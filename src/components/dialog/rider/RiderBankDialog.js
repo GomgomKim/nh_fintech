@@ -23,7 +23,6 @@ class RiderBankDialog extends Component {
         super(props)
         this.state = {
             selectedDate: today,
-
             list: [],
             pagination: {
                 total: 0,
@@ -35,7 +34,7 @@ class RiderBankDialog extends Component {
     }
     componentDidMount() {
         this.getList()
-        console.log(this.props)
+        // console.log(this.props)
     }
 
     setDate = (date) => {
@@ -50,22 +49,6 @@ class RiderBankDialog extends Component {
             pagination: pager,
         }, () => this.getList());
     };
-
-    onSearchRider = (value) => {
-        this.setState({
-            riderName: value,
-        }, () => {
-            this.getList()
-        })
-    }
-
-    onChange = e => {
-        // console.log('radio checked', e.target.value);
-        this.setState({
-            riderStatus: e.target.value,
-        }, () => this.getList());
-    };
-
 
     getList = () => {
         var list = [
@@ -144,7 +127,6 @@ class RiderBankDialog extends Component {
                 title: "처리자",
                 dataIndex: "processer",
                 className: "table-column-center",
-                render: (data) => <div>{comma(data)}</div>
             },
             {
                 title: "기사명",
@@ -161,11 +143,13 @@ class RiderBankDialog extends Component {
                 title: "처리금액",
                 dataIndex: "processPrice",
                 className: "table-column-center",
+                render: (data) => <div>{comma(data)}</div>
             },
             {
                 title: "잔액",
                 dataIndex: "leftPrice",
                 className: "table-column-center",
+                render: (data) => <div>{comma(data)}</div>
             },
 
 
@@ -186,7 +170,7 @@ class RiderBankDialog extends Component {
 
                                 <div className="riderBank-content">
                                     <div className="riderBank-title">
-                                        코인이체
+                                        기사 입출금내역
                                     </div>
                                     <img onClick={close} src={require('../../../img/login/close.png').default} className="coinRider-close" />
 
