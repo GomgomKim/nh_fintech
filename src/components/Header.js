@@ -1,11 +1,13 @@
 import React from "react";
-import { Layout, Modal } from "antd";
+import { withRouter, Link, Switch, Route } from "react-router-dom";
+import { Layout, Modal, Menu } from "antd";
 import { connect } from "react-redux";
 import { reactLocalStorage } from "reactjs-localstorage";
-
 import { httpPost, httpUrl } from "../api/httpClient";
 import { logout, login } from "../actions/loginAction";
 import con from "../const";
+import { CopyOutlined, PhoneOutlined, TeamOutlined, IdcardOutlined, SettingOutlined } from '@ant-design/icons';
+const SubMenu = Menu.SubMenu;
 
 class Header extends React.Component {
   constructor(props) {
@@ -37,6 +39,17 @@ class Header extends React.Component {
   }
 
   render() {
+    console.log(this.props.history.location.pathname)
+
+    const menus = [
+      { idx: 1, name: '접수현황', icon: (<CopyOutlined />), url: '/order/OrderMain' },
+      { idx: 2, name: '가맹점관리', icon: (<PhoneOutlined />), url: '/franchise/FranchiseMain' },
+      { idx: 3, name: '기사관리', icon: (<TeamOutlined />), url: '/rider/RiderMain' },
+      { idx: 4, name: '직원관리', icon: (<IdcardOutlined />), url: '/staff/StaffMain' },
+      { idx: 5, name: '환경설정', icon: (<SettingOutlined />), url: '/setting/SettingMain' },
+    ];
+
+    const currentPage = menus.find(x => x.url == this.props.history.location.pathname);
     return (
       <Layout.Header style={{ background: "#fff", padding: 0 }}>
         <div
@@ -45,20 +58,35 @@ class Header extends React.Component {
             fontSize: "14px",
             fontWeight: "bold",
             color: "#fff",
-            textAlign: "right",
+            textAlign: "left",
             paddingRight: "20px"
           }}>
-          <div style={{ display: "inline-block" }}>
-            관리자&nbsp;&nbsp;&nbsp;|
+          <div className="menu-wrapper">
+            {menus.map(row => {
+              return (
+                <div onClick={()=>this.props.history.push(row.url)} className={"top-menu " + (row.idx == currentPage.idx ? 'active' : '')}>
+                  {row.icon}&nbsp;
+                  {row.name}
+                </div>
+              );
+            })}
+          </div>
+
+          <div className="menu-right">
+            <div style={{ display: "inline-block" }}>
+              관리자&nbsp;&nbsp;&nbsp;|
             {/* {this.props.loginInfo.userId}&nbsp;&nbsp;&nbsp;| */}
+            </div>
+            <div
+              style={{ display: "inline-block", cursor: "pointer" }}
+              onClick={() => {
+                this.setState({ visible: true });
+              }}>
+              &nbsp;&nbsp;&nbsp;로그아웃
           </div>
-          <div
-            style={{ display: "inline-block", cursor: "pointer" }}
-            onClick={() => {
-              this.setState({ visible: true });
-            }}>
-            &nbsp;&nbsp;&nbsp;로그아웃
+
           </div>
+
         </div>
         <Modal
           visible={this.state.visible}
@@ -90,4 +118,4 @@ let mapDispatchToProps = (dispatch) => {
     onLogout: () => dispatch(logout())
   };
 };
-export default connect(mapStateToProps, mapDispatchToProps)(Header);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Header));

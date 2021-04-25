@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Route, Switch } from "react-router-dom";
 import { Layout } from "antd";
-import { FranchiseList } from "../pages";
+import { OrderMain, FranchiseMain, RiderMain, StaffMain, SettingMain } from "../pages";
 import { Redirect } from "react-router-dom";
 
 export default class Content extends Component {
@@ -11,8 +11,12 @@ export default class Content extends Component {
         <div style={{ padding: 24, background: "#fff" }}>
           <Switch>
             {/* 게시글 */}
-            <Route exact path="/franchise/tid" component={FranchiseList} />
-            <Redirect to="/franchise/tid" />
+            <Route exact path="/order/OrderMain" component={OrderMain} />
+            <Route exact path="/franchise/FranchiseMain" component={FranchiseMain} />
+            <Route exact path="/rider/RiderMain" component={RiderMain} />
+            <Route exact path="/staff/StaffMain" component={StaffMain} />
+            <Route exact path="/setting/SettingMain" component={SettingMain} />
+            <Redirect to="/" />
 
           </Switch>
         </div>

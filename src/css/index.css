@@ -146,6 +146,32 @@ body {
   width: 200px;
 }
 
+.menu-wrapper {
+}
+.menu-right {
+  position: absolute;
+  right: 30px;
+  top: 0px;
+}
+.top-menu {
+  display: inline-block;
+  margin: 0px 15px;
+  padding: 0px 15px;
+  cursor: pointer;
+  font-family: NotoSansRegular;
+  font-size: 18px;
+  color: #fff;
+  font-weight: normal;
+}
+.top-menu:hover {
+  color: #fddc00;
+  border-bottom: 3px solid #fddc00;
+}
+.top-menu.active {
+  color: #fddc00;
+  border-bottom: 3px solid #fddc00;
+}
+
 .login-container {
   max-width: 1200px;
   margin: 100px auto;

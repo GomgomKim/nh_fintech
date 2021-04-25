@@ -155,8 +155,6 @@ const httpUrl = {
   logout: "/logout",
 
   //게시판
-  franchiseList: "/franchise/list?pageSize=%s&pageNum=%s&searchType=%s&searchText=%s",
-  modifyTid: "/franchise/modify/tid",
 };
 
 const imageType = ["image/jpeg", "image/png", "image/bmp"];

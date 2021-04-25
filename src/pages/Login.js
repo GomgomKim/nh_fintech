@@ -54,7 +54,7 @@ console.log(value)
           }
           reactLocalStorage.setObject(Const.appName + ':auth', JSON.stringify(localData));
 
-          this.props.history.push('/main')
+          this.props.history.push('/order/OrderMain')
         }
         else {
           alert("아이디 또는 비밀번호가 잘못되었습니다.")
