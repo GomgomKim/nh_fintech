@@ -1,5 +1,6 @@
 import { Form, DatePicker, Input, Checkbox, Select, Table, Button, Descriptions } from 'antd';
 import Icon from '@ant-design/icons';
+import moment from 'moment';
 import React, { Component } from 'react';
 import { httpGet, httpUrl, httpDownload, httpPost, httpPut } from '../../api/httpClient';
 import SelectBox from "../../components/input/SelectBox";
@@ -256,7 +257,7 @@ class OrderMain extends Component {
           <TimeDelayDialog isOpen={this.state.timeDelayOpen} close={this.closeTimeDelayModal} />
             <Button
               className="tabBtn delayTab"
-              onClick={() => { this.setState({ delayTab: 1 }) }}
+              onClick={() => { this.setState({ delayTab: 1 }, this.openTimeDelayModal) }}
             >10분지연</Button>
 
             <Button
