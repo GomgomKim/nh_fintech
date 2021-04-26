@@ -8,6 +8,7 @@ import { formatDate } from "../../lib/util/dateUtil";
 import "../../css/order.css";
 import { comma } from "../../lib/util/numberUtil";
 
+import SurchargeDialog from "../../components/dialog/SurchargeDialog";
 const FormItem = Form.Item;
 const Ditems = Descriptions.Item;
 
@@ -39,6 +40,7 @@ class OrderMain extends Component {
       },
       // test data
       list: [],
+      surchargeOpen: false,
     };
   }
 
@@ -137,6 +139,12 @@ class OrderMain extends Component {
       pagination: pager,
     }, () => this.getList());
   };
+  openSurchargeModal = () => {
+    this.setState({ surchargeOpen: true });
+  }
+  closeSurchargeModal = () => {
+    this.setState({ surchargeOpen: false });
+  }
 
   render() {
     const columns = [
@@ -318,7 +326,13 @@ class OrderMain extends Component {
             />
           </div>
           
+        <div>
+          <SurchargeDialog isOpen={this.state.surchargeOpen} close={this.closeSurchargeModal} />
+          <div className="" onClick={this.openSurchargeModal}>
+            example dialog
+          </div>
         </div>
+      </div>
     )
   }
 }
