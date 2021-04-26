@@ -1,9 +1,10 @@
-import { Form, DatePicker, Input, Table, Button, Descriptions } from 'antd';
-import moment from 'moment';
+import { Form, DatePicker, Input, Checkbox, Select, Table, Button, Descriptions } from 'antd';
 import Icon from '@ant-design/icons';
+import moment from 'moment';
 import React, { Component } from 'react';
 import { httpGet, httpUrl, httpDownload, httpPost, httpPut } from '../../api/httpClient';
 import SelectBox from "../../components/input/SelectBox";
+import TimeDelayDialog from "../../components/dialog/TimeDelayDialog";
 import { formatDate } from "../../lib/util/dateUtil";
 import "../../css/order.css";
 import { comma } from "../../lib/util/numberUtil";
@@ -39,6 +40,7 @@ class OrderMain extends Component {
       },
       // test data
       list: [],
+      timeDelayOpen: false,
       surchargeOpen: false,
     };
   }
@@ -75,6 +77,7 @@ class OrderMain extends Component {
     })
   }
 
+
   getList = () => {
     var list = [
       {
@@ -90,7 +93,7 @@ class OrderMain extends Component {
         deliveryCharge: 1000,
         destination: '서울시 노원구 123동',
         charge: 60000,
-        destination: 0,
+        paymentMethod: 0,
       },
       {
         pickupStatus: 0,
@@ -105,7 +108,7 @@ class OrderMain extends Component {
         deliveryCharge: 3000,
         destination: '서울시 노원구 123동',
         charge: 30000,
-        destination: 0,
+        paymentMethod: 0,
       },
       {
         pickupStatus: 0,
@@ -120,7 +123,7 @@ class OrderMain extends Component {
         deliveryCharge: 2000,
         destination: '서울시 노원구 123동',
         charge: 20000,
-        destination: 0,
+        paymentMethod: 0,
       },
     ];
     this.setState({
@@ -138,12 +141,24 @@ class OrderMain extends Component {
       pagination: pager,
     }, () => this.getList());
   };
+
+
+  // 시간지연 dialog
+  openTimeDelayModal = () => {
+    this.setState({ timeDelayOpen: true });
+  }
+  closeTimeDelayModal = () => {
+    this.setState({ timeDelayOpen: false });
+  }
+
+  // 할증 dialog
   openSurchargeModal = () => {
     this.setState({ surchargeOpen: true });
   }
   closeSurchargeModal = () => {
     this.setState({ surchargeOpen: false });
   }
+
 
   render() {
     const columns = [
@@ -218,7 +233,7 @@ class OrderMain extends Component {
       },
       {
         title: "결제방식",
-        dataIndex: "destination",
+        dataIndex: "paymentMethod",
         className: "table-column-center",
         render: (data) => <div>{data == 0 ? "선결" : "카드"}</div>
       },
@@ -238,10 +253,10 @@ class OrderMain extends Component {
     return (
       <div className="">
         <div className="btnLayout">
+          <TimeDelayDialog isOpen={this.state.timeDelayOpen} close={this.closeTimeDelayModal} />
           <Button
-            style={{ zIndex: 0 }}
             className="tabBtn delayTab"
-            onClick={() => { this.setState({ delayTab: 1 }) }}
+            onClick={() => { this.setState({ delayTab: 1 }, this.openTimeDelayModal) }}
           >10분지연</Button>
 
           <Button
@@ -326,6 +341,8 @@ class OrderMain extends Component {
             onChange={this.handleTableChange}
           />
         </div>
+
+
       </div>
     )
   }
