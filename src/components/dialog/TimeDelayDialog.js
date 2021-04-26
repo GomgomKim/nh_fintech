@@ -26,25 +26,49 @@ class SurchargeDialog extends Component {
                                 </div>
                                 <div className="timeDelay-Pop-content">
 
-                                    <div className="timeDelay_inner">
-                                        example dialog
+                                    <div className="timeDelay-inner">
 
-                                        <FormItem
-                                                    style={{ marginBottom: 0, display: 'inline-block', verticalAlign: 'middle' }}
-                                                    name="phone1"
-                                                    className="phone-num-select"
-                                                    initialValue="가맹점 선택"
-                                                >
-                                                    <Select size="large">
-                                                        <Option value="010">010</Option>
-                                                        <Option value="011">011</Option>
-                                                        <Option value="016">016</Option>
-                                                        <Option value="017">017</Option>
-                                                        <Option value="018">018</Option>
-                                                        <Option value="019">019</Option>
-                                                    </Select>
-                                                </FormItem>
+                                        <div className="timeDelay-place1">
+                                            <FormItem
+                                                style={{ marginBottom: 0, display: 'inline-block', verticalAlign: 'middle' }}
+                                                name="timeDelay-place"
+                                                initialValue="가맹점 선택"
+                                            >
+                                                <Select size="large">
+                                                    <Option value="플러스김포">플러스김포 / 플러스김포</Option>
+                                                    <Option value="플러스김포">플러스김포1 / 플러스김포</Option>
+                                                    <Option value="플러스김포">플러스김포2 / 플러스김포</Option>
+                                                    <Option value="플러스김포">플러스김포3 / 플러스김포</Option>
+                                                    <Option value="플러스김포">플러스김포4 / 플러스김포</Option>
+                                                    <Option value="플러스김포">플러스김포5 / 플러스김포</Option>
+                                                </Select>
+                                            </FormItem>
+                                        </div>
+
+                                        <div className="timeDelay-box">
+                                            <div className="timeDelay-box-01">10분</div>
+                                            <div className="timeDelay-box-02">15분</div>
+                                            <div className="timeDelay-box-03">20분</div>
+                                            <div className="timeDelay-box-04">30분</div>
+                                            <div className="timeDelay-box-05">40분</div>
+                                            <div className="timeDelay-box-06">50분</div>
+                                            <div className="timeDelay-box-07">0분</div>
+                                            <div className="timeDelay-box-08">0분</div>
+                                            <div className="timeDelay-box-09">0분 지연</div>
+                                            <div className="timeDelay-box-10">0분 지연</div>
+                                            <div className="timeDelay-box-11">0분 지연</div>
+                                            <div className="timeDelay-box-12">0분 지연</div>
+                                        </div>
+
+                                        <div className="timeDelay-btn-01">
+                                            배달불가
                                     </div>
+                                        <div className="timeDelay-btn-02">
+                                            적용
+                                    </div>
+
+                                    </div>
+
 
                                 </div>
                             </div>
