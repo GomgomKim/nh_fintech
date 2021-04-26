@@ -1,9 +1,9 @@
-import { Form, DatePicker, Input, Table, Button, Descriptions } from 'antd';
+import { Form, DatePicker, Input, Checkbox, Select, Table, Button, Descriptions } from 'antd';
 import Icon from '@ant-design/icons';
 import React, { Component } from 'react';
 import { httpGet, httpUrl, httpDownload, httpPost, httpPut } from '../../api/httpClient';
 import SelectBox from "../../components/input/SelectBox";
-import SurchargeDialog from "../../components/dialog/SurchargeDialog";
+import TimeDelayDialog from "../../components/dialog/TimeDelayDialog";
 const FormItem = Form.Item;
 const Ditems = Descriptions.Item;
 
@@ -14,26 +14,26 @@ class OrderMain extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      surchargeOpen: false,
+      timeDelayOpen: false,
     };
   }
 
   componentDidMount() {
   }
 
-  openSurchargeModal = () => {
-    this.setState({ surchargeOpen: true });
+  openTimeDelayModal = () => {
+    this.setState({ timeDelayOpen: true });
   }
-  closeSurchargeModal = () => {
-    this.setState({ surchargeOpen: false });
+  closeTimeDelayModal = () => {
+    this.setState({ timeDelayOpen: false });
   }
 
   render() {
     return (
       <div>
-        <SurchargeDialog isOpen={this.state.surchargeOpen} close={this.closeSurchargeModal} />
-        <div className="" onClick={this.openSurchargeModal}>
-          example dialog
+        <TimeDelayDialog isOpen={this.state.timeDelayOpen} close={this.closeTimeDelayModal} />
+        <div className="" onClick={this.openTimeDelayModal}>
+          time delay
         </div>
       </div>
     )

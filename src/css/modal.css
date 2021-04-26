@@ -49,6 +49,50 @@
   }
   
 
+/* 시간지연 dialog */
+
+.timeDelay-Dialog{
+  position:fixed;
+  top:20%;
+  left:40%;
+  width:400px;
+}
+
+  .timeDelay-Pop-title{
+    width:400px;
+    height:30px;
+
+  }
+
+  .timeDelay-Pop-title-1{
+    width:30px;
+    cursor:pointer;
+    background-color:#fddc00;
+    float:right;
+
+  }
+  .timeDelay-Pop-image{
+    float:right;
+  }
+  .timeDelay-Pop-content{
+    padding:0px;
+    width:400px;
+    height:700px;
+    background-color:white;
+
+  }
+
+  .timeDelay-Pop-content .timeDelay_inner { 
+    width: 100%; 
+    height: 700px; 
+    overflow-y: scroll; 
+    border: 1px solid #ccc; 
+    padding: 10px; 
+    text-align: left;
+}
+
+
+
 /* 유튜브-미국로또주문방법 */
 
 .ytb-content{
