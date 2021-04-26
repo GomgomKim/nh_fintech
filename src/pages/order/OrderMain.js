@@ -8,7 +8,6 @@ import TimeDelayDialog from "../../components/dialog/TimeDelayDialog";
 import { formatDate } from "../../lib/util/dateUtil";
 import "../../css/order.css";
 import { comma } from "../../lib/util/numberUtil";
-
 import SurchargeDialog from "../../components/dialog/SurchargeDialog";
 const FormItem = Form.Item;
 const Ditems = Descriptions.Item;
@@ -78,7 +77,7 @@ class OrderMain extends Component {
     })
   }
 
-  
+
   getList = () => {
     var list = [
       {
@@ -130,9 +129,9 @@ class OrderMain extends Component {
     this.setState({
       list: list,
     });
-    
+
   }
-  
+
   handleTableChange = (pagination) => {
     console.log(pagination)
     const pager = { ...this.state.pagination };
@@ -152,15 +151,15 @@ class OrderMain extends Component {
     this.setState({ timeDelayOpen: false });
   }
 
-   // 할증 dialog
+  // 할증 dialog
   openSurchargeModal = () => {
     this.setState({ surchargeOpen: true });
   }
   closeSurchargeModal = () => {
     this.setState({ surchargeOpen: false });
   }
-  
-  
+
+
   render() {
     const columns = [
       {
@@ -168,9 +167,9 @@ class OrderMain extends Component {
         dataIndex: "pickupStatus",
         className: "table-column-center",
         render: (data) => <div>{data == -1 ? "취소"
-         : data == 0 ? "픽업" 
-         : data == 1 ? "배차" 
-         : data == 2 ? "완료" : "-" }</div>
+          : data == 0 ? "픽업"
+            : data == 1 ? "배차"
+              : data == 2 ? "완료" : "-"}</div>
       },
       {
         title: "음식준비",
@@ -252,97 +251,98 @@ class OrderMain extends Component {
     ];
 
     return (
-        <div className="">
-          <div className="btnLayout">
+      <div className="">
+        <div className="btnLayout">
           <TimeDelayDialog isOpen={this.state.timeDelayOpen} close={this.closeTimeDelayModal} />
-            <Button
-              className="tabBtn delayTab"
-              onClick={() => { this.setState({ delayTab: 1 }, this.openTimeDelayModal) }}
-            >10분지연</Button>
+          <Button
+            className="tabBtn delayTab"
+            onClick={() => { this.setState({ delayTab: 1 }, this.openTimeDelayModal) }}
+          >10분지연</Button>
 
-            <Button
-              className="tabBtn mapTab"
-              onClick={() => { this.setState({ mapTab: 1 }) }}
-            >지도관제</Button>
+          <Button
+            className="tabBtn mapTab"
+            onClick={() => { this.setState({ mapTab: 1 }) }}
+          >지도관제</Button>
 
-            <Button
-              className="tabBtn surchargeTab"
-              onClick={() => { this.setState({ surchargeTab: 1 }) }}
-            >할증</Button>
+          <SurchargeDialog isOpen={this.state.surchargeOpen} close={this.closeSurchargeModal} />
+          <Button
+            className="tabBtn surchargeTab"
+            onClick={() => { this.setState({ surchargeTab: 1 }, this.openSurchargeModal) }}
+          >할증</Button>
 
-            <Button
-              className="tabBtn registTab"
-              onClick={() => { this.setState({ registTab: 1 }) }}
-            >콜등록</Button>
+          <Button
+            className="tabBtn registTab"
+            onClick={() => { this.setState({ registTab: 1 }) }}
+          >콜등록</Button>
 
-            <Button
-              className="tabBtn messageTab"
-              onClick={() => { this.setState({ messageTab: 1 }) }}
-            >상담메세지</Button>
+          <Button
+            className="tabBtn messageTab"
+            onClick={() => { this.setState({ messageTab: 1 }) }}
+          >상담메세지</Button>
 
-            <Button
-              className="tabBtn noticeTab"
-              onClick={() => { this.setState({ noticeTab: 1 }) }}
-            >공지사항</Button>
-          </div>
+          <Button
+            className="tabBtn noticeTab"
+            onClick={() => { this.setState({ noticeTab: 1 }) }}
+          >공지사항</Button>
+        </div>
 
-          <div className="selectLayout">
-            <DatePicker 
-              defaultValue={moment(today, dateFormat)}
-              format={dateFormat}
-              onChange={date => this.setState({ selectedDate: date })}
-            />
+        <div className="selectLayout">
+          <DatePicker
+            defaultValue={moment(today, dateFormat)}
+            format={dateFormat}
+            onChange={date => this.setState({ selectedDate: date })}
+          />
 
-            <Button
-              className="tabBtn filterTab"
-              onClick={() => { this.setState({ filterTab: 1 }) }}
-            >필터링 설정</Button>
+          <Button
+            className="tabBtn filterTab"
+            onClick={() => { this.setState({ filterTab: 1 }) }}
+          >필터링 설정</Button>
 
-            <Search
-              placeholder="가맹점검색"
-              enterButton
-              allowClear
-              onSearch={this.onSearchFranchisee}
-              style={{
-                width: 200,
-                marginLeft: 20
-              }}
-            />
+          <Search
+            placeholder="가맹점검색"
+            enterButton
+            allowClear
+            onSearch={this.onSearchFranchisee}
+            style={{
+              width: 200,
+              marginLeft: 20
+            }}
+          />
 
-            <Search
-              placeholder="기사명검색"
-              enterButton
-              allowClear
-              onSearch={this.onSearchFranchisee}
-              style={{
-                width: 200,
-                marginLeft: 20
-              }}
-            />
+          <Search
+            placeholder="기사명검색"
+            enterButton
+            allowClear
+            onSearch={this.onSearchFranchisee}
+            style={{
+              width: 200,
+              marginLeft: 20
+            }}
+          />
 
-            <Search
-              placeholder="전화번호검색"
-              enterButton
-              allowClear
-              onSearch={this.onSearchFranchisee}
-              style={{
-                width: 200,
-                marginLeft: 20
-              }}
-            />
-          </div>
+          <Search
+            placeholder="전화번호검색"
+            enterButton
+            allowClear
+            onSearch={this.onSearchFranchisee}
+            style={{
+              width: 200,
+              marginLeft: 20
+            }}
+          />
+        </div>
 
-          <div className="dataTableLayout">
-            <Table
-              // rowKey={(record) => record.idx}
-              dataSource={this.state.list}
-              columns={columns}
-              pagination={this.state.pagination}
-              onChange={this.handleTableChange}
-            />
-          </div>
-          
-        
+        <div className="dataTableLayout">
+          <Table
+            // rowKey={(record) => record.idx}
+            dataSource={this.state.list}
+            columns={columns}
+            pagination={this.state.pagination}
+            onChange={this.handleTableChange}
+          />
+        </div>
+
+
       </div>
     )
   }

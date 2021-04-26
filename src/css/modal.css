@@ -14,44 +14,79 @@
     transform: translate(-50%, -50%);
     width: 720px;
     border-radius: 30px;
-       /* background-color: white; */
+    z-index: 2;
 }
-  .servicePop-title{
-      /* font-size: 28px; */
-      letter-spacing: -1px;
-      font-weight: bold;
-      color: #333;
-      text-align: right;             
+
+  /* 할증 dialog */
+  .surcharge-dialog{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 900px;
+    border-radius: 30px;
+    z-index: 2;
   }
-  .servicePop-title-1{
-    width: 30px;
-    background-color: #0f53a8;
-    padding: 8px;
-    cursor: pointer;
-  }
-  .servicePop-image{
-      cursor: pointer;
-      float: right;
-      margin-top: 20px;
-   }
-  .servicePop-content{
+  .surcharge-container{
     background-color: white;
     padding:30px;
     text-align: left;
     color: #777;
   }
-  .servicePop-content .agree_inner { 
-      width: 100%; 
-      height: 320px; 
-      overflow-y: scroll; 
-      border: 1px solid #ccc; 
-      padding: 10px; 
-      text-align: left;
+  .surcharge-title{
+    /* font-size: 28px; */
+    letter-spacing: -1px;
+    font-weight: bold;
+    color: #333;
+    text-align: right;             
+    display: inline-block;
+    font-size: 25px;
+    line-height: 30px;
   }
-  
+  .surcharge-close{
+    width: 30px;
+    background-color: #fddc00;
+    padding: 8px;
+    cursor: pointer;
+    /* display: inline-block; */
+    float: right;
+  }
+  .surcharge-container .selLayout{ 
+    margin-top: 20px;
+    width: 100%; 
+    height: 320px; 
+    overflow-y: scroll; 
+    border: 1px solid #ccc; 
+    padding: 20px; 
+    text-align: left;
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+  .selLayout::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera*/
+  }
+
+  .selectBlock{
+
+  }
+  .selectBlock .mainTitle{
+    display: inline-block;
+    font-size: 20px;
+    vertical-align: middle;
+    font-weight: bold;
+  }
+  .selectBlock .ant-select{
+    margin-left: 20px;
+    width: 250px;
+    font-size: 15px;
+    display: inline-block;
+    vertical-align: middle;
+  }
+  .listBlock{
+
+  }
 
 /* 시간지연 dialog */
-
 .timeDelay-Dialog{
   position:fixed;
   top:20%;
@@ -154,20 +189,6 @@
 
 
 
-/* 유튜브-미국로또주문방법 */
 
-.ytb-content{
-  width:720px;
-  height: 560px;
-  background: #fff;
-  text-align: center;
-}
 
-.ytb-content-box{
-  padding: 20px;
-}
 
-.ytb-content-text{
-  font-size: 18px;
-  font-weight: 500;;
-}
