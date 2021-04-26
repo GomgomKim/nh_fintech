@@ -91,7 +91,7 @@ class OrderMain extends Component {
         deliveryCharge: 1000,
         destination: '서울시 노원구 123동',
         charge: 60000,
-        destination: 0,
+        paymentMethod: 0,
       },
       {
         pickupStatus: 0,
@@ -106,7 +106,7 @@ class OrderMain extends Component {
         deliveryCharge: 3000,
         destination: '서울시 노원구 123동',
         charge: 30000,
-        destination: 0,
+        paymentMethod: 0,
       },
       {
         pickupStatus: 0,
@@ -121,7 +121,7 @@ class OrderMain extends Component {
         deliveryCharge: 2000,
         destination: '서울시 노원구 123동',
         charge: 20000,
-        destination: 0,
+        paymentMethod: 0,
       },
     ];
     this.setState({
@@ -219,7 +219,7 @@ class OrderMain extends Component {
       },
       {
         title: "결제방식",
-        dataIndex: "destination",
+        dataIndex: "paymentMethod",
         className: "table-column-center",
         render: (data) => <div>{data == 0 ? "선결" : "카드"}</div>
       },
