@@ -1,10 +1,11 @@
-import { Form, DatePicker, Input, Checkbox, Select, Table, Button, Descriptions } from 'antd';
+import { Form, DatePicker, Input, Checkbox, Select, Table, Button, Radio, Descriptions } from 'antd';
 import Icon from '@ant-design/icons';
 import moment from 'moment';
 import React, { Component } from 'react';
 import { httpGet, httpUrl, httpDownload, httpPost, httpPut } from '../../api/httpClient';
 import SelectBox from "../../components/input/SelectBox";
 import TimeDelayDialog from "../../components/dialog/TimeDelayDialog";
+import FilteringDialog from "../../components/dialog/FilteringDialog";
 import { formatDate } from "../../lib/util/dateUtil";
 import "../../css/order.css";
 import { comma } from "../../lib/util/numberUtil";
@@ -42,6 +43,7 @@ class OrderMain extends Component {
       list: [],
       timeDelayOpen: false,
       surchargeOpen: false,
+      filteringOpen: false,
     };
   }
 
@@ -159,6 +161,13 @@ class OrderMain extends Component {
     this.setState({ surchargeOpen: false });
   }
 
+  // 필터링 dialog
+  openFilteringModal = () => {
+    this.setState({ filteringOpen: true });
+  }
+  closeFilteringModal = () => {
+    this.setState({ filteringOpen: false });
+  }
 
   render() {
     const columns = [
@@ -292,10 +301,10 @@ class OrderMain extends Component {
             format={dateFormat}
             onChange={date => this.setState({ selectedDate: date })}
           />
-
+          <FilteringDialog isOpen={this.state.filteringOpen} close={this.closeFilteringModal} />
           <Button
             className="tabBtn filterTab"
-            onClick={() => { this.setState({ filterTab: 1 }) }}
+            onClick={() => { this.setState({ filterTab: 1 }, this.openFilteringModal) }}
           >필터링 설정</Button>
 
           <Search
