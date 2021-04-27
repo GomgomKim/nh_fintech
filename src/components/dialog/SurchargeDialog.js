@@ -188,7 +188,7 @@ class SurchargeDialog extends Component {
                                                 <div className="mainTitle">
                                                     할증 요금 정보
                                                 </div>
-                                                <div style={{ marginTop: 20 }}>
+                                                <div className="m-t-20">
                                                     <div className="subTitle">
                                                         할증명
                                                     </div>

@@ -7,7 +7,7 @@
 }
 
 .selectLayout{
-    margin-top: 20px;
+    margin-top: 20px !important;
 }
 
 .filterTab{
@@ -16,4 +16,26 @@
 
 .dataTableLayout{
     margin-top: 40px;
+}
+
+.riderTableLayout{
+    margin-top: 10px;
+}
+
+.orderTab{
+    margin-left: 0px !important;
+}
+
+.textLayout{
+    margin-top: 30px;
+}
+
+.riderText{
+    font-size: 20px;
+    font-family: NotoSansBold;
+}
+
+.mapLayout{
+    width:1000px;
+    height:600px;
 }

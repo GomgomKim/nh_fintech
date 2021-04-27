@@ -1,0 +1,24 @@
+.franchiseContainer .tabBtn{
+    margin-left: 10px;
+}
+
+.franchiseContainer .delayTab{
+    margin-left: 0px !important;
+}
+
+.franchiseContainer .selectLayout{
+    margin-top: 20px;
+}
+
+.franchiseContainer .filterTab{
+    margin-left: 20px !important;
+}
+
+.franchiseContainer .dataTableLayout{
+    margin-top: 40px;
+}
+
+.selectFran .override-select.fran{
+    margin-top: 10px;
+    width: 440px;
+}
