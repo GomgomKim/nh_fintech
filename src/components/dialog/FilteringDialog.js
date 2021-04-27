@@ -22,29 +22,44 @@ class FilteringDialog extends Component {
                             <div className="Dialog-overlay" onClick={close} />
                             <div className="filtering-Dialog">
 
-                                <div className="filtering-Pop-content">
+                                <div className="filtering-content">
+                                    <div className="timeDelay-title">
+                                        상태 필터링
+                                    </div>
+                                    <img onClick={close} src={require('../../img/login/close.png').default} className="filtering-close" />
+
 
                                     <div className="filtering-inner">
-                                        상태 필터링
-                                        <div className="filtering-Pop-title">
-                                            <img onClick={close} src={require('../../img/login/close.png').default} className="filtering-Pop-title-1" />
-                                        </div>
-
-                                        <div className="filtering-place1">
-                                            <FormItem
-                                                style={{ marginBottom: 0 }}
-                                                name="smsAreee"
-                                                initialValue={1}
-                                                className="mypage-infochange-content-check-01-text-02-check"
-                                            >
-                                                <Radio.Group>
-                                                    <Radio value={1} >예</Radio>
-                                                    <Radio value={0} >아니오</Radio>
-                                                </Radio.Group>
-                                            </FormItem>
-                                        </div>
 
                                         <div className="filtering-box">
+                                            <div className="filtering-btn-01">
+                                                <Checkbox>접수</Checkbox>
+                                            </div>
+                                            <div className="filtering-btn-02">
+                                                <Checkbox>완료</Checkbox>
+                                            </div>
+                                            <div className="filtering-btn-03">
+                                                <Checkbox>배차</Checkbox>
+                                            </div>
+                                            <div className="filtering-btn-04">
+                                                <Checkbox>현금</Checkbox>
+                                            </div>
+                                            <div className="filtering-btn-05">
+                                                <Checkbox>픽업</Checkbox>
+                                            </div>
+                                            <div className="filtering-btn-06">
+                                                <Checkbox>카드</Checkbox>
+                                            </div>
+                                            <div className="filtering-btn-07">
+                                                <Checkbox>취소</Checkbox>
+                                            </div>
+                                            <div className="filtering-btn-08">
+                                                <Checkbox>선결</Checkbox>
+                                            </div>
+
+
+
+
                                         </div>
 
 

@@ -348,58 +348,51 @@
 /* 시간지연 dialog */
 .timeDelay-Dialog{
   position:fixed;
-  top:20%;
-  left:30%;
-  width:1200px;
+  top:50%;
+  left:50%;
+  transform: translate(-50%, -50%);
+  width:780px;
   z-index: 2;
 }
 
-  .timeDelay-Pop-title{
-    width:1050px;
-    height:30px;
-    margin:5px;
+.timeDelay-content{
+  padding:30px;
+  background-color:white;
+}
 
-  }
+.timeDelay-title{
+  font-size:25px;
+  font-weight:bold;
+  line-height:30px;
+  /* width:300px; */
+  display: inline-block;
+  vertical-align: middle;
+}
 
-  .timeDelay-Pop-title-1{
+.timeDelay-close{
     width:30px;
     cursor:pointer;
     background-color:#fddc00;
-    float:right;
+    /* display: inline-block; */
+    float: right;
     padding:8px;
 
-  }
-  .timeDelay-Pop-image{
-    float:right;
-  }
-  .timeDelay-Pop-content{
-    padding:0px;
-    width:1100px;
-    height:675px;
-    background-color:white;
+}
 
-  }
-
-  .timeDelay-Pop-content .timeDelay-inner { 
+.timeDelay-inner { 
     width: 100%; 
-    height: 675px; 
+    height: 650px; 
     overflow-y: scroll; 
     border: 1px solid #ccc; 
-    padding: 10px; 
+    padding: 20px; 
     text-align: left;
+    margin-top:20px;
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
 }
 
-
-.timeDelay-place1{
-  text-align: center;
-  margin:10px;
-  position:absolute;
-  top:110px;
-  left:700px;
-}
-.timeDelay-place1 .ant-select-selector{
-  width:250px;
-  
+.timeDelay-inner::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera*/
 }
 
 .timeDelay-box{
@@ -408,16 +401,17 @@
   margin:16px 32px;
   text-align:center;
   line-height:130px;
-  margin-top:70px;
+  margin:30px;
 }
 
-.timeDelay-box > div{
+.timeDelay-box > button{
   width:144px;
   height:144px;
   float:left;
   border:1px solid #777;
   border-radius:10px;
   margin:0px 0px 10px 10px;
+  font-size:25px;
 }
 
 .timeDelay-box .timeDelay-box-01, .timeDelay-box-05, .timeDelay-box-09 {
@@ -428,89 +422,141 @@
   margin-bottom:0px!important;
 }
 
+.timeDelay-place1{
+  text-align: center;
+  display:inline-block;
+}
+.timeDelay-place1 .ant-select:not(.ant-select-customize-input) .ant-select-selector{
+  width:220px;
+}
+
 .timeDelay-btn-01{
-  width:100px;
-  height:40px;
-  background:red;
-  color:#fff;
-  margin:20px 32px;
-  text-align:center;
-  line-height:40px;
+  width:120px;
+  height:32px;
+  /* background:red; */
+  color:#000;
+  text-align:left;
   font-size:20px;
-  letter-spacing:3px;
+  padding-left:8px;
+  display:inline-block;
+  vertical-align: middle;
+  margin-left:8px;
+}
+
+.timeDelay-btn-01 .ant-checkbox-inner {
+  width:20px;
+  height:22px;
   position:absolute;
-  left:700px;
-  top:450px;
+  top:-22px;
+  left:10px;
 }
 
 .timeDelay-btn-02{
+  text-align:center;
+  display:inline-block;
+  vertical-align: middle;
+  margin-left:25px;
+} 
+
+.timeDelay-btn-02 > button{
+  height:50px;
   width:230px;
-  height:40px;
+  font-size:20px;
   background:#40a9ff;
   color:#fff;
-  margin:20px 32px;
-  text-align:center;
-  line-height:40px;
   font-size:20px;
-  letter-spacing:3px;
-  position:absolute;
-  left:700px;
-  top:510px;
+  text-align:center;
+  padding: 0px!important;
+  display:inline-block;
 }
-
+.timeDelay-btn-02 .timeDelay-btn{
+  margin:0px!important;
+}
 /* 필터링 dialog */
-
 .filtering-Dialog{
   position:fixed;
-  top:20%;
-  left:30%;
-  width:1200px;
+  top:50%;
+  left:50%;
+  transform: translate(-50%, -50%);
+  width:530px;
   z-index: 2;
 }
-.filtering-Pop-title{
-  width:1050px;
-  height:30px;
-  margin:5px;
 
-}
-
-.filtering-Pop-title-1{
-  width:30px;
-  cursor:pointer;
-  background-color:#fddc00;
-  float:right;
-  padding:8px;
-
-}
-.filtering-Pop-image{
-  float:right;
-}
-.filtering-Pop-content{
-  padding:0px;
-  width:1100px;
-  height:675px;
+.filtering-content{
+  padding:30px;
   background-color:white;
+}
+
+.filtering-title{
+  font-size:25px;
+  font-weight:bold;
+  line-height:30px;
+  /* width:300px; */
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.filtering-close{
+
+    width:30px;
+    cursor:pointer;
+    background-color:#fddc00;
+    /* display: inline-block; */
+    float: right;
+    padding:8px;
 
 }
 
-.filtering-Pop-content .filtering-inner { 
-  width: 100%; 
-  height: 675px; 
-  overflow-y: scroll; 
-  border: 1px solid #ccc; 
-  padding: 10px; 
-  text-align: left;
+.filtering-inner { 
+    width: 100%; 
+    height: 558px; 
+    overflow-y: scroll; 
+    border: 1px solid #ccc; 
+    padding: 20px; 
+    text-align: left;
+    margin-top:20px;
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
 }
 
-
-.filtering-place1{
-text-align: center;
-margin:10px;
-position:absolute;
-top:110px;
-left:700px;
+.filtering-inner::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera*/
 }
-.filtering-place1 .ant-select-selector{
-width:250px;
 
+.filtering-box{
+  width:365px;
+  height:448px;
+  margin:30px;
+}
+.filtering-box .ant-checkbox{
+  top: 0em!important;
+}
+.filtering-box .ant-checkbox-wrapper{
+  display:table;
+}
+
+.filtering-box .ant-checkbox-wrapper >span{
+  display:table-cell;
+  text-align: center;
+}
+
+.filtering-box > div {
+  width:120px;
+  height:52px;
+  float:left;
+  margin:30px;
+}
+
+.filtering-box .ant-checkbox-inner{
+  width:50px;
+  height:50px;
+}
+.filtering-box .ant-checkbox-wrapper .ant-checkbox-checked{
+ width:50px;
+ height:50px;
+}
+
+.filtering-box .ant-checkbox + span{
+  font-size:25px;
+  vertical-align: middle;
 }
