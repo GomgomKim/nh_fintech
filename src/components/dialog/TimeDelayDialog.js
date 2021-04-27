@@ -5,7 +5,7 @@ import '../../css/modal.css';
 const FormItem = Form.Item;
 const { Option } = Select;
 
-class SurchargeDialog extends Component {
+class TimeDelayDialog extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -21,12 +21,13 @@ class SurchargeDialog extends Component {
                         <React.Fragment>
                             <div className="Dialog-overlay" onClick={close} />
                             <div className="timeDelay-Dialog">
-                                <div className="timeDelay-Pop-title">
-                                    <img onClick={close} src={require('../../img/login/close.png').default} className="timeDelay-Pop-title-1" />
-                                </div>
+
                                 <div className="timeDelay-Pop-content">
 
                                     <div className="timeDelay-inner">
+                                        <div className="timeDelay-Pop-title">
+                                            <img onClick={close} src={require('../../img/login/close.png').default} className="timeDelay-Pop-title-1" />
+                                        </div>
 
                                         <div className="timeDelay-place1">
                                             <FormItem
@@ -34,7 +35,7 @@ class SurchargeDialog extends Component {
                                                 name="timeDelay-place"
                                                 initialValue="가맹점 선택"
                                             >
-                                                <Select size="large">
+                                                <Select placeholder="소속지사를 선택해 주세요." className="antd-select">
                                                     <Option value="플러스김포">플러스김포 / 플러스김포</Option>
                                                     <Option value="플러스김포">플러스김포1 / 플러스김포</Option>
                                                     <Option value="플러스김포">플러스김포2 / 플러스김포</Option>
@@ -62,7 +63,11 @@ class SurchargeDialog extends Component {
 
                                         <div className="timeDelay-btn-01">
                                             배달불가
-                                    </div>
+                                            <Checkbox>
+
+                                            </Checkbox>
+                                        </div>
+
                                         <div className="timeDelay-btn-02">
                                             적용
                                     </div>
@@ -81,4 +86,4 @@ class SurchargeDialog extends Component {
     }
 }
 
-export default (SurchargeDialog);
+export default (TimeDelayDialog);

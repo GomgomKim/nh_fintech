@@ -313,14 +313,15 @@
 .timeDelay-Dialog{
   position:fixed;
   top:20%;
-  left:40%;
-  width:400px;
+  left:30%;
+  width:1200px;
   z-index: 2;
 }
 
   .timeDelay-Pop-title{
-    width:400px;
+    width:1050px;
     height:30px;
+    margin:5px;
 
   }
 
@@ -329,6 +330,7 @@
     cursor:pointer;
     background-color:#fddc00;
     float:right;
+    padding:8px;
 
   }
   .timeDelay-Pop-image{
@@ -336,15 +338,15 @@
   }
   .timeDelay-Pop-content{
     padding:0px;
-    width:358px;
-    height:700px;
+    width:1100px;
+    height:675px;
     background-color:white;
 
   }
 
   .timeDelay-Pop-content .timeDelay-inner { 
     width: 100%; 
-    height: 700px; 
+    height: 675px; 
     overflow-y: scroll; 
     border: 1px solid #ccc; 
     padding: 10px; 
@@ -354,30 +356,35 @@
 
 .timeDelay-place1{
   text-align: center;
+  margin:10px;
+  position:absolute;
+  top:110px;
+  left:700px;
 }
-.timeDelay-place1 .ant-select-single.ant-select-lg:not(.ant-select-customize-input) .ant-select-selector{
-  width:230px;
+.timeDelay-place1 .ant-select-selector{
+  width:250px;
   
 }
 
 .timeDelay-box{
-  width:262px;
-  height:350px;
+  width:610px;
+  height:460px;
   margin:16px 32px;
   text-align:center;
   line-height:130px;
+  margin-top:70px;
 }
 
 .timeDelay-box > div{
-  width:80px;
-  height:80px;
+  width:144px;
+  height:144px;
   float:left;
   border:1px solid #777;
   border-radius:10px;
   margin:0px 0px 10px 10px;
 }
 
-.timeDelay-box .timeDelay-box-01, .timeDelay-box-04, .timeDelay-box-07, .timeDelay-box-10 {
+.timeDelay-box .timeDelay-box-01, .timeDelay-box-05, .timeDelay-box-09 {
   margin-left:0px!important;
 }
 
@@ -395,6 +402,9 @@
   line-height:40px;
   font-size:20px;
   letter-spacing:3px;
+  position:absolute;
+  left:700px;
+  top:450px;
 }
 
 .timeDelay-btn-02{
@@ -407,11 +417,64 @@
   line-height:40px;
   font-size:20px;
   letter-spacing:3px;
+  position:absolute;
+  left:700px;
+  top:510px;
+}
+
+/* 필터링 dialog */
+
+.filtering-Dialog{
+  position:fixed;
+  top:20%;
+  left:30%;
+  width:1200px;
+  z-index: 2;
+}
+.filtering-Pop-title{
+  width:1050px;
+  height:30px;
+  margin:5px;
+
+}
+
+.filtering-Pop-title-1{
+  width:30px;
+  cursor:pointer;
+  background-color:#fddc00;
+  float:right;
+  padding:8px;
+
+}
+.filtering-Pop-image{
+  float:right;
+}
+.filtering-Pop-content{
+  padding:0px;
+  width:1100px;
+  height:675px;
+  background-color:white;
+
+}
+
+.filtering-Pop-content .filtering-inner { 
+  width: 100%; 
+  height: 675px; 
+  overflow-y: scroll; 
+  border: 1px solid #ccc; 
+  padding: 10px; 
+  text-align: left;
 }
 
 
+.filtering-place1{
+text-align: center;
+margin:10px;
+position:absolute;
+top:110px;
+left:700px;
+}
+.filtering-place1 .ant-select-selector{
+width:250px;
 
-
-
-
-
+}
