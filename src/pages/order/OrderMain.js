@@ -5,10 +5,11 @@ import React, { Component } from 'react';
 import { httpGet, httpUrl, httpDownload, httpPost, httpPut } from '../../api/httpClient';
 import SelectBox from "../../components/input/SelectBox";
 import TimeDelayDialog from "../../components/dialog/TimeDelayDialog";
+import SurchargeDialog from "../../components/dialog/SurchargeDialog";
+import AddCallDialog from "../../components/dialog/AddCallDialog";
 import { formatDate } from "../../lib/util/dateUtil";
 import "../../css/order.css";
 import { comma } from "../../lib/util/numberUtil";
-import SurchargeDialog from "../../components/dialog/SurchargeDialog";
 const FormItem = Form.Item;
 const Ditems = Descriptions.Item;
 
@@ -42,6 +43,7 @@ class OrderMain extends Component {
       list: [],
       timeDelayOpen: false,
       surchargeOpen: false,
+      addCallOpen: false,
     };
   }
 
@@ -159,6 +161,14 @@ class OrderMain extends Component {
     this.setState({ surchargeOpen: false });
   }
 
+  // 할증 dialog
+  openAddCallModal = () => {
+    this.setState({ addCallOpen: true });
+  }
+  closeAddCallModal = () => {
+    this.setState({ addCallOpen: false });
+  }
+
 
   render() {
     const columns = [
@@ -270,9 +280,10 @@ class OrderMain extends Component {
             onClick={() => { this.setState({ surchargeTab: 1 }, this.openSurchargeModal) }}
           >할증</Button>
 
+          <AddCallDialog isOpen={this.state.addCallOpen} close={this.closeAddCallModal} />
           <Button
             className="tabBtn registTab"
-            onClick={() => { this.setState({ registTab: 1 }) }}
+            onClick={() => { this.setState({ registTab: 1 }, this.openAddCallModal) }}
           >콜등록</Button>
 
           <Button

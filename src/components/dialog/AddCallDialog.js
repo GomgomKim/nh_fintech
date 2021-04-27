@@ -9,8 +9,9 @@ import { formatDate } from "../../lib/util/dateUtil";
 const Option = Select.Option;
 const FormItem = Form.Item;
 const { RangePicker } = DatePicker;
+const Search = Input.Search;
 
-class SurchargeDialog extends Component {
+class AddCallDialog extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -148,46 +149,100 @@ class SurchargeDialog extends Component {
                     isOpen ?
                         <React.Fragment>
                             <div className="Dialog-overlay" onClick={close} />
-                            <div className="surcharge-dialog">
-                                <div className="surcharge-container">
-                                    <div className="surcharge-title">
-                                        할증
+                            <div className="addcall-dialog">
+                                <div className="addcall-container">
+                                    <div className="addcall-title">
+                                        콜등록
                                     </div>
                                     <img onClick={close} src={require('../../img/login/close.png').default} className="surcharge-close" />
 
 
-                                    <div className="surchargeLayout">
-                                        <Form ref={this.formIdRef} onFinish={this.handleIdSubmit}>
+                                    <Form ref={this.formIdRef} onFinish={this.handleIdSubmit}>
+                                        <div className="addcallLayout">
                                             <div className="selectBlock">
                                                 <div className="mainTitle">
                                                     소속지사
-                                            </div>
+                                                </div>
                                                 <FormItem
                                                     name="belongBranch"
                                                     className="selectItem"
                                                 >
-                                                    <Select placeholder="소속지사를 선택해 주세요." className="override-select">
+                                                    <Select placeholder="소속지사를 선택해 주세요." className="override-select branch">
                                                         <Option value={0}>플러스김포 / 플러스김포</Option>
                                                         <Option value={1}>김포1지점 / 플러스김포</Option>
                                                         <Option value={2}>김포2지점 / 플러스김포</Option>
                                                     </Select>
                                                 </FormItem>
                                             </div>
-                                            <div className="listBlock">
-                                                <Table
-                                                    // rowKey={(record) => record.idx}
-                                                    dataSource={this.state.list}
-                                                    columns={columns}
-                                                    pagination={this.state.pagination}
-                                                    onChange={this.handleTableChange}
+                                            <div className="selectBlock">
+                                                <div className="mainTitle">
+                                                    가맹점명
+                                                </div>
+                                                <FormItem
+                                                    name="franchiseName"
+                                                    className="selectItem"
+                                                >
+                                                    <Select placeholder="가맹점을 선택해 주세요." className="override-select fran">
+                                                        <Option value={0}>플러스김포 / 플러스김포</Option>
+                                                        <Option value={1}>김포1지점 / 플러스김포</Option>
+                                                        <Option value={2}>김포2지점 / 플러스김포</Option>
+                                                    </Select>
+                                                </FormItem>
+                                                <Search
+                                                    placeholder="가맹점검색"
+                                                    enterButton
+                                                    allowClear
+                                                    onSearch={this.onSearchFranchisee}
+                                                    style={{
+                                                        width: 190,
+                                                        marginLeft: 10
+                                                    }}
                                                 />
                                             </div>
-                                        </Form>
-                                        <Form ref={this.formIdRef} onFinish={this.handleIdSubmit}>
-                                            <div className="insertBlock">
+                                            <div className="selectBlock">
                                                 <div className="mainTitle">
-                                                    할증 요금 정보
+                                                    고객번호
                                                 </div>
+                                                <Search
+                                                    placeholder="가맹점검색"
+                                                    enterButton
+                                                    allowClear
+                                                    onSearch={this.onSearchFranchisee}
+                                                    style={{
+                                                        width: 202,
+                                                        marginLeft: 20
+                                                    }}
+                                                />
+                                                <div className="mainTitle sub">
+                                                    준비시간
+                                                </div>
+                                                <FormItem
+                                                    name="preparationTime"
+                                                    className="selectItem"
+                                                >
+                                                    <Select placeholder="시간단위" className="override-select time">
+                                                        <Option value={1}>1</Option>
+                                                        <Option value={2}>2</Option>
+                                                        <Option value={3}>3</Option>
+                                                    </Select>
+                                                </FormItem>
+                                            </div>
+                                            <div className="selectBlock">
+                                                <div className="mainTitle">
+                                                    도착지
+                                                </div>
+                                                <FormItem
+                                                    name="addrMain"
+                                                    className="selectItem"
+                                                >
+                                                    <Input placeholder="소속지사를 선택해 주세요." className="override-select">
+                                                    </Input>
+                                                </FormItem>
+                                            </div>
+
+
+
+                                            {/* <div className="insertBlock">
                                                 <div style={{ marginTop: 20 }}>
                                                     <div className="subTitle">
                                                         할증명
@@ -233,9 +288,10 @@ class SurchargeDialog extends Component {
                                                         등록하기
                                                     </Button>
                                                 </div>
-                                            </div>
-                                        </Form>
-                                    </div>
+                                            </div> */}
+
+                                        </div>
+                                    </Form>
 
 
 
@@ -251,4 +307,4 @@ class SurchargeDialog extends Component {
     }
 }
 
-export default (SurchargeDialog);
+export default (AddCallDialog);
