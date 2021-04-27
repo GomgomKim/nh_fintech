@@ -6,7 +6,6 @@ import { httpGet, httpUrl, httpDownload, httpPost, httpPut } from '../../api/htt
 import SelectBox from "../../components/input/SelectBox";
 import TimeDelayDialog from "../../components/dialog/TimeDelayDialog";
 import FilteringDialog from "../../components/dialog/FilteringDialog";
-import SurchargeDialog from "../../components/dialog/SurchargeDialog";
 import AddCallDialog from "../../components/dialog/AddCallDialog";
 import { formatDate } from "../../lib/util/dateUtil";
 import "../../css/order.css";
