@@ -163,19 +163,20 @@ class OrderMain extends Component {
     this.setState({ surchargeOpen: false });
   }
 
+  // 콜등록 dialog
+  openAddCallModal = () => {
+    this.setState({ addCallOpen: true });
+  }
+  closeAddCallModal = () => {
+    this.setState({ addCallOpen: false });
+  }
+
   // 필터링 dialog
   openFilteringModal = () => {
     this.setState({ filteringOpen: true });
   }
   closeFilteringModal = () => {
     this.setState({ filteringOpen: false });
-  }
-  // 할증 dialog
-  openAddCallModal = () => {
-    this.setState({ addCallOpen: true });
-  }
-  closeAddCallModal = () => {
-    this.setState({ addCallOpen: false });
   }
 
 

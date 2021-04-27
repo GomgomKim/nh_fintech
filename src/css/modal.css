@@ -17,6 +17,7 @@
     z-index: 2;
 }
 
+
   /* 할증 dialog */
   .surcharge-dialog{
     position: fixed;
@@ -169,6 +170,7 @@
     float: right;
   }
 
+  
   /* 콜등록 dialog */
   .addcall-dialog{
     position: fixed;
@@ -290,22 +292,18 @@
   }
   .contentBlock .override-input.memo{
     /* margin-left: -30px; */
-    width: 165px;
+    width: 205px;
   }
   .contentBlock .override-input.price{
     /* margin-left: -30px; */
-    width: 165px;
+    width: 205px;
   }
   .contentBlock .override-input.delprice{
     /* margin-left: -30px; */
-    width: 165px;
-  }
-  .contentBlock .override-input.delprice{
-    /* margin-left: -30px; */
-    width: 165px;
+    width: 205px;
   }
   .addcallWrapper.sub .callTab{
-    width: 260px;
+    width: 300px;
     height: 40px;
     font-size: 18px;
     margin-top: 12px;
@@ -313,8 +311,167 @@
   .addcallMap{
     margin-top: 20px;
   }
-
   
+
+  /* 가맹점등록 dialog */
+.addFranchise-dialog{
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 1000px;
+  border-radius: 30px;
+  z-index: 2;
+}
+.addFranchise-container{
+  background-color: white;
+  padding:30px;
+  text-align: left;
+  color: #777;
+}
+.addFranchise-title{
+  /* font-size: 28px; */
+  letter-spacing: -1px;
+  font-weight: bold;
+  color: #333;
+  text-align: right;             
+  display: inline-block;
+  font-size: 25px;
+  line-height: 30px;
+}
+.addFranchise-close{
+  width: 30px;
+  background-color: #fddc00;
+  padding: 8px;
+  cursor: pointer;
+  /* display: inline-block; */
+  float: right;
+}
+.addFranchiseLayout{ 
+  margin-top: 20px;
+  width: 100%; 
+  height: 725px; 
+  overflow-y: scroll; 
+  border: 1px solid #ccc; 
+  padding: 10px 20px 20px; 
+  text-align: left;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+.addFranchiseLayout::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera*/
+}
+/* 왼쪽 wrappper */
+.addFranchiseWrapper{
+  display: inline-block;
+}
+.addFranchiseTitle{
+  display: inline-block;
+  font-size: 23px;
+  vertical-align: middle;
+  font-weight: bold;
+  color: #1890ff;
+}
+.addFranchiseWrapper .mainTitle{
+  display: inline-block;
+  font-size: 20px;
+  vertical-align: middle;
+  font-weight: bold;
+  width: 100px;
+}
+.addFranchiseWrapper .mainTitle.red{
+  display: inline-block;
+  font-size: 20px;
+  vertical-align: middle;
+  font-weight: bold;
+  width: 100px;
+  color: #1890ff;
+}
+.mainTitle.sub{
+  display: inline-block;
+  font-size: 18px;
+  vertical-align: middle;
+  font-weight: bold;
+  margin-left: 10px;
+}
+.addFranchiseLayout .contentBlock{
+  margin-top: 15px;
+}
+.addFranchiseWrapper .ant-form-item{
+  margin-bottom: 0px;
+}
+.addFranchiseWrapper .selectItem{
+  display: inline-block;
+}
+.addFranchiseWrapper .override-select{
+  margin-left: 20px;
+  width: 250px;
+  font-size: 15px;
+}
+.addFranchiseWrapper .override-select.branch{
+  margin-left: 20px;
+  width: 300px;
+  font-size: 15px;
+  display: inline-block;
+  vertical-align: middle;
+}
+.addFranchiseWrapper .override-input{
+  margin-left: 20px;
+  width: 300px;
+}
+/* 오른쪽 wrappper */
+.addFranchiseWrapper.sub{
+  vertical-align: top;
+  display: inline-block;
+  /* width: 340px; */
+  margin-top: 36px;
+  margin-left: 70px;
+}
+.addFranchiseWrapper.sub .mainTitle{
+  display: inline-block;
+  font-size: 20px;
+  vertical-align: middle;
+  font-weight: bold;
+  width: 75px;
+}
+.addFranchiseWrapper.sub .override-input.sub{
+  /* margin-left: -30px; */
+  width: 300px;
+}
+.addFranchiseWrapper.sub .override-input.price{
+  /* margin-left: -30px; */
+  width: 200px;
+  margin-right: 10px;
+}
+.addFranchiseWrapper.sub .callTab{
+  width: 400px;
+  height: 40px;
+  font-size: 18px;
+  margin-top: 60px;
+}
+/* 하단 랩퍼 */
+.addFranchiseWrapper.bot{
+  margin-top: 20px;
+  display: inline-block;
+}
+.addFranchiseWrapper.bot .mainTitle{
+  display: inline-block;
+  font-size: 20px;
+  vertical-align: middle;
+  font-weight: bold;
+  width: 70px;
+}
+.addFranchiseWrapper.bot .override-input.sub{
+  /* margin-left: -30px; */
+  width: 250px;
+}
+.addFranchiseWrapper.bot .callTab{
+  width: 300px;
+  height: 40px;
+  font-size: 18px;
+  margin-top: 12px;
+}
+
 
 /* 시간지연 dialog */
 .timeDelay-Dialog{
