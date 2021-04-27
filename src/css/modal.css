@@ -135,6 +135,12 @@
     color: #fddc00;
     border-radius: 10px;
   }
+
+  .memoInputBox{
+    width: 400px;
+    height: 200px;
+  }
+  
   .inputBox .ant-form-item{
     margin-bottom: 0px;
     display: inline-block;

@@ -1,0 +1,19 @@
+.searchRequirement{
+    margin-top: 10px;
+}
+
+.tableLayout{
+    margin-top: 20px;
+}
+
+.searchRequirementText{
+    font-size: 15px;
+    font-family: NotoSansBold;
+}
+
+.registStaff{
+    float: right;
+    background-color: #fddc00;
+    font-family: NotoSansRegular;
+    border: #fddc00;
+}
