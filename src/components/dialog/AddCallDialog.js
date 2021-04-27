@@ -259,7 +259,7 @@ class AddCallDialog extends Component {
                                                         메모
                                                 </div>
                                                     <FormItem
-                                                        name="addrSub"
+                                                        name="callmemo"
                                                         className="selectItem"
                                                     >
                                                         <Input placeholder="메모를 입력해 주세요." className="override-input memo">
@@ -271,7 +271,7 @@ class AddCallDialog extends Component {
                                                         가격
                                                     </div>
                                                     <FormItem
-                                                        name="addrSub"
+                                                        name="callprice"
                                                         className="selectItem"
                                                     >
                                                         <Input placeholder="가격 입력" className="override-input price">
@@ -283,7 +283,7 @@ class AddCallDialog extends Component {
                                                         배달요금
                                                     </div>
                                                     <FormItem
-                                                        name="addrSub"
+                                                        name="callAmount"
                                                         className="selectItem"
                                                     >
                                                         <Input placeholder="배달요금 입력" className="override-input delprice">

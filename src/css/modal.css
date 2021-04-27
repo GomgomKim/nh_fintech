@@ -90,7 +90,7 @@
     font-size: 20px;
     vertical-align: middle;
     font-weight: bold;
-    width: 75px;
+    /* width: 75px; */
   }
   .subTitle{
     display: inline-block;
@@ -220,6 +220,13 @@
   /* 왼쪽 wrappper */
   .addcallWrapper{
     display: inline-block;
+  }
+  .addcallWrapper .mainTitle{
+    display: inline-block;
+    font-size: 20px;
+    vertical-align: middle;
+    font-weight: bold;
+    width: 75px;
   }
   .mainTitle.sub{
     display: inline-block;
