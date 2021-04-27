@@ -432,30 +432,33 @@
 
 .timeDelay-btn-01{
   width:120px;
-  height:32px;
-  /* background:red; */
   color:#000;
   text-align:left;
   font-size:20px;
-  padding-left:8px;
   display:inline-block;
   vertical-align: middle;
-  margin-left:8px;
+  margin-left:15px;
 }
 
 .timeDelay-btn-01 .ant-checkbox-inner {
   width:20px;
   height:22px;
-  position:absolute;
-  top:-22px;
-  left:10px;
+  display:inline-block;
+  vertical-align: middle;
+  margin:8px;
 }
+
+.timeDelay-btn-01 .ant-checkbox-inner::after {
+  width:10px;
+  height:10px;
+}
+
 
 .timeDelay-btn-02{
   text-align:center;
   display:inline-block;
   vertical-align: middle;
-  margin-left:25px;
+  margin-left:20px;
 } 
 
 .timeDelay-btn-02 > button{
@@ -551,9 +554,9 @@
   width:50px;
   height:50px;
 }
-.filtering-box .ant-checkbox-wrapper .ant-checkbox-checked{
- width:50px;
- height:50px;
+.filtering-box .ant-checkbox-inner::after {
+  width: 25px;
+  height: 25px;
 }
 
 .filtering-box .ant-checkbox + span{
