@@ -90,6 +90,7 @@
     font-size: 20px;
     vertical-align: middle;
     font-weight: bold;
+    width: 75px;
   }
   .subTitle{
     display: inline-block;
@@ -216,6 +217,10 @@
   .addcallLayout::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera*/
   }
+  /* 왼쪽 wrappper */
+  .addcallWrapper{
+    display: inline-block;
+  }
   .mainTitle.sub{
     display: inline-block;
     font-size: 18px;
@@ -223,124 +228,83 @@
     font-weight: bold;
     margin-left: 10px;
   }
-  .addcallLayout .selectBlock{
+  .addcallLayout .contentBlock{
     margin-top: 15px;
   }
-  .addcallLayout .selectBlock .override-select.branch{
+  .contentBlock .ant-form-item{
+    margin-bottom: 0px;
+  }
+  .contentBlock .selectItem{
+    display: inline-block;
+  }
+  .contentBlock .override-select{
+    margin-left: 20px;
+    width: 250px;
+    font-size: 15px;
+  }
+  .contentBlock .override-select.branch{
     margin-left: 20px;
     width: 400px;
     font-size: 15px;
     display: inline-block;
     vertical-align: middle;
   }
-  .addcallLayout .selectBlock .override-select.fran{
+  .contentBlock .override-select.fran{
     margin-left: 20px;
     width: 201px;
     font-size: 15px;
     display: inline-block;
     vertical-align: middle;
   }
-  .addcallLayout .selectBlock .override-select.time{
-    margin-left: 10px;
+  .contentBlock .override-select.time{
+    margin-left: 1px;
     width: 112px;
     font-size: 15px;
     display: inline-block;
     vertical-align: middle;
   }
-
-
-
-
-  .listBlock{
-    margin-top: 20px;
+  .contentBlock .override-input{
+    margin-left: 20px;
+    width: 400px;
   }
-  .listBlock .ant-btn{
-    margin-left: -5px;
+  /* 오른쪽 wrappper */
+  .addcallWrapper.sub{
+    vertical-align: top;
+    display: inline-block;
+    width: 300px;
+    margin-left: 100px;
   }
-  .insertBlock{
-
-  }
-  .mainTitle{
+  .addcallWrapper.sub .mainTitle{
     display: inline-block;
     font-size: 20px;
     vertical-align: middle;
     font-weight: bold;
+    width: 75px;
   }
-  .subTitle{
-    display: inline-block;
+  .contentBlock .override-input.memo{
+    /* margin-left: -30px; */
+    width: 165px;
+  }
+  .contentBlock .override-input.price{
+    /* margin-left: -30px; */
+    width: 165px;
+  }
+  .contentBlock .override-input.delprice{
+    /* margin-left: -30px; */
+    width: 165px;
+  }
+  .contentBlock .override-input.delprice{
+    /* margin-left: -30px; */
+    width: 165px;
+  }
+  .addcallWrapper.sub .callTab{
+    width: 260px;
+    height: 40px;
     font-size: 18px;
-    vertical-align: middle;
+    margin-top: 12px;
   }
-  .subDate{
-    display: inline-block;
-    margin-left: 32px;
-    font-size: 18px;
-    vertical-align: middle;
-  }
-  .selectBox{
-    display: inline-block;
-    margin-left: 10px;
-    font-size: 18px;
-    vertical-align: middle;
-    color: #fddc00;
-    border-radius: 10px;
-  }
-  .selectBox .ant-form-item{
-    margin-bottom: 0px;
-  }
-  .selectBox .ant-picker{
-    width: 380px;
-    padding: 11px 11px;
-    font-size: 18px;
-    border-radius: 10px;
-  }
-  .selectBox .ant-picker-input > input{
-    text-align: center;
-  }
-  .btnInsert{
-    margin-top: 10px;
-  }
-  .inputBox{
-    display: inline-block;
-    margin-left: 10px;
-    font-size: 18px;
-    vertical-align: middle;
-    color: #fddc00;
-    border-radius: 10px;
-  }
-  .inputBox .ant-form-item{
-    margin-bottom: 0px;
-    display: inline-block;
-    vertical-align: middle;
-  }
-  .inputBox #surchargeName{
-    width: 350px;
-    padding: 8px 11px;
-    font-size: 18px;
-    border-radius: 10px;
-  }
-  .inputBox #feeAdd{
-    width: 335px;
-    padding: 8px 11px;
-    font-size: 18px;
-    border-radius: 10px;
-    text-align: right;
-  }
-  .priceText{
-    display: inline-block;
-    vertical-align: middle;
-    margin-left: 5px;
-    font-size: 20px;
-    color: #000;
-  }
-  .btnInsert .ant-btn{
-    width: 150px;
-    font-size: 18px;
-    border-radius: 2px;
-    vertical-align: middle;
-    padding: 0px;
-    height: 43px;
-    float: right;
+  .addcallMap{
+    margin-top: 20px;
   }
 
   

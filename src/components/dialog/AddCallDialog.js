@@ -159,136 +159,166 @@ class AddCallDialog extends Component {
 
                                     <Form ref={this.formIdRef} onFinish={this.handleIdSubmit}>
                                         <div className="addcallLayout">
-                                            <div className="selectBlock">
-                                                <div className="mainTitle">
-                                                    소속지사
+                                            <div className="addcallWrapper">
+                                                <div className="contentBlock">
+                                                    <div className="mainTitle">
+                                                        소속지사
                                                 </div>
-                                                <FormItem
-                                                    name="belongBranch"
-                                                    className="selectItem"
-                                                >
-                                                    <Select placeholder="소속지사를 선택해 주세요." className="override-select branch">
-                                                        <Option value={0}>플러스김포 / 플러스김포</Option>
-                                                        <Option value={1}>김포1지점 / 플러스김포</Option>
-                                                        <Option value={2}>김포2지점 / 플러스김포</Option>
-                                                    </Select>
-                                                </FormItem>
+                                                    <FormItem
+                                                        name="belongBranch"
+                                                        className="selectItem"
+                                                    >
+                                                        <Select placeholder="소속지사를 선택해 주세요." className="override-select branch">
+                                                            <Option value={0}>플러스김포 / 플러스김포</Option>
+                                                            <Option value={1}>김포1지점 / 플러스김포</Option>
+                                                            <Option value={2}>김포2지점 / 플러스김포</Option>
+                                                        </Select>
+                                                    </FormItem>
+                                                </div>
+                                                <div className="contentBlock">
+                                                    <div className="mainTitle">
+                                                        가맹점명
+                                                </div>
+                                                    <FormItem
+                                                        name="franchiseName"
+                                                        className="selectItem"
+                                                    >
+                                                        <Select placeholder="가맹점을 선택해 주세요." className="override-select fran">
+                                                            <Option value={0}>플러스김포 / 플러스김포</Option>
+                                                            <Option value={1}>김포1지점 / 플러스김포</Option>
+                                                            <Option value={2}>김포2지점 / 플러스김포</Option>
+                                                        </Select>
+                                                    </FormItem>
+                                                    <Search
+                                                        placeholder="가맹점검색"
+                                                        enterButton
+                                                        allowClear
+                                                        onSearch={this.onSearchFranchisee}
+                                                        style={{
+                                                            width: 190,
+                                                            marginLeft: 10
+                                                        }}
+                                                    />
+                                                </div>
+                                                <div className="contentBlock">
+                                                    <div className="mainTitle">
+                                                        고객번호
+                                                </div>
+                                                    <Search
+                                                        placeholder="가맹점검색"
+                                                        enterButton
+                                                        allowClear
+                                                        onSearch={this.onSearchFranchisee}
+                                                        style={{
+                                                            width: 202,
+                                                            marginLeft: 20
+                                                        }}
+                                                    />
+                                                    <div className="mainTitle sub">
+                                                        준비시간
+                                                </div>
+                                                    <FormItem
+                                                        name="preparationTime"
+                                                        className="selectItem"
+                                                    >
+                                                        <Select placeholder="시간단위" className="override-select time">
+                                                            <Option value={1}>1</Option>
+                                                            <Option value={2}>2</Option>
+                                                            <Option value={3}>3</Option>
+                                                        </Select>
+                                                    </FormItem>
+                                                </div>
+                                                <div className="contentBlock">
+                                                    <div className="mainTitle">
+                                                        도착지
+                                                </div>
+                                                    <FormItem
+                                                        name="addrMain"
+                                                        className="selectItem"
+                                                    >
+                                                        <Input placeholder="도착지를 선택해 주세요." className="override-input">
+                                                        </Input>
+                                                    </FormItem>
+                                                </div>
+                                                <div className="contentBlock">
+                                                    <div className="mainTitle">
+                                                        상세주소
+                                                </div>
+                                                    <FormItem
+                                                        name="addrSub"
+                                                        className="selectItem"
+                                                    >
+                                                        <Input placeholder="상세주소를 입력해 주세요." className="override-input">
+                                                        </Input>
+                                                    </FormItem>
+                                                </div>
                                             </div>
-                                            <div className="selectBlock">
-                                                <div className="mainTitle">
-                                                    가맹점명
+                                            <div className="addcallWrapper sub">
+                                                <div className="contentBlock">
+                                                    <div className="mainTitle">
+                                                        메모
                                                 </div>
-                                                <FormItem
-                                                    name="franchiseName"
-                                                    className="selectItem"
-                                                >
-                                                    <Select placeholder="가맹점을 선택해 주세요." className="override-select fran">
-                                                        <Option value={0}>플러스김포 / 플러스김포</Option>
-                                                        <Option value={1}>김포1지점 / 플러스김포</Option>
-                                                        <Option value={2}>김포2지점 / 플러스김포</Option>
-                                                    </Select>
-                                                </FormItem>
-                                                <Search
-                                                    placeholder="가맹점검색"
-                                                    enterButton
-                                                    allowClear
-                                                    onSearch={this.onSearchFranchisee}
-                                                    style={{
-                                                        width: 190,
-                                                        marginLeft: 10
-                                                    }}
-                                                />
+                                                    <FormItem
+                                                        name="addrSub"
+                                                        className="selectItem"
+                                                    >
+                                                        <Input placeholder="메모를 입력해 주세요." className="override-input memo">
+                                                        </Input>
+                                                    </FormItem>
+                                                </div>
+                                                <div className="contentBlock">
+                                                    <div className="mainTitle">
+                                                        가격
+                                                    </div>
+                                                    <FormItem
+                                                        name="addrSub"
+                                                        className="selectItem"
+                                                    >
+                                                        <Input placeholder="가격 입력" className="override-input price">
+                                                        </Input>
+                                                    </FormItem>
+                                                </div>
+                                                <div className="contentBlock">
+                                                    <div className="mainTitle">
+                                                        배달요금
+                                                    </div>
+                                                    <FormItem
+                                                        name="addrSub"
+                                                        className="selectItem"
+                                                    >
+                                                        <Input placeholder="배달요금 입력" className="override-input delprice">
+                                                        </Input>
+                                                    </FormItem>
+                                                </div>
+                                                <div style={{ marginTop: 10 }}>
+                                                    <FormItem
+                                                        style={{
+                                                            marginBottom: 0,
+                                                            display: 'inline-block',
+                                                            verticalAlign: 'middle',
+                                                        }}
+                                                        name="payType"
+                                                        initialValue={0}
+                                                    >
+                                                        <Radio.Group>
+                                                            <Radio style={{ fontSize: 18 }} value={0}>현금</Radio>
+                                                            <Radio style={{ fontSize: 18 }} value={1}>카드</Radio>
+                                                            <Radio style={{ fontSize: 18 }} value={2}>선결</Radio>
+                                                        </Radio.Group>
+                                                    </FormItem>
+                                                </div>
+                                                <Button type="primary" htmlType="submit" className="callTab">
+                                                    등록하기
+                                                </Button>
                                             </div>
-                                            <div className="selectBlock">
-                                                <div className="mainTitle">
-                                                    고객번호
-                                                </div>
-                                                <Search
-                                                    placeholder="가맹점검색"
-                                                    enterButton
-                                                    allowClear
-                                                    onSearch={this.onSearchFranchisee}
-                                                    style={{
-                                                        width: 202,
-                                                        marginLeft: 20
-                                                    }}
-                                                />
-                                                <div className="mainTitle sub">
-                                                    준비시간
-                                                </div>
-                                                <FormItem
-                                                    name="preparationTime"
-                                                    className="selectItem"
-                                                >
-                                                    <Select placeholder="시간단위" className="override-select time">
-                                                        <Option value={1}>1</Option>
-                                                        <Option value={2}>2</Option>
-                                                        <Option value={3}>3</Option>
-                                                    </Select>
-                                                </FormItem>
-                                            </div>
-                                            <div className="selectBlock">
-                                                <div className="mainTitle">
-                                                    도착지
-                                                </div>
-                                                <FormItem
-                                                    name="addrMain"
-                                                    className="selectItem"
-                                                >
-                                                    <Input placeholder="소속지사를 선택해 주세요." className="override-select">
-                                                    </Input>
-                                                </FormItem>
+
+                                            <div className="addcallMap">
+                                                <img src={require('../../img/order/map.png').default}
+                                                    style={{ width: 890, height: 430 }}
+                                                ></img>
                                             </div>
 
 
-
-                                            {/* <div className="insertBlock">
-                                                <div style={{ marginTop: 20 }}>
-                                                    <div className="subTitle">
-                                                        할증명
-                                                    </div>
-                                                    <div className="inputBox">
-                                                        <FormItem
-                                                            name="surchargeName"
-                                                            rules={[{ required: true, message: "할증명을 입력해주세요." }]}
-                                                        >
-                                                            <Input />
-                                                        </FormItem>
-                                                    </div>
-                                                    <div className="subDate">
-                                                        등록기간
-                                                    </div>
-                                                    <div className="selectBox">
-                                                        <FormItem
-                                                            name="surchargeDate"
-                                                            rules={[{ required: true, message: "등록기간 날짜를 선택해주세요" }]}
-                                                        >
-                                                            <RangePicker
-                                                                onChange={this.onChangeDate}
-                                                            />
-                                                        </FormItem>
-                                                    </div>
-                                                </div>
-                                                <div className="btnInsert">
-                                                    <div className="subTitle">
-                                                        추가요금
-                                                    </div>
-                                                    <div className="inputBox">
-                                                        <FormItem
-                                                            name="feeAdd"
-                                                            rules={[{ required: true, message: "추가금액을 입력해주세요." }]}
-                                                        >
-                                                            <Input />
-                                                        </FormItem>
-                                                        <div className="priceText">
-                                                            원
-                                                        </div>
-                                                    </div>
-                                                    <Button type="primary" htmlType="submit" className="tabBtn insertTab">
-                                                        등록하기
-                                                    </Button>
-                                                </div>
-                                            </div> */}
 
                                         </div>
                                     </Form>
