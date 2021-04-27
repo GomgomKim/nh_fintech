@@ -338,7 +338,6 @@ class ReceptionStatus extends Component {
 
         <div className="dataTableLayout">
           <Table
-            // rowKey={(record) => record.idx}
             dataSource={this.state.list}
             columns={columns}
             pagination={this.state.pagination}

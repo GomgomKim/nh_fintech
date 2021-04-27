@@ -254,7 +254,6 @@ class MapControl extends Component {
 
         <div className="riderTableLayout">
           <Table
-            // rowKey={(record) => record.idx}
             dataSource={this.state.list}
             columns={columns}
             pagination={this.state.pagination}
