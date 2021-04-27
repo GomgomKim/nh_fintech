@@ -23,7 +23,7 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 900px;
+    width: 1000px;
     border-radius: 30px;
     z-index: 2;
   }
@@ -51,10 +51,10 @@
     /* display: inline-block; */
     float: right;
   }
-  .surcharge-container .selLayout{ 
+  .surchargeLayout{ 
     margin-top: 20px;
     width: 100%; 
-    height: 320px; 
+    height: 725px; 
     overflow-y: scroll; 
     border: 1px solid #ccc; 
     padding: 20px; 
@@ -62,42 +62,273 @@
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
   }
-  .selLayout::-webkit-scrollbar {
+  .surchargeLayout::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera*/
   }
-
-  .selectBlock{
+  .selectBlock .ant-form-item{
+    margin-bottom: 0px;
+  }
+  .selectBlock .selectItem{
+    display: inline-block;
+  }
+  .selectBlock .override-select{
+    margin-left: 20px;
+    width: 250px;
+    font-size: 15px;
+  }
+  .listBlock{
+    margin-top: 20px;
+  }
+  .listBlock .ant-btn{
+    margin-left: -5px;
+  }
+  .insertBlock{
 
   }
-  .selectBlock .mainTitle{
+  .mainTitle{
     display: inline-block;
     font-size: 20px;
     vertical-align: middle;
     font-weight: bold;
+    /* width: 75px; */
   }
-  .selectBlock .ant-select{
+  .subTitle{
+    display: inline-block;
+    font-size: 18px;
+    vertical-align: middle;
+  }
+  .subDate{
+    display: inline-block;
+    margin-left: 32px;
+    font-size: 18px;
+    vertical-align: middle;
+  }
+  .selectBox{
+    display: inline-block;
+    margin-left: 10px;
+    font-size: 18px;
+    vertical-align: middle;
+    color: #fddc00;
+    border-radius: 10px;
+  }
+  .selectBox .ant-form-item{
+    margin-bottom: 0px;
+  }
+  .selectBox .ant-picker{
+    width: 380px;
+    padding: 11px 11px;
+    font-size: 18px;
+    border-radius: 10px;
+  }
+  .selectBox .ant-picker-input > input{
+    text-align: center;
+  }
+  .btnInsert{
+    margin-top: 10px;
+  }
+  .inputBox{
+    display: inline-block;
+    margin-left: 10px;
+    font-size: 18px;
+    vertical-align: middle;
+    color: #fddc00;
+    border-radius: 10px;
+  }
+  .inputBox .ant-form-item{
+    margin-bottom: 0px;
+    display: inline-block;
+    vertical-align: middle;
+  }
+  .inputBox #surchargeName{
+    width: 350px;
+    padding: 8px 11px;
+    font-size: 18px;
+    border-radius: 10px;
+  }
+  .inputBox #feeAdd{
+    width: 335px;
+    padding: 8px 11px;
+    font-size: 18px;
+    border-radius: 10px;
+    text-align: right;
+  }
+  .priceText{
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 5px;
+    font-size: 20px;
+    color: #000;
+  }
+  .btnInsert .ant-btn{
+    width: 150px;
+    font-size: 18px;
+    border-radius: 2px;
+    vertical-align: middle;
+    padding: 0px;
+    height: 43px;
+    float: right;
+  }
+
+  /* 콜등록 dialog */
+  .addcall-dialog{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 1000px;
+    border-radius: 30px;
+    z-index: 2;
+  }
+  .addcall-container{
+    background-color: white;
+    padding:30px;
+    text-align: left;
+    color: #777;
+  }
+  .addcall-title{
+    /* font-size: 28px; */
+    letter-spacing: -1px;
+    font-weight: bold;
+    color: #333;
+    text-align: right;             
+    display: inline-block;
+    font-size: 25px;
+    line-height: 30px;
+  }
+  .addcall-close{
+    width: 30px;
+    background-color: #fddc00;
+    padding: 8px;
+    cursor: pointer;
+    /* display: inline-block; */
+    float: right;
+  }
+  .addcallLayout{ 
+    margin-top: 20px;
+    width: 100%; 
+    height: 725px; 
+    overflow-y: scroll; 
+    border: 1px solid #ccc; 
+    padding: 10px 20px 20px; 
+    text-align: left;
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+  .addcallLayout::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera*/
+  }
+  /* 왼쪽 wrappper */
+  .addcallWrapper{
+    display: inline-block;
+  }
+  .addcallWrapper .mainTitle{
+    display: inline-block;
+    font-size: 20px;
+    vertical-align: middle;
+    font-weight: bold;
+    width: 75px;
+  }
+  .mainTitle.sub{
+    display: inline-block;
+    font-size: 18px;
+    vertical-align: middle;
+    font-weight: bold;
+    margin-left: 10px;
+  }
+  .addcallLayout .contentBlock{
+    margin-top: 15px;
+  }
+  .contentBlock .ant-form-item{
+    margin-bottom: 0px;
+  }
+  .contentBlock .selectItem{
+    display: inline-block;
+  }
+  .contentBlock .override-select{
     margin-left: 20px;
     width: 250px;
+    font-size: 15px;
+  }
+  .contentBlock .override-select.branch{
+    margin-left: 20px;
+    width: 400px;
     font-size: 15px;
     display: inline-block;
     vertical-align: middle;
   }
-  .listBlock{
-
+  .contentBlock .override-select.fran{
+    margin-left: 20px;
+    width: 201px;
+    font-size: 15px;
+    display: inline-block;
+    vertical-align: middle;
   }
+  .contentBlock .override-select.time{
+    margin-left: 1px;
+    width: 112px;
+    font-size: 15px;
+    display: inline-block;
+    vertical-align: middle;
+  }
+  .contentBlock .override-input{
+    margin-left: 20px;
+    width: 400px;
+  }
+  /* 오른쪽 wrappper */
+  .addcallWrapper.sub{
+    vertical-align: top;
+    display: inline-block;
+    width: 300px;
+    margin-left: 100px;
+  }
+  .addcallWrapper.sub .mainTitle{
+    display: inline-block;
+    font-size: 20px;
+    vertical-align: middle;
+    font-weight: bold;
+    width: 75px;
+  }
+  .contentBlock .override-input.memo{
+    /* margin-left: -30px; */
+    width: 165px;
+  }
+  .contentBlock .override-input.price{
+    /* margin-left: -30px; */
+    width: 165px;
+  }
+  .contentBlock .override-input.delprice{
+    /* margin-left: -30px; */
+    width: 165px;
+  }
+  .contentBlock .override-input.delprice{
+    /* margin-left: -30px; */
+    width: 165px;
+  }
+  .addcallWrapper.sub .callTab{
+    width: 260px;
+    height: 40px;
+    font-size: 18px;
+    margin-top: 12px;
+  }
+  .addcallMap{
+    margin-top: 20px;
+  }
+
+  
 
 /* 시간지연 dialog */
 .timeDelay-Dialog{
   position:fixed;
   top:20%;
-  left:40%;
-  width:400px;
+  left:30%;
+  width:1200px;
   z-index: 2;
 }
 
   .timeDelay-Pop-title{
-    width:400px;
+    width:1050px;
     height:30px;
+    margin:5px;
 
   }
 
@@ -106,6 +337,7 @@
     cursor:pointer;
     background-color:#fddc00;
     float:right;
+    padding:8px;
 
   }
   .timeDelay-Pop-image{
@@ -113,15 +345,15 @@
   }
   .timeDelay-Pop-content{
     padding:0px;
-    width:358px;
-    height:700px;
+    width:1100px;
+    height:675px;
     background-color:white;
 
   }
 
   .timeDelay-Pop-content .timeDelay-inner { 
     width: 100%; 
-    height: 700px; 
+    height: 675px; 
     overflow-y: scroll; 
     border: 1px solid #ccc; 
     padding: 10px; 
@@ -131,30 +363,35 @@
 
 .timeDelay-place1{
   text-align: center;
+  margin:10px;
+  position:absolute;
+  top:110px;
+  left:700px;
 }
-.timeDelay-place1 .ant-select-single.ant-select-lg:not(.ant-select-customize-input) .ant-select-selector{
-  width:230px;
+.timeDelay-place1 .ant-select-selector{
+  width:250px;
   
 }
 
 .timeDelay-box{
-  width:262px;
-  height:350px;
+  width:610px;
+  height:460px;
   margin:16px 32px;
   text-align:center;
   line-height:130px;
+  margin-top:70px;
 }
 
 .timeDelay-box > div{
-  width:80px;
-  height:80px;
+  width:144px;
+  height:144px;
   float:left;
   border:1px solid #777;
   border-radius:10px;
   margin:0px 0px 10px 10px;
 }
 
-.timeDelay-box .timeDelay-box-01, .timeDelay-box-04, .timeDelay-box-07, .timeDelay-box-10 {
+.timeDelay-box .timeDelay-box-01, .timeDelay-box-05, .timeDelay-box-09 {
   margin-left:0px!important;
 }
 
@@ -172,6 +409,9 @@
   line-height:40px;
   font-size:20px;
   letter-spacing:3px;
+  position:absolute;
+  left:700px;
+  top:450px;
 }
 
 .timeDelay-btn-02{
@@ -184,11 +424,64 @@
   line-height:40px;
   font-size:20px;
   letter-spacing:3px;
+  position:absolute;
+  left:700px;
+  top:510px;
+}
+
+/* 필터링 dialog */
+
+.filtering-Dialog{
+  position:fixed;
+  top:20%;
+  left:30%;
+  width:1200px;
+  z-index: 2;
+}
+.filtering-Pop-title{
+  width:1050px;
+  height:30px;
+  margin:5px;
+
+}
+
+.filtering-Pop-title-1{
+  width:30px;
+  cursor:pointer;
+  background-color:#fddc00;
+  float:right;
+  padding:8px;
+
+}
+.filtering-Pop-image{
+  float:right;
+}
+.filtering-Pop-content{
+  padding:0px;
+  width:1100px;
+  height:675px;
+  background-color:white;
+
+}
+
+.filtering-Pop-content .filtering-inner { 
+  width: 100%; 
+  height: 675px; 
+  overflow-y: scroll; 
+  border: 1px solid #ccc; 
+  padding: 10px; 
+  text-align: left;
 }
 
 
+.filtering-place1{
+text-align: center;
+margin:10px;
+position:absolute;
+top:110px;
+left:700px;
+}
+.filtering-place1 .ant-select-selector{
+width:250px;
 
-
-
-
-
+}
