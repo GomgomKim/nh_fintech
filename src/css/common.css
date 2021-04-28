@@ -1,23 +1,23 @@
 .ant-table-content thead th{
     /* 흐릿하게 */
     /* background-color:rgba( 253, 220, 0, 0.4 ) !important; */
-    background-color:black;
-    color: white;
+    background-color:black !important;
+    color: white !important;
 }
 
 .ant-radio-checked .ant-radio-inner{
-    border-color: #fddc00;
+    border-color: #fddc00 !important;
   }
   
 .ant-radio-checked .ant-radio-inner:after{
-    background-color: #fddc00;
+    background-color: #fddc00 !important;
 }
 
 .ant-radio:hover .ant-radio-inner {
-    border-color: #fddc00 ;
+    border-color: #fddc00 !important;
 }
 
 .ant-input-search-button{
-    background-color: #fddc00;
-    border-color: #fddc00;
+    background-color: #fddc00 !important;
+    border-color: #fddc00 !important;
 }

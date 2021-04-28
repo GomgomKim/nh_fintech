@@ -356,7 +356,7 @@ class AddCallDialog extends Component {
                                                 <div className="contentBlock">
                                                     <div className="mainTitle">
                                                         관리비
-                                                </div>
+                                                    </div>
                                                     <FormItem
                                                         name="managePrice"
                                                         className="selectItem"
@@ -365,9 +365,11 @@ class AddCallDialog extends Component {
                                                         </Input>
                                                     </FormItem>
                                                 </div>
-                                                <Button type="primary" htmlType="submit" className="callTab">
-                                                    등록하기
+                                                <div>
+                                                    <Button type="primary" htmlType="submit" className="callTab">
+                                                        등록하기
                                                 </Button>
+                                                </div>
                                             </div>
 
 
