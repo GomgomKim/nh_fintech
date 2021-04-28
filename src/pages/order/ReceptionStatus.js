@@ -5,6 +5,8 @@ import React, { Component } from 'react';
 import { httpGet, httpUrl, httpDownload, httpPost, httpPut } from '../../api/httpClient';
 import SelectBox from "../../components/input/SelectBox";
 import TimeDelayDialog from "../../components/dialog/TimeDelayDialog";
+import FilteringDialog from "../../components/dialog/FilteringDialog";
+import AddCallDialog from "../../components/dialog/AddCallDialog";
 import { formatDate } from "../../lib/util/dateUtil";
 import "../../css/order.css";
 import "../../css/common.css";
@@ -45,6 +47,8 @@ class ReceptionStatus extends Component {
       list: [],
       timeDelayOpen: false,
       surchargeOpen: false,
+      addCallOpen: false,
+      filteringOpen: false,
     };
   }
 
@@ -163,6 +167,21 @@ class ReceptionStatus extends Component {
     this.setState({ surchargeOpen: false });
   }
 
+  // 콜등록 dialog
+  openAddCallModal = () => {
+    this.setState({ addCallOpen: true });
+  }
+  closeAddCallModal = () => {
+    this.setState({ addCallOpen: false });
+  }
+
+  // 필터링 dialog
+  openFilteringModal = () => {
+    this.setState({ filteringOpen: true });
+  }
+  closeFilteringModal = () => {
+    this.setState({ filteringOpen: false });
+  }
 
   render() {
     const columns = [
@@ -263,7 +282,7 @@ class ReceptionStatus extends Component {
             className="tabBtn delayTab"
             onClick={() => { this.setState({ delayTab: 1 }, this.openTimeDelayModal) }}
           >10분지연</Button>
-        
+
           <Button
             className="tabBtn mapTab"
             onClick={() => { this.props.openMapControl() }}
@@ -275,9 +294,10 @@ class ReceptionStatus extends Component {
             onClick={() => { this.setState({ surchargeTab: 1 }, this.openSurchargeModal) }}
           >할증</Button>
 
+          <AddCallDialog isOpen={this.state.addCallOpen} close={this.closeAddCallModal} />
           <Button
             className="tabBtn registTab"
-            onClick={() => { this.setState({ registTab: 1 }) }}
+            onClick={() => { this.setState({ registTab: 1 }, this.openAddCallModal) }}
           >콜등록</Button>
 
           <Button
@@ -297,10 +317,10 @@ class ReceptionStatus extends Component {
             format={dateFormat}
             onChange={date => this.setState({ selectedDate: date })}
           />
-
+          <FilteringDialog isOpen={this.state.filteringOpen} close={this.closeFilteringModal} />
           <Button
             className="tabBtn filterTab"
-            onClick={() => { this.setState({ filterTab: 1 }) }}
+            onClick={() => { this.setState({ filterTab: 1 }, this.openFilteringModal) }}
           >필터링 설정</Button>
 
           <Search

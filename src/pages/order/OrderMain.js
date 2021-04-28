@@ -48,38 +48,6 @@ class OrderMain extends Component {
     });
   }
 
-  // 시간지연 dialog
-  openTimeDelayModal = () => {
-    this.setState({ timeDelayOpen: true });
-  }
-  closeTimeDelayModal = () => {
-    this.setState({ timeDelayOpen: false });
-  }
-
-  // 할증 dialog
-  openSurchargeModal = () => {
-    this.setState({ surchargeOpen: true });
-  }
-  closeSurchargeModal = () => {
-    this.setState({ surchargeOpen: false });
-  }
-
-  // 콜등록 dialog
-  openAddCallModal = () => {
-    this.setState({ addCallOpen: true });
-  }
-  closeAddCallModal = () => {
-    this.setState({ addCallOpen: false });
-  }
-
-  // 필터링 dialog
-  openFilteringModal = () => {
-    this.setState({ filteringOpen: true });
-  }
-  closeFilteringModal = () => {
-    this.setState({ filteringOpen: false });
-  }
-
   render() {
     return (
       <div className="">

@@ -33,8 +33,6 @@ class MapControl extends Component {
       },
       // test data
       list: [],
-      timeDelayOpen: false,
-      surchargeOpen: false,
       franchisee: "",
     };
   }
@@ -43,7 +41,7 @@ class MapControl extends Component {
     this.getList()
 
   }
-  
+
 
 
   setDate = (date) => {
@@ -213,7 +211,7 @@ class MapControl extends Component {
       },
     ];
 
-    
+
 
     return (
       <div className="">
@@ -249,7 +247,7 @@ class MapControl extends Component {
         </div>
 
         <div className="textLayout">
-            <span className="riderText">{this.state.riderName}의 배차 목록 &lt;{this.state.franchisee}&gt; </span>
+          <span className="riderText">{this.state.riderName}의 배차 목록 &lt;{this.state.franchisee}&gt; </span>
         </div>
 
         <div className="riderTableLayout">
@@ -262,10 +260,10 @@ class MapControl extends Component {
         </div>
 
         <div className="mapLayout">
-          <MapContainer/>
+          <MapContainer />
         </div>
 
-      
+
       </div>
     )
   }
