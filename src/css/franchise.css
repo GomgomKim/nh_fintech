@@ -23,6 +23,7 @@
     width: 440px;
 }
 
+/* 상세 */
 .franchiseContainer .ant-table-tbody > tr > td > .ant-table-wrapper:only-child .ant-table{
     margin: 0px;
 }

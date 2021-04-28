@@ -148,7 +148,7 @@ class SurchargeDialog extends Component {
                     isOpen ?
                         <React.Fragment>
                             <div className="Dialog-overlay" onClick={close} />
-                            <div className="surcharge-dialog">
+                            <div className="surcharge-Dialog">
                                 <div className="surcharge-container">
                                     <div className="surcharge-title">
                                         할증

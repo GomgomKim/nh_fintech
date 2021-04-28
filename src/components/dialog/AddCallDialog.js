@@ -149,7 +149,7 @@ class AddCallDialog extends Component {
                     isOpen ?
                         <React.Fragment>
                             <div className="Dialog-overlay" onClick={close} />
-                            <div className="addcall-dialog">
+                            <div className="addcall-Dialog">
                                 <div className="addcall-container">
                                     <div className="addcall-title">
                                         콜등록

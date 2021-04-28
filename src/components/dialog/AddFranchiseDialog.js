@@ -149,7 +149,7 @@ class AddCallDialog extends Component {
                     isOpen ?
                         <React.Fragment>
                             <div className="Dialog-overlay" onClick={close} />
-                            <div className="addFranchise-dialog">
+                            <div className="addFranchise-Dialog">
                                 <div className="addFranchise-container">
                                     <div className="addFranchise-title">
                                         가맹점 등록
@@ -365,7 +365,7 @@ class AddCallDialog extends Component {
                                                         name="minusDate"
                                                         className="selectItem"
                                                     >
-                                                        <Select placeholder="차감일자를 선택해 주세요." className="override-select">
+                                                        <Select placeholder="차감일자 선택" className="override-select">
                                                             <Option value={0}>매일</Option>
                                                             <Option value={1}>매월 1일 ~ 매월 31일</Option>
                                                             <Option value={2}>매월 말일</Option>
@@ -378,12 +378,12 @@ class AddCallDialog extends Component {
                                                         name="managePrice"
                                                         className="selectItem"
                                                     >
-                                                        <Input placeholder="관리비를 입력해 주세요." className="override-input sub">
+                                                        <Input placeholder="관리비 입력" className="override-input sub">
                                                         </Input>
                                                     </FormItem>
                                                     <Button type="primary" htmlType="submit" className="callTab">
                                                         등록하기
-                                                </Button>
+                                                    </Button>
                                                 </div>
                                             </div>
 

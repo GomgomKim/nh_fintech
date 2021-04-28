@@ -366,7 +366,7 @@ class FranchiseMain extends Component {
               display: 'inline-block',
               verticalAlign: 'middle',
             }}
-            name="searchType"
+            name="useType"
             initialValue={0}
           >
             <Radio.Group>
