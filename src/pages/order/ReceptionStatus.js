@@ -12,7 +12,11 @@ import "../../css/order.css";
 import "../../css/common.css";
 import { comma } from "../../lib/util/numberUtil";
 import SurchargeDialog from "../../components/dialog/SurchargeDialog";
-import MapControl from "./MapControl"
+import {
+  FieldTimeOutlined, DollarCircleOutlined, EnvironmentFilled,
+  PhoneOutlined, MessageOutlined, UnorderedListOutlined
+} from '@ant-design/icons';
+import MapControl from "./MapControl";
 
 const FormItem = Form.Item;
 const Ditems = Descriptions.Item;
@@ -279,33 +283,39 @@ class ReceptionStatus extends Component {
         <div className="btnLayout">
           <TimeDelayDialog isOpen={this.state.timeDelayOpen} close={this.closeTimeDelayModal} />
           <Button
+            icon={<FieldTimeOutlined />}
             className="tabBtn delayTab"
             onClick={() => { this.setState({ delayTab: 1 }, this.openTimeDelayModal) }}
           >10분지연</Button>
 
           <Button
+            icon={<EnvironmentFilled />}
             className="tabBtn mapTab"
             onClick={() => { this.props.openMapControl() }}
           >지도관제</Button>
 
           <SurchargeDialog isOpen={this.state.surchargeOpen} close={this.closeSurchargeModal} />
           <Button
+            icon={<DollarCircleOutlined />}
             className="tabBtn surchargeTab"
             onClick={() => { this.setState({ surchargeTab: 1 }, this.openSurchargeModal) }}
           >할증</Button>
 
           <AddCallDialog isOpen={this.state.addCallOpen} close={this.closeAddCallModal} />
           <Button
+            icon={<PhoneOutlined />}
             className="tabBtn registTab"
             onClick={() => { this.setState({ registTab: 1 }, this.openAddCallModal) }}
           >콜등록</Button>
 
           <Button
+            icon={<MessageOutlined />}
             className="tabBtn messageTab"
             onClick={() => { this.setState({ messageTab: 1 }) }}
           >상담메세지</Button>
 
           <Button
+            icon={<UnorderedListOutlined />}
             className="tabBtn noticeTab"
             onClick={() => { this.setState({ noticeTab: 1 }) }}
           >공지사항</Button>

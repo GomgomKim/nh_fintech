@@ -5,9 +5,12 @@ import React, { Component } from 'react';
 import { httpGet, httpUrl, httpDownload, httpPost, httpPut } from '../../api/httpClient';
 import SelectBox from "../../components/input/SelectBox";
 import AddFranchiseDialog from "../../components/dialog/AddFranchiseDialog";
+import BasicDialog from "../../components/dialog/BasicDialog";
+
 import { formatDate } from "../../lib/util/dateUtil";
 import "../../css/franchise.css";
 import { comma } from "../../lib/util/numberUtil";
+import { BankOutlined } from '@ant-design/icons';
 const Option = Select.Option;
 const FormItem = Form.Item;
 const Ditems = Descriptions.Item;
@@ -26,11 +29,8 @@ class FranchiseMain extends Component {
       registTab: 0,
       messageTab: 0,
       noticeTab: 0,
-      selectedDate: today,
       filterTab: 0,
       franchisee: "",
-      rider: "",
-      phoneNum: "",
       workTab: 0,
       pagination: {
         total: 0,
@@ -39,6 +39,7 @@ class FranchiseMain extends Component {
       },
       // test data
       list: [],
+      franStatus: 1,
       addFranchiseOpen: false,
     };
   }
@@ -47,104 +48,12 @@ class FranchiseMain extends Component {
     this.getList()
   }
 
-  setDate = (date) => {
-    console.log(date)
-  }
-
   onSearchFranchisee = (value) => {
     this.setState({
       franchisee: value,
     }, () => {
       this.getList()
     })
-  }
-
-
-  getList = () => {
-    var list = [
-      {
-        franStatus: 1,
-        idx: 3,
-        branchName: '플러스김포',
-        franchiseName: '계룡리슈빌)잭슨부대',
-        businessNum: '234013269',
-        ceoName: '이스나',
-        callNum: '031-995-4555',
-        phoneNum: '010-1234-5896',
-        ceoBirth: '19960404',
-        memo: 'dbrwh45@blict.co.kr',
-        address: '경기도 김포시 양촌읍 구래리 271-4',
-        balanceCoin: '60000',
-        delPayType: 1,
-        delPrice: '3000',
-        membershipUse: 1,
-        applyType: '매월 1일',
-        membershipFee: '110000',
-        cardStatus: 0,
-        van: 'IC(나이스)',
-        businessCard: '2340113269',
-        businessCardName: '이스나',
-        businessCardFran: '계룡리슈빌)잭슨부대',
-        businessEmail: 'dbrwh45@blict.co.kr',
-        businessDate: '21-02-01 19:02:17'
-      },
-      {
-        franStatus: 0,
-        idx: 2,
-        branchName: '플러스김포',
-        franchiseName: '계룡리슈빌)잭슨부대',
-        businessNum: '234013269',
-        ceoName: '이덕호',
-        callNum: '031-995-4555',
-        phoneNum: '010-1234-5896',
-        ceoBirth: '19960404',
-        memo: 'dbrwh45@blict.co.kr',
-        address: '경기도 김포시 양촌읍 구래리 271-4',
-        balanceCoin: '60000',
-        delPayType: 0,
-        delPrice: '3000',
-        membershipUse: 0,
-        applyType: '매월 1일',
-        membershipFee: '110000',
-        cardStatus: 1,
-        van: 'IC(나이스)',
-        businessCard: '2340113269',
-        businessCardName: '이덕호',
-        businessCardFran: '계룡리슈빌)잭슨부대',
-        businessEmail: 'dbrwh45@blict.co.kr',
-        businessDate: '21-02-01 19:02:17'
-      },
-      {
-        franStatus: 1,
-        idx: 1,
-        branchName: '플러스김포',
-        franchiseName: '계룡리슈빌)잭슨부대',
-        businessNum: '234013269',
-        ceoName: '이라희',
-        callNum: '031-995-4555',
-        phoneNum: '010-1234-5896',
-        ceoBirth: '19960404',
-        memo: 'dbrwh45@blict.co.kr',
-        address: '경기도 김포시 양촌읍 구래리 271-4',
-        balanceCoin: '60000',
-        delPayType: 0,
-        delPrice: '3000',
-        membershipUse: 1,
-        applyType: '매월 1일',
-        membershipFee: '110000',
-        cardStatus: 0,
-        van: 'IC(나이스)',
-        businessCard: '2340113269',
-        businessCardName: '이라희',
-        businessCardFran: '계룡리슈빌)잭슨부대',
-        businessEmail: 'dbrwh45@blict.co.kr',
-        businessDate: '21-02-01 19:02:17'
-      },
-    ];
-    this.setState({
-      list: list,
-    });
-
   }
 
   handleTableChange = (pagination) => {
@@ -157,14 +66,169 @@ class FranchiseMain extends Component {
     }, () => this.getList());
   };
 
+  getList = () => {
+    if (this.state.franStatus == 1) {
+      var list = [
+        {
+          franStatus: 1,
+          idx: 3,
+          branchName: '플러스김포',
+          franchiseName: '계룡리슈빌)잭슨부대',
+          businessNum: '234013269',
+          ceoName: '이스나',
+          callNum: '031-995-4555',
+          phoneNum: '010-1234-5896',
+          ceoBirth: '19960404',
+          memo: 'dbrwh45@blict.co.kr',
+          address: '경기도 김포시 양촌읍 구래리 271-4',
+          balanceCoin: '60000',
+          delPayType: 1,
+          delPrice: '3000',
+          membershipUse: 1,
+          applyType: '매월 1일',
+          membershipFee: '110000',
+          cardStatus: 0,
+          van: 'IC(나이스)',
+          businessCard: '2340113269',
+          businessCardName: '이스나',
+          businessCardFran: '계룡리슈빌)잭슨부대',
+          businessEmail: 'dbrwh45@blict.co.kr',
+          businessDate: '21-02-01 19:02:17'
+        },
+        {
+          franStatus: 1,
+          idx: 2,
+          branchName: '플러스김포',
+          franchiseName: '계룡리슈빌)잭슨부대',
+          businessNum: '234013269',
+          ceoName: '이덕호',
+          callNum: '031-995-4555',
+          phoneNum: '010-1234-5896',
+          ceoBirth: '19960404',
+          memo: 'dbrwh45@blict.co.kr',
+          address: '경기도 김포시 양촌읍 구래리 271-4',
+          balanceCoin: '60000',
+          delPayType: 0,
+          delPrice: '3000',
+          membershipUse: 0,
+          applyType: '매월 1일',
+          membershipFee: '110000',
+          cardStatus: 1,
+          van: 'IC(나이스)',
+          businessCard: '2340113269',
+          businessCardName: '이덕호',
+          businessCardFran: '계룡리슈빌)잭슨부대',
+          businessEmail: 'dbrwh45@blict.co.kr',
+          businessDate: '21-02-01 19:02:17'
+        },
+        {
+          franStatus: 1,
+          idx: 1,
+          branchName: '플러스김포',
+          franchiseName: '계룡리슈빌)잭슨부대',
+          businessNum: '234013269',
+          ceoName: '이라희',
+          callNum: '031-995-4555',
+          phoneNum: '010-1234-5896',
+          ceoBirth: '19960404',
+          memo: 'dbrwh45@blict.co.kr',
+          address: '경기도 김포시 양촌읍 구래리 271-4',
+          balanceCoin: '60000',
+          delPayType: 0,
+          delPrice: '3000',
+          membershipUse: 1,
+          applyType: '매월 1일',
+          membershipFee: '110000',
+          cardStatus: 0,
+          van: 'IC(나이스)',
+          businessCard: '2340113269',
+          businessCardName: '이라희',
+          businessCardFran: '계룡리슈빌)잭슨부대',
+          businessEmail: 'dbrwh45@blict.co.kr',
+          businessDate: '21-02-01 19:02:17'
+        },
+      ];
+    }
+    else if (this.state.franStatus == -1) {
+      var list = [
+        {
+          franStatus: -1,
+          idx: 4,
+          branchName: '플러스김포',
+          franchiseName: '계룡리슈빌)잭슨부대',
+          businessNum: '234013269',
+          ceoName: '이스나',
+          callNum: '031-995-4555',
+          phoneNum: '010-1234-5896',
+          ceoBirth: '19960404',
+          memo: 'dbrwh45@blict.co.kr',
+          address: '경기도 김포시 양촌읍 구래리 271-4',
+          balanceCoin: '60000',
+          delPayType: 1,
+          delPrice: '3000',
+          membershipUse: 1,
+          applyType: '매월 1일',
+          membershipFee: '110000',
+          cardStatus: 0,
+          van: 'IC(나이스)',
+          businessCard: '2340113269',
+          businessCardName: '이스나',
+          businessCardFran: '계룡리슈빌)잭슨부대',
+          businessEmail: 'dbrwh45@blict.co.kr',
+          businessDate: '21-02-01 19:02:17'
+        },
+      ];
+    }
+    else {
+      var list = [
+        {
+          franStatus: 0,
+          idx: 5,
+          branchName: '플러스김포',
+          franchiseName: '계룡리슈빌)잭슨부대',
+          businessNum: '234013269',
+          ceoName: '이스나',
+          callNum: '031-995-4555',
+          phoneNum: '010-1234-5896',
+          ceoBirth: '19960404',
+          memo: 'dbrwh45@blict.co.kr',
+          address: '경기도 김포시 양촌읍 구래리 271-4',
+          balanceCoin: '60000',
+          delPayType: 1,
+          delPrice: '3000',
+          membershipUse: 1,
+          applyType: '매월 1일',
+          membershipFee: '110000',
+          cardStatus: 0,
+          van: 'IC(나이스)',
+          businessCard: '2340113269',
+          businessCardName: '이스나',
+          businessCardFran: '계룡리슈빌)잭슨부대',
+          businessEmail: 'dbrwh45@blict.co.kr',
+          businessDate: '21-02-01 19:02:17'
+        },
+      ];
+    }
+    this.setState({
+      list: list,
+    });
 
-  // 시간지연 dialog
+  }
+
+  // 가맹점등록 dialog
   openAddFranchiseModal = () => {
     this.setState({ addFranchiseOpen: true });
   }
   closeAddFranchiseModal = () => {
     this.setState({ addFranchiseOpen: false });
   }
+
+  // 검색조건 radio
+  onChange = (e) => {
+    this.setState({
+      franStatus: e.target.value,
+    }, () => this.getList());
+  };
 
 
   render() {
@@ -173,9 +237,10 @@ class FranchiseMain extends Component {
         title: "상태",
         dataIndex: "franStatus",
         className: "table-column-center",
-        render: (data) => <div>{
-          data == 0 ? "미사용"
-            : data == 1 ? "사용" : "-"}</div>
+        render: (data) => <div>{data == -1 ? "탈퇴"
+          : data == 0 ? "중지"
+            : data == 1 ? "사용"
+              : "-"}</div>
       },
       {
         title: "순번",
@@ -329,6 +394,7 @@ class FranchiseMain extends Component {
         <div className="btnLayout">
           <AddFranchiseDialog isOpen={this.state.addFranchiseOpen} close={this.closeAddFranchiseModal} />
           <Button
+            icon={<BankOutlined />}
             className="tabBtn delayTab"
             onClick={() => { this.setState({ delayTab: 1 }, this.openAddFranchiseModal) }}
           >가맹점등록</Button>
@@ -360,28 +426,19 @@ class FranchiseMain extends Component {
           </FormItem>
         </div>
         <div className="m-t-m13">
-          <FormItem
-            style={{
-              marginBottom: 0,
-              display: 'inline-block',
-              verticalAlign: 'middle',
-            }}
-            name="useType"
-            initialValue={0}
-          >
-            <Radio.Group>
-              <Radio style={{ fontSize: 14 }} value={0}>사용</Radio>
-              <Radio style={{ fontSize: 14 }} value={1}>중지</Radio>
-              <Radio style={{ fontSize: 14 }} value={2}>탈퇴</Radio>
-            </Radio.Group>
-          </FormItem>
+          <span className="searchRequirementText">검색조건</span><br />
+          <Radio.Group className="searchRequirement" onChange={this.onChange} value={this.state.franStatus}>
+            <Radio value={1}>사용</Radio>
+            <Radio value={0}>중지</Radio>
+            <Radio value={-1}>탈퇴</Radio>
+          </Radio.Group>
           <Search
             placeholder="가맹점검색"
             enterButton
             allowClear
             onSearch={this.onSearchFranchisee}
             style={{
-              width: 224,
+              width: 246,
               marginLeft: 20
             }}
           />

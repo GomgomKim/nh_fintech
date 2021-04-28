@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-export class BasicDialog extends Component {
+class BasicDialog extends Component {
     render() {
         const { open, close } = this.props;
 
@@ -20,3 +20,4 @@ export class BasicDialog extends Component {
         )
     }
 }
+export default (BasicDialog);

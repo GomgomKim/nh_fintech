@@ -18,12 +18,17 @@
     margin-top: 40px;
 }
 
-.selectFran .override-select.fran{
+.franchiseContainer .override-select.fran{
     margin-top: 10px;
-    width: 440px;
+    width: 463px;
 }
 
 /* 상세 */
 .franchiseContainer .ant-table-tbody > tr > td > .ant-table-wrapper:only-child .ant-table{
     margin: 0px;
+}
+
+
+.franchiseContainer .ant-input-group-wrapper{
+    vertical-align: middle;
 }

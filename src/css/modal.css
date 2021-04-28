@@ -55,7 +55,7 @@
   .surchargeLayout{ 
     margin-top: 20px;
     width: 100%; 
-    height: 675px; 
+    /* height: 675px;  */
     overflow-y: scroll; 
     border: 1px solid #ccc; 
     padding: 20px; 
@@ -83,8 +83,10 @@
   .listBlock .ant-btn{
     margin-left: -5px;
   }
-  .insertBlock{
-
+  .surchargeLayout .insertBlock{ 
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #b5b5b5;
   }
   .mainTitle{
     display: inline-block;
@@ -193,7 +195,7 @@
   .addcallLayout{ 
     margin-top: 20px;
     width: 100%; 
-    height: 725px; 
+    /* height: 725px;  */
     overflow-y: scroll; 
     border: 1px solid #ccc; 
     padding: 10px 20px 20px; 
@@ -335,7 +337,7 @@
 .addFranchiseLayout{ 
   margin-top: 20px;
   width: 100%;
-  height: 510px; 
+  /* height: 510px;  */
   overflow-y: scroll; 
   border: 1px solid #ccc; 
   padding: 10px 20px 20px; 
@@ -436,7 +438,9 @@
 }
 /* 하단 랩퍼 */
 .addFranchiseWrapper.bot{
-  margin-top: 20px;
+  margin-top: 40px;
+  padding-top: 30px;
+  border-top: 1px solid #b5b5b5;
   display: inline-block;
 }
 .addFranchiseWrapper.bot .addFranchiseTitle{
