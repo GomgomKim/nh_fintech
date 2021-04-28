@@ -22,3 +22,7 @@
     margin-top: 10px;
     width: 440px;
 }
+
+.franchiseContainer .ant-table-tbody > tr > td > .ant-table-wrapper:only-child .ant-table{
+    margin: 0px;
+}

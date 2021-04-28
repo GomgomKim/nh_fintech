@@ -315,8 +315,8 @@ class AddCallDialog extends Component {
                                                         initialValue={0}
                                                     >
                                                         <Radio.Group>
-                                                            <Radio style={{ fontSize: 18 }} value={0}>현금</Radio>
-                                                            <Radio style={{ fontSize: 18 }} value={1}>카드</Radio>
+                                                            <Radio style={{ fontSize: 18 }} value={0}>코인</Radio>
+                                                            <Radio style={{ fontSize: 18 }} value={1}>코인(VAT)</Radio>
                                                         </Radio.Group>
                                                     </FormItem>
                                                 </div>
@@ -339,7 +339,7 @@ class AddCallDialog extends Component {
                                                         비밀번호
                                                     </div>
                                                     <FormItem
-                                                        name="franAddress"
+                                                        name="changePwd"
                                                         className="selectItem"
                                                     >
                                                         <Input placeholder="비밀번호 입력" className="override-input sub">
@@ -355,17 +355,32 @@ class AddCallDialog extends Component {
                                                 </div>
                                                 <div className="contentBlock">
                                                     <div className="mainTitle">
+                                                        사용여부
+                                                    </div>
+                                                    <Checkbox style={{ verticalAlign: 'middle' }}></Checkbox>
+                                                    <div className="subTitle">
+                                                        차감일자
+                                                    </div>
+                                                    <FormItem
+                                                        name="minusDate"
+                                                        className="selectItem"
+                                                    >
+                                                        <Select placeholder="차감일자를 선택해 주세요." className="override-select">
+                                                            <Option value={0}>매일</Option>
+                                                            <Option value={1}>매월 1일 ~ 매월 31일</Option>
+                                                            <Option value={2}>매월 말일</Option>
+                                                        </Select>
+                                                    </FormItem>
+                                                    <div className="subTitle">
                                                         관리비
                                                     </div>
                                                     <FormItem
                                                         name="managePrice"
                                                         className="selectItem"
                                                     >
-                                                        <Input placeholder="메모를 입력해 주세요." className="override-input sub">
+                                                        <Input placeholder="관리비를 입력해 주세요." className="override-input sub">
                                                         </Input>
                                                     </FormItem>
-                                                </div>
-                                                <div>
                                                     <Button type="primary" htmlType="submit" className="callTab">
                                                         등록하기
                                                 </Button>

@@ -335,7 +335,7 @@
 .addFranchiseLayout{ 
   margin-top: 20px;
   width: 100%; 
-  height: 725px; 
+  height: 550px; 
   overflow-y: scroll; 
   border: 1px solid #ccc; 
   padding: 10px 20px 20px; 
@@ -449,7 +449,18 @@
   font-size: 20px;
   vertical-align: middle;
   font-weight: bold;
-  width: 70px;
+  width: 90px;
+}
+.addFranchiseWrapper.bot .subTitle{
+  font-size: 20px;
+  vertical-align: middle;
+  font-weight: bold;
+  /* width: 70px; */
+  margin-left: 65px;
+}
+.addFranchiseWrapper.bot .ant-checkbox-inner{
+  width: 20px;
+  height: 20px;
 }
 .addFranchiseWrapper.bot .override-input.sub{
   /* margin-left: -30px; */
@@ -460,10 +471,14 @@
   height: 40px;
   font-size: 18px;
   margin-top: 12px;
+  margin-right: 10px;
+  float: right;
+  
 }
 .addFranchiseWrapper.bot .contentBlock{
   /* display: inline-block; */
 }
+
 
 /* 시간지연 dialog */
 .timeDelay-Dialog{

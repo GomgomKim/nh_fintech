@@ -77,6 +77,16 @@ class FranchiseMain extends Component {
         balanceCoin: '60000',
         delPayType: 1,
         delPrice: '3000',
+        membershipUse: 1,
+        applyType: '매월 1일',
+        membershipFee: '110000',
+        cardStatus: 0,
+        van: 'IC(나이스)',
+        businessCard: '2340113269',
+        businessCardName: '이스나',
+        businessCardFran: '계룡리슈빌)잭슨부대',
+        businessEmail: 'dbrwh45@blict.co.kr',
+        businessDate: '21-02-01 19:02:17'
       },
       {
         franStatus: 0,
@@ -93,6 +103,16 @@ class FranchiseMain extends Component {
         balanceCoin: '60000',
         delPayType: 0,
         delPrice: '3000',
+        membershipUse: 0,
+        applyType: '매월 1일',
+        membershipFee: '110000',
+        cardStatus: 1,
+        van: 'IC(나이스)',
+        businessCard: '2340113269',
+        businessCardName: '이덕호',
+        businessCardFran: '계룡리슈빌)잭슨부대',
+        businessEmail: 'dbrwh45@blict.co.kr',
+        businessDate: '21-02-01 19:02:17'
       },
       {
         franStatus: 1,
@@ -109,6 +129,16 @@ class FranchiseMain extends Component {
         balanceCoin: '60000',
         delPayType: 0,
         delPrice: '3000',
+        membershipUse: 1,
+        applyType: '매월 1일',
+        membershipFee: '110000',
+        cardStatus: 0,
+        van: 'IC(나이스)',
+        businessCard: '2340113269',
+        businessCardName: '이라희',
+        businessCardFran: '계룡리슈빌)잭슨부대',
+        businessEmail: 'dbrwh45@blict.co.kr',
+        businessDate: '21-02-01 19:02:17'
       },
     ];
     this.setState({
@@ -227,6 +257,72 @@ class FranchiseMain extends Component {
           </div>
       },
     ];
+    const expandedRowRender = (record) => {
+      const dropColumns = [
+        {
+          title: "월회비 사용여부",
+          dataIndex: "membershipUse",
+          className: "table-column-center",
+          render: (data) => <div>{data == 0 ? "사용안함" : "사용함"}</div>
+        },
+        {
+          title: "적용타입",
+          dataIndex: "applyType",
+          className: "table-column-center",
+        },
+        {
+          title: "월회비",
+          dataIndex: "membershipFee",
+          className: "table-column-center",
+          render: (data) => <div>{comma(data)}</div>
+        },
+        {
+          title: "카드가맹상태",
+          dataIndex: "cardStatus",
+          className: "table-column-center",
+          render: (data) => <div>{data == 0 ? "요청" : "등록완료"}</div>
+        },
+        {
+          title: "VAN",
+          dataIndex: "van",
+          className: "table-column-center",
+        },
+        {
+          title: "카드_사업자번호",
+          dataIndex: "businessCard",
+          className: "table-column-center",
+        },
+        {
+          title: "카드_사업주",
+          dataIndex: "businessCardName",
+          className: "table-column-center",
+        },
+        {
+          title: "카드_가맹점명",
+          dataIndex: "businessCardFran",
+          className: "table-column-center",
+        },
+        {
+          title: "이메일",
+          dataIndex: "businessEmail",
+          className: "table-column-center",
+        },
+        {
+          title: "시작일자",
+          dataIndex: "businessDate",
+          className: "table-column-center",
+        },
+
+      ];
+      return (
+        <Table
+          rowKey={(record) => `record: ${record.idx}`}
+          columns={dropColumns}
+          dataSource={[record]}
+          pagination={false}
+        />
+      );
+    };
 
     return (
       <div className="franchiseContainer">
@@ -293,11 +389,12 @@ class FranchiseMain extends Component {
 
         <div className="dataTableLayout">
           <Table
-            // rowKey={(record) => record.idx}
+            rowKey={(record) => record.idx}
             dataSource={this.state.list}
             columns={columns}
             pagination={this.state.pagination}
             onChange={this.handleTableChange}
+            expandedRowRender={expandedRowRender}
           />
         </div>
 
