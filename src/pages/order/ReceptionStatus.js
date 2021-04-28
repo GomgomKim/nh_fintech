@@ -7,6 +7,7 @@ import SelectBox from "../../components/input/SelectBox";
 import TimeDelayDialog from "../../components/dialog/TimeDelayDialog";
 import { formatDate } from "../../lib/util/dateUtil";
 import "../../css/order.css";
+import "../../css/common.css";
 import { comma } from "../../lib/util/numberUtil";
 import SurchargeDialog from "../../components/dialog/SurchargeDialog";
 import MapControl from "./MapControl"
