@@ -5,7 +5,7 @@ import { ClockCircleOutlined } from '@ant-design/icons';
 
 
 const FormItem = Form.Item;
-const { Option } = Select;
+const Option = Select.Option;
 
 class TimeDelayDialog extends Component {
     constructor(props) {
@@ -116,9 +116,11 @@ class TimeDelayDialog extends Component {
                                                     </Select>
                                                 </FormItem>
                                             </div>
-
-                                            <div className="timeDelay-btn-01">
-                                                배달불가<Checkbox></Checkbox>
+                                            <div className="timeDelay-btn">
+                                                <div className="timeDelay-btn-01">
+                                                    배달불가
+                                            </div>
+                                                <Checkbox></Checkbox>
                                             </div>
 
                                             <div className="timeDelay-btn-02">

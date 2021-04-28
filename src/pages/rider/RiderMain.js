@@ -232,6 +232,10 @@ class RiderMain extends Component {
           <Button className="riderManageBtn"
             onClick={() => { this.setState({ registRiderOpen: true }) }}
           >기사 등록</Button>
+
+          <Button className="riderManageBtn"
+            onClick={() => { this.setState({ registBlockOpen: true }) }}
+          >기사 차단목록</Button>
         </div>
 
         <div className="dataTableLayout">
