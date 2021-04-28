@@ -17,7 +17,7 @@ class RiderMain extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      staffStatus: 1,
+      riderStatus: 1,
       riderName: "",
       taskSchedulerOpen: false, // 작업 스케줄러
       riderGroupMgtOpen: false, // 기사 그룹 관리
@@ -53,6 +53,13 @@ class RiderMain extends Component {
       this.getList()
     })
   }
+
+  onChange = e => {
+    // console.log('radio checked', e.target.value);
+    this.setState({
+      riderStatus: e.target.value,
+    }, () => this.getList());
+  };
 
   getList = () => {
     var list = [
@@ -191,7 +198,7 @@ class RiderMain extends Component {
         <div className="">
             <div className="selectLayout">
             <span className="searchRequirementText">검색조건</span><br></br>
-            <Radio.Group className="searchRequirement" onChange={this.onChange} value={this.state.staffStatus}>
+            <Radio.Group className="searchRequirement" onChange={this.onChange} value={this.state.riderStatus}>
               <Radio value={1}>사용</Radio>
               <Radio value={0}>중지</Radio>
               <Radio value={-1}>탈퇴</Radio>
