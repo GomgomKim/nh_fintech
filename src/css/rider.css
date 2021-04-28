@@ -1,7 +1,206 @@
-/*기사관리*/
-/*기사 그룹관리*/
-
-
 .riderManageBtn{
-    margin-left: 10px;
+  margin-left: 10px;
+}
+
+/*기사관리*/
+
+
+/*기사 그룹관리*/
+.riderGroup-Dialog{
+  position:fixed;
+  top:50%;
+  left:50%;
+  transform: translate(-50%, -50%);
+  width:1000px;
+  z-index: 2;
+}
+
+.riderGroup-content{
+  padding:30px;
+  background-color:white;
+}
+
+.riderGroup-title{
+  font-size:25px;
+  font-weight:bold;
+  line-height:30px;
+  /* width:300px; */
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.riderGroup-close{
+    width:30px;
+    cursor:pointer;
+    background-color:#fddc00;
+    /* display: inline-block; */
+    float: right;
+    padding:8px;
+
+}
+
+.riderGroup-inner { 
+    width: 100%; 
+    height: 675px; 
+    overflow-y: scroll; 
+    border: 1px solid #ccc; 
+    padding: 20px; 
+    text-align: left;
+    margin-top:20px;
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}
+
+.riderGroup-inner::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera*/
+}
+
+.riderGroup-place1{
+  text-align: center;
+  display:inline-block;
+  margin:0px 30px;
+}
+.riderGroup-place1 .ant-select:not(.ant-select-customize-input) .ant-select-selector{
+  width:220px;
+  /* margin: 0px 30px; */
+}
+
+.selectBlock{
+  margin:20px;
+}
+.selectBlock .ant-form-item{
+  margin-bottom: 0px;
+}
+.selectBlock .selectItem{
+  display: inline-block;
+}
+/* .selectBlock .antd-select{
+  margin-left: 20px;
+  width: 250px;
+  font-size: 15px;
+} */
+
+.listBlock{
+  margin-top: 20px;
+}
+.listBlock .ant-btn{
+  margin-left: -5px;
+}
+
+.mainTitle{
+  display: inline-block;
+  font-size: 20px;
+  vertical-align: middle;
+  font-weight: bold;
+  /* width: 75px; */
+}
+
+.riderGroup-ftline{
+  border:1px solid;
+  line-height:30px;
+  font-size:16px;
+  border:1px solid #ccc;
+  height:290px;
+  padding-top:20px;
+}
+
+.riderGroup-ftline td{
+  width:150px;
+  display:inline-block;
+  margin-left:20px;
+}
+
+.riderGroup-ftline .ant-checkbox-inner{
+  /* width: 25px;
+  height:25px; */
+  margin-right:20px;
+}
+
+/* .riderGroup-ftline .ant-checkbox-inner::after {
+  width:12px;
+  height:12px;
+} */
+
+.riderGroup-ftline .ant-radio-wrapper{
+  font-size:16px!important;
+}
+.riderGroup-ftline-06{
+  display: inline-block;
+}
+
+.riderGroup-btn{
+  float:right
+}
+.riderGroup-btn-01{
+  text-align:center;
+  vertical-align: middle;
+  display:inline-block;
+  margin-left:20px;
+}
+.riderGroup-btn-01 > button{
+  height:40px;
+  width:130px;
+  font-size:20px;
+  background:#1890ff;
+  color:#fff;
+  font-size:20px;
+  text-align:center;
+  display:inline-block;
+  padding: 0px!important;
+}
+.riderGroup-btn-02{
+  vertical-align: middle;
+  margin-left:20px;
+} 
+
+.riderGroup-btn-02 > button{
+  height:40px;
+  width:130px;
+  font-size:20px;
+  background:#222;
+  color:#fff;
+  font-size:20px;
+  padding: 0px!important;
+}
+
+
+
+/*기사그룹관리 임시 input*/
+
+.riderGroup-ftline-01, .riderGroup-ftline-03, .riderGroup-ftline-04 {
+  display:inline-block;
+  }
+
+  .riderGroup-ftline-03 .ant-input, .riderGroup-ftline-04 .ant-input {
+    margin-left:20px;
+    }
+
+.inputBox{
+  display: inline-block;
+  font-size: 16px;
+  vertical-align: middle;
+  margin-left:20px!important;
+}
+
+.inputBox .ant-form-item{
+  margin-bottom: 0px;
+  display: inline-block;
+  vertical-align: middle;
+}
+.riderGText{
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 10px;
+  font-size: 14px;
+  color: #000!important;
+}
+.riderGroup-ftline .ant-input{
+  padding:0px!important;
+}
+
+.inputBox-rider{
+  display: inline-block;
+  font-size: 16px;
+  vertical-align: middle;
+  margin:0px!important;
 }

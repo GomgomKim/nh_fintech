@@ -7,7 +7,7 @@ import "../../css/staffManage.css";
 import "../../css/common.css";
 import { comma } from "../../lib/util/numberUtil";
 import { formatDate } from "../../lib/util/dateUtil";
-import RegistStaffDialog from "../../components/dialog/registStaffDialog";
+import RegistStaffDialog from "../../components/dialog/RegistStaffDialog";
 
 
 
@@ -196,6 +196,7 @@ class StaffMain extends Component {
             <Button className="registStaff"
               onClick={() => { this.setState({ registStaff: true }) }}
             >직원 등록</Button>
+
             <RegistStaffDialog isOpen={this.state.registStaff} close={this.closeStaffRegistrationModal} />
           </div>
 
