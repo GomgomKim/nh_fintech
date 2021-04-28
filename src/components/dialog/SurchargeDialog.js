@@ -200,7 +200,7 @@ class SurchargeDialog extends Component {
                                                             <Input />
                                                         </FormItem>
                                                     </div>
-                                                    <div className="subDate">
+                                                    <div className="subDatePrice">
                                                         등록기간
                                                     </div>
                                                     <div className="selectBox">
@@ -213,9 +213,7 @@ class SurchargeDialog extends Component {
                                                             />
                                                         </FormItem>
                                                     </div>
-                                                </div>
-                                                <div className="btnInsert">
-                                                    <div className="subTitle">
+                                                    <div className="subDatePrice">
                                                         추가요금
                                                     </div>
                                                     <div className="inputBox">
@@ -229,6 +227,8 @@ class SurchargeDialog extends Component {
                                                             원
                                                         </div>
                                                     </div>
+                                                </div>
+                                                <div className="btnInsert">
                                                     <Button type="primary" htmlType="submit" className="tabBtn insertTab">
                                                         등록하기
                                                     </Button>
