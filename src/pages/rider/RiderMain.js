@@ -3,6 +3,7 @@ import Icon from '@ant-design/icons';
 import React, { Component } from 'react';
 import { httpGet, httpUrl, httpDownload, httpPost, httpPut } from '../../api/httpClient';
 import SelectBox from "../../components/input/SelectBox";
+import RiderGroupDialog from "../../components/dialog/RiderGroupDialog";
 import '../../css/rider.css'
 import { formatDate } from "../../lib/util/dateUtil";
 import { comma } from "../../lib/util/numberUtil";
@@ -20,7 +21,7 @@ class RiderMain extends Component {
       riderStatus: 1,
       riderName: "",
       taskSchedulerOpen: false, // 작업 스케줄러
-      riderGroupMgtOpen: false, // 기사 그룹 관리
+      riderGroupOpen: false, // 기사 그룹 관리
       registRiderOpen: false, // 기사등록
       workTabOpen: false, // 작업
       pagination: {
@@ -55,7 +56,7 @@ class RiderMain extends Component {
   }
 
 
-  
+
   onChange = e => {
     // console.log('radio checked', e.target.value);
     this.setState({
@@ -112,6 +113,13 @@ class RiderMain extends Component {
       list: list,
     });
 
+  };
+  //기사 그룹관리 
+  openRiderGroupModal = () => {
+    this.setState({ riderGroupOpen: true });
+  }
+  closeRiderGroupModal = () => {
+    this.setState({ riderGroupOpen: false });
   }
 
   render() {
@@ -197,45 +205,46 @@ class RiderMain extends Component {
     ];
 
     return (
-        <div className="">
-            <div className="selectLayout">
-            <span className="searchRequirementText">검색조건</span><br></br>
-            <Radio.Group className="searchRequirement" onChange={this.onChange} value={this.state.riderStatus}>
-              <Radio value={1}>사용</Radio>
-              <Radio value={0}>중지</Radio>
-              <Radio value={-1}>탈퇴</Radio>
-            </Radio.Group>
+      <div className="">
+        <div className="selectLayout">
+          <span className="searchRequirementText">검색조건</span><br></br>
+          <Radio.Group className="searchRequirement" onChange={this.onChange} value={this.state.riderStatus}>
+            <Radio value={1}>사용</Radio>
+            <Radio value={0}>중지</Radio>
+            <Radio value={-1}>탈퇴</Radio>
+          </Radio.Group>
 
-            <Search placeholder="기사명" 
-                    onSearch={this.onSearchRider} 
-                    enterButton
-                    style={{
-                      width: 200,
-                      marginLeft: 20
-                    }} />
-                    
-            <Button className="riderManageBtn"
-              onClick={() => { this.setState({ taskSchedulerOpen: true }) }}
-            >작업 스케줄러</Button>
+          <Search placeholder="기사명"
+            onSearch={this.onSearchRider}
+            enterButton
+            style={{
+              width: 200,
+              marginLeft: 20
+            }} />
 
-            <Button className="riderManageBtn"
-              onClick={() => { this.setState({ riderGroupMgtOpen: true }) }}
-            >기사 그룹 관리</Button>
+          <Button className="riderManageBtn"
+            onClick={() => { this.setState({ taskSchedulerOpen: true }) }}
+          >작업 스케줄러</Button>
 
-            <Button className="riderManageBtn"
-              onClick={() => { this.setState({ registRiderOpen: true }) }}
-            >기사 등록</Button>
-          </div>
+          <RiderGroupDialog isOpen={this.state.riderGroupOpen} close={this.closeRiderGroupModal} />
+          <Button className="riderManageBtn"
+            onClick={() => { this.setState({ riderGroupOpen: true }) }}
+          >기사 그룹 관리</Button>
 
-          <div className="dataTableLayout">
-            <Table
-              dataSource={this.state.list}
-              columns={columns}
-              pagination={this.state.pagination}
-              onChange={this.handleTableChange}
-            />
-          </div>
+          <Button className="riderManageBtn"
+            onClick={() => { this.setState({ registRiderOpen: true }) }}
+          >기사 등록</Button>
         </div>
+
+        <div className="dataTableLayout">
+          <Table
+            dataSource={this.state.list}
+            columns={columns}
+            pagination={this.state.pagination}
+            onChange={this.handleTableChange}
+          />
+        </div>
+      </div>
     )
   }
 }

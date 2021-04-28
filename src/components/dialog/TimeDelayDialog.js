@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { Form, Button, Input, Checkbox, Select, Radio, Modal } from 'antd';
 import '../../css/modal.css';
+import { ClockCircleOutlined } from '@ant-design/icons';
+
 
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -35,50 +37,62 @@ class TimeDelayDialog extends Component {
 
                                         <div className="timeDelay-box">
                                             <Button
+                                                icon={<ClockCircleOutlined />}
                                                 className="timeDelay-box-01"
                                                 onClick={() => { }}
                                             >10분</Button>
                                             <Button
+                                                icon={<ClockCircleOutlined />}
                                                 className="timeDelay-box-02"
                                                 onClick={() => { }}
                                             >15분</Button>
                                             <Button
+                                                icon={<ClockCircleOutlined />}
                                                 className="timeDelay-box-03"
                                                 onClick={() => { }}
                                             >20분</Button>
                                             <Button
+                                                icon={<ClockCircleOutlined />}
                                                 className="timeDelay-box-04"
                                                 onClick={() => { }}
                                             >30분</Button>
                                             <Button
+                                                icon={<ClockCircleOutlined />}
                                                 className="timeDelay-box-05"
                                                 onClick={() => { }}
                                             >40분</Button>
                                             <Button
+                                                icon={<ClockCircleOutlined />}
                                                 className="timeDelay-box-06"
                                                 onClick={() => { }}
                                             >50분</Button>
                                             <Button
+                                                icon={<ClockCircleOutlined />}
                                                 className="timeDelay-box-07"
                                                 onClick={() => { }}
                                             >0분</Button>
                                             <Button
+                                                icon={<ClockCircleOutlined />}
                                                 className="timeDelay-box-08"
                                                 onClick={() => { }}
                                             >0분 지연</Button>
                                             <Button
+                                                icon={<ClockCircleOutlined />}
                                                 className="timeDelay-box-09"
                                                 onClick={() => { }}
                                             >0분 지연</Button>
                                             <Button
+                                                icon={<ClockCircleOutlined />}
                                                 className="timeDelay-box-10"
                                                 onClick={() => { }}
                                             >0분 지연</Button>
                                             <Button
+                                                icon={<ClockCircleOutlined />}
                                                 className="timeDelay-box-11"
                                                 onClick={() => { }}
                                             >0분 지연</Button>
                                             <Button
+                                                icon={<ClockCircleOutlined />}
                                                 className="timeDelay-box-12"
                                                 onClick={() => { }}
                                             >0분 지연</Button>
