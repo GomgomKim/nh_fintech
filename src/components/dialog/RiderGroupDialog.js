@@ -178,12 +178,8 @@ class RiderGroupDialog extends Component {
                                                     >
                                                         <Select placeholder="소속지사를 선택해 주세요." className="antd-select">
                                                             <Option value="플러스김포">플러스김포 / 플러스김포</Option>
-                                                            <Option value="플러스김포">플러스김포1 / 플러스김포</Option>
-                                                            <Option value="플러스김포">플러스김포2 / 플러스김포</Option>
-                                                            <Option value="플러스김포">플러스김포3 / 플러스김포</Option>
-                                                            <Option value="플러스김포">플러스김포4 / 플러스김포</Option>
-                                                            <Option value="플러스김포">플러스김포5 / 플러스김포</Option>
                                                         </Select>
+                                                        
                                                     </FormItem>
                                                 </div>
                                                 <div className="listBlock">
