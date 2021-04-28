@@ -662,7 +662,7 @@
   height:50px;
   width:230px;
   font-size:20px;
-  background:#40a9ff;
+  background:#40a9ff; 
   color:#fff;
   font-size:20px;
   text-align:center;
@@ -671,6 +671,14 @@
 }
 .timeDelay-btn-02 .timeDelay-btn{
   margin:0px!important;
+}
+
+.timeDelay-box .anticon {
+  /* width:2em;
+  height:2em; */
+  /* font-size: 20px; */
+  width: 20px;
+
 }
 /* 필터링 dialog */
 .filtering-Dialog{
