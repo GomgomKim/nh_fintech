@@ -3,9 +3,11 @@ import {
     Form, Modal, Input, DatePicker, Descriptions, Table,
     Upload, Button, Select, Icon, Radio, Carousel, Text,
 } from "antd";
+import SelectBox from '../../components/input/SelectBox';
 import '../../css/modal.css';
 import { comma } from "../../lib/util/numberUtil";
 import { formatDate } from "../../lib/util/dateUtil";
+import string from "../../string";
 const Option = Select.Option;
 const FormItem = Form.Item;
 const { RangePicker } = DatePicker;
@@ -20,6 +22,7 @@ class BlackListDialog extends Component {
                 current: 1,
                 pageSize: 5,
             },
+            blocked: 0,
         };
         this.formRef = React.createRef();
     }
@@ -38,40 +41,56 @@ class BlackListDialog extends Component {
         }, () => this.getList());
     };
 
+    modifyHandleChange = (value) => {
+        // alert(JSON.stringify(value))
+        let blocked = value
+        this.setState({
+            blocked: blocked
+        }, () => {
+            // alert([gradeLevel] + ' 등급 으로 수정합니다.')
+            this.getList();
+        })
+            .catch((error) => { });
+    }
+
 
     getList = () => {
         var list = [
             {
                 blockDate: '21-02-17',
                 FranchiseName: '구래반도4차)소통',
-                riderName: '최덕용',
+                riderName: '배지현',
                 riderBranch: '플러스김포',
-                riderBranch: '010-7755-6466',
-                blockMemo: '배송지연 및 픽업지연'
+                riderPhone: '010-7755-6466',
+                blockMemo: '배송지연 및 픽업지연',
+                blocked: this.state.blocked
             },
             {
                 blockDate: '21-02-17',
                 FranchiseName: '구래반도4차)소통',
-                riderName: '최덕용',
+                riderName: '배지현',
                 riderBranch: '플러스김포',
-                riderBranch: '010-7755-6466',
-                blockMemo: '배송지연 및 픽업지연'
+                riderPhone: '010-7755-6466',
+                blockMemo: '배송지연 및 픽업지연',
+                blocked: this.state.blocked
             },
             {
                 blockDate: '21-02-17',
                 FranchiseName: '구래반도4차)소통',
-                riderName: '최덕용',
+                riderName: '배지현',
                 riderBranch: '플러스김포',
-                riderBranch: '010-7755-6466',
-                blockMemo: '배송지연 및 픽업지연'
+                riderPhone: '010-7755-6466',
+                blockMemo: '배송지연 및 픽업지연',
+                blocked: this.state.blocked
             },
             {
                 blockDate: '21-02-17',
                 FranchiseName: '구래반도4차)소통',
-                riderName: '최덕용',
+                riderName: '배지현',
                 riderBranch: '플러스김포',
-                riderBranch: '010-7755-6466',
-                blockMemo: '배송지연 및 픽업지연'
+                riderPhone: '010-7755-6466',
+                blockMemo: '배송지연 및 픽업지연',
+                blocked: this.state.blocked
             },
 
         ];
@@ -112,6 +131,26 @@ class BlackListDialog extends Component {
                 title: "차단사항",
                 dataIndex: "blockMemo",
                 className: "table-column-center",
+            },
+            {
+                title: "상태",
+                dataIndex: "blocked",
+                className: "table-column-center",
+                render:
+                    (data, row) => (
+                        <div>
+                            <SelectBox
+                                value={string.blockString[data]}
+                                code={string.toggleCode}
+                                codeString={string.blockString}
+                                onChange={(value) => {
+                                    if (parseInt(value) !== row.blocked) {
+                                        this.onDelete(value);
+                                    }
+                                }}
+                            />
+                        </div>
+                    ),
             },
         ];
 

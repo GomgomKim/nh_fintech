@@ -2,16 +2,12 @@
     margin-left: 10px;
 }
 
-.franchiseContainer .delayTab{
+.franchiseContainer .addFranTab{
     margin-left: 0px !important;
 }
 
 .franchiseContainer .selectLayout{
     margin-top: 20px;
-}
-
-.franchiseContainer .filterTab{
-    margin-left: 20px !important;
 }
 
 .franchiseContainer .dataTableLayout{
@@ -24,7 +20,8 @@
 }
 
 /* 상세 */
-.franchiseContainer .ant-table-tbody > tr > td > .ant-table-wrapper:only-child .ant-table{
+.franchiseContainer .ant-table-tbody > tr > td > 
+.ant-table-wrapper:only-child .ant-table{
     margin: 0px;
 }
 

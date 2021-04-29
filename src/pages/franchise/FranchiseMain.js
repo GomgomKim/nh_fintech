@@ -23,15 +23,7 @@ class FranchiseMain extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      delayTab: 0,
-      mapTab: 0,
-      surchargeTab: 0,
-      registTab: 0,
-      messageTab: 0,
-      noticeTab: 0,
-      filterTab: 0,
       franchisee: "",
-      workTab: 0,
       pagination: {
         total: 0,
         current: 1,
@@ -317,7 +309,7 @@ class FranchiseMain extends Component {
           <div>
             <Button
               className="tabBtn surchargeTab"
-              onClick={() => { this.setState({ workTab: 1 }) }}
+              onClick={() => { }}
             >작업</Button>
           </div>
       },
@@ -395,23 +387,20 @@ class FranchiseMain extends Component {
           <AddFranchiseDialog isOpen={this.state.addFranchiseOpen} close={this.closeAddFranchiseModal} />
           <Button
             icon={<BankOutlined />}
-            className="tabBtn delayTab"
-            onClick={() => { this.setState({ delayTab: 1 }, this.openAddFranchiseModal) }}
+            className="tabBtn addFranTab"
+            onClick={this.openAddFranchiseModal}
           >가맹점등록</Button>
 
           <Button
-            className="tabBtn mapTab"
-            onClick={() => { this.setState({ mapTab: 1 }) }}
+            className="tabBtn sectionTab"
           >구간 요금 설정</Button>
 
           <Button
-            className="tabBtn surchargeTab"
-            onClick={() => { this.setState({ surchargeTab: 1 }) }}
+            className="tabBtn priceTab"
           >요금설정</Button>
 
           <Button
-            className="tabBtn registTab"
-            onClick={() => { this.setState({ registTab: 1 }) }}
+            className="tabBtn placeTab"
           >배달 지역 설정</Button>
 
           <FormItem

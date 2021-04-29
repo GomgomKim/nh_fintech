@@ -6,6 +6,8 @@ import {
 import '../../css/modal.css';
 import { comma } from "../../lib/util/numberUtil";
 import { formatDate } from "../../lib/util/dateUtil";
+import MapContainer from "../../pages/order/MapContainer";
+
 const Option = Select.Option;
 const FormItem = Form.Item;
 const { RangePicker } = DatePicker;
@@ -312,10 +314,8 @@ class AddCallDialog extends Component {
                                                 </Button>
                                             </div>
 
-                                            <div className="addcallMap">
-                                                <img src={require('../../img/order/map.png').default}
-                                                    style={{ width: 895, height: 430 }}
-                                                ></img>
+                                            <div className="mapLayout">
+                                                <MapContainer />
                                             </div>
 
 
