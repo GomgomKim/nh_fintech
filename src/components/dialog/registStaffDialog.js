@@ -37,7 +37,7 @@ class RegistStaffDialog extends Component {
     };
 
     handleClear = () => {
-        this.formRef.current.setFieldsValue({ 
+        this.formRef.current.setFieldsValue({
             belongBranch: undefined,
             staffName: undefined,
             password: undefined,
@@ -152,7 +152,7 @@ class RegistStaffDialog extends Component {
                                                     <div className="mainTitle">
                                                         권한
                                                     </div>
-        
+
                                                     <FormItem
                                                         name="auth"
                                                         className="selectItem"

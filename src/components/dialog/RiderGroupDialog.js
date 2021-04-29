@@ -42,46 +42,46 @@ class RiderGroupDialog extends Component {
     getList = () => {
         var list = [
             {
-                useType: 1,
-                riderGroupTitle: '추석연휴 운행할증',
-                applyTerm: '매일',
-                completionTime: '금일 11:00 부터 익일 07:59 까지',
-                addFee: '500',
+                riderGroup: 'A',
+                proCount: 6,
+                // withdraw: '매일',
+                withdrawLimit: '100000',
+                transferLimit: '500',
             },
             {
-                useType: 0,
-                riderGroupTitle: '추석연휴 운행할증',
-                applyTerm: '매일',
-                completionTime: '금일 11:00 부터 익일 07:59 까지',
-                addFee: '500'
+                riderGroup: 'B',
+                proCount: 5,
+                // withdraw: '매일',
+                withdrawLimit: '100000',
+                transferLimit: '500',
             },
             {
-                useType: 1,
-                riderGroupTitle: '추석연휴 운행할증',
-                applyTerm: '매일',
-                completionTime: '금일 11:00 부터 익일 07:59 까지',
-                addFee: '500'
+                riderGroup: 'C',
+                proCount: 4,
+                // withdraw: '매일',
+                withdrawLimit: '100000',
+                transferLimit: '500',
             },
             {
-                useType: 0,
-                riderGroupTitle: '추석연휴 운행할증',
-                applyTerm: '매일',
-                completionTime: '금일 11:00 부터 익일 07:59 까지',
-                addFee: '500'
+                riderGroup: 'D',
+                proCount: 3,
+                // withdraw: '매일',
+                withdrawLimit: '100000',
+                transferLimit: '500',
             },
             {
-                useType: 0,
-                riderGroupTitle: '추석연휴 운행할증',
-                applyTerm: '매일',
-                completionTime: '금일 11:00 부터 익일 07:59 까지',
-                addFee: '500'
+                riderGroup: 'D',
+                proCount: 2,
+                // withdraw: '매일',
+                withdrawLimit: '100000',
+                transferLimit: '500',
             },
             {
-                useType: 0,
-                riderGroupTitle: '추석연휴 운행할증',
-                applyTerm: '매일',
-                completionTime: '금일 11:00 부터 익일 07:59 까지',
-                addFee: '500'
+                riderGroup: 'A',
+                proCount: 1,
+                // withdraw: '매일',
+                withdrawLimit: '100000',
+                transferLimit: '500',
             },
 
         ];
@@ -104,18 +104,24 @@ class RiderGroupDialog extends Component {
             },
             {
                 title: "처리건수",
-                dataIndex: "rgTitle",
+                dataIndex: "proCount",
                 className: "table-column-center",
-                render: (data) => <div>{data == 0 ? "준비중" : "완료"}</div>
             },
             {
                 title: "출금가능",
-                dataIndex: "rgTerm",
+                // dataIndex: "withdraw",
                 className: "table-column-center",
+                render: () =>
+                    <div>
+                        {<Checkbox
+                            className="tabBtn riderGroupTab"
+                            onClick={() => { this.setState({ workTabOpen: true }) }}
+                        ></Checkbox>}
+                    </div>
             },
             {
                 title: "출금제한 금액",
-                dataIndex: "rgFee",
+                dataIndex: "withdrawLimit",
                 className: "table-column-center",
                 render: (data) => <div>{comma(data)}</div>
             },
@@ -132,7 +138,7 @@ class RiderGroupDialog extends Component {
             },
             {
                 title: "이체제한",
-                dataIndex: "rgFee",
+                dataIndex: "transferLimit",
                 className: "table-column-center",
                 render: (data) => <div>{comma(data)}</div>
             },
@@ -169,29 +175,34 @@ class RiderGroupDialog extends Component {
                                             <div className="selectBlock">
                                                 <div className="mainTitle">
                                                     지점 선택
-                                            </div>
+                                                </div>
                                                 <div className="riderGroup-place1">
                                                     <FormItem
                                                         style={{ marginBottom: 0, display: 'inline-block', verticalAlign: 'middle' }}
                                                         name="riderGroup-place"
-                                                        initialValue="가맹점 선택"
                                                     >
-                                                        <Select placeholder="소속지사를 선택해 주세요." className="antd-select">
-                                                            <Option value="플러스김포">플러스김포 / 플러스김포</Option>
+                                                        <Select placeholder="소속지사를 선택해 주세요." className="rider-select">
+                                                            <Option value={1}>플러스김포 / 플러스김포</Option>
+                                                            <Option value={2}>플러스김포1 / 플러스김포</Option>
+                                                            <Option value={3}>플러스김포2 / 플러스김포</Option>
+                                                            <Option value={4}>플러스김포3 / 플러스김포</Option>
+                                                            <Option value={5}>플러스김포4 / 플러스김포</Option>
+                                                            <Option value={6}>플러스김포5 / 플러스김포</Option>
                                                         </Select>
-                                                        
+
                                                     </FormItem>
                                                 </div>
-                                                <div className="listBlock">
-                                                    <Table
-                                                        // rowKey={(record) => record.idx}
-                                                        dataSource={this.state.list}
-                                                        columns={columns}
-                                                        pagination={this.state.pagination}
-                                                        onChange={this.handleTableChange}
-                                                    />
-                                                </div>
                                             </div>
+                                            <div className="listBlock">
+                                                <Table
+                                                    // rowKey={(record) => record.idx}
+                                                    dataSource={this.state.list}
+                                                    columns={columns}
+                                                    pagination={this.state.pagination}
+                                                    onChange={this.handleTableChange}
+                                                />
+                                            </div>
+
                                         </Form>
                                         <div className="riderGroup-ftline">
                                             <div className="riderGroup-ftline-01">

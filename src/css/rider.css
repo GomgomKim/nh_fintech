@@ -100,7 +100,7 @@
   line-height:30px;
   font-size:16px;
   border:1px solid #ccc;
-  height:290px;
+  height:250px;
   padding-top:20px;
 }
 
@@ -129,13 +129,22 @@
 }
 
 .riderGroup-btn{
-  float:right
+  display:inline-block;
+  width:292px;
+  float:right;
 }
+
+
 .riderGroup-btn-01{
   text-align:center;
   vertical-align: middle;
   display:inline-block;
-  margin-left:20px;
+  /* margin-left:20px; */
+}
+
+.riderGroup-btn-01 .tabBtn{
+  margin:0px!important;
+
 }
 .riderGroup-btn-01 > button{
   height:40px;
@@ -151,6 +160,7 @@
 .riderGroup-btn-02{
   vertical-align: middle;
   margin-left:20px;
+  display:inline-block;
 } 
 
 .riderGroup-btn-02 > button{
@@ -161,6 +171,7 @@
   color:#fff;
   font-size:20px;
   padding: 0px!important;
+  display:inline-block;
 }
 
 
@@ -198,7 +209,7 @@
   padding:0px!important;
 }
 
-.inputBox-rider{
+.inputBox{
   display: inline-block;
   font-size: 16px;
   vertical-align: middle;

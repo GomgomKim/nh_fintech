@@ -634,8 +634,18 @@
   width:220px;
 }
 
+
+
+.timeDelay-btn{
+  display:inline-block;
+  vertical-align: middle; 
+}
+/* .timeDelay-btn .ant-checkbox-input{
+  display:inline-block;
+  vertical-align: middle; 
+} */
 .timeDelay-btn-01{
-  width:120px;
+  width:80px;
   color:#000;
   text-align:left;
   font-size:20px;
@@ -644,7 +654,7 @@
   margin-left:15px;
 }
 
-.timeDelay-btn-01 .ant-checkbox-inner {
+.timeDelay-btn .ant-checkbox-inner {
   width:20px;
   height:22px;
   display:inline-block;
@@ -652,7 +662,7 @@
   margin:8px;
 }
 
-.timeDelay-btn-01 .ant-checkbox-inner::after {
+.timeDelay-btn .ant-checkbox-inner::after {
   width:10px;
   height:10px;
 }
@@ -662,12 +672,12 @@
   text-align:center;
   display:inline-block;
   vertical-align: middle;
-  margin-left:20px;
+  margin-left:55px;
 } 
 
 .timeDelay-btn-02 > button{
   height:50px;
-  width:230px;
+  width:200px;
   font-size:20px;
   background:#40a9ff; 
   color:#fff;
