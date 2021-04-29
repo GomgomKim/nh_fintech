@@ -5,6 +5,8 @@ import { httpGet, httpUrl, httpDownload, httpPost, httpPut } from '../../api/htt
 import SelectBox from "../../components/input/SelectBox";
 import RiderGroupDialog from "../../components/dialog/RiderGroupDialog";
 import TaskSchedulerDialog from "../../components/dialog/TaskSchedulerDialog";
+import TaskGroupDialog from "../../components/dialog/TaskGroupDialog";
+import TaskWorkDialog from "../../components/dialog/TaskWorkDialog";
 import '../../css/rider.css'
 import { formatDate } from "../../lib/util/dateUtil";
 import { comma } from "../../lib/util/numberUtil";
@@ -22,6 +24,8 @@ class RiderMain extends Component {
       riderStatus: 1,
       riderName: "",
       taskSchedulerOpen: false, // 작업 스케줄러
+      taskGroupOpen: false, //작업 그룹설정
+      taskWorkOpen: false, //작업 등록
       riderGroupOpen: false, // 기사 그룹 관리
       registRiderOpen: false, // 기사등록
       workTabOpen: false, // 작업
@@ -113,12 +117,28 @@ class RiderMain extends Component {
     });
 
   };
-  //기사 스케줄러
+  //작업 스케줄러
   openTaskSchedulerModal = () => {
     this.setState({ taskSchedulerOpen: true });
   }
-  closetaskSchedulerModal = () => {
+  closeTaskSchedulerModal = () => {
     this.setState({ taskSchedulerOpen: false });
+  }
+
+  //작업 스케줄러 그룹설정
+  openTaskGroupModal = () => {
+    this.setState({ taskGroupOpen: true });
+  }
+  closeTaskGrouprModal = () => {
+    this.setState({ taskGroupOpen: false });
+  }
+
+  //작업 스케줄러 작업등록
+  openTaskWorkModal = () => {
+    this.setState({ taskWorkOpen: true });
+  }
+  closeTaskWorkModal = () => {
+    this.setState({ taskWorkOpen: false });
   }
 
   //기사 그룹관리 
@@ -219,7 +239,6 @@ class RiderMain extends Component {
             <Radio value={1}>사용</Radio>
             <Radio value={0}>중지</Radio>
             <Radio value={-1}>탈퇴</Radio>
-            <Radio value={9}>기사 차단 목록</Radio>
           </Radio.Group>
 
           <Search placeholder="기사명"
@@ -229,19 +248,33 @@ class RiderMain extends Component {
               width: 200,
               marginLeft: 20
             }} />
-          <TaskSchedulerDialog isOpen={this.state.taskSchedulerOpen} close={this.closetaskSchedulerModal} />
+          <TaskSchedulerDialog isOpen={this.state.taskSchedulerOpen} close={this.closeTaskSchedulerModal} />
           <Button className="riderManageBtn"
-            onClick={() => { this.setState({ taskSchedulerOpen: true }) }}
+            onClick={this.openTaskSchedulerModal}
           >작업 스케줄러</Button>
+
+          <TaskGroupDialog isOpen={this.state.taskGroupOpen} close={this.closeTaskGroupModal} />
+          <Button className="riderManageBtn"
+            onClick={this.openTaskGroupModal}
+          >작업 스케줄러 그룹관리</Button>
+
+          <TaskWorkDialog isOpen={this.state.taskWorkOpen} close={this.closeTaskWorkModal} />
+          <Button className="riderManageBtn"
+            onClick={this.openTaskSchedulerModal}
+          >작업 스케줄러 작업등록</Button>
 
           <RiderGroupDialog isOpen={this.state.riderGroupOpen} close={this.closeRiderGroupModal} />
           <Button className="riderManageBtn"
-            onClick={() => { this.setState({ riderGroupOpen: true }) }}
+            onClick={this.openRiderGroupModal}
           >기사 그룹 관리</Button>
 
           <Button className="riderManageBtn"
             onClick={() => { this.setState({ registRiderOpen: true }) }}
           >기사 등록</Button>
+
+          <Button className="riderManageBtn"
+            onClick={() => { this.setState({ registRiderOpen: true }) }}
+          >기사 차단목록</Button>
 
         </div>
 

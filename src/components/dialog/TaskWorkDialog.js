@@ -3,8 +3,6 @@ import {
     Form, Modal, Input, DatePicker, Descriptions, Table,
     Upload, Button, Select, Icon, Radio, Carousel, Text, Checkbox
 } from "antd";
-import TaskGroupDialog from "../../components/dialog/TaskGroupDialog";
-import TaskWorkDialog from "../../components/dialog/TaskWorkDialog";
 import '../../css/rider.css';
 import { comma } from "../../lib/util/numberUtil";
 import { formatDate } from "../../lib/util/dateUtil";
@@ -12,15 +10,10 @@ import { formatDate } from "../../lib/util/dateUtil";
 const FormItem = Form.Item;
 const Option = Select.Option;
 
-
-class TaskSchedulerDialog extends Component {
+class TaskWorkDialog extends Component {
     constructor(props) {
-        super(props);
+        super(props)
         this.state = {
-            riderStatus: 1,
-            riderName: "",
-            taskGroupOpen: false, //작업 그룹설정
-            taskWorkOpen: false, //작업 등록
             list: [],
             pagination: {
                 total: 0,
@@ -42,21 +35,6 @@ class TaskSchedulerDialog extends Component {
         pager.pageSize = pagination.pageSize
         this.setState({
             pagination: pager,
-        }, () => this.getList());
-    };
-
-    onSearchRider = (value) => {
-        this.setState({
-            riderName: value,
-        }, () => {
-            this.getList()
-        })
-    }
-
-    onChange = e => {
-        // console.log('radio checked', e.target.value);
-        this.setState({
-            riderStatus: e.target.value,
         }, () => this.getList());
     };
 
@@ -134,21 +112,6 @@ class TaskSchedulerDialog extends Component {
         this.setState({
             list: list,
         });
-    };
-    //작업 스케줄러 그룹설정
-    openTaskGroupModal = () => {
-        this.setState({ taskGroupOpen: true });
-    }
-    closeTaskGrouprModal = () => {
-        this.setState({ taskGroupOpen: false });
-    }
-
-    //작업 스케줄러 작업등록
-    openTaskWorkModal = () => {
-        this.setState({ taskWorkOpen: true });
-    }
-    closeTaskWorkModal = () => {
-        this.setState({ taskWorkOpen: false });
     }
 
     render() {
@@ -160,7 +123,7 @@ class TaskSchedulerDialog extends Component {
                 render: () =>
                     <div>
                         {<Checkbox
-                            className="tabBtn riderGroupTab"
+                            className="tabBtn taskWorkTab"
                             onClick={() => { this.setState({ workTabOpen: true }) }}
                         ></Checkbox>}
                     </div>
@@ -224,33 +187,31 @@ class TaskSchedulerDialog extends Component {
                     isOpen ?
                         <React.Fragment>
                             <div className="Dialog-overlay" onClick={close} />
-                            <div className="taskScheduler-Dialog">
+                            <div className="taskWork-Dialog">
 
-                                <div className="taskScheduler-content">
-                                    <div className="taskScheduler-title">
+                                <div className="taskWork-content">
+                                    <div className="taskWork-title">
                                         작업 스케줄러 목록
                                     </div>
-                                    <img onClick={close} src={require('../../img/login/close.png').default} className="taskScheduler-close" />
-                                    <div className="taskScheduler-inner">
+                                    <img onClick={close} src={require('../../img/login/close.png').default} className="taskWork-close" />
+                                    <div className="taskWork-inner">
 
-                                        <div className="taskScheduler-btn">
-                                            <div className="taskScheduler-btn-01">
-                                                <TaskGroupDialog isOpen={this.state.taskGroupOpen} close={this.closetaskGroupModal} />
+                                        <div className="taskWork-btn">
+                                            <div className="taskWork-btn-01">
                                                 <Button
-                                                    className="tabBtn taskScheduler-btn"
-                                                    onClick={this.openTaskGroupModal}
+                                                    className="tabBtn taskWork-btn"
+                                                    onClick={() => { }}
                                                 >그룹설정</Button>
                                             </div>
-                                            <div className="taskScheduler-btn-02">
-                                                <TaskWorkDialog isOpen={this.state.taskWorkOpen} close={this.closetaskWorkModal} />
+                                            <div className="taskWork-btn-02">
                                                 <Button
-                                                    className="tabBtn taskScheduler-btn"
-                                                    onClick={this.openTaskWorkModal}
+                                                    className="tabBtn taskWork-btn"
+                                                    onClick={() => { }}
                                                 >작업등록</Button>
                                             </div>
-                                            <div className="taskScheduler-btn-03">
+                                            <div className="taskWork-btn-03">
                                                 <Button
-                                                    className="tabBtn taskScheduler-btn"
+                                                    className="tabBtn taskWork-btn"
                                                     onClick={() => { }}
                                                 >조회</Button>
                                             </div>
@@ -284,4 +245,4 @@ class TaskSchedulerDialog extends Component {
     }
 }
 
-export default TaskSchedulerDialog;
+export default (TaskWorkDialog);
