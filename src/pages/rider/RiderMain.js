@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import { httpGet, httpUrl, httpDownload, httpPost, httpPut } from '../../api/httpClient';
 import SelectBox from "../../components/input/SelectBox";
 import RiderGroupDialog from "../../components/dialog/RiderGroupDialog";
+import TaskSchedulerDialog from "../../components/dialog/TaskSchedulerDialog";
 import '../../css/rider.css'
 import { formatDate } from "../../lib/util/dateUtil";
 import { comma } from "../../lib/util/numberUtil";
@@ -112,6 +113,14 @@ class RiderMain extends Component {
     });
 
   };
+  //기사 스케줄러
+  openTaskSchedulerModal = () => {
+    this.setState({ taskSchedulerOpen: true });
+  }
+  closetaskSchedulerModal = () => {
+    this.setState({ taskSchedulerOpen: false });
+  }
+
   //기사 그룹관리 
   openRiderGroupModal = () => {
     this.setState({ riderGroupOpen: true });
@@ -219,7 +228,7 @@ class RiderMain extends Component {
               width: 200,
               marginLeft: 20
             }} />
-
+          <TaskSchedulerDialog isOpen={this.state.taskSchedulerOpen} close={this.closetaskSchedulerModal} />
           <Button className="riderManageBtn"
             onClick={() => { this.setState({ taskSchedulerOpen: true }) }}
           >작업 스케줄러</Button>

@@ -3,7 +3,130 @@
 }
 
 /*기사관리*/
+/*작업 스케줄러*/
 
+.taskScheduler-Dialog{
+  position:fixed;
+  top:50%;
+  left:50%;
+  transform: translate(-50%, -50%);
+  width:1200px;
+  z-index: 2;
+}
+
+.taskScheduler-content{
+  padding:30px;
+  background-color:white;
+}
+
+.taskScheduler-title{
+  font-size:25px;
+  font-weight:bold;
+  line-height:30px;
+  /* width:300px; */
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.taskScheduler-close{
+    width:30px;
+    cursor:pointer;
+    background-color:#fddc00;
+    /* display: inline-block; */
+    float: right;
+    padding:8px;
+
+}
+
+.taskScheduler-inner { 
+    width: 100%; 
+    height: 580px; 
+    overflow-y: scroll; 
+    border: 1px solid #ccc; 
+    padding: 20px; 
+    text-align: left;
+    margin-top:20px;
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}
+
+.taskScheduler-inner::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera*/
+}
+
+
+.listBlock{
+  margin-top: 20px;
+}
+.listBlock .ant-btn{
+  margin-left: -5px;
+}
+
+.mainTitle{
+  display: inline-block;
+  font-size: 20px;
+  vertical-align: middle;
+  font-weight: bold;
+  /* width: 75px; */
+}
+
+
+.taskScheduler-btn{
+  display:inline-block;
+  width:1098px;
+}
+
+
+.taskScheduler-btn-01{
+  text-align:center;
+  vertical-align: middle;
+  display:inline-block;
+}
+
+.rtaskScheduler-btn-01 .tabBtn{
+  margin:0px!important;
+
+}
+.taskScheduler-btn-01 > button{
+  height:40px;
+  width:130px;
+  font-size:20px;
+  color:#222;
+  font-size:20px;
+  text-align:center;
+  display:inline-block;
+  padding: 0px!important;
+}
+.taskScheduler-btn-02{
+  vertical-align: middle;
+  display:inline-block;
+} 
+
+.taskScheduler-btn-02 > button{
+  height:40px;
+  width:130px;
+  font-size:20px;
+  color:#222;
+  font-size:20px;
+  padding: 0px!important;
+  display:inline-block;
+}
+
+.taskScheduler-btn-03{
+  vertical-align: middle;
+  display:inline-block;
+  float:right;
+} 
+.taskScheduler-btn-03 > button{
+  height:40px;
+  width:130px;
+  font-size:20px;
+  background:#1890ff;
+  color:#fff;
+  font-size:20px;
+  padding: 0px!important;
+  display:inline-block;
+}
 
 /*기사 그룹관리*/
 .riderGroup-Dialog{
