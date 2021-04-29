@@ -5,7 +5,7 @@ import { httpGet, httpUrl, httpDownload, httpPost, httpPut } from '../../api/htt
 import SelectBox from "../../components/input/SelectBox";
 import RiderGroupDialog from "../../components/dialog/RiderGroupDialog";
 import TaskSchedulerDialog from "../../components/dialog/TaskSchedulerDialog";
-
+import BlackListDialog from "../../components/dialog/BlackListDialog";
 import '../../css/rider.css'
 import { formatDate } from "../../lib/util/dateUtil";
 import { comma } from "../../lib/util/numberUtil";
@@ -25,6 +25,7 @@ class RiderMain extends Component {
       taskSchedulerOpen: false, // 작업 스케줄러
       riderGroupOpen: false, // 기사 그룹 관리
       registRiderOpen: false, // 기사등록
+      blackListOpen: false, // 기사등록
       workTabOpen: false, // 작업
       pagination: {
         total: 0,
@@ -128,6 +129,14 @@ class RiderMain extends Component {
   }
   closeRiderGroupModal = () => {
     this.setState({ riderGroupOpen: false });
+  }
+
+  //기사 차단목록
+  openBlackListModal = () => {
+    this.setState({ blackListOpen: true });
+  }
+  closeBlackListModal = () => {
+    this.setState({ blackListOpen: false });
   }
 
   render() {
@@ -245,8 +254,9 @@ class RiderMain extends Component {
             onClick={() => { this.setState({ registRiderOpen: true }) }}
           >기사 등록</Button>
 
+          <BlackListDialog isOpen={this.state.blackListOpen} close={this.closeBlackListModal} />
           <Button className="riderManageBtn"
-            onClick={() => { this.setState({ registRiderOpen: true }) }}
+            onClick={this.openBlackListModal}
           >기사 차단목록</Button>
 
         </div>

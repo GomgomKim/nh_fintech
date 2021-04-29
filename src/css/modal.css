@@ -401,9 +401,12 @@
     font-size: 18px;
     margin-top: 12px;
   }
-  .addcallMap{
+
+  .addcallLayout .mapLayout{
     margin-top: 20px;
-  }
+    width:1000px;
+    height:600px;
+}
   
 
   /* 가맹점등록 dialog */
