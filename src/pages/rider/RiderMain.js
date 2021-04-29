@@ -219,6 +219,7 @@ class RiderMain extends Component {
             <Radio value={1}>사용</Radio>
             <Radio value={0}>중지</Radio>
             <Radio value={-1}>탈퇴</Radio>
+            <Radio value={9}>기사 차단 목록</Radio>
           </Radio.Group>
 
           <Search placeholder="기사명"
@@ -242,9 +243,6 @@ class RiderMain extends Component {
             onClick={() => { this.setState({ registRiderOpen: true }) }}
           >기사 등록</Button>
 
-          <Button className="riderManageBtn"
-            onClick={() => { this.setState({ registBlockOpen: true }) }}
-          >기사 차단목록</Button>
         </div>
 
         <div className="dataTableLayout">

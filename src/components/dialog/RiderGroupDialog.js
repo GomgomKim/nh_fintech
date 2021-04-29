@@ -253,6 +253,7 @@ class RiderGroupDialog extends Component {
                                                     원 까지만 이체가능
                                                 </div>
                                             </div>
+                                            
                                             <div className="riderGroup-ftline-05">
                                                 <td>기사수수료</td>
                                                 <FormItem
