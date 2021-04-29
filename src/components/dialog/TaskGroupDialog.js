@@ -147,7 +147,7 @@ class TaskGroupDialog extends Component {
                                             <div className="taskGroup-list-03-place1">
                                                 <FormItem
                                                     style={{ marginBottom: 0, display: 'inline-block', verticalAlign: 'middle' }}
-                                                    name="taskGruop-place"
+                                                    name="taskGroup-place"
                                                 >
                                                     <Select placeholder="소속지사를 선택해 주세요." className="rider-select">
                                                         <Option value={1}>플러스김포 / 플러스김포</Option>

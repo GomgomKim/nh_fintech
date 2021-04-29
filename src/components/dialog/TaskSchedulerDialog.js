@@ -139,7 +139,7 @@ class TaskSchedulerDialog extends Component {
     openTaskGroupModal = () => {
         this.setState({ taskGroupOpen: true });
     }
-    closeTaskGrouprModal = () => {
+    closeTaskGroupModal = () => {
         this.setState({ taskGroupOpen: false });
     }
 
@@ -235,14 +235,14 @@ class TaskSchedulerDialog extends Component {
 
                                         <div className="taskScheduler-btn">
                                             <div className="taskScheduler-btn-01">
-                                                <TaskGroupDialog isOpen={this.state.taskGroupOpen} close={this.closetaskGroupModal} />
+                                                <TaskGroupDialog isOpen={this.state.taskGroupOpen} close={this.closeTaskGroupModal} />
                                                 <Button
                                                     className="tabBtn taskScheduler-btn"
                                                     onClick={this.openTaskGroupModal}
                                                 >그룹설정</Button>
                                             </div>
                                             <div className="taskScheduler-btn-02">
-                                                <TaskWorkDialog isOpen={this.state.taskWorkOpen} close={this.closetaskWorkModal} />
+                                                <TaskWorkDialog isOpen={this.state.taskWorkOpen} close={this.closeTaskWorkModal} />
                                                 <Button
                                                     className="tabBtn taskScheduler-btn"
                                                     onClick={this.openTaskWorkModal}
