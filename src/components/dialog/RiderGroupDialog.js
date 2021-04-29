@@ -8,7 +8,7 @@ import { comma } from "../../lib/util/numberUtil";
 import { formatDate } from "../../lib/util/dateUtil";
 
 const FormItem = Form.Item;
-const { Option } = Select.Option;
+const Option = Select.Option;
 
 class RiderGroupDialog extends Component {
     constructor(props) {
@@ -242,6 +242,7 @@ class RiderGroupDialog extends Component {
                                                     원 까지만 이체가능
                                                 </div>
                                             </div>
+                                            
                                             <div className="riderGroup-ftline-05">
                                                 <td>기사수수료</td>
                                                 <FormItem

@@ -93,6 +93,7 @@ class ReceptionStatus extends Component {
   getList = () => {
     var list = [
       {
+        idx: 1,
         pickupStatus: 1,
         preparationStatus: 0,
         requestTime: '2021-04-21 12:00:00',
@@ -106,8 +107,21 @@ class ReceptionStatus extends Component {
         destination: '서울시 노원구 123동',
         charge: 60000,
         paymentMethod: 0,
+        fees: -200,
+        distance: 0.91,
+        cardStatus: 0,
+        authNum: 0,
+        businessCardName: '신한',
+        riderPhoneNum: '010-1234-5678',
+        franchiseName: '풀러스김포',
+        payAmount: 20000,
+        changes: '',
+        riderBelong: '플러스김포',
+        receiptAmount: 192,
+        franchisePhoneNum: '031-1234-5678',
       },
       {
+        idx: 2,
         pickupStatus: 0,
         preparationStatus: 1,
         requestTime: '2021-04-21 12:00:00',
@@ -121,8 +135,21 @@ class ReceptionStatus extends Component {
         destination: '서울시 노원구 123동',
         charge: 30000,
         paymentMethod: 0,
+        fees: -200,
+        distance: 0.91,
+        cardStatus: 1,
+        authNum: 0,
+        businessCardName: '신한',
+        riderPhoneNum: '010-1234-5678',
+        franchiseName: '풀러스김포',
+        payAmount: 20000,
+        changes: '17:19 승인완료',
+        riderBelong: '플러스김포',
+        receiptAmount: 192,
+        franchisePhoneNum: '031-1234-5678',
       },
       {
+        idx: 3,
         pickupStatus: 0,
         preparationStatus: 1,
         requestTime: '2021-04-21 12:00:00',
@@ -136,6 +163,18 @@ class ReceptionStatus extends Component {
         destination: '서울시 노원구 123동',
         charge: 20000,
         paymentMethod: 0,
+        fees: -200,
+        distance: 0.91,
+        cardStatus: 0,
+        authNum: 0,
+        businessCardName: '신한',
+        riderPhoneNum: '010-1234-5678',
+        franchiseName: '풀러스김포',
+        payAmount: 20000,
+        changes: '',
+        riderBelong: '플러스김포',
+        receiptAmount: 192,
+        franchisePhoneNum: '031-1234-5678',
       },
     ];
     this.setState({
@@ -278,6 +317,83 @@ class ReceptionStatus extends Component {
       },
     ];
 
+    const expandedRowRender = (record) => {
+      const dropColumns = [
+        {
+          title: "수수료",
+          dataIndex: "fees",
+          className: "table-column-center",
+          render: (data) => <div>{comma(data)}</div>
+        },
+        {
+          title: "거리(km)",
+          dataIndex: "distance",
+          className: "table-column-center",
+        },
+        {
+          title: "카드상태",
+          dataIndex: "cardStatus",
+          className: "table-column-center",
+          render: (data) => <div>{data == 0 ? "요청" : "등록완료"}</div>
+        },
+        {
+          title: "승인번호",
+          dataIndex: "authNum",
+          className: "table-column-center",
+        },
+        {
+          title: "카드사",
+          dataIndex: "businessCardName",
+          className: "table-column-center",
+        },
+        {
+          title: "기사 연락처",
+          dataIndex: "riderPhoneNum",
+          className: "table-column-center",
+        },
+        {
+          title: "지사명",
+          dataIndex: "franchiseName",
+          className: "table-column-center",
+        },
+        {
+          title: "카드승인금액",
+          dataIndex: "payAmount",
+          className: "table-column-center",
+          render: (data) => <div>{comma(data)}</div>
+        },
+        {
+          title: "변경내역",
+          dataIndex: "changes",
+          className: "table-column-center",
+        },
+        {
+          title: "기사소속",
+          dataIndex: "riderBelong",
+          className: "table-column-center",
+        },
+        {
+          title: "접수건수",
+          dataIndex: "receiptAmount",
+          className: "table-column-center",
+          render: (data) => <div>{comma(data)}</div>
+        },
+        {
+          title: "가맹점 번호",
+          dataIndex: "franchisePhoneNum",
+          className: "table-column-center",
+        },
+      ];
+      return (
+        <Table
+          rowKey={(record) => `record: ${record.idx}`}
+          columns={dropColumns}
+          dataSource={[record]}
+          pagination={false}
+        />
+      );
+    }
+
     return (
       <div className="">
         <div className="btnLayout">
@@ -369,10 +485,12 @@ class ReceptionStatus extends Component {
 
         <div className="dataTableLayout">
           <Table
+            rowKey={(record) => record.idx}
             dataSource={this.state.list}
             columns={columns}
             pagination={this.state.pagination}
             onChange={this.handleTableChange}
+            expandedRowRender={expandedRowRender}
           />
         </div>
       </div>
