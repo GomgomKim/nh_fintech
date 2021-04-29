@@ -208,7 +208,7 @@ class RiderGroupDialog extends Component {
                                             <div className="riderGroup-ftline-01">
                                                 <td>오더처리건수</td>
                                             </div>
-                                            <div className="inputBox inputBox-rider">
+                                            <div className="inputBox inputBox-rider sub">
                                                 <FormItem
                                                     name="riderG"
                                                     rules={[{ required: true, message: "0건." }]}
@@ -227,7 +227,7 @@ class RiderGroupDialog extends Component {
                                                 <td>출금설정</td>
                                                 <Checkbox></Checkbox>출금 사용
                                         </div>
-                                            <div className="inputBox">
+                                            <div className="inputBox inputBox-rider">
                                                 <FormItem
                                                     name="riderG"
                                                     rules={[{ required: true, message: "0건." }]}
@@ -242,7 +242,7 @@ class RiderGroupDialog extends Component {
                                                 <td>가맹점 코인이체</td>
                                                 <Checkbox></Checkbox>이체 사용
                                         </div>
-                                            <div className="inputBox">
+                                            <div className="inputBox inputBox-rider">
                                                 <FormItem
                                                     name="riderG"
                                                     rules={[{ required: true, message: "0건." }]}
@@ -253,7 +253,7 @@ class RiderGroupDialog extends Component {
                                                     원 까지만 이체가능
                                                 </div>
                                             </div>
-                                            
+
                                             <div className="riderGroup-ftline-05">
                                                 <td>기사수수료</td>
                                                 <FormItem
@@ -288,7 +288,7 @@ class RiderGroupDialog extends Component {
                                                     </Radio.Group>
                                                 </FormItem>
                                             </div>
-                                            <div className="inputBox">
+                                            <div className="inputBox inputBox-rider">
                                                 <FormItem
                                                     name="riderG"
                                                     rules={[{ required: true, message: "0건." }]}

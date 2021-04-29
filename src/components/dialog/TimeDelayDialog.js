@@ -37,7 +37,7 @@ class TimeDelayDialog extends Component {
 
                                         <div className="timeDelay-box">
                                             <Button
-                                                icon={<ClockCircleOutlined />}
+                                                icon={<ClockCircleOutlined style={ } />}
                                                 className="timeDelay-box-01"
                                                 onClick={() => { }}
                                             >10분</Button>
