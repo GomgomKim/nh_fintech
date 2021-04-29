@@ -7,6 +7,7 @@ import SelectBox from "../../components/input/SelectBox";
 import TimeDelayDialog from "../../components/dialog/TimeDelayDialog";
 import FilteringDialog from "../../components/dialog/FilteringDialog";
 import AddCallDialog from "../../components/dialog/AddCallDialog";
+import NoticeDialog from "../../components/dialog/NoticeDialog";
 import { formatDate } from "../../lib/util/dateUtil";
 import "../../css/order.css";
 import "../../css/common.css";
@@ -53,6 +54,7 @@ class ReceptionStatus extends Component {
       surchargeOpen: false,
       addCallOpen: false,
       filteringOpen: false,
+      noticeOpen: false,
     };
   }
 
@@ -93,7 +95,6 @@ class ReceptionStatus extends Component {
   getList = () => {
     var list = [
       {
-        idx: 1,
         pickupStatus: 1,
         preparationStatus: 0,
         requestTime: '2021-04-21 12:00:00',
@@ -121,7 +122,6 @@ class ReceptionStatus extends Component {
         franchisePhoneNum: '031-1234-5678',
       },
       {
-        idx: 2,
         pickupStatus: 0,
         preparationStatus: 1,
         requestTime: '2021-04-21 12:00:00',
@@ -149,7 +149,6 @@ class ReceptionStatus extends Component {
         franchisePhoneNum: '031-1234-5678',
       },
       {
-        idx: 3,
         pickupStatus: 0,
         preparationStatus: 1,
         requestTime: '2021-04-21 12:00:00',
@@ -224,6 +223,11 @@ class ReceptionStatus extends Component {
   }
   closeFilteringModal = () => {
     this.setState({ filteringOpen: false });
+  }
+
+  // 공지사항 dialog
+  closeNoticeModal = () => {
+    this.setState({ noticeOpen: false });
   }
 
   render() {
@@ -433,8 +437,9 @@ class ReceptionStatus extends Component {
           <Button
             icon={<UnorderedListOutlined />}
             className="tabBtn noticeTab"
-            onClick={() => { this.setState({ noticeTab: 1 }) }}
+            onClick={() => { this.setState({ noticeOpen: true }) }}
           >공지사항</Button>
+          <NoticeDialog isOpen={this.state.noticeOpen} close={this.closeNoticeModal} />
         </div>
 
         <div className="selectLayout">
@@ -485,7 +490,7 @@ class ReceptionStatus extends Component {
 
         <div className="dataTableLayout">
           <Table
-            rowKey={(record) => record.idx}
+            rowKey={(record) => record}
             dataSource={this.state.list}
             columns={columns}
             pagination={this.state.pagination}
