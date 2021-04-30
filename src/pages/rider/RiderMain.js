@@ -228,6 +228,26 @@ class RiderMain extends Component {
             >작업</Button>
           </div>
       },
+      {
+        className: "table-column-center",
+        render: () =>
+          <div>
+            <Button
+              className="tabBtn surchargeTab"
+              onClick={() => { this.setState({ workTabOpen: true }) }}
+            >코인충전</Button>
+          </div>
+      },
+      {
+        className: "table-column-center",
+        render: () =>
+          <div>
+            <Button
+              className="tabBtn surchargeTab"
+              onClick={() => { this.setState({ workTabOpen: true }) }}
+            >입출금내역</Button>
+          </div>
+      },
     ];
 
     return (
