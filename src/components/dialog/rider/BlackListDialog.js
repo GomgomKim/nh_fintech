@@ -3,11 +3,9 @@ import {
     Form, Modal, Input, DatePicker, Descriptions, Table,
     Upload, Button, Select, Icon, Radio, Carousel, Text,
 } from "antd";
-import SelectBox from '../../components/input/SelectBox';
-import '../../css/modal.css';
-import { comma } from "../../lib/util/numberUtil";
-import { formatDate } from "../../lib/util/dateUtil";
-import string from "../../string";
+import SelectBox from '../../../components/input/SelectBox';
+import '../../../css/modal.css';
+import string from "../../../string";
 const Option = Select.Option;
 const FormItem = Form.Item;
 const { RangePicker } = DatePicker;
@@ -167,7 +165,7 @@ class BlackListDialog extends Component {
                                     <div className="surcharge-title">
                                         기사 차단 목록
                                     </div>
-                                    <img onClick={close} src={require('../../img/login/close.png').default} className="surcharge-close" />
+                                    <img onClick={close} src={require('../../../img/login/close.png').default} className="surcharge-close" />
 
 
                                     <div className="surchargeLayout">

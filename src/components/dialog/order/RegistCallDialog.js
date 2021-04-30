@@ -3,17 +3,16 @@ import {
     Form, Modal, Input, DatePicker, Descriptions, Table,
     Upload, Button, Select, Icon, Radio, Carousel, Text,
 } from "antd";
-import '../../css/modal.css';
-import { comma } from "../../lib/util/numberUtil";
-import { formatDate } from "../../lib/util/dateUtil";
-import MapContainer from "../../pages/order/MapContainer";
+import '../../../css/modal.css';
+import { comma } from "../../../lib/util/numberUtil";
+import MapContainer from "../../../pages/order/MapContainer";
 
 const Option = Select.Option;
 const FormItem = Form.Item;
 const { RangePicker } = DatePicker;
 const Search = Input.Search;
 
-class AddCallDialog extends Component {
+class RegistCallDialog extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -151,17 +150,17 @@ class AddCallDialog extends Component {
                     isOpen ?
                         <React.Fragment>
                             <div className="Dialog-overlay" onClick={close} />
-                            <div className="addcall-Dialog">
-                                <div className="addcall-container">
-                                    <div className="addcall-title">
+                            <div className="registCall-Dialog">
+                                <div className="registCall-container">
+                                    <div className="registCall-title">
                                         콜등록
                                     </div>
-                                    <img onClick={close} src={require('../../img/login/close.png').default} className="surcharge-close" />
+                                    <img onClick={close} src={require('../../../img/login/close.png').default} className="surcharge-close" />
 
 
                                     <Form ref={this.formIdRef} onFinish={this.handleIdSubmit}>
-                                        <div className="addcallLayout">
-                                            <div className="addcallWrapper">
+                                        <div className="registCallLayout">
+                                            <div className="registCallWrapper">
                                                 <div className="contentBlock">
                                                     <div className="mainTitle">
                                                         소속지사
@@ -255,7 +254,7 @@ class AddCallDialog extends Component {
                                                     </FormItem>
                                                 </div>
                                             </div>
-                                            <div className="addcallWrapper sub">
+                                            <div className="registCallWrapper sub">
                                                 <div className="contentBlock">
                                                     <div className="mainTitle">
                                                         메모
@@ -337,4 +336,4 @@ class AddCallDialog extends Component {
     }
 }
 
-export default (AddCallDialog);
+export default (RegistCallDialog);

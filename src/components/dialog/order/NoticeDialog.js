@@ -3,9 +3,7 @@ import {
     Form, Modal, Input, DatePicker, Descriptions, Table,
     Upload, Button, Select, Icon, Radio, Carousel, Text,
 } from "antd";
-import '../../css/modal.css';
-import { comma } from "../../lib/util/numberUtil";
-import { formatDate } from "../../lib/util/dateUtil";
+import '../../../css/modal.css';
 const Option = Select.Option;
 const FormItem = Form.Item;
 const { RangePicker } = DatePicker;
@@ -113,7 +111,7 @@ class NoticeDialog extends Component {
                                     <div className="title">
                                         공지사항
                                     </div>
-                                    <img onClick={close} src={require('../../img/login/close.png').default} className="surcharge-close" />
+                                    <img onClick={close} src={require('../../../img/login/close.png').default} className="surcharge-close" />
 
 
                                     <div className="noticeLayout">
@@ -135,7 +133,7 @@ class NoticeDialog extends Component {
                                                         className="noticeInputBox"
                                                         name="surchargeName"
                                                     >
-                                                        <Input className="noticeInputBox"/>
+                                                        <Input className="noticeInputBox" />
                                                     </FormItem>
                                                 </div>
                                                 <div className="btnInsert">

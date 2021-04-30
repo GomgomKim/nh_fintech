@@ -4,20 +4,20 @@ import moment from 'moment';
 import React, { Component } from 'react';
 import { httpGet, httpUrl, httpDownload, httpPost, httpPut } from '../../api/httpClient';
 import SelectBox from "../../components/input/SelectBox";
-import TimeDelayDialog from "../../components/dialog/TimeDelayDialog";
-import FilteringDialog from "../../components/dialog/FilteringDialog";
-import AddCallDialog from "../../components/dialog/AddCallDialog";
-import NoticeDialog from "../../components/dialog/NoticeDialog";
+import TimeDelayDialog from "../../components/dialog/order/TimeDelayDialog";
+import FilteringDialog from "../../components/dialog/order/FilteringDialog";
+import RegistCallDialog from "../../components/dialog/order/RegistCallDialog";
+import SurchargeDialog from "./../../components/dialog/order/SurchargeDialog";
+import NoticeDialog from "../../components/dialog/order/NoticeDialog";
 import { formatDate } from "../../lib/util/dateUtil";
 import "../../css/order.css";
 import "../../css/common.css";
 import { comma } from "../../lib/util/numberUtil";
-import SurchargeDialog from "../../components/dialog/SurchargeDialog";
 import {
   FieldTimeOutlined, DollarCircleOutlined, EnvironmentFilled,
   PhoneOutlined, MessageOutlined, UnorderedListOutlined
 } from '@ant-design/icons';
-import MapControl from "./MapControl";
+// import MapControl from "./MapControl";
 
 const FormItem = Form.Item;
 const Ditems = Descriptions.Item;
@@ -421,7 +421,7 @@ class ReceptionStatus extends Component {
             onClick={() => { this.setState({ surchargeTab: 1 }, this.openSurchargeModal) }}
           >할증</Button>
 
-          <AddCallDialog isOpen={this.state.addCallOpen} close={this.closeAddCallModal} />
+          <RegistCallDialog isOpen={this.state.addCallOpen} close={this.closeAddCallModal} />
           <Button
             icon={<PhoneOutlined />}
             className="tabBtn registTab"
@@ -434,12 +434,12 @@ class ReceptionStatus extends Component {
             onClick={() => { this.setState({ messageTab: 1 }) }}
           >상담메세지</Button>
 
+          <NoticeDialog isOpen={this.state.noticeOpen} close={this.closeNoticeModal} />
           <Button
             icon={<UnorderedListOutlined />}
             className="tabBtn noticeTab"
             onClick={() => { this.setState({ noticeOpen: true }) }}
           >공지사항</Button>
-          <NoticeDialog isOpen={this.state.noticeOpen} close={this.closeNoticeModal} />
         </div>
 
         <div className="selectLayout">

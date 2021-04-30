@@ -3,9 +3,7 @@ import {
     Form, Modal, Input, DatePicker, Descriptions, Table,
     Upload, Button, Select, Icon, Radio, Carousel, Text, Checkbox
 } from "antd";
-import '../../css/modal.css';
-import { comma } from "../../lib/util/numberUtil";
-import { formatDate } from "../../lib/util/dateUtil";
+import '../../../css/modal.css';
 const Option = Select.Option;
 const FormItem = Form.Item;
 const { RangePicker } = DatePicker;
@@ -62,7 +60,7 @@ class RegistStaffDialog extends Component {
                                     <div className="title">
                                         직원 등록
                                     </div>
-                                    <img onClick={close} src={require('../../img/login/close.png').default} className="surcharge-close" />
+                                    <img onClick={close} src={require('../../../img/login/close.png').default} className="surcharge-close" />
 
 
                                     <Form ref={this.formRef} onFinish={this.handleIdSubmit}>

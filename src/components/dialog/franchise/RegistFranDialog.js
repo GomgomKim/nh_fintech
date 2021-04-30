@@ -3,15 +3,15 @@ import {
     Form, Modal, Input, DatePicker, Descriptions, Table,
     Upload, Button, Select, Icon, Radio, Carousel, Text, Checkbox
 } from "antd";
-import '../../css/modal.css';
-import { comma } from "../../lib/util/numberUtil";
-import { formatDate } from "../../lib/util/dateUtil";
+import '../../../css/modal.css';
+import { comma } from "../../../lib/util/numberUtil";
+// import { formatDate } from "../../../lib/util/dateUtil";
 const Option = Select.Option;
 const FormItem = Form.Item;
 const { RangePicker } = DatePicker;
 const Search = Input.Search;
 
-class AddCallDialog extends Component {
+class RegistFranDialog extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -149,18 +149,18 @@ class AddCallDialog extends Component {
                     isOpen ?
                         <React.Fragment>
                             <div className="Dialog-overlay" onClick={close} />
-                            <div className="addFranchise-Dialog">
-                                <div className="addFranchise-container">
-                                    <div className="addFranchise-title">
+                            <div className="registFran-Dialog">
+                                <div className="registFran-container">
+                                    <div className="registFran-title">
                                         가맹점 등록
                                     </div>
-                                    <img onClick={close} src={require('../../img/login/close.png').default} className="surcharge-close" />
+                                    <img onClick={close} src={require('../../../img/login/close.png').default} className="surcharge-close" />
 
 
                                     <Form ref={this.formIdRef} onFinish={this.handleIdSubmit}>
-                                        <div className="addFranchiseLayout">
-                                            <div className="addFranchiseWrapper">
-                                                <div className="addFranchiseTitle">
+                                        <div className="registFranLayout">
+                                            <div className="registFranWrapper">
+                                                <div className="registFranTitle">
                                                     기본정보
                                                 </div>
                                                 <div className="contentBlock">
@@ -251,7 +251,7 @@ class AddCallDialog extends Component {
                                                     </FormItem>
                                                 </div>
                                             </div>
-                                            <div className="addFranchiseWrapper sub">
+                                            <div className="registFranWrapper sub">
                                                 <div className="contentBlock">
                                                     <div className="mainTitle">
                                                         생년월일
@@ -349,8 +349,8 @@ class AddCallDialog extends Component {
                                             </div>
 
 
-                                            <div className="addFranchiseWrapper bot">
-                                                <div className="addFranchiseTitle">
+                                            <div className="registFranWrapper bot">
+                                                <div className="registFranTitle">
                                                     월관리비 설정
                                                 </div>
                                                 <div className="contentBlock">
@@ -407,4 +407,4 @@ class AddCallDialog extends Component {
     }
 }
 
-export default (AddCallDialog);
+export default (RegistFranDialog);

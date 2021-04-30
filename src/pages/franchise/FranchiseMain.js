@@ -4,9 +4,9 @@ import moment from 'moment';
 import React, { Component } from 'react';
 import { httpGet, httpUrl, httpDownload, httpPost, httpPut } from '../../api/httpClient';
 import SelectBox from "../../components/input/SelectBox";
-import AddFranchiseDialog from "../../components/dialog/AddFranchiseDialog";
+import RegistFranDialog from "../../components/dialog/franchise/RegistFranDialog";
+import CoinTransferDialog from "../../components/dialog/franchise/CoinTransferDialog";
 import BasicDialog from "../../components/dialog/BasicDialog";
-
 import { formatDate } from "../../lib/util/dateUtil";
 import "../../css/franchise.css";
 import { comma } from "../../lib/util/numberUtil";
@@ -33,6 +33,7 @@ class FranchiseMain extends Component {
       list: [],
       franStatus: 1,
       addFranchiseOpen: false,
+      coinTransferOpen: false,
     };
   }
 
@@ -214,6 +215,14 @@ class FranchiseMain extends Component {
   closeAddFranchiseModal = () => {
     this.setState({ addFranchiseOpen: false });
   }
+  // 코인이체 dialog
+  openCoinTransferModal = () => {
+    this.setState({ coinTransferOpen: true });
+  }
+  closeCoinTransferodal = () => {
+    this.setState({ coinTransferOpen: false });
+  }
+
 
   // 검색조건 radio
   onChange = (e) => {
@@ -275,11 +284,6 @@ class FranchiseMain extends Component {
         className: "table-column-center",
       },
       {
-        title: "메모",
-        dataIndex: "memo",
-        className: "table-column-center",
-      },
-      {
         title: "주소",
         dataIndex: "address",
         className: "table-column-center",
@@ -311,6 +315,17 @@ class FranchiseMain extends Component {
               className="tabBtn surchargeTab"
               onClick={() => { }}
             >작업</Button>
+          </div>
+      },
+      {
+        className: "table-column-center",
+        render: () =>
+          <div>
+            <RegistFranDialog isOpen={this.state.addFranchiseOpen} close={this.closeAddFranchiseModal} />
+            <Button
+              className="tabBtn surchargeTab"
+              onClick={this.openCoinTransferModal}
+            >코인이체</Button>
           </div>
       },
     ];
@@ -365,6 +380,11 @@ class FranchiseMain extends Component {
           className: "table-column-center",
         },
         {
+          title: "메모",
+          dataIndex: "memo",
+          className: "table-column-center",
+        },
+        {
           title: "시작일자",
           dataIndex: "businessDate",
           className: "table-column-center",
@@ -384,7 +404,7 @@ class FranchiseMain extends Component {
     return (
       <div className="franchiseContainer">
         <div className="btnLayout">
-          <AddFranchiseDialog isOpen={this.state.addFranchiseOpen} close={this.closeAddFranchiseModal} />
+          <CoinTransferDialog isOpen={this.state.coinTransferOpen} close={this.closeCoinTransferodal} />
           <Button
             icon={<BankOutlined />}
             className="tabBtn addFranTab"
