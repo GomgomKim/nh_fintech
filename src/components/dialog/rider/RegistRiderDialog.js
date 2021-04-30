@@ -60,7 +60,7 @@ class RegistRiderDialog extends Component {
                             <div className="registRider-Dialog">
                                 <div className="registRider-content">
                                     <div className="registRider-title">
-                                        직원 등록
+                                        기사 등록
                                     </div>
                                     <img onClick={close} src={require('../../../img/login/close.png').default} className="registRider-close" />
 

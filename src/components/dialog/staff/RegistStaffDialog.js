@@ -58,7 +58,7 @@ class RegistStaffDialog extends Component {
                             <div className="registStaff-Dialog">
                                 <div className="registStaff-content">
                                     <div className="registStaff-title">
-                                        기사 등록
+                                        직원 등록
                                     </div>
                                     <img onClick={close} src={require('../../../img/login/close.png').default} className="surcharge-close" />
 
