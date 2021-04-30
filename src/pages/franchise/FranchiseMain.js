@@ -8,6 +8,7 @@ import RegistFranDialog from "../../components/dialog/franchise/RegistFranDialog
 import CoinTransferDialog from "../../components/dialog/franchise/CoinTransferDialog";
 import BasicDialog from "../../components/dialog/BasicDialog";
 import { formatDate } from "../../lib/util/dateUtil";
+import string from "../../string";
 import "../../css/franchise.css";
 import { comma } from "../../lib/util/numberUtil";
 import { BankOutlined } from '@ant-design/icons';
@@ -31,6 +32,7 @@ class FranchiseMain extends Component {
       },
       // test data
       list: [],
+      withdrawSet: 0,
       franStatus: 1,
       addFranchiseOpen: false,
       coinTransferOpen: false,
@@ -71,10 +73,10 @@ class FranchiseMain extends Component {
           ceoName: '이스나',
           callNum: '031-995-4555',
           phoneNum: '010-1234-5896',
-          ceoBirth: '19960404',
           memo: 'dbrwh45@blict.co.kr',
           address: '경기도 김포시 양촌읍 구래리 271-4',
           balanceCoin: '60000',
+          withdrawSet: this.state.withdrawSet,
           delPayType: 1,
           delPrice: '3000',
           membershipUse: 1,
@@ -97,10 +99,10 @@ class FranchiseMain extends Component {
           ceoName: '이덕호',
           callNum: '031-995-4555',
           phoneNum: '010-1234-5896',
-          ceoBirth: '19960404',
           memo: 'dbrwh45@blict.co.kr',
           address: '경기도 김포시 양촌읍 구래리 271-4',
           balanceCoin: '60000',
+          withdrawSet: this.state.withdrawSet,
           delPayType: 0,
           delPrice: '3000',
           membershipUse: 0,
@@ -123,10 +125,10 @@ class FranchiseMain extends Component {
           ceoName: '이라희',
           callNum: '031-995-4555',
           phoneNum: '010-1234-5896',
-          ceoBirth: '19960404',
           memo: 'dbrwh45@blict.co.kr',
           address: '경기도 김포시 양촌읍 구래리 271-4',
           balanceCoin: '60000',
+          withdrawSet: this.state.withdrawSet,
           delPayType: 0,
           delPrice: '3000',
           membershipUse: 1,
@@ -153,10 +155,10 @@ class FranchiseMain extends Component {
           ceoName: '이스나',
           callNum: '031-995-4555',
           phoneNum: '010-1234-5896',
-          ceoBirth: '19960404',
           memo: 'dbrwh45@blict.co.kr',
           address: '경기도 김포시 양촌읍 구래리 271-4',
           balanceCoin: '60000',
+          withdrawSet: this.state.withdrawSet,
           delPayType: 1,
           delPrice: '3000',
           membershipUse: 1,
@@ -183,10 +185,10 @@ class FranchiseMain extends Component {
           ceoName: '이스나',
           callNum: '031-995-4555',
           phoneNum: '010-1234-5896',
-          ceoBirth: '19960404',
           memo: 'dbrwh45@blict.co.kr',
           address: '경기도 김포시 양촌읍 구래리 271-4',
           balanceCoin: '60000',
+          withdrawSet: this.state.withdrawSet,
           delPayType: 1,
           delPrice: '3000',
           membershipUse: 1,
@@ -223,6 +225,16 @@ class FranchiseMain extends Component {
     this.setState({ coinTransferOpen: false });
   }
 
+  onSetting = (value) => {
+    // alert(JSON.stringify(idx))
+    let withdrawSet = value
+    this.setState({
+      withdrawSet: withdrawSet
+    }, () => {
+      // alert([gradeLevel] + ' 등급 으로 수정합니다.')
+      this.getList();
+    })
+  }
 
   // 검색조건 radio
   onChange = (e) => {
@@ -279,11 +291,6 @@ class FranchiseMain extends Component {
         className: "table-column-center",
       },
       {
-        title: "생년월일",
-        dataIndex: "ceoBirth",
-        className: "table-column-center",
-      },
-      {
         title: "주소",
         dataIndex: "address",
         className: "table-column-center",
@@ -316,6 +323,26 @@ class FranchiseMain extends Component {
               onClick={() => { }}
             >작업</Button>
           </div>
+      },
+      {
+        title: "출금설정",
+        dataIndex: "withdrawSet",
+        className: "table-column-center",
+        render:
+          (data, row) => (
+            <div>
+              <SelectBox
+                value={string.withdrawString[data]}
+                code={string.toggleCode}
+                codeString={string.withdrawString}
+                onChange={(value) => {
+                  if (parseInt(value) !== row.blocked) {
+                    this.onSetting(value);
+                  }
+                }}
+              />
+            </div>
+          ),
       },
       {
         className: "table-column-center",
