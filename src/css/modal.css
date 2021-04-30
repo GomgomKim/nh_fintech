@@ -791,7 +791,79 @@
   width:300px;
 }
 
+/*입출금내역 dialog*/
 
+.riderBank-Dialog{
+  position:fixed;
+  top:50%;
+  left:50%;
+  transform: translate(-50%, -50%);
+  width:1000px;
+  z-index: 2;
+}
+
+.riderBank-content{
+  padding:30px;
+  background-color:white;
+}
+
+.riderBank-title{
+  font-size:25px;
+  font-weight:bold;
+  line-height:30px;
+  /* width:300px; */
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.riderBank-close{
+    width:30px;
+    cursor:pointer;
+    background-color:#fddc00;
+    /* display: inline-block; */
+    float: right;
+    padding:8px;
+
+}
+
+.riderBank-inner { 
+    width: 100%; 
+    height: 650px; 
+    overflow-y: scroll; 
+    border: 1px solid #ccc; 
+    padding: 20px; 
+    text-align: left;
+    margin-top:20px;
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}
+
+.riderBank-inner::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera*/
+}
+
+.riderBank-list-01{
+  display:inline-block;
+  width:950px;
+  text-align: left;
+  margin-top:20px;
+}
+
+.riderBank-list-01 .riderBank-datepicker{
+  display: inline-block;
+}
+
+.riderBank-list-01 td{
+  display: inline-block;
+  width:100px;
+  font-size:25px;
+  text-align: center!important;
+}
+.riderBank-list-01 Button {
+  margin-left:30px;
+  background-color: #40a9ff;
+  color:#fff;
+}
 /* 시간지연 dialog */
 .timeDelay-Dialog{
   position:fixed;
@@ -1384,7 +1456,6 @@
 
 .taskWork-list-05 .taskWork-datepicker{
   margin-left:10px;
-
 }
 
 .taskWork-list-06 .ant-select:not(.ant-select-customize-input) .ant-select-selector{
