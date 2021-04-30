@@ -187,11 +187,13 @@ class StaffMain extends Component {
       <div className="">
         <div className="selectLayout">
           <span className="searchRequirementText">검색조건</span><br></br>
-          <Radio.Group className="searchRequirement" onChange={this.onChange} value={this.state.staffStatus}>
-            <Radio value={1}>사용</Radio>
-            <Radio value={0}>중지</Radio>
-            <Radio value={-1}>퇴사</Radio>
-          </Radio.Group>
+          <div className="m-t-10">
+            <Radio.Group className="searchRequirement" onChange={this.onChange} value={this.state.staffStatus}>
+              <Radio value={1}>사용</Radio>
+              <Radio value={0}>중지</Radio>
+              <Radio value={-1}>퇴사</Radio>
+            </Radio.Group>
+          </div>
 
           <Button className="registStaff"
             onClick={() => { this.setState({ registStaff: true }) }}

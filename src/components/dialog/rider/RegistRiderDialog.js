@@ -88,7 +88,7 @@ class RegistRiderDialog extends Component {
                                                         기사그룹
                                                     </div>
                                                     <FormItem
-                                                        name="belongBranch"
+                                                        name="riderGroup"
                                                         className="selectItem"
                                                     >
                                                         <Select placeholder="그룹을 선택해주세요." className="override-select branch">

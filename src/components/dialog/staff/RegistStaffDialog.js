@@ -56,16 +56,16 @@ class RegistStaffDialog extends Component {
                         <React.Fragment>
                             <div className="Dialog-overlay" onClick={close} />
                             <div className="registStaff-Dialog">
-                                <div className="container">
-                                    <div className="title">
-                                        직원 등록
+                                <div className="registStaff-content">
+                                    <div className="registStaff-title">
+                                        기사 등록
                                     </div>
                                     <img onClick={close} src={require('../../../img/login/close.png').default} className="surcharge-close" />
 
 
                                     <Form ref={this.formRef} onFinish={this.handleIdSubmit}>
                                         <div className="layout">
-                                            <div className="addFranchiseWrapper">
+                                            <div className="registStaffWrapper">
                                                 <div className="contentBlock">
                                                     <div className="mainTitle">
                                                         소속지사
@@ -155,7 +155,7 @@ class RegistStaffDialog extends Component {
                                                         name="auth"
                                                         className="selectItem"
                                                     >
-                                                        <Radio.Group className="override-select branch" onChange={this.onChange} value={this.state.staffAuth}>
+                                                        <Radio.Group className="override-select sub" onChange={this.onChange} value={this.state.staffAuth}>
                                                             <Radio value={1}>주문</Radio>
                                                             <Radio value={2}>기사</Radio>
                                                             <Radio value={3}>직원</Radio>
