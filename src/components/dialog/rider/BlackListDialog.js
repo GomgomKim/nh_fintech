@@ -39,7 +39,7 @@ class BlackListDialog extends Component {
         }, () => this.getList());
     };
 
-    modifyHandleChange = (value) => {
+    onDelete = (value) => {
         // alert(JSON.stringify(value))
         let blocked = value
         this.setState({
@@ -48,13 +48,13 @@ class BlackListDialog extends Component {
             // alert([gradeLevel] + ' 등급 으로 수정합니다.')
             this.getList();
         })
-            .catch((error) => { });
     }
 
 
     getList = () => {
         var list = [
             {
+                idx: 4,
                 blockDate: '21-02-17',
                 FranchiseName: '구래반도4차)소통',
                 riderName: '배지현',
@@ -64,6 +64,7 @@ class BlackListDialog extends Component {
                 blocked: this.state.blocked
             },
             {
+                idx: 3,
                 blockDate: '21-02-17',
                 FranchiseName: '구래반도4차)소통',
                 riderName: '배지현',
@@ -73,6 +74,7 @@ class BlackListDialog extends Component {
                 blocked: this.state.blocked
             },
             {
+                idx: 2,
                 blockDate: '21-02-17',
                 FranchiseName: '구래반도4차)소통',
                 riderName: '배지현',
@@ -82,6 +84,7 @@ class BlackListDialog extends Component {
                 blocked: this.state.blocked
             },
             {
+                idx: 1,
                 blockDate: '21-02-17',
                 FranchiseName: '구래반도4차)소통',
                 riderName: '배지현',
@@ -143,7 +146,7 @@ class BlackListDialog extends Component {
                                 codeString={string.blockString}
                                 onChange={(value) => {
                                     if (parseInt(value) !== row.blocked) {
-                                        this.onDelete(value);
+                                        this.onDelete(value, row.idx);
                                     }
                                 }}
                             />

@@ -64,7 +64,7 @@ class RiderCoinDialog extends Component {
                                     </div>
                                     <img onClick={close} src={require('../../../img/login/close.png').default} className="coinRider-close" />
                                     <div className="coinRider-title-sub">
-                                        계룡리슈빌)잭슨부대
+                                        기사명 : ***
                                     </div>
                                     <div className="coinRider-inner">
 
