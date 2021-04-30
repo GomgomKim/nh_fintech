@@ -3,9 +3,9 @@ import {
     Form, Modal, Input, DatePicker, Descriptions, Table,
     Upload, Button, Select, Icon, Radio, Carousel, Text, Checkbox
 } from "antd";
-import '../../css/rider.css';
-import { comma } from "../../lib/util/numberUtil";
-import { formatDate } from "../../lib/util/dateUtil";
+import '../../../css/rider.css';
+import { comma } from "../../../lib/util/numberUtil";
+// import { formatDate } from "../../lib/util/dateUtil";
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -169,7 +169,7 @@ class RiderGroupDialog extends Component {
                                     <div className="riderGroup-title">
                                         기사 그룹관리
                                     </div>
-                                    <img onClick={close} src={require('../../img/login/close.png').default} className="riderGroup-close" />
+                                    <img onClick={close} src={require('../../../img/login/close.png').default} className="riderGroup-close" />
                                     <div className="riderGruop-inner">
                                         <Form ref={this.formIdRef} onFinish={this.handleIdSubmit}>
                                             <div className="selectBlock">

@@ -361,8 +361,10 @@
 .taskWork-list-06 .inputBox{
   color: #222 !important;;
 }
-.taskWork-list .inputBox-taskWork.sub .ant-row .ant-form-item{
-  margin-left: -10px;
+.taskWork-list .inputBox-taskWork.sub .ant-input{
+  margin-left: -20px;
+  width:180px;
+
 }
 
 /*기사 그룹관리*/
@@ -573,7 +575,6 @@
   font-size: 16px;
   vertical-align: middle;
   margin-left:0px!important;
-  border:1px solid red;
 }
 
 .riderGroup-ftline .inputBox-rider.sub .ant-input {

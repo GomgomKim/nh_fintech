@@ -3,9 +3,9 @@ import {
     Form, Modal, Input, DatePicker, Descriptions, Table,
     Upload, Button, Select, Icon, Radio, Carousel, Text, Checkbox
 } from "antd";
-import '../../css/rider.css';
-import { comma } from "../../lib/util/numberUtil";
-import { formatDate } from "../../lib/util/dateUtil";
+import '../../../css/rider.css';
+// import { comma } from "../../../lib/util/numberUtil";
+// import { formatDate } from "../../lib/util/dateUtil";
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -129,7 +129,7 @@ class TaskGroupDialog extends Component {
                                     <div className="taskGroup-title">
                                         작업 스케줄러 그룹관리
                                     </div>
-                                    <img onClick={close} src={require('../../img/login/close.png').default} className="taskGroup-close" />
+                                    <img onClick={close} src={require('../../../img/login/close.png').default} className="taskGroup-close" />
                                     <div className="taskGroup-inner">
 
                                         <div className="taskGroup-btn">

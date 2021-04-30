@@ -3,8 +3,8 @@ import Icon from '@ant-design/icons';
 import React, { Component } from 'react';
 import { httpGet, httpUrl, httpDownload, httpPost, httpPut } from '../../api/httpClient';
 import SelectBox from "../../components/input/SelectBox";
-import RiderGroupDialog from "../../components/dialog/RiderGroupDialog";
-import TaskSchedulerDialog from "../../components/dialog/TaskSchedulerDialog";
+import RiderGroupDialog from "../../components/dialog/rider/RiderGroupDialog";
+import TaskSchedulerDialog from "../../components/dialog/rider/TaskSchedulerDialog";
 import BlackListDialog from "../../components/dialog/BlackListDialog";
 import '../../css/rider.css'
 import { formatDate } from "../../lib/util/dateUtil";
