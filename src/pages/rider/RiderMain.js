@@ -6,6 +6,8 @@ import SelectBox from "../../components/input/SelectBox";
 import RiderGroupDialog from "../../components/dialog/rider/RiderGroupDialog";
 import TaskSchedulerDialog from "../../components/dialog/rider/TaskSchedulerDialog";
 import RegistRiderDialog from "../../components/dialog/rider/RegistRiderDialog";
+import RiderCoinDialog from "../../components/dialog/rider/RiderCoinDialog";
+
 import '../../css/modal.css'
 import BlackListDialog from "../../components/dialog/rider/BlackListDialog";
 import { formatDate } from "../../lib/util/dateUtil";
@@ -27,6 +29,7 @@ class RiderMain extends Component {
       riderGroupOpen: false, // 기사 그룹 관리
       registRiderOpen: false, // 기사등록
       blackListOpen: false, // 기사차단등록
+      riderCoinOpen: false, // 기사코인충전
       workTabOpen: false, // 작업
       pagination: {
         total: 0,
@@ -148,6 +151,14 @@ class RiderMain extends Component {
     this.setState({ blackListOpen: false });
   }
 
+  //기사 차단목록
+  openRiderCoinModal = () => {
+    this.setState({ riderCoinOpen: true });
+  }
+  closeRiderCoinModal = () => {
+    this.setState({ riderCoinOpen: false });
+  }
+
   render() {
     const columns = [
       {
@@ -232,9 +243,10 @@ class RiderMain extends Component {
         className: "table-column-center",
         render: () =>
           <div>
+            <RiderCoinDialog isOpen={this.state.riderCoinOpen} close={this.closeRiderCoinModal} />
             <Button
               className="tabBtn surchargeTab"
-              onClick={() => { this.setState({ workTabOpen: true }) }}
+              onClick={this.openRiderCoinModal}
             >코인충전</Button>
           </div>
       },
