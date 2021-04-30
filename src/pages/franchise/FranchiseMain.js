@@ -4,8 +4,8 @@ import moment from 'moment';
 import React, { Component } from 'react';
 import { httpGet, httpUrl, httpDownload, httpPost, httpPut } from '../../api/httpClient';
 import SelectBox from "../../components/input/SelectBox";
-import AddFranchiseDialog from "../../components/dialog/AddFranchiseDialog";
-import CoinTransferDialog from "../../components/dialog/CoinTransferDialog";
+import RegistFranDialog from "../../components/dialog/franchise/RegistFranDialog";
+import CoinTransferDialog from "../../components/dialog/franchise/CoinTransferDialog";
 import BasicDialog from "../../components/dialog/BasicDialog";
 import { formatDate } from "../../lib/util/dateUtil";
 import "../../css/franchise.css";
@@ -321,7 +321,7 @@ class FranchiseMain extends Component {
         className: "table-column-center",
         render: () =>
           <div>
-            <AddFranchiseDialog isOpen={this.state.addFranchiseOpen} close={this.closeAddFranchiseModal} />
+            <RegistFranDialog isOpen={this.state.addFranchiseOpen} close={this.closeAddFranchiseModal} />
             <Button
               className="tabBtn surchargeTab"
               onClick={this.openCoinTransferModal}

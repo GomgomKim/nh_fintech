@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Form, Button, Input, Checkbox, Select, Radio, Modal } from 'antd';
-import '../../css/modal.css';
+import '../../../css/modal.css';
 
 const FormItem = Form.Item;
 const { Option } = Radio;
@@ -26,7 +26,7 @@ class FilteringDialog extends Component {
                                     <div className="timeDelay-title">
                                         상태 필터링
                                     </div>
-                                    <img onClick={close} src={require('../../img/login/close.png').default} className="filtering-close" />
+                                    <img onClick={close} src={require('../../../img/login/close.png').default} className="filtering-close" />
 
 
                                     <div className="filtering-inner">

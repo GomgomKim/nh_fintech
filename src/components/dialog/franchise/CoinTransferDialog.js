@@ -3,10 +3,10 @@ import {
     Form, Modal, Input, DatePicker, Descriptions, Table,
     Upload, Button, Select, Icon, Radio, Carousel, Text, Checkbox
 } from "antd";
-import '../../css/rider.css';
+import '../../../css/rider.css';
 import moment from 'moment';
-import { comma } from "../../lib/util/numberUtil";
-import { formatDate } from "../../lib/util/dateUtil";
+import { comma } from "../../../lib/util/numberUtil";
+import { formatDate } from "../../../lib/util/dateUtil";
 
 const FormItem = Form.Item;
 const Ditems = Descriptions.Item;
@@ -62,7 +62,7 @@ class CoinTransferDialog extends Component {
                                     <div className="taskWork-title">
                                         코인이체
                                     </div>
-                                    <img onClick={close} src={require('../../img/login/close.png').default} className="taskWork-close" />
+                                    <img onClick={close} src={require('../../../img/login/close.png').default} className="taskWork-close" />
                                     <div className="taskWork-title-sub">
                                         작업 스케줄러 정보
 

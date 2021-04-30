@@ -7,7 +7,7 @@ import "../../css/staffManage.css";
 import "../../css/common.css";
 import { comma } from "../../lib/util/numberUtil";
 import { formatDate } from "../../lib/util/dateUtil";
-import RegistStaffDialog from "../../components/dialog/RegistStaffDialog";
+import RegistStaffDialog from "../../components/dialog/staff/RegistStaffDialog";
 
 
 
@@ -55,7 +55,7 @@ class StaffMain extends Component {
   };
 
   getList = () => {
-    if(this.state.staffStatus == 1){
+    if (this.state.staffStatus == 1) {
       console.log(this.state.staffStatus)
       var list = [
         {
@@ -86,7 +86,7 @@ class StaffMain extends Component {
           staffMemo: '메모',
         },
       ]
-    } else if(this.state.staffStatus == -1){
+    } else if (this.state.staffStatus == -1) {
       var list = [
         {
           franchiseeName: "플러스김포",
@@ -98,7 +98,7 @@ class StaffMain extends Component {
           staffMemo: '메모',
         },
       ]
-    } else{
+    } else {
       var list = [
         {
           franchiseeName: "플러스김포",
@@ -116,12 +116,12 @@ class StaffMain extends Component {
     });
 
   }
-  
+
   closeStaffRegistrationModal = () => {
     this.setState({ registStaff: false });
   }
 
-  
+
   render() {
     const columns = [
       {
@@ -184,31 +184,31 @@ class StaffMain extends Component {
       },
     ];
     return (
-        <div className="">
-          <div className="selectLayout">
-            <span className="searchRequirementText">검색조건</span><br></br>
-            <Radio.Group className="searchRequirement" onChange={this.onChange} value={this.state.staffStatus}>
-              <Radio value={1}>사용</Radio>
-              <Radio value={0}>중지</Radio>
-              <Radio value={-1}>퇴사</Radio>
-            </Radio.Group>
+      <div className="">
+        <div className="selectLayout">
+          <span className="searchRequirementText">검색조건</span><br></br>
+          <Radio.Group className="searchRequirement" onChange={this.onChange} value={this.state.staffStatus}>
+            <Radio value={1}>사용</Radio>
+            <Radio value={0}>중지</Radio>
+            <Radio value={-1}>퇴사</Radio>
+          </Radio.Group>
 
-            <Button className="registStaff"
-              onClick={() => { this.setState({ registStaff: true }) }}
-            >직원 등록</Button>
+          <Button className="registStaff"
+            onClick={() => { this.setState({ registStaff: true }) }}
+          >직원 등록</Button>
 
-            <RegistStaffDialog isOpen={this.state.registStaff} close={this.closeStaffRegistrationModal} />
-          </div>
+          <RegistStaffDialog isOpen={this.state.registStaff} close={this.closeStaffRegistrationModal} />
+        </div>
 
-          <div className="tableLayout">
-            <Table
+        <div className="tableLayout">
+          <Table
             dataSource={this.state.list}
             columns={columns}
             pagination={this.state.pagination}
             onChange={this.handleTableChange}
-            />
-          </div>
+          />
         </div>
+      </div>
 
 
     )

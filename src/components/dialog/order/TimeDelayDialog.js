@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Form, Button, Input, Checkbox, Select, Radio, Modal } from 'antd';
-import '../../css/modal.css';
+import '../../../css/modal.css';
 import { ClockCircleOutlined } from '@ant-design/icons';
 
 
@@ -30,7 +30,7 @@ class TimeDelayDialog extends Component {
                                     <div className="timeDelay-title">
                                         시간지연
                                     </div>
-                                    <img onClick={close} src={require('../../img/login/close.png').default} className="timeDelay-close" />
+                                    <img onClick={close} src={require('../../../img/login/close.png').default} className="timeDelay-close" />
                                     <div className="timeDelay-inner">
 
 

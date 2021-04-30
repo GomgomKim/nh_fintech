@@ -5,7 +5,7 @@ import { httpGet, httpUrl, httpDownload, httpPost, httpPut } from '../../api/htt
 import SelectBox from "../../components/input/SelectBox";
 import RiderGroupDialog from "../../components/dialog/rider/RiderGroupDialog";
 import TaskSchedulerDialog from "../../components/dialog/rider/TaskSchedulerDialog";
-import BlackListDialog from "../../components/dialog/BlackListDialog";
+import BlackListDialog from "../../components/dialog/rider/BlackListDialog";
 import '../../css/rider.css'
 import { formatDate } from "../../lib/util/dateUtil";
 import { comma } from "../../lib/util/numberUtil";
