@@ -3,7 +3,7 @@ import {
     Form, Modal, Input, DatePicker, Descriptions, Table,
     Upload, Button, Select, Icon, Radio, Carousel, Text, Checkbox
 } from "antd";
-import '../../../css/rider.css';
+import '../../../css/modal.css';
 // import { comma } from "../../../lib/util/numberUtil";
 // import { formatDate } from "../../lib/util/dateUtil";
 

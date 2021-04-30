@@ -836,3 +836,662 @@
   font-size:20px;
   vertical-align: middle;
 }
+
+
+.riderManageBtn{
+  margin-left: 10px;
+}
+
+/*기사관리*/
+/*작업 스케줄러*/
+
+.taskScheduler-Dialog{
+  position:fixed;
+  top:50%;
+  left:50%;
+  transform: translate(-50%, -50%);
+  width:1200px;
+  z-index: 2;
+}
+
+.taskScheduler-content{
+  padding:30px;
+  background-color:white;
+}
+
+.taskScheduler-title{
+  font-size:25px;
+  font-weight:bold;
+  line-height:30px;
+  /* width:300px; */
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.taskScheduler-close{
+    width:30px;
+    cursor:pointer;
+    background-color:#fddc00;
+    /* display: inline-block; */
+    float: right;
+    padding:8px;
+
+}
+
+.taskScheduler-inner { 
+    width: 100%; 
+    height: 580px; 
+    overflow-y: scroll; 
+    border: 1px solid #ccc; 
+    padding: 20px; 
+    text-align: left;
+    margin-top:20px;
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}
+
+.taskScheduler-inner::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera*/
+}
+
+
+.listBlock{
+  margin-top: 20px;
+}
+.listBlock .ant-btn{
+  margin-left: -5px;
+}
+
+.mainTitle{
+  display: inline-block;
+  font-size: 20px;
+  vertical-align: middle;
+  font-weight: bold;
+  /* width: 75px; */
+}
+
+
+.taskScheduler-btn{
+  display:inline-block;
+  width:1098px;
+}
+
+
+.taskScheduler-btn-01{
+  text-align:center;
+  vertical-align: middle;
+  display:inline-block;
+}
+
+.rtaskScheduler-btn-01 .tabBtn{
+  margin:0px!important;
+
+}
+.taskScheduler-btn-01 > button{
+  height:40px;
+  width:130px;
+  font-size:20px;
+  color:#222;
+  font-size:20px;
+  text-align:center;
+  display:inline-block;
+  padding: 0px!important;
+}
+.taskScheduler-btn-02{
+  vertical-align: middle;
+  display:inline-block;
+} 
+
+.taskScheduler-btn-02 > button{
+  height:40px;
+  width:130px;
+  font-size:20px;
+  color:#222;
+  font-size:20px;
+  padding: 0px!important;
+  display:inline-block;
+}
+
+.taskScheduler-btn-03{
+  vertical-align: middle;
+  display:inline-block;
+  float:right;
+} 
+.taskScheduler-btn-03 > button{
+  height:40px;
+  width:130px;
+  font-size:20px;
+  background:#1890ff;
+  color:#fff;
+  font-size:20px;
+  padding: 0px!important;
+  display:inline-block;
+}
+/*작업 스케줄러 그룹 설정*/
+
+.taskGroup-Dialog{
+  position:fixed;
+  top:50%;
+  left:50%;
+  transform: translate(-50%, -50%);
+  width:1000px;
+  z-index: 2;
+}
+
+.taskGroup-content{
+  padding:30px;
+  background-color:white;
+}
+
+.taskGroup-title{
+  font-size:25px;
+  font-weight:bold;
+  line-height:30px;
+  /* width:300px; */
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.taskGroup-close{
+    width:30px;
+    cursor:pointer;
+    background-color:#fddc00;
+    /* display: inline-block; */
+    float: right;
+    padding:8px;
+
+}
+
+.taskGroup-inner { 
+    width: 100%; 
+    height: 580px; 
+    overflow-y: scroll; 
+    border: 1px solid #ccc; 
+    padding: 20px; 
+    text-align: left;
+    margin-top:20px;
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}
+
+.taskGroup-inner::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera*/
+}
+
+
+
+.taskGroup-btn{
+  display:inline-block;
+  width:1098px;
+}
+
+
+.taskGroup-btn-01{
+  text-align:center;
+  vertical-align: middle;
+  display:inline-block;
+}
+
+.taskGroup-btn-01 .tabBtn{
+  margin:0px!important;
+
+}
+.taskGroup-btn-01 > button{
+  height:40px;
+  width:130px;
+  font-size:20px;
+  color:#222;
+  font-size:20px;
+  text-align:center;
+  display:inline-block;
+  padding: 0px!important;
+}
+
+.taskGroup-list{
+  border:1px solid red;
+  width:900px;
+  display:inline-block;
+  margin-top:20px;
+  font-size:15px;
+
+}
+.taskGroup-list-01{
+  display:inline-block;
+  width:326.67px;
+  height:32px;
+  background-color:#333;
+  color:#fff;
+  text-align:center;
+  line-height:32px;
+}
+.taskGroup-list-02{
+  display:inline-block;
+  width:173.33px;
+  height:32px;
+  background-color:#333;
+  color:#fff;
+  text-align:center;
+  line-height:32px;
+}
+.taskGroup-list-03-place1{
+  display:inline-block;
+  float:right;
+
+}
+.taskGroup-content .listBlock{
+  width:550px;
+}
+
+/*작업 스케줄러 작업등록*/
+
+.taskWork-Dialog{
+  position:fixed;
+  top:50%;
+  left:50%;
+  transform: translate(-50%, -50%);
+  width:700px;
+  z-index: 2;
+}
+
+.taskWork-content{
+  padding:30px;
+  background-color:white;
+}
+
+.taskWork-title{
+  font-size:25px;
+  font-weight:bold;
+  line-height:30px;
+  /* width:300px; */
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.taskWork-close{
+    width:30px;
+    cursor:pointer;
+    background-color:#fddc00;
+    /* display: inline-block; */
+    float: right;
+    padding:8px;
+
+}
+
+.taskWork-title-sub{
+  text-align:center;
+  margin-top:20px;
+  font-size:16px;
+  background-color:#222;
+  color:#fff;
+  height:32px;
+  line-height:32px;
+}
+
+.taskWork-inner { 
+    width: 100%; 
+    height: 400px; 
+    overflow-y: scroll; 
+    border: 1px solid #ccc; 
+    padding: 20px; 
+    text-align: left;
+    margin-top:5px;
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}
+
+.taskWork-inner::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera*/
+}
+
+.taskWork-list{
+  /* border:1px solid red; */
+  height:360px;
+}
+.taskWork-list td{
+  width:100px;
+  font-size:16px;
+  display:inline-block;
+  /* border:1px solid blue; */
+  
+}
+
+
+.taskWork-list .taskWork-place1{
+  display: inline-block;
+}
+
+.taskWork-list .twl{
+  width:600px;
+  display:inline-block;
+  height:60px;
+  line-height:60px;
+  /* border:1px solid red */
+}
+
+
+.taskWork-btn-01{
+  margin-top:20px;
+  text-align: center;
+}
+
+.taskWork-btn-01 .tabBtn{
+  margin:0px!important;
+
+}
+.taskWork-btn-01 > button{
+  height:40px;
+  width:200px;
+  font-size:20px;
+  background-color:#1890ff;
+  color:#fff;
+  font-size:20px;
+  text-align:center;
+  display:inline-block;
+  padding: 0px!important;
+}
+
+.taskWork-list-05 .taskWork-datepicker{
+  margin-left:10px;
+
+}
+
+.taskWork-list-06 .ant-select:not(.ant-select-customize-input) .ant-select-selector{
+  margin-left:10px;
+}
+.taskWork-list-06 .inputBox{
+  color: #222 !important;;
+}
+.taskWork-list .inputBox-taskWork.sub .ant-input{
+  margin-left: -20px;
+  width:180px;
+
+}
+
+/*기사 그룹관리*/
+.riderGroup-Dialog{
+  position:fixed;
+  top:50%;
+  left:50%;
+  transform: translate(-50%, -50%);
+  width:1000px;
+  z-index: 2;
+}
+
+.riderGroup-content{
+  padding:30px;
+  background-color:white;
+}
+
+.riderGroup-title{
+  font-size:25px;
+  font-weight:bold;
+  line-height:30px;
+  /* width:300px; */
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.riderGroup-close{
+    width:30px;
+    cursor:pointer;
+    background-color:#fddc00;
+    /* display: inline-block; */
+    float: right;
+    padding:8px;
+
+}
+
+.riderGroup-inner { 
+    width: 100%; 
+    height: 675px; 
+    overflow-y: scroll; 
+    border: 1px solid #ccc; 
+    padding: 20px; 
+    text-align: left;
+    margin-top:20px;
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}
+
+.riderGroup-inner::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera*/
+}
+
+.riderGroup-place1{
+  text-align: center;
+  display:inline-block;
+  margin:0px 30px;
+}
+.riderGroup-place1 .ant-select:not(.ant-select-customize-input) .ant-select-selector{
+  width:220px;
+  /* margin: 0px 30px; */
+}
+
+.riderGroup-inner .selectBlock{
+  margin:20px;
+}
+.riderGroup-inner .selectBlock .ant-form-item{
+  margin-bottom: 0px;
+}
+.riderGroup-inner .selectBlock .selectItem{
+  display: inline-block;
+}
+/* .selectBlock .antd-select{
+  margin-left: 20px;
+  width: 250px;
+  font-size: 15px;
+} */
+
+.riderGroup-inner .listBlock{
+  margin-top: 20px;
+}
+.riderGroup-inner .listBlock .ant-btn{
+  margin-left: -5px;
+}
+
+.riderGroup-inner .mainTitle{
+  display: inline-block;
+  font-size: 20px;
+  vertical-align: middle;
+  font-weight: bold;
+  /* width: 75px; */
+}
+
+.riderGroup-ftline{
+  border:1px solid;
+  line-height:30px;
+  font-size:16px;
+  border:1px solid #ccc;
+  height:250px;
+  padding-top:20px;
+}
+
+.riderGroup-ftline td{
+  width:150px;
+  display:inline-block;
+  margin-left:20px;
+}
+
+.riderGroup-ftline .ant-checkbox-inner{
+  /* width: 25px;
+  height:25px; */
+  margin-right:20px;
+}
+
+/* .riderGroup-ftline .ant-checkbox-inner::after {
+  width:12px;
+  height:12px;
+} */
+
+.riderGroup-ftline .ant-radio-wrapper{
+  font-size:16px!important;
+}
+.riderGroup-ftline-06{
+  display: inline-block;
+}
+
+.riderGroup-btn{
+  display:inline-block;
+  width:292px;
+  float:right;
+}
+
+
+.riderGroup-btn-01{
+  text-align:center;
+  vertical-align: middle;
+  display:inline-block;
+  /* margin-left:20px; */
+}
+
+.riderGroup-btn-01 .tabBtn{
+  margin:0px!important;
+
+}
+.riderGroup-btn-01 > button{
+  height:40px;
+  width:130px;
+  font-size:20px;
+  background:#1890ff;
+  color:#fff;
+  font-size:20px;
+  text-align:center;
+  display:inline-block;
+  padding: 0px!important;
+}
+.riderGroup-btn-02{
+  vertical-align: middle;
+  margin-left:20px;
+  display:inline-block;
+} 
+
+.riderGroup-btn-02 > button{
+  height:40px;
+  width:130px;
+  font-size:20px;
+  background:#222;
+  color:#fff;
+  font-size:20px;
+  padding: 0px!important;
+  display:inline-block;
+}
+
+
+
+/*기사그룹관리 임시 input*/
+
+.riderGroup-ftline-01, .riderGroup-ftline-03, .riderGroup-ftline-04 {
+  display:inline-block;
+  }
+
+.riderGroup-ftline-03 .ant-input, .riderGroup-ftline-04 .ant-input {
+    margin-left:20px;
+    }
+
+.riderGroup-ftline .inputBox{
+  display: inline-block;
+  font-size: 16px;
+  vertical-align: middle;
+}
+
+.riderGroup-ftline .inputBox .ant-form-item{
+  margin-bottom: 0px;
+  display: inline-block;
+  vertical-align: middle;
+}
+.riderGText{
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 10px;
+  font-size: 14px;
+  color: #000!important;
+}
+.riderGroup-ftline .ant-input{
+  padding:0px!important;
+}
+
+.riderGroup-ftline .inputBox{
+  display: inline-block;
+  font-size: 16px;
+  vertical-align: middle;
+  margin-left:0px!important;
+}
+
+.riderGroup-ftline .inputBox-rider.sub .ant-input {
+  margin-left: -10px;
+}
+
+/*기사 등록*/
+.registRider-Dialog{
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 530px;
+  border-radius: 30px;
+  z-index: 2;
+}
+
+.registRider-content{
+  background-color: white;
+  padding:30px;
+  text-align: left;
+  color: #777;
+}
+
+.registRider-title{
+  letter-spacing: -1px;
+  font-weight: bold;
+  color: #333;
+  text-align: right;             
+  display: inline-block;
+  font-size: 25px;
+  line-height: 30px;
+}
+
+.registRider-close{
+    width:30px;
+    cursor:pointer;
+    background-color:#fddc00;
+    /* display: inline-block; */
+    float: right;
+    padding:8px;
+
+}
+
+.registRider-inner { 
+  margin-top: 20px;
+  width: 100%;
+  height: 510px; 
+  overflow-y: scroll; 
+  border: 1px solid #ccc; 
+  padding: 10px 20px 20px; 
+  text-align: left;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.registRider-inner::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera*/
+}
+
+.registRiderWrapper .layout .contentBlock{
+  margin-top: 25px;
+}
+
+.registRiderWrapper .submitBlock{
+  margin-top: 30px;
+  text-align: center;
+}
+
+.registRiderWrapper .clearBtn{
+  margin-left: 20px;
+}
+
+.registRiderWrapper .contentBlock .override-select.branch{
+  width:200px!important;
+}
+
+.registRiderWrapper .ant-row .ant-form-item .selectItem{
+  width:200px!important;
+}

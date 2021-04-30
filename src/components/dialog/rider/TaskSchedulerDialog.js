@@ -5,7 +5,7 @@ import {
 } from "antd";
 import TaskGroupDialog from "../rider/TaskGroupDialog";
 import TaskWorkDialog from "../rider/TaskWorkDialog";
-import '../../../css/rider.css';
+import '../../../css/modal.css';
 import { comma } from "../../../lib/util/numberUtil";
 // import { formatDate } from "../../lib/util/dateUtil";
 
