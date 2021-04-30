@@ -7,6 +7,7 @@ import RiderGroupDialog from "../../components/dialog/rider/RiderGroupDialog";
 import TaskSchedulerDialog from "../../components/dialog/rider/TaskSchedulerDialog";
 import RegistRiderDialog from "../../components/dialog/rider/RegistRiderDialog";
 import RiderCoinDialog from "../../components/dialog/rider/RiderCoinDialog";
+import RiderBankDialog from "../../components/dialog/rider/RiderBankDialog";
 
 import '../../css/modal.css'
 import BlackListDialog from "../../components/dialog/rider/BlackListDialog";
@@ -30,6 +31,7 @@ class RiderMain extends Component {
       registRiderOpen: false, // 기사등록
       blackListOpen: false, // 기사차단등록
       riderCoinOpen: false, // 기사코인충전
+      riderBankOpen: false, //기사 입출금내역
       workTabOpen: false, // 작업
       pagination: {
         total: 0,
@@ -151,12 +153,20 @@ class RiderMain extends Component {
     this.setState({ blackListOpen: false });
   }
 
-  //기사 차단목록
+  //코인충전
   openRiderCoinModal = () => {
     this.setState({ riderCoinOpen: true });
   }
   closeRiderCoinModal = () => {
     this.setState({ riderCoinOpen: false });
+  }
+
+  //입출금내역
+  openRiderBankModal = () => {
+    this.setState({ riderBankOpen: true });
+  }
+  closeRiderBankModal = () => {
+    this.setState({ riderBankOpen: false });
   }
 
   render() {
@@ -254,9 +264,10 @@ class RiderMain extends Component {
         className: "table-column-center",
         render: () =>
           <div>
+            <RiderBankDialog isOpen={this.state.riderBankOpen} close={this.closeRiderBankModal} />
             <Button
               className="tabBtn surchargeTab"
-              onClick={() => { this.setState({ workTabOpen: true }) }}
+              onClick={this.openRiderBankModal}
             >입출금내역</Button>
           </div>
       },
