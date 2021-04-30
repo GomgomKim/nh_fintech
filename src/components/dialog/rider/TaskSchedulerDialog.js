@@ -3,11 +3,11 @@ import {
     Form, Modal, Input, DatePicker, Descriptions, Table,
     Upload, Button, Select, Icon, Radio, Carousel, Text, Checkbox
 } from "antd";
-import TaskGroupDialog from "../../components/dialog/TaskGroupDialog";
-import TaskWorkDialog from "../../components/dialog/TaskWorkDialog";
-import '../../css/rider.css';
-import { comma } from "../../lib/util/numberUtil";
-import { formatDate } from "../../lib/util/dateUtil";
+import TaskGroupDialog from "../rider/TaskGroupDialog";
+import TaskWorkDialog from "../rider/TaskWorkDialog";
+import '../../../css/rider.css';
+import { comma } from "../../../lib/util/numberUtil";
+// import { formatDate } from "../../lib/util/dateUtil";
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -230,7 +230,7 @@ class TaskSchedulerDialog extends Component {
                                     <div className="taskScheduler-title">
                                         작업 스케줄러 목록
                                     </div>
-                                    <img onClick={close} src={require('../../img/login/close.png').default} className="taskScheduler-close" />
+                                    <img onClick={close} src={require('../../../img/login/close.png').default} className="taskScheduler-close" />
                                     <div className="taskScheduler-inner">
 
                                         <div className="taskScheduler-btn">
