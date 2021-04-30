@@ -184,10 +184,12 @@ class RegistRiderDialog extends Component {
                                                     </FormItem>
                                                 </div>
                                                 <div className="contentBlock">
-                                                    <div className="mainTitle">
+                                                    <div className="mainTitle mainTitle-sub">
                                                         원천징수
                                                     </div>
-                                                    <Checkbox></Checkbox>
+                                                    <div className="registRiderCheck">
+                                                        <Checkbox></Checkbox>
+                                                    </div>
 
                                                 </div>
                                                 <div className="submitBlock">

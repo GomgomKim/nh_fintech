@@ -1554,24 +1554,18 @@
 
 }
 
-.registRider-inner { 
-  margin-top: 20px;
-  width: 100%;
-  height: 510px; 
-  overflow-y: scroll; 
-  border: 1px solid #ccc; 
-  padding: 10px 20px 20px; 
-  text-align: left;
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
+
+.registRiderWrapper .mainTitle{
+  width:130px;
 }
 
-.registRider-inner::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Opera*/
+.registRiderWrapper .registRiderCheck{
+  display: inline-block;
+  margin-left:22px;
 }
 
-.registRiderWrapper .layout .contentBlock{
-  margin-top: 25px;
+.registRider-Dialog .layout{
+  height:700px;
 }
 
 .registRiderWrapper .submitBlock{
@@ -1584,9 +1578,10 @@
 }
 
 .registRiderWrapper .contentBlock .override-select.branch{
-  width:200px!important;
+  width:240px!important;
 }
 
-.registRiderWrapper .ant-row .ant-form-item .selectItem{
-  width:200px!important;
+
+.registRiderWrapper .contentBlock .override-input{
+width:240px!important;
 }
