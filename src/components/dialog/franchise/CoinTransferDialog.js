@@ -56,131 +56,62 @@ class CoinTransferDialog extends Component {
                     isOpen ?
                         <React.Fragment>
                             <div className="Dialog-overlay" onClick={close} />
-                            <div className="taskWork-Dialog">
+                            <div className="coinTran-Dialog">
 
-                                <div className="taskWork-content">
-                                    <div className="taskWork-title">
+                                <div className="coinTran-content">
+                                    <div className="coinTran-title">
                                         코인이체
                                     </div>
-                                    <img onClick={close} src={require('../../../img/login/close.png').default} className="taskWork-close" />
-                                    <div className="taskWork-title-sub">
-                                        작업 스케줄러 정보
-
+                                    <img onClick={close} src={require('../../../img/login/close.png').default} className="coinTran-close" />
+                                    <div className="coinTran-title-sub">
+                                        계룡리슈빌)잭슨부대
                                     </div>
-                                    <div className="taskWork-inner">
+                                    <div className="coinTran-inner">
 
-                                        <div className="taskWork-list">
+                                        <div className="coinTran-list">
 
-                                            <div className="twl taskWork-list-01">
-                                                <td>사용여부</td>
-                                                <Checkbox></Checkbox>사용함
-                                            </div>
-                                            <div className="twl taskWork-list-02">
-                                                <td>작업명</td>
-                                                <div className="inputBox inputBox-taskWork sub">
+                                            <div className="twl coinTran-list">
+                                                <td>코인잔액</td>
+                                                <div className="inputBox inputBox-coinTran sub">
                                                     <FormItem
-                                                        name="riderG"
+                                                        name="coinBalance"
                                                         rules={[{ required: true, message: "0건." }]}
                                                     >
                                                         <Input />
                                                     </FormItem>
                                                 </div>
                                             </div>
-                                            <div className="twl taskWork-list-03">
-                                                <td>적용대상</td>
-                                                <div className="taskWork-place1">
+                                            <div className="twl coinTran-list">
+                                                <td>금액</td>
+                                                <div className="inputBox inputBox-coinTran sub">
                                                     <FormItem
-                                                        style={{ marginBottom: 0, display: 'inline-block', verticalAlign: 'middle' }}
-                                                        name="taskWork-place"
+                                                        name="price"
+                                                        rules={[{ required: true, message: "0건." }]}
                                                     >
-                                                        <Select placeholder="적용대상을 선택해주세요" className="taskWork-select">
-                                                            <Option value={1}>대여금 -36300원 배지현</Option>
-                                                            <Option value={2}>대여금 -36300원 배지현</Option>
-                                                            <Option value={3}>대여금 -36300원 배지현</Option>
-                                                        </Select>
-
+                                                        <Input />
                                                     </FormItem>
                                                 </div>
                                             </div>
-                                            <div className="twl taskWork-list-04">
-                                                <td>실행타입</td>
-                                                <div className="taskWork-place1">
+                                            <div className="twl coinTran-list">
+                                                <td>메모</td>
+                                                <div className="inputBox inputBox-coinTran sub">
                                                     <FormItem
-                                                        style={{ marginBottom: 0, display: 'inline-block', verticalAlign: 'middle' }}
-                                                        name="taskWork-place2"
+                                                        name="memo"
+                                                        rules={[{ required: true, message: "0건." }]}
                                                     >
-                                                        <Select placeholder="실행타입을 선택해주세요" className="taskWork-select">
-                                                            <Option value={1}>매일</Option>
-                                                            <Option value={2}>매일(월~토)</Option>
-                                                            <Option value={3}>매주일요일</Option>
-                                                            <Option value={3}>매주월요일</Option>
-                                                            <Option value={3}>매주화요일</Option>
-                                                            <Option value={3}>매주수요일</Option>
-                                                            <Option value={3}>매주목요일</Option>
-                                                            <Option value={3}>매주금요일</Option>
-                                                            <Option value={3}>매주토요일</Option>
-                                                            <Option value={3}>매월말일</Option>
-                                                            <Option value={3}>매월1일</Option>
-                                                            <Option value={3}>매월5일</Option>
-                                                            <Option value={3}>매월10일</Option>
-                                                            <Option value={3}>매월15일</Option>
-                                                            <Option value={3}>매월20일</Option>
-                                                            <Option value={3}>매월25일</Option>
-                                                        </Select>
-
+                                                        <Input />
                                                     </FormItem>
-                                                </div>
-                                                <div className="twl taskWork-list-05">
-                                                    <td>&nbsp;</td>
-                                                    <Checkbox>
-                                                    </Checkbox>기간제한사용
-
-                                                        <DatePicker
-                                                        defaultValue={moment(today, dateFormat)}
-                                                        format={dateFormat}
-                                                        onChange={date => this.setState({ selectedDate: date })}
-                                                        className="taskWork-datepicker"
-                                                    />부터
-                                                    <DatePicker
-                                                        defaultValue={moment(today, dateFormat)}
-                                                        format={dateFormat}
-                                                        onChange={date => this.setState({ selectedDate: date })}
-                                                        className="taskWork-datepicker"
-                                                    />까지
-                                                </div>
-                                                <div className="twl taskWork-list-06">
-                                                    <td>금액</td>
-                                                    <div className="inputBox inputBox-taskWork sub">
-                                                        <FormItem
-                                                            name="riderG"
-                                                            rules={[{ required: true, message: "0건." }]}
-                                                        >
-                                                            <Input />
-                                                        </FormItem>원
-                                                </div>
-                                                    <div className="taskWork-place1">
-                                                        <FormItem
-                                                            style={{ marginBottom: 0, display: 'inline-block', verticalAlign: 'middle' }}
-                                                            name="taskWork-place3"
-                                                        >
-                                                            <Select placeholder="차감" className="taskWork-select taskWork-select-06">
-                                                                <Option value={1}>차감</Option>
-                                                                <Option value={2}>적립</Option>
-                                                            </Select>
-
-                                                        </FormItem>
-                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
 
                                     </div>
 
-                                    <div className="taskWork-btn-01">
+                                    <div className="coinTran-btn-01">
                                         <Button
-                                            className="tabBtn taskWork-btn"
+                                            className="tabBtn coinTran-btn"
                                             onClick={() => { }}
-                                        >등록</Button>
+                                        >코인이체</Button>
 
 
                                     </div>
