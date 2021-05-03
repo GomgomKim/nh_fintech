@@ -271,7 +271,7 @@ class FranchiseMain extends Component {
         render:
           (data, row) => (
             <div>
-              <Select defaultValue={1} style={{ width: 68 }}>
+              <Select defaultValue={this.state.franStatus} style={{ width: 68 }}>
                 <Option value={0}>중지</Option>
                 <Option value={1}>사용</Option>
                 <Option value={2}>탈퇴</Option>
@@ -507,7 +507,7 @@ class FranchiseMain extends Component {
           <Radio.Group className="searchRequirement" onChange={this.onChange} value={this.state.franStatus}>
             <Radio value={1}>사용</Radio>
             <Radio value={0}>중지</Radio>
-            <Radio value={-1}>탈퇴</Radio>
+            <Radio value={2}>탈퇴</Radio>
           </Radio.Group>
           <Search
             placeholder="가맹점검색"
