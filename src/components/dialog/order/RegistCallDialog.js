@@ -16,131 +16,13 @@ class RegistCallDialog extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            list: [],
-            pagination: {
-                total: 0,
-                current: 1,
-                pageSize: 5,
-            },
         };
         this.formRef = React.createRef();
     }
 
     componentDidMount() {
-        this.getList()
     }
-
-    handleTableChange = (pagination) => {
-        console.log(pagination)
-        const pager = { ...this.state.pagination };
-        pager.current = pagination.current;
-        pager.pageSize = pagination.pageSize
-        this.setState({
-            pagination: pager,
-        }, () => this.getList());
-    };
-
-
-    getList = () => {
-        var list = [
-            {
-                useType: 1,
-                surchargeTitle: '추석연휴 운행할증',
-                applyTerm: '매일',
-                completionTime: '금일 11:00 부터 익일 07:59 까지',
-                addFee: '500',
-            },
-            {
-                useType: 0,
-                surchargeTitle: '추석연휴 운행할증',
-                applyTerm: '매일',
-                completionTime: '금일 11:00 부터 익일 07:59 까지',
-                addFee: '500'
-            },
-            {
-                useType: 1,
-                surchargeTitle: '추석연휴 운행할증',
-                applyTerm: '매일',
-                completionTime: '금일 11:00 부터 익일 07:59 까지',
-                addFee: '500'
-            },
-            {
-                useType: 0,
-                surchargeTitle: '추석연휴 운행할증',
-                applyTerm: '매일',
-                completionTime: '금일 11:00 부터 익일 07:59 까지',
-                addFee: '500'
-            },
-            {
-                useType: 0,
-                surchargeTitle: '추석연휴 운행할증',
-                applyTerm: '매일',
-                completionTime: '금일 11:00 부터 익일 07:59 까지',
-                addFee: '500'
-            },
-            {
-                useType: 0,
-                surchargeTitle: '추석연휴 운행할증',
-                applyTerm: '매일',
-                completionTime: '금일 11:00 부터 익일 07:59 까지',
-                addFee: '500'
-            },
-
-        ];
-        this.setState({
-            list: list,
-        });
-    }
-
     render() {
-
-        const columns = [
-            {
-                title: "사용여부",
-                dataIndex: "useType",
-                className: "table-column-center",
-                render: (data) => <div>
-                    <Button
-                        className="tabBtn surchargeTab"
-                        onClick={() => { }}
-                    >{data == 0 ? "OFF"
-                        : data == 1 ? "ON" : "-"}</Button>
-                </div>
-            },
-            {
-                title: "할증명",
-                dataIndex: "surchargeTitle",
-                className: "table-column-center",
-                render: (data) => <div>{data == 0 ? "준비중" : "완료"}</div>
-            },
-            {
-                title: "적용기간",
-                dataIndex: "applyTerm",
-                className: "table-column-center",
-            },
-            {
-                title: "적용시간",
-                dataIndex: "completionTime",
-                className: "table-column-center",
-                render: (data) => <div>{data}</div>
-            },
-            {
-                title: "추가요금",
-                dataIndex: "addFee",
-                className: "table-column-center",
-                render: (data) => <div>{comma(data)}</div>
-            },
-            {
-                className: "table-column-center",
-                render: () =>
-                    <div>
-                        <Button
-                            className="tabBtn surchargeTab"
-                            onClick={() => { }}
-                        >삭제</Button>
-                    </div>
-            },
-        ];
 
         const { isOpen, close } = this.props;
 
@@ -313,7 +195,7 @@ class RegistCallDialog extends Component {
                                                 </Button>
                                             </div>
 
-                                            <div className="mapLayout">
+                                            <div className="mapLayout" id="myMap">
                                                 <MapContainer />
                                             </div>
 

@@ -23,13 +23,6 @@ class CoinTransferDialog extends Component {
         super(props)
         this.state = {
             selectedDate: today,
-
-            list: [],
-            pagination: {
-                total: 0,
-                current: 1,
-                pageSize: 5,
-            },
         };
         this.formRef = React.createRef();
     }
