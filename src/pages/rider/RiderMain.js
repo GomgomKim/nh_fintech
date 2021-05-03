@@ -10,6 +10,7 @@ import RiderCoinDialog from "../../components/dialog/rider/RiderCoinDialog";
 import RiderBankDialog from "../../components/dialog/rider/RiderBankDialog";
 
 import '../../css/modal.css'
+import BlackRiderDialog from "../../components/dialog/rider/BlackRiderDialog";
 import BlackListDialog from "../../components/dialog/rider/BlackListDialog";
 import { formatDate } from "../../lib/util/dateUtil";
 import { comma } from "../../lib/util/numberUtil";
@@ -29,6 +30,7 @@ class RiderMain extends Component {
       taskSchedulerOpen: false, // 작업 스케줄러
       riderGroupOpen: false, // 기사 그룹 관리
       registRiderOpen: false, // 기사등록
+      blackRiderOpen: false, //기사차단
       blackListOpen: false, // 기사차단등록
       riderCoinOpen: false, // 기사코인충전
       riderBankOpen: false, //기사 입출금내역
@@ -143,6 +145,14 @@ class RiderMain extends Component {
   }
   closeRegistRiderModal = () => {
     this.setState({ registRiderOpen: false });
+  }
+
+  //기사 차단
+  openBlackRiderModal = () => {
+    this.setState({ blackRiderOpen: true });
+  }
+  closeBlackRiderModal = () => {
+    this.setState({ blackRiderOpen: false });
   }
 
   //기사 차단목록
@@ -307,6 +317,12 @@ class RiderMain extends Component {
           <Button className="riderManageBtn"
             onClick={this.openTaskSchedulerModal}
           >작업 스케줄러</Button>
+
+          <BlackRiderDialog isOpen={this.state.blackRiderOpen} close={this.closeBlackRiderModal} />
+          <Button className="riderManageBtn"
+            onClick={this.openBlackRiderModal}
+          >기사 차단</Button>
+
 
           <BlackListDialog isOpen={this.state.blackListOpen} close={this.closeBlackListModal} />
           <Button className="riderManageBtn"

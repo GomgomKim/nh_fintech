@@ -1765,7 +1765,7 @@
 width:240px!important;
 }
 
-/*기사 등록*/
+/*직원 등록*/
 .registStaff-Dialog{
   position: fixed;
   top: 50%;
@@ -1837,3 +1837,80 @@ width:240px!important;
 .registStaffWrapper .contentBlock .override-input{
   width:240px;
 }
+
+
+/*기사 차단*/
+
+.blackRider-Dialog{
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 530px;
+  border-radius: 30px;
+  z-index: 2;
+}
+
+.blackRider-content{
+  background-color: white;
+  padding:30px;
+  text-align: left;
+  color: #777;
+}
+
+.blackRider-title{
+  letter-spacing: -1px;
+  font-weight: bold;
+  color: #333;
+  text-align: right;             
+  display: inline-block;
+  font-size: 25px;
+  line-height: 30px;
+}
+
+.blackRider-close{
+    width:30px;
+    cursor:pointer;
+    background-color:#fddc00;
+    /* display: inline-block; */
+    float: right;
+    padding:8px;
+
+}
+
+
+.blackRiderWrapper .mainTitle{
+  width:130px;
+}
+
+.blackRiderWrapper .registRiderCheck{
+  display: inline-block;
+  margin-left:22px;
+}
+
+.blackRider-Dialog .layout{
+  height:500px;
+}
+
+.blackRiderWrapper .submitBlock{
+  margin-top: 30px;
+  text-align: center;
+}
+
+.blackRiderWrapper .clearBtn{
+  margin-left: 20px;
+}
+
+.blackRiderWrapper .contentBlock .override-select.branch{
+  width:240px!important;
+}
+
+
+.blackRiderWrapper .contentBlock .override-input{
+width:240px!important;
+}
+
+.blackRiderWrapper .contentBlock .override-input.branch{
+  width:240px!important;
+  height:200px;
+  }
