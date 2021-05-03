@@ -4,6 +4,9 @@ import {
     Upload, Button, Select, Icon, Radio, Carousel, Text, Checkbox
 } from "antd";
 import '../../../css/modal.css';
+import AddRiderDialog from "./AddRiderDialog";
+import RegistRiderGroupDialog from "./RegistRiderGroupDialog";
+
 // import { comma } from "../../../lib/util/numberUtil";
 // import { formatDate } from "../../lib/util/dateUtil";
 
@@ -23,6 +26,8 @@ class TaskGroupDialog extends Component {
                 current: 1,
                 pageSize: 5,
             },
+            addRiderOpen: false,
+            registRiderGroupOpen: false,
         };
         this.formRef = React.createRef();
     }
@@ -41,51 +46,84 @@ class TaskGroupDialog extends Component {
         }, () => this.getList());
     };
 
-
     getList = () => {
         var list = [
             {
                 groupName: '대여금 -33000원 배지현',
                 groupType: '기사그룹(기사개별)',
-                placeName: '플러스김포',
-                riderName: '배지현',
+                data: [
+                    {
+                        branchName: '플러스김포',
+                        riderName: '김기연',
+                    },
+                    {
+                        branchName: '플러스김포',
+                        riderName: '김종국',
+                    },
+                    {
+                        branchName: '플러스김포',
+                        riderName: '성시경',
+                    }
+                ]
             },
             {
                 groupName: '대여금 -33000원 배지현',
                 groupType: '기사그룹(기사개별)',
-                placeName: '플러스김포',
-                riderName: '배지현',
+                data: [
+                    {
+                        branchName: '플러스김포',
+                        riderName: '김기연',
+                    },
+                ]
             },
             {
                 groupName: '대여금 -33000원 배지현',
                 groupType: '기사그룹(기사개별)',
-                placeName: '플러스김포',
-                riderName: '배지현',
+                data: [
+                    {
+                        branchName: '플러스김포',
+                        riderName: '박재범',
+                    },
+                    {
+                        branchName: '플러스김포',
+                        riderName: '정기석',
+                    },
+                ]
             },
             {
                 groupName: '대여금 -33000원 배지현',
                 groupType: '기사그룹(기사개별)',
-                placeName: '플러스김포',
-                riderName: '배지현',
             },
             {
-                groupName: '리스비 -33000원',
+                groupName: '대여금 -33000원 배지현',
                 groupType: '기사그룹(기사개별)',
-                placeName: '플러스김포',
-                riderName: '배지현',
             },
             {
-                groupName: '리스비 -33000원',
+                groupName: '대여금 -33000원 배지현',
                 groupType: '기사그룹(기사개별)',
-                placeName: '플러스김포',
-                riderName: '배지현',
             },
-
         ];
         this.setState({
             list: list,
         });
     }
+
+    // 기사추가 dialog
+    openAddRiderModal = () => {
+        this.setState({ addRiderOpen: true });
+    }
+    closeAddRiderModal = () => {
+        this.setState({ addRiderOpen: false });
+    }
+
+    // 기사 그룹 등록 dialog
+    openRegistRiderGroupModal = () => {
+        this.setState({ registRiderGroupOpen: true });
+    }
+    closeRegistRiderGroupModal = () => {
+        this.setState({ registRiderGroupOpen: false });
+    }
+    
 
     render() {
 
@@ -94,7 +132,6 @@ class TaskGroupDialog extends Component {
                 title: "그룹명",
                 dataIndex: "groupName",
                 className: "table-column-center",
-
             },
             {
                 title: "그룹타입",
@@ -102,17 +139,42 @@ class TaskGroupDialog extends Component {
                 className: "table-column-center",
             },
             {
-                title: "지사명",
-                dataIndex: "placeName",
+                title: "기사추가",
                 className: "table-column-center",
+                render: () =>
+                  <div>
+                    <AddRiderDialog isOpen={this.state.addRiderOpen} close={this.closeAddRiderModal} />
+                    <Button
+                      className="tabBtn"
+                      onClick={() => { this.openAddRiderModal() }}
+                    >추가</Button>
+                  </div>
             },
-            {
+        ];
+  
+
+        const expandedRowRender = (record) => {
+            const dropColumns = [
+              {
+                title: "지사명",
+                dataIndex: "branchName",
+                className: "table-column-center",
+              },
+              {
                 title: "기사명",
                 dataIndex: "riderName",
                 className: "table-column-center",
-            },
-
-        ];
+              },
+            ];
+            return (
+              <Table
+                rowKey={(record) => `record: ${record.idx}`}
+                columns={dropColumns}
+                dataSource={record.data}
+                pagination={false}
+              />
+            );
+          }
 
 
         const { isOpen, close } = this.props;
@@ -134,41 +196,23 @@ class TaskGroupDialog extends Component {
 
                                         <div className="taskGroup-btn">
                                             <div className="taskGroup-btn-01">
+                                                <RegistRiderGroupDialog isOpen={this.state.registRiderGroupOpen} close={this.closeRegistRiderGroupModal} />
                                                 <Button
                                                     className="tabBtn taskGroup-btn"
-                                                    onClick={() => { }}
+                                                    onClick={() => { this.openRegistRiderGroupModal() }}
                                                 >그룹등록</Button>
                                             </div>
 
                                         </div>
-                                        <div className="taskGroup-list">
-                                            <div className="taskGroup-list-01">작업스케줄러 그룹목록</div>
-                                            <div className="taskGroup-list-02">리스비 -22500원 </div>
-                                            <div className="taskGroup-list-03-place1">
-                                                <FormItem
-                                                    style={{ marginBottom: 0, display: 'inline-block', verticalAlign: 'middle' }}
-                                                    name="taskGroup-place"
-                                                >
-                                                    <Select placeholder="소속지사를 선택해 주세요." className="rider-select">
-                                                        <Option value={1}>플러스김포 / 플러스김포</Option>
-                                                        <Option value={2}>플러스김포1 / 플러스김포</Option>
-                                                        <Option value={3}>플러스김포2 / 플러스김포</Option>
-                                                        <Option value={4}>플러스김포3 / 플러스김포</Option>
-                                                        <Option value={5}>플러스김포4 / 플러스김포</Option>
-                                                        <Option value={6}>플러스김포5 / 플러스김포</Option>
-                                                    </Select>
-
-                                                </FormItem>
-                                            </div>
-                                        </div>
-                                        <Form ref={this.formIdRef} onFinish={this.handleIdSubmit}>
+                                        <Form ref={this.formIdRef} onFinish={this.handleSubmit}>
                                             <div className="listBlock">
                                                 <Table
-                                                    // rowKey={(record) => record.idx}
+                                                    rowKey={(record) => record}
                                                     dataSource={this.state.list}
                                                     columns={columns}
                                                     pagination={this.state.pagination}
                                                     onChange={this.handleTableChange}
+                                                    expandedRowRender={expandedRowRender}
                                                 />
                                             </div>
 
