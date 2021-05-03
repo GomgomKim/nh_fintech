@@ -193,13 +193,14 @@ class StaffMain extends Component {
               <Radio value={0}>중지</Radio>
               <Radio value={-1}>퇴사</Radio>
             </Radio.Group>
+
+
+            <Button className="registStaff"
+              onClick={() => { this.setState({ registStaff: true }) }}
+            >직원 등록</Button>
+
+            <RegistStaffDialog isOpen={this.state.registStaff} close={this.closeStaffRegistrationModal} />
           </div>
-
-          <Button className="registStaff"
-            onClick={() => { this.setState({ registStaff: true }) }}
-          >직원 등록</Button>
-
-          <RegistStaffDialog isOpen={this.state.registStaff} close={this.closeStaffRegistrationModal} />
         </div>
 
         <div className="tableLayout">
