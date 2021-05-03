@@ -1026,12 +1026,12 @@
   top:50%;
   left:50%;
   transform: translate(-50%, -50%);
-  width:780px;
+  width:690px;
   z-index: 2;
 }
 
 .timeDelay-content{
-  padding:30px;
+  padding:20px;
   background-color:white;
 }
 
@@ -1056,10 +1056,9 @@
 
 .timeDelay-inner { 
     width: 100%; 
-    height: 650px; 
     overflow-y: scroll; 
     border: 1px solid #ccc; 
-    padding: 20px; 
+    /* padding: 20px;  */
     text-align: left;
     margin-top:20px;
     -ms-overflow-style: none; /* IE and Edge */
@@ -1076,7 +1075,7 @@
   margin:16px 32px;
   text-align:center;
   line-height:130px;
-  margin:30px;
+  margin:20px;
 }
 
 .timeDelay-box > button{
@@ -1171,7 +1170,7 @@
 
 .timeDelay-box td{
   width:200px;
-  font-size:16px;
+  font-size:20px;
   text-align:center;
 }
 
@@ -1183,7 +1182,7 @@
   top:50%;
   left:50%;
   transform: translate(-50%, -50%);
-  width:525px;
+  width:425px;
   z-index: 2;
 }
 
@@ -1214,7 +1213,6 @@
 
 .filtering-inner { 
     width: 100%; 
-    height: 558px; 
     overflow-y: scroll; 
     border: 1px solid #ccc; 
     padding: 20px; 
@@ -1229,9 +1227,7 @@
 }
 
 .filtering-box{
-  width:365px;
-  height:448px;
-  margin:30px;
+  /* width:365px; */
 }
 .filtering-box .ant-checkbox{
   top: 0em!important;
@@ -1249,7 +1245,7 @@
   width:120px;
   height:52px;
   float:left;
-  margin:30px;
+  margin:20px;
 }
 
 .filtering-box .ant-checkbox-inner{
@@ -1309,7 +1305,6 @@
 
 .taskScheduler-inner { 
     width: 100%; 
-    height: 580px; 
     overflow-y: scroll; 
     border: 1px solid #ccc; 
     padding: 20px; 
@@ -1855,7 +1850,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 530px;
+  width: 500px;
   border-radius: 30px;
   z-index: 2;
 }
@@ -1925,7 +1920,7 @@ width:240px!important;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 530px;
+  width: 500px;
   border-radius: 30px;
   z-index: 2;
 }
@@ -1962,7 +1957,7 @@ width:240px!important;
   width:130px;
 }
 
-.registStaffWrapper .registRiderCheck{
+.registStaffWrapper .registStaffCheck{
   display: inline-block;
   margin-left:22px;
 }
@@ -2000,7 +1995,7 @@ width:240px!important;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 530px;
+  width: 500px;
   border-radius: 30px;
   z-index: 2;
 }
@@ -2037,10 +2032,6 @@ width:240px!important;
   width:130px;
 }
 
-.blackRiderWrapper .registRiderCheck{
-  display: inline-block;
-  margin-left:22px;
-}
 
 .blackRider-Dialog .layout{
   height:500px;
