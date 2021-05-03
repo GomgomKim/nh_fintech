@@ -314,17 +314,6 @@ class FranchiseMain extends Component {
         render: (data) => <div>{comma(data)}</div>
       },
       {
-        title: "작업",
-        className: "table-column-center",
-        render: () =>
-          <div>
-            <Button
-              className="tabBtn surchargeTab"
-              onClick={() => { }}
-            >작업</Button>
-          </div>
-      },
-      {
         title: "출금설정",
         dataIndex: "withdrawSet",
         className: "table-column-center",
@@ -345,6 +334,7 @@ class FranchiseMain extends Component {
           ),
       },
       {
+        title: "이체",
         className: "table-column-center",
         render: () =>
           <div>
@@ -353,6 +343,17 @@ class FranchiseMain extends Component {
               className="tabBtn surchargeTab"
               onClick={this.openCoinTransferModal}
             >코인이체</Button>
+          </div>
+      },
+      {
+        title: "작업",
+        className: "table-column-center",
+        render: () =>
+          <div>
+            <Button
+              className="tabBtn surchargeTab"
+              onClick={() => { }}
+            >작업</Button>
           </div>
       },
     ];

@@ -239,17 +239,7 @@ class RiderMain extends Component {
         render: (data) => <div>{data == 0 ? "OFF" : "ON"}</div>
       },
       {
-        title: "작업",
-        className: "table-column-center",
-        render: () =>
-          <div>
-            <Button
-              className="tabBtn surchargeTab"
-              onClick={() => { this.setState({ workTabOpen: true }) }}
-            >작업</Button>
-          </div>
-      },
-      {
+        title: "충전",
         className: "table-column-center",
         render: () =>
           <div>
@@ -261,6 +251,7 @@ class RiderMain extends Component {
           </div>
       },
       {
+        title: "입출금내역",
         className: "table-column-center",
         render: () =>
           <div>
@@ -268,7 +259,18 @@ class RiderMain extends Component {
             <Button
               className="tabBtn surchargeTab"
               onClick={this.openRiderBankModal}
-            >입출금내역</Button>
+            >내역보기</Button>
+          </div>
+      },
+      {
+        title: "작업",
+        className: "table-column-center",
+        render: () =>
+          <div>
+            <Button
+              className="tabBtn surchargeTab"
+              onClick={() => { this.setState({ workTabOpen: true }) }}
+            >작업</Button>
           </div>
       },
     ];
@@ -291,21 +293,20 @@ class RiderMain extends Component {
               marginLeft: 20
             }} />
 
-          <TaskSchedulerDialog isOpen={this.state.taskSchedulerOpen} close={this.closeTaskSchedulerModal} />
+          <RegistRiderDialog isOpen={this.state.registRiderOpen} close={this.closeRegistRiderModal} />
           <Button className="riderManageBtn"
-            onClick={this.openTaskSchedulerModal}
-          >작업 스케줄러</Button>
-
+            onClick={this.openRegistRiderModal}
+          >기사 등록</Button>
 
           <RiderGroupDialog isOpen={this.state.riderGroupOpen} close={this.closeRiderGroupModal} />
           <Button className="riderManageBtn"
             onClick={this.openRiderGroupModal}
           >기사 그룹 관리</Button>
 
-          <RegistRiderDialog isOpen={this.state.registRiderOpen} close={this.closeRegistRiderModal} />
+          <TaskSchedulerDialog isOpen={this.state.taskSchedulerOpen} close={this.closeTaskSchedulerModal} />
           <Button className="riderManageBtn"
-            onClick={this.openRegistRiderModal}
-          >기사 등록</Button>
+            onClick={this.openTaskSchedulerModal}
+          >작업 스케줄러</Button>
 
           <BlackListDialog isOpen={this.state.blackListOpen} close={this.closeBlackListModal} />
           <Button className="riderManageBtn"
