@@ -37,65 +37,65 @@ class TimeDelayDialog extends Component {
 
                                         <div className="timeDelay-box">
                                             <Button
-                                                icon={<ClockCircleOutlined />}
+                                                icon={<ClockCircleOutlined style={{ fontSize: 60, width: 100 }} />}
                                                 className="timeDelay-box-01"
                                                 onClick={() => { }}
-                                            >10분</Button>
+                                            ><td>10분</td></Button>
                                             <Button
-                                                icon={<ClockCircleOutlined />}
+                                                icon={<ClockCircleOutlined style={{ fontSize: 60, width: 100 }} />}
                                                 className="timeDelay-box-02"
                                                 onClick={() => { }}
-                                            >15분</Button>
+                                            ><td>15분</td></Button>
                                             <Button
-                                                icon={<ClockCircleOutlined />}
+                                                icon={<ClockCircleOutlined style={{ fontSize: 60, width: 100 }} />}
                                                 className="timeDelay-box-03"
                                                 onClick={() => { }}
-                                            >20분</Button>
+                                            ><td>20분</td></Button>
                                             <Button
-                                                icon={<ClockCircleOutlined />}
+                                                icon={<ClockCircleOutlined style={{ fontSize: 60, width: 100 }} />}
                                                 className="timeDelay-box-04"
                                                 onClick={() => { }}
-                                            >30분</Button>
+                                            ><td>25분</td></Button>
                                             <Button
-                                                icon={<ClockCircleOutlined />}
+                                                icon={<ClockCircleOutlined style={{ fontSize: 60, width: 100 }} />}
                                                 className="timeDelay-box-05"
                                                 onClick={() => { }}
-                                            >40분</Button>
+                                            ><td>30분</td></Button>
                                             <Button
-                                                icon={<ClockCircleOutlined />}
+                                                icon={<ClockCircleOutlined style={{ fontSize: 60, width: 100 }} />}
                                                 className="timeDelay-box-06"
                                                 onClick={() => { }}
-                                            >50분</Button>
+                                            ><td>40분</td></Button>
                                             <Button
-                                                icon={<ClockCircleOutlined />}
+                                                icon={<ClockCircleOutlined style={{ fontSize: 60, width: 100 }} />}
                                                 className="timeDelay-box-07"
                                                 onClick={() => { }}
-                                            >0분</Button>
+                                            ><td>50분</td></Button>
                                             <Button
-                                                icon={<ClockCircleOutlined />}
+                                                icon={<ClockCircleOutlined style={{ fontSize: 60, width: 100 }} />}
                                                 className="timeDelay-box-08"
                                                 onClick={() => { }}
-                                            >0분 지연</Button>
+                                            ><td>0분 지연</td></Button>
                                             <Button
-                                                icon={<ClockCircleOutlined />}
+                                                icon={<ClockCircleOutlined style={{ fontSize: 60, width: 100 }} />}
                                                 className="timeDelay-box-09"
                                                 onClick={() => { }}
-                                            >0분 지연</Button>
+                                            ><td>0분 지연</td></Button>
                                             <Button
-                                                icon={<ClockCircleOutlined />}
+                                                icon={<ClockCircleOutlined style={{ fontSize: 60, width: 100 }} />}
                                                 className="timeDelay-box-10"
                                                 onClick={() => { }}
-                                            >0분 지연</Button>
+                                            ><td>0분 지연</td></Button>
                                             <Button
-                                                icon={<ClockCircleOutlined />}
+                                                icon={<ClockCircleOutlined style={{ fontSize: 60, width: 100 }} />}
                                                 className="timeDelay-box-11"
                                                 onClick={() => { }}
-                                            >0분 지연</Button>
+                                            ><td>0분 지연</td></Button>
                                             <Button
-                                                icon={<ClockCircleOutlined />}
+                                                icon={<ClockCircleOutlined style={{ fontSize: 60, width: 100 }} />}
                                                 className="timeDelay-box-12"
                                                 onClick={() => { }}
-                                            >0분 지연</Button>
+                                            ><td>0분 지연</td></Button>
 
                                         </div>
 

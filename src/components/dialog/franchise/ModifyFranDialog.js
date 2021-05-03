@@ -11,7 +11,7 @@ const FormItem = Form.Item;
 const { RangePicker } = DatePicker;
 const Search = Input.Search;
 
-class RegistFranDialog extends Component {
+class ModifyFranDialog extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -33,18 +33,18 @@ class RegistFranDialog extends Component {
                     isOpen ?
                         <React.Fragment>
                             <div className="Dialog-overlay" onClick={close} />
-                            <div className="registFran-Dialog">
-                                <div className="registFran-container">
-                                    <div className="registFran-title">
-                                        가맹점 등록
+                            <div className="modifyFran-Dialog">
+                                <div className="modifyFran-container">
+                                    <div className="modifyFran-title">
+                                        가맹점 수정
                                     </div>
                                     <img onClick={close} src={require('../../../img/login/close.png').default} className="surcharge-close" />
 
 
                                     <Form ref={this.formIdRef} onFinish={this.handleIdSubmit}>
-                                        <div className="registFranLayout">
-                                            <div className="registFranWrapper">
-                                                <div className="registFranTitle">
+                                        <div className="modifyFranLayout">
+                                            <div className="modifyFranWrapper">
+                                                <div className="modifyFranTitle">
                                                     기본정보
                                                 </div>
                                                 <div className="contentBlock">
@@ -135,7 +135,7 @@ class RegistFranDialog extends Component {
                                                     </FormItem>
                                                 </div>
                                             </div>
-                                            <div className="registFranWrapper sub">
+                                            <div className="modifyFranWrapper sub">
                                                 <div className="contentBlock">
                                                     <div className="mainTitle">
                                                         생년월일
@@ -233,42 +233,10 @@ class RegistFranDialog extends Component {
                                             </div>
 
 
-                                            <div className="registFranWrapper bot">
-                                                <div className="registFranTitle">
-                                                    월관리비 설정
-                                                </div>
-                                                <div className="contentBlock">
-                                                    <div className="mainTitle">
-                                                        사용여부
-                                                    </div>
-                                                    <Checkbox style={{ verticalAlign: 'middle' }}></Checkbox>
-                                                    <div className="subTitle">
-                                                        차감일자
-                                                    </div>
-                                                    <FormItem
-                                                        name="minusDate"
-                                                        className="selectItem"
-                                                    >
-                                                        <Select placeholder="차감일자 선택" className="override-select">
-                                                            <Option value={0}>매일</Option>
-                                                            <Option value={1}>매월 1일 ~ 매월 31일</Option>
-                                                            <Option value={2}>매월 말일</Option>
-                                                        </Select>
-                                                    </FormItem>
-                                                    <div className="subTitle">
-                                                        관리비
-                                                    </div>
-                                                    <FormItem
-                                                        name="managePrice"
-                                                        className="selectItem"
-                                                    >
-                                                        <Input placeholder="관리비 입력" className="override-input sub">
-                                                        </Input>
-                                                    </FormItem>
-                                                    <Button type="primary" htmlType="submit" className="callTab">
-                                                        등록하기
-                                                    </Button>
-                                                </div>
+                                            <div className="modifyFranWrapper bot">
+                                                <Button type="primary" htmlType="submit" className="callTab">
+                                                    수정하기
+                                                </Button>
                                             </div>
 
 
@@ -291,4 +259,4 @@ class RegistFranDialog extends Component {
     }
 }
 
-export default (RegistFranDialog);
+export default (ModifyFranDialog);

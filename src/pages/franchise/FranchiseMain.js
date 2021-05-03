@@ -6,6 +6,7 @@ import { httpGet, httpUrl, httpDownload, httpPost, httpPut } from '../../api/htt
 import SelectBox from "../../components/input/SelectBox";
 import RegistFranDialog from "../../components/dialog/franchise/RegistFranDialog";
 import CoinTransferDialog from "../../components/dialog/franchise/CoinTransferDialog";
+import ModifyFranDialog from "../../components/dialog/franchise/ModifyFranDialog";
 import BasicDialog from "../../components/dialog/BasicDialog";
 import { formatDate } from "../../lib/util/dateUtil";
 import string from "../../string";
@@ -36,19 +37,12 @@ class FranchiseMain extends Component {
       franStatus: 1,
       addFranchiseOpen: false,
       coinTransferOpen: false,
+      modifyFranOpen: false,
     };
   }
 
   componentDidMount() {
     this.getList()
-  }
-
-  onSearchFranchisee = (value) => {
-    this.setState({
-      franchisee: value,
-    }, () => {
-      this.getList()
-    })
   }
 
   handleTableChange = (pagination) => {
@@ -62,6 +56,7 @@ class FranchiseMain extends Component {
   };
 
   getList = () => {
+    // 사용목록
     if (this.state.franStatus == 1) {
       var list = [
         {
@@ -144,10 +139,11 @@ class FranchiseMain extends Component {
         },
       ];
     }
-    else if (this.state.franStatus == -1) {
+    // 중지목록
+    else if (this.state.franStatus == 0) {
       var list = [
         {
-          franStatus: -1,
+          franStatus: 0,
           idx: 4,
           branchName: '플러스김포',
           franchiseName: '계룡리슈빌)잭슨부대',
@@ -174,10 +170,11 @@ class FranchiseMain extends Component {
         },
       ];
     }
+    // 탈퇴목록
     else {
       var list = [
         {
-          franStatus: 0,
+          franStatus: 2,
           idx: 5,
           branchName: '플러스김포',
           franchiseName: '계룡리슈빌)잭슨부대',
@@ -225,16 +222,34 @@ class FranchiseMain extends Component {
     this.setState({ coinTransferOpen: false });
   }
 
-  onSetting = (value) => {
-    // alert(JSON.stringify(idx))
-    let withdrawSet = value
-    this.setState({
-      withdrawSet: withdrawSet
-    }, () => {
-      // alert([gradeLevel] + ' 등급 으로 수정합니다.')
-      this.getList();
-    })
+  // 가맹점수정 dialog
+  openModifyFranModal = () => {
+    this.setState({ modifyFranOpen: true });
   }
+  closeModifyFranModal = () => {
+    this.setState({ modifyFranOpen: false });
+  }
+
+  // // 출금설정
+  // onSetting = (value) => {
+  //   let withdrawSet = value
+  //   this.setState({
+  //     withdrawSet: withdrawSet
+  //   }, () => {
+  //     this.getList();
+  //   })
+  // }
+
+  // // 상태설정
+  // onStatusSetting = (value) => {
+  //   let franStatus = value
+  //   this.setState({
+  //     franStatus: franStatus
+  //   }, () => {
+  //     this.getList();
+  //   })
+  // }
+
 
   // 검색조건 radio
   onChange = (e) => {
@@ -246,14 +261,34 @@ class FranchiseMain extends Component {
 
   render() {
     const columns = [
+      // 0 = 중지
+      // 1 = 사용
+      // 2 = 탈퇴
       {
         title: "상태",
         dataIndex: "franStatus",
         className: "table-column-center",
-        render: (data) => <div>{data == -1 ? "탈퇴"
-          : data == 0 ? "중지"
-            : data == 1 ? "사용"
-              : "-"}</div>
+        render:
+          (data, row) => (
+            <div>
+              <Select defaultValue={this.state.franStatus} style={{ width: 68 }}>
+                <Option value={0}>중지</Option>
+                <Option value={1}>사용</Option>
+                <Option value={2}>탈퇴</Option>
+              </Select>
+              {/* <SelectBox
+                style={{ width: 68 }}
+                value={string.statusString[data]}
+                code={string.statusCode}
+                codeString={string.statusString}
+                onChange={(value) => {
+                  if (parseInt(value) !== row.status) {
+                    // this.onStatusSetting(value);
+                  }
+                }}
+              /> */}
+            </div>
+          ),
       },
       {
         title: "순번",
@@ -314,37 +349,31 @@ class FranchiseMain extends Component {
         render: (data) => <div>{comma(data)}</div>
       },
       {
-        title: "작업",
-        className: "table-column-center",
-        render: () =>
-          <div>
-            <Button
-              className="tabBtn surchargeTab"
-              onClick={() => { }}
-            >작업</Button>
-          </div>
-      },
-      {
         title: "출금설정",
         dataIndex: "withdrawSet",
         className: "table-column-center",
         render:
           (data, row) => (
             <div>
-              <SelectBox
+              <Select defaultValue={1}>
+                <Option value={0}>출금 금지</Option>
+                <Option value={1}>출금 가능</Option>
+              </Select>
+              {/* <SelectBox
                 value={string.withdrawString[data]}
                 code={string.toggleCode}
                 codeString={string.withdrawString}
                 onChange={(value) => {
                   if (parseInt(value) !== row.blocked) {
-                    this.onSetting(value);
+                    // this.onSetting(value);
                   }
                 }}
-              />
+              /> */}
             </div>
           ),
       },
       {
+        title: "이체",
         className: "table-column-center",
         render: () =>
           <div>
@@ -353,6 +382,18 @@ class FranchiseMain extends Component {
               className="tabBtn surchargeTab"
               onClick={this.openCoinTransferModal}
             >코인이체</Button>
+          </div>
+      },
+      {
+        title: "수정",
+        className: "table-column-center",
+        render: () =>
+          <div>
+            <ModifyFranDialog isOpen={this.state.modifyFranOpen} close={this.closeModifyFranModal} />
+            <Button
+              className="tabBtn surchargeTab"
+              onClick={this.openModifyFranModal}
+            >수정하기</Button>
           </div>
       },
     ];
@@ -466,7 +507,7 @@ class FranchiseMain extends Component {
           <Radio.Group className="searchRequirement" onChange={this.onChange} value={this.state.franStatus}>
             <Radio value={1}>사용</Radio>
             <Radio value={0}>중지</Radio>
-            <Radio value={-1}>탈퇴</Radio>
+            <Radio value={2}>탈퇴</Radio>
           </Radio.Group>
           <Search
             placeholder="가맹점검색"
