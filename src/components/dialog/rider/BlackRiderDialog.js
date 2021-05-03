@@ -60,7 +60,7 @@ class BlackRiderDialog extends Component {
                             <div className="blackRider-Dialog">
                                 <div className="blackRider-content">
                                     <div className="blackRider-title">
-                                        기사 등록
+                                        기사 차단
                                     </div>
                                     <img onClick={close} src={require('../../../img/login/close.png').default} className="blackRider-close" />
 
