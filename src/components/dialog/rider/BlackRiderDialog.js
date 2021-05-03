@@ -113,7 +113,7 @@ class BlackRiderDialog extends Component {
 
                                                 <div className="contentBlock">
                                                     <div className="mainTitle">
-                                                        메모
+                                                        차단 사유
                                                     </div>
                                                     <FormItem
                                                         name="memo"
@@ -127,7 +127,7 @@ class BlackRiderDialog extends Component {
 
                                                 <div className="submitBlock">
                                                     <Button type="primary" htmlType="submit">
-                                                        등록하기
+                                                        차단하기
                                                     </Button>
 
                                                     <Button className="clearBtn" onClick={this.handleClear}>
