@@ -1014,6 +1014,15 @@
   width: 20px;
 
 }
+
+.timeDelay-box td{
+  width:200px;
+  font-size:16px;
+  text-align:center;
+}
+
+
+
 /* 필터링 dialog */
 .filtering-Dialog{
   position:fixed;
