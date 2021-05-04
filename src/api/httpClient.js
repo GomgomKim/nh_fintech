@@ -154,6 +154,9 @@ const httpUrl = {
   login: "/login",
   logout: "/logout",
 
+  // 접수 현황
+  ReceptionStatusList: "/order/assignList?pageSize=%s&pageNum=%s",
+
   //게시판
 };
 

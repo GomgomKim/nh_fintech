@@ -1,4 +1,4 @@
-import { Form, DatePicker, Input, Table, Button, Descriptions, Radio } from 'antd';
+import { Form, DatePicker, Input, Table, Button, Descriptions, Radio, Select } from 'antd';
 import Icon from '@ant-design/icons';
 import React, { Component } from 'react';
 import { httpGet, httpUrl, httpDownload, httpPost, httpPut } from '../../api/httpClient';
@@ -17,6 +17,7 @@ import { comma } from "../../lib/util/numberUtil";
 
 const FormItem = Form.Item;
 const Ditems = Descriptions.Item;
+const Option = Select.Option;
 
 const Search = Input.Search;
 const RangePicker = DatePicker.RangePicker;
@@ -88,6 +89,7 @@ class RiderMain extends Component {
         accountHolder: '김기연',
         accountNumber: '110-123-123456',
         withholdingTax: 0,
+        riderStatus: 0,
       },
       {
         franchiseeName: '플러스김포',
@@ -102,6 +104,7 @@ class RiderMain extends Component {
         accountHolder: '김기연',
         accountNumber: '110-123-123456',
         withholdingTax: 0,
+        riderStatus: 1,
       },
       {
         franchiseeName: '플러스김포',
@@ -111,11 +114,12 @@ class RiderMain extends Component {
         balance: '80000',
         memo: '메모',
         carIdx: '1234',
-        fees: '-200',
+        fees: '-200', 
         bankName: '신한은행',
         accountHolder: '김기연',
         accountNumber: '110-123-123456',
         withholdingTax: 0,
+        riderStatus: 2,
       },
     ];
     this.setState({
@@ -273,6 +277,22 @@ class RiderMain extends Component {
           </div>
       },
       {
+        title: "상태",
+        dataIndex: "riderStatus",
+        className: "table-column-center",
+        render:
+          (data, row) => (
+            <div>
+              <Select defaultValue={data} style={{ width: 68 }}>
+                <Option value={0}>중지</Option>
+                <Option value={1}>사용</Option>
+                <Option value={2}>탈퇴</Option>
+              </Select>
+            </div>
+          ),
+      },
+      /*
+      {
         title: "작업",
         className: "table-column-center",
         render: () =>
@@ -282,7 +302,7 @@ class RiderMain extends Component {
               onClick={() => { this.setState({ workTabOpen: true }) }}
             >작업</Button>
           </div>
-      },
+      },*/
     ];
 
     return (

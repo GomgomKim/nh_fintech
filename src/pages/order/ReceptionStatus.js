@@ -21,7 +21,7 @@ import {
 
 const FormItem = Form.Item;
 const Ditems = Descriptions.Item;
-
+const Option = Select.Option;
 const Search = Input.Search;
 const RangePicker = DatePicker.RangePicker;
 const dateFormat = 'YYYY/MM/DD';
@@ -236,10 +236,18 @@ class ReceptionStatus extends Component {
         title: "상태",
         dataIndex: "pickupStatus",
         className: "table-column-center",
-        render: (data) => <div>{data == -1 ? "취소"
-          : data == 0 ? "픽업"
-            : data == 1 ? "배차"
-              : data == 2 ? "완료" : "-"}</div>
+        render: (data) => <div>
+          <Select defaultValue={data} style={{ width: 68 }}>
+            <Option value={-1}>취소</Option>
+            <Option value={0}>픽업</Option>
+            <Option value={1}>배차</Option>
+            <Option value={2}>완료</Option>
+          </Select></div>
+
+        // render: (data) => <div>{data == -1 ? "취소"
+        //   : data == 0 ? "픽업"
+        //     : data == 1 ? "배차"
+        //       : data == 2 ? "완료" : "-"}</div>
       },
       {
         title: "음식준비",
@@ -308,6 +316,7 @@ class ReceptionStatus extends Component {
         className: "table-column-center",
         render: (data) => <div>{data == 0 ? "선결" : "카드"}</div>
       },
+      /*
       {
         title: "작업",
         className: "table-column-center",
@@ -319,6 +328,7 @@ class ReceptionStatus extends Component {
             >작업</Button>
           </div>
       },
+      */
     ];
 
     const expandedRowRender = (record) => {

@@ -1,4 +1,4 @@
-import { Form, DatePicker, Input, Table, Button, Descriptions, Radio } from 'antd';
+import { Form, DatePicker, Input, Table, Button, Descriptions, Radio, Select } from 'antd';
 import Icon from '@ant-design/icons';
 import React, { Component } from 'react';
 import { httpGet, httpUrl, httpDownload, httpPost, httpPut } from '../../api/httpClient';
@@ -13,6 +13,7 @@ import RegistStaffDialog from "../../components/dialog/staff/RegistStaffDialog";
 
 const FormItem = Form.Item;
 const Ditems = Descriptions.Item;
+const Option = Select.Option;
 
 const Search = Input.Search;
 const RangePicker = DatePicker.RangePicker;
@@ -152,12 +153,29 @@ class StaffMain extends Component {
         title: "상태",
         dataIndex: "staffStatus",
         className: "table-column-center",
+        width: 100,
+        render:
+          (data, row) => (
+            <div>
+              <Select defaultValue={data} style={{ width: 68 }}>
+                <Option value={-1}>퇴사</Option>
+                <Option value={0}>중지</Option>
+                <Option value={1}>근무</Option>
+              </Select>
+            </div>
+          ),
+      },
+      /*
+      {
+        title: "상태",
+        dataIndex: "staffStatus",
+        className: "table-column-center",
         width: "200px",
         render: (data) => <div>{data == -1 ? "퇴사"
           : data == 0 ? "중지"
             : data == 1 ? "근무"
               : "-"}</div>
-      },
+      },*/
       {
         title: "전화번호",
         dataIndex: "staffPhoneNum",
@@ -170,6 +188,7 @@ class StaffMain extends Component {
         className: "table-column-center",
         width: "200px",
       },
+      /*
       {
         title: "작업",
         className: "table-column-center",
@@ -181,7 +200,7 @@ class StaffMain extends Component {
               onClick={() => { this.setState({ workTab: 1 }) }}
             >작업</Button>
           </div>
-      },
+      },*/
     ];
     return (
       <div className="">
