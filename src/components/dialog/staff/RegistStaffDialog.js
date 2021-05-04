@@ -137,16 +137,15 @@ class RegistStaffDialog extends Component {
                                                         name="rank"
                                                         className="selectItem"
                                                     >
-                                                        <Select placeholder="직급을 선택해 주세요." className="override-select branch">
-                                                            <Option value={0}>본사</Option>
-                                                            <Option value={1}>팀장</Option>
-                                                            <Option value={2}>본부장</Option>
-                                                            <Option value={3}>부지점장</Option>
-                                                            <Option value={4}>지점장</Option>
+                                                        <Select placeholder="소속지사를 선택해 주세요." className="override-select branch">
+                                                            <Option value={0}>팀장</Option>
+                                                            <Option value={1}>본부장</Option>
+                                                            <Option value={2}>부지점장</Option>
+                                                            <Option value={3}>지점장</Option>
                                                         </Select>
                                                     </FormItem>
                                                 </div>
-                                                <div className="contentBlock">
+                                                {/* <div className="contentBlock">
                                                     <div className="mainTitle">
                                                         권한
                                                     </div>
@@ -162,7 +161,7 @@ class RegistStaffDialog extends Component {
                                                             <Radio value={4}>가맹</Radio>
                                                         </Radio.Group>
                                                     </FormItem>
-                                                </div>
+                                                </div> */}
                                                 <div className="submitBlock">
                                                     <Button type="primary" htmlType="submit">
                                                         등록하기
