@@ -15,7 +15,7 @@ import "../../css/common.css";
 import { comma } from "../../lib/util/numberUtil";
 import {
   FieldTimeOutlined, DollarCircleOutlined, EnvironmentFilled,
-  PhoneOutlined, MessageOutlined, UnorderedListOutlined
+  PhoneOutlined, MessageOutlined, NotificationFilled, FilterOutlined
 } from '@ant-design/icons';
 // import MapControl from "./MapControl";
 
@@ -446,7 +446,7 @@ class ReceptionStatus extends Component {
 
           <NoticeDialog isOpen={this.state.noticeOpen} close={this.closeNoticeModal} />
           <Button
-            icon={<UnorderedListOutlined />}
+            icon={<NotificationFilled />}
             className="tabBtn noticeTab"
             onClick={() => { this.setState({ noticeOpen: true }) }}
           >공지사항</Button>
@@ -460,6 +460,7 @@ class ReceptionStatus extends Component {
           />
           <FilteringDialog isOpen={this.state.filteringOpen} close={this.closeFilteringModal} />
           <Button
+            icon={<FilterOutlined />}
             className="tabBtn filterTab"
             onClick={() => { this.setState({ filterTab: 1 }, this.openFilteringModal) }}
           >필터링 설정</Button>

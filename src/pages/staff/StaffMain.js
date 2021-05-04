@@ -206,7 +206,6 @@ class StaffMain extends Component {
       <div className="">
         <div className="selectLayout">
           <span className="searchRequirementText">검색조건</span><br></br>
-          <div className="m-t-10">
             <Radio.Group className="searchRequirement" onChange={this.onChange} value={this.state.staffStatus}>
               <Radio value={1}>사용</Radio>
               <Radio value={0}>중지</Radio>
@@ -219,10 +218,9 @@ class StaffMain extends Component {
             >직원 등록</Button>
 
             <RegistStaffDialog isOpen={this.state.registStaff} close={this.closeStaffRegistrationModal} />
-          </div>
         </div>
 
-        <div className="tableLayout">
+        <div className="dataTableLayout">
           <Table
             dataSource={this.state.list}
             columns={columns}

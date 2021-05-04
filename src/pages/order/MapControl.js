@@ -212,14 +212,14 @@ class MapControl extends Component {
 
     return (
       <div className="">
-        <div className="btnLayout">
+
+        <div className="selectLayout">
+
           <Button
             className="tabBtn orderTab"
             onClick={() => { this.props.closeMapControl() }}
           >접수현황</Button>
-        </div>
 
-        <div className="selectLayout">
           <Search
             placeholder="지사명검색"
             enterButton
