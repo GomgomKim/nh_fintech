@@ -99,7 +99,7 @@ class TimeDelayDialog extends Component {
 
                                         </div>
 
-                                        <div style={{ margin: 30, width: 610 }}>
+                                        <div style={{ margin: 20, width: 610 }}>
                                             <div className="timeDelay-place1">
                                                 <FormItem
                                                     style={{ marginBottom: 0, display: 'inline-block', verticalAlign: 'middle' }}
