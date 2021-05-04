@@ -310,12 +310,6 @@ class RiderGroupDialog extends Component {
                                                     >적용</Button>
                                                 </div>
 
-                                                <div className="riderGroup-btn-02" onClick={close}>
-                                                    <Button
-                                                        className="tabBtn riderGroup-btn"
-                                                        onClick={() => { }}
-                                                    >닫기</Button>
-                                                </div>
                                             </div>
 
 
