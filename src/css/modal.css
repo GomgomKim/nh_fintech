@@ -17,6 +17,9 @@
     z-index: 2;
 }
 
+.contentBlock:nth-child(1){
+  margin-top:0px!important;
+}
 /* 직원 수정 dialog */
 .updateStaff-Dialog-overlay{
   position: fixed;
@@ -677,7 +680,7 @@
   /* height: 510px;  */
   overflow-y: scroll; 
   border: 1px solid #ccc; 
-  padding: 10px 20px 20px; 
+  padding: 20px; 
   text-align: left;
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
@@ -822,7 +825,7 @@
   height: 40px;
   font-size: 18px;
   /* margin-top: 12px; */
-  margin-left: 20px;
+  margin-left: 45px;
   display: inline-block;
   vertical-align: middle;
 }
@@ -1818,6 +1821,10 @@
   /* border:1px solid red */
 }
 
+.twl:nth-child(1){
+  margin-top:-10px;
+}
+
 
 .taskWork-btn-01{
   margin-top:20px;
@@ -2060,7 +2067,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 530px;
+  width: 500px;
   border-radius: 30px;
   z-index: 2;
 }
@@ -2157,7 +2164,7 @@ width:240px!important;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 530px;
+  width: 500px;
   border-radius: 30px;
   z-index: 2;
 }
