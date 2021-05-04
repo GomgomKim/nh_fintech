@@ -221,12 +221,14 @@ class RiderGroupDialog extends Component {
                                             </div>
                                             <div className="riderGroup-ftline-02">
                                                 <td>전체배차조회</td>
-                                                <Checkbox></Checkbox>전체기사 배차목록 사용
-                                        </div>
+                                                <Checkbox></Checkbox>
+                                                <span class="riderSubtext">전체기사 배차목록 사용</span>
+                                            </div>
                                             <div className="riderGroup-ftline-03">
                                                 <td>출금설정</td>
-                                                <Checkbox></Checkbox>출금 사용
-                                        </div>
+                                                <Checkbox></Checkbox>
+                                                <span class="riderSubtext">출금 사용</span>
+                                            </div>
                                             <div className="inputBox inputBox-rider">
                                                 <FormItem
                                                     name="riderG"
@@ -240,8 +242,9 @@ class RiderGroupDialog extends Component {
                                             </div>
                                             <div className="riderGroup-ftline-04">
                                                 <td>가맹점 코인이체</td>
-                                                <Checkbox></Checkbox>이체 사용
-                                        </div>
+                                                <Checkbox></Checkbox>
+                                                <span class="riderSubtext">이체 사용</span>
+                                            </div>
                                             <div className="inputBox inputBox-rider">
                                                 <FormItem
                                                     name="riderG"
@@ -307,7 +310,7 @@ class RiderGroupDialog extends Component {
                                                     >적용</Button>
                                                 </div>
 
-                                                <div className="riderGroup-btn-02">
+                                                <div className="riderGroup-btn-02" onClick={close}>
                                                     <Button
                                                         className="tabBtn riderGroup-btn"
                                                         onClick={() => { }}
