@@ -225,7 +225,7 @@
 
 .addGroup-content{
   background-color: white;
-  padding:30px;
+  padding:20px;
   /* text-align: left; */
   /* color: #777; */
 }
@@ -241,6 +241,9 @@
   line-height: 30px;
 }
 
+.addGroupWrapper{
+  margin-top:20px;
+}
 .addGrouplayout .contentBlock{
   width: 400px;
 }
@@ -262,13 +265,18 @@
   height: 100px;
 }
 
-.addGroupWrapper .contentBlock {
+/* .addGroupWrapper .contentBlock {
   margin-top: 30px;
-}
+} */
 
 .addGroupWrapper .submitBlock{
   margin-top: 30px;
   text-align: center;
+}
+
+.addGroupWrapper .ant-btn-primary{
+  width:130px;
+  height:40px;
 }
 
 
