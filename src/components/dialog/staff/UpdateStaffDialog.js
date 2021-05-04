@@ -9,7 +9,7 @@ const FormItem = Form.Item;
 const { RangePicker } = DatePicker;
 const Search = Input.Search;
 
-class RegistStaffDialog extends Component {
+class UpdateStaffDialog extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -47,25 +47,25 @@ class RegistStaffDialog extends Component {
     };
 
     render() {
-        const { isOpen, close } = this.props;
+        const { data, isOpen, close } = this.props;
 
         return (
             <React.Fragment>
                 {
                     isOpen ?
                         <React.Fragment>
-                            <div className="Dialog-overlay" onClick={close} />
-                            <div className="registStaff-Dialog">
-                                <div className="registStaff-content">
-                                    <div className="registStaff-title">
-                                        직원 등록
+                            <div className="updateStaff-Dialog-overlay" onClick={close} />
+                            <div className="updateStaff-Dialog">
+                                <div className="updateStaff-content">
+                                    <div className="updateStaff-title">
+                                        직원 정보 수정
                                     </div>
                                     <img onClick={close} src={require('../../../img/login/close.png').default} className="surcharge-close" />
 
 
                                     <Form ref={this.formRef} onFinish={this.handleIdSubmit}>
                                         <div className="layout">
-                                            <div className="registStaffWrapper">
+                                            <div className="updateStaffWrapper">
                                                 <div className="contentBlock">
                                                     <div className="mainTitle">
                                                         소속지사
@@ -89,7 +89,8 @@ class RegistStaffDialog extends Component {
                                                         name="staffName"
                                                         className="selectItem"
                                                     >
-                                                        <Input placeholder="직원명을 입력해 주세요." className="override-input">
+                                                        <Input defaultValue={data.staffName} className="override-input">
+                                                         
                                                         </Input>
                                                     </FormItem>
                                                 </div>
@@ -113,7 +114,7 @@ class RegistStaffDialog extends Component {
                                                         name="phoneNumber"
                                                         className="selectItem"
                                                     >
-                                                        <Input placeholder="휴대전화 번호를 입력해 주세요." className="override-input">
+                                                        <Input defaultValue={data.staffPhoneNum} className="override-input">
                                                         </Input>
                                                     </FormItem>
                                                 </div>
@@ -125,7 +126,7 @@ class RegistStaffDialog extends Component {
                                                         name="memo"
                                                         className="selectItem"
                                                     >
-                                                        <Input placeholder="메모를 입력해 주세요." className="override-input branch">
+                                                        <Input defaultValue={data.staffMemo} className="override-input branch">
                                                         </Input>
                                                     </FormItem>
                                                 </div>
@@ -138,14 +139,15 @@ class RegistStaffDialog extends Component {
                                                         className="selectItem"
                                                     >
                                                         <Select placeholder="직급을 선택해 주세요." className="override-select branch">
-                                                            <Option value={0}>팀장</Option>
-                                                            <Option value={1}>본부장</Option>
-                                                            <Option value={2}>부지점장</Option>
-                                                            <Option value={3}>지점장</Option>
+                                                            <Option value={0}>본사</Option>
+                                                            <Option value={1}>팀장</Option>
+                                                            <Option value={2}>본부장</Option>
+                                                            <Option value={3}>부지점장</Option>
+                                                            <Option value={4}>지점장</Option>
                                                         </Select>
                                                     </FormItem>
                                                 </div>
-                                                {/* <div className="contentBlock">
+                                                <div className="contentBlock">
                                                     <div className="mainTitle">
                                                         권한
                                                     </div>
@@ -161,7 +163,7 @@ class RegistStaffDialog extends Component {
                                                             <Radio value={4}>가맹</Radio>
                                                         </Radio.Group>
                                                     </FormItem>
-                                                </div> */}
+                                                </div>
                                                 <div className="submitBlock">
                                                     <Button type="primary" htmlType="submit">
                                                         등록하기
@@ -186,4 +188,4 @@ class RegistStaffDialog extends Component {
     }
 }
 
-export default (RegistStaffDialog);
+export default (UpdateStaffDialog);
