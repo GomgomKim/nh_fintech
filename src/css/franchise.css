@@ -2,6 +2,7 @@
 
 .franchiseContainer .selectLayout{
     /* margin-top: 20px; */
+    vertical-align: middle;
 }
 
 .franchiseContainer .dataTableLayout{
@@ -20,3 +21,6 @@
     margin: 0px;
 } */
 
+/* .franchiseContainer .ant-input-group-wrapper{
+    vertical-align: middle;
+} */
