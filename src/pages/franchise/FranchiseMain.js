@@ -471,7 +471,26 @@ class FranchiseMain extends Component {
 
     return (
       <div className="franchiseContainer">
-        <div className="btnLayout">
+
+        <div className="selectLayout">
+          <span className="searchRequirementText">검색조건</span><br />
+          <Radio.Group className="searchRequirement" onChange={this.onChange} value={this.state.franStatus}>
+            <Radio value={1}>사용</Radio>
+            <Radio value={0}>중지</Radio>
+            <Radio value={2}>탈퇴</Radio>
+          </Radio.Group>
+          <Search
+            placeholder="가맹점검색"
+            enterButton
+            allowClear
+            onSearch={this.onSearchFranchisee}
+            style={{
+              width: 200,
+              marginLeft: 20
+            }}
+          />
+
+
           <CoinTransferDialog isOpen={this.state.coinTransferOpen} close={this.closeCoinTransferodal} />
           <Button
             icon={<BankOutlined />}
@@ -491,35 +510,15 @@ class FranchiseMain extends Component {
             className="tabBtn placeTab"
           >배달 지역 설정</Button>
 
-          <FormItem
-            name="franMainName"
-            className="selectFran"
-          >
-            <Select placeholder="지사를 선택해 주세요." className="override-select fran">
-              <Option value={0}>플러스김포 / 플러스김포</Option>
-              <Option value={1}>김포1지점 / 플러스김포</Option>
-              <Option value={2}>김포2지점 / 플러스김포</Option>
-            </Select>
-          </FormItem>
+          <Select placeholder="지사를 선택해 주세요." className="override-select fran">
+            <Option value={0}>플러스김포 / 플러스김포</Option>
+            <Option value={1}>김포1지점 / 플러스김포</Option>
+            <Option value={2}>김포2지점 / 플러스김포</Option>
+          </Select>
+
         </div>
-        <div className="m-t-m13">
-          <span className="searchRequirementText">검색조건</span><br />
-          <Radio.Group className="searchRequirement" onChange={this.onChange} value={this.state.franStatus}>
-            <Radio value={1}>사용</Radio>
-            <Radio value={0}>중지</Radio>
-            <Radio value={2}>탈퇴</Radio>
-          </Radio.Group>
-          <Search
-            placeholder="가맹점검색"
-            enterButton
-            allowClear
-            onSearch={this.onSearchFranchisee}
-            style={{
-              width: 246,
-              marginLeft: 20
-            }}
-          />
-        </div>
+
+
 
         <div className="dataTableLayout">
           <Table

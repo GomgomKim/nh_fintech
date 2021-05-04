@@ -1,13 +1,7 @@
-.franchiseContainer .tabBtn{
-    margin-left: 10px;
-}
 
-.franchiseContainer .addFranTab{
-    margin-left: 0px !important;
-}
 
 .franchiseContainer .selectLayout{
-    margin-top: 20px;
+    /* margin-top: 20px; */
 }
 
 .franchiseContainer .dataTableLayout{
@@ -15,16 +9,14 @@
 }
 
 .franchiseContainer .override-select.fran{
-    margin-top: 10px;
-    width: 463px;
+    width: 220px;
+    margin-left:10px;
 }
+
 
 /* 상세 */
-.franchiseContainer .ant-table-tbody > tr > td > 
+/* .franchiseContainer .ant-table-tbody > tr > td > 
 .ant-table-wrapper:only-child .ant-table{
     margin: 0px;
-}
+} */
 
-.franchiseContainer .ant-input-group-wrapper{
-    vertical-align: middle;
-}
