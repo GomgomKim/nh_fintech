@@ -90,7 +90,30 @@ class UpdateStaffDialog extends Component {
                                                         className="selectItem"
                                                     >
                                                         <Input defaultValue={data.staffName} className="override-input">
-
+                                                        </Input>
+                                                    </FormItem>
+                                                </div>
+                                                <div className="contentBlock">
+                                                    <div className="mainTitle">
+                                                        아이디
+                                                    </div>
+                                                    <FormItem
+                                                        name="staffId"
+                                                        className="selectItem"
+                                                    >
+                                                        <Input defaultValue={data.staffId} className="override-input">
+                                                        </Input>
+                                                    </FormItem>
+                                                </div>
+                                                <div className="contentBlock">
+                                                    <div className="mainTitle">
+                                                        이메일
+                                                    </div>
+                                                    <FormItem
+                                                        name="staffEmail"
+                                                        className="selectItem"
+                                                    >
+                                                        <Input defaultValue={data.staffEmail} className="override-input">
                                                         </Input>
                                                     </FormItem>
                                                 </div>
