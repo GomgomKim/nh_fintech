@@ -114,7 +114,7 @@ class RiderMain extends Component {
         balance: '80000',
         memo: '메모',
         carIdx: '1234',
-        fees: '-200', 
+        fees: '-200',
         bankName: '신한은행',
         accountHolder: '김기연',
         accountNumber: '110-123-123456',
@@ -320,7 +320,8 @@ class RiderMain extends Component {
             enterButton
             style={{
               width: 200,
-              marginLeft: 20
+              marginLeft: 20,
+              verticalAlign: 'bottom'
             }} />
 
           <RegistRiderDialog isOpen={this.state.registRiderOpen} close={this.closeRegistRiderModal} />

@@ -486,7 +486,8 @@ class FranchiseMain extends Component {
             onSearch={this.onSearchFranchisee}
             style={{
               width: 200,
-              marginLeft: 20
+              marginLeft: 20,
+              verticalAlign: 'bottom'
             }}
           />
 
