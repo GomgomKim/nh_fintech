@@ -8,6 +8,7 @@ import "../../css/common.css";
 import { comma } from "../../lib/util/numberUtil";
 import { formatDate } from "../../lib/util/dateUtil";
 import RegistStaffDialog from "../../components/dialog/staff/RegistStaffDialog";
+import UpdateStaffDialog from "../../components/dialog/staff/UpdateStaffDialog";
 
 
 
@@ -31,6 +32,7 @@ class StaffMain extends Component {
         pageSize: 10,
       },
       registStaff: false,
+      updateStaff: false,
     };
   }
 
@@ -122,6 +124,10 @@ class StaffMain extends Component {
     this.setState({ registStaff: false });
   }
 
+  closeStaffUpdateModal = () => {
+    this.setState({ updateStaff: false });
+  }
+
 
   render() {
     const columns = [
@@ -188,19 +194,19 @@ class StaffMain extends Component {
         className: "table-column-center",
         width: "200px",
       },
-      /*
       {
-        title: "작업",
+        title: "정보 수정",
         className: "table-column-center",
         width: "200px",
-        render: () =>
+        render: (data) =>
           <div>
+            <UpdateStaffDialog data={data} isOpen={this.state.updateStaff} close={this.closeStaffUpdateModal} />
             <Button
               className="tabBtn surchargeTab"
-              onClick={() => { this.setState({ workTab: 1 }) }}
-            >작업</Button>
+              onClick={() => { this.setState({ updateStaff: true }) }}
+            >수정</Button>
           </div>
-      },*/
+      },
     ];
     return (
       <div className="">
