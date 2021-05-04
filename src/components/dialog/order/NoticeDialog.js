@@ -108,7 +108,7 @@ class NoticeDialog extends Component {
                             <div className="Dialog-overlay" onClick={close} />
                             <div className="noticeDialog">
                                 <div className="container">
-                                    <div className="title">
+                                    <div className="notice-title">
                                         공지사항
                                     </div>
                                     <img onClick={close} src={require('../../../img/login/close.png').default} className="surcharge-close" />
@@ -126,6 +126,8 @@ class NoticeDialog extends Component {
                                                 />
                                             </div>
                                         </Form>
+
+
                                         <Form ref={this.formIdRef} onFinish={this.handleIdSubmit}>
                                             <div className="noticeDetailBlock">
                                                 <div className="inputBox">

@@ -162,23 +162,51 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 1300px;
+  width: 1320px;
   border-radius: 30px;
+  padding:20px;
   z-index: 2;
 }
 
 .noticeLayout{ 
   margin-top: 20px;
   width: 100%;
-  height: 510px; 
   overflow-y: scroll; 
-  border: 1px solid #ccc; 
-  padding: 10px 20px 20px; 
+  border: 1px solid #ccc;  
   text-align: left;
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
-  padding: 30px;
+  padding: 20px;
 }
+
+.noticeDialog .container {
+  background-color: white;
+    padding:30px;
+    text-align: left;
+    color: #777;
+}
+
+
+.notice-title{
+  /* font-size: 28px; */
+  letter-spacing: -1px;
+  font-weight: bold;
+  color: #333;
+  text-align: right;             
+  display: inline-block;
+  font-size: 25px;
+  line-height: 30px;
+}
+
+.notice-close{
+  width: 30px;
+  background-color: #fddc00;
+  padding: 8px;
+  cursor: pointer;
+  /* display: inline-block; */
+  float: right;
+}
+
 .noticeLayout::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Opera*/
 }
@@ -194,7 +222,7 @@
 }
 
 .noticeLayout .inputBox{
-  width: 100%;
+  width: 530px;
   height: 380px;
 }
 
@@ -389,7 +417,7 @@
     /* height: 725px;  */
     overflow-y: scroll; 
     border: 1px solid #ccc; 
-    padding: 10px 20px 20px; 
+    padding:20px; 
     text-align: left;
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
