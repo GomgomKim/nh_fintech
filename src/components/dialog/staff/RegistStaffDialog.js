@@ -155,7 +155,7 @@ class RegistStaffDialog extends Component {
                                                         name="auth"
                                                         className="selectItem"
                                                     >
-                                                        <Radio.Group className="override-select sub" onChange={this.onChange} value={this.state.staffAuth}>
+                                                        <Radio.Group onChange={this.onChange} value={this.state.staffAuth}>
                                                             <Radio value={1}>주문</Radio>
                                                             <Radio value={2}>기사</Radio>
                                                             <Radio value={3}>직원</Radio>

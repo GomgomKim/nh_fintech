@@ -2125,6 +2125,13 @@ width:240px!important;
 .registStaffWrapper .contentBlock .override-input{
   width:240px;
 }
+.registStaffWrapper .ant-radio-group{
+  margin-left: 20px;
+}
+.registStaffWrapper span.ant-radio + *{
+  padding-left: 5px;
+  padding-right: 5px;
+}
 
 
 /*기사 차단*/
