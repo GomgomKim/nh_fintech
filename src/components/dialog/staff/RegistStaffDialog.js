@@ -95,6 +95,30 @@ class RegistStaffDialog extends Component {
                                                 </div>
                                                 <div className="contentBlock">
                                                     <div className="mainTitle">
+                                                        아이디
+                                                    </div>
+                                                    <FormItem
+                                                        name="staffId"
+                                                        className="selectItem"
+                                                    >
+                                                        <Input placeholder="아이디를 입력해 주세요." className="override-input">
+                                                        </Input>
+                                                    </FormItem>
+                                                </div>
+                                                <div className="contentBlock">
+                                                    <div className="mainTitle">
+                                                        이메일
+                                                    </div>
+                                                    <FormItem
+                                                        name="staffEmail"
+                                                        className="selectItem"
+                                                    >
+                                                        <Input placeholder="ex) example@naver.com" className="override-input">
+                                                        </Input>
+                                                    </FormItem>
+                                                </div>
+                                                <div className="contentBlock">
+                                                    <div className="mainTitle">
                                                         패스워드
                                                     </div>
                                                     <FormItem

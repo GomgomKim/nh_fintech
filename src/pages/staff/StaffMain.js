@@ -63,7 +63,8 @@ class StaffMain extends Component {
       var list = [
         {
           franchiseeName: "플러스김포",
-          staffId: "김기연",
+          staffId: "example1",
+          staffEmail: "example@naver.com",
           staffName: '김기연',
           staffRank: '본사',
           staffStatus: this.state.staffStatus,
@@ -72,7 +73,8 @@ class StaffMain extends Component {
         },
         {
           franchiseeName: "플러스김포",
-          staffId: "김포맨",
+          staffId: "example2",
+          staffEmail: "example@naver.com",
           staffName: '곰기연',
           staffRank: '팀장',
           staffStatus: this.state.staffStatus,
@@ -81,7 +83,8 @@ class StaffMain extends Component {
         },
         {
           franchiseeName: "플러스김포",
-          staffId: "딜리버리",
+          staffId: "example3",
+          staffEmail: "example@naver.com",
           staffName: '딜리버리',
           staffRank: '본부장',
           staffStatus: this.state.staffStatus,
@@ -93,7 +96,8 @@ class StaffMain extends Component {
       var list = [
         {
           franchiseeName: "플러스김포",
-          staffId: "김포좋아요",
+          staffId: "example4",
+          staffEmail: "example@naver.com",
           staffName: '김기연',
           staffRank: '팀장',
           staffStatus: this.state.staffStatus,
@@ -105,7 +109,8 @@ class StaffMain extends Component {
       var list = [
         {
           franchiseeName: "플러스김포",
-          staffId: "곰곰킴",
+          staffId: "example5",
+          staffEmail: "example@naver.com",
           staffName: '곰기연',
           staffRank: '본사',
           staffStatus: this.state.staffStatus,
@@ -140,6 +145,12 @@ class StaffMain extends Component {
       {
         title: "아이디",
         dataIndex: "staffId",
+        className: "table-column-center",
+        width: "200px",
+      },
+      {
+        title: "이메일",
+        dataIndex: "staffEmail",
         className: "table-column-center",
         width: "200px",
       },
@@ -212,18 +223,18 @@ class StaffMain extends Component {
       <div className="">
         <div className="selectLayout">
           <span className="searchRequirementText">검색조건</span><br></br>
-            <Radio.Group className="searchRequirement" onChange={this.onChange} value={this.state.staffStatus}>
-              <Radio value={1}>사용</Radio>
-              <Radio value={0}>중지</Radio>
-              <Radio value={-1}>퇴사</Radio>
-            </Radio.Group>
+          <Radio.Group className="searchRequirement" onChange={this.onChange} value={this.state.staffStatus}>
+            <Radio value={1}>사용</Radio>
+            <Radio value={0}>중지</Radio>
+            <Radio value={-1}>퇴사</Radio>
+          </Radio.Group>
 
 
-            <Button className="registStaff"
-              onClick={() => { this.setState({ registStaff: true }) }}
-            >직원 등록</Button>
+          <Button className="registStaff"
+            onClick={() => { this.setState({ registStaff: true }) }}
+          >직원 등록</Button>
 
-            <RegistStaffDialog isOpen={this.state.registStaff} close={this.closeStaffRegistrationModal} />
+          <RegistStaffDialog isOpen={this.state.registStaff} close={this.closeStaffRegistrationModal} />
         </div>
 
         <div className="dataTableLayout">
