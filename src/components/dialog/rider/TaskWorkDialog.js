@@ -73,7 +73,7 @@ class TaskWorkDialog extends Component {
 
                                             <div className="twl taskWork-list-01">
                                                 <td>사용여부</td>
-                                                <Checkbox></Checkbox>사용함
+                                                <Checkbox></Checkbox><td className="taskWorkSub">사용함</td>
                                             </div>
                                             <div className="twl taskWork-list-02">
                                                 <td>작업명</td>
@@ -133,20 +133,20 @@ class TaskWorkDialog extends Component {
                                                 <div className="twl taskWork-list-05">
                                                     <td>&nbsp;</td>
                                                     <Checkbox>
-                                                    </Checkbox>기간제한사용
+                                                    </Checkbox><td className="taskWorkSub">기간제한사용</td>
 
-                                                        <DatePicker
-                                                        defaultValue={moment(today, dateFormat)}
-                                                        format={dateFormat}
-                                                        onChange={date => this.setState({ selectedDate: date })}
-                                                        className="taskWork-datepicker"
-                                                    />부터
                                                     <DatePicker
                                                         defaultValue={moment(today, dateFormat)}
                                                         format={dateFormat}
                                                         onChange={date => this.setState({ selectedDate: date })}
                                                         className="taskWork-datepicker"
-                                                    />까지
+                                                    /><td className="taskWorkSub">부터</td>
+                                                    <DatePicker
+                                                        defaultValue={moment(today, dateFormat)}
+                                                        format={dateFormat}
+                                                        onChange={date => this.setState({ selectedDate: date })}
+                                                        className="taskWork-datepicker"
+                                                    /><td className="taskWorkSub">까지</td>
                                                 </div>
                                                 <div className="twl taskWork-list-06">
                                                     <td>금액</td>

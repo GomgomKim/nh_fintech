@@ -225,7 +225,7 @@
 
 .addGroup-content{
   background-color: white;
-  padding:20px;
+  padding:30px;
   /* text-align: left; */
   /* color: #777; */
 }
@@ -277,6 +277,7 @@
 .addGroupWrapper .ant-btn-primary{
   width:130px;
   height:40px;
+  font-size:18px;
 }
 
 
@@ -1376,9 +1377,9 @@
   height:10px;
 }
 
-.timeDelay-btn .ant-checkbox-input {
-  height:32px;
-}
+/* .timeDelay-btn .ant-checkbox-input {
+  height:40px;
+} */
 
 
 .timeDelay-btn-02{
@@ -1391,6 +1392,7 @@
 
 .timeDelay-btn-02 > button{
   width:130px;
+  height:40px;
   font-size:18px;
   background:#40a9ff; 
   color:#fff;
@@ -1424,7 +1426,7 @@
   top:50%;
   left:50%;
   transform: translate(-50%, -50%);
-  width:425px;
+  width:345px;
   z-index: 2;
 }
 
@@ -1487,7 +1489,7 @@
   width:120px;
   height:52px;
   float:left;
-  margin:20px;
+  /* margin:20px; */
 }
 
 .filtering-box .ant-checkbox-inner{
@@ -1790,12 +1792,12 @@
 
 .taskWork-inner { 
     width: 100%; 
-    height: 400px; 
     overflow-y: scroll; 
     border: 1px solid #ccc; 
     padding: 20px; 
     text-align: left;
     margin-top:5px;
+    height:390px;
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
 }
@@ -1806,11 +1808,19 @@
 
 .taskWork-list{
   /* border:1px solid red; */
-  height:360px;
+  /* height:360px; */
 }
 .taskWork-list td{
   width:100px;
   font-size:18px;
+  display:inline-block;
+  /* border:1px solid blue; */
+  
+}
+
+.taskWork-list-01 .taskWorkSub, .taskWork-list-05 .taskWorkSub{
+  width:90px;
+  font-size:16px;
   display:inline-block;
   /* border:1px solid blue; */
   
@@ -1822,7 +1832,7 @@
 }
 
 .taskWork-list .twl{
-  width:600px;
+  width:670px;
   display:inline-block;
   height:60px;
   line-height:60px;
