@@ -137,7 +137,7 @@ class RegistStaffDialog extends Component {
                                                         name="rank"
                                                         className="selectItem"
                                                     >
-                                                        <Select placeholder="소속지사를 선택해 주세요." className="override-select branch">
+                                                        <Select placeholder="직급을 선택해 주세요." className="override-select branch">
                                                             <Option value={0}>팀장</Option>
                                                             <Option value={1}>본부장</Option>
                                                             <Option value={2}>부지점장</Option>
