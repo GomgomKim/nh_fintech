@@ -4,6 +4,8 @@ import {
     Upload, Button, Select, Icon, Radio, Carousel, Text, Checkbox
 } from "antd";
 import '../../../css/modal.css';
+import { httpGet, httpUrl, httpDownload, httpPost, httpPut } from '../../../api/httpClient';
+
 const Option = Select.Option;
 const FormItem = Form.Item;
 const { RangePicker } = DatePicker;
@@ -34,6 +36,21 @@ class RegistStaffDialog extends Component {
         });
     };
 
+    handleSubmit = () => {
+        console.log(this.formRef.current)
+        // httpPost(httpUrl.registStaff, [], {
+        //     lotteryNums: this.formRef.current,
+        //     lotteryType: 0,
+        // }).then((result) => {
+        //     console.log("## result: " + JSON.stringify(result, null, 4));
+        //     alert('나의로또볼이 저장되었습니다.')
+        //     this.props.history.push('/lottery/megamillionStep')
+        // }).catch(e => {
+        //     alert('에러가 발생하였습니다 다시 시도해주세요.')
+        // });
+    }
+
+
     handleClear = () => {
         this.formRef.current.setFieldsValue({
             belongBranch: undefined,
@@ -63,7 +80,7 @@ class RegistStaffDialog extends Component {
                                     <img onClick={close} src={require('../../../img/login/close.png').default} className="surcharge-close" />
 
 
-                                    <Form ref={this.formRef} onFinish={this.handleIdSubmit}>
+                                    <Form ref={this.formRef} onFinish={this.handleSubmit}>
                                         <div className="layout">
                                             <div className="registStaffWrapper">
                                                 <div className="contentBlock">
