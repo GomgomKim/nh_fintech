@@ -162,6 +162,10 @@ const httpUrl = {
 
   //게시판
 
+  // rider
+  riderList: "/rider/list?pageSize=%s&pageNum=%s&riderLevels=%s&userStatus=%s",
+  riderRegist: "/rider/create",
+
   //직원등록
   registStaffList: "/rider/list?pageSize=%s&pageNum=%s&riderLevels=%s&userStatus=%s",
   staffUpdate: "/rider/update"
