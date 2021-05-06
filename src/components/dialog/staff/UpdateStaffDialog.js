@@ -58,6 +58,7 @@ class UpdateStaffDialog extends Component {
             console.log("## result: " + JSON.stringify(result, null, 4));
             alert('직원정보 수정이 완료되었습니다.')
             // this.props.history.push('../../pages/staff/StaffMain')
+
         });
 
         //.catch(e => {
