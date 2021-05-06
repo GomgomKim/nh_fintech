@@ -163,7 +163,8 @@ const httpUrl = {
   //게시판
 
   //직원등록
-  registRiderList: "/rider/list?pageSize=%s&pageNum=%s&riderLevels=%s&userStatus=%s",
+  registStaffList: "/rider/list?pageSize=%s&pageNum=%s&riderLevels=%s&userStatus=%s",
+  staffUpdate: "/rider/update"
 };
 
 const imageType = ["image/jpeg", "image/png", "image/bmp"];
