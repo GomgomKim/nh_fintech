@@ -4,6 +4,7 @@ import {
     Upload, Button, Select, Icon, Radio, Carousel, Text, Checkbox
 } from "antd";
 import '../../../css/modal.css';
+import { httpGet, httpUrl, httpDownload, httpPost, httpPut } from '../../../api/httpClient';
 import { comma } from "../../../lib/util/numberUtil";
 // import { formatDate } from "../../lib/util/dateUtil";
 const Option = Select.Option;
@@ -36,15 +37,48 @@ class RegistRiderDialog extends Component {
         });
     };
 
+    handleSubmit = () => {
+        httpPost(httpUrl.registRider, [], {
+            riderName: this.formRef.current.getFieldsValue().riderName,
+            id: this.formRef.current.getFieldsValue().id,
+            email: this.formRef.current.getFieldsValue().email,
+            password: this.formRef.current.getFieldsValue().password,
+            phone: this.formRef.current.getFieldsValue().phone,
+            memo: this.formRef.current.getFieldsValue().memo,
+            riderStatus: this.formRef.current.getFieldsValue().riderStatus,
+            deliveryPriceFeeAmount: this.formRef.current.getFieldsValue().deliveryPriceFeeAmount,
+            ncash: 0,
+            userStatus: 1,
+            withdrawPassword: 0,
+            bank: "한국은행",
+            bankAccount: "111-111-1111",
+            depositor: "냠냠박스",
+            userType: 1,
+            userGroup: 1,
+            riderLevel: 1,
+        }).then((result) => {
+            console.log("## result: " + JSON.stringify(result, null, 4));
+            alert('직원 등록이 완료되었습니다.');
+            this.props.close()
+            // this.props.history.push('/staff/StaffMain')
+        }).catch(e => {
+            alert('에러가 발생하였습니다 다시 시도해주세요.')
+        });
+    }
+
     handleClear = () => {
         this.formRef.current.setFieldsValue({
             belongBranch: undefined,
-            staffName: undefined,
+            riderGroup: undefined,
+            riderName: undefined,
+            id: undefined,
             password: undefined,
-            phoneNumber: undefined,
+            email: undefined,
+            phone: undefined,
             memo: undefined,
             rank: undefined,
             auth: undefined,
+            deliveryPriceFeeAmount: undefined,
         });
     };
 
@@ -65,7 +99,7 @@ class RegistRiderDialog extends Component {
                                     <img onClick={close} src={require('../../../img/login/close.png').default} className="registRider-close" />
 
 
-                                    <Form ref={this.formRef} onFinish={this.handleIdSubmit}>
+                                    <Form ref={this.formRef} onFinish={this.handleSubmit}>
                                         <div className="layout">
                                             <div className="registRiderWrapper">
                                                 <div className="contentBlock">
@@ -103,7 +137,7 @@ class RegistRiderDialog extends Component {
                                                         기사명
                                                     </div>
                                                     <FormItem
-                                                        name="staffName"
+                                                        name="riderName"
                                                         className="selectItem"
                                                     >
                                                         <Input placeholder="직원명을 입력해 주세요." className="override-input">
@@ -112,13 +146,37 @@ class RegistRiderDialog extends Component {
                                                 </div>
                                                 <div className="contentBlock">
                                                     <div className="mainTitle">
-                                                        단말기번호
+                                                        아이디
+                                                    </div>
+                                                    <FormItem
+                                                        name="id"
+                                                        className="selectItem"
+                                                    >
+                                                        <Input placeholder="아이디를 입력해 주세요." className="override-input">
+                                                        </Input>
+                                                    </FormItem>
+                                                </div>
+                                                <div className="contentBlock">
+                                                    <div className="mainTitle">
+                                                        이메일
+                                                    </div>
+                                                    <FormItem
+                                                        name="email"
+                                                        className="selectItem"
+                                                    >
+                                                        <Input placeholder="ex) example@naver.com" className="override-input">
+                                                        </Input>
+                                                    </FormItem>
+                                                </div>
+                                                <div className="contentBlock">
+                                                    <div className="mainTitle">
+                                                        패스워드
                                                     </div>
                                                     <FormItem
                                                         name="password"
                                                         className="selectItem"
                                                     >
-                                                        <Input placeholder="단말기번호를 입력해 주세요." className="override-input">
+                                                        <Input placeholder="패스워드를 입력해 주세요." className="override-input">
                                                         </Input>
                                                     </FormItem>
                                                 </div>
@@ -127,22 +185,10 @@ class RegistRiderDialog extends Component {
                                                         전화번호
                                                     </div>
                                                     <FormItem
-                                                        name="phoneNumber"
+                                                        name="phone"
                                                         className="selectItem"
                                                     >
                                                         <Input placeholder="휴대전화 번호를 입력해 주세요." className="override-input">
-                                                        </Input>
-                                                    </FormItem>
-                                                </div>
-                                                <div className="contentBlock">
-                                                    <div className="mainTitle">
-                                                        차량번호
-                                                    </div>
-                                                    <FormItem
-                                                        name="carNumber"
-                                                        className="selectItem"
-                                                    >
-                                                        <Input placeholder="차량 번호를 입력해 주세요." className="override-input">
                                                         </Input>
                                                     </FormItem>
                                                 </div>
@@ -160,23 +206,10 @@ class RegistRiderDialog extends Component {
                                                 </div>
                                                 <div className="contentBlock">
                                                     <div className="mainTitle">
-                                                        변경권한
-                                                    </div>
-                                                    <FormItem
-                                                        name="rank"
-                                                        className="selectItem"
-                                                    >
-                                                        <Select placeholder="선택해 주세요." className="override-select branch">
-                                                            <Option value={0}>권한없음</Option>
-                                                        </Select>
-                                                    </FormItem>
-                                                </div>
-                                                <div className="contentBlock">
-                                                    <div className="mainTitle">
                                                         수수료
                                                     </div>
                                                     <FormItem
-                                                        name="memo"
+                                                        name="deliveryPriceFeeAmount"
                                                         className="selectItem"
                                                     >
                                                         <Input placeholder="수수료를 입력해 주세요." className="override-input branch">
@@ -190,7 +223,6 @@ class RegistRiderDialog extends Component {
                                                     <div className="registRiderCheck">
                                                         <Checkbox></Checkbox>
                                                     </div>
-
                                                 </div>
                                                 <div className="submitBlock">
                                                     <Button type="primary" htmlType="submit">
