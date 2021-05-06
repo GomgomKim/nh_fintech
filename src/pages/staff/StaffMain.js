@@ -34,8 +34,8 @@ class StaffMain extends Component {
       },
       registStaff: false,
       updateStaff: false,
-      riderLevel: [2],
-      userData: [1],
+      riderLevel: [1, 2],
+      userData: 1,
     };
   }
 

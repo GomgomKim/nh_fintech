@@ -37,17 +37,32 @@ class RegistStaffDialog extends Component {
     };
 
     handleSubmit = () => {
-        console.log(this.formRef.current)
-        // httpPost(httpUrl.registStaff, [], {
-        //     lotteryNums: this.formRef.current,
-        //     lotteryType: 0,
-        // }).then((result) => {
-        //     console.log("## result: " + JSON.stringify(result, null, 4));
-        //     alert('나의로또볼이 저장되었습니다.')
-        //     this.props.history.push('/lottery/megamillionStep')
-        // }).catch(e => {
-        //     alert('에러가 발생하였습니다 다시 시도해주세요.')
-        // });
+        // console.log(this.formRef.current.getFieldsValue().staffName)
+        httpPost(httpUrl.registStaff, [], {
+            riderName: this.formRef.current.getFieldsValue().riderName,
+            id: this.formRef.current.getFieldsValue().id,
+            email: this.formRef.current.getFieldsValue().email,
+            password: this.formRef.current.getFieldsValue().password,
+            phone: this.formRef.current.getFieldsValue().phone,
+            memo: this.formRef.current.getFieldsValue().memo,
+            riderStatus: this.formRef.current.getFieldsValue().riderStatus,
+            ncash: 0,
+            userStatus: 1,
+            withdrawPassword: 0,
+            bank: "한국은행",
+            bankAccount: "111-111-1111",
+            depositor: "냠냠박스",
+            userType: 1,
+            userGroup: 1,
+            riderLevel: 1,
+        }).then((result) => {
+            console.log("## result: " + JSON.stringify(result, null, 4));
+            alert('직원 등록이 완료되었습니다.');
+            this.props.close()
+            // this.props.history.push('/staff/StaffMain')
+        }).catch(e => {
+            alert('에러가 발생하였습니다 다시 시도해주세요.')
+        });
     }
 
 
@@ -103,7 +118,7 @@ class RegistStaffDialog extends Component {
                                                         직원명
                                                     </div>
                                                     <FormItem
-                                                        name="staffName"
+                                                        name="riderName"
                                                         className="selectItem"
                                                     >
                                                         <Input placeholder="직원명을 입력해 주세요." className="override-input">
@@ -115,7 +130,7 @@ class RegistStaffDialog extends Component {
                                                         아이디
                                                     </div>
                                                     <FormItem
-                                                        name="staffId"
+                                                        name="id"
                                                         className="selectItem"
                                                     >
                                                         <Input placeholder="아이디를 입력해 주세요." className="override-input">
@@ -127,7 +142,7 @@ class RegistStaffDialog extends Component {
                                                         이메일
                                                     </div>
                                                     <FormItem
-                                                        name="staffEmail"
+                                                        name="email"
                                                         className="selectItem"
                                                     >
                                                         <Input placeholder="ex) example@naver.com" className="override-input">
@@ -151,7 +166,7 @@ class RegistStaffDialog extends Component {
                                                         휴대전화
                                                     </div>
                                                     <FormItem
-                                                        name="phoneNumber"
+                                                        name="phone"
                                                         className="selectItem"
                                                     >
                                                         <Input placeholder="휴대전화 번호를 입력해 주세요." className="override-input">
@@ -175,14 +190,14 @@ class RegistStaffDialog extends Component {
                                                         직급
                                                     </div>
                                                     <FormItem
-                                                        name="rank"
+                                                        name="riderStatus"
                                                         className="selectItem"
                                                     >
                                                         <Select placeholder="직급을 선택해 주세요." className="override-select branch">
-                                                            <Option value={0}>팀장</Option>
-                                                            <Option value={1}>본부장</Option>
-                                                            <Option value={2}>부지점장</Option>
-                                                            <Option value={3}>지점장</Option>
+                                                            <Option value={3}>팀장</Option>
+                                                            <Option value={4}>본부장</Option>
+                                                            <Option value={5}>부지점장</Option>
+                                                            <Option value={6}>지점장</Option>
                                                         </Select>
                                                     </FormItem>
                                                 </div>

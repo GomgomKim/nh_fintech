@@ -158,7 +158,7 @@ const httpUrl = {
   receptionStatusList: "/order/assignList?pageSize=%s&pageNum=%s",
 
   // 직원 관리
-  registStaff: "/rider/create"
+  registStaff: "/rider/create",
 
   //게시판
 
