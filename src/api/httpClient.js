@@ -157,6 +157,9 @@ const httpUrl = {
   // 접수 현황
   receptionStatusList: "/order/assignList?pageSize=%s&pageNum=%s",
 
+  // 직원 관리
+  registStaff: "/rider/create",
+
   //게시판
 
   // rider
@@ -164,7 +167,8 @@ const httpUrl = {
   riderRegist: "/rider/create",
 
   //직원등록
-  registRiderList: "/rider/list?pageSize=%s&pageNum=%s&riderLevels=%s&userStatus=%s",
+  registStaffList: "/rider/list?pageSize=%s&pageNum=%s&riderLevels=%s&userStatus=%s",
+  staffUpdate: "/rider/update"
 };
 
 const imageType = ["image/jpeg", "image/png", "image/bmp"];

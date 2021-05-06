@@ -4,6 +4,7 @@ import {
     Upload, Button, Select, Icon, Radio, Carousel, Text, Checkbox
 } from "antd";
 import '../../../css/modal.css';
+import { httpGet, httpUrl, httpPost } from "../../../api/httpClient";
 const Option = Select.Option;
 const FormItem = Form.Item;
 const { RangePicker } = DatePicker;
@@ -13,7 +14,7 @@ class UpdateStaffDialog extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            list: [],
+            staffUpdate: [],
             pagination: {
                 total: 0,
                 current: 1,
@@ -46,6 +47,35 @@ class UpdateStaffDialog extends Component {
         });
     };
 
+
+    handleSubmit = () => {
+        const form = this.formRef.current;
+
+        console.log(JSON.stringify(form.getFieldValue('staffUpdate')));
+        httpPost(httpUrl.staffUpdate, [], {
+            staffUpdate: form.getFieldValue('staffUpdate')
+        }).then((result) => {
+            console.log("## result: " + JSON.stringify(result, null, 4));
+            alert('직원정보 수정이 완료되었습니다.')
+            // this.props.history.push('../../pages/staff/StaffMain')
+
+        });
+
+        //.catch(e => {
+        //     console.log('## change error: ' + e);
+        //     Modal.info({
+        //         title: "등록 실패",
+        //         content: (
+        //             <div>
+        //                 시스템에러로 직원수정 등록에 실패하였습니다. 잠시 후 다시 시도해주세요.
+        //             </div>
+        //         ),
+        // onOk() { },
+        // });
+        //});
+    }
+
+
     render() {
         const { data, isOpen, close } = this.props;
 
@@ -63,7 +93,7 @@ class UpdateStaffDialog extends Component {
                                     <img onClick={close} src={require('../../../img/login/close.png').default} className="surcharge-close" />
 
 
-                                    <Form ref={this.formRef} onFinish={this.handleIdSubmit}>
+                                    <Form ref={this.formRef} onFinish={this.handleSubmit}>
                                         <div className="layout">
                                             <div className="updateStaffWrapper">
                                                 <div className="contentBlock">
