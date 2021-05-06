@@ -27,6 +27,8 @@ class RiderMain extends Component {
     super(props);
     this.state = {
       riderStatus: 1,
+      riderLevel: [1],
+      userData: 1,
       riderName: "",
       taskSchedulerOpen: false, // 작업 스케줄러
       riderGroupOpen: false, // 기사 그룹 관리
@@ -41,7 +43,6 @@ class RiderMain extends Component {
         current: 1,
         pageSize: 10,
       },
-      list: [],
     };
   }
 
@@ -75,57 +76,20 @@ class RiderMain extends Component {
   };
 
   getList = () => {
-    var list = [
-      {
-        franchiseeName: '플러스김포',
-        riderName: '김기연',
-        riderGroup: 'A',
-        phoneNum: '010-1234-5678',
-        balance: '80000',
-        memo: '메모',
-        carIdx: '1234',
-        fees: '-200',
-        bankName: '신한은행',
-        accountHolder: '김기연',
-        accountNumber: '110-123-123456',
-        withholdingTax: 0,
-        riderStatus: 0,
-      },
-      {
-        franchiseeName: '플러스김포',
-        riderName: '김기연',
-        riderGroup: 'A',
-        phoneNum: '010-1234-5678',
-        balance: '80000',
-        memo: '메모',
-        carIdx: '1234',
-        fees: '-200',
-        bankName: '신한은행',
-        accountHolder: '김기연',
-        accountNumber: '110-123-123456',
-        withholdingTax: 0,
-        riderStatus: 1,
-      },
-      {
-        franchiseeName: '플러스김포',
-        riderName: '김기연',
-        riderGroup: 'A',
-        phoneNum: '010-1234-5678',
-        balance: '80000',
-        memo: '메모',
-        carIdx: '1234',
-        fees: '-200',
-        bankName: '신한은행',
-        accountHolder: '김기연',
-        accountNumber: '110-123-123456',
-        withholdingTax: 0,
-        riderStatus: 2,
-      },
-    ];
-    this.setState({
-      list: list,
-    });
+    let pageNum = this.state.pagination.current;
+    let riderLevel = this.state.riderLevel;
+    let userData = this.state.userData;
 
+    httpGet(httpUrl.riderList, [10, pageNum, riderLevel, userData], {}).then((result) => {
+      console.log('## nnbox result=' + JSON.stringify(result, null, 4))
+      const pagination = { ...this.state.pagination };
+      pagination.current = result.data.currentPage;
+      pagination.total = result.data.totalCount;
+      this.setState({
+        results: result.data.riders,
+        pagination,
+      });
+    })
   };
   //작업 스케줄러
   openTaskSchedulerModal = () => {
@@ -187,7 +151,7 @@ class RiderMain extends Component {
     const columns = [
       {
         title: "지사명",
-        dataIndex: "franchiseeName",
+        dataIndex: "id",
         className: "table-column-center",
       },
       {
@@ -197,7 +161,7 @@ class RiderMain extends Component {
       },
       {
         title: "기사그룹",
-        dataIndex: "riderGroup",
+        dataIndex: "userGroup",
         className: "table-column-center",
         render: (data) => <div>{data == "A" ? "A"
           : data == "B" ? "B"
@@ -206,12 +170,12 @@ class RiderMain extends Component {
       },
       {
         title: "단말기번호",
-        dataIndex: "phoneNum",
+        dataIndex: "phone",
         className: "table-column-center",
       },
       {
         title: "잔액",
-        dataIndex: "balance",
+        dataIndex: "ncash",
         className: "table-column-center",
         render: (data) => <div>{comma(data)}</div>
       },
@@ -220,38 +184,38 @@ class RiderMain extends Component {
         dataIndex: "memo",
         className: "table-column-center",
       },
-      {
-        title: "차량번호",
-        dataIndex: "carIdx",
-        className: "table-column-center",
-      },
+      // {
+      //   title: "차량번호",
+      //   dataIndex: "carIdx",
+      //   className: "table-column-center",
+      // },
       {
         title: "수수료",
-        dataIndex: "fees",
+        dataIndex: "deliveryPriceFeeAmount",
         className: "table-column-center",
         render: (data) => <div>{comma(data)}</div>
       },
       {
         title: "은행명",
-        dataIndex: "bankName",
+        dataIndex: "bank",
         className: "table-column-center",
       },
       {
         title: "예금주",
-        dataIndex: "accountHolder",
+        dataIndex: "riderName",
         className: "table-column-center",
       },
       {
         title: "계좌번호",
-        dataIndex: "accountNumber",
+        dataIndex: "bankAccount",
         className: "table-column-center",
       },
-      {
-        title: "원천징수",
-        dataIndex: "withholdingTax",
-        className: "table-column-center",
-        render: (data) => <div>{data == 0 ? "OFF" : "ON"}</div>
-      },
+      // {
+      //   title: "원천징수",
+      //   dataIndex: "withholdingTax",
+      //   className: "table-column-center",
+      //   render: (data) => <div>{data == 0 ? "OFF" : "ON"}</div>
+      // },
       {
         title: "충전",
         className: "table-column-center",
@@ -284,9 +248,9 @@ class RiderMain extends Component {
           (data, row) => (
             <div>
               <Select defaultValue={data} style={{ width: 68 }}>
-                <Option value={0}>중지</Option>
+                <Option value={3}>탈퇴</Option>
+                <Option value={2}>중지</Option>
                 <Option value={1}>사용</Option>
-                <Option value={2}>탈퇴</Option>
               </Select>
             </div>
           ),
@@ -310,9 +274,9 @@ class RiderMain extends Component {
         <div className="selectLayout">
           <span className="searchRequirementText">검색조건</span><br></br>
           <Radio.Group className="searchRequirement" onChange={this.onChange} value={this.state.riderStatus}>
+            <Radio value={3}>탈퇴</Radio>
+            <Radio value={2}>중지</Radio>
             <Radio value={1}>사용</Radio>
-            <Radio value={0}>중지</Radio>
-            <Radio value={-1}>탈퇴</Radio>
           </Radio.Group>
 
           <Search placeholder="기사명"
@@ -354,7 +318,7 @@ class RiderMain extends Component {
 
         <div className="dataTableLayout">
           <Table
-            dataSource={this.state.list}
+            dataSource={this.state.results}
             columns={columns}
             pagination={this.state.pagination}
             onChange={this.handleTableChange}
