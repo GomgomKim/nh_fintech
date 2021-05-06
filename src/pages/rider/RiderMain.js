@@ -160,6 +160,18 @@ class RiderMain extends Component {
         className: "table-column-center",
       },
       {
+        title: "아이디",
+        dataIndex: "id",
+        className: "table-column-center",
+        width: "200px",
+      },
+      {
+        title: "이메일",
+        dataIndex: "email",
+        className: "table-column-center",
+        width: "200px",
+      },
+      {
         title: "기사그룹",
         dataIndex: "userGroup",
         className: "table-column-center",
@@ -169,7 +181,7 @@ class RiderMain extends Component {
               : data == "D" ? "D" : "-"}</div>
       },
       {
-        title: "단말기번호",
+        title: "전화번호",
         dataIndex: "phone",
         className: "table-column-center",
       },
