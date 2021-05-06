@@ -26,6 +26,7 @@ class StaffMain extends Component {
     this.state = {
       staffStatus: 1,
       workTab: 0,
+      registRiderList: [],
       pagination: {
         total: 0,
         current: 1,
@@ -33,18 +34,20 @@ class StaffMain extends Component {
       },
       registStaff: false,
       updateStaff: false,
+      riderLevel: [2],
+      userData: [1],
     };
   }
 
   componentDidMount() {
-    this.getList()
+    this.getRegistRiderList()
   }
 
   onChange = e => {
     // console.log('radio checked', e.target.value);
     this.setState({
       staffStatus: e.target.value,
-    }, () => this.getList());
+    }, () => this.getRegistRiderList());
   };
 
   handleTableChange = (pagination) => {
@@ -57,71 +60,24 @@ class StaffMain extends Component {
     }, () => this.getList());
   };
 
-  getList = () => {
-    if (this.state.staffStatus == 1) {
-      console.log(this.state.staffStatus)
-      var list = [
-        {
-          franchiseeName: "플러스김포",
-          staffId: "example1",
-          staffEmail: "example@naver.com",
-          staffName: '김기연',
-          staffRank: '본사',
-          staffStatus: this.state.staffStatus,
-          staffPhoneNum: '010-1234-5678',
-          staffMemo: '메모',
-        },
-        {
-          franchiseeName: "플러스김포",
-          staffId: "example2",
-          staffEmail: "example@naver.com",
-          staffName: '곰기연',
-          staffRank: '팀장',
-          staffStatus: this.state.staffStatus,
-          staffPhoneNum: '010-1234-5678',
-          staffMemo: '메모',
-        },
-        {
-          franchiseeName: "플러스김포",
-          staffId: "example3",
-          staffEmail: "example@naver.com",
-          staffName: '딜리버리',
-          staffRank: '본부장',
-          staffStatus: this.state.staffStatus,
-          staffPhoneNum: '010-1234-5678',
-          staffMemo: '메모',
-        },
-      ]
-    } else if (this.state.staffStatus == -1) {
-      var list = [
-        {
-          franchiseeName: "플러스김포",
-          staffId: "example4",
-          staffEmail: "example@naver.com",
-          staffName: '김기연',
-          staffRank: '팀장',
-          staffStatus: this.state.staffStatus,
-          staffPhoneNum: '010-1234-5678',
-          staffMemo: '메모',
-        },
-      ]
-    } else {
-      var list = [
-        {
-          franchiseeName: "플러스김포",
-          staffId: "example5",
-          staffEmail: "example@naver.com",
-          staffName: '곰기연',
-          staffRank: '본사',
-          staffStatus: this.state.staffStatus,
-          staffPhoneNum: '010-1234-5678',
-          staffMemo: '메모',
-        },
-      ]
-    }
-    this.setState({
-      list: list,
-    });
+  getRegistRiderList = () => {
+    let pageNum = this.state.pagination.current;
+    let riderLevel = this.state.riderLevel;
+    let userData = this.state.userData;
+
+    httpGet(httpUrl.registRiderList, [10, pageNum, riderLevel, userData], {}).then((result) => {
+      console.log('## nnbox result=' + JSON.stringify(result, null, 4))
+      const pagination = { ...this.state.pagination };
+      pagination.current = result.data.currentPage;
+      pagination.total = result.data.totalCount;
+      this.setState({
+        results: result.data.riders,
+        pagination,
+      });
+    })
+    // this.setState({
+    //   list: list,
+    // });
 
   }
 
@@ -138,45 +94,45 @@ class StaffMain extends Component {
     const columns = [
       {
         title: "지사명",
-        dataIndex: "franchiseeName",
+        dataIndex: "id",
         className: "table-column-center",
         width: "200px",
       },
       {
         title: "아이디",
-        dataIndex: "staffId",
+        dataIndex: "id",
         className: "table-column-center",
         width: "200px",
       },
       {
         title: "이메일",
-        dataIndex: "staffEmail",
+        dataIndex: "email",
         className: "table-column-center",
         width: "200px",
       },
       {
         title: "이름",
-        dataIndex: "staffName",
+        dataIndex: "riderName",
         className: "table-column-center",
         width: "200px",
       },
       {
         title: "직급",
-        dataIndex: "staffRank",
+        dataIndex: "riderLevel",
         className: "table-column-center",
         width: "200px",
       },
       {
         title: "상태",
-        dataIndex: "staffStatus",
+        dataIndex: "userStatus",
         className: "table-column-center",
         width: 100,
         render:
           (data, row) => (
             <div>
               <Select defaultValue={data} style={{ width: 68 }}>
-                <Option value={-1}>퇴사</Option>
-                <Option value={0}>중지</Option>
+                <Option value={3}>퇴사</Option>
+                <Option value={2}>중지</Option>
                 <Option value={1}>근무</Option>
               </Select>
             </div>
@@ -195,13 +151,13 @@ class StaffMain extends Component {
       },*/
       {
         title: "전화번호",
-        dataIndex: "staffPhoneNum",
+        dataIndex: "phone",
         className: "table-column-center",
         width: "350px",
       },
       {
         title: "메모",
-        dataIndex: "staffMemo",
+        dataIndex: "memo",
         className: "table-column-center",
         width: "200px",
       },
@@ -239,7 +195,7 @@ class StaffMain extends Component {
 
         <div className="dataTableLayout">
           <Table
-            dataSource={this.state.list}
+            dataSource={this.state.results}
             columns={columns}
             pagination={this.state.pagination}
             onChange={this.handleTableChange}

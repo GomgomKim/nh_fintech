@@ -155,9 +155,12 @@ const httpUrl = {
   logout: "/logout",
 
   // 접수 현황
-  ReceptionStatusList: "/order/assignList?pageSize=%s&pageNum=%s",
+  receptionStatusList: "/order/assignList?pageSize=%s&pageNum=%s",
 
   //게시판
+
+  //직원등록
+  registRiderList: "/rider/list?pageSize=%s&pageNum=%s&riderLevels=%s&userStatus=%s",
 };
 
 const imageType = ["image/jpeg", "image/png", "image/bmp"];
