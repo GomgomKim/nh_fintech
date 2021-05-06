@@ -169,6 +169,7 @@ const httpUrl = {
   //직원등록
   registStaffList: "/rider/list?pageSize=%s&pageNum=%s&riderLevels=%s&userStatus=%s",
   staffUpdate: "/rider/update"
+
 };
 
 const imageType = ["image/jpeg", "image/png", "image/bmp"];

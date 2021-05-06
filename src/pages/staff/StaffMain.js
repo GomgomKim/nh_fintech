@@ -60,6 +60,17 @@ class StaffMain extends Component {
     }, () => this.getList());
   };
 
+
+  onChangeSel = (value) => {
+    httpPost(httpUrl.staffUpdate, [], {
+      riderStatus: value
+    }).then((result) => {
+      console.log(result)
+      // this.props.close()
+      // this.props.history.push('../../pages/staff/StaffMain')
+
+    });
+  }
   getRegistStaffList = () => {
     let pageNum = this.state.pagination.current;
     let riderLevel = this.state.riderLevel;
@@ -80,6 +91,7 @@ class StaffMain extends Component {
     // });
 
   }
+
 
   closeStaffRegistrationModal = () => {
     this.setState({ registStaff: false });
@@ -130,7 +142,9 @@ class StaffMain extends Component {
         render:
           (data, row) => (
             <div>
-              <Select defaultValue={data} style={{ width: 68 }}>
+              <Select onChange={value => {
+                this.onChangeSel(value);
+              }} defaultValue={data} style={{ width: 68 }}>
                 <Option value={3}>퇴사</Option>
                 <Option value={2}>중지</Option>
                 <Option value={1}>근무</Option>
@@ -198,7 +212,7 @@ class StaffMain extends Component {
             dataSource={this.state.results}
             columns={columns}
             pagination={this.state.pagination}
-            onChange={this.handleTableChange}
+            onChange={this.state.Status}
           />
         </div>
       </div>
@@ -207,4 +221,5 @@ class StaffMain extends Component {
     )
   }
 }
+
 export default StaffMain;
