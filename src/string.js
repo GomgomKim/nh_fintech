@@ -12,11 +12,11 @@ const string = {
   toggleCode: [0, 1],
 
   statusString: {
-    0: "중지",
     1: "사용",
-    2: "탈퇴"
+    2: "중지",
+    3: "탈퇴"
   },
-  statusCode: [0, 1, 2],
+  statusCode: [1, 2, 3],
 
 };
 

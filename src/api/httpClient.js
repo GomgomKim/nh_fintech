@@ -165,6 +165,7 @@ const httpUrl = {
   // rider
   riderList: "/rider/list?pageSize=%s&pageNum=%s&riderLevels=%s&userStatus=%s",
   registRider: "/rider/create",
+  updateRider: "/rider/update",
 
   //직원등록
   registStaffList: "/rider/list?pageSize=%s&pageNum=%s&riderLevels=%s&userStatus=%s",

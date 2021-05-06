@@ -8,7 +8,7 @@ import TaskSchedulerDialog from "../../components/dialog/rider/TaskSchedulerDial
 import RegistRiderDialog from "../../components/dialog/rider/RegistRiderDialog";
 import RiderCoinDialog from "../../components/dialog/rider/RiderCoinDialog";
 import RiderBankDialog from "../../components/dialog/rider/RiderBankDialog";
-
+import string from "../../string";
 import '../../css/modal.css'
 import BlackRiderDialog from "../../components/dialog/rider/BlackRiderDialog";
 import BlackListDialog from "../../components/dialog/rider/BlackListDialog";
@@ -91,6 +91,15 @@ class RiderMain extends Component {
       });
     })
   };
+
+  modifyHandleChange = (value) => {
+    httpPost(httpUrl.updateRider, [], {
+      riderStatus: value
+    }).then((result) => {
+      alert(JSON.stringify(result))
+    });
+  }
+
   //작업 스케줄러
   openTaskSchedulerModal = () => {
     this.setState({ taskSchedulerOpen: true });
@@ -259,7 +268,9 @@ class RiderMain extends Component {
         render:
           (data, row) => (
             <div>
-              <Select defaultValue={data} style={{ width: 68 }}>
+              <Select onChange={
+                value => { this.modifyHandleChange(value); }}
+                defaultValue={data} style={{ width: 68 }}>
                 <Option value={3}>탈퇴</Option>
                 <Option value={2}>중지</Option>
                 <Option value={1}>사용</Option>
@@ -267,18 +278,6 @@ class RiderMain extends Component {
             </div>
           ),
       },
-      /*
-      {
-        title: "작업",
-        className: "table-column-center",
-        render: () =>
-          <div>
-            <Button
-              className="tabBtn surchargeTab"
-              onClick={() => { this.setState({ workTabOpen: true }) }}
-            >작업</Button>
-          </div>
-      },*/
     ];
 
     return (
@@ -286,9 +285,9 @@ class RiderMain extends Component {
         <div className="selectLayout">
           <span className="searchRequirementText">검색조건</span><br></br>
           <Radio.Group className="searchRequirement" onChange={this.onChange} value={this.state.riderStatus}>
-            <Radio value={3}>탈퇴</Radio>
-            <Radio value={2}>중지</Radio>
             <Radio value={1}>사용</Radio>
+            <Radio value={2}>중지</Radio>
+            <Radio value={3}>탈퇴</Radio>
           </Radio.Group>
 
           <Search placeholder="기사명"
