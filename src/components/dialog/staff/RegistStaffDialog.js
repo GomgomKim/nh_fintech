@@ -3,7 +3,6 @@ import {
     Form, Modal, Input, DatePicker, Descriptions, Table,
     Upload, Button, Select, Icon, Radio, Carousel, Text, Checkbox
 } from "antd";
-import { httpGet, httpUrl, httpPost } from "../../../api/httpClient";
 import '../../../css/modal.css';
 import { httpGet, httpUrl, httpDownload, httpPost, httpPut } from '../../../api/httpClient';
 
