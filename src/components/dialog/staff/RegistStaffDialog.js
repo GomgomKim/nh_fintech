@@ -3,6 +3,7 @@ import {
     Form, Modal, Input, DatePicker, Descriptions, Table,
     Upload, Button, Select, Icon, Radio, Carousel, Text, Checkbox
 } from "antd";
+import { httpGet, httpUrl, httpPost } from "../../../api/httpClient";
 import '../../../css/modal.css';
 const Option = Select.Option;
 const FormItem = Form.Item;
@@ -46,6 +47,8 @@ class RegistStaffDialog extends Component {
         });
     };
 
+
+
     render() {
         const { isOpen, close } = this.props;
 
@@ -63,7 +66,7 @@ class RegistStaffDialog extends Component {
                                     <img onClick={close} src={require('../../../img/login/close.png').default} className="surcharge-close" />
 
 
-                                    <Form ref={this.formRef} onFinish={this.handleIdSubmit}>
+                                    <Form ref={this.formRef} onFinish={this.handleSubmit}>
                                         <div className="layout">
                                             <div className="registStaffWrapper">
                                                 <div className="contentBlock">

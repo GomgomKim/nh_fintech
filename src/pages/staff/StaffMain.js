@@ -26,7 +26,7 @@ class StaffMain extends Component {
     this.state = {
       staffStatus: 1,
       workTab: 0,
-      registRiderList: [],
+      registStaffList: [],
       pagination: {
         total: 0,
         current: 1,
@@ -34,20 +34,20 @@ class StaffMain extends Component {
       },
       registStaff: false,
       updateStaff: false,
-      riderLevel: [2],
-      userData: [1],
+      riderLevel: [1, 2],
+      userData: 1,
     };
   }
 
   componentDidMount() {
-    this.getRegistRiderList()
+    this.getRegistStaffList()
   }
 
   onChange = e => {
     // console.log('radio checked', e.target.value);
     this.setState({
       staffStatus: e.target.value,
-    }, () => this.getRegistRiderList());
+    }, () => this.getRegistStaffList());
   };
 
   handleTableChange = (pagination) => {
@@ -60,12 +60,12 @@ class StaffMain extends Component {
     }, () => this.getList());
   };
 
-  getRegistRiderList = () => {
+  getRegistStaffList = () => {
     let pageNum = this.state.pagination.current;
     let riderLevel = this.state.riderLevel;
     let userData = this.state.userData;
 
-    httpGet(httpUrl.registRiderList, [10, pageNum, riderLevel, userData], {}).then((result) => {
+    httpGet(httpUrl.registStaffList, [10, pageNum, riderLevel, userData], {}).then((result) => {
       console.log('## nnbox result=' + JSON.stringify(result, null, 4))
       const pagination = { ...this.state.pagination };
       pagination.current = result.data.currentPage;
