@@ -39,8 +39,6 @@ class CoinTransferDialog extends Component {
 
     render() {
 
-
-
         const { isOpen, close } = this.props;
 
         return (
