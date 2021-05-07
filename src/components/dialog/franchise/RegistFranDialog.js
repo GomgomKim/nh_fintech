@@ -4,6 +4,7 @@ import {
     Upload, Button, Select, Icon, Radio, Carousel, Text, Checkbox
 } from "antd";
 import '../../../css/modal.css';
+import { httpGet, httpUrl, httpDownload, httpPost, httpPut } from '../../../api/httpClient';
 import { comma } from "../../../lib/util/numberUtil";
 // import { formatDate } from "../../../lib/util/dateUtil";
 const Option = Select.Option;
@@ -23,6 +24,96 @@ class RegistFranDialog extends Component {
         // this.getList()
     }
 
+
+    handleSubmit = () => {
+        httpPost(httpUrl.registFranchise, [], {
+            // belongBranch: this.formRef.current.getFieldsValue().belongBranch,
+            franchiseName: this.formRef.current.getFieldsValue().franchiseName,
+            businessNumber: this.formRef.current.getFieldsValue().businessNumber,
+            ceoName: this.formRef.current.getFieldsValue().ceoName,
+            franEmail: this.formRef.current.getFieldsValue().franEmail,
+            phoneNumber: this.formRef.current.getFieldsValue().phoneNumber,
+            birth: this.formRef.current.getFieldsValue().birth,
+            franMemo: this.formRef.current.getFieldsValue().franMemo,
+            franAddress: this.formRef.current.getFieldsValue().franAddress,
+            franAddressSub: this.formRef.current.getFieldsValue().franAddressSub,
+            payType: this.formRef.current.getFieldsValue().payType,
+            callAmount: this.formRef.current.getFieldsValue().callAmount,
+            changePwd: this.formRef.current.getFieldsValue().changePwd,
+            minusDate: this.formRef.current.getFieldsValue().minusDate,
+            managePrice: this.formRef.current.getFieldsValue().managePrice,
+            addr1: "서울시 강남구 선릉로 717",
+            addr2: "3층",
+            addr3: "서울시 강남구 논현동 111-22",
+            bank: "한국은행",
+            bankAccount: "111-111-1111",
+            basicDeliveryPrice: 3000,
+            birthday: "1999-01-01",
+            usinessNumber: "111-22-33333",
+            chargeDate: 99,
+            corporateNumber: "123456-1111111",
+            depositor: "냠냠박스",
+            dues: 10000,
+            duesAutoChargeEnabled: true,
+            email: "string",
+            frName: "강남식당",
+            frPhone: "02-111-2222",
+            frStatus: 1,
+            id: "knowend33",
+            idx: 0,
+            latitude: 37.51878733378206,
+            longitude: 127.04047646959147,
+            memo: "string",
+            ncash: 0,
+            ncashPayEnabled: true,
+            password: 1111,
+            phone: "010-4456-6668",
+            prepayAccount: "111-222-333333",
+            prepayBank: "냠냠은행",
+            prepayDepositor: "냠냠박스",
+            profileImage: "string",
+            recommenderIdx: 0,
+            securityPassword: "string",
+            tidNormal: "sejflskejfo",
+            tidNormalRate: 50,
+            tidPrepay: "kjepsoiefjlk",
+            userGroup: 1,
+            userStatus: 1,
+            userType: 1,
+            vaccountBank: "string",
+            vaccountDepositor: "string",
+            vaccountNumber: "string",
+            withdrawLimit: 100000,
+            withdrawPassword: 1111
+        }).then((result) => {
+            console.log("## result: " + JSON.stringify(result, null, 4));
+            alert('가맹점 등록이 완료되었습니다.');
+            this.props.close()
+            // this.props.history.push('/staff/StaffMain')
+        }).catch(e => {
+            alert('에러가 발생하였습니다 다시 시도해주세요.')
+        });
+    }
+
+    // handleClear = () => {
+    //     this.formRef.current.setFieldsValue({
+    //         belongBranch: undefined,
+    //         franchiseName: undefined,
+    //         businessNumber: undefined,
+    //         franEmail: undefined,
+    //         callNumber: undefined,
+    //         birth: undefined,
+    //         franMemo: undefined,
+    //         franAddress: undefined,
+    //         franAddressSub: undefined,
+    //         payType: undefined,
+    //         callAmount: undefined,
+    //         changePwd: undefined,
+    //         minusDate: undefined,
+    //         managePrice: undefined,
+    //     });
+    // };
+
     render() {
 
         const { isOpen, close } = this.props;
@@ -41,13 +132,13 @@ class RegistFranDialog extends Component {
                                     <img onClick={close} src={require('../../../img/login/close.png').default} className="surcharge-close" />
 
 
-                                    <Form ref={this.formIdRef} onFinish={this.handleIdSubmit}>
+                                    <Form ref={this.formRef} onFinish={this.handleSubmit}>
                                         <div className="registFranLayout">
                                             <div className="registFranWrapper">
                                                 <div className="registFranTitle">
                                                     기본정보
                                                 </div>
-                                                <div className="contentBlock">
+                                                {/* <div className="contentBlock">
                                                     <div className="mainTitle">
                                                         소속지사
                                                     </div>
@@ -61,7 +152,7 @@ class RegistFranDialog extends Component {
                                                             <Option value={2}>김포2지점 / 플러스김포</Option>
                                                         </Select>
                                                     </FormItem>
-                                                </div>
+                                                </div> */}
                                                 <div className="contentBlock">
                                                     <div className="mainTitle">
                                                         가맹점명
@@ -110,7 +201,7 @@ class RegistFranDialog extends Component {
                                                         </Input>
                                                     </FormItem>
                                                 </div>
-                                                <div className="contentBlock">
+                                                {/* <div className="contentBlock">
                                                     <div className="mainTitle">
                                                         전화번호
                                                     </div>
@@ -121,7 +212,7 @@ class RegistFranDialog extends Component {
                                                         <Input placeholder="전화번호를 입력해 주세요." className="override-input">
                                                         </Input>
                                                     </FormItem>
-                                                </div>
+                                                </div> */}
                                                 <div className="contentBlock">
                                                     <div className="mainTitle">
                                                         휴대전화
@@ -265,6 +356,7 @@ class RegistFranDialog extends Component {
                                                         <Input placeholder="관리비 입력" className="override-input sub">
                                                         </Input>
                                                     </FormItem>
+
                                                     <Button type="primary" htmlType="submit" className="callTab">
                                                         등록하기
                                                     </Button>
