@@ -1,9 +1,7 @@
-import { Form, DatePicker, Input, Checkbox, Select, Table, Button, Descriptions } from 'antd';
+import { Form, DatePicker, Input, Select, Table, Button, Descriptions } from 'antd';
 import Icon from '@ant-design/icons';
 import moment from 'moment';
 import React, { Component } from 'react';
-import { httpGet, httpUrl, httpDownload, httpPost, httpPut } from '../../api/httpClient';
-import SelectBox from "../../components/input/SelectBox";
 import TimeDelayDialog from "../../components/dialog/order/TimeDelayDialog";
 import FilteringDialog from "../../components/dialog/order/FilteringDialog";
 import RegistCallDialog from "../../components/dialog/order/RegistCallDialog";
@@ -244,10 +242,6 @@ class ReceptionStatus extends Component {
             <Option value={2}>완료</Option>
           </Select></div>
 
-        // render: (data) => <div>{data == -1 ? "취소"
-        //   : data == 0 ? "픽업"
-        //     : data == 1 ? "배차"
-        //       : data == 2 ? "완료" : "-"}</div>
       },
       {
         title: "음식준비",
@@ -316,19 +310,7 @@ class ReceptionStatus extends Component {
         className: "table-column-center",
         render: (data) => <div>{data == 0 ? "선결" : "카드"}</div>
       },
-      /*
-      {
-        title: "작업",
-        className: "table-column-center",
-        render: () =>
-          <div>
-            <Button
-              className="tabBtn surchargeTab"
-              onClick={() => { this.setState({ workTab: 1 }) }}
-            >작업</Button>
-          </div>
-      },
-      */
+
     ];
 
     const expandedRowRender = (record) => {
@@ -416,7 +398,7 @@ class ReceptionStatus extends Component {
             icon={<FieldTimeOutlined />}
             className="tabBtn delayTab"
             onClick={() => { this.setState({ delayTab: 1 }, this.openTimeDelayModal) }}
-          >10분지연</Button>
+          >호출설정</Button>
 
           <Button
             icon={<EnvironmentFilled />}
