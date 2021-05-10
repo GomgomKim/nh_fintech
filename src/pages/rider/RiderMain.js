@@ -7,10 +7,12 @@ import TaskSchedulerDialog from "../../components/dialog/rider/TaskSchedulerDial
 import RegistRiderDialog from "../../components/dialog/rider/RegistRiderDialog";
 import RiderCoinDialog from "../../components/dialog/rider/RiderCoinDialog";
 import RiderBankDialog from "../../components/dialog/rider/RiderBankDialog";
+import UpdatePasswordDialog from "../../components/dialog/rider/UpdatePasswordDialog";
 import '../../css/modal.css'
 import BlackRiderDialog from "../../components/dialog/rider/BlackRiderDialog";
 import BlackListDialog from "../../components/dialog/rider/BlackListDialog";
 import { comma } from "../../lib/util/numberUtil";
+import UpdateRiderDialog from '../../components/dialog/rider/UpdateRiderDialog';
 
 const FormItem = Form.Item;
 const Ditems = Descriptions.Item;
@@ -18,6 +20,8 @@ const Option = Select.Option;
 
 const Search = Input.Search;
 const RangePicker = DatePicker.RangePicker;
+
+const riderLevelText = ["none", "라이더", "부팀장", "팀장", "부본부장", "본부장", "부지점장", "지점장", "부센터장", "센터장"];
 
 class RiderMain extends Component {
   constructor(props) {
@@ -33,6 +37,9 @@ class RiderMain extends Component {
       riderCoinOpen: false, // 기사코인충전
       riderBankOpen: false, //기사 입출금내역
       workTabOpen: false, // 작업
+      riderUpdateOpen: false, // 기사 수정
+      updatePasswordOpen: false, // 출금 비밀번호
+      blackListOpen: false, // 블라인드
       pagination: {
         total: 0,
         current: 1,
@@ -119,6 +126,14 @@ class RiderMain extends Component {
     this.setState({ registRiderOpen: false });
   }
 
+  //기사 수정 
+  openUpdateRiderModal = () => {
+    this.setState({ riderUpdateOpen: true });
+  }
+  closeUpdateRiderModal = () => {
+    this.setState({ riderUpdateOpen: false });
+  }
+
   //코인충전
   openRiderCoinModal = () => {
     this.setState({ riderCoinOpen: true });
@@ -133,6 +148,22 @@ class RiderMain extends Component {
   }
   closeRiderBankModal = () => {
     this.setState({ riderBankOpen: false });
+  }
+
+  //출금비밀번호
+  openUpdatePasswordModal = () => {
+    this.setState({ updatePasswordOpen: true });
+  }
+  closeUpdatePasswordModal = () => {
+    this.setState({ updatePasswordOpen: false });
+  }
+
+  //블라인드
+  openBlackListModal = () => {
+    this.setState({ blackListOpen: true });
+  }
+  closeBlackListModal = () => {
+    this.setState({ blackListOpen: false });
   }
 
   render() {
@@ -154,10 +185,11 @@ class RiderMain extends Component {
         width: "200px",
       },
       {
-        title: "이메일",
-        dataIndex: "email",
+        title: "직급",
+        dataIndex: "riderLevel",
         className: "table-column-center",
         width: "200px",
+        render: (data) => <div>{riderLevelText[data]}</div>
       },
       {
         title: "기사그룹",
@@ -169,53 +201,29 @@ class RiderMain extends Component {
               : data == "D" ? "D" : "-"}</div>
       },
       {
-        title: "전화번호",
-        dataIndex: "phone",
+        title: "출금비밀번호",
         className: "table-column-center",
+        render: () =>
+          <div>
+            <UpdatePasswordDialog isOpen={this.state.updatePasswordOpen} close={this.closeUpdatePasswordModal} />
+            <Button
+              className="tabBtn surchargeTab"
+              onClick={this.openUpdatePasswordModal}
+            >초기화</Button>
+          </div>
       },
       {
-        title: "잔액",
-        dataIndex: "ncash",
+        title: "블라인드",
         className: "table-column-center",
-        render: (data) => <div>{comma(data)}</div>
+        render: () =>
+          <div>
+            <BlackListDialog isOpen={this.state.blackListOpen} close={this.closeBlackListModal} />
+            <Button
+              className="tabBtn surchargeTab"
+              onClick={this.openBlackListModal}
+            >블라인드</Button>
+          </div>
       },
-      {
-        title: "메모",
-        dataIndex: "memo",
-        className: "table-column-center",
-      },
-      // {
-      //   title: "차량번호",
-      //   dataIndex: "carIdx",
-      //   className: "table-column-center",
-      // },
-      {
-        title: "수수료",
-        dataIndex: "deliveryPriceFeeAmount",
-        className: "table-column-center",
-        render: (data) => <div>{comma(data)}</div>
-      },
-      {
-        title: "은행명",
-        dataIndex: "bank",
-        className: "table-column-center",
-      },
-      {
-        title: "예금주",
-        dataIndex: "riderName",
-        className: "table-column-center",
-      },
-      {
-        title: "계좌번호",
-        dataIndex: "bankAccount",
-        className: "table-column-center",
-      },
-      // {
-      //   title: "원천징수",
-      //   dataIndex: "withholdingTax",
-      //   className: "table-column-center",
-      //   render: (data) => <div>{data == 0 ? "OFF" : "ON"}</div>
-      // },
       {
         title: "충전",
         className: "table-column-center",
@@ -229,7 +237,7 @@ class RiderMain extends Component {
           </div>
       },
       {
-        title: "입출금내역",
+        title: "출금내역",
         className: "table-column-center",
         render: () =>
           <div>
@@ -257,7 +265,81 @@ class RiderMain extends Component {
             </div>
           ),
       },
+      {
+        title: "수정",
+        className: "table-column-center",
+        render: () =>
+          <div>
+            <UpdateRiderDialog isOpen={this.state.riderUpdateOpen} close={this.closeUpdateRiderModal} />
+            <Button
+              className="tabBtn surchargeTab"
+              onClick={this.openUpdateRiderModal}
+            >수정</Button>
+          </div>
+      },
     ];
+
+    const expandedRowRender = (record) => {
+      const dropColumns = [
+        {
+          title: "최소보유잔액",
+          dataIndex: "minCashAmount",
+          className: "table-column-center",
+          render: (data) => <div>{comma(data)}</div>
+        },
+        {
+          title: "전화번호",
+          dataIndex: "phone",
+          className: "table-column-center",
+        },
+        {
+          title: "잔액",
+          dataIndex: "ncash",
+          className: "table-column-center",
+          render: (data) => <div>{comma(data)}</div>
+        },
+        {
+          title: "메모",
+          dataIndex: "memo",
+          className: "table-column-center",
+        },
+        {
+          title: "수수료",
+          dataIndex: "deliveryPriceFeeAmount",
+          className: "table-column-center",
+          render: (data) => <div>{comma(data)}</div>
+        },
+        {
+          title: "수수료방식",
+          dataIndex: "deliveryPriceFeeAmount",
+          className: "table-column-center",
+          render: (data) => <div>{data == 1 ? "정량" : "정률"}</div>
+        },
+        {
+          title: "은행명",
+          dataIndex: "bank",
+          className: "table-column-center",
+        },
+        {
+          title: "예금주",
+          dataIndex: "riderName",
+          className: "table-column-center",
+        },
+        {
+          title: "계좌번호",
+          dataIndex: "bankAccount",
+          className: "table-column-center",
+        },
+      ];
+      return (
+        <Table
+          rowKey={(record) => `record: ${record.idx}`}
+          columns={dropColumns}
+          dataSource={[record]}
+          pagination={false}
+        />
+      );
+    }
 
     return (
       <div className="">
@@ -298,10 +380,12 @@ class RiderMain extends Component {
 
         <div className="dataTableLayout">
           <Table
+            rowKey={(record) => record}
             dataSource={this.state.results}
             columns={columns}
             pagination={this.state.pagination}
             onChange={this.handleTableChange}
+            expandedRowRender={expandedRowRender}
           />
         </div>
       </div>
