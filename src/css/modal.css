@@ -2171,11 +2171,9 @@ background-color: #1a1a1a;
 
 
 .clickRowStyl{
-  background-color: #fddc00;
+  background-color: #40a9ff;
 }
-.ant-table-tbody>.clickRowStyl:hover>td{
-  background-color: #00b4ed;
-}
+
 
 
 /*기사 등록*/

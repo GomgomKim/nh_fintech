@@ -36,17 +36,17 @@ class RiderGroupDialog extends Component {
         }, () => this.getList());
     };
 
-    onClickRow = (record) => {
+    onClickRow = (index) => {
         return {
             onClick: () => {
                 this.setState({
-                    rowId: record.id,
+                    rowId: index,
                 });
             },
         };
     }
-    setRowClassName = (record) => {
-        return record.id === this.state.rowId ? 'clickRowStyl' : '';
+    setRowClassName = (index) => {
+        return index === this.state.rowId ? 'clickRowStyl' : '';
     }
 
 
