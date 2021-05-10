@@ -1,18 +1,22 @@
 import React, { Component } from "react";
 import '../../../css/modal.css';
-import { Form, DatePicker, Input, Checkbox, Select, Table, Button, Descriptions } from 'antd';
+import { Form, Input, Table, Button } from 'antd';
 import { formatDate } from "../../../lib/util/dateUtil";
 import "../../../css/order.css";
 import { comma } from "../../../lib/util/numberUtil";
-import MapContainer from "./MapContainer";
-import { httpGet, httpUrl, httpDownload, httpPost, httpPut } from '../../../api/httpClient';
+// import MapContainer from "./MapContainer";
+import { httpGet, httpUrl} from '../../../api/httpClient';
+import { NaverMap, Marker, Polyline } from 'react-naver-maps'
+
 
 
 const FormItem = Form.Item;
+
 // const { Option } = Radio;
 const Search = Input.Search;
 const riderLevelText = ["none", "라이더", "부팀장", "팀장", "부본부장", "본부장", "부지점장", "지점장", "부센터장", "센터장"];
-
+const lat = 37.518663;
+const lng = 127.040514;
 
 class MapControlDialog extends Component {
     constructor(props) {
@@ -38,6 +42,7 @@ class MapControlDialog extends Component {
             results: [],
             riderStatus: 1,
             riderLevel: [1],
+            userData: 1,
         }
     }
 
@@ -143,9 +148,21 @@ class MapControlDialog extends Component {
         }, () => this.getList());
     };
 
+    handleRiderListTableChange = (pagination) => {
+      console.log(pagination)
+      const pager = { ...this.state.paginationRiderList };
+      pager.current = pagination.current;
+      pager.pageSize = pagination.pageSize
+      this.setState({
+        paginationRiderList: pager,
+      }, () => this.getList());
+  };
+
       
     render() {
         const { isOpen, close } = this.props;
+        const navermaps = window.naver.maps;
+
         const columns = [
             {
               title: "상태",
@@ -310,14 +327,38 @@ class MapControlDialog extends Component {
                                         </div>
 
                                         <div className="mapLayout">
-                                            <MapContainer />
+                                            {/* <MapContainer/> */}
+                                            <NaverMap
+                                                className='map-navermap'
+                                                defaultZoom={14}
+                                                center={{ lat: lat, lng: lng }}
+                                            >
+                                            <Marker
+                                                position={new navermaps.LatLng(lat, lng)}
+                                                icon={require('../../../img/login/map/marker_rider.png').default}
+                                            />
+                                            <Marker
+                                                position={new navermaps.LatLng(this.props.frLat, this.props.frLng)}
+                                                icon={require('../../../img/login/map/marker_target.png').default}
+                                            />
+                                            <Polyline 
+                                              path={[
+                                                new navermaps.LatLng(this.props.frLat, this.props.frLng),
+                                                new navermaps.LatLng(lat, lng),
+                                              ]}
+                                              // clickable // 사용자 인터랙션을 받기 위해 clickable을 true로 설정합니다.
+                                              strokeColor={'#5347AA'}
+                                              strokeWeight={5}        
+                                            />
+                                            </NaverMap>
+                                        </div>
+                                        <div className="riderListInMapControl">
                                             <Table
-                                                className="riderListInMapControl"
                                                 rowKey={(record) => record}
                                                 dataSource={this.state.results}
                                                 columns={columns_riderList}
                                                 pagination={this.state.paginationRiderList}
-                                                onChange={this.handleTableChange}
+                                                onChange={this.handleRiderListTableChange}
                                             />
                                         </div>
                                     </div>

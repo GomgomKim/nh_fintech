@@ -1,20 +1,17 @@
 import React, { Component } from "react";
 import {
-    Form, Input, DatePicker, Table, Button, Select,
+    Form, Table, Button, Tag
 } from "antd";
 import '../../../css/modal.css';
 import AddRiderDialog from "./AddRiderDialog";
 import RegistRiderGroupDialog from "./RegistRiderGroupDialog";
 const FormItem = Form.Item;
-const Option = Select.Option;
-
-const Search = Input.Search;
-const RangePicker = DatePicker.RangePicker;
 
 class TaskGroupDialog extends Component {
     constructor(props) {
         super(props)
         this.state = {
+            visible: true,
             list: [],
             pagination: {
                 total: 0,
@@ -46,6 +43,18 @@ class TaskGroupDialog extends Component {
             {
                 groupName: 'A',
                 data: [
+                    {
+                        branchName: '플러스김포',
+                        riderName: '김기연',
+                    },
+                    {
+                        branchName: '플러스김포',
+                        riderName: '김종국',
+                    },
+                    {
+                        branchName: '플러스김포',
+                        riderName: '성시경',
+                    },
                     {
                         branchName: '플러스김포',
                         riderName: '김기연',
@@ -131,31 +140,29 @@ class TaskGroupDialog extends Component {
                         >추가</Button>
                     </div>
             },
-            {
-                title: "기사목록",
-                className: "table-column-center",
-                render: () =>
-                    <div>
-                        <AddRiderDialog isOpen={this.state.addRiderOpen} close={this.closeAddRiderModal} />
-                        <Button
-                            className="tabBtn"
-                            onClick={() => { this.openAddRiderModal() }}
-                        >상세</Button>
-                    </div>
-            },
         ];
 
 
         const expandedRowRender = (record) => {
             const dropColumns = [
                 {
-                    title: "기사명",
                     dataIndex: "riderName",
                     className: "table-column-center",
+                    render: (data) =>
+                        <>
+                            <Tag
+                                style={{ fontSize: 14, padding: 5 }}
+                                closable
+                                onClose={() => this.setState({ visible: false })}
+                            >
+                                {data}
+                            </Tag>
+                        </>
                 },
             ];
             return (
                 <Table
+                    className="subTable"
                     rowKey={(record) => `record: ${record.idx}`}
                     columns={dropColumns}
                     dataSource={record.data}

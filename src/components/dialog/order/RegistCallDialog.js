@@ -1,16 +1,18 @@
 import React, { Component } from "react";
 import {
-    Form, Modal, Input, DatePicker, Descriptions, Table,
-    Upload, Button, Select, Icon, Radio, Carousel, Text,
+    Form, Input, DatePicker, Button, Select, Radio
 } from "antd";
 import '../../../css/modal.css';
-import { comma } from "../../../lib/util/numberUtil";
-import MapContainer from "./MapContainer";
+// import MapContainer from "./MapContainer";
+import { NaverMap, Marker, Polyline } from 'react-naver-maps'
+
 
 const Option = Select.Option;
 const FormItem = Form.Item;
 const { RangePicker } = DatePicker;
 const Search = Input.Search;
+const lat = 37.518663;
+const lng = 127.040514;
 
 class RegistCallDialog extends Component {
     constructor(props) {
@@ -25,6 +27,8 @@ class RegistCallDialog extends Component {
     render() {
 
         const { isOpen, close } = this.props;
+        const navermaps = window.naver.maps;
+
 
         return (
             <React.Fragment>
@@ -186,7 +190,30 @@ class RegistCallDialog extends Component {
                                             </div>
 
                                             <div className="mapLayout" id="myMap">
-                                                <MapContainer />
+                                                {/* <MapContainer /> */}
+                                                <NaverMap
+                                                    className='map-navermap'
+                                                    defaultZoom={14}
+                                                    center={{ lat: lat, lng: lng }}
+                                                >
+                                                <Marker
+                                                    position={new navermaps.LatLng(lat, lng)}
+                                                    icon={require('../../../img/login/map/marker_rider.png').default}
+                                                />
+                                                <Marker
+                                                    position={new navermaps.LatLng(this.props.frLat, this.props.frLng)}
+                                                    icon={require('../../../img/login/map/marker_target.png').default}
+                                                />
+                                                <Polyline 
+                                                path={[
+                                                    new navermaps.LatLng(this.props.frLat, this.props.frLng),
+                                                    new navermaps.LatLng(lat, lng),
+                                                ]}
+                                                // clickable // 사용자 인터랙션을 받기 위해 clickable을 true로 설정합니다.
+                                                strokeColor={'#5347AA'}
+                                                strokeWeight={5}        
+                                                />
+                                                </NaverMap>
                                             </div>
 
 
