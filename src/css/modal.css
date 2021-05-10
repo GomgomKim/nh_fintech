@@ -597,8 +597,8 @@
     vertical-align: middle;
   }
   .contentBlock .override-select.time{
-    margin-left: 1px;
-    width: 112px;
+    margin-left: 20px;
+    width: 201px;
     font-size: 15px;
     display: inline-block;
     vertical-align: middle;
@@ -642,7 +642,7 @@
   .registCallLayout .mapLayout{
     margin-top: 20px;
     width:1000px;
-    height:600px;
+    height:400px;
 }
   .registCallLayout #myMap{
     width:895px;
@@ -1984,8 +1984,9 @@
   display:inline-block;
 }
 
-
-.riderGroup-ftline-02 .riderSubtext, .riderGroup-ftline-03 .riderSubtext, .riderGroup-ftline-04 .riderSubtext {
+.riderGroup-ftline-02 .riderSubtext, 
+.riderGroup-ftline-03 .riderSubtext, 
+.riderGroup-ftline-04 .riderSubtext {
   margin-left:20px;
 }
 
