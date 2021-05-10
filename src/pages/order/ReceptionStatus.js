@@ -1,5 +1,4 @@
-import { Form, DatePicker, Input, Select, Table, Button, Descriptions, Checkbox } from 'antd';
-import Icon from '@ant-design/icons';
+import { DatePicker, Input, Select, Table, Button, Checkbox } from 'antd';
 import moment from 'moment';
 import React, { Component } from 'react';
 import TimeDelayDialog from "../../components/dialog/order/TimeDelayDialog";
@@ -15,13 +14,9 @@ import {
   FieldTimeOutlined, DollarCircleOutlined, EnvironmentFilled,
   PhoneOutlined, MessageOutlined, NotificationFilled, FilterOutlined
 } from '@ant-design/icons';
-// import MapControl from "./MapControl";
 
-const FormItem = Form.Item;
-const Ditems = Descriptions.Item;
 const Option = Select.Option;
 const Search = Input.Search;
-const RangePicker = DatePicker.RangePicker;
 const dateFormat = 'YYYY/MM/DD';
 const today = new Date();
 const rowClassName = ['', 'table-red', 'table-blue', 'table-white', 'table-gray', 'table-gray']
