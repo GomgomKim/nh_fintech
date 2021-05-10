@@ -5,7 +5,7 @@ import {
 } from "antd";
 import '../../../css/modal.css';
 import { comma } from "../../../lib/util/numberUtil";
-import MapContainer from "../../../pages/order/MapContainer";
+import MapContainer from "./MapContainer";
 
 const Option = Select.Option;
 const FormItem = Form.Item;

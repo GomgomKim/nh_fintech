@@ -131,7 +131,89 @@
   font-size:18px!important;
 }
 
+/* 지도 관제 dialog */
+.map-Dialog{
+  position:fixed;
+  top:50%;
+  left:50%;
+  transform: translate(-50%, -50%);
+  width:100%;
+  height: 100%;
+  z-index: 2;
+}
 
+.map-content{
+  padding:30px;
+  background-color:white;
+  height: 100%;
+}
+
+.map-title{
+  font-size:25px;
+  font-weight:bold;
+  line-height:30px;
+  /* width:300px; */
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.map-close{
+    width:30px;
+    cursor:pointer;
+    background-color:#fddc00;
+    /* display: inline-block; */
+    float: right;
+    padding:8px;
+}
+
+.map-inner { 
+    width: 100%; 
+    overflow-y: scroll; 
+    border: 1px solid #ccc; 
+    padding: 20px; 
+    text-align: left;
+    margin-top:20px;
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}
+
+.map-inner::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera*/
+}
+
+
+.map-box .ant-checkbox{
+  top: 0em!important;
+}
+.map-box .ant-checkbox-wrapper{
+  display:table;
+}
+
+.map-box .ant-checkbox-wrapper >span{
+  display:table-cell;
+  text-align: center;
+}
+
+.map-box > div {
+  width:120px;
+  height:52px;
+  float:left;
+  /* margin:20px; */
+}
+
+.map-box .ant-checkbox-inner{
+  width:45px;
+  height:45px;
+}
+.map-box .ant-checkbox-inner::after {
+  width: 25px;
+  height: 25px;
+}
+
+.map-box .ant-checkbox + span{
+  font-size:20px;
+  vertical-align: middle;
+}
 
 /* 기사 추가 dialog */
 .addRider-Dialog-overlay{
