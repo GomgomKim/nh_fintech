@@ -480,7 +480,7 @@ class ReceptionStatus extends Component {
             }}
           />
 
-          <Checkbox className="tabCheck">완료조회</Checkbox>
+          <Checkbox className="tabCheck"> <span className="span1">완료조회</span></Checkbox>
 
 
 

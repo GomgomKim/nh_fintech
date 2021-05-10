@@ -27,7 +27,7 @@ class RiderMain extends Component {
       riderLevel: [1],
       userData: 1,
       riderName: "",
-      taskSchedulerOpen: false, // 작업 스케줄러
+      taskSchedulerOpen: false, // 일차감
       riderGroupOpen: false, // 기사 그룹 관리
       registRiderOpen: false, // 기사등록
       riderCoinOpen: false, // 기사코인충전
@@ -95,7 +95,7 @@ class RiderMain extends Component {
     });
   }
 
-  //작업 스케줄러
+  //일차감
   openTaskSchedulerModal = () => {
     this.setState({ taskSchedulerOpen: true });
   }
@@ -291,7 +291,7 @@ class RiderMain extends Component {
           <TaskSchedulerDialog isOpen={this.state.taskSchedulerOpen} close={this.closeTaskSchedulerModal} />
           <Button className="riderManageBtn"
             onClick={this.openTaskSchedulerModal}
-          >작업 스케줄러</Button>
+          >일차감</Button>
 
 
         </div>
