@@ -484,9 +484,6 @@ class ReceptionStatus extends Component {
 
           <Checkbox></Checkbox><span className="span1">완료조회</span>
 
-
-
-
         </div>
 
 
