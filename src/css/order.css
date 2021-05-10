@@ -68,3 +68,17 @@
       width:60px;
       height:32px;
   }  */
+
+.table-red{
+    background-color: red;
+}
+.table-gray{
+    background-color: gray;
+}
+.table-blue{
+    background-color: rgb(0, 0, 255, 0.6);;
+    /* color: white; */
+}
+.table-white{
+    background-color: white;
+}
