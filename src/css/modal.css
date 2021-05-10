@@ -2166,6 +2166,18 @@ background-color: #1a1a1a;
 .ant-checkbox-checked:checked .ant-table-row-level-0:active{
   background-color: #fddc00;
 }
+
+/*기사 그룹관리 라인활성화*/
+
+
+.clickRowStyl{
+  background-color: #fddc00;
+}
+.ant-table-tbody>.clickRowStyl:hover>td{
+  background-color: #00b4ed;
+}
+
+
 /*기사 등록*/
 .registRider-Dialog{
   position: fixed;

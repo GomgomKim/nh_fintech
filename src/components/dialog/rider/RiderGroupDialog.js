@@ -36,6 +36,19 @@ class RiderGroupDialog extends Component {
         }, () => this.getList());
     };
 
+    onClickRow = (record) => {
+        return {
+            onClick: () => {
+                this.setState({
+                    rowId: record.id,
+                });
+            },
+        };
+    }
+    setRowClassName = (record) => {
+        return record.id === this.state.rowId ? 'clickRowStyl' : '';
+    }
+
 
     getList = () => {
         var list = [
@@ -145,6 +158,9 @@ class RiderGroupDialog extends Component {
                                                     columns={columns}
                                                     // pagination={this.state.pagination}
                                                     onChange={this.handleTableChange}
+                                                    onRow={this.onClickRow}
+                                                    rowClassName={this.setRowClassName}
+
                                                 />
                                             </div>
 
