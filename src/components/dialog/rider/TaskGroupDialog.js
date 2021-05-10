@@ -1,15 +1,11 @@
 import React, { Component } from "react";
 import {
-    Form, Input, DatePicker, Table, Button, Select, Tag
+    Form, Table, Button, Tag
 } from "antd";
 import '../../../css/modal.css';
 import AddRiderDialog from "./AddRiderDialog";
 import RegistRiderGroupDialog from "./RegistRiderGroupDialog";
 const FormItem = Form.Item;
-const Option = Select.Option;
-
-const Search = Input.Search;
-const RangePicker = DatePicker.RangePicker;
 
 class TaskGroupDialog extends Component {
     constructor(props) {
