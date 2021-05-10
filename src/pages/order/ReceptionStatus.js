@@ -391,7 +391,7 @@ class ReceptionStatus extends Component {
     }
 
     return (
-      <div className="">
+      <div className="reception-box">
         <div className="btnLayout">
           <TimeDelayDialog isOpen={this.state.timeDelayOpen} close={this.closeTimeDelayModal} />
           <Button
@@ -480,7 +480,9 @@ class ReceptionStatus extends Component {
             }}
           />
 
-          <Checkbox className="tabCheck"> <span className="span1">완료조회</span></Checkbox>
+
+          <Checkbox></Checkbox><span className="span1">완료조회</span>
+
 
 
 
