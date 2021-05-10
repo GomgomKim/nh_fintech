@@ -169,7 +169,12 @@ const httpUrl = {
 
   //직원등록
   registStaffList: "/rider/list?pageSize=%s&pageNum=%s&riderLevels=%s&userStatus=%s",
-  staffUpdate: "/rider/update"
+  staffUpdate: "/rider/update",
+
+  // 가맹점 관리
+  registFranchise: "/fr/create",
+  franchiseList: "/fr/list",
+  franchiseUpdate: "/fr/update"
 
 };
 
