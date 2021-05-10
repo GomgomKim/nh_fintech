@@ -49,6 +49,7 @@ class ReceptionStatus extends Component {
       addCallOpen: false,
       filteringOpen: false,
       noticeOpen: false,
+      activeIndex: -1,
     };
   }
 
@@ -223,6 +224,11 @@ class ReceptionStatus extends Component {
   closeNoticeModal = () => {
     this.setState({ noticeOpen: false });
   }
+
+  // setClassName = (record, index) => {
+  //   console.log(record, index)
+  //   return index == this.state.activeIndex ? 'table-red' : "";
+  // }
 
   render() {
     const columns = [
@@ -487,7 +493,6 @@ class ReceptionStatus extends Component {
         </div>
 
 
-
         <div className="dataTableLayout">
           <Table
             rowKey={(record) => record}
@@ -497,6 +502,17 @@ class ReceptionStatus extends Component {
             pagination={this.state.pagination}
             onChange={this.handleTableChange}
             expandedRowRender={expandedRowRender}
+            // onRow={(record, index) => ({
+            //   onClick: () => {
+            //     // console.log(record.pickupStatus)
+            //     // console.log(record, index)
+            //     // rowClassName: 'table-red'
+            //     this.setState({
+            //       activeIndex: index,
+            //     })
+            //   }
+            // })}
+            // rowClassName ={this.setClassName}
           />
         </div>
       </div>

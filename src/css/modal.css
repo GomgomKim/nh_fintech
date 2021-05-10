@@ -178,7 +178,12 @@
 }
 
 .map-inner::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Opera*/
+  /* display: none; Chrome, Safari, Opera */
+}
+
+.riderListInMapControl{
+  width: 40%;
+  float: right;
 }
 
 

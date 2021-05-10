@@ -310,7 +310,7 @@ class MapControlDialog extends Component {
                                         </div>
 
                                         <div className="mapLayout">
-                                            <MapContainer />
+                                            <MapContainer/>
                                             <Table
                                                 className="riderListInMapControl"
                                                 rowKey={(record) => record}
