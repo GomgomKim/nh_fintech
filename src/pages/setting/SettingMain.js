@@ -30,7 +30,7 @@ class SettingMain extends Component {
               <td>현재 비밀번호</td>
               <div className="inputBox inputBox-pwChange sub">
                 <FormItem>
-                  <Input />
+                  <Input placeholder="현재 비밀번호를 입력해주세요" />
                 </FormItem>
               </div>
             </div>
@@ -38,7 +38,7 @@ class SettingMain extends Component {
               <td>새 비밀번호</td>
               <div className="inputBox inputBox-pwChange sub">
                 <FormItem>
-                  <Input />
+                  <Input placeholder="새로운 비밀번호를 입력해주세요" />
                 </FormItem>
               </div>
             </div>
@@ -46,7 +46,7 @@ class SettingMain extends Component {
               <td>새 비밀번호 확인</td>
               <div className="inputBox inputBox-pwChange sub">
                 <FormItem>
-                  <Input />
+                  <Input placeholder="새로운 비밀번호를 다시 입력해주세요" />
                 </FormItem>
               </div>
             </div>

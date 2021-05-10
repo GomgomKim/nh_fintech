@@ -4,9 +4,11 @@ import {
     Upload, Button, Select, Icon, Radio, Carousel, Text, Checkbox
 } from "antd";
 import '../../../css/rider.css';
+import SelectBox from '../../../components/input/SelectBox';
 import moment from 'moment';
 import { comma } from "../../../lib/util/numberUtil";
 import { formatDate } from "../../../lib/util/dateUtil";
+import string from "../../../string";
 
 const FormItem = Form.Item;
 const Ditems = Descriptions.Item;
@@ -23,6 +25,7 @@ class SearchAddressDialog extends Component {
         super(props)
         this.state = {
             selectedDate: today,
+            list: [],
             pagination: {
                 total: 0,
                 current: 1,
@@ -33,18 +36,62 @@ class SearchAddressDialog extends Component {
         this.formRef = React.createRef();
     }
     componentDidMount() {
-        // this.getList()
-        // console.log(this.props)
+        this.getList()
     }
 
     setDate = (date) => {
         console.log(date)
     }
+    handleTableChange = (pagination) => {
+        console.log(pagination)
+        const pager = { ...this.state.pagination };
+        pager.current = pagination.current;
+        pager.pageSize = pagination.pageSize
+        this.setState({
+            pagination: pager,
+        }, () => this.getList());
+    };
 
 
+    getList = () => {
+        var list = [
+            {
+                idx: 5,
+                KindOfAddress: '오피스텔',
+                addressList: '잠실 푸르지오시티 106동',
+                delete: this.state.blocked
+            },
+            {
+                idx: 4,
+                KindOfAddress: '오피스텔',
+                addressList: '잠실 푸르지오시티 106동',
+                delete: this.state.blocked
+            },
+            {
+                idx: 3,
+                KindOfAddress: '오피스텔',
+                addressList: '잠실 푸르지오시티 106동',
+                delete: this.state.blocked
+            },
+            {
+                idx: 2,
+                KindOfAddress: '아파트',
+                addressList: '잠실 푸르지오시티 106동',
+                delete: this.state.blocked
+            },
+            {
+                idx: 1,
+                KindOfAddress: '아파트',
+                addressList: '잠실 푸르지오시티 106동',
+                delete: this.state.blocked
+            },
 
+        ];
+        this.setState({
+            list: list,
+        });
+    }
     render() {
-        const { isOpen, close } = this.props;
 
 
         const onChange = (e) => {
@@ -60,23 +107,33 @@ class SearchAddressDialog extends Component {
                 title: "종류",
                 dataIndex: "KindOfAddress",
                 className: "table-column-center",
-                width: "15%",
+                width: "20%",
             },
             {
                 title: "등록 주소 목록",
                 dataIndex: "addressList",
                 className: "table-column-center",
-                width: "70%",
+                width: "60%",
             },
             {
                 title: "삭제",
                 dataIndex: "delete",
                 className: "table-column-center",
-                width: "15%",
+                width: "20%",
+                render:
+                    (data) => (
+                        <div className="pwChange-btn">
+                            <Button
+                                className="tabBtn"
+                                onClick={() => { }}
+                            >삭제</Button>
+                        </div>
+                    ),
             },
 
         ];
 
+        const { isOpen, close } = this.props;
 
         return (
             <React.Fragment>
@@ -121,10 +178,10 @@ class SearchAddressDialog extends Component {
 
                                             <div className="dataTableLayout-01">
                                                 <Table
-                                                    dataSource={this.state.results}
+                                                    dataSource={this.state.list}
                                                     columns={columns}
                                                     pagination={this.state.pagination}
-                                                    onChange={this.state.Status}
+                                                    onChange={this.state.handleTableChange}
                                                 />
                                             </div>
 
