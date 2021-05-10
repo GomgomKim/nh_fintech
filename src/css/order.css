@@ -76,13 +76,13 @@
   }
 
 .table-red{
-    background-color: #fed8d6;
+    background-color: red;
 }
 .table-gray{
     background-color: gray;
 }
 .table-blue{
-    background-color: #d6edfe;
+    background-color: blue;
     /* color: white; */
 }
 .table-white{

@@ -1756,7 +1756,7 @@
   top:50%;
   left:50%;
   transform: translate(-50%, -50%);
-  width:650px;
+  /* width:650px; */
   z-index: 2;
 }
 
@@ -1799,13 +1799,20 @@
   display: none; /* Chrome, Safari, Opera*/
 }
 
+.taskGroup-inner .subTable .ant-table-thead{
+  /* display: none; */
+}
+.taskGroup-inner .subTable .ant-table-cell{
+  padding: 13px;
+}
+.taskGroup-inner .subTable .ant-table-row{
+  display: inline-block;
+}
 
 
 .taskGroup-btn{
   display:inline-block;
-  width:1098px;
 }
-
 
 .taskGroup-btn-01{
   text-align:center;
@@ -1914,7 +1921,7 @@
     padding: 20px; 
     text-align: left;
     margin-top:5px;
-    height:360px;
+    height:340px;
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
 }
@@ -2176,11 +2183,9 @@ background-color: #1a1a1a;
 
 
 .clickRowStyl{
-  background-color: #fddc00;
+  background-color: #40a9ff;
 }
-.ant-table-tbody>.clickRowStyl:hover>td{
-  background-color: #00b4ed;
-}
+
 
 
 /*기사 등록*/

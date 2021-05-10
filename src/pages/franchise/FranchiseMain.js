@@ -5,18 +5,12 @@ import RegistFranDialog from "../../components/dialog/franchise/RegistFranDialog
 import CoinTransferDialog from "../../components/dialog/franchise/CoinTransferDialog";
 import ModifyFranDialog from "../../components/dialog/franchise/ModifyFranDialog";
 import SearchAddressDialog from "../../components/dialog/franchise/SearchAddressDialog";
-import { formatDate } from "../../lib/util/dateUtil";
-import string from "../../string";
 import "../../css/franchise.css";
 import { comma } from "../../lib/util/numberUtil";
 import { BankOutlined } from '@ant-design/icons';
 const Option = Select.Option;
 const FormItem = Form.Item;
-const Ditems = Descriptions.Item;
 const Search = Input.Search;
-const RangePicker = DatePicker.RangePicker;
-const dateFormat = 'YYYY/MM/DD';
-const today = new Date();
 
 class FranchiseMain extends Component {
   constructor(props) {
@@ -179,7 +173,7 @@ class FranchiseMain extends Component {
         title: "전화번호",
         dataIndex: "frPhone",
         className: "table-column-center",
-        // render: (data) => <div>{'010-1234-5678'}</div>
+        render: (data) => <div>{'010-1234-5678'}</div>
       },
       {
         title: "주소",
@@ -307,13 +301,13 @@ class FranchiseMain extends Component {
           title: "VAN",
           dataIndex: "van",
           className: "table-column-center",
-          render: (data) => <div>{'123341245'}</div>
+          render: (data) => <div>{'1233451245'}</div>
         },
         {
           title: "PG",
           dataIndex: "businessCard",
           className: "table-column-center",
-          render: (data) => <div>{'PG'}</div>
+          render: (data) => <div>{'1233451245'}</div>
         },
         {
           title: "PG 사용비율",
