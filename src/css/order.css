@@ -12,6 +12,7 @@
 
 .selectLayout{
     margin-top: 20px !important;
+    display: inline-block;
 }
 
 .filterTab{
@@ -44,27 +45,41 @@
     height:600px;
 }
 
-.tabCheck{
- width:200px;
- height:32px;
- margin-left: 20px!important;
- vertical-align: top;
-}
-  .tabCheck .ant-checkbox-inner{
-    width:30px;
-    height:30px;
+
+.reception-box .ant-checkbox-inner{
+    width:25px;
+    height:25px;
   }
-  .tabCheck .ant-checkbox-inner::after {
+  .reception-box .ant-checkbox-inner::after {
     width: 15px;
     height: 15px;
+  }  
+
+  .reception-box .ant-checkbox-wrapper{
+    height:32px;
+    margin-left: 20px!important;
+    vertical-align: top;
+  } 
+  
+  .reception-box .span1{
+    font-size:16px;
+    margin-left:10px;
+
   }
 
-  .tabCheck .ant-checkbox + span{
-    font-size:16px; 
- }
-/* 
-  .tabCheck span .span1{
-      margin-top: -10px!important;
-      width:60px;
-      height:32px;
-  }  */
+.table-red{
+    background-color: red;
+}
+.table-gray{
+    background-color: gray;
+}
+.table-blue{
+    background-color: blue;
+    /* color: white; */
+}
+.table-white{
+    background-color: white;
+}
+
+
+  

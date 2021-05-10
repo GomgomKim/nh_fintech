@@ -1,13 +1,11 @@
 import React, { Component } from "react";
 import {
-    Form, Modal, Input, DatePicker, Descriptions, Table,
-    Upload, Button, Select, Icon, Radio, Carousel, Text, Checkbox
+    Form, Table, Button, Select, Checkbox
 } from "antd";
 import TaskGroupDialog from "../rider/TaskGroupDialog";
 import TaskWorkDialog from "../rider/TaskWorkDialog";
 import '../../../css/modal.css';
 import { comma } from "../../../lib/util/numberUtil";
-// import { formatDate } from "../../lib/util/dateUtil";
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -176,11 +174,6 @@ class TaskSchedulerDialog extends Component {
                 className: "table-column-center",
                 render: (data) => <div>{comma(data)}</div>
             },
-            // {
-            //     title: "등록일",
-            //     dataIndex: "registerDate",
-            //     className: "table-column-center",
-            // },
             {
                 title: "등록자",
                 dataIndex: "registerName",
@@ -237,7 +230,7 @@ class TaskSchedulerDialog extends Component {
                                                 <Button
                                                     className="tabBtn taskScheduler-btn"
                                                     onClick={this.openTaskWorkModal}
-                                                >작업등록</Button>
+                                                >일차감 등록</Button>
                                             </div>
                                             <div className="taskScheduler-btn-03">
                                                 <Button

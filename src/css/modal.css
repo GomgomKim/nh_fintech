@@ -131,7 +131,89 @@
   font-size:18px!important;
 }
 
+/* 지도 관제 dialog */
+.map-Dialog{
+  position:fixed;
+  top:50%;
+  left:50%;
+  transform: translate(-50%, -50%);
+  width:100%;
+  height: 100%;
+  z-index: 2;
+}
 
+.map-content{
+  padding:30px;
+  background-color:white;
+  height: 100%;
+}
+
+.map-title{
+  font-size:25px;
+  font-weight:bold;
+  line-height:30px;
+  /* width:300px; */
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.map-close{
+    width:30px;
+    cursor:pointer;
+    background-color:#fddc00;
+    /* display: inline-block; */
+    float: right;
+    padding:8px;
+}
+
+.map-inner { 
+    width: 100%; 
+    overflow-y: scroll; 
+    border: 1px solid #ccc; 
+    padding: 20px; 
+    text-align: left;
+    margin-top:20px;
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}
+
+.map-inner::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera*/
+}
+
+
+.map-box .ant-checkbox{
+  top: 0em!important;
+}
+.map-box .ant-checkbox-wrapper{
+  display:table;
+}
+
+.map-box .ant-checkbox-wrapper >span{
+  display:table-cell;
+  text-align: center;
+}
+
+.map-box > div {
+  width:120px;
+  height:52px;
+  float:left;
+  /* margin:20px; */
+}
+
+.map-box .ant-checkbox-inner{
+  width:45px;
+  height:45px;
+}
+.map-box .ant-checkbox-inner::after {
+  width: 25px;
+  height: 25px;
+}
+
+.map-box .ant-checkbox + span{
+  font-size:20px;
+  vertical-align: middle;
+}
 
 /* 기사 추가 dialog */
 .addRider-Dialog-overlay{
@@ -846,7 +928,7 @@
   top:50%;
   left:50%;
   transform: translate(-50%, -50%);
-  width:500px;
+  width:800px;
   z-index: 2;
 }
 
@@ -883,7 +965,6 @@
 }
 .coinTran-inner { 
     width: 100%; 
-    height: 200px; 
     overflow-y: scroll; 
     border: 1px solid #ccc; 
     padding: 20px; 
@@ -897,6 +978,7 @@
 }
 .coinTran-list{
   text-align: center;
+  margin-top: 10px;
 }
 .coinTran-list td{
   width:100px;
@@ -909,12 +991,11 @@
 .coinTran-list .twl{
   width:400px;
   display:inline-block;
-  height:60px;
   line-height:30px;
 }
 .coinTran-btn-01{
   margin-top:20px;
-  text-align:right;
+  text-align:center;
 }
 .coinTran-btn-01 .tabBtn{
   margin:0px!important;
@@ -932,8 +1013,24 @@
 }
 .coinTran-list .inputBox-coinTran.sub .ant-input{
   margin-left: -20px;
-  width:300px;
+  width:200px;
+  text-align: right;
 }
+.coinTran-title-02{
+  font-size: 15px;
+  font-family: NotoSansBold;
+}
+/* 코인이체모달-antd 수정 */
+
+.coinTran-Dialog .coinTran-inner .dataTableLayout{
+  margin: 0;
+}
+
+.coinTran-Dialog .ant-table-content thead th {
+  background-color: #222 !important;
+  padding: 10px;
+}
+
 
 
 /* 가맹점수정 dialog */
@@ -1326,7 +1423,7 @@
 
 .timeDelay-box{
   width:610px;
-  height:330px;
+  height:460px;
   margin:16px 32px;
   text-align:center;
   line-height:130px;
@@ -1349,6 +1446,14 @@
 
 .timeDelay-box .timeDelay-box-10, .timeDelay-box-11, .timeDelay-box-12 {
   margin-bottom:0px!important;
+}
+
+.timeDelay-place1{
+  text-align: center;
+  display:inline-block;
+}
+.timeDelay-place1 .ant-select:not(.ant-select-customize-input) .ant-select-selector{
+  width:220px;
 }
 
 
@@ -1811,7 +1916,7 @@
     padding: 20px; 
     text-align: left;
     margin-top:5px;
-    height:360px;
+    height:340px;
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
 }
@@ -1934,7 +2039,7 @@
 
 .riderGroup-inner { 
     width: 100%; 
-    height: 675px; 
+    height: 610px; 
     overflow-y: scroll; 
     border: 1px solid #ccc; 
     padding: 20px; 
@@ -1948,30 +2053,6 @@
   display: none; /* Chrome, Safari, Opera*/
 }
 
-.riderGroup-place1{
-  text-align: center;
-  display:inline-block;
-  margin:0px 30px;
-}
-.riderGroup-place1 .ant-select:not(.ant-select-customize-input) .ant-select-selector{
-  width:220px;
-  /* margin: 0px 30px; */
-}
-
-.riderGroup-content .selectBlock{
-  margin-top:20px; 
-}
-.riderGroup-inner .selectBlock .ant-form-item{
-  margin-bottom: 0px;
-}
-.riderGroup-inner .selectBlock .selectItem{
-  display: inline-block;
-}
-/* .selectBlock .antd-select{
-  margin-left: 20px;
-  width: 250px;
-  font-size: 15px;
-} */
 
 .riderGroup-inner .listBlock{
   margin-top: 20px;
@@ -1989,12 +2070,12 @@
 }
 
 .riderGroup-ftline{
-  border:1px solid;
   line-height:30px;
   font-size:18px;
-  border:1px solid #ccc;
-  height:250px;
+  height:215px;
   padding:20px;
+  margin-top:10px;
+  /* border:1px solid #ccc; */
 }
 
 .riderGroup-ftline td{
@@ -2044,35 +2125,18 @@
   text-align:center;
   padding: 0px!important;
 }
-/* .riderGroup-btn-02{
-  vertical-align: middle;
-  margin-left:20px;
-  display:inline-block;
-} 
-
-.riderGroup-btn-02 > button{
-  height:40px;
-  width:130px;
-  font-size:20px;
-  background:#222;
-  color:#fff;
-  font-size:20px;
-  padding: 0px!important;
-  display:inline-block;
-} */
 
 
-
-/*기사그룹관리 임시 input*/
-
-.riderGroup-ftline-01, .riderGroup-ftline-03, .riderGroup-ftline-04 {
+.riderGroup-ftline-01, .riderGroup-ftline-05 {
   display:inline-block;
   }
 
-.riderGroup-ftline-03 .ant-input, .riderGroup-ftline-04 .ant-input {
+ .riderGroup-ftline-05 .ant-input {
     margin-left:20px;
     }
-
+.riderGroup-ftline-05 td{
+  margin-left:35.15px;
+}
 .riderGroup-ftline .inputBox .ant-form-item{
   margin-bottom: 0px;
   display: inline-block;
@@ -2097,6 +2161,27 @@
 .riderGroup-ftline .inputBox-rider.sub .ant-input {
   margin-left: -10px;
 }
+
+.riderGroup-inner .listBlock .ant-pagination{
+display:none;
+}
+
+.riderGroup-inner .ant-table-row-level-0-active{
+background-color: #1a1a1a;
+}
+
+.ant-checkbox-checked:checked .ant-table-row-level-0:active{
+  background-color: #fddc00;
+}
+
+/*기사 그룹관리 라인활성화*/
+
+
+.clickRowStyl{
+  background-color: #40a9ff;
+}
+
+
 
 /*기사 등록*/
 .registRider-Dialog{
@@ -2390,3 +2475,138 @@ width:240px!important;
   width:240px!important;
   height:200px;
   }
+
+  /* 환경설정 */
+
+.pwChange-root{
+  padding: 24px;
+}
+.pwChange-Layout{
+  border: 1px solid #ccc;
+  padding: 20px;
+  width: 40%;
+  margin: 0 auto;
+}
+.pwChange-title{
+    font-size: 15px;
+    font-family: NotoSansBold;
+    text-align: center;
+    margin-top: 20px;
+ }
+.pwChange-box { 
+    width: 100%; 
+    padding: 20px; 
+    text-align: left;
+    margin-top:5px;
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}  
+.pwChange-list{
+  text-align: center;
+  padding: 5px 0;
+}
+.pwChange-list td{
+  width:110px;
+  font-size:14px;
+  display:inline-block;
+}
+.pwChange-list .twl{
+  width:80px;
+  display:inline-block;
+  height:60px;
+  line-height:30px;
+}
+.inputBox-pwChange input{
+  width: 250px;
+}
+.pwChange-btn{
+  text-align: center;
+  padding: 10px 0;
+}
+
+/* 주소검색관리 */
+
+.serchAddress-Dialog{
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 800px;
+  border-radius: 30px;
+  z-index: 2;
+}
+
+.serchAddress-content{
+  background-color: white;
+  padding:30px;
+  text-align: left;
+  color: #777;
+}
+
+.serchAddress-title{
+  letter-spacing: -1px;
+  font-weight: bold;
+  color: #333;
+  text-align: right;             
+  display: inline-block;
+  font-size: 25px;
+  line-height: 30px;
+}
+
+.serchAddress-close{
+    width:30px;
+    cursor:pointer;
+    background-color:#fddc00;
+    /* display: inline-block; */
+    float: right;
+    padding:8px;
+}
+.serchAddress-Dialog .layout{
+  margin-top: 20px;
+  width: 100%;
+  overflow-y: scroll; 
+  border: 1px solid #ccc; 
+  padding: 20px 20px; 
+  text-align: left;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.serchAddress-Dialog .layout .contentBlock{
+  display: inline-block;
+  line-height: 20px;
+}
+
+.serchAddress-Dialog .layout .contentBlock span{
+   font-size: 18px;
+}
+
+.serchAddress-list{
+  display: inline-block;
+  vertical-align: bottom;
+}
+.serchAddress-list input{
+  width: 400px;
+}
+
+.searchAddress-btn{
+  display: inline-block;
+  vertical-align: bottom;
+}
+
+.searchAddress-btn .ant-btn-primary{
+  background-color: black;
+  border-style: none;
+}
+.serchAddress-searchbox{
+  float: right;
+  margin: 20px 0;
+}
+
+.serchAddress-Dialog .layout .dataTableLayout-01{
+  margin-top: 30px;
+}
+
+.serchAddress-Dialog .ant-table-content thead th {
+  padding: 10px;
+}

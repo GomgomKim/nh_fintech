@@ -1,5 +1,4 @@
-import { Form, DatePicker, Input, Select, Table, Button, Descriptions, Checkbox } from 'antd';
-import Icon from '@ant-design/icons';
+import { DatePicker, Input, Select, Table, Button, Checkbox } from 'antd';
 import moment from 'moment';
 import React, { Component } from 'react';
 import TimeDelayDialog from "../../components/dialog/order/TimeDelayDialog";
@@ -15,15 +14,12 @@ import {
   FieldTimeOutlined, DollarCircleOutlined, EnvironmentFilled,
   PhoneOutlined, MessageOutlined, NotificationFilled, FilterOutlined
 } from '@ant-design/icons';
-// import MapControl from "./MapControl";
 
-const FormItem = Form.Item;
-const Ditems = Descriptions.Item;
 const Option = Select.Option;
 const Search = Input.Search;
-const RangePicker = DatePicker.RangePicker;
 const dateFormat = 'YYYY/MM/DD';
 const today = new Date();
+const rowClassName = ['', 'table-red', 'table-blue', 'table-white', 'table-gray', 'table-gray']
 
 class ReceptionStatus extends Component {
   constructor(props) {
@@ -120,7 +116,7 @@ class ReceptionStatus extends Component {
         franchisePhoneNum: '031-1234-5678',
       },
       {
-        pickupStatus: 0,
+        pickupStatus: 2,
         preparationStatus: 1,
         requestTime: '2021-04-21 12:00:00',
         preparationTime: '15분',
@@ -147,7 +143,7 @@ class ReceptionStatus extends Component {
         franchisePhoneNum: '031-1234-5678',
       },
       {
-        pickupStatus: 0,
+        pickupStatus: 3,
         preparationStatus: 1,
         requestTime: '2021-04-21 12:00:00',
         preparationTime: '10분',
@@ -235,11 +231,16 @@ class ReceptionStatus extends Component {
         dataIndex: "pickupStatus",
         className: "table-column-center",
         render: (data) => <div>
-          <Select defaultValue={data} style={{ width: 68 }}>
-            <Option value={-1}>취소</Option>
-            <Option value={0}>픽업</Option>
-            <Option value={1}>배차</Option>
-            <Option value={2}>완료</Option>
+          <Select defaultValue={data} 
+              onChange={(value) => {
+                // console.log(value)
+
+            }}>
+            <Option value={1}>대기중</Option>
+            <Option value={2}>픽업중</Option>
+            <Option value={3}>배달중</Option>
+            <Option value={4}>완료</Option>
+            <Option value={5}>취소</Option>
           </Select></div>
 
       },
@@ -391,7 +392,7 @@ class ReceptionStatus extends Component {
     }
 
     return (
-      <div className="">
+      <div className="reception-box">
         <div className="btnLayout">
           <TimeDelayDialog isOpen={this.state.timeDelayOpen} close={this.closeTimeDelayModal} />
           <Button
@@ -480,9 +481,8 @@ class ReceptionStatus extends Component {
             }}
           />
 
-          <Checkbox className="tabCheck"> <span className="span1">완료조회</span></Checkbox>
 
-
+          <Checkbox></Checkbox><span className="span1">완료조회</span>
 
         </div>
 
@@ -491,6 +491,7 @@ class ReceptionStatus extends Component {
         <div className="dataTableLayout">
           <Table
             rowKey={(record) => record}
+            rowClassName={(record) => rowClassName[record.pickupStatus]}
             dataSource={this.state.list}
             columns={columns}
             pagination={this.state.pagination}
