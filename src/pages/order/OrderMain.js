@@ -7,6 +7,7 @@ import "../../css/order.css";
 import "../../css/common.css";
 import MapControl from "./MapControl"
 import ReceptionStatus from "./ReceptionStatus"
+import MapControlDialog from "../../components/dialog/order/MapControlDialog"
 
 const FormItem = Form.Item;
 const Ditems = Descriptions.Item;
@@ -20,33 +21,29 @@ class OrderMain extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      mapTab: 0,
+      mapControlOpen: false,
     };
   }
 
   componentDidMount() {
   }
 
-  openMapControl = () => {
-    // console.log("open")
-    this.setState({
-      mapTab: 1
-    });
+  //기사 등록 
+  openMapControlModal = () => {
+    this.setState({ mapControlOpen: true });
   }
-
-  closeMapControl = () => {
-    // console.log("open")
-    this.setState({
-      mapTab: 0
-    });
+  closeMapControlModal = () => {
+    this.setState({ mapControlOpen: false });
   }
 
   render() {
     return (
       <div className="">
-        {this.state.mapTab == 0 ?
-          <ReceptionStatus openMapControl={this.openMapControl} /> :
-          <MapControl closeMapControl={this.closeMapControl} />}
+        {this.state.mapControlOpen ?
+          <MapControlDialog 
+            isOpen={this.state.mapControlOpen} close={this.closeMapControlModal}
+            closeMapControl={this.closeMapControlModal} /> :
+          <ReceptionStatus openMapControl={this.openMapControlModal} />}
       </div>
     )
   }

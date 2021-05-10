@@ -1,9 +1,6 @@
 import { Form, DatePicker, Input, Checkbox, Select, Table, Button, Radio, Descriptions } from 'antd';
-import Icon from '@ant-design/icons';
-import moment from 'moment';
 import React, { Component } from 'react';
-import { httpGet, httpUrl, httpDownload, httpPost, httpPut } from '../../api/httpClient';
-import SelectBox from "../../components/input/SelectBox";
+import { httpUrl, httpPost } from '../../api/httpClient';
 import RegistFranDialog from "../../components/dialog/franchise/RegistFranDialog";
 import CoinTransferDialog from "../../components/dialog/franchise/CoinTransferDialog";
 import ModifyFranDialog from "../../components/dialog/franchise/ModifyFranDialog";
@@ -160,52 +157,45 @@ class FranchiseMain extends Component {
         title: "지사명",
         dataIndex: "branchName",
         className: "table-column-center",
+        render: (data) => <div>{'김포1지점'}</div>
       },
       {
         title: "가맹점명",
-        dataIndex: "franchiseName",
-        className: "table-column-center",
-      },
-      {
-        title: "사업자번호",
-        dataIndex: "businessNum",
+        dataIndex: "frName",
         className: "table-column-center",
       },
       {
         title: "대표자명",
         dataIndex: "ceoName",
         className: "table-column-center",
+        render: (data) => <div>{'홍길동'}</div>
+      },
+      {
+        title: "사업자번호",
+        dataIndex: "businessNumber",
+        className: "table-column-center",
       },
       {
         title: "전화번호",
-        dataIndex: "callNum",
+        dataIndex: "frPhone",
         className: "table-column-center",
-      },
-      {
-        title: "휴대전화",
-        dataIndex: "phoneNum",
-        className: "table-column-center",
+        // render: (data) => <div>{'010-1234-5678'}</div>
       },
       {
         title: "주소",
-        dataIndex: "address",
+        dataIndex: "addr1",
         className: "table-column-center",
+        render: (data, row) => <div>{row.addr1 + '' + row.addr2}</div>
       },
       {
         title: "코인잔액",
-        dataIndex: "balanceCoin",
+        dataIndex: "ncash",
         className: "table-column-center",
         render: (data) => <div>{comma(data)}</div>
       },
       {
-        title: "배달료 지급방법",
-        dataIndex: "delPayType",
-        className: "table-column-center",
-        render: (data) => <div>{data == 0 ? "코인" : "코인(VAT)"}</div>
-      },
-      {
         title: "기본배달요금",
-        dataIndex: "delPrice",
+        dataIndex: "basicDeliveryPrice",
         className: "table-column-center",
         render: (data) => <div>{comma(data)}</div>
       },
@@ -233,6 +223,18 @@ class FranchiseMain extends Component {
               className="tabBtn surchargeTab"
               onClick={this.openCoinTransferModal}
             >코인이체</Button>
+          </div>
+      },
+      {
+        title: "블라인드",
+        className: "table-column-center",
+        render: () =>
+          <div>
+            <RegistFranDialog isOpen={this.state.addFranchiseOpen} close={this.closeAddFranchiseModal} />
+            <Button
+              className="tabBtn surchargeTab"
+            // onClick={}
+            >블라인드</Button>
           </div>
       },
       {
@@ -278,21 +280,22 @@ class FranchiseMain extends Component {
     const expandedRowRender = (record) => {
       const dropColumns = [
         {
-          title: "월회비 사용여부",
-          dataIndex: "membershipUse",
+          title: "월회비 최초납부일",
+          dataIndex: "membershipDate",
           className: "table-column-center",
-          render: (data) => <div>{data == 0 ? "사용안함" : "사용함"}</div>
+          render: (data) => <div>{'2021-04-29'}</div>
         },
         {
           title: "적용타입",
           dataIndex: "applyType",
           className: "table-column-center",
+          render: (data) => <div>{'적용'}</div>
         },
         {
           title: "월회비",
           dataIndex: "membershipFee",
           className: "table-column-center",
-          render: (data) => <div>{comma(data)}</div>
+          render: (data) => <div>{'100,000'}</div>
         },
         {
           title: "카드가맹상태",
@@ -304,26 +307,19 @@ class FranchiseMain extends Component {
           title: "VAN",
           dataIndex: "van",
           className: "table-column-center",
+          render: (data) => <div>{'123341245'}</div>
         },
         {
-          title: "카드_사업자번호",
+          title: "PG",
           dataIndex: "businessCard",
           className: "table-column-center",
+          render: (data) => <div>{'PG'}</div>
         },
         {
-          title: "카드_사업주",
+          title: "PG 사용비율",
           dataIndex: "businessCardName",
           className: "table-column-center",
-        },
-        {
-          title: "카드_가맹점명",
-          dataIndex: "businessCardFran",
-          className: "table-column-center",
-        },
-        {
-          title: "이메일",
-          dataIndex: "businessEmail",
-          className: "table-column-center",
+          render: (data) => <div>{'50%'}</div>
         },
         {
           title: "메모",
@@ -331,9 +327,10 @@ class FranchiseMain extends Component {
           className: "table-column-center",
         },
         {
-          title: "시작일자",
+          title: "가입일",
           dataIndex: "businessDate",
           className: "table-column-center",
+          render: (data) => <div>{'2021-04-29'}</div>
         },
 
       ];
@@ -383,7 +380,6 @@ class FranchiseMain extends Component {
             className="tabBtn sectionTab"
             onClick={this.openSearchAddressModal}
           >주소검색관리</Button>
-
 
         </div>
 

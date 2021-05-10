@@ -1,13 +1,11 @@
 import React, { Component } from "react";
 import {
-    Form, Modal, Input, DatePicker, Descriptions, Table,
-    Upload, Button, Select, Icon, Radio, Carousel, Text, Checkbox
+    Form, Table, Button, Select, Checkbox
 } from "antd";
 import TaskGroupDialog from "../rider/TaskGroupDialog";
 import TaskWorkDialog from "../rider/TaskWorkDialog";
 import '../../../css/modal.css';
 import { comma } from "../../../lib/util/numberUtil";
-// import { formatDate } from "../../lib/util/dateUtil";
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -135,7 +133,7 @@ class TaskSchedulerDialog extends Component {
             list: list,
         });
     };
-    //작업 스케줄러 그룹설정
+    //일차감 그룹설정
     openTaskGroupModal = () => {
         this.setState({ taskGroupOpen: true });
     }
@@ -143,7 +141,7 @@ class TaskSchedulerDialog extends Component {
         this.setState({ taskGroupOpen: false });
     }
 
-    //작업 스케줄러 작업등록
+    //일차감 작업등록
     openTaskWorkModal = () => {
         this.setState({ taskWorkOpen: true });
     }
@@ -177,26 +175,12 @@ class TaskSchedulerDialog extends Component {
                 render: (data) => <div>{comma(data)}</div>
             },
             {
-                title: "등록일",
-                dataIndex: "registerDate",
-                className: "table-column-center",
-            },
-            {
                 title: "등록자",
                 dataIndex: "registerName",
                 className: "table-column-center",
 
             },
-            {
-                title: "적용기간",
-                dataIndex: "applyTerm",
-                className: "table-column-center",
-            },
-            {
-                title: "다음실행일",
-                dataIndex: "nextDate",
-                className: "table-column-center",
-            },
+
             {
                 title: "기간제한사용",
                 dataIndex: "limitTimeUse",
@@ -228,7 +212,7 @@ class TaskSchedulerDialog extends Component {
 
                                 <div className="taskScheduler-content">
                                     <div className="taskScheduler-title">
-                                        작업 스케줄러 목록
+                                        일차감 목록
                                     </div>
                                     <img onClick={close} src={require('../../../img/login/close.png').default} className="taskScheduler-close" />
                                     <div className="taskScheduler-inner">
@@ -246,7 +230,7 @@ class TaskSchedulerDialog extends Component {
                                                 <Button
                                                     className="tabBtn taskScheduler-btn"
                                                     onClick={this.openTaskWorkModal}
-                                                >작업등록</Button>
+                                                >일차감</Button>
                                             </div>
                                             <div className="taskScheduler-btn-03">
                                                 <Button

@@ -60,11 +60,11 @@ class TaskWorkDialog extends Component {
 
                                 <div className="taskWork-content">
                                     <div className="taskWork-title">
-                                        작업 스케줄러 작업등록
+                                        일차감 등록
                                     </div>
                                     <img onClick={close} src={require('../../../img/login/close.png').default} className="taskWork-close" />
                                     <div className="taskWork-title-sub">
-                                        작업 스케줄러 정보
+                                        일차감 정보
 
                                     </div>
                                     <div className="taskWork-inner">
@@ -103,32 +103,17 @@ class TaskWorkDialog extends Component {
                                                 </div>
                                             </div>
                                             <div className="twl taskWork-list-04">
-                                                <td>실행타입</td>
+                                                <td>차감금액</td>
                                                 <div className="taskWork-place1">
-                                                    <FormItem
-                                                        style={{ marginBottom: 0, display: 'inline-block', verticalAlign: 'middle' }}
-                                                        name="taskWork-place2"
-                                                    >
-                                                        <Select placeholder="실행타입을 선택해주세요" className="taskWork-select">
-                                                            <Option value={1}>매일</Option>
-                                                            <Option value={2}>매일(월~토)</Option>
-                                                            <Option value={3}>매주일요일</Option>
-                                                            <Option value={3}>매주월요일</Option>
-                                                            <Option value={3}>매주화요일</Option>
-                                                            <Option value={3}>매주수요일</Option>
-                                                            <Option value={3}>매주목요일</Option>
-                                                            <Option value={3}>매주금요일</Option>
-                                                            <Option value={3}>매주토요일</Option>
-                                                            <Option value={3}>매월말일</Option>
-                                                            <Option value={3}>매월1일</Option>
-                                                            <Option value={3}>매월5일</Option>
-                                                            <Option value={3}>매월10일</Option>
-                                                            <Option value={3}>매월15일</Option>
-                                                            <Option value={3}>매월20일</Option>
-                                                            <Option value={3}>매월25일</Option>
-                                                        </Select>
+                                                    <div className="inputBox inputBox-taskWork sub">
+                                                        <FormItem
+                                                            name="riderG"
+                                                            rules={[{ required: true, message: "0건." }]}
+                                                        >
+                                                            <Input />
+                                                        </FormItem>원
+                                                    </div>
 
-                                                    </FormItem>
                                                 </div>
                                                 <div className="twl taskWork-list-05">
                                                     <td>&nbsp;</td>
@@ -140,25 +125,16 @@ class TaskWorkDialog extends Component {
                                                         format={dateFormat}
                                                         onChange={date => this.setState({ selectedDate: date })}
                                                         className="taskWork-datepicker"
-                                                    /><td className="taskWorkSub">부터</td>
+                                                    /><td className="taskWorkSub1">부터</td>
                                                     <DatePicker
                                                         defaultValue={moment(today, dateFormat)}
                                                         format={dateFormat}
                                                         onChange={date => this.setState({ selectedDate: date })}
                                                         className="taskWork-datepicker"
-                                                    /><td className="taskWorkSub">까지</td>
+                                                    /><td className="taskWorkSub1">까지</td>
                                                 </div>
-                                                <div className="twl taskWork-list-06">
-                                                    <td>금액</td>
-                                                    <div className="inputBox inputBox-taskWork sub">
-                                                        <FormItem
-                                                            name="riderG"
-                                                            rules={[{ required: true, message: "0건." }]}
-                                                        >
-                                                            <Input />
-                                                        </FormItem>원
-                                                </div>
-                                                    <div className="taskWork-place1">
+
+                                                {/* <div className="taskWork-place1">
                                                         <FormItem
                                                             style={{ marginBottom: 0, display: 'inline-block', verticalAlign: 'middle' }}
                                                             name="taskWork-place3"
@@ -169,8 +145,8 @@ class TaskWorkDialog extends Component {
                                                             </Select>
 
                                                         </FormItem>
-                                                    </div>
-                                                </div>
+                                                    </div> */}
+
                                             </div>
                                         </div>
 

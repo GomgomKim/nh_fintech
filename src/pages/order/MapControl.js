@@ -6,7 +6,7 @@ import { httpGet, httpUrl, httpDownload, httpPost, httpPut } from '../../api/htt
 import { formatDate } from "../../lib/util/dateUtil";
 import "../../css/order.css";
 import { comma } from "../../lib/util/numberUtil";
-import MapContainer from "./MapContainer";
+import MapContainer from "../../components/dialog/order/MapContainer";
 const FormItem = Form.Item;
 const Ditems = Descriptions.Item;
 
@@ -14,7 +14,6 @@ const Search = Input.Search;
 const RangePicker = DatePicker.RangePicker;
 const dateFormat = 'YYYY/MM/DD';
 const today = new Date();
-
 
 class MapControl extends Component {
   constructor(props) {
@@ -38,8 +37,6 @@ class MapControl extends Component {
     this.getList()
 
   }
-
-
 
   setDate = (date) => {
     console.log(date)

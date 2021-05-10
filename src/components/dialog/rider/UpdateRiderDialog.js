@@ -7,7 +7,7 @@ import { httpUrl, httpPost} from '../../../api/httpClient';
 const Option = Select.Option;
 const FormItem = Form.Item;
 
-class RegistRiderDialog extends Component {
+class UpdateRiderDialog extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -106,7 +106,7 @@ class RegistRiderDialog extends Component {
                             <div className="registRider-Dialog">
                                 <div className="registRider-content">
                                     <div className="registRider-title">
-                                        기사 등록
+                                        기사 정보 수정
                                     </div>
                                     <img onClick={close} src={require('../../../img/login/close.png').default} className="registRider-close" />
 
@@ -313,4 +313,4 @@ class RegistRiderDialog extends Component {
     }
 }
 
-export default (RegistRiderDialog);
+export default (UpdateRiderDialog);

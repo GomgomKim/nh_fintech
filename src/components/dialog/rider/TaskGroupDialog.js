@@ -1,15 +1,10 @@
 import React, { Component } from "react";
 import {
-    Form, Modal, Input, DatePicker, Descriptions, Table,
-    Upload, Button, Select, Icon, Radio, Carousel, Text, Checkbox
+    Form, Input, DatePicker, Table, Button, Select,
 } from "antd";
 import '../../../css/modal.css';
 import AddRiderDialog from "./AddRiderDialog";
 import RegistRiderGroupDialog from "./RegistRiderGroupDialog";
-
-// import { comma } from "../../../lib/util/numberUtil";
-// import { formatDate } from "../../lib/util/dateUtil";
-
 const FormItem = Form.Item;
 const Option = Select.Option;
 
@@ -49,8 +44,7 @@ class TaskGroupDialog extends Component {
     getList = () => {
         var list = [
             {
-                groupName: '대여금 -33000원 배지현',
-                groupType: '기사그룹(기사개별)',
+                groupName: 'A',
                 data: [
                     {
                         branchName: '플러스김포',
@@ -67,8 +61,7 @@ class TaskGroupDialog extends Component {
                 ]
             },
             {
-                groupName: '대여금 -33000원 배지현',
-                groupType: '기사그룹(기사개별)',
+                groupName: 'B',
                 data: [
                     {
                         branchName: '플러스김포',
@@ -77,8 +70,7 @@ class TaskGroupDialog extends Component {
                 ]
             },
             {
-                groupName: '대여금 -33000원 배지현',
-                groupType: '기사그룹(기사개별)',
+                groupName: 'C',
                 data: [
                     {
                         branchName: '플러스김포',
@@ -91,16 +83,10 @@ class TaskGroupDialog extends Component {
                 ]
             },
             {
-                groupName: '대여금 -33000원 배지현',
-                groupType: '기사그룹(기사개별)',
+                groupName: 'D',
             },
             {
-                groupName: '대여금 -33000원 배지현',
-                groupType: '기사그룹(기사개별)',
-            },
-            {
-                groupName: '대여금 -33000원 배지현',
-                groupType: '기사그룹(기사개별)',
+                groupName: 'E',
             },
         ];
         this.setState({
@@ -123,7 +109,7 @@ class TaskGroupDialog extends Component {
     closeRegistRiderGroupModal = () => {
         this.setState({ registRiderGroupOpen: false });
     }
-    
+
 
     render() {
 
@@ -134,47 +120,49 @@ class TaskGroupDialog extends Component {
                 className: "table-column-center",
             },
             {
-                title: "그룹타입",
-                dataIndex: "groupType",
-                className: "table-column-center",
-            },
-            {
                 title: "기사추가",
                 className: "table-column-center",
                 render: () =>
-                  <div>
-                    <AddRiderDialog isOpen={this.state.addRiderOpen} close={this.closeAddRiderModal} />
-                    <Button
-                      className="tabBtn"
-                      onClick={() => { this.openAddRiderModal() }}
-                    >추가</Button>
-                  </div>
+                    <div>
+                        <AddRiderDialog isOpen={this.state.addRiderOpen} close={this.closeAddRiderModal} />
+                        <Button
+                            className="tabBtn"
+                            onClick={() => { this.openAddRiderModal() }}
+                        >추가</Button>
+                    </div>
+            },
+            {
+                title: "기사목록",
+                className: "table-column-center",
+                render: () =>
+                    <div>
+                        <AddRiderDialog isOpen={this.state.addRiderOpen} close={this.closeAddRiderModal} />
+                        <Button
+                            className="tabBtn"
+                            onClick={() => { this.openAddRiderModal() }}
+                        >상세</Button>
+                    </div>
             },
         ];
-  
+
 
         const expandedRowRender = (record) => {
             const dropColumns = [
-              {
-                title: "지사명",
-                dataIndex: "branchName",
-                className: "table-column-center",
-              },
-              {
-                title: "기사명",
-                dataIndex: "riderName",
-                className: "table-column-center",
-              },
+                {
+                    title: "기사명",
+                    dataIndex: "riderName",
+                    className: "table-column-center",
+                },
             ];
             return (
-              <Table
-                rowKey={(record) => `record: ${record.idx}`}
-                columns={dropColumns}
-                dataSource={record.data}
-                pagination={false}
-              />
+                <Table
+                    rowKey={(record) => `record: ${record.idx}`}
+                    columns={dropColumns}
+                    dataSource={record.data}
+                    pagination={false}
+                />
             );
-          }
+        }
 
 
         const { isOpen, close } = this.props;
@@ -189,7 +177,7 @@ class TaskGroupDialog extends Component {
 
                                 <div className="taskGroup-content">
                                     <div className="taskGroup-title">
-                                        작업 스케줄러 그룹관리
+                                        일차감 그룹관리
                                     </div>
                                     <img onClick={close} src={require('../../../img/login/close.png').default} className="taskGroup-close" />
                                     <div className="taskGroup-inner">

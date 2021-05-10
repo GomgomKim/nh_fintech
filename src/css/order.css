@@ -12,6 +12,7 @@
 
 .selectLayout{
     margin-top: 20px !important;
+    display: inline-block;
 }
 
 .filterTab{
@@ -43,3 +44,41 @@
     width:1000px;
     height:600px;
 }
+
+
+.reception-box .ant-checkbox-inner{
+    width:25px;
+    height:25px;
+  }
+  .reception-box .ant-checkbox-inner::after {
+    width: 15px;
+    height: 15px;
+  }  
+
+  .reception-box .ant-checkbox-wrapper{
+    height:32px;
+    margin-left: 20px!important;
+    vertical-align: top;
+  } 
+  
+  .reception-box .span1{
+    font-size:16px;
+    margin-left:10px;
+
+  }
+
+.table-red{
+    background-color: red;
+}
+.table-gray{
+    background-color: gray;
+}
+.table-blue{
+    background-color: rgb(0, 0, 255, 0.6);;
+    /* color: white; */
+}
+.table-white{
+    background-color: white;
+}
+
+  
