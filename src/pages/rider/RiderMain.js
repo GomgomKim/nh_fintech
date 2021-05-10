@@ -1,5 +1,4 @@
 import { Form, DatePicker, Input, Table, Button, Descriptions, Radio, Select } from 'antd';
-import Icon from '@ant-design/icons';
 import React, { Component } from 'react';
 import { httpGet, httpUrl, httpDownload, httpPost, httpPut } from '../../api/httpClient';
 import SelectBox from "../../components/input/SelectBox";
@@ -8,11 +7,9 @@ import TaskSchedulerDialog from "../../components/dialog/rider/TaskSchedulerDial
 import RegistRiderDialog from "../../components/dialog/rider/RegistRiderDialog";
 import RiderCoinDialog from "../../components/dialog/rider/RiderCoinDialog";
 import RiderBankDialog from "../../components/dialog/rider/RiderBankDialog";
-import string from "../../string";
 import '../../css/modal.css'
 import BlackRiderDialog from "../../components/dialog/rider/BlackRiderDialog";
 import BlackListDialog from "../../components/dialog/rider/BlackListDialog";
-import { formatDate } from "../../lib/util/dateUtil";
 import { comma } from "../../lib/util/numberUtil";
 
 const FormItem = Form.Item;
@@ -30,11 +27,9 @@ class RiderMain extends Component {
       riderLevel: [1],
       userData: 1,
       riderName: "",
-      taskSchedulerOpen: false, // 작업 스케줄러
+      taskSchedulerOpen: false, // 일차감
       riderGroupOpen: false, // 기사 그룹 관리
       registRiderOpen: false, // 기사등록
-      blackRiderOpen: false, //기사차단
-      blackListOpen: false, // 기사차단등록
       riderCoinOpen: false, // 기사코인충전
       riderBankOpen: false, //기사 입출금내역
       workTabOpen: false, // 작업
@@ -100,7 +95,7 @@ class RiderMain extends Component {
     });
   }
 
-  //작업 스케줄러
+  //일차감
   openTaskSchedulerModal = () => {
     this.setState({ taskSchedulerOpen: true });
   }
@@ -122,22 +117,6 @@ class RiderMain extends Component {
   }
   closeRegistRiderModal = () => {
     this.setState({ registRiderOpen: false });
-  }
-
-  //기사 차단
-  openBlackRiderModal = () => {
-    this.setState({ blackRiderOpen: true });
-  }
-  closeBlackRiderModal = () => {
-    this.setState({ blackRiderOpen: false });
-  }
-
-  //기사 차단목록
-  openBlackListModal = () => {
-    this.setState({ blackListOpen: true });
-  }
-  closeBlackListModal = () => {
-    this.setState({ blackListOpen: false });
   }
 
   //코인충전
@@ -312,18 +291,8 @@ class RiderMain extends Component {
           <TaskSchedulerDialog isOpen={this.state.taskSchedulerOpen} close={this.closeTaskSchedulerModal} />
           <Button className="riderManageBtn"
             onClick={this.openTaskSchedulerModal}
-          >작업 스케줄러</Button>
+          >일차감</Button>
 
-          <BlackRiderDialog isOpen={this.state.blackRiderOpen} close={this.closeBlackRiderModal} />
-          <Button className="riderManageBtn"
-            onClick={this.openBlackRiderModal}
-          >기사 차단</Button>
-
-
-          <BlackListDialog isOpen={this.state.blackListOpen} close={this.closeBlackListModal} />
-          <Button className="riderManageBtn"
-            onClick={this.openBlackListModal}
-          >기사 차단목록</Button>
 
         </div>
 

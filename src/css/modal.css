@@ -1309,7 +1309,7 @@
 
 .timeDelay-box{
   width:610px;
-  height:460px;
+  height:330px;
   margin:16px 32px;
   text-align:center;
   line-height:130px;
@@ -1332,14 +1332,6 @@
 
 .timeDelay-box .timeDelay-box-10, .timeDelay-box-11, .timeDelay-box-12 {
   margin-bottom:0px!important;
-}
-
-.timeDelay-place1{
-  text-align: center;
-  display:inline-block;
-}
-.timeDelay-place1 .ant-select:not(.ant-select-customize-input) .ant-select-selector{
-  width:220px;
 }
 
 
@@ -1470,9 +1462,7 @@
   display: none; /* Chrome, Safari, Opera*/
 }
 
-.filtering-box{
-  /* width:365px; */
-}
+
 .filtering-box .ant-checkbox{
   top: 0em!important;
 }
@@ -1512,7 +1502,7 @@
 }
 
 /*기사관리*/
-/*작업 스케줄러*/
+/*일차감*/
 
 .taskScheduler-Dialog{
   position:fixed;
@@ -1632,7 +1622,7 @@
   padding: 0px!important;
   display:inline-block;
 }
-/*작업 스케줄러 그룹 설정*/
+/*일차감 그룹 설정*/
 
 .taskGroup-Dialog{
   position:fixed;
@@ -1745,7 +1735,7 @@
   width:550px;
 }
 
-/*작업 스케줄러 작업등록*/
+/*일차감 작업등록*/
 
 .taskWork-Dialog{
   position:fixed;
@@ -1797,7 +1787,7 @@
     padding: 20px; 
     text-align: left;
     margin-top:5px;
-    height:390px;
+    height:360px;
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
 }
@@ -1824,6 +1814,10 @@
   display:inline-block;
   /* border:1px solid blue; */
   
+}
+
+.taskWork-list-05 .taskWorkSub1{
+  width:60px;
 }
 
 
@@ -1871,7 +1865,7 @@
 .taskWork-list-06 .ant-select:not(.ant-select-customize-input) .ant-select-selector{
   margin-left:10px;
 }
-.taskWork-list-06 .inputBox{
+.taskWork-list-04 .inputBox{
   color: #222 !important;;
 }
 .taskWork-list .inputBox-taskWork.sub .ant-input{

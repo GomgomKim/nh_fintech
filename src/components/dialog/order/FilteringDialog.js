@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Form, Button, Input, Checkbox, Select, Radio, Modal } from 'antd';
+import { Form, Checkbox, Radio } from 'antd';
 import '../../../css/modal.css';
 
 const FormItem = Form.Item;
@@ -33,28 +33,26 @@ class FilteringDialog extends Component {
 
                                         <div className="filtering-box">
                                             <div className="filtering-btn-01">
-                                                <Checkbox>접수</Checkbox>
+                                                <Checkbox defaultChecked="checked" >접수</Checkbox>
                                             </div>
-                                            <div className="filtering-btn-02">
-                                                <Checkbox>완료</Checkbox>
-                                            </div>
+
                                             <div className="filtering-btn-03">
-                                                <Checkbox>배차</Checkbox>
+                                                <Checkbox defaultChecked="checked" >현금</Checkbox>
                                             </div>
                                             <div className="filtering-btn-04">
-                                                <Checkbox>현금</Checkbox>
+                                                <Checkbox defaultChecked="checked">배차</Checkbox>
                                             </div>
                                             <div className="filtering-btn-05">
-                                                <Checkbox>픽업</Checkbox>
+                                                <Checkbox defaultChecked="checked">카드</Checkbox>
                                             </div>
                                             <div className="filtering-btn-06">
-                                                <Checkbox>카드</Checkbox>
+                                                <Checkbox defaultChecked="checked">픽업</Checkbox>
                                             </div>
                                             <div className="filtering-btn-07">
-                                                <Checkbox>취소</Checkbox>
+                                                <Checkbox defaultChecked="checked">선결</Checkbox>
                                             </div>
                                             <div className="filtering-btn-08">
-                                                <Checkbox>선결</Checkbox>
+                                                <Checkbox defaultChecked="checked">취소</Checkbox>
                                             </div>
 
 

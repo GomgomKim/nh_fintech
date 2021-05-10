@@ -123,7 +123,7 @@ class TaskGroupDialog extends Component {
     closeRegistRiderGroupModal = () => {
         this.setState({ registRiderGroupOpen: false });
     }
-    
+
 
     render() {
 
@@ -142,39 +142,39 @@ class TaskGroupDialog extends Component {
                 title: "기사추가",
                 className: "table-column-center",
                 render: () =>
-                  <div>
-                    <AddRiderDialog isOpen={this.state.addRiderOpen} close={this.closeAddRiderModal} />
-                    <Button
-                      className="tabBtn"
-                      onClick={() => { this.openAddRiderModal() }}
-                    >추가</Button>
-                  </div>
+                    <div>
+                        <AddRiderDialog isOpen={this.state.addRiderOpen} close={this.closeAddRiderModal} />
+                        <Button
+                            className="tabBtn"
+                            onClick={() => { this.openAddRiderModal() }}
+                        >추가</Button>
+                    </div>
             },
         ];
-  
+
 
         const expandedRowRender = (record) => {
             const dropColumns = [
-              {
-                title: "지사명",
-                dataIndex: "branchName",
-                className: "table-column-center",
-              },
-              {
-                title: "기사명",
-                dataIndex: "riderName",
-                className: "table-column-center",
-              },
+                {
+                    title: "지사명",
+                    dataIndex: "branchName",
+                    className: "table-column-center",
+                },
+                {
+                    title: "기사명",
+                    dataIndex: "riderName",
+                    className: "table-column-center",
+                },
             ];
             return (
-              <Table
-                rowKey={(record) => `record: ${record.idx}`}
-                columns={dropColumns}
-                dataSource={record.data}
-                pagination={false}
-              />
+                <Table
+                    rowKey={(record) => `record: ${record.idx}`}
+                    columns={dropColumns}
+                    dataSource={record.data}
+                    pagination={false}
+                />
             );
-          }
+        }
 
 
         const { isOpen, close } = this.props;
@@ -189,7 +189,7 @@ class TaskGroupDialog extends Component {
 
                                 <div className="taskGroup-content">
                                     <div className="taskGroup-title">
-                                        작업 스케줄러 그룹관리
+                                        일차감 그룹관리
                                     </div>
                                     <img onClick={close} src={require('../../../img/login/close.png').default} className="taskGroup-close" />
                                     <div className="taskGroup-inner">

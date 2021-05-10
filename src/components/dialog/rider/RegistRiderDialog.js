@@ -23,6 +23,8 @@ class RegistRiderDialog extends Component {
                 pageSize: 5,
             },
             staffAuth: 1,
+            riderLevelSelected: false,
+            feeManner: 0,
         };
         this.formRef = React.createRef();
     }
@@ -55,7 +57,7 @@ class RegistRiderDialog extends Component {
             depositor: "냠냠박스",
             userType: 1,
             userGroup: 1,
-            riderLevel: 1,
+            riderLevel: this.formRef.current.getFieldsValue().riderLevel,
         }).then((result) => {
             console.log("## result: " + JSON.stringify(result, null, 4));
             alert('직원 등록이 완료되었습니다.');
@@ -81,6 +83,21 @@ class RegistRiderDialog extends Component {
             deliveryPriceFeeAmount: undefined,
         });
     };
+
+    handleChangeRiderLevel = (value) => {
+        // console.log(`selected ${value}`);
+        if (value == 1){
+            this.setState({ riderLevelSelected: true });
+        } else{
+            this.setState({ riderLevelSelected: false });
+        }
+    }
+
+    onChangFeeManner = (e) => {
+        console.log(`selected ${e.target.value}`);
+        this.setState({ feeManner: e.target.value });
+    }
+    
 
     render() {
         const { isOpen, close } = this.props;
@@ -126,12 +143,50 @@ class RegistRiderDialog extends Component {
                                                         className="selectItem"
                                                     >
                                                         <Select placeholder="그룹을 선택해주세요." className="override-select branch">
-                                                            <Option value={0}>A</Option>
-                                                            <Option value={1}>B</Option>
-                                                            <Option value={2}>C</Option>
+                                                            <Option value={1}>A</Option>
+                                                            <Option value={2}>B</Option>
+                                                            <Option value={3}>C</Option>
+                                                            <Option value={4}>D</Option>
+                                                            <Option value={5}>E</Option>
                                                         </Select>
                                                     </FormItem>
                                                 </div>
+                                                <div className="contentBlock">
+                                                    <div className="mainTitle">
+                                                        직급
+                                                    </div>
+                                                    <FormItem
+                                                        name="riderLevel"
+                                                        className="selectItem"
+                                                    >
+                                                        <Select placeholder="직급을 선택해주세요." onChange={this.handleChangeRiderLevel} className="override-select branch" >
+                                                            <Option value={1}>라이더</Option>
+                                                            <Option value={2}>부팀장</Option>
+                                                            <Option value={3}>팀장</Option>
+                                                            <Option value={4}>부본부장</Option>
+                                                            <Option value={5}>본부장</Option>
+                                                            <Option value={6}>부지점장</Option>
+                                                            <Option value={7}>지점장</Option>
+                                                            <Option value={8}>부센터장</Option>
+                                                            <Option value={9}>센터장</Option>
+                                                        </Select>
+                                                    </FormItem>
+                                                </div>
+                                                {this.state.riderLevelSelected &&
+                                                    <div className="contentBlock">
+                                                        <div className="mainTitle">
+                                                            소속팀장
+                                                        </div>
+                                                        <FormItem
+                                                            name="teamManager"
+                                                            className="selectItem"
+                                                        >
+                                                            <Input placeholder="팀장명을 입력해 주세요." className="override-input">
+                                                            </Input>
+                                                        </FormItem>
+                                                    </div>
+                                                }
+                                                
                                                 <div className="contentBlock">
                                                     <div className="mainTitle">
                                                         기사명
@@ -218,11 +273,26 @@ class RegistRiderDialog extends Component {
                                                 </div>
                                                 <div className="contentBlock">
                                                     <div className="mainTitle mainTitle-sub">
-                                                        원천징수
+                                                        수수료방식
                                                     </div>
                                                     <div className="registRiderCheck">
-                                                        <Checkbox></Checkbox>
+                                                    <Radio.Group onChange={this.onChangFeeManner} value={this.state.feeManner}>
+                                                        <Radio value={1}>정량</Radio>
+                                                        <Radio value={2}>정률</Radio>
+                                                    </Radio.Group>
                                                     </div>
+                                                </div>
+                                                <div className="contentBlock">
+                                                    <div className="mainTitle">
+                                                        최소보유잔액
+                                                    </div>
+                                                    <FormItem
+                                                        name="minCashAmount"
+                                                        className="selectItem"
+                                                    >
+                                                        <Input placeholder="최소보유잔액을 입력해 주세요." className="override-input branch">
+                                                        </Input>
+                                                    </FormItem>
                                                 </div>
                                                 <div className="submitBlock">
                                                     <Button type="primary" htmlType="submit">
