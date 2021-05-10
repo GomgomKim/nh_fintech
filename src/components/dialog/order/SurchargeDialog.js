@@ -108,12 +108,7 @@ class SurchargeDialog extends Component {
                 title: "할증명",
                 dataIndex: "surchargeTitle",
                 className: "table-column-center",
-                render: (data) => <div>{data == 0 ? "준비중" : "완료"}</div>
-            },
-            {
-                title: "적용기간",
-                dataIndex: "applyTerm",
-                className: "table-column-center",
+                render: (data) => <div>{data == 0 ? "우천할증" : "설연휴할증"}</div>
             },
             {
                 title: "적용시간",
@@ -157,21 +152,6 @@ class SurchargeDialog extends Component {
 
                                     <div className="surchargeLayout">
                                         <Form ref={this.formIdRef} onFinish={this.handleIdSubmit}>
-                                            <div className="selectBlock">
-                                                <div className="mainTitle">
-                                                    소속지사
-                                            </div>
-                                                <FormItem
-                                                    name="belongBranch"
-                                                    className="selectItem"
-                                                >
-                                                    <Select placeholder="소속지사를 선택해 주세요." className="override-select">
-                                                        <Option value={0}>플러스김포 / 플러스김포</Option>
-                                                        <Option value={1}>김포1지점 / 플러스김포</Option>
-                                                        <Option value={2}>김포2지점 / 플러스김포</Option>
-                                                    </Select>
-                                                </FormItem>
-                                            </div>
                                             <div className="listBlock">
                                                 <Table
                                                     // rowKey={(record) => record.idx}

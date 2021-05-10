@@ -1,15 +1,9 @@
 import { Form, DatePicker, Input, Checkbox, Select, Table, Button, Radio, Descriptions } from 'antd';
-import Icon from '@ant-design/icons';
-import moment from 'moment';
 import React, { Component } from 'react';
-import { httpGet, httpUrl, httpDownload, httpPost, httpPut } from '../../api/httpClient';
-import SelectBox from "../../components/input/SelectBox";
+import { httpUrl, httpPost } from '../../api/httpClient';
 import RegistFranDialog from "../../components/dialog/franchise/RegistFranDialog";
 import CoinTransferDialog from "../../components/dialog/franchise/CoinTransferDialog";
 import ModifyFranDialog from "../../components/dialog/franchise/ModifyFranDialog";
-import BasicDialog from "../../components/dialog/BasicDialog";
-import { formatDate } from "../../lib/util/dateUtil";
-import string from "../../string";
 import "../../css/franchise.css";
 import { comma } from "../../lib/util/numberUtil";
 import { BankOutlined } from '@ant-design/icons';
@@ -58,153 +52,6 @@ class FranchiseMain extends Component {
   };
 
   getList = () => {
-    // // 사용목록
-    // if (this.state.franStatus == 1) {
-    //   var list = [
-    //     {
-    //       franStatus: 1,
-    //       idx: 3,
-    //       branchName: '플러스김포',
-    //       franchiseName: '계룡리슈빌)잭슨부대',
-    //       businessNum: '234013269',
-    //       ceoName: '이스나',
-    //       callNum: '031-995-4555',
-    //       phoneNum: '010-1234-5896',
-    //       memo: 'dbrwh45@blict.co.kr',
-    //       address: '경기도 김포시 양촌읍 구래리 271-4',
-    //       balanceCoin: '60000',
-    //       withdrawSet: this.state.withdrawSet,
-    //       delPayType: 1,
-    //       delPrice: '3000',
-    //       membershipUse: 1,
-    //       applyType: '매월 1일',
-    //       membershipFee: '110000',
-    //       cardStatus: 0,
-    //       van: 'IC(나이스)',
-    //       businessCard: '2340113269',
-    //       businessCardName: '이스나',
-    //       businessCardFran: '계룡리슈빌)잭슨부대',
-    //       businessEmail: 'dbrwh45@blict.co.kr',
-    //       businessDate: '21-02-01 19:02:17'
-    //     },
-    //     {
-    //       franStatus: 1,
-    //       idx: 2,
-    //       branchName: '플러스김포',
-    //       franchiseName: '계룡리슈빌)잭슨부대',
-    //       businessNum: '234013269',
-    //       ceoName: '이덕호',
-    //       callNum: '031-995-4555',
-    //       phoneNum: '010-1234-5896',
-    //       memo: 'dbrwh45@blict.co.kr',
-    //       address: '경기도 김포시 양촌읍 구래리 271-4',
-    //       balanceCoin: '60000',
-    //       withdrawSet: this.state.withdrawSet,
-    //       delPayType: 0,
-    //       delPrice: '3000',
-    //       membershipUse: 0,
-    //       applyType: '매월 1일',
-    //       membershipFee: '110000',
-    //       cardStatus: 1,
-    //       van: 'IC(나이스)',
-    //       businessCard: '2340113269',
-    //       businessCardName: '이덕호',
-    //       businessCardFran: '계룡리슈빌)잭슨부대',
-    //       businessEmail: 'dbrwh45@blict.co.kr',
-    //       businessDate: '21-02-01 19:02:17'
-    //     },
-    //     {
-    //       franStatus: 1,
-    //       idx: 1,
-    //       branchName: '플러스김포',
-    //       franchiseName: '계룡리슈빌)잭슨부대',
-    //       businessNum: '234013269',
-    //       ceoName: '이라희',
-    //       callNum: '031-995-4555',
-    //       phoneNum: '010-1234-5896',
-    //       memo: 'dbrwh45@blict.co.kr',
-    //       address: '경기도 김포시 양촌읍 구래리 271-4',
-    //       balanceCoin: '60000',
-    //       withdrawSet: this.state.withdrawSet,
-    //       delPayType: 0,
-    //       delPrice: '3000',
-    //       membershipUse: 1,
-    //       applyType: '매월 1일',
-    //       membershipFee: '110000',
-    //       cardStatus: 0,
-    //       van: 'IC(나이스)',
-    //       businessCard: '2340113269',
-    //       businessCardName: '이라희',
-    //       businessCardFran: '계룡리슈빌)잭슨부대',
-    //       businessEmail: 'dbrwh45@blict.co.kr',
-    //       businessDate: '21-02-01 19:02:17'
-    //     },
-    //   ];
-    // }
-    // // 중지목록
-    // else if (this.state.franStatus == 0) {
-    //   var list = [
-    //     {
-    //       franStatus: 0,
-    //       idx: 4,
-    //       branchName: '플러스김포',
-    //       franchiseName: '계룡리슈빌)잭슨부대',
-    //       businessNum: '234013269',
-    //       ceoName: '이스나',
-    //       callNum: '031-995-4555',
-    //       phoneNum: '010-1234-5896',
-    //       memo: 'dbrwh45@blict.co.kr',
-    //       address: '경기도 김포시 양촌읍 구래리 271-4',
-    //       balanceCoin: '60000',
-    //       withdrawSet: this.state.withdrawSet,
-    //       delPayType: 1,
-    //       delPrice: '3000',
-    //       membershipUse: 1,
-    //       applyType: '매월 1일',
-    //       membershipFee: '110000',
-    //       cardStatus: 0,
-    //       van: 'IC(나이스)',
-    //       businessCard: '2340113269',
-    //       businessCardName: '이스나',
-    //       businessCardFran: '계룡리슈빌)잭슨부대',
-    //       businessEmail: 'dbrwh45@blict.co.kr',
-    //       businessDate: '21-02-01 19:02:17'
-    //     },
-    //   ];
-    // }
-    // // 탈퇴목록
-    // else {
-    //   var list = [
-    //     {
-    //       franStatus: 2,
-    //       idx: 5,
-    //       branchName: '플러스김포',
-    //       franchiseName: '계룡리슈빌)잭슨부대',
-    //       businessNum: '234013269',
-    //       ceoName: '이스나',
-    //       callNum: '031-995-4555',
-    //       phoneNum: '010-1234-5896',
-    //       memo: 'dbrwh45@blict.co.kr',
-    //       address: '경기도 김포시 양촌읍 구래리 271-4',
-    //       balanceCoin: '60000',
-    //       withdrawSet: this.state.withdrawSet,
-    //       delPayType: 1,
-    //       delPrice: '3000',
-    //       membershipUse: 1,
-    //       applyType: '매월 1일',
-    //       membershipFee: '110000',
-    //       cardStatus: 0,
-    //       van: 'IC(나이스)',
-    //       businessCard: '2340113269',
-    //       businessCardName: '이스나',
-    //       businessCardFran: '계룡리슈빌)잭슨부대',
-    //       businessEmail: 'dbrwh45@blict.co.kr',
-    //       businessDate: '21-02-01 19:02:17'
-    //     },
-    //   ];
-    // }
-
-
     httpPost(httpUrl.franchiseList, [], {
       frName: "",
       pageNum: 1,
@@ -314,52 +161,45 @@ class FranchiseMain extends Component {
         title: "지사명",
         dataIndex: "branchName",
         className: "table-column-center",
+        render: (data) => <div>{'김포1지점'}</div>
       },
       {
         title: "가맹점명",
-        dataIndex: "franchiseName",
-        className: "table-column-center",
-      },
-      {
-        title: "사업자번호",
-        dataIndex: "businessNum",
+        dataIndex: "frName",
         className: "table-column-center",
       },
       {
         title: "대표자명",
         dataIndex: "ceoName",
         className: "table-column-center",
+        render: (data) => <div>{'홍길동'}</div>
+      },
+      {
+        title: "사업자번호",
+        dataIndex: "businessNumber",
+        className: "table-column-center",
       },
       {
         title: "전화번호",
-        dataIndex: "callNum",
+        dataIndex: "frPhone",
         className: "table-column-center",
-      },
-      {
-        title: "휴대전화",
-        dataIndex: "phoneNum",
-        className: "table-column-center",
+        // render: (data) => <div>{'010-1234-5678'}</div>
       },
       {
         title: "주소",
-        dataIndex: "address",
+        dataIndex: "addr1",
         className: "table-column-center",
+        render: (data, row) => <div>{row.addr1 + '' + row.addr2}</div>
       },
       {
         title: "코인잔액",
-        dataIndex: "balanceCoin",
+        dataIndex: "ncash",
         className: "table-column-center",
         render: (data) => <div>{comma(data)}</div>
       },
       {
-        title: "배달료 지급방법",
-        dataIndex: "delPayType",
-        className: "table-column-center",
-        render: (data) => <div>{data == 0 ? "코인" : "코인(VAT)"}</div>
-      },
-      {
         title: "기본배달요금",
-        dataIndex: "delPrice",
+        dataIndex: "basicDeliveryPrice",
         className: "table-column-center",
         render: (data) => <div>{comma(data)}</div>
       },
@@ -374,16 +214,6 @@ class FranchiseMain extends Component {
                 <Option value={0}>출금 금지</Option>
                 <Option value={1}>출금 가능</Option>
               </Select>
-              {/* <SelectBox
-                value={string.withdrawString[data]}
-                code={string.toggleCode}
-                codeString={string.withdrawString}
-                onChange={(value) => {
-                  if (parseInt(value) !== row.blocked) {
-                    // this.onSetting(value);
-                  }
-                }}
-              /> */}
             </div>
           ),
       },
@@ -397,6 +227,18 @@ class FranchiseMain extends Component {
               className="tabBtn surchargeTab"
               onClick={this.openCoinTransferModal}
             >코인이체</Button>
+          </div>
+      },
+      {
+        title: "블라인드",
+        className: "table-column-center",
+        render: () =>
+          <div>
+            <RegistFranDialog isOpen={this.state.addFranchiseOpen} close={this.closeAddFranchiseModal} />
+            <Button
+              className="tabBtn surchargeTab"
+            // onClick={}
+            >블라인드</Button>
           </div>
       },
       {
@@ -442,21 +284,22 @@ class FranchiseMain extends Component {
     const expandedRowRender = (record) => {
       const dropColumns = [
         {
-          title: "월회비 사용여부",
-          dataIndex: "membershipUse",
+          title: "월회비 최초납부일",
+          dataIndex: "membershipDate",
           className: "table-column-center",
-          render: (data) => <div>{data == 0 ? "사용안함" : "사용함"}</div>
+          render: (data) => <div>{'2021-04-29'}</div>
         },
         {
           title: "적용타입",
           dataIndex: "applyType",
           className: "table-column-center",
+          render: (data) => <div>{'적용'}</div>
         },
         {
           title: "월회비",
           dataIndex: "membershipFee",
           className: "table-column-center",
-          render: (data) => <div>{comma(data)}</div>
+          render: (data) => <div>{'100,000'}</div>
         },
         {
           title: "카드가맹상태",
@@ -468,26 +311,19 @@ class FranchiseMain extends Component {
           title: "VAN",
           dataIndex: "van",
           className: "table-column-center",
+          render: (data) => <div>{'123341245'}</div>
         },
         {
-          title: "카드_사업자번호",
+          title: "PG",
           dataIndex: "businessCard",
           className: "table-column-center",
+          render: (data) => <div>{'PG'}</div>
         },
         {
-          title: "카드_사업주",
+          title: "PG 사용비율",
           dataIndex: "businessCardName",
           className: "table-column-center",
-        },
-        {
-          title: "카드_가맹점명",
-          dataIndex: "businessCardFran",
-          className: "table-column-center",
-        },
-        {
-          title: "이메일",
-          dataIndex: "businessEmail",
-          className: "table-column-center",
+          render: (data) => <div>{'50%'}</div>
         },
         {
           title: "메모",
@@ -495,9 +331,10 @@ class FranchiseMain extends Component {
           className: "table-column-center",
         },
         {
-          title: "시작일자",
+          title: "가입일",
           dataIndex: "businessDate",
           className: "table-column-center",
+          render: (data) => <div>{'2021-04-29'}</div>
         },
 
       ];
@@ -554,12 +391,6 @@ class FranchiseMain extends Component {
           <Button
             className="tabBtn placeTab"
           >배달 지역 설정</Button>
-
-          <Select placeholder="지사를 선택해 주세요." className="override-select fran" onChange={onChangeGroup}>
-            <Option value={0}>플러스김포 / 플러스김포</Option>
-            <Option value={1}>김포1지점 / 플러스김포</Option>
-            <Option value={2}>김포2지점 / 플러스김포</Option>
-          </Select>
 
         </div>
 

@@ -4,6 +4,7 @@ import {
     Upload, Button, Select, Icon, Radio, Carousel, Text, Checkbox
 } from "antd";
 import '../../../css/rider.css';
+import '../../../css/modal.css';
 import moment from 'moment';
 import { comma } from "../../../lib/util/numberUtil";
 import { formatDate } from "../../../lib/util/dateUtil";
@@ -18,7 +19,7 @@ const dateFormat = 'YYYY/MM/DD';
 const today = new Date();
 
 
-class RiderCoinDialog extends Component {
+class UpdatePasswordDialog extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -46,6 +47,8 @@ class RiderCoinDialog extends Component {
 
     render() {
 
+
+
         const { isOpen, close } = this.props;
 
         return (
@@ -58,43 +61,21 @@ class RiderCoinDialog extends Component {
 
                                 <div className="coinRider-content">
                                     <div className="coinRider-title">
-                                        코인이체
+                                        출금 비밀번호 초기화
                                     </div>
                                     <img onClick={close} src={require('../../../img/login/close.png').default} className="coinRider-close" />
                                     <div className="coinRider-title-sub">
                                         기사명 : ***
                                     </div>
-                                    <div className="coinRider-inner">
+                                    <div className="updatePassword-inner">
 
                                         <div className="coinRider-list">
 
                                             <div className="twl coinRider-list">
-                                                <td>코인잔액</td>
+                                                <td>출금 비밀번호</td>
                                                 <div className="inputBox inputBox-coinRider sub">
                                                     <FormItem
                                                         name="coinBalance"
-                                                        rules={[{ required: true, message: "0건." }]}
-                                                    >
-                                                        <Input />
-                                                    </FormItem>
-                                                </div>
-                                            </div>
-                                            <div className="twl coinRider-list">
-                                                <td>금액</td>
-                                                <div className="inputBox inputBox-coinRider sub">
-                                                    <FormItem
-                                                        name="price"
-                                                        rules={[{ required: true, message: "0건." }]}
-                                                    >
-                                                        <Input />
-                                                    </FormItem>
-                                                </div>
-                                            </div>
-                                            <div className="twl coinRider-list">
-                                                <td>메모</td>
-                                                <div className="inputBox inputBox-coinRider sub">
-                                                    <FormItem
-                                                        name="memo"
                                                         rules={[{ required: true, message: "0건." }]}
                                                     >
                                                         <Input />
@@ -109,7 +90,7 @@ class RiderCoinDialog extends Component {
                                         <Button
                                             className="tabBtn coinRider-btn"
                                             onClick={() => { }}
-                                        >코인이체</Button>
+                                        >설정</Button>
 
 
                                     </div>
@@ -126,4 +107,4 @@ class RiderCoinDialog extends Component {
     }
 }
 
-export default (RiderCoinDialog);
+export default (UpdatePasswordDialog);

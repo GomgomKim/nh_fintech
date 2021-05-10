@@ -45,21 +45,6 @@ class RegistCallDialog extends Component {
                                             <div className="registCallWrapper">
                                                 <div className="contentBlock">
                                                     <div className="mainTitle">
-                                                        소속지사
-                                                </div>
-                                                    <FormItem
-                                                        name="belongBranch"
-                                                        className="selectItem"
-                                                    >
-                                                        <Select placeholder="소속지사를 선택해 주세요." className="override-select branch">
-                                                            <Option value={0}>플러스김포 / 플러스김포</Option>
-                                                            <Option value={1}>김포1지점 / 플러스김포</Option>
-                                                            <Option value={2}>김포2지점 / 플러스김포</Option>
-                                                        </Select>
-                                                    </FormItem>
-                                                </div>
-                                                <div className="contentBlock">
-                                                    <div className="mainTitle">
                                                         가맹점명
                                                 </div>
                                                     <FormItem
@@ -85,21 +70,8 @@ class RegistCallDialog extends Component {
                                                 </div>
                                                 <div className="contentBlock">
                                                     <div className="mainTitle">
-                                                        고객번호
-                                                </div>
-                                                    <Search
-                                                        placeholder="가맹점검색"
-                                                        enterButton
-                                                        allowClear
-                                                        onSearch={this.onSearchFranchisee}
-                                                        style={{
-                                                            width: 202,
-                                                            marginLeft: 20
-                                                        }}
-                                                    />
-                                                    <div className="mainTitle sub">
                                                         준비시간
-                                                </div>
+                                                        </div>
                                                     <FormItem
                                                         name="preparationTime"
                                                         className="selectItem"
@@ -109,6 +81,20 @@ class RegistCallDialog extends Component {
                                                             <Option value={2}>2</Option>
                                                             <Option value={3}>3</Option>
                                                         </Select>
+                                                    </FormItem>
+                                                    <FormItem
+                                                        style={{
+                                                            marginLeft: 10,
+                                                            display: 'inline-block',
+                                                            verticalAlign: 'middle',
+                                                        }}
+                                                        name="payType"
+                                                        initialValue={0}
+                                                    >
+                                                        <Radio.Group>
+                                                            <Radio style={{ fontSize: 16 }} value={0}>과금</Radio>
+                                                            <Radio style={{ fontSize: 18 }} value={1}>과적</Radio>
+                                                        </Radio.Group>
                                                     </FormItem>
                                                 </div>
                                                 <div className="contentBlock">

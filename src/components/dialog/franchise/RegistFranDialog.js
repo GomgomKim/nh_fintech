@@ -1,15 +1,15 @@
 import React, { Component } from "react";
 import {
-    Form, Modal, Input, DatePicker, Descriptions, Table,
-    Upload, Button, Select, Icon, Radio, Carousel, Text, Checkbox
+    Form, Input, DatePicker,
+    Button, Select, Checkbox
 } from "antd";
 import '../../../css/modal.css';
-import { httpGet, httpUrl, httpDownload, httpPost, httpPut } from '../../../api/httpClient';
-import { comma } from "../../../lib/util/numberUtil";
-// import { formatDate } from "../../../lib/util/dateUtil";
+import { httpUrl, httpPost } from '../../../api/httpClient';
+import moment from 'moment';
 const Option = Select.Option;
 const FormItem = Form.Item;
-const { RangePicker } = DatePicker;
+const dateFormat = 'YYYY/MM/DD';
+const today = new Date();
 const Search = Input.Search;
 
 class RegistFranDialog extends Component {
@@ -225,6 +225,18 @@ class RegistFranDialog extends Component {
                                                         </Input>
                                                     </FormItem>
                                                 </div>
+                                                <div className="contentBlock">
+                                                    <div className="mainTitle">
+                                                        PG 사용비율
+                                                    </div>
+                                                    <FormItem
+                                                        name="phoneNumber"
+                                                        className="selectItem"
+                                                    >
+                                                        <Input placeholder="PG 사용비율을 입력해 주세요." className="override-input">
+                                                        </Input>
+                                                    </FormItem>
+                                                </div>
                                             </div>
                                             <div className="registFranWrapper sub">
                                                 <div className="contentBlock">
@@ -275,26 +287,6 @@ class RegistFranDialog extends Component {
                                                         </Input>
                                                     </FormItem>
                                                 </div>
-                                                <div className="m-t-10">
-                                                    <div className="mainTitle">
-                                                        기본료
-                                                    </div>
-                                                    <FormItem
-                                                        style={{
-                                                            marginBottom: 0,
-                                                            display: 'inline-block',
-                                                            verticalAlign: 'middle',
-                                                            marginLeft: 20
-                                                        }}
-                                                        name="payType"
-                                                        initialValue={0}
-                                                    >
-                                                        <Radio.Group>
-                                                            <Radio style={{ fontSize: 18 }} value={0}>코인</Radio>
-                                                            <Radio style={{ fontSize: 18 }} value={1}>코인(VAT)</Radio>
-                                                        </Radio.Group>
-                                                    </FormItem>
-                                                </div>
                                                 <div className="contentBlock">
                                                     <div className="mainTitle">
                                                         배달요금
@@ -334,17 +326,18 @@ class RegistFranDialog extends Component {
                                                     </div>
                                                     <Checkbox style={{ verticalAlign: 'middle' }}></Checkbox>
                                                     <div className="subTitle">
-                                                        차감일자
+                                                        월회비 최초납부일
                                                     </div>
                                                     <FormItem
-                                                        name="minusDate"
+                                                        name="payDate"
                                                         className="selectItem"
                                                     >
-                                                        <Select placeholder="차감일자 선택" className="override-select">
-                                                            <Option value={0}>매일</Option>
-                                                            <Option value={1}>매월 1일 ~ 매월 31일</Option>
-                                                            <Option value={2}>매월 말일</Option>
-                                                        </Select>
+                                                        <DatePicker
+                                                            style={{ marginLeft: 10 }}
+                                                            defaultValue={moment(today, dateFormat)}
+                                                            format={dateFormat}
+                                                        // onChange={date => this.setState({ selectedDate: date })}
+                                                        />
                                                     </FormItem>
                                                     <div className="subTitle">
                                                         관리비
@@ -353,7 +346,7 @@ class RegistFranDialog extends Component {
                                                         name="managePrice"
                                                         className="selectItem"
                                                     >
-                                                        <Input placeholder="관리비 입력" className="override-input sub">
+                                                        <Input defaultValue={'100,000'} placeholder="관리비 입력" className="override-input sub">
                                                         </Input>
                                                     </FormItem>
 
