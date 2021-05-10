@@ -43,3 +43,27 @@
     width:1000px;
     height:600px;
 }
+
+.tabCheck{
+ width:200px;
+ height:32px;
+ margin-left: 20px!important;
+ vertical-align: top;
+}
+
+  .tabCheck .ant-checkbox-inner{
+    width:30px;
+    height:30px;
+  }
+  .tabCheck .ant-checkbox-inner::after {
+    width: 15px;
+    height: 15px;
+  }
+  
+  .tabCheck .ant-checkbox + span{
+    font-size:16px;
+  }
+
+  .tabCheck >span{
+      height:32px;
+  }

@@ -1462,9 +1462,7 @@
   display: none; /* Chrome, Safari, Opera*/
 }
 
-.filtering-box{
-  /* width:365px; */
-}
+
 .filtering-box .ant-checkbox{
   top: 0em!important;
 }
