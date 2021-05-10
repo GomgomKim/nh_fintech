@@ -1,15 +1,9 @@
 import { Form, DatePicker, Input, Checkbox, Select, Table, Button, Radio, Descriptions } from 'antd';
-import Icon from '@ant-design/icons';
-import moment from 'moment';
 import React, { Component } from 'react';
-import { httpGet, httpUrl, httpDownload, httpPost, httpPut } from '../../api/httpClient';
-import SelectBox from "../../components/input/SelectBox";
+import { httpUrl, httpPost } from '../../api/httpClient';
 import RegistFranDialog from "../../components/dialog/franchise/RegistFranDialog";
 import CoinTransferDialog from "../../components/dialog/franchise/CoinTransferDialog";
 import ModifyFranDialog from "../../components/dialog/franchise/ModifyFranDialog";
-import BasicDialog from "../../components/dialog/BasicDialog";
-import { formatDate } from "../../lib/util/dateUtil";
-import string from "../../string";
 import "../../css/franchise.css";
 import { comma } from "../../lib/util/numberUtil";
 import { BankOutlined } from '@ant-design/icons';
@@ -317,7 +311,7 @@ class FranchiseMain extends Component {
           title: "VAN",
           dataIndex: "van",
           className: "table-column-center",
-          render: (data) => <div>{'VAN'}</div>
+          render: (data) => <div>{'123341245'}</div>
         },
         {
           title: "PG",
@@ -397,12 +391,6 @@ class FranchiseMain extends Component {
           <Button
             className="tabBtn placeTab"
           >배달 지역 설정</Button>
-
-          <Select placeholder="지사를 선택해 주세요." className="override-select fran" onChange={onChangeGroup}>
-            <Option value={0}>플러스김포 / 플러스김포</Option>
-            <Option value={1}>김포1지점 / 플러스김포</Option>
-            <Option value={2}>김포2지점 / 플러스김포</Option>
-          </Select>
 
         </div>
 
