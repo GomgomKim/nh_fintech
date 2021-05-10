@@ -230,7 +230,7 @@ class TaskSchedulerDialog extends Component {
                                                 <Button
                                                     className="tabBtn taskScheduler-btn"
                                                     onClick={this.openTaskWorkModal}
-                                                >일차감</Button>
+                                                >일차감 등록</Button>
                                             </div>
                                             <div className="taskScheduler-btn-03">
                                                 <Button
