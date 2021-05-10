@@ -36,16 +36,17 @@ class RiderGroupDialog extends Component {
         }, () => this.getList());
     };
 
-    onClickRow = (record) => {
+    onClickRow = (record, index) => {
         return {
             onClick: () => {
+                // console.log(record.riderGroup)
                 this.setState({
                     rowId: record.id,
                 });
             },
         };
     }
-    setRowClassName = (record) => {
+    setRowClassName = (record, index) => {
         return record.id === this.state.rowId ? 'clickRowStyl' : '';
     }
 
@@ -54,30 +55,35 @@ class RiderGroupDialog extends Component {
         var list = [
             {
                 // className={ "mypage-left-select " + (depth1.idx == row.idx ? 'active' : '') },
+                id: 1,
                 riderGroup: 'A',
                 proCount: 6,
                 withdrawLimit: '100000',
                 transferLimit: '500',
             },
             {
+                id: 2,
                 riderGroup: 'B',
                 proCount: 5,
                 withdrawLimit: '100000',
                 transferLimit: '500',
             },
             {
+                id: 3,
                 riderGroup: 'C',
                 proCount: 4,
                 withdrawLimit: '100000',
                 transferLimit: '500',
             },
             {
+                id: 4,
                 riderGroup: 'D',
                 proCount: 3,
                 withdrawLimit: '100000',
                 transferLimit: '500',
             },
             {
+                id: 5,
                 riderGroup: 'D',
                 proCount: 2,
                 withdrawLimit: '100000',

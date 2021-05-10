@@ -41,8 +41,16 @@
 }
 
 .mapLayout{
-    width:100%;
+    width:55%;
     height:600px;
+    float: left;
+}
+
+.map-navermap {
+    border-bottom-left-radius: 30px;
+    border-bottom-right-radius: 30px;
+    width: 100%;
+    height: 600px;
 }
 
 
