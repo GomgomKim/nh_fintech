@@ -4,6 +4,9 @@ import { httpUrl, httpPost } from '../../api/httpClient';
 import RegistFranDialog from "../../components/dialog/franchise/RegistFranDialog";
 import CoinTransferDialog from "../../components/dialog/franchise/CoinTransferDialog";
 import ModifyFranDialog from "../../components/dialog/franchise/ModifyFranDialog";
+import SearchAddressDialog from "../../components/dialog/franchise/SearchAddressDialog";
+import { formatDate } from "../../lib/util/dateUtil";
+import string from "../../string";
 import "../../css/franchise.css";
 import { comma } from "../../lib/util/numberUtil";
 import { BankOutlined } from '@ant-design/icons';
@@ -34,6 +37,7 @@ class FranchiseMain extends Component {
       addFranchiseOpen: false,
       coinTransferOpen: false,
       modifyFranOpen: false,
+      SearchAddressOpen: false,
     };
   }
 
@@ -68,11 +72,6 @@ class FranchiseMain extends Component {
         pagination,
       });
     })
-
-    // this.setState({
-    //   list: list,
-    // });
-
   }
 
   // 가맹점등록 dialog
@@ -96,6 +95,14 @@ class FranchiseMain extends Component {
   }
   closeModifyFranModal = () => {
     this.setState({ modifyFranOpen: false });
+  }
+
+  // 주소검색관리 dialog
+  openSearchAddressModal = () => {
+    this.setState({ SearchAddressOpen: true });
+  }
+  closeSearchAddressModal = () => {
+    this.setState({ SearchAddressOpen: false });
   }
 
   // // 출금설정
@@ -138,17 +145,6 @@ class FranchiseMain extends Component {
                 <Option value={1}>사용</Option>
                 <Option value={2}>탈퇴</Option>
               </Select>
-              {/* <SelectBox
-                style={{ width: 68 }}
-                value={string.statusString[data]}
-                code={string.statusCode}
-                codeString={string.statusString}
-                onChange={(value) => {
-                  if (parseInt(value) !== row.status) {
-                    // this.onStatusSetting(value);
-                  }
-                }}
-              /> */}
             </div>
           ),
       },
@@ -379,18 +375,11 @@ class FranchiseMain extends Component {
             className="tabBtn addFranTab"
             onClick={this.openAddFranchiseModal}
           >가맹점등록</Button>
-
+          <SearchAddressDialog isOpen={this.state.SearchAddressOpen} close={this.closeSearchAddressModal} />
           <Button
             className="tabBtn sectionTab"
-          >구간 요금 설정</Button>
-
-          <Button
-            className="tabBtn priceTab"
-          >요금설정</Button>
-
-          <Button
-            className="tabBtn placeTab"
-          >배달 지역 설정</Button>
+            onClick={this.openSearchAddressModal}
+          >주소검색관리</Button>
 
         </div>
 

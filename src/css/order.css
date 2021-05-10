@@ -68,17 +68,18 @@
   }
 
 .table-red{
-    background-color: red;
+    background-color: #fed8d6;
 }
 .table-gray{
     background-color: gray;
 }
 .table-blue{
-    background-color: rgb(0, 0, 255, 0.6);;
+    background-color: #d6edfe;
     /* color: white; */
 }
 .table-white{
     background-color: white;
 }
+
 
   
