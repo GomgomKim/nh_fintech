@@ -1,4 +1,4 @@
-import { Form, DatePicker, Input, Select, Table, Button, Descriptions } from 'antd';
+import { Form, DatePicker, Input, Select, Table, Button, Descriptions, Checkbox } from 'antd';
 import Icon from '@ant-design/icons';
 import moment from 'moment';
 import React, { Component } from 'react';
@@ -479,7 +479,14 @@ class ReceptionStatus extends Component {
               marginLeft: 20
             }}
           />
+
+          <Checkbox className="tabCheck"> <span className="span1">완료조회</span></Checkbox>
+
+
+
         </div>
+
+
 
         <div className="dataTableLayout">
           <Table

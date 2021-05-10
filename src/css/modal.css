@@ -597,8 +597,8 @@
     vertical-align: middle;
   }
   .contentBlock .override-select.time{
-    margin-left: 1px;
-    width: 112px;
+    margin-left: 20px;
+    width: 201px;
     font-size: 15px;
     display: inline-block;
     vertical-align: middle;
@@ -642,7 +642,7 @@
   .registCallLayout .mapLayout{
     margin-top: 20px;
     width:1000px;
-    height:600px;
+    height:400px;
 }
   .registCallLayout #myMap{
     width:895px;
@@ -1479,9 +1479,7 @@
   display: none; /* Chrome, Safari, Opera*/
 }
 
-.filtering-box{
-  /* width:365px; */
-}
+
 .filtering-box .ant-checkbox{
   top: 0em!important;
 }
@@ -1521,7 +1519,7 @@
 }
 
 /*기사관리*/
-/*작업 스케줄러*/
+/*일차감*/
 
 .taskScheduler-Dialog{
   position:fixed;
@@ -1641,7 +1639,7 @@
   padding: 0px!important;
   display:inline-block;
 }
-/*작업 스케줄러 그룹 설정*/
+/*일차감 그룹 설정*/
 
 .taskGroup-Dialog{
   position:fixed;
@@ -1754,7 +1752,7 @@
   width:550px;
 }
 
-/*작업 스케줄러 작업등록*/
+/*일차감 작업등록*/
 
 .taskWork-Dialog{
   position:fixed;
@@ -1806,7 +1804,7 @@
     padding: 20px; 
     text-align: left;
     margin-top:5px;
-    height:390px;
+    height:360px;
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
 }
@@ -1833,6 +1831,10 @@
   display:inline-block;
   /* border:1px solid blue; */
   
+}
+
+.taskWork-list-05 .taskWorkSub1{
+  width:60px;
 }
 
 
@@ -1880,7 +1882,7 @@
 .taskWork-list-06 .ant-select:not(.ant-select-customize-input) .ant-select-selector{
   margin-left:10px;
 }
-.taskWork-list-06 .inputBox{
+.taskWork-list-04 .inputBox{
   color: #222 !important;;
 }
 .taskWork-list .inputBox-taskWork.sub .ant-input{
@@ -1993,8 +1995,9 @@
   display:inline-block;
 }
 
-
-.riderGroup-ftline-02 .riderSubtext, .riderGroup-ftline-03 .riderSubtext, .riderGroup-ftline-04 .riderSubtext {
+.riderGroup-ftline-02 .riderSubtext, 
+.riderGroup-ftline-03 .riderSubtext, 
+.riderGroup-ftline-04 .riderSubtext {
   margin-left:20px;
 }
 

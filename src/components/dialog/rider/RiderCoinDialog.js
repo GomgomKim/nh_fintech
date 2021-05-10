@@ -46,8 +46,6 @@ class RiderCoinDialog extends Component {
 
     render() {
 
-
-
         const { isOpen, close } = this.props;
 
         return (
