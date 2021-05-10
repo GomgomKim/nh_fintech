@@ -23,6 +23,11 @@ class CoinTransferDialog extends Component {
         super(props)
         this.state = {
             selectedDate: today,
+            pagination: {
+                total: 0,
+                current: 1,
+                pageSize: 5,
+            },
         };
         this.formRef = React.createRef();
     }
@@ -36,10 +41,37 @@ class CoinTransferDialog extends Component {
     }
 
 
-
     render() {
 
         const { isOpen, close } = this.props;
+        const columns = [
+            {
+                title: "날짜",
+                dataIndex: "data",
+                className: "table-column-center",
+                width: "20%",
+            },
+            {
+                title: "금액",
+                dataIndex: "price",
+                className: "table-column-center",
+                width: "30%",
+            },
+            {
+                title: "이체 후 잔액",
+                dataIndex: "email",
+                className: "table-column-center",
+                width: "30%",
+            },
+            {
+                title: "메모",
+                dataIndex: "riderName",
+                className: "table-column-center",
+                width: "20%",
+            },
+
+        ];
+
 
         return (
             <React.Fragment>
@@ -64,11 +96,10 @@ class CoinTransferDialog extends Component {
                                             <div className="twl coinTran-list">
                                                 <td>코인잔액</td>
                                                 <div className="inputBox inputBox-coinTran sub">
-                                                    <FormItem
-                                                        name="coinBalance"
-                                                        rules={[{ required: true, message: "0건." }]}
-                                                    >
-                                                        <Input />
+                                                    <FormItem>
+                                                        <Input
+                                                            name="coinBalance"
+                                                            value={"111,111원"} />
                                                     </FormItem>
                                                 </div>
                                             </div>
@@ -94,6 +125,17 @@ class CoinTransferDialog extends Component {
                                                     </FormItem>
                                                 </div>
                                             </div>
+                                        </div>
+
+
+                                        <div className="dataTableLayout-01">
+                                            <span className="coinTran-title-02">이체내역</span><br /><br />
+                                            <Table
+                                                dataSource={this.state.results}
+                                                columns={columns}
+                                                pagination={this.state.pagination}
+                                                onChange={this.state.Status}
+                                            />
                                         </div>
 
                                     </div>
