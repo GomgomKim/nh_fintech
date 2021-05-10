@@ -1646,7 +1646,7 @@
   top:50%;
   left:50%;
   transform: translate(-50%, -50%);
-  width:650px;
+  /* width:650px; */
   z-index: 2;
 }
 
@@ -1689,13 +1689,20 @@
   display: none; /* Chrome, Safari, Opera*/
 }
 
+.taskGroup-inner .subTable .ant-table-thead{
+  /* display: none; */
+}
+.taskGroup-inner .subTable .ant-table-cell{
+  padding: 13px;
+}
+.taskGroup-inner .subTable .ant-table-row{
+  display: inline-block;
+}
 
 
 .taskGroup-btn{
   display:inline-block;
-  width:1098px;
 }
-
 
 .taskGroup-btn-01{
   text-align:center;

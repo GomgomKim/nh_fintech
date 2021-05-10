@@ -183,7 +183,7 @@ class FranchiseMain extends Component {
         title: "전화번호",
         dataIndex: "frPhone",
         className: "table-column-center",
-        // render: (data) => <div>{'010-1234-5678'}</div>
+        render: (data) => <div>{'010-1234-5678'}</div>
       },
       {
         title: "주소",
@@ -311,13 +311,13 @@ class FranchiseMain extends Component {
           title: "VAN",
           dataIndex: "van",
           className: "table-column-center",
-          render: (data) => <div>{'123341245'}</div>
+          render: (data) => <div>{'1233451245'}</div>
         },
         {
           title: "PG",
           dataIndex: "businessCard",
           className: "table-column-center",
-          render: (data) => <div>{'PG'}</div>
+          render: (data) => <div>{'1233451245'}</div>
         },
         {
           title: "PG 사용비율",
