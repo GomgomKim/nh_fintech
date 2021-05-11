@@ -36,6 +36,7 @@ class StaffMain extends Component {
       updateStaff: false,
       riderLevel: [1, 2],
       userData: 1,
+      dialogData: [],
     };
   }
 
@@ -179,12 +180,13 @@ class StaffMain extends Component {
         title: "정보 수정",
         className: "table-column-center",
         width: "200px",
-        render: (data) =>
+        render: (data, row) =>
           <div>
-            <UpdateStaffDialog data={data} isOpen={this.state.updateStaff} close={this.closeStaffUpdateModal} />
+            <UpdateStaffDialog data={this.state.dialogData} isOpen={this.state.updateStaff} close={this.closeStaffUpdateModal} />
             <Button
               className="tabBtn surchargeTab"
-              onClick={() => { this.setState({ updateStaff: true }) }}
+              onClick={() => { this.setState({ updateStaff: true, dialogData: row }) }}
+              // onClick={() => { alert(row.id) }}
             >수정</Button>
           </div>
       },

@@ -95,7 +95,7 @@ class UpdateRiderDialog extends Component {
     
 
     render() {
-        const { isOpen, close } = this.props;
+        const { isOpen, close, data } = this.props;
 
         return (
             <React.Fragment>
@@ -137,7 +137,7 @@ class UpdateRiderDialog extends Component {
                                                         name="riderGroup"
                                                         className="selectItem"
                                                     >
-                                                        <Select placeholder="그룹을 선택해주세요." className="override-select branch">
+                                                        <Select placeholder="그룹을 선택해주세요." className="override-select branch"  defaultValue={'A'}>
                                                             <Option value={1}>A</Option>
                                                             <Option value={2}>B</Option>
                                                             <Option value={3}>C</Option>
@@ -190,7 +190,7 @@ class UpdateRiderDialog extends Component {
                                                         name="riderName"
                                                         className="selectItem"
                                                     >
-                                                        <Input placeholder="직원명을 입력해 주세요." className="override-input">
+                                                        <Input placeholder="직원명을 입력해 주세요." className="override-input" defaultValue={data.riderName}>
                                                         </Input>
                                                     </FormItem>
                                                 </div>
@@ -202,7 +202,7 @@ class UpdateRiderDialog extends Component {
                                                         name="id"
                                                         className="selectItem"
                                                     >
-                                                        <Input placeholder="아이디를 입력해 주세요." className="override-input">
+                                                        <Input placeholder="아이디를 입력해 주세요." className="override-input" defaultValue={data.id}>
                                                         </Input>
                                                     </FormItem>
                                                 </div>
@@ -214,7 +214,7 @@ class UpdateRiderDialog extends Component {
                                                         name="email"
                                                         className="selectItem"
                                                     >
-                                                        <Input placeholder="ex) example@naver.com" className="override-input">
+                                                        <Input placeholder="ex) example@naver.com" className="override-input" >
                                                         </Input>
                                                     </FormItem>
                                                 </div>
@@ -238,7 +238,7 @@ class UpdateRiderDialog extends Component {
                                                         name="phone"
                                                         className="selectItem"
                                                     >
-                                                        <Input placeholder="휴대전화 번호를 입력해 주세요." className="override-input">
+                                                        <Input placeholder="휴대전화 번호를 입력해 주세요." className="override-input" defaultValue={data.phone}>
                                                         </Input>
                                                     </FormItem>
                                                 </div>
@@ -250,7 +250,7 @@ class UpdateRiderDialog extends Component {
                                                         name="memo"
                                                         className="selectItem"
                                                     >
-                                                        <Input placeholder="메모를 입력해 주세요." className="override-input branch">
+                                                        <Input placeholder="메모를 입력해 주세요." className="override-input branch" defaultValue={'memo'}>
                                                         </Input>
                                                     </FormItem>
                                                 </div>
@@ -262,7 +262,7 @@ class UpdateRiderDialog extends Component {
                                                         name="deliveryPriceFeeAmount"
                                                         className="selectItem"
                                                     >
-                                                        <Input placeholder="수수료를 입력해 주세요." className="override-input branch">
+                                                        <Input placeholder="수수료를 입력해 주세요." className="override-input branch" defaultValue={data.deliveryPriceFeeAmount}>
                                                         </Input>
                                                     </FormItem>
                                                 </div>
@@ -285,7 +285,7 @@ class UpdateRiderDialog extends Component {
                                                         name="minCashAmount"
                                                         className="selectItem"
                                                     >
-                                                        <Input placeholder="최소보유잔액을 입력해 주세요." className="override-input branch">
+                                                        <Input placeholder="최소보유잔액을 입력해 주세요." className="override-input branch" defaultValue={1000}>
                                                         </Input>
                                                     </FormItem>
                                                 </div>

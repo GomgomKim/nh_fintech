@@ -120,7 +120,7 @@ class UpdateStaffDialog extends Component {
                                                         name="staffName"
                                                         className="selectItem"
                                                     >
-                                                        <Input defaultValue={data.staffName} className="override-input">
+                                                        <Input defaultValue={data.riderName} className="override-input">
                                                         </Input>
                                                     </FormItem>
                                                 </div>
@@ -132,7 +132,7 @@ class UpdateStaffDialog extends Component {
                                                         name="staffId"
                                                         className="selectItem"
                                                     >
-                                                        <Input defaultValue={data.staffId} className="override-input">
+                                                        <Input defaultValue={data.id} className="override-input">
                                                         </Input>
                                                     </FormItem>
                                                 </div>
@@ -144,7 +144,7 @@ class UpdateStaffDialog extends Component {
                                                         name="staffEmail"
                                                         className="selectItem"
                                                     >
-                                                        <Input defaultValue={data.staffEmail} className="override-input">
+                                                        <Input defaultValue={data.email} className="override-input">
                                                         </Input>
                                                     </FormItem>
                                                 </div>
@@ -168,7 +168,7 @@ class UpdateStaffDialog extends Component {
                                                         name="phoneNumber"
                                                         className="selectItem"
                                                     >
-                                                        <Input defaultValue={data.staffPhoneNum} className="override-input">
+                                                        <Input defaultValue={data.phone} className="override-input">
                                                         </Input>
                                                     </FormItem>
                                                 </div>
@@ -180,7 +180,7 @@ class UpdateStaffDialog extends Component {
                                                         name="memo"
                                                         className="selectItem"
                                                     >
-                                                        <Input defaultValue={data.staffMemo} className="override-input branch">
+                                                        <Input defaultValue={data.memo} className="override-input branch">
                                                         </Input>
                                                     </FormItem>
                                                 </div>

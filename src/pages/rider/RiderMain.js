@@ -39,12 +39,13 @@ class RiderMain extends Component {
       workTabOpen: false, // 작업
       riderUpdateOpen: false, // 기사 수정
       updatePasswordOpen: false, // 출금 비밀번호
-      blackListOpen: false, // 블라인드
+      // blackListOpen: false, // 블라인드
       pagination: {
         total: 0,
         current: 1,
         pageSize: 10,
       },
+      dialogData: [],
     };
   }
 
@@ -120,16 +121,13 @@ class RiderMain extends Component {
 
   //기사 등록 
   openRegistRiderModal = () => {
-    this.setState({ registRiderOpen: true });
+    this.setState({ registRiderOpen: true});
   }
   closeRegistRiderModal = () => {
     this.setState({ registRiderOpen: false });
   }
 
   //기사 수정 
-  openUpdateRiderModal = () => {
-    this.setState({ riderUpdateOpen: true });
-  }
   closeUpdateRiderModal = () => {
     this.setState({ riderUpdateOpen: false });
   }
@@ -159,12 +157,15 @@ class RiderMain extends Component {
   }
 
   //블라인드
-  openBlackListModal = () => {
+  setBlackList = () => {
+    alert("블라인드 처리 되었습니다.")
+  }
+  /* openBlackListModal = () => {
     this.setState({ blackListOpen: true });
   }
   closeBlackListModal = () => {
     this.setState({ blackListOpen: false });
-  }
+  } */
 
   render() {
     const columns = [
@@ -195,10 +196,11 @@ class RiderMain extends Component {
         title: "기사그룹",
         dataIndex: "userGroup",
         className: "table-column-center",
-        render: (data) => <div>{data == "A" ? "A"
-          : data == "B" ? "B"
-            : data == "C" ? "C"
-              : data == "D" ? "D" : "-"}</div>
+        // render: (data) => <div>{data == "A" ? "A"
+        //   : data == "B" ? "B"
+        //     : data == "C" ? "C"
+        //       : data == "D" ? "D" : "-"}</div>
+        render: (data) => <div>{'A'}</div>
       },
       {
         title: "출금비밀번호",
@@ -217,10 +219,10 @@ class RiderMain extends Component {
         className: "table-column-center",
         render: () =>
           <div>
-            <BlackListDialog isOpen={this.state.blackListOpen} close={this.closeBlackListModal} />
+            {/* <BlackListDialog isOpen={this.state.blackListOpen} close={this.closeBlackListModal} /> */}
             <Button
               className="tabBtn surchargeTab"
-              onClick={this.openBlackListModal}
+              onClick={this.setBlackList}
             >블라인드</Button>
           </div>
       },
@@ -268,12 +270,12 @@ class RiderMain extends Component {
       {
         title: "수정",
         className: "table-column-center",
-        render: () =>
+        render: (data, row) =>
           <div>
-            <UpdateRiderDialog isOpen={this.state.riderUpdateOpen} close={this.closeUpdateRiderModal} />
+            <UpdateRiderDialog isOpen={this.state.riderUpdateOpen} close={this.closeUpdateRiderModal} data={this.state.dialogData} />
             <Button
               className="tabBtn surchargeTab"
-              onClick={this.openUpdateRiderModal}
+              onClick={()=>this.setState({riderUpdateOpen: true, dialogData: row})}
             >수정</Button>
           </div>
       },
@@ -285,7 +287,8 @@ class RiderMain extends Component {
           title: "최소보유잔액",
           dataIndex: "minCashAmount",
           className: "table-column-center",
-          render: (data) => <div>{comma(data)}</div>
+          // render: (data) => <div>{comma(data)}</div>
+          render: (data) => <div>{1000}</div>
         },
         {
           title: "전화번호",
@@ -302,6 +305,7 @@ class RiderMain extends Component {
           title: "메모",
           dataIndex: "memo",
           className: "table-column-center",
+          render: (data) => <div>{'memo'}</div>
         },
         {
           title: "수수료",
@@ -311,7 +315,7 @@ class RiderMain extends Component {
         },
         {
           title: "수수료방식",
-          dataIndex: "deliveryPriceFeeAmount",
+          dataIndex: "feeManner",
           className: "table-column-center",
           render: (data) => <div>{data == 1 ? "정량" : "정률"}</div>
         },
