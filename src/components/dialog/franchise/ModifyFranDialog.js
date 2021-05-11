@@ -98,7 +98,7 @@ class ModifyFranDialog extends Component {
 
     render() {
 
-        const { isOpen, close } = this.props;
+        const { isOpen, close, data } = this.props;
 
         return (
             <React.Fragment>
@@ -144,7 +144,7 @@ class ModifyFranDialog extends Component {
                                                             name="franchiseName"
                                                             className="selectItem"
                                                         >
-                                                            <Input placeholder="가맹점명을 입력해 주세요." className="override-input">
+                                                            <Input placeholder="가맹점명을 입력해 주세요." className="override-input" defaultValue={data.frName}>
                                                             </Input>
                                                         </FormItem>
                                                     </div>
@@ -156,7 +156,7 @@ class ModifyFranDialog extends Component {
                                                             name="businessNumber"
                                                             className="selectItem"
                                                         >
-                                                            <Input placeholder="사업자번호를 입력해 주세요." className="override-input">
+                                                            <Input placeholder="사업자번호를 입력해 주세요." className="override-input" defaultValue={data.businessNumber}>
                                                             </Input>
                                                         </FormItem>
                                                     </div>
@@ -168,7 +168,7 @@ class ModifyFranDialog extends Component {
                                                             name="ceoName"
                                                             className="selectItem"
                                                         >
-                                                            <Input placeholder="대표자명을 입력해 주세요." className="override-input">
+                                                            <Input placeholder="대표자명을 입력해 주세요." className="override-input" defaultValue={'홍길동'}>
                                                             </Input>
                                                         </FormItem>
                                                     </div>
@@ -180,7 +180,7 @@ class ModifyFranDialog extends Component {
                                                             name="franEmail"
                                                             className="selectItem"
                                                         >
-                                                            <Input placeholder="(필수입력) 세금계산서 발행용" className="override-input">
+                                                            <Input placeholder="(필수입력) 세금계산서 발행용" className="override-input" >
                                                             </Input>
                                                         </FormItem>
                                                     </div>
@@ -204,7 +204,7 @@ class ModifyFranDialog extends Component {
                                                             name="phoneNumber"
                                                             className="selectItem"
                                                         >
-                                                            <Input placeholder="휴대전화 번호를 입력해 주세요." className="override-input">
+                                                            <Input placeholder="휴대전화 번호를 입력해 주세요." className="override-input" defaultValue={'010-1234-5678'}>
                                                             </Input>
                                                         </FormItem>
                                                     </div>
@@ -218,7 +218,7 @@ class ModifyFranDialog extends Component {
                                                             name="birth"
                                                             className="selectItem"
                                                         >
-                                                            <Input placeholder="ex) 19960404" className="override-input sub">
+                                                            <Input placeholder="ex) 19960404" className="override-input sub" defaultValue={'1994-09-23'}>
                                                             </Input>
                                                         </FormItem>
                                                     </div>
@@ -230,7 +230,7 @@ class ModifyFranDialog extends Component {
                                                             name="franMemo"
                                                             className="selectItem"
                                                         >
-                                                            <Input placeholder="메모를 입력해 주세요." className="override-input sub">
+                                                            <Input placeholder="메모를 입력해 주세요." className="override-input sub" defaultValue={'테스트'}>
                                                             </Input>
                                                         </FormItem>
                                                     </div>
@@ -242,7 +242,7 @@ class ModifyFranDialog extends Component {
                                                             name="franAddress"
                                                             className="selectItem"
                                                         >
-                                                            <Input placeholder="주소 입력" className="override-input sub">
+                                                            <Input placeholder="주소 입력" className="override-input sub" defaultValue={data.addr1}>
                                                             </Input>
                                                         </FormItem>
                                                     </div>
@@ -254,28 +254,8 @@ class ModifyFranDialog extends Component {
                                                             name="franAddressSub"
                                                             className="selectItem"
                                                         >
-                                                            <Input placeholder="주소 입력" className="override-input sub">
+                                                            <Input placeholder="주소 입력" className="override-input sub" defaultValue={data.addr2}>
                                                             </Input>
-                                                        </FormItem>
-                                                    </div>
-                                                    <div className="m-t-10">
-                                                        <div className="mainTitle">
-                                                            기본료
-                                                    </div>
-                                                        <FormItem
-                                                            style={{
-                                                                marginBottom: 0,
-                                                                display: 'inline-block',
-                                                                verticalAlign: 'middle',
-                                                                marginLeft: 20
-                                                            }}
-                                                            name="payType"
-                                                            initialValue={0}
-                                                        >
-                                                            <Radio.Group>
-                                                                <Radio style={{ fontSize: 18 }} value={0}>코인</Radio>
-                                                                <Radio style={{ fontSize: 18 }} value={1}>코인(VAT)</Radio>
-                                                            </Radio.Group>
                                                         </FormItem>
                                                     </div>
                                                     <div className="contentBlock">
@@ -286,7 +266,7 @@ class ModifyFranDialog extends Component {
                                                             name="callAmount"
                                                             className="selectItem"
                                                         >
-                                                            <Input placeholder="배달요금 입력" className="override-input price">
+                                                            <Input placeholder="배달요금 입력" className="override-input price" defaultValue={data.basicDeliveryPrice}>
                                                             </Input>
                                                         </FormItem>
                                                     * 기본배달요금

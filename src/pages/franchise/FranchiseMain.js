@@ -234,9 +234,9 @@ class FranchiseMain extends Component {
       {
         title: "수정",
         className: "table-column-center",
-        render: () =>
+        render: (data, row) =>
           <div>
-            <ModifyFranDialog isOpen={this.state.modifyFranOpen} close={this.closeModifyFranModal} />
+            <ModifyFranDialog isOpen={this.state.modifyFranOpen} close={this.closeModifyFranModal} data={row} />
             <Button
               className="tabBtn surchargeTab"
               onClick={this.openModifyFranModal}
