@@ -32,6 +32,7 @@ class FranchiseMain extends Component {
       coinTransferOpen: false,
       modifyFranOpen: false,
       SearchAddressOpen: false,
+      dialogData: [],
     };
   }
 
@@ -84,8 +85,8 @@ class FranchiseMain extends Component {
   }
 
   // 가맹점수정 dialog
-  openModifyFranModal = () => {
-    this.setState({ modifyFranOpen: true });
+  openModifyFranModal = (row) => {
+    this.setState({ modifyFranOpen: true, dialogData: row});
   }
   closeModifyFranModal = () => {
     this.setState({ modifyFranOpen: false });
@@ -236,10 +237,10 @@ class FranchiseMain extends Component {
         className: "table-column-center",
         render: (data, row) =>
           <div>
-            <ModifyFranDialog isOpen={this.state.modifyFranOpen} close={this.closeModifyFranModal} data={row} />
+            <ModifyFranDialog isOpen={this.state.modifyFranOpen} close={this.closeModifyFranModal} data={this.state.dialogData} />
             <Button
               className="tabBtn surchargeTab"
-              onClick={this.openModifyFranModal}
+              onClick={() => this.openModifyFranModal(row)}
             >수정하기</Button>
           </div>
       },
