@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import {
-    Form, Input, DatePicker, Button, Select, Radio
+    Form, Input, DatePicker, Button, Select, Radio, Checkbox
 } from "antd";
 import '../../../css/modal.css';
 // import MapContainer from "./MapContainer";
@@ -51,7 +51,7 @@ class RegistCallDialog extends Component {
                                                     <div className="mainTitle">
                                                         가맹점명
                                                 </div>
-                                                    <FormItem
+                                                    {/* <FormItem
                                                         name="franchiseName"
                                                         className="selectItem"
                                                     >
@@ -60,7 +60,7 @@ class RegistCallDialog extends Component {
                                                             <Option value={1}>김포1지점 / 플러스김포</Option>
                                                             <Option value={2}>김포2지점 / 플러스김포</Option>
                                                         </Select>
-                                                    </FormItem>
+                                                    </FormItem> */}
                                                     <Search
                                                         placeholder="가맹점검색"
                                                         enterButton
@@ -81,9 +81,14 @@ class RegistCallDialog extends Component {
                                                         className="selectItem"
                                                     >
                                                         <Select placeholder="시간단위" className="override-select time">
-                                                            <Option value={1}>1</Option>
-                                                            <Option value={2}>2</Option>
-                                                            <Option value={3}>3</Option>
+                                                            <Option value={1}>5분</Option>
+                                                            <Option value={1}>10분</Option>
+                                                            <Option value={1}>15분</Option>
+                                                            <Option value={1}>20분</Option>
+                                                            <Option value={1}>30분</Option>
+                                                            <Option value={1}>40분</Option>
+                                                            <Option value={1}>후5분</Option>
+                                                            <Option value={1}>후10분</Option>
                                                         </Select>
                                                     </FormItem>
                                                     <FormItem
@@ -95,10 +100,8 @@ class RegistCallDialog extends Component {
                                                         name="payType"
                                                         initialValue={0}
                                                     >
-                                                        <Radio.Group>
-                                                            <Radio style={{ fontSize: 16 }} value={0}>과금</Radio>
-                                                            <Radio style={{ fontSize: 18 }} value={1}>과적</Radio>
-                                                        </Radio.Group>
+                                                            <Checkbox style={{ fontSize: 16 }} value={0}>과금</Checkbox>
+                                                            <Checkbox style={{ fontSize: 18 }} value={1}>과적</Checkbox>
                                                     </FormItem>
                                                 </div>
                                                 <div className="contentBlock">
@@ -189,7 +192,7 @@ class RegistCallDialog extends Component {
                                                 </Button>
                                             </div>
 
-                                            <div className="mapLayout" id="myMap">
+                                            <div className="mapLayout regist-call-map" id="myMap">
                                                 {/* <MapContainer /> */}
                                                 {navermaps &&
                                                     <NaverMap

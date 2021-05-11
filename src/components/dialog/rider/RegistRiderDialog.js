@@ -4,6 +4,7 @@ import {
 } from "antd";
 import '../../../css/modal.css';
 import { httpUrl, httpPost} from '../../../api/httpClient';
+import Search from "antd/lib/transfer/search";
 const Option = Select.Option;
 const FormItem = Form.Item;
 
@@ -156,9 +157,9 @@ class RegistRiderDialog extends Component {
                                                     >
                                                         <Select placeholder="직급을 선택해주세요." onChange={this.handleChangeRiderLevel} className="override-select branch" >
                                                             <Option value={1}>라이더</Option>
-                                                            <Option value={2}>부팀장</Option>
+                                                            {/* <Option value={2}>부팀장</Option> */}
                                                             <Option value={3}>팀장</Option>
-                                                            <Option value={4}>부본부장</Option>
+                                                            {/* <Option value={4}>부본부장</Option> */}
                                                             <Option value={5}>본부장</Option>
                                                             <Option value={6}>부지점장</Option>
                                                             <Option value={7}>지점장</Option>
@@ -176,8 +177,13 @@ class RegistRiderDialog extends Component {
                                                             name="teamManager"
                                                             className="selectItem"
                                                         >
-                                                            <Input placeholder="팀장명을 입력해 주세요." className="override-input">
-                                                            </Input>
+                                                            <Select placeholder="팀장을 선택해주세요." className="override-select branch" >
+                                                                <Option value={1}>김동일</Option>
+                                                                <Option value={2}>문승현</Option>
+                                                                <Option value={3}>송용학</Option>
+                                                                <Option value={4}>김시욱</Option>
+                                                                <Option value={5}>홍원표</Option>
+                                                            </Select>
                                                         </FormItem>
                                                     </div>
                                                 }

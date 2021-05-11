@@ -50,6 +50,10 @@
     height:600px;
     float: left;
 }
+.regist-call-map {
+    height: 200px;
+    overflow: hidden;
+}
 
 .map-navermap {
     border-bottom-left-radius: 30px;
