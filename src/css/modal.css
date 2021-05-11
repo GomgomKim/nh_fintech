@@ -1428,7 +1428,7 @@
 
 .timeDelay-box{
   width:610px;
-  height:460px;
+  height:300px;
   margin:16px 32px;
   text-align:center;
   line-height:130px;
@@ -2172,7 +2172,7 @@ display:none;
 }
 
 .riderGroup-inner .ant-table-row-level-0-active{
-background-color: #1a1a1a;
+  background-color: #1a1a1a;
 }
 
 .ant-checkbox-checked:checked .ant-table-row-level-0:active{
@@ -2181,12 +2181,20 @@ background-color: #1a1a1a;
 
 /*기사 그룹관리 라인활성화*/
 
-
+ 
 .clickRowStyl{
   background-color: #40a9ff;
+} 
+
+/* .riderGroup-inner .ant-table-row-level-0:hover{
+  background-color: #40a9ff !important;
+  cursor: default;
 }
 
-
+.riderGroup-inner .clickRowStyl:hover{
+  background-color: #40a9ff !important;
+  transition: all 10s ease-in-out;
+} */
 
 /*기사 등록*/
 .registRider-Dialog{

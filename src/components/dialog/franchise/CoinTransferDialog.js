@@ -7,6 +7,7 @@ import '../../../css/rider.css';
 import moment from 'moment';
 import { comma } from "../../../lib/util/numberUtil";
 import { formatDate } from "../../../lib/util/dateUtil";
+import { NaverMap } from "react-naver-maps";
 
 const FormItem = Form.Item;
 const Ditems = Descriptions.Item;
@@ -28,11 +29,12 @@ class CoinTransferDialog extends Component {
                 current: 1,
                 pageSize: 5,
             },
+            list: [],
         };
         this.formRef = React.createRef();
     }
     componentDidMount() {
-        // this.getList()
+        this.getList()
         // console.log(this.props)
     }
 
@@ -40,6 +42,39 @@ class CoinTransferDialog extends Component {
         console.log(date)
     }
 
+    getList = () => {
+        var list = [
+            {
+                date: '2021-05-10',
+                price: 10000,
+                email: 'abcd@naver.com',
+                riderName: '김기연',
+            },
+            {
+                date: '2021-05-10',
+                price: 20000,
+                email: 'abcd@naver.com',
+                riderName: '김기연',
+            },
+            {
+                date: '2021-05-11',
+                price: 30000,
+                email: 'abcd@naver.com',
+                riderName: '김기연',
+            },
+            {
+                date: '2021-05-11',
+                price: 20000,
+                email: 'abcd@naver.com',
+                riderName: '김기연',
+            }
+        ];
+
+        this.setState({
+            list: list,
+        });
+    }
+    
 
     render() {
 
@@ -47,7 +82,7 @@ class CoinTransferDialog extends Component {
         const columns = [
             {
                 title: "날짜",
-                dataIndex: "data",
+                dataIndex: "date",
                 className: "table-column-center",
                 width: "20%",
             },
@@ -69,8 +104,8 @@ class CoinTransferDialog extends Component {
                 className: "table-column-center",
                 width: "20%",
             },
-
         ];
+
 
 
         return (
@@ -131,7 +166,7 @@ class CoinTransferDialog extends Component {
                                         <div className="dataTableLayout-01">
                                             <span className="coinTran-title-02">이체내역</span><br /><br />
                                             <Table
-                                                dataSource={this.state.results}
+                                                dataSource={this.state.list}
                                                 columns={columns}
                                                 pagination={this.state.pagination}
                                                 onChange={this.state.Status}

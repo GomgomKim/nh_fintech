@@ -11,7 +11,7 @@ import { NaverMap, Marker, Polyline } from 'react-naver-maps'
 
 
 const FormItem = Form.Item;
-
+const navermaps = window.naver.maps;
 // const { Option } = Radio;
 const Search = Input.Search;
 const riderLevelText = ["none", "라이더", "부팀장", "팀장", "부본부장", "본부장", "부지점장", "지점장", "부센터장", "센터장"];
@@ -161,7 +161,6 @@ class MapControlDialog extends Component {
       
     render() {
         const { isOpen, close } = this.props;
-        const navermaps = window.naver.maps;
 
         const columns = [
             {

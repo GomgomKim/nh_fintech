@@ -84,7 +84,7 @@ class RiderGroupDialog extends Component {
             },
             {
                 id: 5,
-                riderGroup: 'D',
+                riderGroup: 'E',
                 proCount: 2,
                 withdrawLimit: '100000',
                 transferLimit: '500',
@@ -106,7 +106,7 @@ class RiderGroupDialog extends Component {
                 render: (data) => <div>{data == "A" ? "A"
                     : data == "B" ? "B"
                         : data == "C" ? "C"
-                            : data == "D" ? "D" : "-"}</div>
+                            : data == "D" ? "D" : "E"}</div>
             },
             {
                 title: "처리건수",
@@ -166,7 +166,6 @@ class RiderGroupDialog extends Component {
                                                     onChange={this.handleTableChange}
                                                     onRow={this.onClickRow}
                                                     rowClassName={this.setRowClassName}
-
                                                 />
                                             </div>
 

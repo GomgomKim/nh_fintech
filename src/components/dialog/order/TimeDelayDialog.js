@@ -87,7 +87,7 @@ class TimeDelayDialog extends Component {
                                                 <div className="timeDelay-btn-01">
                                                     배달불가
                                             </div>
-                                                <Checkbox></Checkbox>
+                                                <Checkbox style={{ marginTop: 11 }}></Checkbox>
                                             </div>
 
                                             <div className="timeDelay-btn-02">
