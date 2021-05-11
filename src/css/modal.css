@@ -2623,3 +2623,152 @@ width:240px!important;
 .serchAddress-Dialog .ant-table-content thead th {
   padding: 10px;
 }
+
+.serchAddress-Dialog .layout .ant-table-tbody > tr > td{
+  padding: 0;
+}
+
+
+/* 강제배차 Dialog */
+
+.forceAllocate-Dialog{
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  border-radius: 30px;
+  z-index: 2;
+}
+
+.forceAllocate-content{
+  padding:30px;
+  background-color:white;
+}
+
+.forceAllocate-title{
+  letter-spacing: -1px;
+  font-weight: bold;
+  color: #333;
+  display: inline-block;
+  font-size: 25px;
+  line-height: 30px;
+  margin-bottom: 10px;
+  float: left;
+}
+
+.forceAllocate-close{
+    width:30px;
+    cursor:pointer;
+    background-color:#fddc00;
+    /* display: inline-block; */
+    float: right;
+    padding:8px;
+
+}
+
+.forceAllocate-inner { 
+    width: 100%; 
+    border: 1px solid #ccc; 
+    padding: 20px; 
+    margin-top:5px;
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+    clear: both;
+}
+
+.forceAllocate-inner::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera*/
+}
+
+.forceAllocate-list{
+ text-align: left;
+ margin: 20px 0;
+} 
+
+.forceAllocate-list span{
+  text-align: left;
+}
+
+
+.forceAllocate-btn-01{
+  margin-top:20px;
+  text-align:center;
+}
+
+.forceAllocate-btn-01 .tabBtn{
+  margin:0px!important;
+}
+.forceAllocate-btn-01 > button{
+  height:40px;
+  width:200px;
+  font-size:18px;
+  background-color:#1890ff;
+  color:#fff;
+  font-size:20px;
+  text-align:center;
+  display:inline-block;
+  padding: 0px!important;
+}
+
+.forceAllocate-select-btn .ant-checkbox-wrapper{
+  margin: 0 !important;
+}
+
+.forceAllocate-Dialog .ant-table-content thead th {
+  padding: 10px;
+}
+
+.forceAllocate-Dialog .forceAllocate-inner .ant-spin-container .ant-table{
+  margin: 0 !important;
+}
+/* 메세지 dialog */
+
+
+.message-Dialog{
+  position:fixed;
+  top:50%;
+  left:50%;
+  transform: translate(-50%, -50%);
+  width:345px;
+  z-index: 2;
+}
+
+.message-content{
+  padding:30px;
+  background-color:white;
+}
+
+.message-title{
+  font-size:25px;
+  font-weight:bold;
+  line-height:30px;
+  /* width:300px; */
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.message-close{
+    width:30px;
+    cursor:pointer;
+    background-color:#fddc00;
+    /* display: inline-block; */
+    float: right;
+    padding:8px;
+
+}
+
+.message-inner { 
+    width: 100%; 
+    overflow-y: scroll; 
+    border: 1px solid #ccc; 
+    padding: 20px; 
+    text-align: left;
+    margin-top:20px;
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}
+
+.message-inner::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera*/
+}

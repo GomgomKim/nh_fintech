@@ -6,6 +6,8 @@ import FilteringDialog from "../../components/dialog/order/FilteringDialog";
 import RegistCallDialog from "../../components/dialog/order/RegistCallDialog";
 import SurchargeDialog from "./../../components/dialog/order/SurchargeDialog";
 import NoticeDialog from "../../components/dialog/order/NoticeDialog";
+import ForceAllocateDialog from "../../components/dialog/order/ForceAllocateDialog";
+import MessageDialog from "../../components/dialog/order/MessageDialog";
 import { formatDate } from "../../lib/util/dateUtil";
 import "../../css/order.css";
 import "../../css/common.css";
@@ -49,6 +51,8 @@ class ReceptionStatus extends Component {
       addCallOpen: false,
       filteringOpen: false,
       noticeOpen: false,
+      forceOpen: false,
+      MessageOpen: false,
       activeIndex: -1,
     };
   }
@@ -225,6 +229,22 @@ class ReceptionStatus extends Component {
     this.setState({ noticeOpen: false });
   }
 
+  // 강제배차 dialog
+  openForceModal = () => {
+    this.setState({ forceOpen: true });
+  }
+  closeForceingModal = () => {
+    this.setState({ forceOpen: false });
+  }
+
+
+  // 메세지 dialog
+  openMessageModal = () => {
+    this.setState({ MessageOpen: true });
+  }
+  closeMessageModal = () => {
+    this.setState({ MessageOpen: false });
+  }
   // setClassName = (record, index) => {
   //   console.log(record, index)
   //   return index == this.state.activeIndex ? 'table-red' : "";
@@ -236,10 +256,10 @@ class ReceptionStatus extends Component {
         title: "상태",
         dataIndex: "pickupStatus",
         className: "table-column-center",
-        render: (data) => <div>
-          <Select defaultValue={data} 
-              onChange={(value) => {
-                // console.log(value)
+        render: (data) => <div className="table-column-sub">
+          <Select defaultValue={data}
+            onChange={(value) => {
+              // console.log(value)
 
             }}>
             <Option value={1}>대기중</Option>
@@ -247,7 +267,8 @@ class ReceptionStatus extends Component {
             <Option value={3}>배달중</Option>
             <Option value={4}>완료</Option>
             <Option value={5}>취소</Option>
-          </Select></div>
+          </Select>
+        </div>
 
       },
       {
@@ -386,6 +407,54 @@ class ReceptionStatus extends Component {
           dataIndex: "franchisePhoneNum",
           className: "table-column-center",
         },
+
+        {
+          title: "가맹점 번호",
+          dataIndex: "franchisePhoneNum",
+          className: "table-column-center",
+        },
+        {
+          title: "배차",
+          dataIndex: "forceLocate",
+          className: "table-column-center",
+          render: (data) => <span>
+            <ForceAllocateDialog isOpen={this.state.forceOpen} close={this.closeForceingModal} />
+            <Button
+              className="tabBtn"
+              onClick={this.openForceModal}
+            >강제배차</Button>
+          </span>
+        },
+        {
+          title: "주문수정",
+          dataIndex: "forceLocate",
+          className: "table-column-center",
+          render: (data) => <span>
+            <Button
+              className="tabBtn"
+              onClick={() => { this.setState({ registTab: 1 }, this.openAddCallModal) }}
+            >주문수정</Button>
+          </span>
+        },
+        {
+          title: "메세지",
+          dataIndex: "franchisePhoneNum",
+          className: "table-column-center",
+          render: (data) => <span>
+            <MessageDialog isOpen={this.state.MessageOpen} close={this.closeMessageModal} />
+            <Button
+              className="tabBtn"
+              onClick={this.openMessageModal}
+            >라이더</Button>
+            <MessageDialog isOpen={this.state.MessageOpen} close={this.closeMessageModal} />
+            <Button
+              className="tabBtn"
+              onClick={this.openMessageModal}
+            >가맹점</Button>
+
+          </span>
+        },
+
       ];
       return (
         <Table
@@ -502,17 +571,17 @@ class ReceptionStatus extends Component {
             pagination={this.state.pagination}
             onChange={this.handleTableChange}
             expandedRowRender={expandedRowRender}
-            // onRow={(record, index) => ({
-            //   onClick: () => {
-            //     // console.log(record.pickupStatus)
-            //     // console.log(record, index)
-            //     // rowClassName: 'table-red'
-            //     this.setState({
-            //       activeIndex: index,
-            //     })
-            //   }
-            // })}
-            // rowClassName ={this.setClassName}
+          // onRow={(record, index) => ({
+          //   onClick: () => {
+          //     // console.log(record.pickupStatus)
+          //     // console.log(record, index)
+          //     // rowClassName: 'table-red'
+          //     this.setState({
+          //       activeIndex: index,
+          //     })
+          //   }
+          // })}
+          // rowClassName ={this.setClassName}
           />
         </div>
       </div>
