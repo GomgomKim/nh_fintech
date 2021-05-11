@@ -7,6 +7,7 @@ import RegistCallDialog from "../../components/dialog/order/RegistCallDialog";
 import SurchargeDialog from "./../../components/dialog/order/SurchargeDialog";
 import NoticeDialog from "../../components/dialog/order/NoticeDialog";
 import ForceAllocateDialog from "../../components/dialog/order/ForceAllocateDialog";
+import MapControlDialog from "../../components/dialog/order/MapControlDialog";
 import MessageDialog from "../../components/dialog/order/MessageDialog";
 import { formatDate } from "../../lib/util/dateUtil";
 import "../../css/order.css";
@@ -54,6 +55,10 @@ class ReceptionStatus extends Component {
       forceOpen: false,
       MessageOpen: false,
       activeIndex: -1,
+      mapControlOpen: false,
+      firstStatus: 1,
+      secondStatus: 2,
+      thirdStatus: 3,
     };
   }
 
@@ -94,7 +99,7 @@ class ReceptionStatus extends Component {
   getList = () => {
     var list = [
       {
-        pickupStatus: 1,
+        pickupStatus: this.state.firstStatus,
         preparationStatus: 0,
         requestTime: '2021-04-21 12:00:00',
         preparationTime: '10분',
@@ -121,7 +126,7 @@ class ReceptionStatus extends Component {
         franchisePhoneNum: '031-1234-5678',
       },
       {
-        pickupStatus: 2,
+        pickupStatus: this.state.secondStatus,
         preparationStatus: 1,
         requestTime: '2021-04-21 12:00:00',
         preparationTime: '15분',
@@ -148,7 +153,7 @@ class ReceptionStatus extends Component {
         franchisePhoneNum: '031-1234-5678',
       },
       {
-        pickupStatus: 3,
+        pickupStatus: this.state.thirdStatus,
         preparationStatus: 1,
         requestTime: '2021-04-21 12:00:00',
         preparationTime: '10분',
@@ -216,6 +221,14 @@ class ReceptionStatus extends Component {
     this.setState({ addCallOpen: false });
   }
 
+  // 지도관제
+  openMapControlModal = () => {
+    this.setState({ mapControlOpen: true });
+  }
+  closeMapControlModal = () => {
+    this.setState({ mapControlOpen: false });
+  }
+
   // 필터링 dialog
   openFilteringModal = () => {
     this.setState({ filteringOpen: true });
@@ -256,11 +269,20 @@ class ReceptionStatus extends Component {
         title: "상태",
         dataIndex: "pickupStatus",
         className: "table-column-center",
-        render: (data) => <div className="table-column-sub">
+        render: (data, index) => <div className="table-column-sub">
           <Select defaultValue={data}
             onChange={(value) => {
               // console.log(value)
+              if(index == 1){
 
+              }
+              else if(index == 2){
+
+              }else if(index == 3){
+
+              }
+              this.setState({
+              })
             }}>
             <Option value={1}>대기중</Option>
             <Option value={2}>픽업중</Option>
@@ -475,11 +497,13 @@ class ReceptionStatus extends Component {
             className="tabBtn delayTab"
             onClick={() => { this.setState({ delayTab: 1 }, this.openTimeDelayModal) }}
           >호출설정</Button>
-
+          
+          <MapControlDialog isOpen={this.state.mapControlOpen} close={this.closeMapControlModal} />
           <Button
             icon={<EnvironmentFilled />}
             className="tabBtn mapTab"
-            onClick={() => { this.props.openMapControl() }}
+            onClick={() => { this.setState(this.openMapControlModal) }} 
+            // onClick={() => { this.props.openMapControl() }}
           >지도관제</Button>
 
           <SurchargeDialog isOpen={this.state.surchargeOpen} close={this.closeSurchargeModal} />

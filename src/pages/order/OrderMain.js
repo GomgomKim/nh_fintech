@@ -28,22 +28,20 @@ class OrderMain extends Component {
   componentDidMount() {
   }
 
-  //기사 등록 
-  openMapControlModal = () => {
+  // 지도관제
+  /* openMapControlModal = () => {
     this.setState({ mapControlOpen: true });
   }
   closeMapControlModal = () => {
     this.setState({ mapControlOpen: false });
-  }
+  } */
 
   render() {
     return (
       <div className="">
-        {this.state.mapControlOpen ?
-          <MapControlDialog 
-            isOpen={this.state.mapControlOpen} close={this.closeMapControlModal}
-            closeMapControl={this.closeMapControlModal} /> :
-          <ReceptionStatus openMapControl={this.openMapControlModal} />}
+          {/* <MapControlDialog isOpen={this.state.mapControlOpen} close={this.closeMapControlModal} /> */}
+          {/* <ReceptionStatus openMapControl={this.openMapControlModal} /> */}
+          <ReceptionStatus/>
       </div>
     )
   }

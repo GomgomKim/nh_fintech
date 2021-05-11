@@ -191,29 +191,31 @@ class RegistCallDialog extends Component {
 
                                             <div className="mapLayout" id="myMap">
                                                 {/* <MapContainer /> */}
-                                                <NaverMap
-                                                    className='map-navermap'
-                                                    defaultZoom={14}
-                                                    center={{ lat: lat, lng: lng }}
-                                                >
-                                                <Marker
-                                                    position={new navermaps.LatLng(lat, lng)}
-                                                    icon={require('../../../img/login/map/marker_rider.png').default}
-                                                />
-                                                <Marker
-                                                    position={new navermaps.LatLng(lat, lng)}
-                                                    icon={require('../../../img/login/map/marker_target.png').default}
-                                                />
-                                                <Polyline 
-                                                path={[
-                                                    new navermaps.LatLng(lat, lng),
-                                                    new navermaps.LatLng(lat, lng),
-                                                ]}
-                                                // clickable // 사용자 인터랙션을 받기 위해 clickable을 true로 설정합니다.
-                                                strokeColor={'#5347AA'}
-                                                strokeWeight={5}        
-                                                />
-                                                </NaverMap>
+                                                {navermaps &&
+                                                    <NaverMap
+                                                        className='map-navermap'
+                                                        defaultZoom={14}
+                                                        center={{ lat: lat, lng: lng }}
+                                                    >
+                                                    <Marker
+                                                        position={navermaps.LatLng(lat, lng)}
+                                                        icon={require('../../../img/login/map/marker_rider.png').default}
+                                                    />
+                                                    <Marker
+                                                        position={navermaps.LatLng(lat, lng)}
+                                                        icon={require('../../../img/login/map/marker_target.png').default}
+                                                    />
+                                                    <Polyline 
+                                                    path={[
+                                                        navermaps.LatLng(lat, lng),
+                                                        navermaps.LatLng(lat, lng),
+                                                    ]}
+                                                    // clickable // 사용자 인터랙션을 받기 위해 clickable을 true로 설정합니다.
+                                                    strokeColor={'#5347AA'}
+                                                    strokeWeight={5}        
+                                                    />
+                                                    </NaverMap>
+                                                }
                                             </div>
 
 
