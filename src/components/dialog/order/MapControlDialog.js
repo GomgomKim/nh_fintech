@@ -15,8 +15,8 @@ const navermaps = window.naver.maps;
 // const { Option } = Radio;
 const Search = Input.Search;
 const riderLevelText = ["none", "라이더", "부팀장", "팀장", "부본부장", "본부장", "부지점장", "지점장", "부센터장", "센터장"];
-const lat = 37.518663;
-const lng = 127.040514;
+const lat = 37.643623625321474;
+const lng = 126.66509442649551;
 
 class MapControlDialog extends Component {
     constructor(props) {
@@ -43,11 +43,14 @@ class MapControlDialog extends Component {
             riderStatus: 1,
             riderLevel: [1],
             userData: 1,
+
+            riderListOpen: false,
+            selectedRider: ''
         }
     }
 
     componentDidMount() {
-        this.getList()
+        //this.getList()
         this.getRiderList()
     }
     
@@ -257,6 +260,10 @@ class MapControlDialog extends Component {
               title: "기사명",
               dataIndex: "riderName",
               className: "table-column-center",
+              render: (data) => <div style={{cursor: 'pointer'}} onClick={()=>{
+                this.setState({selectedRider: 55})
+                this.onSearchWorker(data)
+              }}>{data}</div>
             },
             {
               title: "아이디",
@@ -282,6 +289,20 @@ class MapControlDialog extends Component {
             },
         ];
 
+        const testPos = [
+          [37.643623625321474, 126.66509442649551],
+          [37.64343886140538, 126.65834481723877],
+          [37.65596523546722, 126.6787078755755],
+          [37.65733896727498, 126.63144924895946],
+          [37.640731270645524, 126.62466156284721],
+          [37.63693239487243, 126.669317392533],
+          [37.66251043552984, 126.61328070568158],
+          [37.65842985383964, 126.65206748346581],
+          [37.635598700929414, 126.65467028039605],
+          [37.66368204625145, 126.67901408697905],
+          [37.64444913118349, 126.59990947439282],
+          [37.6370536385893, 126.67334917601319],
+        ]
         return (
             <React.Fragment>
                 {
@@ -291,39 +312,24 @@ class MapControlDialog extends Component {
                             <div className="map-Dialog">
 
                                 <div className="map-content">
-                                    <div className="timeDelay-title">
-                                        지도관제
-                                    </div>
                                     <img onClick={close} src={require('../../../img/login/close.png').default} className="map-close" />
 
 
                                     <div className="map-inner">
-                                        <div className="selectLayout">
 
-                                            <Search
-                                            placeholder="기사명검색"
-                                            enterButton
-                                            allowClear
-                                            onSearch={this.onSearchWorker}
-                                            style={{
-                                                width: 200,
-                                            }}
-                                            />
-
-                                        </div>
-
-                                        <div className="textLayout">
-                                            <span className="riderText">{this.state.riderName}의 배차 목록 &lt;{this.state.franchisee}&gt; </span>
-                                        </div>
-
+                                    {this.state.riderName && (
                                         <div className="riderTableLayout">
+                                          <div className="textLayout">
+                                              <span className="riderText">{this.state.riderName}의 배차 목록</span>
+                                          </div>
                                             <Table
                                             dataSource={this.state.list}
                                             columns={columns}
-                                            pagination={this.state.pagination}
                                             onChange={this.handleTableChange}
+                                            pagination={false}
                                             />
                                         </div>
+                                              )}
 
                                         <div className="mapLayout">
                                             {/* <MapContainer/> */}
@@ -334,35 +340,140 @@ class MapControlDialog extends Component {
                                               center={{ lat: lat, lng: lng }}
                                               >
                                               <Marker
+                                                  position={navermaps.LatLng(testPos[0][0], testPos[0][1])}
+                                                  icon={require('../../../img/login/map/marker_target.png').default}
+                                                  title="강재훈"
+                                                  onClick={()=>this.setState({selectedRider: 55})}
+                                              />
+                                              <Marker
+                                                  position={navermaps.LatLng(testPos[1][0], testPos[1][1])}
+                                                  icon={require('../../../img/login/map/marker_target.png').default}
+                                                  title="김길동"
+                                                  onClick={()=>this.setState({selectedRider: 44})}
+                                              />
+                                              <Marker
+                                                  position={navermaps.LatLng(testPos[2][0], testPos[2][1])}
+                                                  icon={require('../../../img/login/map/marker_target.png').default}
+                                                  title="문재인"
+                                                  onClick={()=>this.setState({selectedRider: 0})}
+                                              />
+                                              {this.state.selectedRider == 55 && (
+                                              <>
+                                              <Marker
+                                                  position={navermaps.LatLng(testPos[3][0], testPos[3][1])}
+                                                  icon={require('../../../img/login/map/marker_rider.png').default}
+                                              />
+                                              <Marker
+                                                  position={navermaps.LatLng(testPos[4][0], testPos[4][1])}
+                                                  icon={require('../../../img/login/map/marker_rider.png').default}
+                                              />
+                                              <Marker
+                                                  position={navermaps.LatLng(testPos[5][0], testPos[5][1])}
+                                                  icon={require('../../../img/login/map/marker_rider.png').default}
+                                              />
+                                              <Marker
+                                                  position={navermaps.LatLng(testPos[6][0], testPos[6][1])}
+                                                  icon={require('../../../img/login/map/marker_rider.png').default}
+                                              />
+                                              <Polyline 
+                                                path={[
+                                                  navermaps.LatLng(testPos[0][0], testPos[0][1]),
+                                                  navermaps.LatLng(testPos[3][0], testPos[3][1]),
+                                                  navermaps.LatLng(testPos[4][0], testPos[4][1]),
+                                                ]}
+                                                strokeColor={'#ff0000'}
+                                                strokeWeight={5}        
+                                              />
+                                              <Polyline 
+                                                path={[
+                                                  navermaps.LatLng(testPos[0][0], testPos[0][1]),
+                                                  navermaps.LatLng(testPos[5][0], testPos[5][1]),
+                                                  navermaps.LatLng(testPos[6][0], testPos[6][1]),
+                                                ]}
+                                                strokeColor={'#5347AA'}
+                                                strokeWeight={5}        
+                                              />
+                                              </>
+
+                                              )}
+                                              {this.state.selectedRider == 44 && (
+                                              <>
+                                              <Marker
+                                                  position={navermaps.LatLng(testPos[7][0], testPos[7][1])}
+                                                  icon={require('../../../img/login/map/marker_rider.png').default}
+                                              />
+                                              <Marker
+                                                  position={navermaps.LatLng(testPos[8][0], testPos[8][1])}
+                                                  icon={require('../../../img/login/map/marker_rider.png').default}
+                                              />
+                                              <Polyline 
+                                                path={[
+                                                  navermaps.LatLng(testPos[1][0], testPos[1][1]),
+                                                  navermaps.LatLng(testPos[7][0], testPos[7][1]),
+                                                  navermaps.LatLng(testPos[8][0], testPos[8][1]),
+                                                ]}
+                                                strokeColor={'#ff0000'}
+                                                strokeWeight={5}        
+                                              />
+                                              </>
+
+                                              )}
+
+                                              {/* <Marker
+                                                  position={navermaps.LatLng(lat, lng)}
+                                                  icon={require('../../../img/login/map/marker_rider.png').default}
+                                              />
+                                              <Marker
+                                                  position={navermaps.LatLng(lat, lng)}
+                                                  icon={require('../../../img/login/map/marker_rider.png').default}
+                                              />
+
+                                              <Marker
                                                   position={navermaps.LatLng(lat, lng)}
                                                   icon={require('../../../img/login/map/marker_rider.png').default}
                                               />
                                               <Marker
                                                   position={navermaps.LatLng(this.props.frLat, this.props.frLng)}
                                                   icon={require('../../../img/login/map/marker_target.png').default}
-                                              />
-                                              <Polyline 
-                                                path={[
-                                                  navermaps.LatLng(this.props.frLat, this.props.frLng),
-                                                  navermaps.LatLng(lat, lng),
-                                                ]}
-                                                // clickable // 사용자 인터랙션을 받기 위해 clickable을 true로 설정합니다.
-                                                strokeColor={'#5347AA'}
-                                                strokeWeight={5}        
-                                              />
+                                              /> */}
                                               </NaverMap>
                                             }
                                             
                                         </div>
-                                        <div className="riderListInMapControl">
-                                            <Table
-                                                rowKey={(record) => record}
-                                                dataSource={this.state.results}
-                                                columns={columns_riderList}
-                                                pagination={this.state.paginationRiderList}
-                                                onChange={this.handleRiderListTableChange}
-                                            />
-                                        </div>
+                                        {this.state.riderListOpen && (
+                                          <>
+                                          <div className="rider-list-show-btn" onClick={()=>this.setState({riderListOpen: false})}>
+                                              닫기
+                                            </div>
+                                            <div className="riderListInMapControl">
+                                              <div className="selectLayout">
+    
+                                                  <Search
+                                                  placeholder="기사명검색"
+                                                  enterButton
+                                                  allowClear
+                                                  onSearch={this.onSearchWorker}
+                                                  style={{
+                                                      width: 200,
+                                                  }}
+                                                  />
+    
+                                              </div>
+                                                <Table
+                                                    rowKey={(record) => record}
+                                                    dataSource={this.state.results}
+                                                    columns={columns_riderList}
+                                                    pagination={this.state.paginationRiderList}
+                                                    onChange={this.handleRiderListTableChange}
+                                                />
+                                            </div>
+                                          </>
+                                        )}
+                                        {!this.state.riderListOpen && (
+                                            <div className="rider-list-show-btn" onClick={()=>this.setState({riderListOpen: true})}>
+                                              열기
+                                            </div>
+                                        )}
                                     </div>
 
 

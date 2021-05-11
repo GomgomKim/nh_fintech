@@ -143,11 +143,10 @@
 }
 
 .map-content{
-  padding:30px;
   background-color:white;
   height: 100%;
+  width: 100%;
 }
-
 .map-title{
   font-size:25px;
   font-weight:bold;
@@ -158,34 +157,41 @@
 }
 
 .map-close{
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 90;
     width:30px;
     cursor:pointer;
     background-color:#fddc00;
     /* display: inline-block; */
-    float: right;
     padding:8px;
 }
 
 .map-inner { 
     width: 100%; 
-    overflow-y: scroll; 
-    border: 1px solid #ccc; 
-    padding: 20px; 
+    /* border: 1px solid #ccc;  */
     text-align: left;
-    margin-top:20px;
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
-}
-
-.map-inner::-webkit-scrollbar {
-  /* display: none; Chrome, Safari, Opera */
 }
 
 .riderListInMapControl{
   width: 42%;
-  float: right;
+  position: absolute;
+  right: 10px;
+  top: 300px;
+  z-index: 50;
 }
-
+.rider-list-show-btn {
+  float: right;
+  position: absolute;
+  z-index: 100;
+  right: 10px;
+  top: 300px;
+  background-color: #000;
+  padding: 5px 20px;
+  color: #fff;
+  cursor: pointer;
+}
 
 .map-box .ant-checkbox{
   top: 0em!important;
