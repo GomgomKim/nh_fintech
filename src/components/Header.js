@@ -1,13 +1,13 @@
 import React from "react";
-import { withRouter, Link, Switch, Route } from "react-router-dom";
-import { Layout, Modal, Menu } from "antd";
+import { withRouter} from "react-router-dom";
+import { Layout, Modal, Select } from "antd";
 import { connect } from "react-redux";
 import { reactLocalStorage } from "reactjs-localstorage";
 import { httpPost, httpUrl } from "../api/httpClient";
 import { logout, login } from "../actions/loginAction";
 import con from "../const";
 import { CopyOutlined, PhoneOutlined, TeamOutlined, IdcardOutlined, SettingOutlined } from '@ant-design/icons';
-const SubMenu = Menu.SubMenu;
+const Option = Select.Option;
 
 class Header extends React.Component {
   constructor(props) {
@@ -70,6 +70,13 @@ class Header extends React.Component {
                 </div>
               );
             })}
+            <Select 
+            style={{ paddingLeft: "20px" }}
+            placeholder="소속지사를 선택해 주세요." className="override-select branch">
+                <Option value={0}>플러스김포 / 플러스김포</Option>
+                <Option value={1}>김포1지점 / 플러스김포</Option>
+                <Option value={2}>김포2지점 / 플러스김포</Option>
+            </Select>
           </div>
 
           <div className="menu-right">
