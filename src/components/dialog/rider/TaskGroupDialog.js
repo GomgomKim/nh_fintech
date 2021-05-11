@@ -70,7 +70,7 @@ class TaskGroupDialog extends Component {
                 ]
             },
             {
-                groupName: 'B',
+                groupName: '기타',
                 data: [
                     {
                         branchName: '플러스김포',

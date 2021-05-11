@@ -183,6 +183,7 @@ class ReceptionStatus extends Component {
         franchisePhoneNum: '031-1234-5678',
       },
     ];
+    list = list.concat(list).concat(list).concat(list).concat(list).concat(list).concat(list).concat(list).concat(list).concat(list)
     this.setState({
       list: list,
     });
@@ -643,7 +644,8 @@ class ReceptionStatus extends Component {
             rowClassName={(record) => rowClassName[record.pickupStatus]}
             dataSource={this.state.list}
             columns={columns}
-            pagination={this.state.pagination}
+            // pagination={this.state.pagination}
+            pagination={false}
             onChange={this.handleTableChange}
             expandedRowRender={expandedRowRender}
           // onRow={(record, index) => ({

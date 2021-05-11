@@ -21,3 +21,19 @@
     background-color: #222 !important;
     border-color: #222 !important;
 }
+.ant-table-tbody > tr > td {
+    padding: 2px!important;
+}
+.ant-table-tbody > tr > td > .ant-table-wrapper:only-child .ant-table {
+    margin: 0px!important;
+}
+.ant-table-thead > tr > th {
+    padding: 5px!important;
+}
+.ant-table-expanded-row .ant-table-thead > tr > th {
+    background-color:white !important;
+    color: #000!important;
+}
+.ant-table-expanded-row .ant-table-wrapper {
+    margin-bottom: 30px!important;
+}
