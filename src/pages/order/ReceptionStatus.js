@@ -99,6 +99,7 @@ class ReceptionStatus extends Component {
   getList = () => {
     var list = [
       {
+        idx: 1,
         pickupStatus: this.state.firstStatus,
         preparationStatus: 0,
         requestTime: '2021-04-21 12:00:00',
@@ -126,6 +127,7 @@ class ReceptionStatus extends Component {
         franchisePhoneNum: '031-1234-5678',
       },
       {
+        idx: 2,
         pickupStatus: this.state.secondStatus,
         preparationStatus: 1,
         requestTime: '2021-04-21 12:00:00',
@@ -153,6 +155,7 @@ class ReceptionStatus extends Component {
         franchisePhoneNum: '031-1234-5678',
       },
       {
+        idx: 3,
         pickupStatus: this.state.thirdStatus,
         preparationStatus: 1,
         requestTime: '2021-04-21 12:00:00',
@@ -263,26 +266,74 @@ class ReceptionStatus extends Component {
   //   return index == this.state.activeIndex ? 'table-red' : "";
   // }
 
+  getStatusVal = (idx) => {
+      if(idx == 1) return this.state.firstStatus
+      else if(idx == 2) return this.state.secondStatus
+      else if(idx == 3) return this.state.thirdStatus
+  } 
+
   render() {
     const columns = [
       {
         title: "상태",
         dataIndex: "pickupStatus",
         className: "table-column-center",
-        render: (data, index) => <div className="table-column-sub">
+        render: (data, row) => <div className="table-column-sub">
           <Select defaultValue={data}
+            value={this.getStatusVal(row.idx)}
             onChange={(value) => {
-              // console.log(value)
-              if(index == 1){
-
+              // console.log(value, row)
+              var flag = true
+              if(row.pickupStatus == 1){
+                if(value != 2 && value != 5){
+                  alert("상태를 바꿀 수 없습니다.")
+                  flag = false
+                }
+                if(value == 2){
+                  alert("강제배차를 사용하세요")
+                }
               }
-              else if(index == 2){
-
-              }else if(index == 3){
-
+              else if(row.pickupStatus == 2){
+                if(value != 3 && value != 5){
+                  alert("상태를 바꿀 수 없습니다.")
+                  flag = false
+                }
               }
-              this.setState({
-              })
+              else if(row.pickupStatus == 3){
+                if(value != 4 && value != 5){
+                  alert("상태를 바꿀 수 없습니다.")
+                  flag = false
+                }
+              }
+              else if(row.pickupStatus == 5){
+                if(value != 1){
+                  alert("상태를 바꿀 수 없습니다.")
+                  flag = false
+                }
+              }
+              if(flag){
+                // DB연동 후 삭제예정
+                if(row.idx == 1){
+                  this.setState({
+                    firstStatus: value
+                  }, () => {
+                    this.getList()
+                  })
+                }
+                else if(row.idx == 2){
+                  this.setState({
+                    secondStatus: value
+                  }, () => {
+                    this.getList()
+                  })
+                }else if(row.idx == 3){
+                  this.setState({
+                    thirdStatus: value
+                  }, () => {
+                    this.getList()
+                  })
+                }
+              }
             }}>
             <Option value={1}>대기중</Option>
             <Option value={2}>픽업중</Option>
