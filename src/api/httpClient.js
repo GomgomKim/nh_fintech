@@ -156,6 +156,9 @@ const httpUrl = {
 
   // 접수 현황
   receptionStatusList: "/order/assignList?pageSize=%s&pageNum=%s",
+  
+  // 주문 현황
+  orderList: "/order/list?frName=%s&orderDate=%s&orderStatuses=%s&pageNum=%s&pageSize=%s&paymentMethods=%s&riderName=%s",
 
   priceExtraList: "/branch/deliveryPriceExtra/list?pageNum=%s&pageSize=%s",
   priceExtraRegist: "/branch/deliveryPriceExtra/create",
@@ -169,6 +172,7 @@ const httpUrl = {
   riderList: "/rider/list?pageSize=%s&pageNum=%s&riderLevels=%s&userStatus=%s",
   registRider: "/rider/create",
   updateRider: "/rider/update",
+  riderLocate: "/rider/location/%s",
 
   //직원등록
   registStaffList: "/rider/list?pageSize=%s&pageNum=%s&riderLevels=%s&userStatus=%s",

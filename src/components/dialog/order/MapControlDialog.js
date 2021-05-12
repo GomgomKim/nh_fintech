@@ -6,7 +6,7 @@ import "../../../css/order.css";
 import { comma } from "../../../lib/util/numberUtil";
 // import MapContainer from "./MapContainer";
 import { httpGet, httpUrl} from '../../../api/httpClient';
-import { NaverMap, Marker, Polyline } from 'react-naver-maps'
+import { NaverMap, Marker, Polyline } from 'react-naver-maps';
 
 
 
@@ -41,11 +41,15 @@ class MapControlDialog extends Component {
             // rider list
             results: [],
             riderStatus: 1,
-            riderLevel: [1],
+            riderLevel: [1, 2],
             userData: 1,
 
             riderListOpen: false,
-            selectedRider: ''
+            selectedRider: '',
+
+            // rider locate param
+            selectedRiderIdx: 0,
+            riderOrderList: [],
         }
     }
 
@@ -67,7 +71,9 @@ class MapControlDialog extends Component {
     }
     
     onSearchWorker = (value) => {
+        var riderIdx = this.state.results.find(x => x.id == value).idx;
         this.setState({
+          selectedRiderIdx: riderIdx,
           riderName: value,
         }, () => {
           this.getList()
@@ -84,7 +90,21 @@ class MapControlDialog extends Component {
     
     
     getList = () => {
-        var list = [
+        let selectedRiderIdx = this.state.selectedRiderIdx;
+        console.log(selectedRiderIdx)
+        httpGet(httpUrl.riderLocate, [selectedRiderIdx], {}).then((result) => {
+          // console.log('### nnbox result=' + JSON.stringify(result, null, 4))
+          const pagination = { ...this.state.pagination };
+          // console.log('### nnbox result=' + JSON.stringify(result.data.orders, null, 4))
+          var list = [result.data.orders];
+          console.log(list)
+          this.setState({
+            riderOrderList: list,
+            pagination,
+          });
+        })
+    
+        /* var list = [
           {
             pickupStatus: 1,
             preparationStatus: 0,
@@ -117,20 +137,17 @@ class MapControlDialog extends Component {
             charge: 30000,
             paymentMethod: 0,
           },
-        ];
-        this.setState({
-          list: list,
-        });
-    
+        ]; */
+        
     }
-
+    
     getRiderList = () => {
         let pageNum = this.state.pagination.current;
         let riderLevel = this.state.riderLevel;
         let userData = this.state.userData;
     
         httpGet(httpUrl.riderList, [10, pageNum, riderLevel, userData], {}).then((result) => {
-          console.log('## nnbox result=' + JSON.stringify(result, null, 4))
+          console.log('### nnbox result=' + JSON.stringify(result, null, 4))
           const pagination = { ...this.state.pagination };
           pagination.current = result.data.currentPage;
           pagination.total = result.data.totalCount;
@@ -166,88 +183,70 @@ class MapControlDialog extends Component {
         const { isOpen, close } = this.props;
 
         const columns = [
-            {
-              title: "상태",
-              dataIndex: "pickupStatus",
-              className: "table-column-center",
-              render: (data) => <div>{data == -1 ? "취소"
-                : data == 0 ? "픽업"
-                  : data == 1 ? "배차"
-                    : data == 2 ? "완료" : "-"}</div>
-            },
-            {
-              title: "도착지",
-              dataIndex: "destination",
-              className: "table-column-center",
-            },
-            {
-              title: "주문시간",
-              dataIndex: "orderTime",
-              className: "table-column-center",
-              render: (data) => <div>{formatDate(data)}</div>
-            },
-            {
-              title: "배차시간",
-              dataIndex: "completionTime",
-              className: "table-column-center",
-              render: (data) => <div>{formatDate(data)}</div>
-            },
-            {
-              title: "픽업시간",
-              dataIndex: "pickupTime",
-              className: "table-column-center",
-              render: (data) => <div>{formatDate(data)}</div>
-            },
-            {
-              title: "경과(분)",
-              dataIndex: "elapsedTime",
-              className: "table-column-center",
-            },
-            {
-              title: "기사명",
-              dataIndex: "riderName",
-              className: "table-column-center",
-            },
-            {
-              title: "가맹점명",
-              dataIndex: "franchiseeName",
-              className: "table-column-center",
-            },
-            {
-              title: "가격",
-              dataIndex: "charge",
-              className: "table-column-center",
-              render: (data) => <div>{comma(data)}</div>
-            },
-            {
-              title: "배달 요금",
-              dataIndex: "deliveryCharge",
-              className: "table-column-center",
-              render: (data) => <div>{comma(data)}</div>
-            },
-            {
-              title: "결제방식",
-              dataIndex: "paymentMethod",
-              className: "table-column-center",
-              render: (data) => <div>{data == 0 ? "선결" : "카드"}</div>
-            },
-            {
-              title: "카드상태",
-              dataIndex: "preparationStatus",
-              className: "table-column-center",
-              render: (data) => <div>{data == 0 ? "요청" : "결제완료"}</div>
-            },
-            {
-              title: "작업",
-              className: "table-column-center",
-              render: () =>
-                <div>
-                  <Button
-                    className="tabBtn surchargeTab"
-                    onClick={() => { this.setState({ workTab: 1 }) }}
-                  >작업</Button>
-                </div>
-            },
+          {
+            title: "상태",
+            dataIndex: 0,
+            className: "table-column-center",
+            render: (data) => <div>{data.orderStatus == 1 ? "대기중"
+              : data.orderStatus == 2 ? "픽업중"
+                : data.orderStatus == 3 ? "배달중"
+                  : data.orderStatus == 4 ? "완료" : "취소"}</div>
+          },
+          {
+            title: "주문시간",
+            dataIndex: 0,
+            className: "table-column-center",
+            render: (data) => <div>{formatDate(data.orderDate)}</div>
+          },
+          {
+            title: "가맹점명",
+            dataIndex: 0,
+            className: "table-column-center",
+            render: (data) => <div>{data.frName}</div>
+
+          },
+          {
+            title: "가격",
+            dataIndex: 0,
+            className: "table-column-center",
+            render: (data) => <div>{comma(data.orderPrice)}</div>
+          },
+          {
+            title: "배달 요금",
+            dataIndex: 0,
+            className: "table-column-center",
+            render: (data) => <div>{comma(data.deliveryPrice)}</div>
+          },
+          {
+            title: "도착지",
+            dataIndex: 0,
+            className: "table-column-center",
+            render: (data) => <div>{data.destAddr1+" "+data.destAddr2+" "+data.destAddr3}</div>
+          },
+          {
+            title: "배차시간",
+            dataIndex: 0,
+            className: "table-column-center",
+            render: (data) => <div>{formatDate(data.assignDate)}</div>
+          },
+          {
+            title: "완료시간",
+            dataIndex: 0,
+            className: "table-column-center",
+            render: (data) => <div>{formatDate(data.arriveReqDate)}</div>
+          },
+          /* {
+            title: "결제방식",
+            dataIndex: 0,
+            className: "table-column-center",
+            render: (data, row) => <div>{data == 0 ? "선결" : "카드"}</div>
+          },
+          {
+            title: "카드상태",
+            dataIndex: "orderPayments",
+            className: "table-column-center",
+            // render: (data) => <div>{data == 0 ? "요청" : "결제완료"}</div>
+          }, */
         ];
 
         const columns_riderList = [
@@ -323,7 +322,7 @@ class MapControlDialog extends Component {
                                               <span className="riderText">{this.state.riderName}의 배차 목록</span>
                                           </div>
                                             <Table
-                                            dataSource={this.state.list}
+                                            dataSource={this.state.riderOrderList}
                                             columns={columns}
                                             onChange={this.handleTableChange}
                                             pagination={false}
@@ -332,7 +331,9 @@ class MapControlDialog extends Component {
                                               )}
 
                                         <div className="mapLayout">
+                                        
                                             {/* <MapContainer/> */}
+                                            {/*
                                             {navermaps &&
                                               <NaverMap
                                               className='map-navermap'
@@ -419,7 +420,7 @@ class MapControlDialog extends Component {
 
                                               )}
 
-                                              {/* <Marker
+                                              <Marker
                                                   position={navermaps.LatLng(lat, lng)}
                                                   icon={require('../../../img/login/map/marker_rider.png').default}
                                               />
@@ -435,9 +436,12 @@ class MapControlDialog extends Component {
                                               <Marker
                                                   position={navermaps.LatLng(this.props.frLat, this.props.frLng)}
                                                   icon={require('../../../img/login/map/marker_target.png').default}
-                                              /> */}
+                                              />
                                               </NaverMap>
+                                              
                                             }
+                                            */}
+                                            
                                             
                                         </div>
                                         {this.state.riderListOpen && (
