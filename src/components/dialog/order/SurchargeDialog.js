@@ -3,8 +3,10 @@ import {
     Form, Modal, Input, DatePicker, Descriptions, Table,
     Upload, Button, Select, Icon, Radio, Carousel, Text,
 } from "antd";
+import { httpUrl, httpPost, httpGet } from '../../../api/httpClient';
 import '../../../css/modal.css';
 import { comma } from "../../../lib/util/numberUtil";
+import moment from 'moment';
 const Option = Select.Option;
 const FormItem = Form.Item;
 const { RangePicker } = DatePicker;
@@ -19,6 +21,8 @@ class SurchargeDialog extends Component {
                 current: 1,
                 pageSize: 5,
             },
+            startDate: "",
+            endDate: "",
         };
         this.formRef = React.createRef();
     }
@@ -37,57 +41,59 @@ class SurchargeDialog extends Component {
         }, () => this.getList());
     };
 
-
     getList = () => {
-        var list = [
-            {
-                useType: 1,
-                surchargeTitle: '추석연휴 운행할증',
-                applyTerm: '매일',
-                completionTime: '금일 11:00 부터 익일 07:59 까지',
-                addFee: '500',
-            },
-            {
-                useType: 0,
-                surchargeTitle: '추석연휴 운행할증',
-                applyTerm: '매일',
-                completionTime: '금일 11:00 부터 익일 07:59 까지',
-                addFee: '500'
-            },
-            {
-                useType: 1,
-                surchargeTitle: '추석연휴 운행할증',
-                applyTerm: '매일',
-                completionTime: '금일 11:00 부터 익일 07:59 까지',
-                addFee: '500'
-            },
-            {
-                useType: 0,
-                surchargeTitle: '추석연휴 운행할증',
-                applyTerm: '매일',
-                completionTime: '금일 11:00 부터 익일 07:59 까지',
-                addFee: '500'
-            },
-            {
-                useType: 0,
-                surchargeTitle: '추석연휴 운행할증',
-                applyTerm: '매일',
-                completionTime: '금일 11:00 부터 익일 07:59 까지',
-                addFee: '500'
-            },
-            {
-                useType: 0,
-                surchargeTitle: '추석연휴 운행할증',
-                applyTerm: '매일',
-                completionTime: '금일 11:00 부터 익일 07:59 까지',
-                addFee: '500'
-            },
-
-        ];
-        this.setState({
-            list: list,
+        let pageNum = this.state.pagination.current;
+        let pageSize = this.state.pagination.pageSize;
+        httpGet(httpUrl.priceExtraList, [pageNum, pageSize], {}).then((res) => {
+            const pagination = { ...this.state.pagination };
+            pagination.current = res.data.currentPage;
+            pagination.total = res.data.totalCount;
+            // console.log('## mega result=' + JSON.stringify(res.data.user, null, 4))
+            this.setState({
+                list: res.data.deliveryPriceExtras,
+                pagination,
+            });
         });
     }
+
+    handleSubmit = () => {
+        // console.log("## result: " + JSON.stringify(this.state.startDate, null, 4));
+        httpPost(httpUrl.priceExtraRegist, [], {
+            branchIdx: this.formRef.current.getFieldsValue().surchargeName,
+            startDate: this.state.startDate,
+            endDate: this.state.endDate,
+            extraPrice: this.formRef.current.getFieldsValue().feeAdd,
+        }).then((result) => {
+            alert('할증 등록이 완료되었습니다.');
+            // this.props.close()
+        }).catch(result => {
+            console.log("## result: " + JSON.stringify(result, null, 4));
+            alert('에러가 발생하였습니다 다시 시도해주세요.')
+        });
+    }
+
+    onDelete = (row) => {
+        let idx = row.idx;
+        httpGet(httpUrl.priceExtraDelete, [idx], {})
+            .then((result) => {
+                let pageNum = this.state.pagination.current;
+                console.log('## result=' + JSON.stringify(result, null, 4))
+                this.getList({
+                    pageSize: 5,
+                    pageNum,
+                });
+            })
+            .catch((error) => { });
+    };
+
+    onChangeDate = (date, dateString) => {
+        // console.log(date, dateString);
+        this.setState({
+            startDate: dateString[0],
+            endDate: dateString[1],
+        },
+        )
+    };
 
     render() {
 
@@ -104,6 +110,11 @@ class SurchargeDialog extends Component {
                         : data == 1 ? "ON" : "ON"}</Button>
                 </div>
             },
+            // {
+            //     title: "지사",
+            //     dataIndex: "branchIdx",
+            //     className: "table-column-center",
+            // },
             {
                 title: "할증명",
                 dataIndex: "surchargeTitle",
@@ -114,21 +125,26 @@ class SurchargeDialog extends Component {
                 title: "적용시간",
                 dataIndex: "completionTime",
                 className: "table-column-center",
-                render: (data) => <div>{data}</div>
+                render: (data, row) => <div>{row.startDate + ' ~ ' + row.endDate}</div>
             },
             {
                 title: "추가요금",
-                dataIndex: "addFee",
+                dataIndex: "extraPrice",
                 className: "table-column-center",
                 render: (data) => <div>{comma(data)}</div>
             },
             {
+                title: "메모",
+                dataIndex: "memo",
                 className: "table-column-center",
-                render: () =>
+            },
+            {
+                className: "table-column-center",
+                render: (data, row) =>
                     <div>
                         <Button
                             className="tabBtn surchargeTab"
-                            onClick={() => { }}
+                            onClick={() => { this.onDelete(row) }}
                         >삭제</Button>
                     </div>
             },
@@ -151,25 +167,34 @@ class SurchargeDialog extends Component {
 
 
                                     <div className="surchargeLayout">
-                                        <Form ref={this.formIdRef} onFinish={this.handleIdSubmit}>
-                                            <div className="listBlock">
-                                                <Table
-                                                    // rowKey={(record) => record.idx}
-                                                    dataSource={this.state.list}
-                                                    columns={columns}
-                                                    pagination={this.state.pagination}
-                                                    onChange={this.handleTableChange}
-                                                />
-                                            </div>
-                                        </Form>
-                                        <Form ref={this.formIdRef} onFinish={this.handleIdSubmit}>
+                                        <div className="listBlock">
+                                            <Table
+                                                // rowKey={(record) => record.idx}
+                                                dataSource={this.state.list}
+                                                columns={columns}
+                                                pagination={this.state.pagination}
+                                                onChange={this.handleTableChange}
+                                            />
+                                        </div>
+                                        <Form ref={this.formRef} onFinish={this.handleSubmit}>
                                             <div className="insertBlock">
                                                 <div className="mainTitle">
                                                     할증 요금 정보
                                                 </div>
                                                 <div className="m-t-20">
-                                                    <div className="subTitle">
+                                                    {/* <div className="subTitle">
                                                         할증명
+                                                    </div>
+                                                    <div className="inputBox">
+                                                        <FormItem
+                                                            name="surchargeName"
+                                                            rules={[{ required: true, message: "할증명을 입력해주세요." }]}
+                                                        >
+                                                            <Input />
+                                                        </FormItem>
+                                                    </div> */}
+                                                    <div className="subTitle">
+                                                        지사
                                                     </div>
                                                     <div className="inputBox">
                                                         <FormItem
@@ -188,6 +213,7 @@ class SurchargeDialog extends Component {
                                                             rules={[{ required: true, message: "등록기간 날짜를 선택해주세요" }]}
                                                         >
                                                             <RangePicker
+                                                                showTime={{ format: 'HH:mm' }}
                                                                 onChange={this.onChangeDate}
                                                             />
                                                         </FormItem>
