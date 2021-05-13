@@ -181,8 +181,10 @@ const httpUrl = {
   // 가맹점 관리
   registFranchise: "/fr/create",
   franchiseList: "/fr/list",
-  franchiseUpdate: "/fr/update"
+  franchiseUpdate: "/fr/update",
 
+  // 지점 수정
+  updateBranch:"/branch/update"
 };
 
 const imageType = ["image/jpeg", "image/png", "image/bmp"];

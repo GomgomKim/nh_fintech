@@ -1,4 +1,4 @@
-import { LOGIN, LOGOUT } from '../actions/loginAction';
+import { CHANGE_BRANCH, LOGIN, LOGOUT } from '../actions/loginAction';
 import { reactLocalStorage } from 'reactjs-localstorage';
 import con from "../const";
 
@@ -14,6 +14,7 @@ const loginInitialState = {
     superAdmin: 0,
     userId: '',
     authList: [],
+    branch:null,
   },
 };
 
@@ -41,6 +42,13 @@ const login = (state = loginInitialState, action) => {
           authList: [],
         },
       });
+
+    case CHANGE_BRANCH:
+      return {
+        ...state,
+        branch:action.value,
+      }
+      
     default:
       return state;
   }

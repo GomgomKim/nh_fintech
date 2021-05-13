@@ -4,7 +4,7 @@ import { Layout, Modal, Select } from "antd";
 import { connect } from "react-redux";
 import { reactLocalStorage } from "reactjs-localstorage";
 import { httpPost, httpUrl } from "../api/httpClient";
-import { logout, login } from "../actions/loginAction";
+import { logout, login, changeBranch } from "../actions/loginAction";
 import con from "../const";
 import { CopyOutlined, PhoneOutlined, TeamOutlined, IdcardOutlined, SettingOutlined } from '@ant-design/icons';
 const Option = Select.Option;
@@ -75,9 +75,9 @@ class Header extends React.Component {
             <Select 
             style={{ paddingLeft: "20px" }}
             placeholder="소속지사를 선택해 주세요." className="override-select branch">
-                <Option value={0}>플러스김포 / 플러스김포</Option>
-                <Option value={1}>김포1지점 / 플러스김포</Option>
-                <Option value={2}>김포2지점 / 플러스김포</Option>
+                <Option value={0} onClick={() => this.props.onChangeBranch(0)}>플러스김포 / 플러스김포</Option>
+                <Option value={1} onClick={() => this.props.onChangeBranch(1)}>김포1지점 / 플러스김포</Option>
+                <Option value={2} onClick={() => this.props.onChangeBranch(2)}>김포2지점 / 플러스김포</Option>
             </Select>
           </div>
 
@@ -117,14 +117,16 @@ class Header extends React.Component {
 let mapStateToProps = (state) => {
   return {
     isLogin: state.login.isLogin,
-    loginInfo: state.login.loginInfo
+    loginInfo: state.login.loginInfo,
+    branch: state.login.branch,
   };
 };
 
 let mapDispatchToProps = (dispatch) => {
   return {
     onLogin: (userinfo) => dispatch(login(userinfo)),
-    onLogout: () => dispatch(logout())
+    onLogout: () => dispatch(logout()),
+    onChangeBranch: (value) => dispatch(changeBranch(value)),
   };
 };
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Header));
