@@ -219,12 +219,10 @@ class SurchargeDialog extends Component {
                                                             name="surchargeDate"
                                                             rules={[{ required: true, message: "등록기간 날짜를 선택해주세요" }]}
                                                         >
-                                                            <div style={{ top: '0' }}>
-                                                                <RangePicker
-                                                                    showTime={{ format: 'HH:mm' }}
-                                                                    onChange={this.onChangeDate}
-                                                                />
-                                                            </div>
+                                                            <RangePicker
+                                                                showTime={{ format: 'HH:mm' }}
+                                                                onChange={this.onChangeDate}
+                                                            />
                                                         </FormItem>
                                                     </div>
                                                     <div className="subDatePrice">

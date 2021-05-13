@@ -522,9 +522,6 @@
     padding-top: 20px;
     border-top: 1px solid #b5b5b5;
   }
-  .surchargeLayout .ant-picker .ant-picker-dropdown-range{
-    top: -100px ;
-  }
   
   .mainTitle{
     display: inline-block;
