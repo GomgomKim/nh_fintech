@@ -18,6 +18,8 @@ import {
   PhoneOutlined, MessageOutlined, NotificationFilled, FilterOutlined
 } from '@ant-design/icons';
 import createDummyCall from '../../lib/util/createCall';
+import { httpGet, httpUrl } from '../../api/httpClient';
+
 
 const Option = Select.Option;
 const Search = Input.Search;
@@ -62,6 +64,14 @@ class ReceptionStatus extends Component {
       firstStatus: 1,
       secondStatus: 2,
       thirdStatus: 3,
+
+      // table param
+      selectedFrName: "냠냠푸드",
+      // selectedDate: formatDate(today),
+      selectedDate: "2021-01-01",
+      selectedOrderStatus: [1, 2, 3, 4, 5],
+      selectedPaymentMethods: [1],
+      selectedRiderName: "margie5047",
     };
   }
 
@@ -259,7 +269,6 @@ class ReceptionStatus extends Component {
   closeForceingModal = () => {
     this.setState({ forceOpen: false });
   }
-
 
   // 메세지 dialog
   openMessageModal = () => {
@@ -560,7 +569,7 @@ class ReceptionStatus extends Component {
           <Button
             icon={<EnvironmentFilled />}
             className="tabBtn mapTab"
-            onClick={() => { this.setState(this.openMapControlModal) }} 
+            onClick={this.openMapControlModal} 
             // onClick={() => { this.props.openMapControl() }}
           >지도관제</Button>
 
