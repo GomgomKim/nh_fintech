@@ -77,7 +77,7 @@ class SurchargeDialog extends Component {
         httpGet(httpUrl.priceExtraDelete, [idx], {})
             .then((result) => {
                 let pageNum = this.state.pagination.current;
-                console.log('## result=' + JSON.stringify(result, null, 4))
+                console.log('## delete result=' + JSON.stringify(result, null, 4))
                 this.getList({
                     pageSize: 5,
                     pageNum,
@@ -89,8 +89,8 @@ class SurchargeDialog extends Component {
     onChangeDate = (date, dateString) => {
         // console.log(date, dateString);
         this.setState({
-            startDate: dateString[0],
-            endDate: dateString[1],
+            startDate: moment(dateString[0]).format('YYYY-MM-DD HH:mm'),
+            endDate: moment(dateString[1]).format('YYYY-MM-DD HH:mm'),
         },
         )
     };
