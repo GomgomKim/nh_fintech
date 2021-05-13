@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import { Form, Button, Checkbox, Select } from 'antd';
 import '../../../css/modal.css';
 import { ClockCircleOutlined } from '@ant-design/icons';
-
+import { connect } from "react-redux";
+import { httpPost, httpUrl } from "../../../api/httpClient";
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -11,8 +12,43 @@ class TimeDelayDialog extends Component {
     constructor(props) {
         super(props)
         this.state = {
+            branchIdx: null,
             deliveryNotAvailable: false,
             delayTime: '',
+            btnInfos: [
+                {
+                    value: 5,
+                    toggle: true,
+                },
+                {
+                    value: 10,
+                    toggle: true,
+                },
+                {
+                    value: 15,
+                    toggle: true,
+                },
+                {
+                    value: 20,
+                    toggle: true,
+                },
+                {
+                    value: 30,
+                    toggle: false,
+                },
+                {
+                    value: 40,
+                    toggle: true,
+                },
+                {
+                    value: 1005,
+                    toggle: true,
+                },
+                {
+                    value: 1010,
+                    toggle: true,
+                },
+            ],
         }
     }
 
@@ -33,12 +69,57 @@ class TimeDelayDialog extends Component {
         });
     }
 
-    handleSubmit = this.props.onSubmit;
+    handleToggle = (value) => {
+        const toggledBtnInfos = this.state.btnInfos.map(btnInfo => {
+            if (btnInfo.value === value) {
+                return {
+                    value: value,
+                    toggle: !btnInfo.toggle
+                };
+            } else {
+                return btnInfo;
+            }
+        })
+        this.setState({ btnInfos: toggledBtnInfos });
+    }
+
+    handleSubmit = () => {
+        httpPost(httpUrl.updateBranch, [], {
+            "idx": this.props.branchIdx,
+            "pickupAvTime10": true,
+            "pickupAvTime10After": true,
+            "pickupAvTime15": true,
+            "pickupAvTime20": true,
+            "pickupAvTime30": true,
+            "pickupAvTime40": true,
+            "pickupAvTime5": true,
+            "pickupAvTime50": true,
+            "pickupAvTime5After": true,
+            "pickupAvTime60": true,
+            "pickupAvTime70": true,
+            "startDate": "2021-03-03"
+        })
+            .then((res) => {
+                if (res.data.result) {
+                    this.props.onLogin(res.data.user);
+
+                    let localData = {};
+                    if (this.state.saveLoginId) {
+                        localData = { type: 'saveLoginId', id: this.formRef.current.getFieldValue('id') }
+                    }
+
+                    this.props.history.push('/order/OrderMain')
+                }
+                else {
+                    alert("아이디 또는 비밀번호가 잘못되었습니다.")
+                }
+            })
+            .catch((error) => { });
+    }
 
     render() {
 
-        const btnInfos = ['5분', '10분', '15분', '20분', '30분', '40분', '후 5분', '후 10분']
-        const disabledBtn = ['5분', '40분', '후 10분']
+        const btnInfos = this.state.btnInfos;
 
         const { isOpen, close } = this.props;
         return (
@@ -57,31 +138,27 @@ class TimeDelayDialog extends Component {
                                     <div className="timeDelay-inner">
                                         <div className="timeDelay-box">
                                             {btnInfos.map(btnInfo => {
-                                                if (!this.state.deliveryNotAvailable) {
-                                                    if (disabledBtn.includes(btnInfo)) {
-                                                        return (
-                                                            <Button
-                                                                icon={<ClockCircleOutlined style={{ fontSize: 60, width: 100 }} />}
-                                                                className="timeDelay-box-01"
-                                                                disabled
-                                                            ><td>{btnInfo}</td></Button>
-                                                        )
-                                                    } else {
-                                                        return (
-                                                            <Button
-                                                                icon={<ClockCircleOutlined style={{ fontSize: 60, width: 100 }} />}
-                                                                className="timeDelay-box-01"
-                                                                onClick={() => this.handleClick(btnInfo)}
-                                                            ><td>{btnInfo}</td></Button>
-                                                        )
+                                                if (btnInfo.toggle) {
+                                                    if (btnInfo.value > 1000) {
+                                                        btnInfo.value = `후 ${btnInfo.value % 1000}`
                                                     }
-                                                } else {
                                                     return (
                                                         <Button
                                                             icon={<ClockCircleOutlined style={{ fontSize: 60, width: 100 }} />}
-                                                            className="timeDelay-box-01"
-                                                            disabled
-                                                        ><td>{btnInfo}</td></Button>
+                                                            className="timeDelay-box-on"
+                                                            onClick={() => this.handleToggle(btnInfo.value)}
+                                                        ><td>{`${btnInfo.value}분`}</td></Button>
+                                                    )
+                                                } else {
+                                                    if (btnInfo > 1000) {
+                                                        btnInfo = `후 ${btnInfo.value % 1000}`
+                                                    }
+                                                    return (
+                                                        <Button
+                                                            icon={<ClockCircleOutlined style={{ fontSize: 60, width: 100 }} />}
+                                                            className="timeDelay-box-off"
+                                                            onClick={() => this.handleToggle(btnInfo.value)}
+                                                        ><td>{`${btnInfo.value}분`}</td></Button>
                                                     )
                                                 }
                                             })}
@@ -145,7 +222,7 @@ class TimeDelayDialog extends Component {
                                                 <Button
                                                     className="tabBtn timeDelay-btn"
                                                     onClick={() => {
-                                                        this.handleSubmit(this.state.delayTime);
+                                                        this.handleSubmit();
                                                         close();
                                                     }}
                                                 >적용</Button>
@@ -166,4 +243,16 @@ class TimeDelayDialog extends Component {
     }
 }
 
-export default (TimeDelayDialog);
+const mapStateToProps = (state) => {
+    return {
+        branchIdx: state.login.branch,
+    };
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(TimeDelayDialog);

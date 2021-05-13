@@ -39,9 +39,8 @@ class ReceptionStatus extends Component {
       // noticeTab: 0,
       // filterTab: 0,
       // workTab: 0,
-      timeDelay:'',
 
-      selectedDate: today, 
+      selectedDate: today,
       franchisee: "",
       rider: "",
       phoneNum: "",
@@ -52,6 +51,7 @@ class ReceptionStatus extends Component {
       },
       // test data
       list: [],
+      totalList: [],
       timeDelayOpen: false,
       surchargeOpen: false,
       addCallOpen: false,
@@ -78,6 +78,11 @@ class ReceptionStatus extends Component {
   componentDidMount() {
     this.getList()
     // console.log(this.props)
+  }
+  handleToggleCompleteCall = (e) => {
+    this.setState({
+      checkedCompleteCall: e.target.checked,
+    });
   }
 
   setDate = (date) => {
@@ -283,10 +288,10 @@ class ReceptionStatus extends Component {
   // }
 
   getStatusVal = (idx) => {
-      if(idx == 1) return this.state.firstStatus
-      else if(idx == 2) return this.state.secondStatus
-      else if(idx == 3) return this.state.thirdStatus
-  } 
+    if (idx == 1) return this.state.firstStatus
+    else if (idx == 2) return this.state.secondStatus
+    else if (idx == 3) return this.state.thirdStatus
+  }
 
   render() {
     const columns = [
@@ -300,49 +305,49 @@ class ReceptionStatus extends Component {
             onChange={(value) => {
               // console.log(value, row)
               var flag = true
-              if(row.pickupStatus == 1){
-                if(value != 2 && value != 5){
+              if (row.pickupStatus == 1) {
+                if (value != 2 && value != 5) {
                   alert("상태를 바꿀 수 없습니다.")
                   flag = false
                 }
-                if(value == 2){
+                if (value == 2) {
                   alert("강제배차를 사용하세요")
                 }
               }
-              else if(row.pickupStatus == 2){
-                if(value != 3 && value != 5){
+              else if (row.pickupStatus == 2) {
+                if (value != 3 && value != 5) {
                   alert("상태를 바꿀 수 없습니다.")
                   flag = false
                 }
               }
-              else if(row.pickupStatus == 3){
-                if(value != 4 && value != 5){
+              else if (row.pickupStatus == 3) {
+                if (value != 4 && value != 5) {
                   alert("상태를 바꿀 수 없습니다.")
                   flag = false
                 }
               }
-              else if(row.pickupStatus == 5){
-                if(value != 1){
+              else if (row.pickupStatus == 5) {
+                if (value != 1) {
                   alert("상태를 바꿀 수 없습니다.")
                   flag = false
                 }
               }
-              if(flag){
+              if (flag) {
                 // DB연동 후 삭제예정
-                if(row.idx == 1){
+                if (row.idx == 1) {
                   this.setState({
                     firstStatus: value
                   }, () => {
                     this.getList()
                   })
                 }
-                else if(row.idx == 2){
+                else if (row.idx == 2) {
                   this.setState({
                     secondStatus: value
                   }, () => {
                     this.getList()
                   })
-                }else if(row.idx == 3){
+                } else if (row.idx == 3) {
                   this.setState({
                     thirdStatus: value
                   }, () => {
@@ -558,19 +563,19 @@ class ReceptionStatus extends Component {
     return (
       <div className="reception-box">
         <div className="btnLayout">
-          <TimeDelayDialog isOpen={this.state.timeDelayOpen} close={this.closeTimeDelayModal} onSubmit={value => {this.setState({timeDelay:value})}} />
+          <TimeDelayDialog isOpen={this.state.timeDelayOpen} close={this.closeTimeDelayModal} />
           <Button
             icon={<FieldTimeOutlined />}
             className="tabBtn delayTab"
             onClick={this.openTimeDelayModal}
           >호출설정</Button>
-          
+
           <MapControlDialog isOpen={this.state.mapControlOpen} close={this.closeMapControlModal} />
           <Button
             icon={<EnvironmentFilled />}
             className="tabBtn mapTab"
-            onClick={this.openMapControlModal} 
-            // onClick={() => { this.props.openMapControl() }}
+            onClick={this.openMapControlModal}
+          // onClick={() => { this.props.openMapControl() }}
           >지도관제</Button>
 
           <SurchargeDialog isOpen={this.state.surchargeOpen} close={this.closeSurchargeModal} />
@@ -648,7 +653,7 @@ class ReceptionStatus extends Component {
           />
 
 
-          <Checkbox></Checkbox><span className="span1">완료조회</span>
+          <Checkbox onChange={this.handleToggleCompleteCall}></Checkbox><span className="span1">완료조회</span>
 
         </div>
 

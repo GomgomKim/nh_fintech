@@ -2,7 +2,7 @@ import React from "react";
 import { Layout as AntLayout } from "antd";
 import { withRouter,  } from "react-router-dom";
 
-import { Sider, Header, Footer, Content } from "./";
+import {  Header, Footer, Content } from "./";
 import { connect } from "react-redux";
 
 class Layout extends React.Component {
