@@ -71,13 +71,20 @@ class MapControlDialog extends Component {
     }
     
     onSearchWorker = (value) => {
-        var riderIdx = this.state.results.find(x => x.id == value).idx;
-        this.setState({
-          selectedRiderIdx: riderIdx,
-          riderName: value,
-        }, () => {
-          this.getList()
-        })
+        var riderIdx = -1;
+        if(this.state.results.find(x => x.id == value)){
+          riderIdx = this.state.results.find(x => x.id == value).idx;
+          this.setState({
+            selectedRiderIdx: riderIdx,
+            riderName: value,
+          }, () => {
+            this.getList()
+          })
+        }
+        else{
+          alert("등록되지 않은 기사명입니다.");
+        }
+        
     }
     
     onSearchPhoneNum = (value) => {
@@ -91,54 +98,25 @@ class MapControlDialog extends Component {
     
     getList = () => {
         let selectedRiderIdx = this.state.selectedRiderIdx;
-        console.log(selectedRiderIdx)
+        // console.log(selectedRiderIdx)
         httpGet(httpUrl.riderLocate, [selectedRiderIdx], {}).then((result) => {
           // console.log('### nnbox result=' + JSON.stringify(result, null, 4))
           const pagination = { ...this.state.pagination };
           // console.log('### nnbox result=' + JSON.stringify(result.data.orders, null, 4))
-          var list = [result.data.orders];
-          console.log(list)
-          this.setState({
-            riderOrderList: list,
-            pagination,
-          });
+          if(result.data != null){
+            var list = [result.data.orders];
+            console.log(list)
+            this.setState({
+              riderOrderList: list,
+              pagination,
+            });
+          }
+          else{
+            this.setState({
+              riderOrderList: [],
+            });
+          }
         })
-    
-        /* var list = [
-          {
-            pickupStatus: 1,
-            preparationStatus: 0,
-            requestTime: '2021-04-21 12:00:00',
-            preparationTime: '10분',
-            elapsedTime: '15',
-            orderTime: '2021-04-21 12:00:00',
-            pickupTime: '2021-04-21 12:00:00',
-            completionTime: '2021-04-21 12:00:00',
-            riderName: '김기연',
-            franchiseeName: '곰곰',
-            deliveryCharge: 1000,
-            destination: '서울시 노원구 123동',
-            charge: 60000,
-            paymentMethod: 0,
-          },
-          {
-            pickupStatus: 0,
-            preparationStatus: 1,
-            requestTime: '2021-04-21 12:00:00',
-            preparationTime: '15분',
-            elapsedTime: '6',
-            orderTime: '2021-04-21 12:00:00',
-            pickupTime: '2021-04-21 12:00:00',
-            completionTime: '2021-04-21 12:00:00',
-            riderName: '김기연',
-            franchiseeName: '곰곰',
-            deliveryCharge: 3000,
-            destination: '서울시 노원구 123동',
-            charge: 30000,
-            paymentMethod: 0,
-          },
-        ]; */
-        
     }
     
     getRiderList = () => {
@@ -259,7 +237,7 @@ class MapControlDialog extends Component {
               title: "기사명",
               dataIndex: "riderName",
               className: "table-column-center",
-              render: (data) => <div style={{cursor: 'pointer'}} onClick={()=>{
+              render: (data) => <div className='riderName' onClick={()=>{
                 this.setState({selectedRider: 55})
                 this.onSearchWorker(data)
               }}>{data}</div>
