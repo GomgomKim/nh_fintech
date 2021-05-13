@@ -62,6 +62,12 @@
     height: 1000px;
 }
 
+.riderName{
+    cursor: pointer;
+    color: blue;
+    text-decoration: underline;
+}
+
 
 .reception-box .ant-checkbox-inner{
     width:25px;
