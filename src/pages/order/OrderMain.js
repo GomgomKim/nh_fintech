@@ -26,6 +26,7 @@ class OrderMain extends Component {
   }
 
   componentDidMount() {
+    console.log("orderMain fr idx :"+this.props.selectedFrIdx)
   }
 
   // 지도관제

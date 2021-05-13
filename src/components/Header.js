@@ -13,7 +13,8 @@ class Header extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      visible: false
+      visible: false,
+      frIdx : 0,
     };
   }
 
@@ -40,6 +41,7 @@ class Header extends React.Component {
 
   render() {
     console.log(this.props.history.location.pathname)
+    // console.log("frIdx : "+this.state.frIdx)
 
     const menus = [
       { idx: 1, name: '접수현황', icon: (<CopyOutlined />), url: '/order/OrderMain' },
@@ -64,7 +66,7 @@ class Header extends React.Component {
           <div className="menu-wrapper">
             {menus.map(row => {
               return (
-                <div onClick={()=>this.props.history.push(row.url)} className={"top-menu " + (row.idx == currentPage.idx ? 'active' : '')}>
+                <div frIdx={this.state.frIdx} onClick={()=>this.props.history.push(row.url)} className={"top-menu " + (row.idx == currentPage.idx ? 'active' : '')}>
                   {row.icon}&nbsp;
                   {row.name}
                 </div>

@@ -5,6 +5,10 @@ import { OrderMain, FranchiseMain, RiderMain, StaffMain, SettingMain } from "../
 import { Redirect } from "react-router-dom";
 
 export default class Content extends Component {
+  componentDidMount() {
+    console.log("Content fr idx :"+this.props.selectedFrIdx)
+  }
+
   render() {
     return (
       <Layout.Content style={{ margin: "24px 16px 0" }}>

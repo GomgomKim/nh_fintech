@@ -12,8 +12,8 @@ class Layout extends React.Component {
       <AntLayout>
         {/* <Sider location={this.props.location} /> */}
         <AntLayout style={{ minWidth: "1280px" }}>
-          <Header />
-          <Content />
+          <Header/>
+          <Content/>
           <Footer />
         </AntLayout>
       </AntLayout>

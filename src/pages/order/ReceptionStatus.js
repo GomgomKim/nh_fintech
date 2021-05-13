@@ -77,7 +77,7 @@ class ReceptionStatus extends Component {
 
   componentDidMount() {
     this.getList()
-    // console.log(this.props)
+    console.log("props : "+this.props.frIdx)
   }
 
   setDate = (date) => {
