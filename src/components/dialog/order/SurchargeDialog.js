@@ -5,6 +5,7 @@ import {
 } from "antd";
 import { httpUrl, httpPost, httpGet } from '../../../api/httpClient';
 import '../../../css/modal.css';
+import { connect } from "react-redux";
 import { comma } from "../../../lib/util/numberUtil";
 import moment from 'moment';
 import SelectBox from '../../../components/input/SelectBox';
@@ -218,10 +219,12 @@ class SurchargeDialog extends Component {
                                                             name="surchargeDate"
                                                             rules={[{ required: true, message: "등록기간 날짜를 선택해주세요" }]}
                                                         >
-                                                            <RangePicker
-                                                                showTime={{ format: 'HH:mm' }}
-                                                                onChange={this.onChangeDate}
-                                                            />
+                                                            <div style={{ top: '0' }}>
+                                                                <RangePicker
+                                                                    showTime={{ format: 'HH:mm' }}
+                                                                    onChange={this.onChangeDate}
+                                                                />
+                                                            </div>
                                                         </FormItem>
                                                     </div>
                                                     <div className="subDatePrice">
@@ -261,5 +264,15 @@ class SurchargeDialog extends Component {
         )
     }
 }
+const mapStateToProps = (state) => {
+    return {
+        branchIdx: state.login.branch,
+    };
+}
+const mapDispatchToProps = (dispatch) => {
+    return {
 
-export default (SurchargeDialog);
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SurchargeDialog);
