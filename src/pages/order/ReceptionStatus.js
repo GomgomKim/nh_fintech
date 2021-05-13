@@ -17,6 +17,7 @@ import {
   FieldTimeOutlined, DollarCircleOutlined, EnvironmentFilled,
   PhoneOutlined, MessageOutlined, NotificationFilled, FilterOutlined
 } from '@ant-design/icons';
+import createDummyCall from '../../lib/util/createCall';
 
 const Option = Select.Option;
 const Search = Input.Search;
@@ -28,18 +29,20 @@ class ReceptionStatus extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      delayTab: 0,
-      mapTab: 0,
-      surchargeTab: 0,
-      registTab: 0,
-      messageTab: 0,
-      noticeTab: 0,
-      selectedDate: today,
-      filterTab: 0,
+      // delayTab: 0,
+      // mapTab: 0,
+      // surchargeTab: 0,
+      // registTab: 0,
+      // messageTab: 0,
+      // noticeTab: 0,
+      // filterTab: 0,
+      // workTab: 0,
+      timeDelay:'',
+
+      selectedDate: today, 
       franchisee: "",
       rider: "",
       phoneNum: "",
-      workTab: 0,
       pagination: {
         total: 0,
         current: 1,
@@ -95,99 +98,99 @@ class ReceptionStatus extends Component {
     })
   }
 
-
   getList = () => {
-    var list = [
-      {
-        idx: 1,
-        pickupStatus: this.state.firstStatus,
-        preparationStatus: 0,
-        requestTime: '2021-04-21 12:00:00',
-        preparationTime: '10분',
-        elapsedTime: '15',
-        pickupTime: '2021-04-21 12:00:00',
-        completionTime: '2021-04-21 12:00:00',
-        riderName: '김기연',
-        franchiseeName: '곰곰',
-        deliveryCharge: 1000,
-        destination: '서울시 노원구 123동',
-        charge: 60000,
-        paymentMethod: 0,
-        fees: -200,
-        distance: 0.91,
-        cardStatus: 0,
-        authNum: 0,
-        businessCardName: '신한',
-        riderPhoneNum: '010-1234-5678',
-        franchiseName: '풀러스김포',
-        payAmount: 20000,
-        changes: '',
-        riderBelong: '플러스김포',
-        receiptAmount: 192,
-        franchisePhoneNum: '031-1234-5678',
-      },
-      {
-        idx: 2,
-        pickupStatus: this.state.secondStatus,
-        preparationStatus: 1,
-        requestTime: '2021-04-21 12:00:00',
-        preparationTime: '15분',
-        elapsedTime: '6',
-        pickupTime: '2021-04-21 12:00:00',
-        completionTime: '2021-04-21 12:00:00',
-        riderName: '김기연',
-        franchiseeName: '곰곰',
-        deliveryCharge: 3000,
-        destination: '서울시 노원구 123동',
-        charge: 30000,
-        paymentMethod: 0,
-        fees: -200,
-        distance: 0.91,
-        cardStatus: 1,
-        authNum: 0,
-        businessCardName: '신한',
-        riderPhoneNum: '010-1234-5678',
-        franchiseName: '풀러스김포',
-        payAmount: 20000,
-        changes: '17:19 승인완료',
-        riderBelong: '플러스김포',
-        receiptAmount: 192,
-        franchisePhoneNum: '031-1234-5678',
-      },
-      {
-        idx: 3,
-        pickupStatus: this.state.thirdStatus,
-        preparationStatus: 1,
-        requestTime: '2021-04-21 12:00:00',
-        preparationTime: '10분',
-        elapsedTime: '7',
-        pickupTime: '2021-04-21 12:00:00',
-        completionTime: '2021-04-21 12:00:00',
-        riderName: '김기연',
-        franchiseeName: '곰곰',
-        deliveryCharge: 2000,
-        destination: '서울시 노원구 123동',
-        charge: 20000,
-        paymentMethod: 0,
-        fees: -200,
-        distance: 0.91,
-        cardStatus: 0,
-        authNum: 0,
-        businessCardName: '신한',
-        riderPhoneNum: '010-1234-5678',
-        franchiseName: '풀러스김포',
-        payAmount: 20000,
-        changes: '',
-        riderBelong: '플러스김포',
-        receiptAmount: 192,
-        franchisePhoneNum: '031-1234-5678',
-      },
-    ];
-    list = list.concat(list).concat(list).concat(list).concat(list).concat(list).concat(list).concat(list).concat(list).concat(list)
+    // var list = [
+    //   {
+    //     idx: 1,
+    //     pickupStatus: this.state.firstStatus,
+    //     preparationStatus: 0,
+    //     requestTime: '2021-04-21 12:00:00',
+    //     preparationTime: '10분',
+    //     elapsedTime: '15',
+    //     pickupTime: '2021-04-21 12:00:00',
+    //     completionTime: '2021-04-21 12:00:00',
+    //     riderName: '김기연',
+    //     franchiseeName: '곰곰',
+    //     deliveryCharge: 1000,
+    //     destination: '서울시 노원구 123동',
+    //     charge: 60000,
+    //     paymentMethod: 0,
+    //     fees: -200,
+    //     distance: 0.91,
+    //     cardStatus: 0,
+    //     authNum: 0,
+    //     businessCardName: '신한',
+    //     riderPhoneNum: '010-1234-5678',
+    //     franchiseName: '풀러스김포',
+    //     payAmount: 20000,
+    //     changes: '',
+    //     riderBelong: '플러스김포',
+    //     receiptAmount: 192,
+    //     franchisePhoneNum: '031-1234-5678',
+    //   },
+    //   {
+    //     idx: 2,
+    //     pickupStatus: this.state.secondStatus,
+    //     preparationStatus: 1,
+    //     requestTime: '2021-04-21 12:00:00',
+    //     preparationTime: '15분',
+    //     elapsedTime: '6',
+    //     pickupTime: '2021-04-21 12:00:00',
+    //     completionTime: '2021-04-21 12:00:00',
+    //     riderName: '김기연',
+    //     franchiseeName: '곰곰',
+    //     deliveryCharge: 3000,
+    //     destination: '서울시 노원구 123동',
+    //     charge: 30000,
+    //     paymentMethod: 0,
+    //     fees: -200,
+    //     distance: 0.91,
+    //     cardStatus: 1,
+    //     authNum: 0,
+    //     businessCardName: '신한',
+    //     riderPhoneNum: '010-1234-5678',
+    //     franchiseName: '풀러스김포',
+    //     payAmount: 20000,
+    //     changes: '17:19 승인완료',
+    //     riderBelong: '플러스김포',
+    //     receiptAmount: 192,
+    //     franchisePhoneNum: '031-1234-5678',
+    //   },
+    //   {
+    //     idx: 3,
+    //     pickupStatus: this.state.thirdStatus,
+    //     preparationStatus: 1,
+    //     requestTime: '2021-04-21 12:00:00',
+    //     preparationTime: '10분',
+    //     elapsedTime: '7',
+    //     pickupTime: '2021-04-21 12:00:00',
+    //     completionTime: '2021-04-21 12:00:00',
+    //     riderName: '김기연',
+    //     franchiseeName: '곰곰',
+    //     deliveryCharge: 2000,
+    //     destination: '서울시 노원구 123동',
+    //     charge: 20000,
+    //     paymentMethod: 0,
+    //     fees: -200,
+    //     distance: 0.91,
+    //     cardStatus: 0,
+    //     authNum: 0,
+    //     businessCardName: '신한',
+    //     riderPhoneNum: '010-1234-5678',
+    //     franchiseName: '풀러스김포',
+    //     payAmount: 20000,
+    //     changes: '',
+    //     riderBelong: '플러스김포',
+    //     receiptAmount: 192,
+    //     franchisePhoneNum: '031-1234-5678',
+    //   },
+    // ];
+    // list = list.concat(list).concat(list).concat(list).concat(list).concat(list).concat(list).concat(list).concat(list).concat(list)
+
+    const list = createDummyCall(100);
     this.setState({
       list: list,
     });
-
   }
 
   handleTableChange = (pagination) => {
@@ -242,6 +245,9 @@ class ReceptionStatus extends Component {
   }
 
   // 공지사항 dialog
+  openNoticeModal = () => {
+    this.setState({ noticeOpen: true });
+  }
   closeNoticeModal = () => {
     this.setState({ noticeOpen: false });
   }
@@ -506,7 +512,7 @@ class ReceptionStatus extends Component {
           render: (data) => <span>
             <Button
               className="tabBtn"
-              onClick={() => { this.setState({ registTab: 1 }, this.openAddCallModal) }}
+              onClick={this.openAddCallModal}
             >주문수정</Button>
           </span>
         },
@@ -543,11 +549,11 @@ class ReceptionStatus extends Component {
     return (
       <div className="reception-box">
         <div className="btnLayout">
-          <TimeDelayDialog isOpen={this.state.timeDelayOpen} close={this.closeTimeDelayModal} />
+          <TimeDelayDialog isOpen={this.state.timeDelayOpen} close={this.closeTimeDelayModal} onSubmit={value => {this.setState({timeDelay:value})}} />
           <Button
             icon={<FieldTimeOutlined />}
             className="tabBtn delayTab"
-            onClick={() => { this.setState({ delayTab: 1 }, this.openTimeDelayModal) }}
+            onClick={this.openTimeDelayModal}
           >호출설정</Button>
           
           <MapControlDialog isOpen={this.state.mapControlOpen} close={this.closeMapControlModal} />
@@ -562,27 +568,27 @@ class ReceptionStatus extends Component {
           <Button
             icon={<DollarCircleOutlined />}
             className="tabBtn surchargeTab"
-            onClick={() => { this.setState({ surchargeTab: 1 }, this.openSurchargeModal) }}
+            onClick={this.openSurchargeModal}
           >할증</Button>
 
           <RegistCallDialog isOpen={this.state.addCallOpen} close={this.closeAddCallModal} />
           <Button
             icon={<PhoneOutlined />}
             className="tabBtn registTab"
-            onClick={() => { this.setState({ registTab: 1 }, this.openAddCallModal) }}
+            onClick={this.openAddCallModal}
           >콜등록</Button>
 
           <Button
             icon={<MessageOutlined />}
             className="tabBtn messageTab"
-            onClick={() => { this.setState({ messageTab: 1 }) }}
+            onClick={this.openMessageModal}
           >상담메세지</Button>
 
           <NoticeDialog isOpen={this.state.noticeOpen} close={this.closeNoticeModal} />
           <Button
             icon={<NotificationFilled />}
             className="tabBtn noticeTab"
-            onClick={() => { this.setState({ noticeOpen: true }) }}
+            onClick={this.openNoticeModal}
           >공지사항</Button>
         </div>
 
@@ -596,7 +602,7 @@ class ReceptionStatus extends Component {
           <Button
             icon={<FilterOutlined />}
             className="tabBtn filterTab"
-            onClick={() => { this.setState({ filterTab: 1 }, this.openFilteringModal) }}
+            onClick={this.openFilteringModal}
           >필터링 설정</Button>
 
           <Search
