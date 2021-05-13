@@ -9,7 +9,14 @@ const string = {
     0: "출금 가능",
     1: "출금 금지",
   },
+
   toggleCode: [0, 1],
+
+  enabledString: {
+    false: "OFF",
+    true: "ON",
+  },
+  enabledCode: [false, true],
 
   statusString: {
     1: "사용",
