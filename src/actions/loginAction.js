@@ -1,5 +1,3 @@
-import {createAction} from 'react-redux';
-
 export const LOGIN = 'LOGIN';
 export const LOGOUT = 'LOGOUT';
 export const CHANGE_BRANCH = 'CHANGE_BRANCH'
