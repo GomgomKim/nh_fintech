@@ -48,7 +48,6 @@ class SurchargeDialog extends Component {
             const pagination = { ...this.state.pagination };
             pagination.current = res.data.currentPage;
             pagination.total = res.data.totalCount;
-            // console.log('## mega result=' + JSON.stringify(res.data.user, null, 4))
             this.setState({
                 list: res.data.deliveryPriceExtras,
                 pagination,
@@ -57,7 +56,6 @@ class SurchargeDialog extends Component {
     }
 
     handleSubmit = () => {
-        // console.log("## result: " + JSON.stringify(this.state.startDate, null, 4));
         httpPost(httpUrl.priceExtraRegist, [], {
             branchIdx: this.formRef.current.getFieldsValue().surchargeName,
             startDate: this.state.startDate,
@@ -65,9 +63,13 @@ class SurchargeDialog extends Component {
             extraPrice: this.formRef.current.getFieldsValue().feeAdd,
         }).then((result) => {
             alert('할증 등록이 완료되었습니다.');
-            // this.props.close()
+            let pageNum = this.state.pagination.current;
+            this.getList({
+                pageSize: 5,
+                pageNum,
+            });
         }).catch(result => {
-            console.log("## result: " + JSON.stringify(result, null, 4));
+            console.log("## create result: " + JSON.stringify(result, null, 4));
             alert('에러가 발생하였습니다 다시 시도해주세요.')
         });
     }
@@ -201,7 +203,7 @@ class SurchargeDialog extends Component {
                                                             name="surchargeName"
                                                             rules={[{ required: true, message: "할증명을 입력해주세요." }]}
                                                         >
-                                                            <Input />
+                                                            <Input style={{ width: 150 }} />
                                                         </FormItem>
                                                     </div>
                                                     <div className="subDatePrice">
@@ -226,7 +228,7 @@ class SurchargeDialog extends Component {
                                                             name="feeAdd"
                                                             rules={[{ required: true, message: "추가금액을 입력해주세요." }]}
                                                         >
-                                                            <Input />
+                                                            <Input style={{ width: 150 }} />
                                                         </FormItem>
                                                         <div className="priceText">
                                                             원

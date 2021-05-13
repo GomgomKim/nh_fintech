@@ -554,6 +554,7 @@
   }
   .selectBox .ant-picker-input > input{
     text-align: center;
+    width: 130px;
   }
   .btnInsert{
     margin: 20px 0px;
@@ -561,7 +562,7 @@
   }
   .inputBox{
     display: inline-block;
-    margin-left: 10px;
+    /* margin-left: 10px; */
     font-size: 18px;
     vertical-align: middle;
     color: #fddc00;
