@@ -37,7 +37,7 @@ class RegistStaffDialog extends Component {
     };
 
     handleSubmit = () => {
-        // console.log(this.formRef.current.getFieldsValue().staffName)
+        console.log(this.formRef.current.getFieldsValue())
         httpPost(httpUrl.registStaff, [], {
             riderName: this.formRef.current.getFieldsValue().riderName,
             id: this.formRef.current.getFieldsValue().id,

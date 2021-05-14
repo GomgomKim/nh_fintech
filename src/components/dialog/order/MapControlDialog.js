@@ -39,10 +39,12 @@ class MapControlDialog extends Component {
             list: [],
             franchisee: "",
             // rider list
+            riderListSave: [],
             results: [],
             riderStatus: 1,
             riderLevel: [1, 2],
             userData: 1,
+            searchName: "",
 
             riderListOpen: false,
             selectedRider: '',
@@ -71,20 +73,43 @@ class MapControlDialog extends Component {
     }
     
     onSearchWorker = (value) => {
-        var riderIdx = -1;
-        if(this.state.results.find(x => x.id == value)){
-          riderIdx = this.state.results.find(x => x.id == value).idx;
-          this.setState({
-            selectedRiderIdx: riderIdx,
-            riderName: value,
-          }, () => {
-            this.getList()
-          })
-        }
-        else{
-          alert("등록되지 않은 기사명입니다.");
-        }
-        
+      // this.state.results.find(x => x.riderName.includes(value))
+      // console.log(this.state.results.find(x => x.riderName.includes(value)).riderName )
+      var riderName = null
+      if(this.state.riderListSave.find(x => x.riderName.includes(value)))
+        riderName = this.state.riderListSave.find(x => x.riderName.includes(value)).riderName
+      else alert("해당 기사명이 존재하지 않습니다.")
+      // console.log("value : "+value+" rider name : "+riderName)
+      if(value == "") riderName = null
+      if(riderName){
+        this.setState({
+          searchName: riderName,
+        }, () => {
+          this.getRiderList(1)
+        })
+      }else{
+        this.setState({
+          searchName: "",
+        }, () => {
+          this.getRiderList(1)
+        })
+      }
+    }
+
+    onSearchWorkerSelected = (value) => {
+      var riderIdx = -1;
+      if(this.state.results.find(x => x.id == value)){
+        riderIdx = this.state.results.find(x => x.id == value).idx;
+        this.setState({
+          selectedRiderIdx: riderIdx,
+          riderName: value,
+        }, () => {
+          this.getList()
+        })
+      }
+      else{
+        alert("등록되지 않은 기사명입니다.");
+      }
     }
     
     onSearchPhoneNum = (value) => {
@@ -101,8 +126,8 @@ class MapControlDialog extends Component {
         // console.log(selectedRiderIdx)
         httpGet(httpUrl.riderLocate, [selectedRiderIdx], {}).then((result) => {
           // console.log('### nnbox result=' + JSON.stringify(result, null, 4))
-          const pagination = { ...this.state.pagination };
           // console.log('### nnbox result=' + JSON.stringify(result.data.orders, null, 4))
+          const pagination = { ...this.state.pagination };
           if(result.data != null){
             var list = [result.data.orders];
             console.log(list)
@@ -119,20 +144,30 @@ class MapControlDialog extends Component {
         })
     }
     
-    getRiderList = () => {
+    getRiderList = (flag) => {
         let pageNum = this.state.pagination.current;
         let riderLevel = this.state.riderLevel;
         let userData = this.state.userData;
-    
-        httpGet(httpUrl.riderList, [10, pageNum, riderLevel, userData], {}).then((result) => {
+        let searchName = this.state.searchName;
+        // console.log("searchName :: "+searchName)
+
+        httpGet(httpUrl.riderList, [10, pageNum, riderLevel, searchName, userData], {}).then((result) => {
           console.log('### nnbox result=' + JSON.stringify(result, null, 4))
           const pagination = { ...this.state.pagination };
           pagination.current = result.data.currentPage;
           pagination.total = result.data.totalCount;
-          this.setState({
-            results: result.data.riders,
-            pagination,
-          });
+          if(flag == 1){
+            this.setState({
+              results: result.data.riders,
+              pagination,
+            });
+          } else{
+            this.setState({
+              riderListSave: result.data.riders,
+              results: result.data.riders,
+              pagination,
+            });
+          }
         })
     };
     
@@ -239,7 +274,7 @@ class MapControlDialog extends Component {
               className: "table-column-center",
               render: (data) => <div className='riderName' onClick={()=>{
                 this.setState({selectedRider: 55})
-                this.onSearchWorker(data)
+                this.onSearchWorkerSelected(data)
               }}>{data}</div>
             },
             {
