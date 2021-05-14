@@ -72,10 +72,8 @@ class SurchargeDialog extends Component {
             extraPrice: this.formRef.current.getFieldsValue().feeAdd,
         }).then((result) => {
             alert('할증 등록이 완료되었습니다.');
-            let pageNum = this.state.pagination.current;
-            this.getList({ pageSize: 5, pageNum });
-        }).catch(result => {
-            console.log("## create result: " + JSON.stringify(result, null, 4));
+            this.getList();
+        }).catch((error) => {
             alert('에러가 발생하였습니다 다시 시도해주세요.')
         });
     }
@@ -85,24 +83,24 @@ class SurchargeDialog extends Component {
         let idx = row.idx;
         httpGet(httpUrl.priceExtraDelete, [idx], {})
             .then((result) => {
-                let pageNum = this.state.pagination.current;
                 console.log('## delete result=' + JSON.stringify(result, null, 4))
-                this.getList({ pageSize: 5, pageNum });
+                alert('해당할증을 삭제합니다.')
+                this.getList();
             })
-            .catch((error) => { });
+            .catch((error) => {
+                alert('에러가 발생하였습니다 다시 시도해주세요.')
+            });
     };
 
     // 할증 사용여부수정
     onChangeStatus = (index, value) => {
         httpPost(httpUrl.priceExtraUpdate, [], { idx: index, enabled: value })
             .then((result) => {
-                let pageNum = this.state.pagination.current;
                 console.log('## update result=' + JSON.stringify(result, null, 4))
                 alert('사용여부를 수정합니다.')
-                this.getList({ pageSize: 5, pageNum });
+                this.getList();
             })
             .catch((error) => {
-                console.log("## update result: " + JSON.stringify(error, null, 4));
                 alert('에러가 발생하였습니다 다시 시도해주세요.')
             });
     }
@@ -219,12 +217,10 @@ class SurchargeDialog extends Component {
                                                             name="surchargeDate"
                                                             rules={[{ required: true, message: "등록기간 날짜를 선택해주세요" }]}
                                                         >
-                                                            <div style={{ top: '0' }}>
-                                                                <RangePicker
-                                                                    showTime={{ format: 'HH:mm' }}
-                                                                    onChange={this.onChangeDate}
-                                                                />
-                                                            </div>
+                                                            <RangePicker
+                                                                showTime={{ format: 'HH:mm' }}
+                                                                onChange={this.onChangeDate}
+                                                            />
                                                         </FormItem>
                                                     </div>
                                                     <div className="subDatePrice">
