@@ -14,7 +14,7 @@ const loginInitialState = {
     superAdmin: 0,
     userId: '',
     authList: [],
-    branch:13,
+    branch:null,
   },
 };
 
