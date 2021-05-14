@@ -272,7 +272,7 @@ class RiderMain extends Component {
         className: "table-column-center",
         render: (data, row) =>
           <div>
-            <UpdateRiderDialog isOpen={this.state.riderUpdateOpen} close={this.closeUpdateRiderModal} data={this.state.dialogData} />
+            <RegistRiderDialog isOpen={this.state.riderUpdateOpen} close={this.closeUpdateRiderModal} data={this.state.dialogData} />
             <Button
               className="tabBtn surchargeTab"
               onClick={()=>this.setState({riderUpdateOpen: true, dialogData: row})}

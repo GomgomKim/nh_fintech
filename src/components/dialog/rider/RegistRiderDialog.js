@@ -65,6 +65,7 @@ class RegistRiderDialog extends Component {
     }
 
     handleClear = () => {
+        console.log("clear")
         this.formRef.current.setFieldsValue({
             belongBranch: undefined,
             riderGroup: undefined,
@@ -96,7 +97,7 @@ class RegistRiderDialog extends Component {
     
 
     render() {
-        const { isOpen, close } = this.props;
+        const { isOpen, close, data } = this.props;
 
         return (
             <React.Fragment>
@@ -107,7 +108,11 @@ class RegistRiderDialog extends Component {
                             <div className="registRider-Dialog">
                                 <div className="registRider-content">
                                     <div className="registRider-title">
-                                        기사 등록
+                                        {data ?
+                                            "기사 수정" :
+                                            "기사 등록"
+                                        }
+                                        
                                     </div>
                                     <img onClick={close} src={require('../../../img/login/close.png').default} className="registRider-close" />
 
@@ -115,21 +120,6 @@ class RegistRiderDialog extends Component {
                                     <Form ref={this.formRef} onFinish={this.handleSubmit}>
                                         <div className="layout">
                                             <div className="registRiderWrapper">
-                                                <div className="contentBlock">
-                                                    <div className="mainTitle">
-                                                        소속지사
-                                                    </div>
-                                                    <FormItem
-                                                        name="belongBranch"
-                                                        className="selectItem"
-                                                    >
-                                                        <Select placeholder="소속지사를 선택해 주세요." className="override-select branch">
-                                                            <Option value={0}>플러스김포 / 플러스김포</Option>
-                                                            <Option value={1}>김포1지점 / 플러스김포</Option>
-                                                            <Option value={2}>김포2지점 / 플러스김포</Option>
-                                                        </Select>
-                                                    </FormItem>
-                                                </div>
                                                 <div className="contentBlock">
                                                     <div className="mainTitle">
                                                         기사그룹
@@ -196,8 +186,11 @@ class RegistRiderDialog extends Component {
                                                         name="riderName"
                                                         className="selectItem"
                                                     >
-                                                        <Input placeholder="직원명을 입력해 주세요." className="override-input">
-                                                        </Input>
+                                                        {data ?
+                                                            <Input placeholder="직원명을 입력해 주세요." className="override-input" defaultValue={data.riderName}/> :
+                                                            <Input placeholder="직원명을 입력해 주세요." className="override-input"/>
+                                                        }
+                                                        
                                                     </FormItem>
                                                 </div>
                                                 <div className="contentBlock">
@@ -208,8 +201,10 @@ class RegistRiderDialog extends Component {
                                                         name="id"
                                                         className="selectItem"
                                                     >
-                                                        <Input placeholder="아이디를 입력해 주세요." className="override-input">
-                                                        </Input>
+                                                        {data ?
+                                                            <Input placeholder="아이디를 입력해 주세요." className="override-input" defaultValue={data.id}/> :
+                                                            <Input placeholder="아이디를 입력해 주세요." className="override-input"/>
+                                                        }
                                                     </FormItem>
                                                 </div>
                                                 <div className="contentBlock">
@@ -232,8 +227,7 @@ class RegistRiderDialog extends Component {
                                                         name="password"
                                                         className="selectItem"
                                                     >
-                                                        <Input placeholder="패스워드를 입력해 주세요." className="override-input">
-                                                        </Input>
+                                                        <Input.Password placeholder="패스워드를 입력해 주세요." className="override-input"/>
                                                     </FormItem>
                                                 </div>
                                                 <div className="contentBlock">
@@ -244,8 +238,10 @@ class RegistRiderDialog extends Component {
                                                         name="phone"
                                                         className="selectItem"
                                                     >
-                                                        <Input placeholder="휴대전화 번호를 입력해 주세요." className="override-input">
-                                                        </Input>
+                                                        {data ?
+                                                            <Input placeholder="휴대전화 번호를 입력해 주세요." className="override-input" defaultValue={data.phone}/> :
+                                                            <Input placeholder="휴대전화 번호를 입력해 주세요." className="override-input"/>
+                                                        }
                                                     </FormItem>
                                                 </div>
                                                 <div className="contentBlock">
@@ -256,8 +252,10 @@ class RegistRiderDialog extends Component {
                                                         name="memo"
                                                         className="selectItem"
                                                     >
-                                                        <Input placeholder="메모를 입력해 주세요." className="override-input branch">
-                                                        </Input>
+                                                        {data ?
+                                                            <Input placeholder="메모를 입력해 주세요." className="override-input" defaultValue={"memo"}/> :
+                                                            <Input placeholder="메모를 입력해 주세요." className="override-input"/>
+                                                        }
                                                     </FormItem>
                                                 </div>
                                                 <div className="contentBlock">
@@ -268,8 +266,10 @@ class RegistRiderDialog extends Component {
                                                         name="deliveryPriceFeeAmount"
                                                         className="selectItem"
                                                     >
-                                                        <Input placeholder="수수료를 입력해 주세요." className="override-input branch">
-                                                        </Input>
+                                                        {data ?
+                                                            <Input placeholder="수수료를 입력해 주세요." className="override-input" defaultValue={data.deliveryPriceFeeAmount}/> :
+                                                            <Input placeholder="수수료를 입력해 주세요." className="override-input"/>
+                                                        }
                                                     </FormItem>
                                                 </div>
                                                 <div className="contentBlock">
@@ -291,18 +291,23 @@ class RegistRiderDialog extends Component {
                                                         name="minCashAmount"
                                                         className="selectItem"
                                                     >
-                                                        <Input placeholder="최소보유잔액을 입력해 주세요." className="override-input branch">
-                                                        </Input>
+                                                        {data ?
+                                                            <Input placeholder="최소보유잔액을 입력해 주세요." className="override-input" defaultValue={1000}/> :
+                                                            <Input placeholder="최소보유잔액을 입력해 주세요." className="override-input"/>
+                                                        }
                                                     </FormItem>
                                                 </div>
                                                 <div className="submitBlock">
                                                     <Button type="primary" htmlType="submit">
                                                         등록하기
                                                     </Button>
-
-                                                    <Button className="clearBtn" onClick={this.handleClear}>
+                                                    
+                                                    {!data &&
+                                                        <Button className="clearBtn" onClick={this.handleClear}>
                                                         초기화
-                                                    </Button>
+                                                        </Button>
+                                                    }
+                                                    
                                                 </div>
                                             </div>
 

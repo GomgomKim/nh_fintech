@@ -96,7 +96,7 @@ class MapControlDialog extends Component {
     }
     
     
-    getList = () => {
+    getList = ()  => {
         let selectedRiderIdx = this.state.selectedRiderIdx;
         // console.log(selectedRiderIdx)
         httpGet(httpUrl.riderLocate, [selectedRiderIdx], {}).then((result) => {

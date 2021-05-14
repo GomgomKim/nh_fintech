@@ -182,7 +182,7 @@ class StaffMain extends Component {
         width: "200px",
         render: (data, row) =>
           <div>
-            <UpdateStaffDialog data={this.state.dialogData} isOpen={this.state.updateStaff} close={this.closeStaffUpdateModal} />
+            <RegistStaffDialog data={this.state.dialogData} isOpen={this.state.updateStaff} close={this.closeStaffUpdateModal} />
             <Button
               className="tabBtn surchargeTab"
               onClick={() => { this.setState({ updateStaff: true, dialogData: row }) }}
