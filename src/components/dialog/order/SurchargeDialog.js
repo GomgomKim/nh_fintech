@@ -72,6 +72,7 @@ class SurchargeDialog extends Component {
             extraPrice: this.formRef.current.getFieldsValue().feeAdd,
         }).then((result) => {
             alert('할증 등록이 완료되었습니다.');
+            this.handleClear();
             this.getList();
         }).catch((error) => {
             alert('에러가 발생하였습니다 다시 시도해주세요.')
@@ -80,12 +81,19 @@ class SurchargeDialog extends Component {
 
     // 할증 등록기간 설정
     onChangeDate = (dateString) => {
-        alert(dateString);
         this.setState({
             startDate: moment(dateString[0]).format('YYYY-MM-DD HH:mm'),
             endDate: moment(dateString[1]).format('YYYY-MM-DD HH:mm'),
-        },
-        )
+        })
+    };
+
+    // 할증 등록시 초기화
+    handleClear = () => {
+        this.formRef.current.setFieldsValue({
+            surchargeName: undefined,
+            feeAdd: undefined,
+            surchargeDate: undefined
+        })
     };
 
     // 할증삭제
@@ -93,7 +101,7 @@ class SurchargeDialog extends Component {
         let idx = row.idx;
         httpGet(httpUrl.priceExtraDelete, [idx], {})
             .then((result) => {
-                console.log('## delete result=' + JSON.stringify(result, null, 4))
+                // console.log('## delete result=' + JSON.stringify(result, null, 4))
                 alert('해당할증을 삭제합니다.')
                 this.getList();
             })
@@ -106,7 +114,7 @@ class SurchargeDialog extends Component {
     onChangeStatus = (index, value) => {
         httpPost(httpUrl.priceExtraUpdate, [], { idx: index, enabled: value })
             .then((result) => {
-                console.log('## update result=' + JSON.stringify(result, null, 4))
+                // console.log('## update result=' + JSON.stringify(result, null, 4))
                 alert('사용여부를 수정합니다.')
                 this.getList();
             })
