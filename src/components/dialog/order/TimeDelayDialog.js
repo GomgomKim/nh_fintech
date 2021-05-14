@@ -14,46 +14,45 @@ class TimeDelayDialog extends Component {
         this.state = {
             branchIdx: null,
             deliveryNotAvailable: false,
-            delayTime: '',
             btnInfos: [
                 {
                     value: 5,
-                    text:'5분',
+                    text: '5분',
                     toggle: true,
                 },
                 {
                     value: 10,
-                    text:'10분',
+                    text: '10분',
                     toggle: true,
                 },
                 {
                     value: 15,
-                    text:'15분',
+                    text: '15분',
                     toggle: true,
                 },
                 {
                     value: 20,
-                    text:'20분',
+                    text: '20분',
                     toggle: true,
                 },
                 {
                     value: 30,
-                    text:'30분',
-                    toggle: false,
+                    text: '30분',
+                    toggle: true,
                 },
                 {
                     value: 40,
-                    text:'40분',
+                    text: '40분',
                     toggle: true,
                 },
                 {
                     value: 1005,
-                    text:'후 5분',
+                    text: '후 5분',
                     toggle: true,
                 },
                 {
                     value: 1010,
-                    text:'후 10분',
+                    text: '후 10분',
                     toggle: true,
                 },
             ],
@@ -66,7 +65,11 @@ class TimeDelayDialog extends Component {
         });
         if (e.target.checked) {
             this.setState({
-                delayTime: '',
+                btnInfos: this.state.btnInfos.map(btnInfo => { return { ...btnInfo, toggle: false } })
+            })
+        } else {
+            this.setState({
+                btnInfos: this.state.btnInfos.map(btnInfo => { return { ...btnInfo, toggle: true } })
             })
         }
     }
@@ -82,7 +85,7 @@ class TimeDelayDialog extends Component {
             if (btnInfo.value === value) {
                 return {
                     value: value,
-                    text:btnInfo.text,
+                    text: btnInfo.text,
                     toggle: !btnInfo.toggle
                 };
             } else {
@@ -93,44 +96,39 @@ class TimeDelayDialog extends Component {
     }
 
     handleSubmit = () => {
-
-        const btnInfos = this.state.btnInfos;
-        console.log(this.props.branchIdx);
-        console.log(btnInfos.find(e => e.value === 5).toggle)
-        console.log(btnInfos.find(e => e.value === 10).toggle)
-        console.log(btnInfos.find(e => e.value === 15).toggle)
-        console.log(btnInfos.find(e => e.value === 20).toggle)
-        console.log(btnInfos.find(e => e.value === 30).toggle)
-        console.log(btnInfos.find(e => e.value === 40).toggle)
-        console.log(btnInfos.find(e => e.value === 1005).toggle)
-        console.log(btnInfos.find(e => e.value === 1010).toggle)
-
-        httpPost(httpUrl.updateBranch, [], {
-            "idx": this.props.branchIdx,
-            "pickupAvTime10": btnInfos.find(e => e.value === 10).toggle,
-            "pickupAvTime10After": btnInfos.find(e => e.value === 1010).toggle,
-            "pickupAvTime15": btnInfos.find(e => e.value === 15).toggle,
-            "pickupAvTime20": btnInfos.find(e => e.value === 20).toggle,
-            "pickupAvTime30": btnInfos.find(e => e.value === 30).toggle,
-            "pickupAvTime40": btnInfos.find(e => e.value === 40).toggle,
-            "pickupAvTime5": btnInfos.find(e => e.value === 5).toggle,
-            "pickupAvTime50": true,
-            "pickupAvTime5After": btnInfos.find(e => e.value === 1005).toggle,
-            "pickupAvTime60": true,
-            "pickupAvTime70": true
-        })
-            .then((res) => {
-                if (res.data.result === "SUCCESS") {
-                    alert('성공적으로 처리되었습니다.')
-                }
-                else {
-                    alert('res는 왔는데 result가 SUCCESS가 아닌 경우.');
-                }
+        if (this.props.branchIdx) {
+            console.log(this.props.branchIdx);
+            const btnInfos = this.state.btnInfos;
+            httpPost(httpUrl.updateBranch, [], {
+                "idx": this.props.branchIdx,
+                "deliveryEnabled": !this.state.deliveryNotAvailable,
+                "pickupAvTime10": btnInfos.find(e => e.value === 10).toggle,
+                "pickupAvTime10After": btnInfos.find(e => e.value === 1010).toggle,
+                "pickupAvTime15": btnInfos.find(e => e.value === 15).toggle,
+                "pickupAvTime20": btnInfos.find(e => e.value === 20).toggle,
+                "pickupAvTime30": btnInfos.find(e => e.value === 30).toggle,
+                "pickupAvTime40": btnInfos.find(e => e.value === 40).toggle,
+                "pickupAvTime5": btnInfos.find(e => e.value === 5).toggle,
+                "pickupAvTime50": true,
+                "pickupAvTime5After": btnInfos.find(e => e.value === 1005).toggle,
+                "pickupAvTime60": true,
+                "pickupAvTime70": true
             })
-            .catch((e) => {
-                console.log(e);
-                alert("처리가 실패했습니다.");
-            });
+                .then((res) => {
+                    if (res.result === "SUCCESS") {
+                        alert('성공적으로 처리되었습니다.')
+                    }
+                    else {
+                        alert('res는 왔는데 result가 SUCCESS가 아닌 경우.');
+                    }
+                })
+                .catch((e) => {
+                    console.log(e);
+                    alert("처리가 실패했습니다.");
+                });
+        } else {
+            alert('지점을 선택해주세요!');
+        }
     }
 
     render() {
