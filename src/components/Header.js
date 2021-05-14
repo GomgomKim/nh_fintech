@@ -74,10 +74,15 @@ class Header extends React.Component {
             })}
             <Select 
             style={{ paddingLeft: "20px" }}
-            placeholder="소속지사를 선택해 주세요." className="override-select branch">
-                <Option value={0} onClick={() => this.props.onChangeBranch(0)}>플러스김포 / 플러스김포</Option>
-                <Option value={1} onClick={() => this.props.onChangeBranch(1)}>김포1지점 / 플러스김포</Option>
-                <Option value={2} onClick={() => this.props.onChangeBranch(2)}>김포2지점 / 플러스김포</Option>
+            placeholder="소속지사를 선택해 주세요." 
+            className="override-select branch"
+            onChange={(value) => {
+              this.props.onChangeBranch(value);
+            }}
+            >
+                <Option value={0}>플러스김포 / 플러스김포</Option>
+                <Option value={1}>김포1지점 / 플러스김포</Option>
+                <Option value={2}>김포2지점 / 플러스김포</Option>
             </Select>
           </div>
 
@@ -118,7 +123,7 @@ let mapStateToProps = (state) => {
   return {
     isLogin: state.login.isLogin,
     loginInfo: state.login.loginInfo,
-    branch: state.login.branch,
+    branch: state.login.loginInfo.branch,
   };
 };
 

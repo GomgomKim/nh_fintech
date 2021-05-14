@@ -5,6 +5,7 @@ import {
 } from "antd";
 import { httpUrl, httpPost, httpGet } from '../../../api/httpClient';
 import '../../../css/modal.css';
+import { connect } from "react-redux";
 import { comma } from "../../../lib/util/numberUtil";
 import moment from 'moment';
 import SelectBox from '../../../components/input/SelectBox';
@@ -71,49 +72,56 @@ class SurchargeDialog extends Component {
             extraPrice: this.formRef.current.getFieldsValue().feeAdd,
         }).then((result) => {
             alert('할증 등록이 완료되었습니다.');
-            let pageNum = this.state.pagination.current;
-            this.getList({ pageSize: 5, pageNum });
-        }).catch(result => {
-            console.log("## create result: " + JSON.stringify(result, null, 4));
+            this.handleClear();
+            this.getList();
+        }).catch((error) => {
             alert('에러가 발생하였습니다 다시 시도해주세요.')
         });
     }
+
+    // 할증 등록기간 설정
+    onChangeDate = (dateString) => {
+        this.setState({
+            startDate: moment(dateString[0]).format('YYYY-MM-DD HH:mm'),
+            endDate: moment(dateString[1]).format('YYYY-MM-DD HH:mm'),
+        })
+    };
+
+    // 할증 등록시 초기화
+    handleClear = () => {
+        this.formRef.current.setFieldsValue({
+            surchargeName: undefined,
+            feeAdd: undefined,
+            surchargeDate: undefined
+        })
+    };
 
     // 할증삭제
     onDelete = (row) => {
         let idx = row.idx;
         httpGet(httpUrl.priceExtraDelete, [idx], {})
             .then((result) => {
-                let pageNum = this.state.pagination.current;
-                console.log('## delete result=' + JSON.stringify(result, null, 4))
-                this.getList({ pageSize: 5, pageNum });
+                // console.log('## delete result=' + JSON.stringify(result, null, 4))
+                alert('해당할증을 삭제합니다.')
+                this.getList();
             })
-            .catch((error) => { });
+            .catch((error) => {
+                alert('에러가 발생하였습니다 다시 시도해주세요.')
+            });
     };
 
     // 할증 사용여부수정
     onChangeStatus = (index, value) => {
         httpPost(httpUrl.priceExtraUpdate, [], { idx: index, enabled: value })
             .then((result) => {
-                let pageNum = this.state.pagination.current;
-                console.log('## update result=' + JSON.stringify(result, null, 4))
+                // console.log('## update result=' + JSON.stringify(result, null, 4))
                 alert('사용여부를 수정합니다.')
-                this.getList({ pageSize: 5, pageNum });
+                this.getList();
             })
             .catch((error) => {
-                console.log("## update result: " + JSON.stringify(error, null, 4));
                 alert('에러가 발생하였습니다 다시 시도해주세요.')
             });
     }
-
-    // 할증 등록기간 설정
-    onChangeDate = (date, dateString) => {
-        this.setState({
-            startDate: moment(dateString[0]).format('YYYY-MM-DD HH:mm'),
-            endDate: moment(dateString[1]).format('YYYY-MM-DD HH:mm'),
-        },
-        )
-    };
 
 
 
@@ -147,7 +155,7 @@ class SurchargeDialog extends Component {
                 title: "적용시간",
                 dataIndex: "completionTime",
                 className: "table-column-center",
-                render: (data, row) => <div>{row.startDate + ' 부터 ' + row.endDate}</div>
+                render: (data, row) => <div>{row.startDate + ' - ' + row.endDate}</div>
             },
             {
                 title: "추가요금",
@@ -219,7 +227,7 @@ class SurchargeDialog extends Component {
                                                             rules={[{ required: true, message: "등록기간 날짜를 선택해주세요" }]}
                                                         >
                                                             <RangePicker
-                                                                // popupStyle={{width: 100}}
+                                                                placeholder={['시작일', '종료일']}
                                                                 showTime={{ format: 'HH:mm' }}
                                                                 onChange={this.onChangeDate}
                                                             />
@@ -262,5 +270,15 @@ class SurchargeDialog extends Component {
         )
     }
 }
+const mapStateToProps = (state) => {
+    return {
+        branchIdx: state.login.branch,
+    };
+}
+const mapDispatchToProps = (dispatch) => {
+    return {
 
-export default (SurchargeDialog);
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SurchargeDialog);

@@ -8,6 +8,7 @@ import SearchAddressDialog from "../../components/dialog/franchise/SearchAddress
 import "../../css/franchise.css";
 import { comma } from "../../lib/util/numberUtil";
 import { BankOutlined } from '@ant-design/icons';
+import { formatDate } from '../../lib/util/dateUtil';
 const Option = Select.Option;
 const FormItem = Form.Item;
 const Search = Input.Search;
@@ -86,7 +87,7 @@ class FranchiseMain extends Component {
 
   // 가맹점수정 dialog
   openModifyFranModal = (row) => {
-    this.setState({ modifyFranOpen: true, dialogData: row});
+    this.setState({ modifyFranOpen: true, dialogData: row });
   }
   closeModifyFranModal = () => {
     this.setState({ modifyFranOpen: false });
@@ -161,7 +162,7 @@ class FranchiseMain extends Component {
       },
       {
         title: "대표자명",
-        dataIndex: "ceoName",
+        dataIndex: "ownerName",
         className: "table-column-center",
         render: (data) => <div>{'홍길동'}</div>
       },
@@ -276,9 +277,9 @@ class FranchiseMain extends Component {
       const dropColumns = [
         {
           title: "월회비 최초납부일",
-          dataIndex: "membershipDate",
+          dataIndex: "chargeDate",
           className: "table-column-center",
-          render: (data) => <div>{'2021-04-29'}</div>
+          render: (data) => <div>{formatDate(data)}</div>
         },
         {
           title: "적용타입",
@@ -288,7 +289,7 @@ class FranchiseMain extends Component {
         },
         {
           title: "월회비",
-          dataIndex: "membershipFee",
+          dataIndex: "dues",
           className: "table-column-center",
           render: (data) => <div>{'100,000'}</div>
         },

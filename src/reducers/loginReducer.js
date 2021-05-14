@@ -46,9 +46,12 @@ const login = (state = loginInitialState, action) => {
     case CHANGE_BRANCH:
       return {
         ...state,
-        branch:action.value,
+        loginInfo:{
+          ...state.loginInfo,
+          branch:action.value,
+        }
       }
-      
+
     default:
       return state;
   }
