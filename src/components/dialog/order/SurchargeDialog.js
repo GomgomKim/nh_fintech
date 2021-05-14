@@ -219,7 +219,7 @@ class SurchargeDialog extends Component {
                                                         </FormItem>
                                                     </div>
                                                     <div className="subDatePrice">
-                                                        등록기간s
+                                                        등록기간
                                                     </div>
                                                     <div className="selectBox">
                                                         <FormItem
