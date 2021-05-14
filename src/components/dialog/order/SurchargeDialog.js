@@ -78,6 +78,16 @@ class SurchargeDialog extends Component {
         });
     }
 
+    // 할증 등록기간 설정
+    onChangeDate = (dateString) => {
+        alert(dateString);
+        this.setState({
+            startDate: moment(dateString[0]).format('YYYY-MM-DD HH:mm'),
+            endDate: moment(dateString[1]).format('YYYY-MM-DD HH:mm'),
+        },
+        )
+    };
+
     // 할증삭제
     onDelete = (row) => {
         let idx = row.idx;
@@ -104,15 +114,6 @@ class SurchargeDialog extends Component {
                 alert('에러가 발생하였습니다 다시 시도해주세요.')
             });
     }
-
-    // 할증 등록기간 설정
-    onChangeDate = (date, dateString) => {
-        this.setState({
-            startDate: moment(dateString[0]).format('YYYY-MM-DD HH:mm'),
-            endDate: moment(dateString[1]).format('YYYY-MM-DD HH:mm'),
-        },
-        )
-    };
 
 
 
@@ -146,7 +147,7 @@ class SurchargeDialog extends Component {
                 title: "적용시간",
                 dataIndex: "completionTime",
                 className: "table-column-center",
-                render: (data, row) => <div>{row.startDate + ' 부터 ' + row.endDate}</div>
+                render: (data, row) => <div>{row.startDate + ' - ' + row.endDate}</div>
             },
             {
                 title: "추가요금",
@@ -218,6 +219,7 @@ class SurchargeDialog extends Component {
                                                             rules={[{ required: true, message: "등록기간 날짜를 선택해주세요" }]}
                                                         >
                                                             <RangePicker
+                                                                placeholder={['시작일', '종료일']}
                                                                 showTime={{ format: 'HH:mm' }}
                                                                 onChange={this.onChangeDate}
                                                             />
