@@ -230,7 +230,7 @@ class RegistFranDialog extends Component {
                                                         PG 사용비율
                                                     </div>
                                                     <FormItem
-                                                        name="phoneNumber"
+                                                        name="pgUse"
                                                         className="selectItem"
                                                     >
                                                         <Input placeholder="PG 사용비율을 입력해 주세요." className="override-input">
