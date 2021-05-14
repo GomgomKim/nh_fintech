@@ -91,9 +91,6 @@ class MapControlDialog extends Component {
           this.getList()
         })
       }
-      else{
-        alert("등록되지 않은 기사명입니다.");
-      }
     }
     
     onSearchPhoneNum = (value) => {
