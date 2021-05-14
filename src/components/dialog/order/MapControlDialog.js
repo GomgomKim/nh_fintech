@@ -75,7 +75,10 @@ class MapControlDialog extends Component {
     onSearchWorker = (value) => {
       // this.state.results.find(x => x.riderName.includes(value))
       // console.log(this.state.results.find(x => x.riderName.includes(value)).riderName )
-      var riderName = this.state.riderListSave.find(x => x.riderName.includes(value)).riderName
+      var riderName = null
+      if(this.state.riderListSave.find(x => x.riderName.includes(value)))
+        riderName = this.state.riderListSave.find(x => x.riderName.includes(value)).riderName
+      else alert("해당 기사명이 존재하지 않습니다.")
       // console.log("value : "+value+" rider name : "+riderName)
       if(value == "") riderName = null
       if(riderName){
@@ -146,7 +149,7 @@ class MapControlDialog extends Component {
         let riderLevel = this.state.riderLevel;
         let userData = this.state.userData;
         let searchName = this.state.searchName;
-        console.log("searchName :: "+searchName)
+        // console.log("searchName :: "+searchName)
 
         httpGet(httpUrl.riderList, [10, pageNum, riderLevel, searchName, userData], {}).then((result) => {
           console.log('### nnbox result=' + JSON.stringify(result, null, 4))
