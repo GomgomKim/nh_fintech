@@ -211,7 +211,7 @@ class SurchargeDialog extends Component {
                                                         </FormItem>
                                                     </div>
                                                     <div className="subDatePrice">
-                                                        등록기간
+                                                        등록기간s
                                                     </div>
                                                     <div className="selectBox">
                                                         <FormItem
@@ -219,6 +219,7 @@ class SurchargeDialog extends Component {
                                                             rules={[{ required: true, message: "등록기간 날짜를 선택해주세요" }]}
                                                         >
                                                             <RangePicker
+                                                                // popupStyle={{width: 100}}
                                                                 showTime={{ format: 'HH:mm' }}
                                                                 onChange={this.onChangeDate}
                                                             />

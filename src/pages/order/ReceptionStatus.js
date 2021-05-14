@@ -26,6 +26,7 @@ const Search = Input.Search;
 const dateFormat = 'YYYY/MM/DD';
 const today = new Date();
 const rowClassName = ['', 'table-red', 'table-blue', 'table-white', 'table-gray', 'table-gray']
+const list = createDummyCall(100);
 
 class ReceptionStatus extends Component {
   constructor(props) {
@@ -61,9 +62,6 @@ class ReceptionStatus extends Component {
       MessageOpen: false,
       activeIndex: -1,
       mapControlOpen: false,
-      firstStatus: 1,
-      secondStatus: 2,
-      thirdStatus: 3,
 
       // table param
       selectedFrName: "냠냠푸드",
@@ -114,7 +112,7 @@ class ReceptionStatus extends Component {
   }
 
   getList = () => {
-    const list = createDummyCall(100);
+    // console.log(list)
     this.setState({
       list: list,
     });
@@ -200,10 +198,9 @@ class ReceptionStatus extends Component {
   // }
 
   getStatusVal = (idx) => {
-    if (idx == 1) return this.state.firstStatus
-    else if (idx == 2) return this.state.secondStatus
-    else if (idx == 3) return this.state.thirdStatus
+    // console.log("idx : "+idx)
   }
+
 
   render() {
     const columns = [
@@ -213,11 +210,42 @@ class ReceptionStatus extends Component {
         className: "table-column-center",
         render: (data, row) => <div className="table-column-sub">
           <Select defaultValue={data}
-            value={this.getStatusVal(row.idx)}
+            value={list.find(x => x.idx == row.idx).pickupStatus}
             onChange={(value) => {
-              // console.log(value, row)
+              console.log("idx : "+row.idx+" val : "+value, " row : "+row)
               var flag = true
-              if (row.pickupStatus == 1) {
+              if (row.pickupStatus <= 3) {
+                if (value != row.pickupStatus+1 && value != 5) {
+                  alert("상태를 바꿀 수 없습니다.")
+                  flag = false
+                  return false
+                }
+                if(row.pickupStatus == 1 && value == 2)
+                  alert("강제배차를 사용하세요")
+              }
+              else if (row.pickupStatus == 5) {
+                if (value != 1) {
+                  alert("상태를 바꿀 수 없습니다.")
+                  flag = false
+                }
+              }
+              
+              if(flag){
+                // console.log( list.find(x => x.idx == row.idx).pickupStatus)
+                // console.log(list)
+                list.find(x => x.idx == row.idx).pickupStatus = value;
+                // console.log( list.find(x => x.idx == row.idx).pickupStatus)
+                // console.log(list)
+                this.setState({
+                  list: list,
+                });
+              }
+              
+              
+              
+
+              // 하드코딩 버전 
+              /* if (row.pickupStatus == 1) {
                 if (value != 2 && value != 5) {
                   alert("상태를 바꿀 수 없습니다.")
                   flag = false
@@ -243,30 +271,7 @@ class ReceptionStatus extends Component {
                   alert("상태를 바꿀 수 없습니다.")
                   flag = false
                 }
-              }
-              if (flag) {
-                // DB연동 후 삭제예정
-                if (row.idx == 1) {
-                  this.setState({
-                    firstStatus: value
-                  }, () => {
-                    this.getList()
-                  })
-                }
-                else if (row.idx == 2) {
-                  this.setState({
-                    secondStatus: value
-                  }, () => {
-                    this.getList()
-                  })
-                } else if (row.idx == 3) {
-                  this.setState({
-                    thirdStatus: value
-                  }, () => {
-                    this.getList()
-                  })
-                }
-              }
+              } */ 
             }}>
             <Option value={1}>대기중</Option>
             <Option value={2}>픽업중</Option>
