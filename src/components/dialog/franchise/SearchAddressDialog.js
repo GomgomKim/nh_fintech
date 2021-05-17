@@ -8,7 +8,6 @@ import SelectBox from '../../../components/input/SelectBox';
 import moment from 'moment';
 import { comma } from "../../../lib/util/numberUtil";
 import { formatDate } from "../../../lib/util/dateUtil";
-import string from "../../../string";
 
 const FormItem = Form.Item;
 const Ditems = Descriptions.Item;

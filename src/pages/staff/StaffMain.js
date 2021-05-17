@@ -1,20 +1,11 @@
 import { Form, DatePicker, Input, Table, Button, Descriptions, Radio, Select } from 'antd';
-import Icon from '@ant-design/icons';
 import React, { Component } from 'react';
 import { httpGet, httpUrl, httpDownload, httpPost, httpPut } from '../../api/httpClient';
-import SelectBox from "../../components/input/SelectBox";
 import "../../css/staff.css";
 import "../../css/common.css";
-import { comma } from "../../lib/util/numberUtil";
-import { formatDate } from "../../lib/util/dateUtil";
 import RegistStaffDialog from "../../components/dialog/staff/RegistStaffDialog";
-import UpdateStaffDialog from "../../components/dialog/staff/UpdateStaffDialog";
-
-
-
-const FormItem = Form.Item;
-const Ditems = Descriptions.Item;
-const Option = Select.Option;
+import SelectBox from '../../components/input/SelectBox';
+import { staffString, statusCode } from '../../lib/util/codeUtil';
 
 const Search = Input.Search;
 const RangePicker = DatePicker.RangePicker;
@@ -61,17 +52,18 @@ class StaffMain extends Component {
     }, () => this.getList());
   };
 
-
-  onChangeSel = (value) => {
+  onChangeStatus = (index, value) => {
     httpPost(httpUrl.staffUpdate, [], {
-      riderStatus: value
-    }).then((result) => {
-      console.log(result)
-      // this.props.close()
-      // this.props.history.push('../../pages/staff/StaffMain')
-
-    });
+      idx: index, userStatus: value
+     })
+        .then((result) => {
+            this.getRegistStaffList();
+        })
+        .catch((error) => {
+            // this.props.alert.show('에러가 발생하였습니다 다시 시도해주세요.')
+        });
   }
+
   getRegistStaffList = () => {
     let pageNum = this.state.pagination.current;
     let riderLevel = this.state.riderLevel;
@@ -139,31 +131,19 @@ class StaffMain extends Component {
         title: "상태",
         dataIndex: "userStatus",
         className: "table-column-center",
-        width: 100,
-        render:
-          (data, row) => (
-            <div>
-              <Select onChange={value => {
-                this.onChangeSel(value);
-              }} defaultValue={data} style={{ width: 68 }}>
-                <Option value={3}>퇴사</Option>
-                <Option value={2}>중지</Option>
-                <Option value={1}>근무</Option>
-              </Select>
-            </div>
-          ),
+        render: (data, row) => <div>
+            <SelectBox
+                value={staffString[data]}
+                code={statusCode}
+                codeString={staffString}
+                onChange={(value) => {
+                    if (parseInt(value) !== row.userStatus) {
+                        this.onChangeStatus(row.idx, value);
+                    }
+                }}
+            />
+        </div>
       },
-      /*
-      {
-        title: "상태",
-        dataIndex: "staffStatus",
-        className: "table-column-center",
-        width: "200px",
-        render: (data) => <div>{data == -1 ? "퇴사"
-          : data == 0 ? "중지"
-            : data == 1 ? "근무"
-              : "-"}</div>
-      },*/
       {
         title: "전화번호",
         dataIndex: "phone",
@@ -196,9 +176,9 @@ class StaffMain extends Component {
         <div className="selectLayout">
           <span className="searchRequirementText">검색조건</span><br></br>
           <Radio.Group className="searchRequirement" onChange={this.onChange} value={this.state.staffStatus}>
-            <Radio value={1}>사용</Radio>
-            <Radio value={0}>중지</Radio>
-            <Radio value={-1}>퇴사</Radio>
+            <Radio value={1}>근무</Radio>
+            <Radio value={2}>중지</Radio>
+            <Radio value={3}>퇴사</Radio>
           </Radio.Group>
 
 

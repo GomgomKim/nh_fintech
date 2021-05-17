@@ -1,14 +1,11 @@
 import React, { Component } from "react";
 import {
-    Form, Modal, Input, DatePicker, Descriptions, Table,
-    Upload, Button, Select, Icon, Radio, Carousel, Text, Checkbox
+    Form, Input, Button, Select,
 } from "antd";
 import '../../../css/modal.css';
-import { httpGet, httpUrl, httpDownload, httpPost, httpPut } from '../../../api/httpClient';
-
+import { httpUrl, httpPost } from '../../../api/httpClient';
 const Option = Select.Option;
 const FormItem = Form.Item;
-const { RangePicker } = DatePicker;
 const Search = Input.Search;
 
 class RegistStaffDialog extends Component {
@@ -37,46 +34,69 @@ class RegistStaffDialog extends Component {
     };
 
     handleSubmit = () => {
+        const data = this.props;
+
         console.log(this.formRef.current.getFieldsValue())
-        httpPost(httpUrl.registStaff, [], {
-            riderName: this.formRef.current.getFieldsValue().riderName,
-            id: this.formRef.current.getFieldsValue().id,
-            email: this.formRef.current.getFieldsValue().email,
-            password: this.formRef.current.getFieldsValue().password,
-            phone: this.formRef.current.getFieldsValue().phone,
-            memo: this.formRef.current.getFieldsValue().memo,
-            riderStatus: this.formRef.current.getFieldsValue().riderStatus,
-            ncash: 0,
-            userStatus: 1,
-            withdrawPassword: 0,
-            bank: "한국은행",
-            bankAccount: "111-111-1111",
-            depositor: "냠냠박스",
-            userType: 1,
-            userGroup: 1,
-            riderLevel: 1,
-        }).then((result) => {
-            console.log("## result: " + JSON.stringify(result, null, 4));
-            alert('직원 등록이 완료되었습니다.');
-            this.props.close()
-            // this.props.history.push('/staff/StaffMain')
-        }).catch(e => {
-            alert('에러가 발생하였습니다 다시 시도해주세요.')
-        });
+        {data ? 
+            httpPost(httpUrl.staffUpdate, [], {
+                // riderName: this.formRef.current.getFieldsValue().riderName,
+                // id: this.formRef.current.getFieldsValue().id,
+                // email: this.formRef.current.getFieldsValue().email,
+                // password: this.formRef.current.getFieldsValue().password,
+                // phone: this.formRef.current.getFieldsValue().phone,
+                // memo: this.formRef.current.getFieldsValue().memo,
+                // riderStatus: this.formRef.current.getFieldsValue().riderStatus,
+                ...this.formRef.current.getFieldsValue(),
+                ncash: 0,
+                userStatus: 1,
+                withdrawPassword: 0,
+                bank: "한국은행",
+                bankAccount: "111-111-1111",
+                depositor: "냠냠박스",
+                userType: 1,
+                userGroup: 1,
+                riderLevel: 1,
+            }).then((result) => {
+                console.log("## result: " + JSON.stringify(result, null, 4));
+                alert('직원 등록이 완료되었습니다.');
+                this.props.close()
+                // this.props.history.push('/staff/StaffMain')
+            }).catch(e => {
+                alert('에러가 발생하였습니다 다시 시도해주세요.')
+            })
+            :
+            httpPost(httpUrl.registStaff, [], {
+                // riderName: this.formRef.current.getFieldsValue().riderName,
+                // id: this.formRef.current.getFieldsValue().id,
+                // email: this.formRef.current.getFieldsValue().email,
+                // password: this.formRef.current.getFieldsValue().password,
+                // phone: this.formRef.current.getFieldsValue().phone,
+                // memo: this.formRef.current.getFieldsValue().memo,
+                // riderStatus: this.formRef.current.getFieldsValue().riderStatus,
+                ...this.formRef.current.getFieldsValue(),
+                ncash: 0,
+                userStatus: 1,
+                withdrawPassword: 0,
+                bank: "한국은행",
+                bankAccount: "111-111-1111",
+                depositor: "냠냠박스",
+                userType: 1,
+                userGroup: 1,
+                riderLevel: 1,
+            }).then((result) => {
+                console.log("## result: " + JSON.stringify(result, null, 4));
+                alert('직원 등록이 완료되었습니다.');
+                this.props.close()
+                // this.props.history.push('/staff/StaffMain')
+            }).catch(e => {
+                alert('에러가 발생하였습니다 다시 시도해주세요.')
+            });
+        }
     }
 
 
     handleClear = () => {
-        this.formRef.current.setFieldsValue({
-            riderName: undefined,
-            password: undefined,
-            phoneNumber: undefined,
-            memo: undefined,
-            rank: undefined,
-            auth: undefined,
-            id: undefined,
-            email: undefined,
-        });
+        this.formRef.current.resetFields();
     };
 
 
