@@ -1,4 +1,4 @@
-import { DatePicker, Input, Select, Table, Button, Checkbox } from 'antd';
+import { DatePicker, Input, Select, Table, Button, Checkbox, Modal } from 'antd';
 import moment from 'moment';
 import React, { Component } from 'react';
 import TimeDelayDialog from '../../components/dialog/order/TimeDelayDialog';
@@ -13,7 +13,14 @@ import { formatDate } from '../../lib/util/dateUtil';
 import '../../css/order.css';
 import '../../css/common.css';
 import { comma } from '../../lib/util/numberUtil';
-import { deliveryStatusCode } from '../../lib/util/codeUtil';
+import { 
+  deliveryStatusCode, 
+  modifyType, 
+  rowColorName, 
+  preparationStatus,
+  paymentMethod,
+  cardStatus,
+} from '../../lib/util/codeUtil';
 import {
   FieldTimeOutlined,
   DollarCircleOutlined,
@@ -30,29 +37,13 @@ const Option = Select.Option;
 const Search = Input.Search;
 const dateFormat = 'YYYY/MM/DD';
 const today = new Date();
-const rowClassName = [
-  '',
-  'table-red',
-  'table-blue',
-  'table-white',
-  'table-gray',
-  'table-gray',
-];
+
 const list = createDummyCall(100);
 
 class ReceptionStatus extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      // delayTab: 0,
-      // mapTab: 0,
-      // surchargeTab: 0,
-      // registTab: 0,
-      // messageTab: 0,
-      // noticeTab: 0,
-      // filterTab: 0,
-      // workTab: 0,
-
       selectedDate: today,
       franchisee: '',
       rider: '',
@@ -215,10 +206,6 @@ class ReceptionStatus extends Component {
   closeMessageModal = () => {
     this.setState({ MessageOpen: false });
   };
-  // setClassName = (record, index) => {
-  //   console.log(record, index)
-  //   return index == this.state.activeIndex ? 'table-red' : "";
-  // }
 
   getStatusVal = idx => {
     // console.log("idx : "+idx)
@@ -236,72 +223,41 @@ class ReceptionStatus extends Component {
               defaultValue={data}
               value={list.find(x => x.idx == row.idx).pickupStatus}
               onChange={value => {
-                console.log(
-                  'idx : ' + row.idx + ' val : ' + value,
-                  ' row : ' + row,
-                );
-
-                // const modifyType = [
-                //   [1,2],
-                //   [2,3],
-
-                // ]
+                console.log('idx : ' + row.idx + ' val : ' + value, ' row : ' + row);
 
                 var flag = true;
-                if (row.pickupStatus <= 3) {
-                  if (value != row.pickupStatus + 1 && value != 5) {
-                    alert('상태를 바꿀 수 없습니다.');
-                    flag = false;
-                    return false;
-                  }
-                  if (row.pickupStatus == 1 && value == 2)
-                    alert('강제배차를 사용하세요');
-                } else if (row.pickupStatus == 5) {
-                  if (value != 1) {
-                    alert('상태를 바꿀 수 없습니다.');
-                    flag = false;
-                  }
+
+                // 제약조건 미성립
+                // console.log([row.pickupStatus, value]+" / "+modifyType[row.pickupStatus])
+                if(!modifyType[row.pickupStatus].includes(value)){
+                  Modal.info({
+                    content: (
+                        <div>
+                            상태를 바꿀 수 없습니다.
+                        </div>
+                    )
+                    })
+                  flag = false;
                 }
 
+                // 대기중 -> 픽업중 변경 시 강제배차 알림
+                if (row.pickupStatus == 1 && value == 2){
+                  Modal.info({
+                    content: (
+                        <div>
+                            강제배차를 사용하세요.
+                        </div>
+                    )
+                  })
+                }
+
+                // 제약조건 성립 시 상태 변경
                 if (flag) {
-                  // console.log( list.find(x => x.idx == row.idx).pickupStatus)
-                  // console.log(list)
                   list.find(x => x.idx == row.idx).pickupStatus = value;
-                  // console.log( list.find(x => x.idx == row.idx).pickupStatus)
-                  // console.log(list)
                   this.setState({
                     list: list,
                   });
                 }
-
-                // 하드코딩 버전
-                /* if (row.pickupStatus == 1) {
-                if (value != 2 && value != 5) {
-                  alert("상태를 바꿀 수 없습니다.")
-                  flag = false
-                }
-                if (value == 2) {
-                  alert("강제배차를 사용하세요")
-                }
-              }
-              else if (row.pickupStatus == 2) {
-                if (value != 3 && value != 5) {
-                  alert("상태를 바꿀 수 없습니다.")
-                  flag = false
-                }
-              }
-              else if (row.pickupStatus == 3) {
-                if (value != 4 && value != 5) {
-                  alert("상태를 바꿀 수 없습니다.")
-                  flag = false
-                }
-              }
-              else if (row.pickupStatus == 5) {
-                if (value != 1) {
-                  alert("상태를 바꿀 수 없습니다.")
-                  flag = false
-                }
-              } */
               }}
             >
               {deliveryStatusCode.map((value, index) => {
@@ -316,7 +272,7 @@ class ReceptionStatus extends Component {
         title: '음식준비',
         dataIndex: 'preparationStatus',
         className: 'table-column-center',
-        render: data => <div>{data == 0 ? '준비중' : '완료'}</div>,
+        render: data => <div>{preparationStatus[data]}</div>,
       },
       {
         title: '요청 시간',
@@ -377,7 +333,7 @@ class ReceptionStatus extends Component {
         title: '결제방식',
         dataIndex: 'paymentMethod',
         className: 'table-column-center',
-        render: data => <div>{data == 0 ? '선결' : '카드'}</div>,
+        render: data => <div>{paymentMethod[data]}</div>,
       },
     ];
 
@@ -398,7 +354,7 @@ class ReceptionStatus extends Component {
           title: '카드상태',
           dataIndex: 'cardStatus',
           className: 'table-column-center',
-          render: data => <div>{data == 0 ? '요청' : '등록완료'}</div>,
+          render: data => <div>{cardStatus[data]}</div>,
         },
         {
           title: '승인번호',
@@ -646,10 +602,9 @@ class ReceptionStatus extends Component {
         <div className="dataTableLayout">
           <Table
             rowKey={record => record}
-            rowClassName={record => rowClassName[record.pickupStatus]}
+            rowClassName={record => rowColorName[record.pickupStatus]}
             dataSource={this.state.list}
             columns={columns}
-            // pagination={this.state.pagination}
             pagination={false}
             onChange={this.handleTableChange}
             expandedRowRender={expandedRowRender}

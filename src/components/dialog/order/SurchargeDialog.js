@@ -73,8 +73,8 @@ class SurchargeDialog extends Component {
             endDate: this.state.endDate,
         }).then((result) => {
             alert('할증 등록이 완료되었습니다.');
-            this.handleClear();
-            this.getList();
+            this.handleClear()
+            this.getList()
         }).catch((error) => {
             alert('에러가 발생하였습니다 다시 시도해주세요.')
         });
