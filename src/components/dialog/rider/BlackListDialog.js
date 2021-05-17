@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import {
-    Form, Modal, Input, DatePicker, Descriptions, Table,
-    Upload, Button, Select, Icon, Radio, Carousel, Text,
+    Form, DatePicker, Table, Select
 } from "antd";
 import SelectBox from '../../../components/input/SelectBox';
 import '../../../css/modal.css';
