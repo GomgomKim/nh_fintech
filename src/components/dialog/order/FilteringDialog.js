@@ -9,7 +9,7 @@ class FilteringDialog extends Component {
     constructor(props) {
         super(props)
         this.state = {
-
+            
         }
     }
     render() {
@@ -37,7 +37,7 @@ class FilteringDialog extends Component {
                                             </div>
 
                                             <div className="filtering-btn-03">
-                                                <Checkbox defaultChecked="checked" >현금</Checkbox>
+                                                <Checkbox defaultChecked="checked">현금</Checkbox>
                                             </div>
                                             <div className="filtering-btn-04">
                                                 <Checkbox defaultChecked="checked">배차</Checkbox>

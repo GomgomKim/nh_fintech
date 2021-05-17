@@ -14,10 +14,3 @@ export function logout() {
     type: LOGOUT,
   };
 }
-
-export function changeBranch(value) {
-  return {
-    type: CHANGE_BRANCH,
-    value:value,
-  };
-}
