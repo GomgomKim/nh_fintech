@@ -77,7 +77,6 @@ class Header extends React.Component {
             placeholder="소속지사를 선택해 주세요." 
             className="override-select branch"
             onChange={(value) => {
-              this.props.onChangeBranch(value);
             }}
             >
                 <Option value={0}>플러스김포 / 플러스김포</Option>
@@ -123,7 +122,6 @@ let mapStateToProps = (state) => {
   return {
     isLogin: state.login.isLogin,
     loginInfo: state.login.loginInfo,
-    branch: state.login.loginInfo.branch,
   };
 };
 
@@ -131,7 +129,6 @@ let mapDispatchToProps = (dispatch) => {
   return {
     onLogin: (userinfo) => dispatch(login(userinfo)),
     onLogout: () => dispatch(logout()),
-    onChangeBranch: (value) => dispatch(changeBranch(value)),
   };
 };
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Header));

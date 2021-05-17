@@ -1,4 +1,4 @@
-import { CHANGE_BRANCH, LOGIN, LOGOUT } from '../actions/loginAction';
+import { LOGIN, LOGOUT } from '../actions/loginAction';
 import { reactLocalStorage } from 'reactjs-localstorage';
 import con from '../const';
 
@@ -22,6 +22,10 @@ const login = (state = loginInitialState, action) => {
   switch (action.type) {
     case LOGIN:
       reactLocalStorage.setObject(con + '#adminUser', action.loginInfo);
+      console.log(Object.assign({}, state, {
+        isLogin: true,
+        loginInfo: action.loginInfo,
+      }));
       return Object.assign({}, state, {
         isLogin: true,
         loginInfo: action.loginInfo,
@@ -42,15 +46,6 @@ const login = (state = loginInitialState, action) => {
           authList: [],
         },
       });
-    case CHANGE_BRANCH:
-      return {
-        ...state,
-        loginInfo: {
-          ...state.loginInfo,
-          branch: action.value,
-        },
-      };
-
     default:
       return state;
   }
