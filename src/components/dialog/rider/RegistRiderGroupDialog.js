@@ -1,11 +1,8 @@
 import React, { Component } from "react";
 import {
-    Form, Modal, Input, DatePicker, Descriptions, Table,
-    Upload, Button, Select, Icon, Radio, Carousel, Text, Checkbox
+    Form, Input, DatePicker, Button, Select
 } from "antd";
 import '../../../css/modal.css';
-import { comma } from "../../../lib/util/numberUtil";
-// import { formatDate } from "../../lib/util/dateUtil";
 const Option = Select.Option;
 const FormItem = Form.Item;
 const { RangePicker } = DatePicker;
@@ -86,7 +83,7 @@ class RegistRiderGroupDialog extends Component {
                                                         등록하기
                                                     </Button>
                                                 </div>
-                                                
+
                                             </div>
 
                                         </div>

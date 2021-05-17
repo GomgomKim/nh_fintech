@@ -1,12 +1,9 @@
 import React, { Component } from "react";
 import {
-    Form, Modal, Input, DatePicker, Descriptions, Table,
-    Upload, Button, Select, Icon, Radio, Carousel, Text, Checkbox
+    Form, Input, DatePicker, Descriptions, Button, Select, Checkbox
 } from "antd";
 import '../../../css/modal.css';
 import moment from 'moment';
-// import { comma } from "../../../lib/util/numberUtil";
-// import { formatDate } from "../../lib/util/dateUtil";
 
 const FormItem = Form.Item;
 const Ditems = Descriptions.Item;
@@ -133,19 +130,6 @@ class TaskWorkDialog extends Component {
                                                         className="taskWork-datepicker"
                                                     /><td className="taskWorkSub1">까지</td>
                                                 </div>
-
-                                                {/* <div className="taskWork-place1">
-                                                        <FormItem
-                                                            style={{ marginBottom: 0, display: 'inline-block', verticalAlign: 'middle' }}
-                                                            name="taskWork-place3"
-                                                        >
-                                                            <Select placeholder="차감" className="taskWork-select taskWork-select-06">
-                                                                <Option value={1}>차감</Option>
-                                                                <Option value={2}>적립</Option>
-                                                            </Select>
-
-                                                        </FormItem>
-                                                    </div> */}
 
                                             </div>
                                         </div>

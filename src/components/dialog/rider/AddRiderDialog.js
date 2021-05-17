@@ -1,11 +1,8 @@
 import React, { Component } from "react";
 import {
-    Form, Modal, Input, DatePicker, Descriptions, Table,
-    Upload, Button, Select, Icon, Radio, Carousel, Text, Checkbox
+    Form, Input, DatePicker, Table, Button, Select
 } from "antd";
 import '../../../css/modal.css';
-import { comma } from "../../../lib/util/numberUtil";
-// import { formatDate } from "../../lib/util/dateUtil";
 const Option = Select.Option;
 const FormItem = Form.Item;
 const { RangePicker } = DatePicker;
@@ -95,21 +92,21 @@ class AddRiderDialog extends Component {
         const rowSelection = {
             // selectedRows : 선택한 row 정보
             onChange: (selectedRowKeys, selectedRows) => {
-              console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-              this.setState({
-                selRiderList: selectedRows,
-              } , () => console.log(this.state.selRiderList));
+                console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+                this.setState({
+                    selRiderList: selectedRows,
+                }, () => console.log(this.state.selRiderList));
             },
             onSelect: (record, selected, selectedRows) => {
-              console.log(record, selected, selectedRows);
+                console.log(record, selected, selectedRows);
             },
             onSelectAll: (selected, selectedRows, changeRows) => {
-              console.log(selected, selectedRows, changeRows);
-              this.setState({
-                selRiderList: selectedRows,
-              })
+                console.log(selected, selectedRows, changeRows);
+                this.setState({
+                    selRiderList: selectedRows,
+                })
             },
-          };
+        };
 
         return (
             <React.Fragment>
@@ -165,7 +162,7 @@ class AddRiderDialog extends Component {
                                                         등록하기
                                                     </Button>
                                                 </div>
-                                                
+
                                             </div>
 
                                         </div>

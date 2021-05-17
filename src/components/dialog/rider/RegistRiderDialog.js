@@ -4,8 +4,6 @@ import {
 } from "antd";
 import '../../../css/modal.css';
 import { httpUrl, httpPost} from '../../../api/httpClient';
-import Search from "antd/lib/transfer/search";
-import { address } from "faker";
 const Option = Select.Option;
 const FormItem = Form.Item;
 
