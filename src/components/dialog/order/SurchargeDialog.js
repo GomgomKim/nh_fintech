@@ -64,12 +64,13 @@ class SurchargeDialog extends Component {
     handleSubmit = () => {
         let enabled = true;
         httpPost(httpUrl.priceExtraRegist, [], {
+            ...this.formRef.current.getFieldsValue(),
+            // name: this.formRef.current.getFieldsValue().surchargeName,
+            // extraPrice: this.formRef.current.getFieldsValue().feeAdd,
             enabled,
             branchIdx: this.state.branchIdx,
-            name: this.formRef.current.getFieldsValue().surchargeName,
             startDate: this.state.startDate,
             endDate: this.state.endDate,
-            extraPrice: this.formRef.current.getFieldsValue().feeAdd,
         }).then((result) => {
             alert('할증 등록이 완료되었습니다.');
             this.handleClear();
@@ -89,11 +90,7 @@ class SurchargeDialog extends Component {
 
     // 할증 등록시 초기화
     handleClear = () => {
-        this.formRef.current.setFieldsValue({
-            surchargeName: undefined,
-            feeAdd: undefined,
-            surchargeDate: undefined
-        })
+        this.formRef.current.resetFieldsValue()
     };
 
     // 할증삭제
@@ -212,7 +209,7 @@ class SurchargeDialog extends Component {
                                                     </div>
                                                     <div className="inputBox">
                                                         <FormItem
-                                                            name="surchargeName"
+                                                            name="name"
                                                             rules={[{ required: true, message: "할증명을 입력해주세요." }]}
                                                         >
                                                             <Input style={{ width: 130 }} />
@@ -238,7 +235,7 @@ class SurchargeDialog extends Component {
                                                     </div>
                                                     <div className="inputBox">
                                                         <FormItem
-                                                            name="feeAdd"
+                                                            name="extraPrice"
                                                             rules={[{ required: true, message: "추가금액을 입력해주세요." }]}
                                                         >
                                                             <Input style={{ width: 150 }} />
