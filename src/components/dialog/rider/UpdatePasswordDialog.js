@@ -1,13 +1,9 @@
 import React, { Component } from "react";
 import {
-    Form, Modal, Input, DatePicker, Descriptions, Table,
-    Upload, Button, Select, Icon, Radio, Carousel, Text, Checkbox
+    Form, Input, DatePicker, Descriptions, Button, Select
 } from "antd";
 import '../../../css/rider.css';
 import '../../../css/modal.css';
-import moment from 'moment';
-import { comma } from "../../../lib/util/numberUtil";
-import { formatDate } from "../../../lib/util/dateUtil";
 
 const FormItem = Form.Item;
 const Ditems = Descriptions.Item;
