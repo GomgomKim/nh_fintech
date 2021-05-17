@@ -73,27 +73,11 @@ class MapControlDialog extends Component {
     }
     
     onSearchWorker = (value) => {
-      // this.state.results.find(x => x.riderName.includes(value))
-      // console.log(this.state.results.find(x => x.riderName.includes(value)).riderName )
-      var riderName = null
-      if(this.state.riderListSave.find(x => x.riderName.includes(value)))
-        riderName = this.state.riderListSave.find(x => x.riderName.includes(value)).riderName
-      else alert("해당 기사명이 존재하지 않습니다.")
-      // console.log("value : "+value+" rider name : "+riderName)
-      if(value == "") riderName = null
-      if(riderName){
-        this.setState({
-          searchName: riderName,
-        }, () => {
-          this.getRiderList(1)
-        })
-      }else{
-        this.setState({
-          searchName: "",
-        }, () => {
-          this.getRiderList(1)
-        })
-      }
+      this.setState({
+        searchName: value,
+      }, () => {
+        this.getRiderList()
+      })
     }
 
     onSearchWorkerSelected = (value) => {
@@ -106,9 +90,6 @@ class MapControlDialog extends Component {
         }, () => {
           this.getList()
         })
-      }
-      else{
-        alert("등록되지 않은 기사명입니다.");
       }
     }
     
@@ -130,7 +111,7 @@ class MapControlDialog extends Component {
           const pagination = { ...this.state.pagination };
           if(result.data != null){
             var list = [result.data.orders];
-            console.log(list)
+            // console.log(list)
             this.setState({
               riderOrderList: list,
               pagination,
@@ -143,8 +124,7 @@ class MapControlDialog extends Component {
           }
         })
     }
-    
-    getRiderList = (flag) => {
+    getRiderList = () => {
         let pageNum = this.state.pagination.current;
         let riderLevel = this.state.riderLevel;
         let userData = this.state.userData;
@@ -152,22 +132,14 @@ class MapControlDialog extends Component {
         // console.log("searchName :: "+searchName)
 
         httpGet(httpUrl.riderList, [10, pageNum, riderLevel, searchName, userData], {}).then((result) => {
-          console.log('### nnbox result=' + JSON.stringify(result, null, 4))
+          console.log('## nnbox result=' + JSON.stringify(result, null, 4))
           const pagination = { ...this.state.pagination };
           pagination.current = result.data.currentPage;
           pagination.total = result.data.totalCount;
-          if(flag == 1){
-            this.setState({
-              results: result.data.riders,
-              pagination,
-            });
-          } else{
-            this.setState({
-              riderListSave: result.data.riders,
-              results: result.data.riders,
-              pagination,
-            });
-          }
+          this.setState({
+            results: result.data.riders,
+            pagination,
+          });
         })
     };
     
@@ -273,7 +245,7 @@ class MapControlDialog extends Component {
               dataIndex: "riderName",
               className: "table-column-center",
               render: (data) => <div className='riderName' onClick={()=>{
-                this.setState({selectedRider: 55})
+                // this.setState({selectedRider: 55})
                 this.onSearchWorkerSelected(data)
               }}>{data}</div>
             },

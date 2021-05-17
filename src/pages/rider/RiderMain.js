@@ -82,8 +82,9 @@ class RiderMain extends Component {
     let pageNum = this.state.pagination.current;
     let riderLevel = this.state.riderLevel;
     let userData = this.state.userData;
+    let riderName = this.state.riderName;
 
-    httpGet(httpUrl.riderList, [10, pageNum, riderLevel, userData], {}).then((result) => {
+    httpGet(httpUrl.riderList, [10, pageNum, riderLevel, riderName, userData], {}).then((result) => {
       console.log('## nnbox result=' + JSON.stringify(result, null, 4))
       const pagination = { ...this.state.pagination };
       pagination.current = result.data.currentPage;

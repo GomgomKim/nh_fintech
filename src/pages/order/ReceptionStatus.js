@@ -13,6 +13,7 @@ import { formatDate } from "../../lib/util/dateUtil";
 import "../../css/order.css";
 import "../../css/common.css";
 import { comma } from "../../lib/util/numberUtil";
+import { deliveryStatusCode } from "../../lib/util/codeUtil";
 import {
   FieldTimeOutlined, DollarCircleOutlined, EnvironmentFilled,
   PhoneOutlined, MessageOutlined, NotificationFilled, FilterOutlined
@@ -213,6 +214,13 @@ class ReceptionStatus extends Component {
             value={list.find(x => x.idx == row.idx).pickupStatus}
             onChange={(value) => {
               console.log("idx : "+row.idx+" val : "+value, " row : "+row)
+
+              // const modifyType = [
+              //   [1,2],
+              //   [2,3],
+
+              // ]
+
               var flag = true
               if (row.pickupStatus <= 3) {
                 if (value != row.pickupStatus+1 && value != 5) {
@@ -273,11 +281,10 @@ class ReceptionStatus extends Component {
                 }
               } */ 
             }}>
-            <Option value={1}>대기중</Option>
-            <Option value={2}>픽업중</Option>
-            <Option value={3}>배달중</Option>
-            <Option value={4}>완료</Option>
-            <Option value={5}>취소</Option>
+            {  deliveryStatusCode.map((value, index)=>{
+              if(index==0) return (<></>);
+              else return(<Option value={index}>{value}</Option>);
+              })}
           </Select>
         </div>
 
