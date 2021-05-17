@@ -46,5 +46,5 @@ export {
     cardStatus, 
     paymentMethod, 
     modifyType, 
-    rowColorName 
+    rowColorName,
 };

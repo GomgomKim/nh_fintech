@@ -68,7 +68,7 @@ class ReceptionStatus extends Component {
       // table param
       selectedFrName: "냠냠푸드",
       // selectedDate: formatDate(today),
-      selectedDate: "2021-01-01",
+      // selectedDate: "2021-01-01",
       selectedOrderStatus: [1, 2, 3, 4, 5],
       selectedPaymentMethods: [1],
       selectedRiderName: "margie5047",
@@ -126,7 +126,26 @@ class ReceptionStatus extends Component {
   // };
 
   getList = () => {
-    httpPost(httpUrl.orderList, [], {
+    var frName = encodeURI(this.state.franchisee)
+    var orderDate = encodeURI(formatDate(this.state.selectedDate))
+    var orderStatuses = encodeURI(this.state.selectedOrderStatus)
+    var pageNum = encodeURI(this.state.pagination.current)
+    var pageSize = encodeURI(this.state.pagination.pageSize)
+    var paymentMethods = encodeURI(this.state.selectedPaymentMethods)
+    var riderName = encodeURI(this.state.rider)
+    httpPost(httpUrl.orderList, [frName, orderDate, orderStatuses, pageNum, pageSize, paymentMethods, riderName], {
+      
+    }).then((res) => {
+      if (res.result === "SUCCESS") {
+        console.log(res.data.orders);
+        alert("성공적으로 처리되었습니다.");
+      } else {
+        alert("res는 왔는데 result가 SUCCESS가 아닌 경우.");
+      }
+    }).catch((e) => {   
+      alert("처리가 실패했습니다.");
+    });
+    /* httpPost(httpUrl.orderList, [], {
       frName: this.state.franchisee,
       orderDate: formatDate(this.state.selectedDate),
       orderStatuses: this.state.selectedOrderStatus,
@@ -155,7 +174,7 @@ class ReceptionStatus extends Component {
           riderName: this.state.selectedRiderName,
         });    
         alert("처리가 실패했습니다.");
-      });
+      }); */
     // console.log(list)
     this.setState({
       list: list,
@@ -253,7 +272,7 @@ class ReceptionStatus extends Component {
           <div className="table-column-sub">
             <Select
               defaultValue={data}
-              value={list.find((x) => x.idx == row.idx).pickupStatus}
+              value={list.find((x) => x.idx === row.idx).pickupStatus}
               onChange={(value) => {
                 console.log(
                   "idx : " + row.idx + " val : " + value,
@@ -276,7 +295,7 @@ class ReceptionStatus extends Component {
                 }
 
                 // 대기중 -> 픽업중 변경 시 강제배차 알림
-                if (row.pickupStatus == 1 && value == 2){
+                if (row.pickupStatus === 1 && value === 2){
                   Modal.info({
                     content: (
                         <div>
@@ -288,7 +307,7 @@ class ReceptionStatus extends Component {
 
                 // 제약조건 성립 시 상태 변경
                 if (flag) {
-                  list.find(x => x.idx == row.idx).pickupStatus = value;
+                  list.find(x => x.idx === row.idx).pickupStatus = value;
                   this.setState({
                     list: list,
                   });
@@ -296,7 +315,7 @@ class ReceptionStatus extends Component {
               }}
             >
               {deliveryStatusCode.map((value, index) => {
-                if (index == 0) return <></>;
+                if (index === 0) return <></>;
                 else return <Option value={index}>{value}</Option>;
               })}
             </Select>

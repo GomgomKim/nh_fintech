@@ -158,7 +158,8 @@ const httpUrl = {
   receptionStatusList: "/order/assignList?pageSize=%s&pageNum=%s",
   
   // 주문 현황
-  orderList: "/order/list",
+  // orderList: "/order/list",
+  orderList: "/order/list?frName=%s&orderDate=%s&orderStatuses=%s&pageNum=%s&paymentMethods=%s",
   orderListExceptCompleted:"/order/allListExceptCompleted",
   orderCompleteListFr:"/order/completeListFr",
 
@@ -171,14 +172,14 @@ const httpUrl = {
   registStaff: "/rider/create",
 
   // rider
-  riderList: "/rider/list?pageSize=%s&pageNum=%s&riderLevels=%s&searchName=%s&userStatus=%s",
+  riderList: "/rider/list?frName=%s&orderDate=%s&pageSize=%s&pageNum=%s&riderLevels=%s&searchName=%s&userStatus=%s",
   registRider: "/rider/create",
   updateRider: "/rider/update",
   riderLocate: "/rider/location/%s",
 
   //직원등록
   registStaffList: "/rider/list?pageSize=%s&pageNum=%s&riderLevels=%s&userStatus=%s",
-  staffUpdate: "/rider/update",
+  staffUpdate: "/rider/up date",
 
   // 가맹점 관리
   registFranchise: "/fr/create",
