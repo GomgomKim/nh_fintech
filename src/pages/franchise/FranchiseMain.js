@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import { httpUrl, httpPost } from '../../api/httpClient';
 import RegistFranDialog from "../../components/dialog/franchise/RegistFranDialog";
 import CoinTransferDialog from "../../components/dialog/franchise/CoinTransferDialog";
-import ModifyFranDialog from "../../components/dialog/franchise/ModifyFranDialog";
 import SearchAddressDialog from "../../components/dialog/franchise/SearchAddressDialog";
 import "../../css/franchise.css";
 import { comma } from "../../lib/util/numberUtil";
@@ -29,9 +28,9 @@ class FranchiseMain extends Component {
       franStatus: 1,
       franGroup: 0,
       franSelectStatus: 0,
-      addFranchiseOpen: false,
+      ResistFranchiseOpen: false,
+      modifyFranOpen:false,
       coinTransferOpen: false,
-      modifyFranOpen: false,
       SearchAddressOpen: false,
       dialogData: [],
     };
@@ -71,11 +70,11 @@ class FranchiseMain extends Component {
   }
 
   // 가맹점등록 dialog
-  openAddFranchiseModal = () => {
-    this.setState({ addFranchiseOpen: true });
+  openRegistFranchiseModal = () => {
+    this.setState({ ResistFranchiseOpen: true });
   }
-  closeAddFranchiseModal = () => {
-    this.setState({ addFranchiseOpen: false });
+  closeRegistFranchiseModal = () => {
+    this.setState({ ResistFranchiseOpen: false });
   }
   // 코인이체 dialog
   openCoinTransferModal = () => {
@@ -86,9 +85,9 @@ class FranchiseMain extends Component {
   }
 
   // 가맹점수정 dialog
-  openModifyFranModal = (row) => {
-    this.setState({ modifyFranOpen: true, dialogData: row });
-  }
+  // openModifyFranModal = (row) => {
+  //   this.setState({ modifyFranOpen: true, dialogData: row });
+  // }
   closeModifyFranModal = () => {
     this.setState({ modifyFranOpen: false });
   }
@@ -238,10 +237,10 @@ class FranchiseMain extends Component {
         className: "table-column-center",
         render: (data, row) =>
           <div>
-            <ModifyFranDialog isOpen={this.state.modifyFranOpen} close={this.closeModifyFranModal} data={this.state.dialogData} />
+            <RegistFranDialog isOpen={this.state.modifyFranOpen} close={this.closeModifyFranModal} data={this.state.dialogData} />
             <Button
               className="tabBtn surchargeTab"
-              onClick={() => this.openModifyFranModal(row)}
+              onClick={() => this.setState({modifyFranOpen:true, dialogData: row})}
             >수정하기</Button>
           </div>
       },
@@ -256,14 +255,6 @@ class FranchiseMain extends Component {
       })
     }
 
-    const onChangeGroup = (value) => {
-      console.log(value)
-      this.setState({
-        franGroup: value
-      }, () => {
-        this.getList();
-      })
-    }
     const onChangeStatus = (value) => {
       console.log(value)
       this.setState({
@@ -365,11 +356,11 @@ class FranchiseMain extends Component {
           />
 
 
-          <CoinTransferDialog isOpen={this.state.coinTransferOpen} close={this.closeCoinTransferodal} />
+          <RegistFranDialog isOpen={this.state.ResistFranchiseOpen} close={this.closeRegistFranchiseModal} />
           <Button
             icon={<BankOutlined />}
             className="tabBtn addFranTab"
-            onClick={this.openAddFranchiseModal}
+            onClick={this.openRegistFranchiseModal}
           >가맹점등록</Button>
           <SearchAddressDialog isOpen={this.state.SearchAddressOpen} close={this.closeSearchAddressModal} />
           <Button
