@@ -1,16 +1,16 @@
-import React, { Component } from "react";
-import { Route, Switch, withRouter } from "react-router-dom";
-import { reactLocalStorage } from "reactjs-localstorage";
+import React, { Component } from 'react';
+import { Route, Switch, withRouter } from 'react-router-dom';
+import { reactLocalStorage } from 'reactjs-localstorage';
 
-import "./App.css";
-import Layout from "./components/Layout";
-import { NotFound, Login } from "./pages";
-import con from "./const";
+import './App.css';
+import Layout from './components/Layout';
+import { NotFound, Login } from './pages';
+import con from './const';
 
 class App extends Component {
   componentDidMount() {
-    const userInfo = reactLocalStorage.getObject(con.appName + "#adminUser");
-    let pathname = this.props.location.pathname.split("/");
+    const userInfo = reactLocalStorage.getObject(`${con.appName}#adminUser`);
+    const pathname = this.props.location.pathname.split('/');
 
     // if (!userInfo.idx && this.props.location.pathname !== "/") {
     //   alert("로그인이 필요합니다.");
@@ -26,7 +26,7 @@ class App extends Component {
     return (
       <Switch>
         <Route exact path="/" component={Login} />
-        {location.pathname === "/404" ? (
+        {location.pathname === '/404' ? (
           <Route component={NotFound} />
         ) : (
           <Route path="/:page" component={Layout} />
