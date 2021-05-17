@@ -1,13 +1,29 @@
-import { Form, DatePicker, Input, Checkbox, Select, Table, Button, Radio, Descriptions } from 'antd';
+import {
+  Form,
+  DatePicker,
+  Input,
+  Checkbox,
+  Select,
+  Table,
+  Button,
+  Radio,
+  Descriptions,
+} from 'antd';
 import Icon from '@ant-design/icons';
 import moment from 'moment';
 import React, { Component } from 'react';
-import { httpGet, httpUrl, httpDownload, httpPost, httpPut } from '../../api/httpClient';
-import "../../css/order.css";
-import "../../css/common.css";
-import MapControl from "./MapControl"
-import ReceptionStatus from "./ReceptionStatus"
-import MapControlDialog from "../../components/dialog/order/MapControlDialog"
+import {
+  httpGet,
+  httpUrl,
+  httpDownload,
+  httpPost,
+  httpPut,
+} from '../../api/httpClient';
+import '../../css/order.css';
+import '../../css/common.css';
+import MapControl from './MapControl';
+import ReceptionStatus from './ReceptionStatus';
+import MapControlDialog from '../../components/dialog/order/MapControlDialog';
 
 const FormItem = Form.Item;
 const Ditems = Descriptions.Item;
@@ -26,7 +42,7 @@ class OrderMain extends Component {
   }
 
   componentDidMount() {
-    console.log("orderMain fr idx :"+this.props.selectedFrIdx)
+    console.log('orderMain fr idx :' + this.props.selectedFrIdx);
   }
 
   // 지도관제
@@ -40,11 +56,11 @@ class OrderMain extends Component {
   render() {
     return (
       <div className="">
-          {/* <MapControlDialog isOpen={this.state.mapControlOpen} close={this.closeMapControlModal} /> */}
-          {/* <ReceptionStatus openMapControl={this.openMapControlModal} /> */}
-          <ReceptionStatus/>
+        {/* <MapControlDialog isOpen={this.state.mapControlOpen} close={this.closeMapControlModal} /> */}
+        {/* <ReceptionStatus openMapControl={this.openMapControlModal} /> */}
+        <ReceptionStatus />
       </div>
-    )
+    );
   }
 }
 export default OrderMain;
