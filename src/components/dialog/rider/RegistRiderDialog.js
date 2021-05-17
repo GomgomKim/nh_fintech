@@ -37,20 +37,21 @@ class RegistRiderDialog extends Component {
 
     handleSubmit = () => {
         httpPost(httpUrl.registRider, [], {
-            riderName: this.formRef.current.getFieldsValue().riderName,
-            id: this.formRef.current.getFieldsValue().id,
-            email: this.formRef.current.getFieldsValue().email,
-            password: this.formRef.current.getFieldsValue().password,
-            phone: this.formRef.current.getFieldsValue().phone,
-            memo: this.formRef.current.getFieldsValue().memo,
-            riderStatus: this.formRef.current.getFieldsValue().riderStatus,
-            deliveryPriceFeeAmount: this.formRef.current.getFieldsValue().deliveryPriceFeeAmount,
+            // riderName: this.formRef.current.getFieldsValue().riderName,
+            // id: this.formRef.current.getFieldsValue().id,
+            // email: this.formRef.current.getFieldsValue().email,
+            // password: this.formRef.current.getFieldsValue().password,
+            // phone: this.formRef.current.getFieldsValue().phone,
+            // memo: this.formRef.current.getFieldsValue().memo,
+            // riderStatus: this.formRef.current.getFieldsValue().riderStatus,
+            // deliveryPriceFeeAmount: this.formRef.current.getFieldsValue().deliveryPriceFeeAmount,
+            ...this.formRef.current.getFieldsValue(),
             ncash: 0,
             userStatus: 1,
             withdrawPassword: 0,
-            bank: "한국은행",
-            bankAccount: "111-111-1111",
-            depositor: "냠냠박스",
+            bank: "",
+            bankAccount: "",
+            depositor: "",
             userType: 1,
             userGroup: 1,
             riderLevel: this.formRef.current.getFieldsValue().riderLevel,
@@ -64,9 +65,33 @@ class RegistRiderDialog extends Component {
         });
     }
 
+    // a = () => {
+    //     const self = this;
+    //         Modal.confirm({
+    //             title: "등록 실패",
+    //             content: (
+    //                 <div>
+    //                     시스템에러로 직원수정 등록에 실패하였습니다. 잠시 후 다시 시도해주세요.
+    //                 </div>
+    //             ),
+    //         onOk() {
+
+    //             httpPost(httpUrl.registRider, [], {
+    //                 riderLevel: this.formRef.current.getFieldsValue().riderLevel,
+    //             }).then((result) => {
+    //                 self.setState({complete: true});
+    //             }).catch(e => {
+    //                 alert('에러가 발생하였습니다 다시 시도해주세요.')
+    //             });
+
+
+    //          },
+    // }
+
     handleClear = () => {
         console.log("clear")
-        this.formRef.current.setFieldsValue({
+        this.formRef.current.resetFields();
+       /*  this.formRef.current.setFieldsValue({
             belongBranch: undefined,
             riderGroup: undefined,
             riderName: undefined,
@@ -78,7 +103,7 @@ class RegistRiderDialog extends Component {
             rank: undefined,
             auth: undefined,
             deliveryPriceFeeAmount: undefined,
-        });
+        }); */
     };
 
     handleChangeRiderLevel = (value) => {
@@ -182,9 +207,14 @@ class RegistRiderDialog extends Component {
                                                     <div className="mainTitle">
                                                         기사명
                                                     </div>
+
+
+
+
                                                     <FormItem
                                                         name="riderName"
                                                         className="selectItem"
+                                                        // initialValue={}
                                                     >
                                                         {data ?
                                                             <Input placeholder="직원명을 입력해 주세요." className="override-input" defaultValue={data.riderName}/> :

@@ -245,7 +245,7 @@ class MapControlDialog extends Component {
               dataIndex: "riderName",
               className: "table-column-center",
               render: (data) => <div className='riderName' onClick={()=>{
-                this.setState({selectedRider: 55})
+                // this.setState({selectedRider: 55})
                 this.onSearchWorkerSelected(data)
               }}>{data}</div>
             },

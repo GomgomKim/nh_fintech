@@ -59,19 +59,19 @@ class TimeDelayDialog extends Component {
         }
     }
 
-    handleChange = e => {
+    handleChange = (e) => {
         this.setState({
             deliveryNotAvailable: e.target.checked,
         });
-        if (e.target.checked) {
-            this.setState({
-                btnInfos: this.state.btnInfos.map(btnInfo => { return { ...btnInfo, toggle: false } })
-            })
-        } else {
-            this.setState({
-                btnInfos: this.state.btnInfos.map(btnInfo => { return { ...btnInfo, toggle: true } })
-            })
-        }
+        // if (e.target.checked) {
+        //     this.setState({
+        //         btnInfos: this.state.btnInfos.map(btnInfo => { return { ...btnInfo, toggle: false } })
+        //     })
+        // } else {
+        //     this.setState({
+        //         btnInfos: this.state.btnInfos.map(btnInfo => { return { ...btnInfo, toggle: true } })
+        //     })
+        // }
     }
 
     handleClick = (value) => {
@@ -152,23 +152,15 @@ class TimeDelayDialog extends Component {
                                     <div className="timeDelay-inner">
                                         <div className="timeDelay-box">
                                             {btnInfos.map(btnInfo => {
-                                                if (btnInfo.toggle) {
-                                                    return (
-                                                        <Button
-                                                            icon={<ClockCircleOutlined style={{ fontSize: 60, width: 100 }} />}
-                                                            className="timeDelay-box-on"
-                                                            onClick={() => this.handleToggle(btnInfo.value)}
-                                                        ><td>{`${btnInfo.text}`}</td></Button>
-                                                    )
-                                                } else {
-                                                    return (
-                                                        <Button
-                                                            icon={<ClockCircleOutlined style={{ fontSize: 60, width: 100 }} />}
-                                                            className="timeDelay-box-off"
-                                                            onClick={() => this.handleToggle(btnInfo.value)}
-                                                        ><td>{`${btnInfo.text}`}</td></Button>
-                                                    )
-                                                }
+                                                return (
+                                                    
+                                                    <Button
+                                                    icon={<ClockCircleOutlined style={{ fontSize: 60, width: 100 }} />}
+                                                    className={btnInfo.toggle && !this.state.deliveryNotAvailable ? "timeDelay-box-on" : "timeDelay-box-off"}
+                                                    onClick={() => this.handleToggle(btnInfo.value)}
+                                                ><td>{btnInfo.text}</td></Button>
+                                                );
+
                                             })}
                                             {/* <Button
                                                 icon={<ClockCircleOutlined style={{ fontSize: 60, width: 100 }} />}
