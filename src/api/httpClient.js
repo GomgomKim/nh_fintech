@@ -158,7 +158,9 @@ const httpUrl = {
   receptionStatusList: "/order/assignList?pageSize=%s&pageNum=%s",
   
   // 주문 현황
-  orderList: "/order/list?frName=%s&orderDate=%s&orderStatuses=%s&pageNum=%s&pageSize=%s&paymentMethods=%s&riderName=%s",
+  orderList: "/order/list",
+  orderListExceptCompleted:"/order/allListExceptCompleted",
+  orderCompleteListFr:"/order/completeListFr",
 
   priceExtraList: "/branch/deliveryPriceExtra/list?pageNum=%s&pageSize=%s",
   priceExtraRegist: "/branch/deliveryPriceExtra/create",

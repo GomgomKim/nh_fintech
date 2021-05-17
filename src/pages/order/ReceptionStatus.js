@@ -1,19 +1,19 @@
-import { DatePicker, Input, Select, Table, Button, Checkbox } from 'antd';
-import moment from 'moment';
-import React, { Component } from 'react';
-import TimeDelayDialog from '../../components/dialog/order/TimeDelayDialog';
-import FilteringDialog from '../../components/dialog/order/FilteringDialog';
-import RegistCallDialog from '../../components/dialog/order/RegistCallDialog';
-import SurchargeDialog from './../../components/dialog/order/SurchargeDialog';
-import NoticeDialog from '../../components/dialog/order/NoticeDialog';
-import ForceAllocateDialog from '../../components/dialog/order/ForceAllocateDialog';
-import MapControlDialog from '../../components/dialog/order/MapControlDialog';
-import MessageDialog from '../../components/dialog/order/MessageDialog';
-import { formatDate } from '../../lib/util/dateUtil';
-import '../../css/order.css';
-import '../../css/common.css';
-import { comma } from '../../lib/util/numberUtil';
-import { deliveryStatusCode } from '../../lib/util/codeUtil';
+import { DatePicker, Input, Select, Table, Button, Checkbox } from "antd";
+import moment from "moment";
+import React, { Component } from "react";
+import TimeDelayDialog from "../../components/dialog/order/TimeDelayDialog";
+import FilteringDialog from "../../components/dialog/order/FilteringDialog";
+import RegistCallDialog from "../../components/dialog/order/RegistCallDialog";
+import SurchargeDialog from "./../../components/dialog/order/SurchargeDialog";
+import NoticeDialog from "../../components/dialog/order/NoticeDialog";
+import ForceAllocateDialog from "../../components/dialog/order/ForceAllocateDialog";
+import MapControlDialog from "../../components/dialog/order/MapControlDialog";
+import MessageDialog from "../../components/dialog/order/MessageDialog";
+import { formatDate } from "../../lib/util/dateUtil";
+import "../../css/order.css";
+import "../../css/common.css";
+import { comma } from "../../lib/util/numberUtil";
+import { deliveryStatusCode } from "../../lib/util/codeUtil";
 import {
   FieldTimeOutlined,
   DollarCircleOutlined,
@@ -22,21 +22,21 @@ import {
   MessageOutlined,
   NotificationFilled,
   FilterOutlined,
-} from '@ant-design/icons';
-import createDummyCall from '../../lib/util/createCall';
-import { httpGet, httpUrl } from '../../api/httpClient';
+} from "@ant-design/icons";
+import createDummyCall from "../../lib/util/createCall";
+import { httpGet, httpPost, httpUrl } from "../../api/httpClient";
 
 const Option = Select.Option;
 const Search = Input.Search;
-const dateFormat = 'YYYY/MM/DD';
+const dateFormat = "YYYY/MM/DD";
 const today = new Date();
 const rowClassName = [
-  '',
-  'table-red',
-  'table-blue',
-  'table-white',
-  'table-gray',
-  'table-gray',
+  "",
+  "table-red",
+  "table-blue",
+  "table-white",
+  "table-gray",
+  "table-gray",
 ];
 const list = createDummyCall(100);
 
@@ -53,10 +53,9 @@ class ReceptionStatus extends Component {
       // filterTab: 0,
       // workTab: 0,
 
-      selectedDate: today,
-      franchisee: '',
-      rider: '',
-      phoneNum: '',
+      franchisee: "",
+      rider: "",
+      phoneNum: "",
       pagination: {
         total: 0,
         current: 1,
@@ -76,70 +75,103 @@ class ReceptionStatus extends Component {
       mapControlOpen: false,
 
       // table param
-      selectedFrName: '냠냠푸드',
+      selectedFrName: "냠냠푸드",
       // selectedDate: formatDate(today),
-      selectedDate: '2021-01-01',
+      selectedDate: "2021-01-01",
       selectedOrderStatus: [1, 2, 3, 4, 5],
       selectedPaymentMethods: [1],
-      selectedRiderName: 'margie5047',
+      selectedRiderName: "margie5047",
     };
   }
 
   componentDidMount() {
     this.getList();
-    console.log('props : ' + this.props.frIdx);
   }
-  handleToggleCompleteCall = e => {
+  handleToggleCompleteCall = (e) => {
     this.setState({
       checkedCompleteCall: e.target.checked,
     });
   };
 
-  setDate = date => {
+  setDate = (date) => {
     console.log(date);
   };
 
-  onSearchFranchisee = value => {
-    this.setState(
-      {
-        franchisee: value,
-      },
-      () => {
-        this.getList();
-      },
-    );
+  onSearch = () => {
+    this.getList();
   };
 
-  onSearchWorker = value => {
-    this.setState(
-      {
-        rider: value,
-      },
-      () => {
-        this.getList();
-      },
-    );
-  };
+  // onSearchFranchisee = (value) => {
+  //   this.setState(
+  //     {
+  //       franchisee: value,
+  //     },
+  //     () => {
+  //       this.getList();
+  //     }
+  //   );
+  // };
 
-  onSearchPhoneNum = value => {
-    this.setState(
-      {
-        phoneNum: value,
-      },
-      () => {
-        this.getList();
-      },
-    );
-  };
+  // onSearchWorker = (value) => {
+  //   this.setState(
+  //     {
+  //       rider: value,
+  //     },
+  //     () => {
+  //       this.getList();
+  //     }
+  //   );
+  // };
+
+  // onSearchPhoneNum = (value) => {
+  //   this.setState(
+  //     {
+  //       phoneNum: value,
+  //     },
+  //     () => {
+  //       this.getList();
+  //     }
+  //   );
+  // };
 
   getList = () => {
+    httpPost(httpUrl.orderList, [], {
+      frName: this.state.franchisee,
+      orderDate: formatDate(this.state.selectedDate),
+      orderStatuses: this.state.selectedOrderStatus,
+      pageNum: this.state.pagination.current,
+      pageSize: this.state.pagination.pageSize,
+      paymentMethods: this.state.selectedPaymentMethods,
+      riderName: this.state.rider,
+    })
+      .then((res) => {
+        if (res.result === "SUCCESS") {
+          console.log(res.data.orders);
+          alert("성공적으로 처리되었습니다.");
+        } else {
+          alert("res는 왔는데 result가 SUCCESS가 아닌 경우.");
+        }
+      })
+      .catch((e) => {
+        console.log(e);
+        console.log({
+          frName: this.state.franchisee,
+          orderDate: formatDate(this.state.selectedDate),
+          orderStatuses: [1, 2, 3, 4, 5],
+          pageNum: this.state.pagination.current,
+          pageSize: this.state.pagination.pageSize,
+          paymentMethods: this.state.selectedPaymentMethods,
+          riderName: this.state.selectedRiderName,
+        });    
+        alert("처리가 실패했습니다.");
+      });
     // console.log(list)
     this.setState({
       list: list,
     });
   };
 
-  handleTableChange = pagination => {
+  handleTableChange = (pagination) => {
     console.log(pagination);
     const pager = { ...this.state.pagination };
     pager.current = pagination.current;
@@ -148,7 +180,7 @@ class ReceptionStatus extends Component {
       {
         pagination: pager,
       },
-      () => this.getList(),
+      () => this.getList()
     );
   };
 
@@ -220,25 +252,25 @@ class ReceptionStatus extends Component {
   //   return index == this.state.activeIndex ? 'table-red' : "";
   // }
 
-  getStatusVal = idx => {
+  getStatusVal = (idx) => {
     // console.log("idx : "+idx)
   };
 
   render() {
     const columns = [
       {
-        title: '상태',
-        dataIndex: 'pickupStatus',
-        className: 'table-column-center',
+        title: "상태",
+        dataIndex: "pickupStatus",
+        className: "table-column-center",
         render: (data, row) => (
           <div className="table-column-sub">
             <Select
               defaultValue={data}
-              value={list.find(x => x.idx == row.idx).pickupStatus}
-              onChange={value => {
+              value={list.find((x) => x.idx == row.idx).pickupStatus}
+              onChange={(value) => {
                 console.log(
-                  'idx : ' + row.idx + ' val : ' + value,
-                  ' row : ' + row,
+                  "idx : " + row.idx + " val : " + value,
+                  " row : " + row
                 );
 
                 // const modifyType = [
@@ -250,15 +282,15 @@ class ReceptionStatus extends Component {
                 var flag = true;
                 if (row.pickupStatus <= 3) {
                   if (value != row.pickupStatus + 1 && value != 5) {
-                    alert('상태를 바꿀 수 없습니다.');
+                    alert("상태를 바꿀 수 없습니다.");
                     flag = false;
                     return false;
                   }
                   if (row.pickupStatus == 1 && value == 2)
-                    alert('강제배차를 사용하세요');
+                    alert("강제배차를 사용하세요");
                 } else if (row.pickupStatus == 5) {
                   if (value != 1) {
-                    alert('상태를 바꿀 수 없습니다.');
+                    alert("상태를 바꿀 수 없습니다.");
                     flag = false;
                   }
                 }
@@ -266,7 +298,7 @@ class ReceptionStatus extends Component {
                 if (flag) {
                   // console.log( list.find(x => x.idx == row.idx).pickupStatus)
                   // console.log(list)
-                  list.find(x => x.idx == row.idx).pickupStatus = value;
+                  list.find((x) => x.idx == row.idx).pickupStatus = value;
                   // console.log( list.find(x => x.idx == row.idx).pickupStatus)
                   // console.log(list)
                   this.setState({
@@ -313,151 +345,151 @@ class ReceptionStatus extends Component {
         ),
       },
       {
-        title: '음식준비',
-        dataIndex: 'preparationStatus',
-        className: 'table-column-center',
-        render: data => <div>{data == 0 ? '준비중' : '완료'}</div>,
+        title: "음식준비",
+        dataIndex: "preparationStatus",
+        className: "table-column-center",
+        render: (data) => <div>{data == 0 ? "준비중" : "완료"}</div>,
       },
       {
-        title: '요청 시간',
-        dataIndex: 'requestTime',
-        className: 'table-column-center',
-        render: data => <div>{formatDate(data)}</div>,
+        title: "요청 시간",
+        dataIndex: "requestTime",
+        className: "table-column-center",
+        render: (data) => <div>{formatDate(data)}</div>,
       },
       {
-        title: '준비 시간',
-        dataIndex: 'preparationTime',
-        className: 'table-column-center',
+        title: "준비 시간",
+        dataIndex: "preparationTime",
+        className: "table-column-center",
       },
       {
-        title: '경과(분)',
-        dataIndex: 'elapsedTime',
-        className: 'table-column-center',
+        title: "경과(분)",
+        dataIndex: "elapsedTime",
+        className: "table-column-center",
       },
       {
-        title: '픽업시간',
-        dataIndex: 'pickupTime',
-        className: 'table-column-center',
-        render: data => <div>{formatDate(data)}</div>,
+        title: "픽업시간",
+        dataIndex: "pickupTime",
+        className: "table-column-center",
+        render: (data) => <div>{formatDate(data)}</div>,
       },
       {
-        title: '완료시간',
-        dataIndex: 'completionTime',
-        className: 'table-column-center',
-        render: data => <div>{formatDate(data)}</div>,
+        title: "완료시간",
+        dataIndex: "completionTime",
+        className: "table-column-center",
+        render: (data) => <div>{formatDate(data)}</div>,
       },
       {
-        title: '기사명',
-        dataIndex: 'riderName',
-        className: 'table-column-center',
+        title: "기사명",
+        dataIndex: "riderName",
+        className: "table-column-center",
       },
       {
-        title: '가맹점명',
-        dataIndex: 'franchiseeName',
-        className: 'table-column-center',
+        title: "가맹점명",
+        dataIndex: "franchiseeName",
+        className: "table-column-center",
       },
       {
-        title: '배달 요금',
-        dataIndex: 'deliveryCharge',
-        className: 'table-column-center',
-        render: data => <div>{comma(data)}</div>,
+        title: "배달 요금",
+        dataIndex: "deliveryCharge",
+        className: "table-column-center",
+        render: (data) => <div>{comma(data)}</div>,
       },
       {
-        title: '도착지',
-        dataIndex: 'destination',
-        className: 'table-column-center',
+        title: "도착지",
+        dataIndex: "destination",
+        className: "table-column-center",
       },
       {
-        title: '가격',
-        dataIndex: 'charge',
-        className: 'table-column-center',
-        render: data => <div>{comma(data)}</div>,
+        title: "가격",
+        dataIndex: "charge",
+        className: "table-column-center",
+        render: (data) => <div>{comma(data)}</div>,
       },
       {
-        title: '결제방식',
-        dataIndex: 'paymentMethod',
-        className: 'table-column-center',
-        render: data => <div>{data == 0 ? '선결' : '카드'}</div>,
+        title: "결제방식",
+        dataIndex: "paymentMethod",
+        className: "table-column-center",
+        render: (data) => <div>{data == 0 ? "선결" : "카드"}</div>,
       },
     ];
 
-    const expandedRowRender = record => {
+    const expandedRowRender = (record) => {
       const dropColumns = [
         {
-          title: '수수료',
-          dataIndex: 'fees',
-          className: 'table-column-center',
-          render: data => <div>{comma(data)}</div>,
+          title: "수수료",
+          dataIndex: "fees",
+          className: "table-column-center",
+          render: (data) => <div>{comma(data)}</div>,
         },
         {
-          title: '거리(km)',
-          dataIndex: 'distance',
-          className: 'table-column-center',
+          title: "거리(km)",
+          dataIndex: "distance",
+          className: "table-column-center",
         },
         {
-          title: '카드상태',
-          dataIndex: 'cardStatus',
-          className: 'table-column-center',
-          render: data => <div>{data == 0 ? '요청' : '등록완료'}</div>,
+          title: "카드상태",
+          dataIndex: "cardStatus",
+          className: "table-column-center",
+          render: (data) => <div>{data == 0 ? "요청" : "등록완료"}</div>,
         },
         {
-          title: '승인번호',
-          dataIndex: 'authNum',
-          className: 'table-column-center',
+          title: "승인번호",
+          dataIndex: "authNum",
+          className: "table-column-center",
         },
         {
-          title: '카드사',
-          dataIndex: 'businessCardName',
-          className: 'table-column-center',
+          title: "카드사",
+          dataIndex: "businessCardName",
+          className: "table-column-center",
         },
         {
-          title: '기사 연락처',
-          dataIndex: 'riderPhoneNum',
-          className: 'table-column-center',
+          title: "기사 연락처",
+          dataIndex: "riderPhoneNum",
+          className: "table-column-center",
         },
         {
-          title: '지사명',
-          dataIndex: 'franchiseName',
-          className: 'table-column-center',
+          title: "지사명",
+          dataIndex: "franchiseName",
+          className: "table-column-center",
         },
         {
-          title: '카드승인금액',
-          dataIndex: 'payAmount',
-          className: 'table-column-center',
-          render: data => <div>{comma(data)}</div>,
+          title: "카드승인금액",
+          dataIndex: "payAmount",
+          className: "table-column-center",
+          render: (data) => <div>{comma(data)}</div>,
         },
         {
-          title: '변경내역',
-          dataIndex: 'changes',
-          className: 'table-column-center',
+          title: "변경내역",
+          dataIndex: "changes",
+          className: "table-column-center",
         },
         {
-          title: '기사소속',
-          dataIndex: 'riderBelong',
-          className: 'table-column-center',
+          title: "기사소속",
+          dataIndex: "riderBelong",
+          className: "table-column-center",
         },
         {
-          title: '접수건수',
-          dataIndex: 'receiptAmount',
-          className: 'table-column-center',
-          render: data => <div>{comma(data)}</div>,
+          title: "접수건수",
+          dataIndex: "receiptAmount",
+          className: "table-column-center",
+          render: (data) => <div>{comma(data)}</div>,
         },
         {
-          title: '가맹점 번호',
-          dataIndex: 'franchisePhoneNum',
-          className: 'table-column-center',
+          title: "가맹점 번호",
+          dataIndex: "franchisePhoneNum",
+          className: "table-column-center",
         },
 
         {
-          title: '가맹점 번호',
-          dataIndex: 'franchisePhoneNum',
-          className: 'table-column-center',
+          title: "가맹점 번호",
+          dataIndex: "franchisePhoneNum",
+          className: "table-column-center",
         },
         {
-          title: '배차',
-          dataIndex: 'forceLocate',
-          className: 'table-column-center',
-          render: data => (
+          title: "배차",
+          dataIndex: "forceLocate",
+          className: "table-column-center",
+          render: (data) => (
             <span>
               <ForceAllocateDialog
                 isOpen={this.state.forceOpen}
@@ -470,10 +502,10 @@ class ReceptionStatus extends Component {
           ),
         },
         {
-          title: '주문수정',
-          dataIndex: 'forceLocate',
-          className: 'table-column-center',
-          render: data => (
+          title: "주문수정",
+          dataIndex: "forceLocate",
+          className: "table-column-center",
+          render: (data) => (
             <span>
               <Button className="tabBtn" onClick={this.openAddCallModal}>
                 주문수정
@@ -482,10 +514,10 @@ class ReceptionStatus extends Component {
           ),
         },
         {
-          title: '메세지',
-          dataIndex: 'franchisePhoneNum',
-          className: 'table-column-center',
-          render: data => (
+          title: "메세지",
+          dataIndex: "franchisePhoneNum",
+          className: "table-column-center",
+          render: (data) => (
             <span>
               <MessageDialog
                 isOpen={this.state.MessageOpen}
@@ -507,7 +539,7 @@ class ReceptionStatus extends Component {
       ];
       return (
         <Table
-          rowKey={record => `record: ${record.idx}`}
+          rowKey={(record) => `record: ${record.idx}`}
           columns={dropColumns}
           dataSource={[record]}
           pagination={false}
@@ -592,7 +624,7 @@ class ReceptionStatus extends Component {
           <DatePicker
             defaultValue={moment(today, dateFormat)}
             format={dateFormat}
-            onChange={date => this.setState({ selectedDate: date })}
+            onChange={(date) => this.setState({ selectedDate: date })}
           />
           <FilteringDialog
             isOpen={this.state.filteringOpen}
@@ -610,7 +642,8 @@ class ReceptionStatus extends Component {
             placeholder="가맹점검색"
             enterButton
             allowClear
-            onSearch={this.onSearchFranchisee}
+            onChange={(e) => this.setState({ franchisee: e.target.value })}
+            onSearch={this.onSearch}
             style={{
               width: 200,
               marginLeft: 20,
@@ -621,7 +654,8 @@ class ReceptionStatus extends Component {
             placeholder="기사명검색"
             enterButton
             allowClear
-            onSearch={this.onSearchFranchisee}
+            onChange={(e) => this.setState({ rider: e.target.value })}
+            onSearch={this.onSearch}
             style={{
               width: 200,
               marginLeft: 20,
@@ -632,7 +666,8 @@ class ReceptionStatus extends Component {
             placeholder="전화번호검색"
             enterButton
             allowClear
-            onSearch={this.onSearchFranchisee}
+            onChange={(e) => this.setState({ phoneNum: e.target.value })}
+            onSearch={this.onSearch}
             style={{
               width: 200,
               marginLeft: 20,
@@ -645,8 +680,8 @@ class ReceptionStatus extends Component {
 
         <div className="dataTableLayout">
           <Table
-            rowKey={record => record}
-            rowClassName={record => rowClassName[record.pickupStatus]}
+            rowKey={(record) => record}
+            rowClassName={(record) => rowClassName[record.pickupStatus]}
             dataSource={this.state.list}
             columns={columns}
             // pagination={this.state.pagination}
