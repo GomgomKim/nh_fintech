@@ -59,6 +59,7 @@ const withdrawString = {
     false: "출금 금지",
 }
 
+
 const blockString = {
     0: " - ",
     1: "차단해제",
