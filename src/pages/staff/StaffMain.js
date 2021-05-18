@@ -199,11 +199,10 @@ class StaffMain extends Component {
           </Radio.Group>
 
 
+          <RegistStaffDialog isOpen={this.state.registStaff} close={this.closeStaffRegistrationModal} />
           <Button className="registStaff"
             onClick={() => { this.setState({ registStaff: true }) }}
           >직원 등록</Button>
-
-          <RegistStaffDialog isOpen={this.state.registStaff} close={this.closeStaffRegistrationModal} />
         </div>
 
         <div className="dataTableLayout">
@@ -211,7 +210,7 @@ class StaffMain extends Component {
             dataSource={this.state.results}
             columns={columns}
             pagination={this.state.pagination}
-            onChange={this.state.Status}
+            onChange={this.handleTableChange}
           />
         </div>
       </div>
