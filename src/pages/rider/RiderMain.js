@@ -1,7 +1,6 @@
-import { Form, DatePicker, Input, Table, Button, Descriptions, Radio, Select } from 'antd';
+import { Input, Table, Button, Radio, Select } from 'antd';
 import React, { Component } from 'react';
-import { httpGet, httpUrl, httpDownload, httpPost, httpPut } from '../../api/httpClient';
-import SelectBox from "../../components/input/SelectBox";
+import { httpGet, httpUrl, httpPost } from '../../api/httpClient';
 import RiderGroupDialog from "../../components/dialog/rider/RiderGroupDialog";
 import TaskSchedulerDialog from "../../components/dialog/rider/TaskSchedulerDialog";
 import RegistRiderDialog from "../../components/dialog/rider/RegistRiderDialog";
@@ -9,17 +8,11 @@ import RiderCoinDialog from "../../components/dialog/rider/RiderCoinDialog";
 import RiderBankDialog from "../../components/dialog/rider/RiderBankDialog";
 import UpdatePasswordDialog from "../../components/dialog/rider/UpdatePasswordDialog";
 import '../../css/modal.css'
-import BlackRiderDialog from "../../components/dialog/rider/BlackRiderDialog";
-import BlackListDialog from "../../components/dialog/rider/BlackListDialog";
 import { comma } from "../../lib/util/numberUtil";
-import UpdateRiderDialog from '../../components/dialog/rider/UpdateRiderDialog';
 
-const FormItem = Form.Item;
-const Ditems = Descriptions.Item;
 const Option = Select.Option;
 
 const Search = Input.Search;
-const RangePicker = DatePicker.RangePicker;
 
 const riderLevelText = ["none", "라이더", "부팀장", "팀장", "부본부장", "본부장", "부지점장", "지점장", "부센터장", "센터장"];
 
@@ -122,7 +115,7 @@ class RiderMain extends Component {
 
   //기사 등록 
   openRegistRiderModal = () => {
-    this.setState({ registRiderOpen: true});
+    this.setState({ registRiderOpen: true });
   }
   closeRegistRiderModal = () => {
     this.setState({ registRiderOpen: false });
@@ -276,7 +269,7 @@ class RiderMain extends Component {
             <RegistRiderDialog isOpen={this.state.riderUpdateOpen} close={this.closeUpdateRiderModal} data={this.state.dialogData} />
             <Button
               className="tabBtn surchargeTab"
-              onClick={()=>this.setState({riderUpdateOpen: true, dialogData: row})}
+              onClick={() => this.setState({ riderUpdateOpen: true, dialogData: row })}
             >수정</Button>
           </div>
       },

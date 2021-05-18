@@ -1,12 +1,8 @@
 import React, { Component } from "react";
 import {
-    Form, DatePicker, Table, Select
+    Form, Table,
 } from "antd";
-import SelectBox from '../../../components/input/SelectBox';
 import '../../../css/modal.css';
-const Option = Select.Option;
-const FormItem = Form.Item;
-const { RangePicker } = DatePicker;
 
 class BlackListDialog extends Component {
     constructor(props) {
