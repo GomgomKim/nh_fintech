@@ -28,7 +28,7 @@ const enabledString = {
 }
 
 const enabledCode = [
-    false, 
+    false,
     true,
 ]
 
@@ -45,8 +45,14 @@ const staffString = {
 }
 
 const statusCode = [
-    1, 
-    2, 
+    1,
+    2,
+    3,
+]
+
+const riderStatusCode = [
+    1,
+    2,
     3,
 ]
 
@@ -66,11 +72,11 @@ const cardStatus = [
 ]
 
 const modifyType = {
-    1 : [2, 5],
-    2 : [3, 5],
-    3 : [4, 5],
-    4 : [1, 2, 3],
-    5 : [1],
+    1: [2, 5],
+    2: [3, 5],
+    3: [4, 5],
+    4: [1, 2, 3],
+    5: [1],
 }
 
 
@@ -83,7 +89,7 @@ const rowColorName = [
     'table-gray',
 ]
 
-export { 
+export {
     deliveryStatusCode,
     blockString,
     withdrawString,
@@ -93,9 +99,10 @@ export {
     statusString,
     staffString,
     statusCode,
-    preparationStatus, 
-    cardStatus, 
-    paymentMethod, 
-    modifyType, 
+    riderStatusCode,
+    preparationStatus,
+    cardStatus,
+    paymentMethod,
+    modifyType,
     rowColorName,
 };
