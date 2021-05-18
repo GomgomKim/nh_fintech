@@ -133,10 +133,10 @@ const createDummyCallApi = (number) => {
   var result = [];
   for (let i = 0; i < number; i++) {
     const Call = {
-      arriveReqDate: dateFormat(faker.date.recent()),
-      assignDate: dateFormat(faker.date.recent()),
+      arriveReqDate: faker.date.recent(),
+      assignDate: faker.date.recent(),
       cancelReason: faker.lorem.sentence(),
-      completeDate: dateFormat(faker.date.recent()),
+      completeDate: faker.date.recent(),
       custMessage: faker.lorem.sentence(),
       custPhone: faker.phone.phoneNumber(),
       deliveryPrice: comma(getRandomInt(10000,100000)),
@@ -151,7 +151,7 @@ const createDummyCallApi = (number) => {
       frName: faker.company.companyName(),
       frPhone: faker.phone.phoneNumber(),
       idx: shortid.generate(),
-      itemPrepared: getRandomInt(-1,1),
+      itemPrepared: getRandomInt(0,2),
       itemPreparingTime: getRandomInt(0,20),
       latitude: 0,
       longitude: 0,
@@ -161,13 +161,13 @@ const createDummyCallApi = (number) => {
       orderPayments: [
         { 
           paymentAmount: comma(getRandomInt(10000,100000)),
-          paymentMethod: getRandomInt(0,4),
+          paymentMethod: getRandomInt(0,3),
           paymentStatus: getRandomInt(0,4),
         },
       ],
       orderPrice: comma(getRandomInt(10000,100000)),
       orderStatus: getRandomInt(1,5),
-      pickupDate: dateFormat(faker.date.recent()),
+      pickupDate: faker.date.recent(),
       riderName: faker.name.lastName() + faker.name.firstName(),
       riderPhone: faker.phone.phoneNumber(),
       tidNormal: "string",
