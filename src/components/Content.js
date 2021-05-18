@@ -6,7 +6,7 @@ import { Redirect } from "react-router-dom";
 
 export default class Content extends Component {
   componentDidMount() {
-    console.log("Content fr idx :"+this.props.selectedFrIdx)
+    // console.log("Content fr idx :"+this.props.selectedFrIdx)
   }
 
   render() {
