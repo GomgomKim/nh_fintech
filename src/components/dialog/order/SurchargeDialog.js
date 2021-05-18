@@ -89,17 +89,16 @@ class SurchargeDialog extends Component {
                                 {self.formRef.current.getFieldsValue().name}이(가) 등록되었습니다.
                             </div>
                         ),
-                        onOk() { },
                     });
                     self.handleClear();
                     self.getList();
                 }).catch((error) => {
-
+                    Modal.info({
+                        title: "등록 오류",
+                        content: "오류가 발생하였습니다. 다시 시도해 주십시오."
+                    });
                 });
             },
-            onCancel() {
-
-            }
         });
     }
 
@@ -128,7 +127,6 @@ class SurchargeDialog extends Component {
                 let idx = row.idx;
                 httpGet(httpUrl.priceExtraDelete, [idx], {})
                     .then((result) => {
-                        // console.log('## delete result=' + JSON.stringify(result, null, 4))
                         Modal.info({
                             title: "할증 삭제",
                             content: (
@@ -136,16 +134,15 @@ class SurchargeDialog extends Component {
                                     해당 할증이 삭제되었습니다.
                                 </div>
                             ),
-                            onOk() { },
                         });
                         self.getList();
                     })
                     .catch((error) => {
-                        alert('에러가 발생하였습니다 다시 시도해주세요.')
+                        Modal.info({
+                            title: "삭제 오류",
+                            content: "오류가 발생하였습니다. 다시 시도해 주십시오."
+                        });
                     });
-            },
-            onCancel() {
-
             },
         });
     };
@@ -157,7 +154,10 @@ class SurchargeDialog extends Component {
                 this.getList();
             })
             .catch((error) => {
-                this.props.alert.show('에러가 발생하였습니다 다시 시도해주세요.')
+                Modal.info({
+                    title: "수정 오류",
+                    content: "오류가 발생하였습니다. 다시 시도해 주십시오."
+                });
             });
     }
 

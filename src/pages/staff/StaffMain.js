@@ -1,14 +1,11 @@
-import { Form, DatePicker, Input, Table, Button, Descriptions, Radio, Select } from 'antd';
+import { Table, Button, Radio, Modal } from 'antd';
 import React, { Component } from 'react';
-import { httpGet, httpUrl, httpDownload, httpPost, httpPut } from '../../api/httpClient';
+import { httpGet, httpUrl, httpPost } from '../../api/httpClient';
 import "../../css/staff.css";
 import "../../css/common.css";
 import RegistStaffDialog from "../../components/dialog/staff/RegistStaffDialog";
 import SelectBox from '../../components/input/SelectBox';
 import { staffString, statusCode } from '../../lib/util/codeUtil';
-
-const Search = Input.Search;
-const RangePicker = DatePicker.RangePicker;
 
 
 class StaffMain extends Component {
@@ -36,12 +33,11 @@ class StaffMain extends Component {
   }
 
   onChange = e => {
-    // console.log('radio checked', e.target.value);
     this.setState({
       staffStatus: e.target.value,
     }, () => this.getRegistStaffList());
   };
-
+  
   handleTableChange = (pagination) => {
     console.log(pagination)
     const pager = { ...this.state.pagination };
@@ -49,19 +45,39 @@ class StaffMain extends Component {
     pager.pageSize = pagination.pageSize
     this.setState({
       pagination: pager,
-    }, () => this.getList());
+    }, () => this.getRegistStaffList());
   };
-
+  
   onChangeStatus = (index, value) => {
-    httpPost(httpUrl.staffUpdate, [], {
-      idx: index, userStatus: value
-     })
-        .then((result) => {
-            this.getRegistStaffList();
-        })
-        .catch((error) => {
-            // this.props.alert.show('에러가 발생하였습니다 다시 시도해주세요.')
-        });
+    let self = this;
+    Modal.confirm({
+      title: "상태 변경",
+      content: 
+      <div>
+          {value +' 상태로 수정하시겠습니까?'}
+      </div>,
+      okText: "확인",
+      cancelText: "취소",
+      onOk() {
+        httpPost(httpUrl.staffUpdate, [], {
+          idx: index, userStatus: value
+         })
+            .then((result) => {
+              Modal.info({
+                title: "변경 완료",
+                content: (
+                    <div>
+                        상태가 변경되었습니다.
+                    </div>
+                ),
+            });
+            self.getRegistStaffList();
+            })
+            .catch((error) => {
+                // this.props.alert.show('에러가 발생하였습니다 다시 시도해주세요.')
+            });
+      },
+  });
   }
 
   getRegistStaffList = () => {

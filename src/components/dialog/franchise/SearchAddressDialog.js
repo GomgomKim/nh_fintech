@@ -1,21 +1,14 @@
 import React, { Component } from "react";
 import {
-    Form, Modal, Input, DatePicker, Descriptions, Table,
-    Upload, Button, Select, Icon, Radio, Carousel, Text, Checkbox
+    Form, Input, Table,
+    Button, Select, Radio
 } from "antd";
 import '../../../css/rider.css';
-import SelectBox from '../../../components/input/SelectBox';
-import moment from 'moment';
-import { comma } from "../../../lib/util/numberUtil";
-import { formatDate } from "../../../lib/util/dateUtil";
 
 const FormItem = Form.Item;
-const Ditems = Descriptions.Item;
 
 const Option = Select.Option;
 const Search = Input.Search;
-const RangePicker = DatePicker.RangePicker;
-const dateFormat = 'YYYY/MM/DD';
 const today = new Date();
 
 

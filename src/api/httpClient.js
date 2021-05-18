@@ -174,7 +174,7 @@ const httpUrl = {
   staffUpdate: "/rider/update",
 
   // rider
-  riderList: "/rider/list?frName=%s&orderDate=%s&pageSize=%s&pageNum=%s&riderLevels=%s&searchName=%s&userStatus=%s",
+  riderList: "/rider/list?pageSize=%s&pageNum=%s&riderLevels=%s&searchName=%s&userStatus=%s",
   registRider: "/rider/create",
   updateRider: "/rider/update",
   riderLocate: "/rider/location/%s",
