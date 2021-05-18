@@ -39,7 +39,6 @@ class RiderMain extends Component {
         current: 1,
         pageSize: 10,
       },
-      userData: 1,
       dialogData: [],
     };
   }
@@ -69,8 +68,9 @@ class RiderMain extends Component {
       okText: "확인",
       cancelText: "취소",
       onOk() {
-        httpPost(httpUrl.riderUpdate, [], {
-          idx: index, riderStatus: value
+        httpPost(httpUrl.updateRider, [], {
+          idx: index,
+          riderStatus: value,
         })
           .then((result) => {
             Modal.info({
@@ -81,10 +81,17 @@ class RiderMain extends Component {
                 </div>
               ),
             });
-            self.getRegistRiderList();
+            self.getList();
           })
           .catch((error) => {
-            // this.props.alert.show('에러가 발생하였습니다 다시 시도해주세요.')
+            Modal.error({
+              title: "변경 실패",
+              content: (
+                <div>
+                  변경에 실패했습니다.
+                </div>
+              ),
+            });
           });
       },
     });
@@ -122,13 +129,6 @@ class RiderMain extends Component {
     })
   };
 
-  modifyHandleChange = (value) => {
-    httpPost(httpUrl.updateRider, [], {
-      riderStatus: value
-    }).then((result) => {
-      alert(JSON.stringify(result))
-    });
-  }
 
   //일차감
   openTaskSchedulerModal = () => {
