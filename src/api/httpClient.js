@@ -168,25 +168,23 @@ const httpUrl = {
   priceExtraDelete: "/branch/deliveryPriceExtra/delete/{idx}?idx=%s",
 
   // 직원 관리
+  registStaffList: "/rider/list?pageSize=%s&pageNum=%s&riderLevels=%s&userStatus=%s",
   registStaff: "/rider/create",
+  staffUpdate: "/rider/update",
 
   // rider
-  riderList: "/rider/list?frName=%s&orderDate=%s&pageSize=%s&pageNum=%s&riderLevels=%s&searchName=%s&userStatus=%s",
+  riderList: "/rider/list?pageSize=%s&pageNum=%s&riderLevels=%s&searchName=%s&userStatus=%s",
   registRider: "/rider/create",
   updateRider: "/rider/update",
   riderLocate: "/rider/location/%s",
-
-  //직원등록
-  registStaffList: "/rider/list?pageSize=%s&pageNum=%s&riderLevels=%s&userStatus=%s",
-  staffUpdate: "/rider/up date",
-
+  
   // 가맹점 관리
   registFranchise: "/fr/create",
   franchiseList: "/fr/list",
   franchiseUpdate: "/fr/update",
 
   // 지점 수정
-  updateBranch:"/branch/update"
+  updateBranch:"/branch/update",
 };
 
 const imageType = ["image/jpeg", "image/png", "image/bmp"];
