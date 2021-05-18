@@ -5,7 +5,6 @@ import {
 import '../../../css/modal.css';
 import AddRiderDialog from "./AddRiderDialog";
 import RegistRiderGroupDialog from "./RegistRiderGroupDialog";
-const FormItem = Form.Item;
 
 class TaskGroupDialog extends Component {
     constructor(props) {

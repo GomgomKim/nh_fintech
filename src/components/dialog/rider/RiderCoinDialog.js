@@ -1,15 +1,10 @@
 import React, { Component } from "react";
 import {
-    Form, Input, DatePicker, Descriptions, Button, Select
+    Form, Input, Button
 } from "antd";
 import '../../../css/rider.css';
 const FormItem = Form.Item;
-const Ditems = Descriptions.Item;
 
-const Option = Select.Option;
-const Search = Input.Search;
-const RangePicker = DatePicker.RangePicker;
-const dateFormat = 'YYYY/MM/DD';
 const today = new Date();
 
 

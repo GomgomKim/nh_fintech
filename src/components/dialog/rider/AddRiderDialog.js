@@ -1,12 +1,10 @@
 import React, { Component } from "react";
 import {
-    Form, Input, DatePicker, Table, Button, Select
+    Form, Table, Button, Select
 } from "antd";
 import '../../../css/modal.css';
 const Option = Select.Option;
 const FormItem = Form.Item;
-const { RangePicker } = DatePicker;
-const Search = Input.Search;
 
 class AddRiderDialog extends Component {
     constructor(props) {
