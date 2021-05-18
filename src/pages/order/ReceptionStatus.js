@@ -40,6 +40,7 @@ import {
 } from "@ant-design/icons";
 import createDummyCallApi from "../../lib/util/createCall";
 import { httpGet, httpPost, httpUrl } from "../../api/httpClient";
+import { connect } from "react-redux";
 
 const Option = Select.Option;
 const Search = Input.Search;
@@ -333,7 +334,7 @@ class ReceptionStatus extends Component {
       },
       {
         title: "음식준비",
-        dataIndex: "preparationStatus",
+        dataIndex: "itemPrepared",
         className: "table-column-center",
         render: (data) => <div>{preparationStatus[data]}</div>,
       },
@@ -372,7 +373,7 @@ class ReceptionStatus extends Component {
       },
       {
         title: "가맹점명",
-        dataIndex: "franchiseeName",
+        dataIndex: "frName",
         className: "table-column-center",
       },
       {
@@ -383,8 +384,11 @@ class ReceptionStatus extends Component {
       },
       {
         title: "도착지",
-        dataIndex: "destAddr1",
+        // dataIndex: "destAddr1",
         className: "table-column-center",
+        render: (row) => (
+          <div>{row.destAddr1 + row.destAddr2 + row.destAddr3}</div>
+        ),
       },
       {
         title: "가격",
@@ -396,9 +400,11 @@ class ReceptionStatus extends Component {
       // orderPayments - paymentMethod 라서 dataIndex 설정 필요
       {
         title: "결제방식",
-        dataIndex: "paymentMethod",
+        dataIndex: "orderPayments",
         className: "table-column-center",
-        render: (data) => <div>{paymentMethod[data]}</div>,
+        render: (data, row) => (
+          <div>{paymentMethod[data[0]["paymentMethod"]]}</div>
+        ),
       },
     ];
 
@@ -446,14 +452,14 @@ class ReceptionStatus extends Component {
         // orderPayments - paymentAmount
         {
           title: "카드승인금액",
-          dataIndex: "payAmount",
+          dataIndex: "orderPayments",
           className: "table-column-center",
-          render: (data) => <div>{comma(data)}</div>,
+          render: (data) => <div>{comma(data[0]["paymentAmount"])}</div>,
         },
         // 내용 확인 필요
         {
           title: "변경내역",
-          dataIndex: "changes",
+          dataIndex: "cancelReason",
           className: "table-column-center",
         },
         // 내용 확인 필요
@@ -701,4 +707,14 @@ class ReceptionStatus extends Component {
   }
 }
 
-export default ReceptionStatus;
+const mapStateToProps = (state) => {
+  return {
+    branchIdx: state.login.loginInfo.userGroup,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ReceptionStatus);

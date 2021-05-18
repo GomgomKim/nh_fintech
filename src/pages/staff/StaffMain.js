@@ -29,13 +29,13 @@ class StaffMain extends Component {
   }
 
   componentDidMount() {
-    this.getRegistStaffList()
+    this.getList()
   }
 
   onChange = e => {
     this.setState({
       staffStatus: e.target.value,
-    }, () => this.getRegistStaffList());
+    }, () => this.getList());
   };
   
   handleTableChange = (pagination) => {
@@ -45,17 +45,14 @@ class StaffMain extends Component {
     pager.pageSize = pagination.pageSize
     this.setState({
       pagination: pager,
-    }, () => this.getRegistStaffList());
+    }, () => this.getList());
   };
   
   onChangeStatus = (index, value) => {
     let self = this;
     Modal.confirm({
       title: "상태 변경",
-      content: 
-      <div>
-          {value +' 상태로 수정하시겠습니까?'}
-      </div>,
+      content: '상태를 수정하시겠습니까?',
       okText: "확인",
       cancelText: "취소",
       onOk() {
@@ -70,22 +67,26 @@ class StaffMain extends Component {
                         상태가 변경되었습니다.
                     </div>
                 ),
-            });
-            self.getRegistStaffList();
+              });
+            self.getList();
             })
             .catch((error) => {
-                // this.props.alert.show('에러가 발생하였습니다 다시 시도해주세요.')
+              Modal.info({
+                title: "변경 오류",
+                content: "오류가 발생하였습니다. 다시 시도해 주십시오."
+            });
             });
       },
   });
   }
 
-  getRegistStaffList = () => {
+  getList = () => {
+    let pageSize = this.state.pagination.pageSize;
     let pageNum = this.state.pagination.current;
     let riderLevel = this.state.riderLevel;
     let userData = this.state.userData;
 
-    httpGet(httpUrl.registStaffList, [10, pageNum, riderLevel, userData], {}).then((result) => {
+    httpGet(httpUrl.registStaffList, [pageSize, pageNum, riderLevel, userData], {}).then((result) => {
       console.log('## nnbox result=' + JSON.stringify(result, null, 4))
       const pagination = { ...this.state.pagination };
       pagination.current = result.data.currentPage;

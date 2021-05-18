@@ -137,6 +137,7 @@ class TimeDelayDialog extends Component {
                   onClick={close}
                   src={require("../../../img/login/close.png").default}
                   className="timeDelay-close"
+                  alt="closeDialog"
                 />
                 <div className="timeDelay-inner">
                   <div className="timeDelay-box">

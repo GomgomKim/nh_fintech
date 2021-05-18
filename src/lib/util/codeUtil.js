@@ -16,6 +16,7 @@ const preparationStatus = [
 
 // 접수현황 - 결재방식
 const paymentMethod = [
+    '현금',
     '선결',
     '카드',
 ]
