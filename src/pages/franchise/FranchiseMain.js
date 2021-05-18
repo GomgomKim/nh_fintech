@@ -1,8 +1,7 @@
-import { Form, DatePicker, Modal, Input, Checkbox, Select, Table, Button, Radio, Descriptions } from 'antd';
+import { Modal, Input, Table, Button, Radio} from 'antd';
 import React, { Component } from 'react';
 import { httpUrl, httpPost } from '../../api/httpClient';
 import RegistFranDialog from "../../components/dialog/franchise/RegistFranDialog";
-import CoinTransferDialog from "../../components/dialog/franchise/CoinTransferDialog";
 import SearchAddressDialog from "../../components/dialog/franchise/SearchAddressDialog";
 import SelectBox from '../../components/input/SelectBox';
 import "../../css/franchise.css";
@@ -16,8 +15,6 @@ import {
   withdrawString,
   cardStatus,
 } from '../../lib/util/codeUtil';
-const Option = Select.Option;
-const FormItem = Form.Item;
 const Search = Input.Search;
 
 class FranchiseMain extends Component {
