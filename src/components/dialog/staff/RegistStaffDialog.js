@@ -1,12 +1,11 @@
 import React, { Component } from "react";
 import {
-    Form, Input, Button, Select,
+    Form, Input, Button, Select, Modal
 } from "antd";
 import '../../../css/modal.css';
 import { httpUrl, httpPost } from '../../../api/httpClient';
 const Option = Select.Option;
 const FormItem = Form.Item;
-const Search = Input.Search;
 
 class RegistStaffDialog extends Component {
     constructor(props) {
@@ -27,71 +26,60 @@ class RegistStaffDialog extends Component {
     }
 
     onChange = e => {
-        // console.log('radio checked', e.target.value);
         this.setState({
             staffAuth: e.target.value,
         });
     };
 
     handleSubmit = () => {
-        const data = this.props;
-
-        console.log(this.formRef.current.getFieldsValue())
-        {data ? 
-            httpPost(httpUrl.staffUpdate, [], {
-                // riderName: this.formRef.current.getFieldsValue().riderName,
-                // id: this.formRef.current.getFieldsValue().id,
-                // email: this.formRef.current.getFieldsValue().email,
-                // password: this.formRef.current.getFieldsValue().password,
-                // phone: this.formRef.current.getFieldsValue().phone,
-                // memo: this.formRef.current.getFieldsValue().memo,
-                // riderStatus: this.formRef.current.getFieldsValue().riderStatus,
-                ...this.formRef.current.getFieldsValue(),
-                ncash: 0,
-                userStatus: 1,
-                withdrawPassword: 0,
-                bank: "한국은행",
-                bankAccount: "111-111-1111",
-                depositor: "냠냠박스",
-                userType: 1,
-                userGroup: 1,
-                riderLevel: 1,
-            }).then((result) => {
-                console.log("## result: " + JSON.stringify(result, null, 4));
-                alert('직원 등록이 완료되었습니다.');
-                this.props.close()
-                // this.props.history.push('/staff/StaffMain')
-            }).catch(e => {
-                alert('에러가 발생하였습니다 다시 시도해주세요.')
-            })
-            :
-            httpPost(httpUrl.registStaff, [], {
-                // riderName: this.formRef.current.getFieldsValue().riderName,
-                // id: this.formRef.current.getFieldsValue().id,
-                // email: this.formRef.current.getFieldsValue().email,
-                // password: this.formRef.current.getFieldsValue().password,
-                // phone: this.formRef.current.getFieldsValue().phone,
-                // memo: this.formRef.current.getFieldsValue().memo,
-                // riderStatus: this.formRef.current.getFieldsValue().riderStatus,
-                ...this.formRef.current.getFieldsValue(),
-                ncash: 0,
-                userStatus: 1,
-                withdrawPassword: 0,
-                bank: "한국은행",
-                bankAccount: "111-111-1111",
-                depositor: "냠냠박스",
-                userType: 1,
-                userGroup: 1,
-                riderLevel: 1,
-            }).then((result) => {
-                console.log("## result: " + JSON.stringify(result, null, 4));
-                alert('직원 등록이 완료되었습니다.');
-                this.props.close()
-                // this.props.history.push('/staff/StaffMain')
-            }).catch(e => {
-                alert('에러가 발생하였습니다 다시 시도해주세요.')
-            });
-        }
+        let self = this;
+        let data = this.props;
+        Modal.confirm({
+            title: <div> {data ? "직원 수정" : "직원 등록" } </div>,
+            content:  
+            <div>
+               {data ? 
+                    self.formRef.current.getFieldsValue().riderName + ' 의 정보를 수정하시겠습니까?':
+                    self.formRef.current.getFieldsValue().riderName + ' 을 등록하시겠습니까?'
+                }
+            </div>,
+            okText: "확인",
+            cancelText: "취소",
+            onOk() {
+                httpPost(httpUrl.registStaff, [], {
+                    ...self.formRef.current.getFieldsValue(),
+                    ncash: 0,
+                    userStatus: 1,
+                    withdrawPassword: 0,
+                    bank: "한국은행",
+                    bankAccount: "111-111-1111",
+                    depositor: "냠냠박스",
+                    userType: 1,
+                    userGroup: 1,
+                    riderLevel: 1,
+                }).then((result) => {
+                    Modal.info({
+                        title: <div>{data ? "직원 수정" : "직원 등록" }</div>,
+                        content: (
+                            <div>
+                                {data ? 
+                                    self.formRef.current.getFieldsValue().riderName + ' 의 정보를 수정하였습니다':
+                                    self.formRef.current.getFieldsValue().riderName + ' 을 등록하였습니다'
+                                } 
+                            </div>
+                        ),
+                    });
+                    self.props.close()
+                }).catch(e => {
+                    Modal.info({
+                        title: <div>{data ? "수정 오류" : "등록 오류" }</div>,
+                        content: "오류가 발생하였습니다. 다시 시도해 주십시오."
+                    });
+                });
+            },
+            onCancel() {},
+        });
+        
     }
 
 
@@ -223,26 +211,9 @@ class RegistStaffDialog extends Component {
                                                         </Select>
                                                     </FormItem>
                                                 </div>
-                                                {/* <div className="contentBlock">
-                                                    <div className="mainTitle">
-                                                        권한
-                                                    </div>
-
-                                                    <FormItem
-                                                        name="auth"
-                                                        className="selectItem"
-                                                    >
-                                                        <Radio.Group onChange={this.onChange} value={this.state.staffAuth}>
-                                                            <Radio value={1}>주문</Radio>
-                                                            <Radio value={2}>기사</Radio>
-                                                            <Radio value={3}>직원</Radio>
-                                                            <Radio value={4}>가맹</Radio>
-                                                        </Radio.Group>
-                                                    </FormItem>
-                                                </div> */}
                                                 <div className="submitBlock">
                                                     <Button type="primary" htmlType="submit">
-                                                        등록하기
+                                                        {data ? "수정하기":"등록하기"}
                                                     </Button>
 
                                                     {!data &&

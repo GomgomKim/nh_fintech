@@ -1,79 +1,146 @@
 import React, { Component } from "react";
-import { Form, Checkbox, Radio } from 'antd';
-import '../../../css/modal.css';
+import { Form, Checkbox, Radio } from "antd";
+import "../../../css/modal.css";
 
 const FormItem = Form.Item;
 const { Option } = Radio;
 
 class FilteringDialog extends Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            
-        }
-    }
-    render() {
-        const { isOpen, close } = this.props;
-        return (
-            <React.Fragment>
-                {
-                    isOpen ?
-                        <React.Fragment>
-                            <div className="Dialog-overlay" onClick={close} />
-                            <div className="filtering-Dialog">
+  constructor(props) {
+    super(props);
+    this.state = {
+      orderStatus: [
+        {
+          key:"orderStatus-1",
+          value: 1,
+          text: "접수",
+        },
+        {
+          key:"orderStatus-2",
+          value: 2,
+          text: "배차",
+        },
+        {
+          key:"orderStatus-3",
+          value: 3,
+          text: "픽업",
+        },
+        {
+          key:"orderStatus-4",
+          value: 4,
+          text: "취소",
+        },
+      ],
+      paymentMethod: [
+        {
+          key:"paymentMethod-1",
+          value: 1,
+          text: "현금",
+        },
+        {
+          key:"paymentMethod-2",
+          value: 2,
+          text: "카드",
+        },
+        {
+          key:"paymentMethod-3",
+          value: 3,
+          text: "선결",
+        },
+      ],
+      selectedOrderStatus: [1, 2, 3, 4],
+      selectedPaymentMethods: [1, 2, 3],
+    };
+    this.formRef = React.createRef();
+  }
 
-                                <div className="filtering-content">
-                                    <div className="timeDelay-title">
-                                        상태 필터링
-                                    </div>
-                                    <img onClick={close} src={require('../../../img/login/close.png').default} className="filtering-close" />
-
-
-                                    <div className="filtering-inner">
-
-                                        <div className="filtering-box">
-                                            <div className="filtering-btn-01">
-                                                <Checkbox defaultChecked="checked" >접수</Checkbox>
-                                            </div>
-
-                                            <div className="filtering-btn-03">
-                                                <Checkbox defaultChecked="checked">현금</Checkbox>
-                                            </div>
-                                            <div className="filtering-btn-04">
-                                                <Checkbox defaultChecked="checked">배차</Checkbox>
-                                            </div>
-                                            <div className="filtering-btn-05">
-                                                <Checkbox defaultChecked="checked">카드</Checkbox>
-                                            </div>
-                                            <div className="filtering-btn-06">
-                                                <Checkbox defaultChecked="checked">픽업</Checkbox>
-                                            </div>
-                                            <div className="filtering-btn-07">
-                                                <Checkbox defaultChecked="checked">선결</Checkbox>
-                                            </div>
-                                            <div className="filtering-btn-08">
-                                                <Checkbox defaultChecked="checked">취소</Checkbox>
-                                            </div>
-
-
-
-
-                                        </div>
-
-
-
-                                    </div>
-
-
-                                </div>
-                            </div>
-                        </React.Fragment>
-                        :
-                        null
-                }
-            </React.Fragment>
-        )
-    }
+  render() {
+    const { isOpen, close } = this.props;
+    return (
+      <React.Fragment>
+        {isOpen ? (
+          <React.Fragment>
+            <div className="Dialog-overlay" onClick={() => close(this.state.selectedOrderStatus,this.state.selectedPaymentMethods)} />
+            <div className="filtering-Dialog">
+              <div className="filtering-content">
+                <div className="timeDelay-title">상태 필터링</div>
+                <img
+                  onClick={() => close(this.state.selectedOrderStatus,this.state.selectedPaymentMethods)}
+                  src={require("../../../img/login/close.png").default}
+                  className="filtering-close"
+                  alt="closeModal"
+                />
+                <div className="filtering-inner">
+                  <div className="filtering-box">
+                    {this.state.orderStatus.map((o) => {
+                      return (
+                        <div className="filtering-btn">
+                          <Checkbox
+                            key={o.key}
+                            value={o.value}
+                            onChange={(e) => {
+                              if (e.target.checked) {
+                                const result =
+                                  this.state.selectedOrderStatus.concat(
+                                    e.target.value
+                                  );
+                                this.setState({ selectedOrderStatus: result });
+                              } else {
+                                const result =
+                                  this.state.selectedOrderStatus.filter(
+                                    el => el !== e.target.value
+                                  );
+                                this.setState({ selectedOrderStatus: result });
+                              }
+                            }}
+                            defaultChecked="checked"
+                          >
+                            {o.text}
+                          </Checkbox>
+                        </div>
+                      );
+                    })}
+                    {this.state.paymentMethod.map((o) => {
+                      return (
+                        <div className="filtering-btn">
+                          <Checkbox
+                            key={o.key}
+                            value={o.value}
+                            onChange={(e) => {
+                              if (e.target.checked) {
+                                const result =
+                                  this.state.selectedPaymentMethods.concat(
+                                    e.target.value
+                                  );
+                                this.setState({
+                                  selectedPaymentMethods: result,
+                                });
+                              } else {
+                                const result =
+                                  this.state.selectedPaymentMethods.filter(
+                                    el => el !== e.target.value
+                                  );
+                                this.setState({
+                                  selectedPaymentMethods: result,
+                                });
+                              }
+                            }}
+                            defaultChecked="checked"
+                          >
+                            {o.text}
+                          </Checkbox>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </React.Fragment>
+        ) : null}
+      </React.Fragment>
+    );
+  }
 }
 
-export default (FilteringDialog);
+export default FilteringDialog;

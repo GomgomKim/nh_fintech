@@ -159,9 +159,8 @@ const httpUrl = {
   
   // 주문 현황
   // orderList: "/order/list",
-  orderList: "/order/list?frName=%s&orderDate=%s&orderStatuses=%s&pageNum=%s&paymentMethods=%s",
-  orderListExceptCompleted:"/order/allListExceptCompleted",
-  orderCompleteListFr:"/order/completeListFr",
+  orderList: "/order/list?frName=%s&orderDate=%s&orderStatuses=%s&pageNum=%s&paymentMethods=%s&riderName=%s",
+  orderCompleteList:"/order/completeListFr?pageNum=%s&pageSize=%s",
 
   priceExtraList: "/branch/deliveryPriceExtra/list?pageNum=%s&pageSize=%s",
   priceExtraRegist: "/branch/deliveryPriceExtra/create",
@@ -174,7 +173,7 @@ const httpUrl = {
   staffUpdate: "/rider/update",
 
   // rider
-  riderList: "/rider/list?frName=%s&orderDate=%s&pageSize=%s&pageNum=%s&riderLevels=%s&searchName=%s&userStatus=%s",
+  riderList: "/rider/list?pageSize=%s&pageNum=%s&riderLevels=%s&searchName=%s&userStatus=%s",
   registRider: "/rider/create",
   updateRider: "/rider/update",
   riderLocate: "/rider/location/%s",
