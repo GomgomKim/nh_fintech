@@ -1,4 +1,4 @@
-import { Input, Table, Button, Radio } from 'antd';
+import { Input, Table, Button, Radio, Modal } from 'antd';
 import React, { Component } from 'react';
 import { httpGet, httpUrl, httpPost } from '../../api/httpClient';
 import RiderGroupDialog from "../../components/dialog/rider/RiderGroupDialog";
