@@ -3,10 +3,14 @@ import {
     Form, Modal, Input, DatePicker, Descriptions, Table,
     Upload, Button, Select, Icon, Radio, Carousel, Text,
 } from "antd";
+import { httpUrl, httpPost, httpGet } from '../../../api/httpClient';
 import '../../../css/modal.css';
+import { formatDate } from '../../../lib/util/dateUtil';
+import moment from 'moment';
 const Option = Select.Option;
 const FormItem = Form.Item;
 const { RangePicker } = DatePicker;
+const today = new Date();
 
 class NoticeDialog extends Component {
     constructor(props) {
@@ -18,6 +22,8 @@ class NoticeDialog extends Component {
                 current: 1,
                 pageSize: 5,
             },
+            date: "",
+            Idx: 1,
         };
         this.formRef = React.createRef();
     }
@@ -38,63 +44,92 @@ class NoticeDialog extends Component {
 
 
     getList = () => {
-        var list = [
-            {
-                noticeDate: '21-03-01',
-                noticeContent: '냠냠박스는 24시간 운영합니다.',
-            },
-            {
-                noticeDate: '21-03-02',
-                noticeContent: '많은 비가 오고있습니다. 조심하세요',
-            },
-            {
-                noticeDate: '21-03-02',
-                noticeContent: '많은 비가 오고있습니다. 조심하세요',
-            },
-            {
-                noticeDate: '21-03-02',
-                noticeContent: '많은 비가 오고있습니다. 조심하세요',
-            },
-            {
-                noticeDate: '21-03-02',
-                noticeContent: '많은 비가 오고있습니다. 조심하세요',
-            },
-            {
-                noticeDate: '21-03-02',
-                noticeContent: '많은 비가 오고있습니다. 조심하세요',
-            },
-            {
-                noticeDate: '21-03-02',
-                noticeContent: '많은 비가 오고있습니다. 조심하세요',
-            },
-        ];
-        this.setState({
-            list: list,
+        let pageNum = this.state.pagination.current;
+        let pageSize = this.state.pagination.pageSize;
+        httpGet(httpUrl.noticeList, [pageNum, pageSize], {}).then((res) => {
+            const pagination = { ...this.state.pagination };
+            pagination.current = res.data.currentPage;
+            pagination.total = res.data.totalCount;
+            this.setState({
+                list: res.data.notices,
+                pagination,
+            });
         });
     }
+
+    handleIdSubmit = () => {
+        let enabled = true;
+        httpPost(httpUrl.registNotice, [], {
+            ...this.formRef.current.getFieldsValue(),
+            // name: this.formRef.current.getFieldsValue().surchargeName,
+            // extraPrice: this.formRef.current.getFieldsValue().feeAdd,
+            enabled,
+            idx: this.state.idx,
+            date: moment(today.format('YYYY-MM-DD')),
+            deleted: false,
+        }).then((result) => {
+            alert('공지사항이 전송되었습니다.');
+            this.handleClear();
+            this.getList();
+        }).catch((error) => {
+            alert('에러가 발생하였습니다 다시 시도해주세요.')
+        });
+    }
+
+    handleClear = () => {
+        this.formRef.current.resetFieldsValue()
+    };
+
+    onDelete = (row) => {
+        let idx = row.idx;
+        let deleted = row.deleted;
+        httpGet(httpUrl.registNotice, [idx, deleted], {})
+            .then((result) => {
+                // console.log('## delete result=' + JSON.stringify(result, null, 4))
+                alert('해당공지사항을 삭제합니다.')
+
+                this.setState({deleted: true});
+                this.getList();
+            })
+            .catch((error) => {
+                alert('에러가 발생하였습니다 다시 시도해주세요.')
+            });
+    };
+
+    updateData = () => {
+
+    }
+
 
     render() {
 
         const columns = [
             {
                 className: "table-column-center",
-                render: () =>
+                render: (data,row) =>
                     <div>
                         <Button
                             className="tabBtn surchargeTab"
-                            onClick={() => { }}
+                            onClick={() => {this.onDelete(row)}}
                         >삭제</Button>
                     </div>
             },
             {
                 title: "날짜",
-                dataIndex: "noticeDate",
+                dataIndex: "createDate",
                 className: "table-column-center",
+                render: (data) => <div>{formatDate(data)}</div>
             },
             {
                 title: "내용",
-                dataIndex: "noticeContent",
+                dataIndex: "content",
                 className: "table-column-center",
+                render: (data) =>
+                <div
+                style={{ display: "inline-block", cursor: "pointer" }}
+                onClick={()=>{}}>
+                    {data}
+                </div>
             },
         ];
 
@@ -130,12 +165,15 @@ class NoticeDialog extends Component {
 
                                         <Form ref={this.formIdRef} onFinish={this.handleIdSubmit}>
                                             <div className="noticeDetailBlock">
+                                            <div className="mainTitle">
+                                                공지사항 추가 및 수정
+                                            </div>
                                                 <div className="inputBox">
                                                     <FormItem
                                                         className="noticeInputBox"
                                                         name="surchargeName"
                                                     >
-                                                        <Input className="noticeInputBox" />
+                                                        <Input className="noticeInputBox" placeholder="공지 내용"/>
                                                     </FormItem>
                                                 </div>
                                                 <div className="btnInsert">
