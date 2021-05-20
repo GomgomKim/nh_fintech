@@ -111,6 +111,7 @@ const httpPut = (url, params, data) => {
 };
 
 const httpPost = (url, params, data) => {
+  console.log(makeUrl(url,params));
   return httpExec("POST", makeUrl(url, params), data);
   // return new Promise((resolve, reject) => {
   //   Axios.post(makeUrl(url, params), data)
@@ -158,8 +159,7 @@ const httpUrl = {
   receptionStatusList: "/order/assignList?pageSize=%s&pageNum=%s",
   
   // 주문 현황
-  // orderList: "/order/list",
-  orderList: "/order/list?frName=%s&orderDate=%s&orderStatuses=%s&pageNum=%s&paymentMethods=%s&riderName=%s",
+  orderList: "/order/list",
   orderExceptCompleteList:"/order/allListExceptCompleted?pageNum=%s&pageSize=%s",
 
   priceExtraList: "/branch/deliveryPriceExtra/list?pageNum=%s&pageSize=%s",

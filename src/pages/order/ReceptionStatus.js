@@ -52,14 +52,14 @@ class ReceptionStatus extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      // paging
       pagination: {
         total: 0,
         current: 1,
         pageSize: 10,
       },
-      // test data
-      list: [],
-      totalList: [],
+
+      // modal open / close
       timeDelayOpen: false,
       surchargeOpen: false,
       addCallOpen: false,
@@ -70,34 +70,35 @@ class ReceptionStatus extends Component {
       activeIndex: -1,
       mapControlOpen: false,
 
-      // table param
+      // data
+      list: [],
+      // api param
       franchisee: "",
       rider: "",
-      phoneNum: "",
       selectedDate: today,
       selectedOrderStatus: [1, 2, 3, 4],
       selectedPaymentMethods: [1, 2, 3],
-      checkedCompleteCall: false,
+      checkedCompleteCall: true,
     };
   }
 
   componentDidMount() {
     this.getList();
   }
-  componentDidUpdate(prevProps, prevState) {
-    if (prevState.checkedCompleteCall !== this.state.checkedCompleteCall) {
-      if (!this.state.checkedCompleteCall) {
-        this.getExceptCompleteList();
-      } else {
-        this.getList();
-      }
-    }
-  }
 
   handleToggleCompleteCall = (e) => {
-    this.setState({
-      checkedCompleteCall: e.target.checked,
-    });
+    this.setState(
+      {
+        checkedCompleteCall: e.target.checked,
+      },
+      () => {
+        if (!this.state.checkedCompleteCall) {
+          this.getExceptCompleteList();
+        } else {
+          this.getList();
+        }
+      }
+    );
   };
 
   setDate = (date) => {
@@ -109,59 +110,62 @@ class ReceptionStatus extends Component {
   };
 
   getList = () => {
-    const frName = this.state.franchisee;
-    const orderDate = formatDate(this.state.selectedDate);
-    const orderStatuses = encodeURI(this.state.selectedOrderStatus);
-    const pageNum = this.state.pagination.current;
-    const pageSize = this.state.pagination.pageSize;
-    const paymentMethods = encodeURI(this.state.selectedPaymentMethods);
-    const riderName = this.state.rider;
-
-    httpPost(
-      httpUrl.orderList,
-      [
-        frName,
-        orderDate,
-        orderStatuses,
-        pageNum,
-        pageSize,
-        paymentMethods,
-        riderName,
-      ],
-      {}
-    )
+    httpPost(httpUrl.orderList, [], {
+      frName: this.state.franchisee,
+      orderDate: formatDate(this.state.selectedDate).split(" ")[0],
+      orderStatuses: this.state.selectedOrderStatus,
+      pageNum: this.state.pagination.current,
+      pageSize: this.state.pagination.pageSize,
+      paymentMethods: this.state.selectedPaymentMethods,
+      riderName: this.state.rider,
+    })
       .then((res) => {
         if (res.result === "SUCCESS") {
           // alert("성공적으로 처리되었습니다.");
+          console.log(res);
           this.setState({
             list: res.data.orders,
           });
+          console.log("완료 포함 조회");
         } else {
-          alert("res는 왔는데 result가 SUCCESS가 아닌 경우.");
+          Modal.info({
+            title: "적용 오류",
+            content: "처리가 실패했습니다.",
+          });
         }
       })
       .catch((e) => {
-        alert("처리가 실패했습니다.");
+        Modal.info({
+          title: "적용 오류",
+          content: "처리가 실패했습니다.",
+        });
       });
   };
 
   getExceptCompleteList = () => {
-    const pageNum = encodeURI(this.state.pagination.current);
-    const pageSize = encodeURI(this.state.pagination.pageSize);
+    const pageNum = this.state.pagination.current;
+    const pageSize = this.state.pagination.pageSize;
     httpGet(httpUrl.orderExceptCompleteList, [pageNum, pageSize], {})
       .then((res) => {
         if (res.result === "SUCCESS") {
           // alert("성공적으로 처리되었습니다.");
+          console.log("완료 제외 조회");
+          this.setState({
+            list: res.orders,
+          });
         } else {
-          alert("res는 왔는데 result가 SUCCESS가 아닌 경우.");
+          Modal.info({
+            title: "적용 오류",
+            content: "처리가 실패했습니다.",
+          });
         }
       })
       .catch((e) => {
-        alert("처리가 실패했습니다.");
+        Modal.info({
+          title: "적용 오류",
+          content: "처리가 실패했습니다.",
+        });
       });
-    this.setState({
-      list: list,
-    });
   };
 
   handleTableChange = (pagination) => {
@@ -597,7 +601,11 @@ class ReceptionStatus extends Component {
           <DatePicker
             defaultValue={moment(today, dateFormat)}
             format={dateFormat}
-            onChange={(date) => this.setState({ selectedDate: date })}
+            onChange={(date) =>
+              this.setState({ selectedDate: date }, () => {
+                date && this.getList();
+              })
+            }
           />
           <FilteringDialog
             isOpen={this.state.filteringOpen}
@@ -637,7 +645,10 @@ class ReceptionStatus extends Component {
             }}
           />
 
-          <Checkbox onChange={this.handleToggleCompleteCall}></Checkbox>
+          <Checkbox
+            defaultChecked={this.state.checkedCompleteCall ? "checked" : ""}
+            onChange={this.handleToggleCompleteCall}
+          ></Checkbox>
           <span className="span1">완료조회</span>
         </div>
 
