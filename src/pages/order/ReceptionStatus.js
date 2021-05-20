@@ -86,8 +86,8 @@ class ReceptionStatus extends Component {
   }
   componentDidUpdate(prevProps, prevState) {
     if (prevState.checkedCompleteCall !== this.state.checkedCompleteCall) {
-      if (this.state.checkedCompleteCall) {
-        this.getCompleteList();
+      if (!this.state.checkedCompleteCall) {
+        this.getExceptCompleteList();
       } else {
         this.getList();
       }
@@ -108,47 +108,15 @@ class ReceptionStatus extends Component {
     this.getList();
   };
 
-  // onSearchFranchisee = (value) => {
-  //   this.setState(
-  //     {
-  //       franchisee: value,
-  //     },
-  //     () => {
-  //       this.getList();
-  //     }
-  //   );
-  // };
-
-  // onSearchWorker = (value) => {
-  //   this.setState(
-  //     {
-  //       rider: value,
-  //     },
-  //     () => {
-  //       this.getList();
-  //     }
-  //   );
-  // };
-
-  // onSearchPhoneNum = (value) => {
-  //   this.setState(
-  //     {
-  //       phoneNum: value,
-  //     },
-  //     () => {
-  //       this.getList();
-  //     }
-  //   );
-  // };
-
   getList = () => {
-    const frName = encodeURI(this.state.franchisee);
-    const orderDate = encodeURI(formatDate(this.state.selectedDate));
+    const frName = this.state.franchisee;
+    const orderDate = formatDate(this.state.selectedDate);
     const orderStatuses = encodeURI(this.state.selectedOrderStatus);
-    const pageNum = encodeURI(this.state.pagination.current);
-    const pageSize = encodeURI(this.state.pagination.pageSize);
+    const pageNum = this.state.pagination.current;
+    const pageSize = this.state.pagination.pageSize;
     const paymentMethods = encodeURI(this.state.selectedPaymentMethods);
-    const riderName = encodeURI(this.state.rider);
+    const riderName = this.state.rider;
+
     httpPost(
       httpUrl.orderList,
       [
@@ -167,7 +135,7 @@ class ReceptionStatus extends Component {
           // alert("성공적으로 처리되었습니다.");
           this.setState({
             list: res.data.orders,
-          });      
+          });
         } else {
           alert("res는 왔는데 result가 SUCCESS가 아닌 경우.");
         }
@@ -177,10 +145,10 @@ class ReceptionStatus extends Component {
       });
   };
 
-  getCompleteList = () => {
+  getExceptCompleteList = () => {
     const pageNum = encodeURI(this.state.pagination.current);
     const pageSize = encodeURI(this.state.pagination.pageSize);
-    httpGet(httpUrl.orderCompleteList, [pageNum, pageSize], {})
+    httpGet(httpUrl.orderExceptCompleteList, [pageNum, pageSize], {})
       .then((res) => {
         if (res.result === "SUCCESS") {
           // alert("성공적으로 처리되었습니다.");
@@ -402,9 +370,12 @@ class ReceptionStatus extends Component {
         title: "결제방식",
         dataIndex: "orderPayments",
         className: "table-column-center",
-        render: (data, row) => (
-          <div>{paymentMethod[data[0]["paymentMethod"]]}</div>
-        ),
+        render: (data, row) =>
+          data.length > 1 ? (
+            <Button>보기</Button>
+          ) : (
+            <div>{paymentMethod[data[0]["paymentMethod"]]}</div>
+          ),
       },
     ];
 
@@ -631,6 +602,8 @@ class ReceptionStatus extends Component {
           <FilteringDialog
             isOpen={this.state.filteringOpen}
             close={this.closeFilteringModal}
+            selectedOrderStatus={this.state.selectedOrderStatus}
+            selectedPaymentMethods={this.state.selectedPaymentMethods}
           />
           <Button
             icon={<FilterOutlined />}
@@ -657,18 +630,6 @@ class ReceptionStatus extends Component {
             enterButton
             allowClear
             onChange={(e) => this.setState({ rider: e.target.value })}
-            onSearch={this.onSearch}
-            style={{
-              width: 200,
-              marginLeft: 20,
-            }}
-          />
-
-          <Search
-            placeholder="전화번호검색"
-            enterButton
-            allowClear
-            onChange={(e) => this.setState({ phoneNum: e.target.value })}
             onSearch={this.onSearch}
             style={{
               width: 200,

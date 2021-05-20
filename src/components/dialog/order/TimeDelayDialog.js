@@ -87,44 +87,42 @@ class TimeDelayDialog extends Component {
   };
 
   handleSubmit = () => {
-    // 2021-05-18 수정 중
-    // 적용이나 확인 버튼 입력 확인창 하나씩 꼭 만들어주기!
-    
-    // Modal.confirm({
-    //   title:'호출설정',
-    //   content:'설정하시겠습니까?'
-    // })
-    if (this.props.branchIdx) {
-      const btnInfos = this.state.btnInfos;
-      httpPost(httpUrl.updateBranch, [], {
-        idx: this.props.branchIdx,
-        deliveryEnabled: !this.state.deliveryNotAvailable,
-        pickupAvTime10: btnInfos.find((e) => e.value === 10).toggle,
-        pickupAvTime10After: btnInfos.find((e) => e.value === 1010).toggle,
-        pickupAvTime15: btnInfos.find((e) => e.value === 15).toggle,
-        pickupAvTime20: btnInfos.find((e) => e.value === 20).toggle,
-        pickupAvTime30: btnInfos.find((e) => e.value === 30).toggle,
-        pickupAvTime40: btnInfos.find((e) => e.value === 40).toggle,
-        pickupAvTime5: btnInfos.find((e) => e.value === 5).toggle,
-        pickupAvTime50: true,
-        pickupAvTime5After: btnInfos.find((e) => e.value === 1005).toggle,
-        pickupAvTime60: true,
-        pickupAvTime70: true,
-      })
-        .then((res) => {
-          if (res.result === "SUCCESS") {
-            alert("성공적으로 처리되었습니다.");
-          } else {
-            alert("res는 왔는데 result가 SUCCESS가 아닌 경우.");
-          }
+    Modal.confirm({
+      title: "호출설정",
+      content: "설정하시겠습니까?",
+      onOk: () => {
+        const btnInfos = this.state.btnInfos;
+        httpPost(httpUrl.updateBranch, [], {
+          idx: this.props.branchIdx,
+          deliveryEnabled: !this.state.deliveryNotAvailable,
+          pickupAvTime10: btnInfos.find((e) => e.value === 10).toggle,
+          pickupAvTime10After: btnInfos.find((e) => e.value === 1010).toggle,
+          pickupAvTime15: btnInfos.find((e) => e.value === 15).toggle,
+          pickupAvTime20: btnInfos.find((e) => e.value === 20).toggle,
+          pickupAvTime30: btnInfos.find((e) => e.value === 30).toggle,
+          pickupAvTime40: btnInfos.find((e) => e.value === 40).toggle,
+          pickupAvTime5: btnInfos.find((e) => e.value === 5).toggle,
+          pickupAvTime50: true,
+          pickupAvTime5After: btnInfos.find((e) => e.value === 1005).toggle,
+          pickupAvTime60: true,
+          pickupAvTime70: true,
         })
-        .catch((e) => {
-          console.log(e);
-          alert("처리가 실패했습니다.");
-        });
-    } else {
-      alert("지점을 선택해주세요!");
-    }
+          .then((res) => {
+            if (res.result === "SUCCESS") {
+              alert("성공적으로 처리되었습니다.");
+            } else {
+              alert("res는 왔는데 result가 SUCCESS가 아닌 경우.");
+            }
+          })
+          .catch((e) => {
+            console.log(e);
+            alert("처리가 실패했습니다.");
+          });
+      },
+      onCancel: () => {
+        console.log("task cancelled");
+      },
+    });
   };
 
   render() {
@@ -182,7 +180,6 @@ class TimeDelayDialog extends Component {
                         className="tabBtn timeDelay-btn"
                         onClick={() => {
                           this.handleSubmit();
-                          close();
                         }}
                       >
                         적용
@@ -201,7 +198,7 @@ class TimeDelayDialog extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    branchIdx: state.login.loginInfo.userGroup,
+    userGroup: state.login.loginInfo.userGroup,
   };
 };
 
