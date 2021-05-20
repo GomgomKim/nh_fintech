@@ -14,6 +14,7 @@ class TimeDelayDialog extends Component {
     this.state = {
       branchIdx: null,
       deliveryNotAvailable: false,
+      confirmLoading:false,
       btnInfos: [
         {
           value: 5,
@@ -91,6 +92,7 @@ class TimeDelayDialog extends Component {
       title: "호출설정",
       content: "설정하시겠습니까?",
       onOk: () => {
+        this.setState({confirmLoading:true});
         const btnInfos = this.state.btnInfos;
         httpPost(httpUrl.updateBranch, [], {
           idx: this.props.branchIdx,
@@ -109,19 +111,33 @@ class TimeDelayDialog extends Component {
         })
           .then((res) => {
             if (res.result === "SUCCESS") {
-              alert("성공적으로 처리되었습니다.");
+              this.setState({confirmLoading:false});
+              Modal.info({
+                title: "적용 완료",
+                content: "성공적으로 처리되었습니다.",
+              });
             } else {
-              alert("res는 왔는데 result가 SUCCESS가 아닌 경우.");
+              this.setState({confirmLoading:false});
+              Modal.info({
+                title: "적용 오류",
+                content: "처리가 실패했습니다.",
+              });
+              console.log(res);
             }
           })
           .catch((e) => {
+            this.setState({confirmLoading:false});
             console.log(e);
-            alert("처리가 실패했습니다.");
+            Modal.info({
+              title: "적용 오류",
+              content: "처리가 실패했습니다.",
+            });
           });
       },
       onCancel: () => {
         console.log("task cancelled");
       },
+      confirmLoading:this.state.confirmLoading,
     });
   };
 

@@ -138,11 +138,11 @@ class FranchiseMain extends Component {
   onChangeStatus = (idx, value) => {
     httpPost(httpUrl.franchiseUpdate, [], {
       idx: idx,
-      frStatus: value,
+      userStatus: value,
     })
       .then((res) => {
         if (res.result === "SUCCESS") {
-          Modal.info({
+          /* Modal.info({
             title: "변경 완료",
             content: (
               <div>
@@ -150,7 +150,7 @@ class FranchiseMain extends Component {
               </div>
             ),
             onOk() { },
-          });
+          }); */
         } else {
           Modal.error({
             title: "변경 실패",
@@ -185,7 +185,7 @@ class FranchiseMain extends Component {
     })
       .then((res) => {
         if (res.result === "SUCCESS") {
-          Modal.info({
+          /* Modal.info({
             title: "변경 완료",
             content: (
               <div>
@@ -193,7 +193,7 @@ class FranchiseMain extends Component {
               </div>
             ),
             onOk() { },
-          });
+          }); */
         } else {
           Modal.error({
             title: "변경 실패",
@@ -224,7 +224,7 @@ class FranchiseMain extends Component {
     const columns = [
       {
         title: "상태",
-        dataIndex: "frStatus",
+        dataIndex: "userStatus",
         className: "table-column-center",
         render: (data, row) => <div>
             <SelectBox
@@ -232,7 +232,7 @@ class FranchiseMain extends Component {
                 code={Object.keys(statusString)}
                 codeString={statusString}
                 onChange={(value) => {
-                    if (parseInt(value) !== row.frStatus) {
+                    if (parseInt(value) !== row.userStatus) {
                         this.onChangeStatus(row.idx, value);
                     }
                 }}
@@ -420,7 +420,7 @@ class FranchiseMain extends Component {
           <Radio.Group className="searchRequirement" onChange={onChange} value={this.state.franStatus}>
             {Object.entries(statusString).map(([key, value]) => {
               return (
-                <Radio value={key}>{value}</Radio>
+                <Radio value={Number(key)}>{value}</Radio>
               );
             })}
           </Radio.Group>
