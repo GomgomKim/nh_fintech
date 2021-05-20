@@ -10,12 +10,10 @@ import UpdatePasswordDialog from "../../components/dialog/rider/UpdatePasswordDi
 import '../../css/modal.css'
 import { comma } from "../../lib/util/numberUtil";
 import SelectBox from '../../components/input/SelectBox';
-import { statusString, riderStatusCode } from '../../lib/util/codeUtil';
+import { statusString, riderStatusCode, riderLevelText } from '../../lib/util/codeUtil';
 
 
 const Search = Input.Search;
-
-const riderLevelText = ["none", "라이더", "부팀장", "팀장", "부본부장", "본부장", "부지점장", "지점장", "부센터장", "센터장"];
 
 class RiderMain extends Component {
   constructor(props) {
@@ -187,12 +185,6 @@ class RiderMain extends Component {
   setBlackList = () => {
     alert("블라인드 처리 되었습니다.")
   }
-  /* openBlackListModal = () => {
-    this.setState({ blackListOpen: true });
-  }
-  closeBlackListModal = () => {
-    this.setState({ blackListOpen: false });
-  } */
 
   render() {
     const columns = [

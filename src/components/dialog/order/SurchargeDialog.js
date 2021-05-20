@@ -57,7 +57,10 @@ class SurchargeDialog extends Component {
                 pagination,
             });
         }).catch(e => {
-            this.props.alert.show('시스템에러가 발생하였습니다.')
+            Modal.info({
+                title: "시스템 에러",
+                content: "시스템 에러가 발생하였습니다. 다시 시도해 주십시오."
+            });
         });;
     }
 
