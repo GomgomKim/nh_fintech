@@ -425,16 +425,16 @@
 
 .noticeLayout .noticelistBlock {
   float: left;
-  width: 47%;
+  width: 55%;
 }
 
 .noticeLayout .noticeDetailBlock {
   float: right;
-  width: 47%;
+  width: 35%;
 }
 
-.noticeLayout .inputBox {
-  width: 530px;
+.noticeLayout .inputBox{
+  width: 370px;
   height: 380px;
 }
 
