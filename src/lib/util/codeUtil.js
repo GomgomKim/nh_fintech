@@ -30,11 +30,11 @@ const cardStatus = [
 // 접수현황 - 상태 변경 가능한 경우
 // key : 기존 값 / value : 변경 가능한 값
 const modifyType = {
-    1 : [2, 5],
-    2 : [3, 5],
-    3 : [4, 5],
-    4 : [1, 2, 3],
-    5 : [1],
+    1: [2, 5],
+    2: [3, 5],
+    3: [4, 5],
+    4: [1, 2, 3],
+    5: [1],
 }
 
 // 접수현황 - 상태 값에 따라 테이블 색 변경
@@ -60,6 +60,7 @@ const withdrawString = {
     false: "출금 금지",
 }
 
+
 const blockString = {
     0: " - ",
     1: "차단해제",
@@ -77,7 +78,7 @@ const enabledString = {
 }
 
 const enabledCode = [
-    false, 
+    false,
     true,
 ]
 
@@ -88,8 +89,14 @@ const staffString = {
 }
 
 const statusCode = [
-    1, 
-    2, 
+    1,
+    2,
+    3,
+]
+
+const riderStatusCode = [
+    1,
+    2,
     3,
 ]
 
@@ -99,7 +106,7 @@ const statusCodeTwo = [
     2,
 ]
 
-export { 
+export {
     deliveryStatusCode,
     blockString,
     withdrawString,
@@ -110,9 +117,10 @@ export {
     statusString,
     staffString,
     statusCode,
-    preparationStatus, 
-    cardStatus, 
-    paymentMethod, 
-    modifyType, 
+    riderStatusCode,
+    preparationStatus,
+    cardStatus,
+    paymentMethod,
+    modifyType,
     rowColorName,
 };
