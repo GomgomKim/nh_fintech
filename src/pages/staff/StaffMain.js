@@ -1,23 +1,11 @@
-import { Form, DatePicker, Input, Table, Button, Descriptions, Radio, Select } from 'antd';
-import Icon from '@ant-design/icons';
+import { Table, Button, Radio, Modal } from 'antd';
 import React, { Component } from 'react';
-import { httpGet, httpUrl, httpDownload, httpPost, httpPut } from '../../api/httpClient';
-import SelectBox from "../../components/input/SelectBox";
+import { httpGet, httpUrl, httpPost } from '../../api/httpClient';
 import "../../css/staff.css";
 import "../../css/common.css";
-import { comma } from "../../lib/util/numberUtil";
-import { formatDate } from "../../lib/util/dateUtil";
 import RegistStaffDialog from "../../components/dialog/staff/RegistStaffDialog";
-import UpdateStaffDialog from "../../components/dialog/staff/UpdateStaffDialog";
-
-
-
-const FormItem = Form.Item;
-const Ditems = Descriptions.Item;
-const Option = Select.Option;
-
-const Search = Input.Search;
-const RangePicker = DatePicker.RangePicker;
+import SelectBox from '../../components/input/SelectBox';
+import { staffString} from '../../lib/util/codeUtil';
 
 
 class StaffMain extends Component {
@@ -41,16 +29,15 @@ class StaffMain extends Component {
   }
 
   componentDidMount() {
-    this.getRegistStaffList()
+    this.getList()
   }
 
   onChange = e => {
-    // console.log('radio checked', e.target.value);
     this.setState({
       staffStatus: e.target.value,
-    }, () => this.getRegistStaffList());
+    }, () => this.getList());
   };
-
+  
   handleTableChange = (pagination) => {
     console.log(pagination)
     const pager = { ...this.state.pagination };
@@ -60,24 +47,46 @@ class StaffMain extends Component {
       pagination: pager,
     }, () => this.getList());
   };
-
-
-  onChangeSel = (value) => {
-    httpPost(httpUrl.staffUpdate, [], {
-      riderStatus: value
-    }).then((result) => {
-      console.log(result)
-      // this.props.close()
-      // this.props.history.push('../../pages/staff/StaffMain')
-
-    });
+  
+  onChangeStatus = (index, value) => {
+    let self = this;
+    Modal.confirm({
+      title: "상태 변경",
+      content: '상태를 수정하시겠습니까?',
+      okText: "확인",
+      cancelText: "취소",
+      onOk() {
+        httpPost(httpUrl.staffUpdate, [], {
+          idx: index, userStatus: value
+         })
+            .then((result) => {
+              Modal.info({
+                title: "변경 완료",
+                content: (
+                    <div>
+                        상태가 변경되었습니다.
+                    </div>
+                ),
+              });
+            self.getList();
+            })
+            .catch((error) => {
+              Modal.info({
+                title: "변경 오류",
+                content: "오류가 발생하였습니다. 다시 시도해 주십시오."
+            });
+            });
+      },
+  });
   }
-  getRegistStaffList = () => {
+
+  getList = () => {
+    let pageSize = this.state.pagination.pageSize;
     let pageNum = this.state.pagination.current;
     let riderLevel = this.state.riderLevel;
     let userData = this.state.userData;
 
-    httpGet(httpUrl.registStaffList, [10, pageNum, riderLevel, userData], {}).then((result) => {
+    httpGet(httpUrl.registStaffList, [pageSize, pageNum, riderLevel, userData], {}).then((result) => {
       console.log('## nnbox result=' + JSON.stringify(result, null, 4))
       const pagination = { ...this.state.pagination };
       pagination.current = result.data.currentPage;
@@ -139,31 +148,19 @@ class StaffMain extends Component {
         title: "상태",
         dataIndex: "userStatus",
         className: "table-column-center",
-        width: 100,
-        render:
-          (data, row) => (
-            <div>
-              <Select onChange={value => {
-                this.onChangeSel(value);
-              }} defaultValue={data} style={{ width: 68 }}>
-                <Option value={3}>퇴사</Option>
-                <Option value={2}>중지</Option>
-                <Option value={1}>근무</Option>
-              </Select>
-            </div>
-          ),
+        render: (data, row) => <div>
+            <SelectBox
+                value={staffString[data]}
+                code={Object.keys(staffString)}
+                codeString={staffString}
+                onChange={(value) => {
+                    if (parseInt(value) !== row.userStatus) {
+                        this.onChangeStatus(row.idx, value);
+                    }
+                }}
+            />
+        </div>
       },
-      /*
-      {
-        title: "상태",
-        dataIndex: "staffStatus",
-        className: "table-column-center",
-        width: "200px",
-        render: (data) => <div>{data == -1 ? "퇴사"
-          : data == 0 ? "중지"
-            : data == 1 ? "근무"
-              : "-"}</div>
-      },*/
       {
         title: "전화번호",
         dataIndex: "phone",
@@ -196,17 +193,16 @@ class StaffMain extends Component {
         <div className="selectLayout">
           <span className="searchRequirementText">검색조건</span><br></br>
           <Radio.Group className="searchRequirement" onChange={this.onChange} value={this.state.staffStatus}>
-            <Radio value={1}>사용</Radio>
-            <Radio value={0}>중지</Radio>
-            <Radio value={-1}>퇴사</Radio>
+            <Radio value={1}>근무</Radio>
+            <Radio value={2}>중지</Radio>
+            <Radio value={3}>퇴사</Radio>
           </Radio.Group>
 
 
+          <RegistStaffDialog isOpen={this.state.registStaff} close={this.closeStaffRegistrationModal} />
           <Button className="registStaff"
             onClick={() => { this.setState({ registStaff: true }) }}
           >직원 등록</Button>
-
-          <RegistStaffDialog isOpen={this.state.registStaff} close={this.closeStaffRegistrationModal} />
         </div>
 
         <div className="dataTableLayout">
@@ -214,7 +210,7 @@ class StaffMain extends Component {
             dataSource={this.state.results}
             columns={columns}
             pagination={this.state.pagination}
-            onChange={this.state.Status}
+            onChange={this.handleTableChange}
           />
         </div>
       </div>

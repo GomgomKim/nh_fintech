@@ -1,13 +1,8 @@
 import React, { Component } from "react";
 import {
-    Form, DatePicker, Table, Select
+    Form, Table,
 } from "antd";
-import SelectBox from '../../../components/input/SelectBox';
 import '../../../css/modal.css';
-import string from "../../../string";
-const Option = Select.Option;
-const FormItem = Form.Item;
-const { RangePicker } = DatePicker;
 
 class BlackListDialog extends Component {
     constructor(props) {
@@ -139,7 +134,7 @@ class BlackListDialog extends Component {
                 render:
                     (data, row) => (
                         <div>
-                            <SelectBox
+                            {/* <SelectBox
                                 value={string.blockString[data]}
                                 code={string.toggleCode}
                                 codeString={string.blockString}
@@ -148,7 +143,7 @@ class BlackListDialog extends Component {
                                         this.onDelete(value, row.idx);
                                     }
                                 }}
-                            />
+                            /> */}
                         </div>
                     ),
             },

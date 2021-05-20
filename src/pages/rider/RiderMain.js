@@ -1,7 +1,6 @@
-import { Form, DatePicker, Input, Table, Button, Descriptions, Radio, Select } from 'antd';
+import { Input, Table, Button, Radio, Modal } from 'antd';
 import React, { Component } from 'react';
-import { httpGet, httpUrl, httpDownload, httpPost, httpPut } from '../../api/httpClient';
-import SelectBox from "../../components/input/SelectBox";
+import { httpGet, httpUrl, httpPost } from '../../api/httpClient';
 import RiderGroupDialog from "../../components/dialog/rider/RiderGroupDialog";
 import TaskSchedulerDialog from "../../components/dialog/rider/TaskSchedulerDialog";
 import RegistRiderDialog from "../../components/dialog/rider/RegistRiderDialog";
@@ -9,19 +8,12 @@ import RiderCoinDialog from "../../components/dialog/rider/RiderCoinDialog";
 import RiderBankDialog from "../../components/dialog/rider/RiderBankDialog";
 import UpdatePasswordDialog from "../../components/dialog/rider/UpdatePasswordDialog";
 import '../../css/modal.css'
-import BlackRiderDialog from "../../components/dialog/rider/BlackRiderDialog";
-import BlackListDialog from "../../components/dialog/rider/BlackListDialog";
 import { comma } from "../../lib/util/numberUtil";
-import UpdateRiderDialog from '../../components/dialog/rider/UpdateRiderDialog';
+import SelectBox from '../../components/input/SelectBox';
+import { statusString, riderLevelText } from '../../lib/util/codeUtil';
 
-const FormItem = Form.Item;
-const Ditems = Descriptions.Item;
-const Option = Select.Option;
 
 const Search = Input.Search;
-const RangePicker = DatePicker.RangePicker;
-
-const riderLevelText = ["none", "라이더", "부팀장", "팀장", "부본부장", "본부장", "부지점장", "지점장", "부센터장", "센터장"];
 
 class RiderMain extends Component {
   constructor(props) {
@@ -63,6 +55,46 @@ class RiderMain extends Component {
     }, () => this.getList());
   };
 
+  onChangeStatus = (index, value) => {
+    let self = this;
+    Modal.confirm({
+      title: "상태 변경",
+      content:
+        <div>
+          {value + ' 상태로 수정하시겠습니까?'}
+        </div>,
+      okText: "확인",
+      cancelText: "취소",
+      onOk() {
+        httpPost(httpUrl.updateRider, [], {
+          idx: index,
+          riderStatus: value,
+        })
+          .then((result) => {
+            Modal.info({
+              title: "변경 완료",
+              content: (
+                <div>
+                  상태가 변경되었습니다.
+                </div>
+              ),
+            });
+            self.getList();
+          })
+          .catch((error) => {
+            Modal.error({
+              title: "변경 실패",
+              content: (
+                <div>
+                  변경에 실패했습니다.
+                </div>
+              ),
+            });
+          });
+      },
+    });
+  }
+
   onSearchRider = (value) => {
     this.setState({
       riderName: value,
@@ -72,7 +104,6 @@ class RiderMain extends Component {
   }
 
   onChange = e => {
-    // console.log('radio checked', e.target.value);
     this.setState({
       riderStatus: e.target.value,
     }, () => this.getList());
@@ -96,13 +127,6 @@ class RiderMain extends Component {
     })
   };
 
-  modifyHandleChange = (value) => {
-    httpPost(httpUrl.updateRider, [], {
-      riderStatus: value
-    }).then((result) => {
-      alert(JSON.stringify(result))
-    });
-  }
 
   //일차감
   openTaskSchedulerModal = () => {
@@ -122,7 +146,7 @@ class RiderMain extends Component {
 
   //기사 등록 
   openRegistRiderModal = () => {
-    this.setState({ registRiderOpen: true});
+    this.setState({ registRiderOpen: true });
   }
   closeRegistRiderModal = () => {
     this.setState({ registRiderOpen: false });
@@ -161,12 +185,6 @@ class RiderMain extends Component {
   setBlackList = () => {
     alert("블라인드 처리 되었습니다.")
   }
-  /* openBlackListModal = () => {
-    this.setState({ blackListOpen: true });
-  }
-  closeBlackListModal = () => {
-    this.setState({ blackListOpen: false });
-  } */
 
   render() {
     const columns = [
@@ -255,18 +273,18 @@ class RiderMain extends Component {
         title: "상태",
         dataIndex: "riderStatus",
         className: "table-column-center",
-        render:
-          (data, row) => (
-            <div>
-              <Select onChange={
-                value => { this.modifyHandleChange(value); }}
-                defaultValue={data} style={{ width: 68 }}>
-                <Option value={3}>탈퇴</Option>
-                <Option value={2}>중지</Option>
-                <Option value={1}>사용</Option>
-              </Select>
-            </div>
-          ),
+        render: (data, row) => <div>
+          <SelectBox
+            value={statusString[data]}
+            code={Object.keys(statusString)}
+            codeString={statusString}
+            onChange={(value) => {
+              if (parseInt(value) !== row.riderStatus) {
+                this.onChangeStatus(row.idx, value);
+              }
+            }}
+          />
+        </div>
       },
       {
         title: "수정",
@@ -276,7 +294,7 @@ class RiderMain extends Component {
             <RegistRiderDialog isOpen={this.state.riderUpdateOpen} close={this.closeUpdateRiderModal} data={this.state.dialogData} />
             <Button
               className="tabBtn surchargeTab"
-              onClick={()=>this.setState({riderUpdateOpen: true, dialogData: row})}
+              onClick={() => this.setState({ riderUpdateOpen: true, dialogData: row })}
             >수정</Button>
           </div>
       },
@@ -397,4 +415,5 @@ class RiderMain extends Component {
     )
   }
 }
+
 export default RiderMain;

@@ -158,7 +158,9 @@ const httpUrl = {
   receptionStatusList: "/order/assignList?pageSize=%s&pageNum=%s",
   
   // 주문 현황
-  orderList: "/order/list?frName=%s&orderDate=%s&orderStatuses=%s&pageNum=%s&pageSize=%s&paymentMethods=%s&riderName=%s",
+  // orderList: "/order/list",
+  orderList: "/order/list?frName=%s&orderDate=%s&orderStatuses=%s&pageNum=%s&paymentMethods=%s&riderName=%s",
+  orderCompleteList:"/order/completeListFr?pageNum=%s&pageSize=%s",
 
   priceExtraList: "/branch/deliveryPriceExtra/list?pageNum=%s&pageSize=%s",
   priceExtraRegist: "/branch/deliveryPriceExtra/create",
@@ -166,18 +168,16 @@ const httpUrl = {
   priceExtraDelete: "/branch/deliveryPriceExtra/delete/{idx}?idx=%s",
 
   // 직원 관리
+  registStaffList: "/rider/list?pageSize=%s&pageNum=%s&riderLevels=%s&userStatus=%s",
   registStaff: "/rider/create",
+  staffUpdate: "/rider/update",
 
   // rider
   riderList: "/rider/list?pageSize=%s&pageNum=%s&riderLevels=%s&searchName=%s&userStatus=%s",
   registRider: "/rider/create",
   updateRider: "/rider/update",
   riderLocate: "/rider/location/%s",
-
-  //직원등록
-  registStaffList: "/rider/list?pageSize=%s&pageNum=%s&riderLevels=%s&userStatus=%s",
-  staffUpdate: "/rider/update",
-
+  
   // 가맹점 관리
   registFranchise: "/fr/create",
   franchiseList: "/fr/list",

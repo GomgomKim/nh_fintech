@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { reactLocalStorage } from 'reactjs-localstorage';
 import { Form, Input, Button, Checkbox } from 'antd';
-import Icon from '@ant-design/icons';
 
 import { login } from '../actions/loginAction';
 import { httpPost, httpUrl } from '../api/httpClient';

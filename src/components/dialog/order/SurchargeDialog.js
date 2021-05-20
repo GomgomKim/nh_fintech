@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import {
     Form, Input, DatePicker, Table,
-    Button, Select,
+    Button, Modal
 } from "antd";
 import { httpUrl, httpPost, httpGet } from '../../../api/httpClient';
 import '../../../css/modal.css';
@@ -9,8 +9,7 @@ import { connect } from "react-redux";
 import { comma } from "../../../lib/util/numberUtil";
 import moment from 'moment';
 import SelectBox from '../../../components/input/SelectBox';
-import string from "../../../string";
-const Option = Select.Option;
+import { enabledString, enabledCode } from '../../../lib/util/codeUtil';
 const FormItem = Form.Item;
 const { RangePicker } = DatePicker;
 
@@ -57,26 +56,52 @@ class SurchargeDialog extends Component {
                 list: res.data.deliveryPriceExtras,
                 pagination,
             });
-        });
+        }).catch(e => {
+            Modal.info({
+                title: "시스템 에러",
+                content: "시스템 에러가 발생하였습니다. 다시 시도해 주십시오."
+            });
+        });;
     }
 
     // 할증등록
     handleSubmit = () => {
-        let enabled = true;
-        httpPost(httpUrl.priceExtraRegist, [], {
-            ...this.formRef.current.getFieldsValue(),
-            // name: this.formRef.current.getFieldsValue().surchargeName,
-            // extraPrice: this.formRef.current.getFieldsValue().feeAdd,
-            enabled,
-            branchIdx: this.state.branchIdx,
-            startDate: this.state.startDate,
-            endDate: this.state.endDate,
-        }).then((result) => {
-            alert('할증 등록이 완료되었습니다.');
-            this.handleClear();
-            this.getList();
-        }).catch((error) => {
-            alert('에러가 발생하였습니다 다시 시도해주세요.')
+        let self = this;
+        Modal.confirm({
+            title: "할증 등록",
+            content: (
+                <div>
+                    {self.formRef.current.getFieldsValue().name + '을 등록하시겠습니까?'}
+                </div>
+            ),
+            okText: "확인",
+            cancelText: "취소",
+            onOk() {
+                let enabled = true;
+                httpPost(httpUrl.priceExtraRegist, [], {
+                    ...self.formRef.current.getFieldsValue(),
+                    enabled,
+                    branchIdx: self.state.branchIdx,
+                    startDate: self.state.startDate,
+                    endDate: self.state.endDate,
+                }).then((result) => {
+                    Modal.info({
+                        title: "등록 완료",
+                        content: (
+                            <div>
+                                {self.formRef.current.getFieldsValue().name}이(가) 등록되었습니다.
+                            </div>
+                        ),
+                    });
+                    self.handleClear();
+                    self.getList();
+                }).catch((error) => {
+                    Modal.info({
+                        title: "등록 오류",
+                        content: "오류가 발생하였습니다. 다시 시도해 주십시오."
+                    });
+                });
+            },
         });
     }
 
@@ -90,33 +115,52 @@ class SurchargeDialog extends Component {
 
     // 할증 등록시 초기화
     handleClear = () => {
-        this.formRef.current.resetFieldsValue()
+        this.formRef.current.resetFields();
     };
 
     // 할증삭제
     onDelete = (row) => {
-        let idx = row.idx;
-        httpGet(httpUrl.priceExtraDelete, [idx], {})
-            .then((result) => {
-                // console.log('## delete result=' + JSON.stringify(result, null, 4))
-                alert('해당할증을 삭제합니다.')
-                this.getList();
-            })
-            .catch((error) => {
-                alert('에러가 발생하였습니다 다시 시도해주세요.')
-            });
+        let self = this;
+        Modal.confirm({
+            title: "할증 삭제",
+            content: "해당 할증을 삭제하시겠습니까?",
+            okText: "확인",
+            cancelText: "취소",
+            onOk() {
+                let idx = row.idx;
+                httpGet(httpUrl.priceExtraDelete, [idx], {})
+                    .then((result) => {
+                        Modal.info({
+                            title: "할증 삭제",
+                            content: (
+                                <div>
+                                    해당 할증이 삭제되었습니다.
+                                </div>
+                            ),
+                        });
+                        self.getList();
+                    })
+                    .catch((error) => {
+                        Modal.info({
+                            title: "삭제 오류",
+                            content: "오류가 발생하였습니다. 다시 시도해 주십시오."
+                        });
+                    });
+            },
+        });
     };
 
     // 할증 사용여부수정
     onChangeStatus = (index, value) => {
         httpPost(httpUrl.priceExtraUpdate, [], { idx: index, enabled: value })
             .then((result) => {
-                // console.log('## update result=' + JSON.stringify(result, null, 4))
-                alert('사용여부를 수정합니다.')
                 this.getList();
             })
             .catch((error) => {
-                alert('에러가 발생하였습니다 다시 시도해주세요.')
+                Modal.info({
+                    title: "수정 오류",
+                    content: "오류가 발생하였습니다. 다시 시도해 주십시오."
+                });
             });
     }
 
@@ -131,9 +175,9 @@ class SurchargeDialog extends Component {
                 className: "table-column-center",
                 render: (data, row) => <div>
                     <SelectBox
-                        value={string.enabledString[data]}
-                        code={string.enabledCode}
-                        codeString={string.enabledString}
+                        value={enabledString[data]}
+                        code={enabledCode}
+                        codeString={enabledString}
                         onChange={(value) => {
                             if (parseInt(value) !== row.enabled) {
                                 this.onChangeStatus(row.idx, value);

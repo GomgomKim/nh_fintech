@@ -1,16 +1,18 @@
-import { Form, DatePicker, Input, Checkbox, Select, Table, Button, Radio, Descriptions } from 'antd';
+import { Modal, Input, Table, Button, Radio } from 'antd';
 import React, { Component } from 'react';
 import { httpUrl, httpPost } from '../../api/httpClient';
 import RegistFranDialog from "../../components/dialog/franchise/RegistFranDialog";
-import CoinTransferDialog from "../../components/dialog/franchise/CoinTransferDialog";
-import ModifyFranDialog from "../../components/dialog/franchise/ModifyFranDialog";
 import SearchAddressDialog from "../../components/dialog/franchise/SearchAddressDialog";
+import SelectBox from '../../components/input/SelectBox';
 import "../../css/franchise.css";
 import { comma } from "../../lib/util/numberUtil";
 import { BankOutlined } from '@ant-design/icons';
 import { formatDate } from '../../lib/util/dateUtil';
-const Option = Select.Option;
-const FormItem = Form.Item;
+import {
+  statusString,
+  withdrawString,
+  cardStatus,
+} from '../../lib/util/codeUtil';
 const Search = Input.Search;
 
 class FranchiseMain extends Component {
@@ -27,11 +29,12 @@ class FranchiseMain extends Component {
       list: [],
       withdrawSet: 0,
       franStatus: 1,
+      frName: "",
       franGroup: 0,
       franSelectStatus: 0,
-      addFranchiseOpen: false,
-      coinTransferOpen: false,
+      ResistFranchiseOpen: false,
       modifyFranOpen: false,
+      coinTransferOpen: false,
       SearchAddressOpen: false,
       dialogData: [],
     };
@@ -39,6 +42,7 @@ class FranchiseMain extends Component {
 
   componentDidMount() {
     this.getList()
+    // console.log("props tag :"+this.props)
   }
 
   handleTableChange = (pagination) => {
@@ -53,7 +57,7 @@ class FranchiseMain extends Component {
 
   getList = () => {
     httpPost(httpUrl.franchiseList, [], {
-      frName: "",
+      frName: this.state.frName,
       pageNum: 1,
       pageSize: 10,
       userGroup: this.state.franGroup,
@@ -71,11 +75,11 @@ class FranchiseMain extends Component {
   }
 
   // 가맹점등록 dialog
-  openAddFranchiseModal = () => {
-    this.setState({ addFranchiseOpen: true });
+  openRegistFranchiseModal = () => {
+    this.setState({ ResistFranchiseOpen: true });
   }
-  closeAddFranchiseModal = () => {
-    this.setState({ addFranchiseOpen: false });
+  closeRegistFranchiseModal = () => {
+    this.setState({ ResistFranchiseOpen: false });
   }
   // 코인이체 dialog
   openCoinTransferModal = () => {
@@ -86,9 +90,9 @@ class FranchiseMain extends Component {
   }
 
   // 가맹점수정 dialog
-  openModifyFranModal = (row) => {
-    this.setState({ modifyFranOpen: true, dialogData: row });
-  }
+  // openModifyFranModal = (row) => {
+  //   this.setState({ modifyFranOpen: true, dialogData: row });
+  // }
   closeModifyFranModal = () => {
     this.setState({ modifyFranOpen: false });
   }
@@ -101,48 +105,139 @@ class FranchiseMain extends Component {
     this.setState({ SearchAddressOpen: false });
   }
 
-  // // 출금설정
-  // onSetting = (value) => {
-  //   let withdrawSet = value
-  //   this.setState({
-  //     withdrawSet: withdrawSet
-  //   }, () => {
-  //     this.getList();
-  //   })
-  // }
+  // 출금설정
+  onSetting = (value) => {
+    let withdrawSet = value
+    this.setState({
+      withdrawSet: withdrawSet
+    }, () => {
+      this.getList();
+    })
+  }
 
-  // // 상태설정
-  // onStatusSetting = (value) => {
-  //   let franStatus = value
-  //   this.setState({
-  //     franStatus: franStatus
-  //   }, () => {
-  //     this.getList();
-  //   })
-  // }
+  // 상태설정
+  onStatusSetting = (value) => {
+    let franStatus = value
+    this.setState({
+      franStatus: franStatus
+    }, () => {
+      this.getList();
+    })
+  }
 
+  // 가맹점 검색
+  onSearchFranchisee = (value) => {
+    this.setState({
+      frName: value
+    }, () => {
+      this.getList();
+    })
+  }
 
-  // 검색조건 radio
+  // 가맹점 상태변경
+  onChangeStatus = (idx, value) => {
+    httpPost(httpUrl.franchiseUpdate, [], {
+      idx: idx,
+      frStatus: value,
+    })
+      .then((res) => {
+        if (res.result === "SUCCESS") {
+          Modal.info({
+            title: "변경 완료",
+            content: (
+              <div>
+                상태가 변경되었습니다.
+              </div>
+            ),
+            onOk() { },
+          });
+        } else {
+          Modal.error({
+            title: "변경 실패",
+            content: (
+              <div>
+                변경에 실패했습니다. 관리자에게 문의하세요.
+              </div>
+            ),
+            onOk() { },
+          });
+        }
+        this.getList();
+      })
+      .catch((e) => {
+        Modal.error({
+          title: "변경 실패",
+          content: (
+            <div>
+              변경에 실패했습니다. 관리자에게 문의하세요.
+            </div>
+          ),
+          onOk() { },
+        });
+      });
+  }
+
+  // 출금설정 변경
+  onChangeWithdraw = (idx, value) => {
+    httpPost(httpUrl.franchiseUpdate, [], {
+      idx: idx,
+      withdrawEnabled: value,
+    })
+      .then((res) => {
+        if (res.result === "SUCCESS") {
+          Modal.info({
+            title: "변경 완료",
+            content: (
+              <div>
+                상태가 변경되었습니다.
+              </div>
+            ),
+            onOk() { },
+          });
+        } else {
+          Modal.error({
+            title: "변경 실패",
+            content: (
+              <div>
+                변경에 실패했습니다. 관리자에게 문의하세요.
+              </div>
+            ),
+            onOk() { },
+          });
+        }
+        this.getList();
+      })
+      .catch((e) => {
+        Modal.error({
+          title: "변경 실패",
+          content: (
+            <div>
+              변경에 실패했습니다. 관리자에게 문의하세요.
+            </div>
+          ),
+          onOk() { },
+        });
+      });
+  }
 
   render() {
     const columns = [
-      // 0 = 중지
-      // 1 = 사용
-      // 2 = 탈퇴
       {
         title: "상태",
-        dataIndex: "franStatus",
+        dataIndex: "frStatus",
         className: "table-column-center",
-        render:
-          (data, row) => (
-            <div>
-              <Select defaultValue={1} onChange={onChangeStatus} style={{ width: 68 }}>
-                <Option value={0}>중지</Option>
-                <Option value={1}>사용</Option>
-                <Option value={2}>탈퇴</Option>
-              </Select>
-            </div>
-          ),
+        render: (data, row) => <div>
+            <SelectBox
+                value={statusString[data]}
+                code={Object.keys(statusString)}
+                codeString={statusString}
+                onChange={(value) => {
+                    if (parseInt(value) !== row.frStatus) {
+                        this.onChangeStatus(row.idx, value);
+                    }
+                }}
+            />
+        </div>
       },
       {
         title: "순번",
@@ -150,21 +245,9 @@ class FranchiseMain extends Component {
         className: "table-column-center",
       },
       {
-        title: "지사명",
-        dataIndex: "branchName",
-        className: "table-column-center",
-        render: (data) => <div>{'김포1지점'}</div>
-      },
-      {
         title: "가맹점명",
         dataIndex: "frName",
         className: "table-column-center",
-      },
-      {
-        title: "대표자명",
-        dataIndex: "ownerName",
-        className: "table-column-center",
-        render: (data) => <div>{'홍길동'}</div>
       },
       {
         title: "사업자번호",
@@ -173,9 +256,8 @@ class FranchiseMain extends Component {
       },
       {
         title: "전화번호",
-        dataIndex: "frPhone",
+        dataIndex: "phone",
         className: "table-column-center",
-        render: (data) => <div>{'010-1234-5678'}</div>
       },
       {
         title: "주소",
@@ -197,17 +279,21 @@ class FranchiseMain extends Component {
       },
       {
         title: "출금설정",
-        dataIndex: "withdrawSet",
+        dataIndex: "withdrawEnabled",
         className: "table-column-center",
-        render:
-          (data, row) => (
-            <div>
-              <Select defaultValue={1}>
-                <Option value={0}>출금 금지</Option>
-                <Option value={1}>출금 가능</Option>
-              </Select>
-            </div>
-          ),
+        render: (data, row) => <div>
+            <SelectBox
+                value={withdrawString[data]}
+                code={Object.keys(withdrawString)}
+                codeString={withdrawString}
+                onChange={(value) => {
+                    console.log(value, row.withdrawEnabled)
+                    if (value !== row.withdrawEnabled.toString()) {
+                      this.onChangeWithdraw(row.idx, value);
+                    }
+                }}
+            />
+        </div>
       },
       {
         title: "이체",
@@ -229,7 +315,7 @@ class FranchiseMain extends Component {
             <RegistFranDialog isOpen={this.state.addFranchiseOpen} close={this.closeAddFranchiseModal} />
             <Button
               className="tabBtn surchargeTab"
-            // onClick={}
+            // onClick={this.onChangeDeleted}
             >블라인드</Button>
           </div>
       },
@@ -238,10 +324,10 @@ class FranchiseMain extends Component {
         className: "table-column-center",
         render: (data, row) =>
           <div>
-            <ModifyFranDialog isOpen={this.state.modifyFranOpen} close={this.closeModifyFranModal} data={this.state.dialogData} />
+            <RegistFranDialog isOpen={this.state.modifyFranOpen} close={this.closeModifyFranModal} data={this.state.dialogData} />
             <Button
               className="tabBtn surchargeTab"
-              onClick={() => this.openModifyFranModal(row)}
+              onClick={() => this.setState({ modifyFranOpen: true, dialogData: row })}
             >수정하기</Button>
           </div>
       },
@@ -256,22 +342,6 @@ class FranchiseMain extends Component {
       })
     }
 
-    const onChangeGroup = (value) => {
-      console.log(value)
-      this.setState({
-        franGroup: value
-      }, () => {
-        this.getList();
-      })
-    }
-    const onChangeStatus = (value) => {
-      console.log(value)
-      this.setState({
-        franStatus: this.state.franStatus
-      }, () => {
-        this.getList();
-      })
-    }
 
     const expandedRowRender = (record) => {
       const dropColumns = [
@@ -297,7 +367,7 @@ class FranchiseMain extends Component {
           title: "카드가맹상태",
           dataIndex: "cardStatus",
           className: "table-column-center",
-          render: (data) => <div>{data == 0 ? "요청" : "등록완료"}</div>
+          render: (data) => <div>{cardStatus[data]}</div>
         },
         {
           title: "VAN",
@@ -348,9 +418,11 @@ class FranchiseMain extends Component {
         <div className="selectLayout">
           <span className="searchRequirementText">검색조건</span><br />
           <Radio.Group className="searchRequirement" onChange={onChange} value={this.state.franStatus}>
-            <Radio value={1}>사용</Radio>
-            <Radio value={0}>중지</Radio>
-            <Radio value={2}>탈퇴</Radio>
+            {Object.entries(statusString).map(([key, value]) => {
+              return (
+                <Radio value={key}>{value}</Radio>
+              );
+            })}
           </Radio.Group>
           <Search
             placeholder="가맹점검색"
@@ -365,11 +437,11 @@ class FranchiseMain extends Component {
           />
 
 
-          <CoinTransferDialog isOpen={this.state.coinTransferOpen} close={this.closeCoinTransferodal} />
+          <RegistFranDialog isOpen={this.state.ResistFranchiseOpen} close={this.closeRegistFranchiseModal} />
           <Button
             icon={<BankOutlined />}
             className="tabBtn addFranTab"
-            onClick={this.openAddFranchiseModal}
+            onClick={this.openRegistFranchiseModal}
           >가맹점등록</Button>
           <SearchAddressDialog isOpen={this.state.SearchAddressOpen} close={this.closeSearchAddressModal} />
           <Button

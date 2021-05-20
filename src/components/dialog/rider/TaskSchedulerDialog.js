@@ -1,14 +1,11 @@
 import React, { Component } from "react";
 import {
-    Form, Table, Button, Select, Checkbox
+    Form, Table, Button, Checkbox
 } from "antd";
 import TaskGroupDialog from "../rider/TaskGroupDialog";
 import TaskWorkDialog from "../rider/TaskWorkDialog";
 import '../../../css/modal.css';
 import { comma } from "../../../lib/util/numberUtil";
-
-const FormItem = Form.Item;
-const Option = Select.Option;
 
 
 class TaskSchedulerDialog extends Component {

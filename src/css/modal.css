@@ -1,38 +1,38 @@
-.Dialog-overlay{
+.Dialog-overlay {
   position: fixed;
   top: 0;
   left: 0;
   bottom: 0;
   right: 0;
-  background-color: rgba(0,0,0,0.56);
+  background-color: rgba(0, 0, 0, 0.56);
   z-index: 1;
 }
-.Dialog{
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 720px;
-    border-radius: 30px;
-    z-index: 2;
+.Dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 720px;
+  border-radius: 30px;
+  z-index: 2;
 }
 
-.contentBlock:nth-child(1){
-  margin-top:0px!important;
+.contentBlock:nth-child(1) {
+  margin-top: 0px !important;
 }
 
 /* 직원 수정 dialog */
-.updateStaff-Dialog-overlay{
+.updateStaff-Dialog-overlay {
   position: fixed;
   top: 0;
   left: 0;
   bottom: 0;
   right: 0;
-  background-color: rgba(0,0,0,0.2);
+  background-color: rgba(0, 0, 0, 0.2);
   z-index: 1;
 }
 
-.updateStaff-Dialog{
+.updateStaff-Dialog {
   position: fixed;
   top: 50%;
   left: 50%;
@@ -42,49 +42,47 @@
   z-index: 2;
 }
 
-.updateStaff-content{
+.updateStaff-content {
   background-color: white;
-  padding:30px;
+  padding: 30px;
   text-align: left;
   color: #777;
 }
 
-.updateStaff-title{
+.updateStaff-title {
   letter-spacing: -1px;
   font-weight: bold;
   color: #333;
-  text-align: right;             
+  text-align: right;
   display: inline-block;
   font-size: 25px;
   line-height: 30px;
 }
 
-.updateStaff-close{
-    width:30px;
-    cursor:pointer;
-    background-color:#fddc00;
-    /* display: inline-block; */
-    float: right;
-    padding:8px;
-
+.updateStaff-close {
+  width: 30px;
+  cursor: pointer;
+  background-color: #fddc00;
+  /* display: inline-block; */
+  float: right;
+  padding: 8px;
 }
 
-
-.updateStaffWrapper .mainTitle{
-  width:130px;
+.updateStaffWrapper .mainTitle {
+  width: 130px;
 }
 
-.updateStaffWrapper .updateStaffCheck{
+.updateStaffWrapper .updateStaffCheck {
   display: inline-block;
-  margin-left:22px;
+  margin-left: 22px;
 }
 
-.updateStaff-Dialog .layout{
+.updateStaff-Dialog .layout {
   margin-top: 20px;
   width: 100%;
-  overflow-y: scroll; 
-  border: 1px solid #ccc; 
-  padding: 20px 20px; 
+  overflow-y: scroll;
+  border: 1px solid #ccc;
+  padding: 20px 20px;
   text-align: left;
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
@@ -94,88 +92,87 @@
   display: none; /* Chrome, Safari, Opera*/
 }
 
-.updateStaff-Dialog .layout .contentBlock{
+.updateStaff-Dialog .layout .contentBlock {
   margin-top: 25px;
 }
 
-
-.updateStaffWrapper .submitBlock{
+.updateStaffWrapper .submitBlock {
   margin-top: 30px;
   text-align: center;
 }
 
-.updateStaffWrapper .clearBtn{
+.updateStaffWrapper .clearBtn {
   margin-left: 20px;
 }
 
-.updateStaffWrapper .contentBlock .override-select.branch{
-  width:240px;
+.updateStaffWrapper .contentBlock .override-select.branch {
+  width: 240px;
 }
 
-.updateStaffWrapper .override-select.sub{
-  width:270px!important;
+.updateStaffWrapper .override-select.sub {
+  width: 270px !important;
 }
 
-.updateStaffWrapper .contentBlock .override-input{
-  width:240px;
+.updateStaffWrapper .contentBlock .override-input {
+  width: 240px;
 }
-.updateStaffWrapper .ant-radio-group{
+.updateStaffWrapper .ant-radio-group {
   margin-left: 20px;
 }
-.updateStaffWrapper span.ant-radio + *{
+.updateStaffWrapper span.ant-radio + * {
   padding-left: 5px;
   padding-right: 5px;
 }
-.updateStaff-Dialog .ant-btn{
-  width:130px;
-  height:40px!important;
-  font-size:18px!important;
+.updateStaff-Dialog .ant-btn {
+  width: 130px;
+  height: 40px !important;
+  font-size: 18px !important;
 }
 
 /* 지도 관제 dialog */
-.map-Dialog{
-  position:fixed;
-  top:50%;
-  left:50%;
+.map-Dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
   transform: translate(-50%, -50%);
-  width:100%;
+  width: 100%;
   height: 100%;
   z-index: 2;
 }
 
-.map-content{
-  background-color:white;
+.map-content {
+  background-color: white;
   height: 100%;
   width: 100%;
 }
-.map-title{
-  font-size:25px;
-  font-weight:bold;
-  line-height:30px;
+.map-title {
+  font-size: 25px;
+  font-weight: bold;
+  line-height: 30px;
   /* width:300px; */
   display: inline-block;
   vertical-align: middle;
 }
 
-.map-close{
+.map-close {
   position: absolute;
   top: 10px;
   right: 10px;
   z-index: 90;
-    width:30px;
-    cursor:pointer;
-    background-color:#fddc00;
-    /* display: inline-block; */
-    padding:8px;
+  width: 30px;
+  cursor: pointer;
+  background-color: #fddc00;
+  /* display: inline-block; */
+  padding: 8px;
 }
 
-.map-inner { 
-    width: 100%; 
-    /* border: 1px solid #ccc;  */
-    text-align: left;
+.map-inner {
+  width: 100%;
+  /* border: 1px solid #ccc;  */
+  text-align: left;
 }
 
-.riderListInMapControl{
+.riderListInMapControl {
   width: 42%;
   position: absolute;
   right: 10px;
@@ -194,51 +191,51 @@
   cursor: pointer;
 }
 
-.map-box .ant-checkbox{
-  top: 0em!important;
+.map-box .ant-checkbox {
+  top: 0em !important;
 }
-.map-box .ant-checkbox-wrapper{
-  display:table;
+.map-box .ant-checkbox-wrapper {
+  display: table;
 }
 
-.map-box .ant-checkbox-wrapper >span{
-  display:table-cell;
+.map-box .ant-checkbox-wrapper > span {
+  display: table-cell;
   text-align: center;
 }
 
 .map-box > div {
-  width:120px;
-  height:52px;
-  float:left;
+  width: 120px;
+  height: 52px;
+  float: left;
   /* margin:20px; */
 }
 
-.map-box .ant-checkbox-inner{
-  width:45px;
-  height:45px;
+.map-box .ant-checkbox-inner {
+  width: 45px;
+  height: 45px;
 }
 .map-box .ant-checkbox-inner::after {
   width: 25px;
   height: 25px;
 }
 
-.map-box .ant-checkbox + span{
-  font-size:20px;
+.map-box .ant-checkbox + span {
+  font-size: 20px;
   vertical-align: middle;
 }
 
 /* 기사 추가 dialog */
-.addRider-Dialog-overlay{
+.addRider-Dialog-overlay {
   position: fixed;
   top: 0;
   left: 0;
   bottom: 0;
   right: 0;
-  background-color: rgba(0,0,0,0.2);
+  background-color: rgba(0, 0, 0, 0.2);
   z-index: 1;
 }
 
-.addRider-Dialog{
+.addRider-Dialog {
   position: fixed;
   top: 50%;
   left: 50%;
@@ -248,34 +245,33 @@
   z-index: 2;
 }
 
-.addRider-content{
+.addRider-content {
   background-color: white;
-  padding:30px;
+  padding: 30px;
   /* text-align: left; */
   /* color: #777; */
 }
 
-
-.addRider-title{
+.addRider-title {
   letter-spacing: -1px;
   font-weight: bold;
   color: #333;
-  text-align: right;             
+  text-align: right;
   display: inline-block;
   font-size: 25px;
   line-height: 30px;
 }
 
-.addRider-close{
-    width:30px;
-    cursor:pointer;
-    background-color:#fddc00;
-    /* display: inline-block; */
-    float: right;
-    padding:8px;
+.addRider-close {
+  width: 30px;
+  cursor: pointer;
+  background-color: #fddc00;
+  /* display: inline-block; */
+  float: right;
+  padding: 8px;
 }
 
-.addRider-Dialog .addRiderlayout{
+.addRider-Dialog .addRiderlayout {
   height: 540px;
 }
 
@@ -283,31 +279,31 @@
   margin-top: 30px !important;
 }
 
-.addRiderWrapper .contentBlock .selectItem .override-select{
+.addRiderWrapper .contentBlock .selectItem .override-select {
   width: 345px;
 }
 
-.addRider-Dialog .dataTableBlock{
+.addRider-Dialog .dataTableBlock {
   margin-top: 40px;
 }
 
-.addRiderWrapper .submitBlock{
+.addRiderWrapper .submitBlock {
   margin-top: 30px;
   text-align: center;
 }
 
 /* 그룹 추가 dialog */
-.addGroup-Dialog-overlay{
+.addGroup-Dialog-overlay {
   position: fixed;
   top: 0;
   left: 0;
   bottom: 0;
   right: 0;
-  background-color: rgba(0,0,0,0.2);
+  background-color: rgba(0, 0, 0, 0.2);
   z-index: 1;
 }
 
-.addGroup-Dialog{
+.addGroup-Dialog {
   position: fixed;
   top: 50%;
   left: 50%;
@@ -317,45 +313,44 @@
   z-index: 2;
 }
 
-.addGroup-content{
+.addGroup-content {
   background-color: white;
-  padding:30px;
+  padding: 30px;
   /* text-align: left; */
   /* color: #777; */
 }
 
-
-.addGroup-title{
+.addGroup-title {
   letter-spacing: -1px;
   font-weight: bold;
   color: #333;
-  text-align: right;             
+  text-align: right;
   display: inline-block;
   font-size: 25px;
   line-height: 30px;
 }
 
-.addGroupWrapper{
-  margin-top:20px;
+.addGroupWrapper {
+  margin-top: 20px;
 }
-.addGrouplayout .contentBlock{
+.addGrouplayout .contentBlock {
   width: 400px;
 }
 
-.addGrouplayout .contentBlock .override-input{
+.addGrouplayout .contentBlock .override-input {
   width: 300px;
 }
 
-.addGroup-close{
-    width:30px;
-    cursor:pointer;
-    background-color:#fddc00;
-    /* display: inline-block; */
-    float: right;
-    padding:8px;
+.addGroup-close {
+  width: 30px;
+  cursor: pointer;
+  background-color: #fddc00;
+  /* display: inline-block; */
+  float: right;
+  padding: 8px;
 }
 
-.addGroup-Dialog .addGrouplayout{
+.addGroup-Dialog .addGrouplayout {
   height: 100px;
 }
 
@@ -363,35 +358,34 @@
   margin-top: 30px;
 } */
 
-.addGroupWrapper .submitBlock{
+.addGroupWrapper .submitBlock {
   margin-top: 30px;
   text-align: center;
 }
 
-.addGroupWrapper .ant-btn-primary{
-  width:130px;
-  height:40px;
-  font-size:18px;
+.addGroupWrapper .ant-btn-primary {
+  width: 130px;
+  height: 40px;
+  font-size: 18px;
 }
 
-
 /* 공지사항 dialog */
-.noticeDialog{
+.noticeDialog {
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   width: 1320px;
   border-radius: 30px;
-  padding:20px;
+  padding: 20px;
   z-index: 2;
 }
 
-.noticeLayout{ 
+.noticeLayout {
   margin-top: 20px;
   width: 100%;
-  overflow-y: scroll; 
-  border: 1px solid #ccc;  
+  overflow-y: scroll;
+  border: 1px solid #ccc;
   text-align: left;
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
@@ -400,24 +394,23 @@
 
 .noticeDialog .container {
   background-color: white;
-    padding:30px;
-    text-align: left;
-    color: #777;
+  padding: 30px;
+  text-align: left;
+  color: #777;
 }
 
-
-.notice-title{
+.notice-title {
   /* font-size: 28px; */
   letter-spacing: -1px;
   font-weight: bold;
   color: #333;
-  text-align: right;             
+  text-align: right;
   display: inline-block;
   font-size: 25px;
   line-height: 30px;
 }
 
-.notice-close{
+.notice-close {
   width: 30px;
   background-color: #fddc00;
   padding: 8px;
@@ -430,12 +423,12 @@
   display: none; /* Chrome, Safari, Opera*/
 }
 
-.noticeLayout .noticelistBlock{
+.noticeLayout .noticelistBlock {
   float: left;
   width: 55%;
 }
 
-.noticeLayout .noticeDetailBlock{
+.noticeLayout .noticeDetailBlock {
   float: right;
   width: 35%;
 }
@@ -445,307 +438,155 @@
   height: 380px;
 }
 
-.noticeLayout .noticeInputBox{
+.noticeLayout .noticeInputBox {
   width: 100%;
   height: 380px;
 }
 
-
-
-
-  /* 할증 dialog */
-  .surcharge-Dialog{
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -65%);
-    width: 1000px;
-    border-radius: 30px;
-    z-index: 2;
-  }
-  .surcharge-container{
-    background-color: white;
-    padding:30px;
-    text-align: left;
-    color: #777;
-  }
-  .surcharge-title{
-    /* font-size: 28px; */
-    letter-spacing: -1px;
-    font-weight: bold;
-    color: #333;
-    text-align: right;             
-    display: inline-block;
-    font-size: 25px;
-    line-height: 30px;
-  }
-  .surcharge-close{
-    width: 30px;
-    background-color: #fddc00;
-    padding: 8px;
-    cursor: pointer;
-    /* display: inline-block; */
-    float: right;
-  }
-  .surchargeLayout{ 
-    margin-top: 20px;
-    width: 100%; 
-    /* height: 675px;  */
-    overflow-y: scroll; 
-    border: 1px solid #ccc; 
-    padding: 20px; 
-    text-align: left;
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
-  }
-  .surchargeLayout::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera*/
-  }
-  .selectBlock .ant-form-item{
-    margin-bottom: 0px;
-  }
-  .selectBlock .selectItem{
-    display: inline-block;
-  }
-  .selectBlock .override-select{
-    margin-left: 20px;
-    width: 250px;
-    font-size: 15px;
-  }
-  .listBlock{
-    margin-top: 20px;
-  }
-  .listBlock .ant-btn{
-    margin-left: -5px;
-  }
-  .surchargeLayout .insertBlock{ 
-    margin-top: 20px;
-    padding-top: 20px;
-    border-top: 1px solid #b5b5b5;
-  }
-  
-  .mainTitle{
-    display: inline-block;
-    font-size: 18px;
-    vertical-align: middle;
-    font-weight: bold;
-    /* width: 75px; */
-  }
-  .subTitle{
-    display: inline-block;
-    font-size: 18px;
-    vertical-align: middle;
-  }
-  .subDatePrice{
-    display: inline-block;
-    margin-left:18px;
-    font-size: 18px;
-    vertical-align: middle;
-  }
-  .selectBox{
-    display: inline-block;
-    margin-left: 10px;
-    font-size: 18px;
-    vertical-align: middle;
-    color: #fddc00;
-    border-radius: 10px;
-  }
-  .selectBox .ant-form-item{
-    margin-bottom: 0px;
-  }
-  .selectBox .ant-picker-input > input{
-    text-align: center;
-    width: 130px;
-  }
-  .btnInsert{
-    margin: 20px 0px;
-    
-  }
-  .inputBox{
-    display: inline-block;
-    /* margin-left: 10px; */
-    font-size: 18px;
-    vertical-align: middle;
-    color: #fddc00;
-    border-radius: 10px;
-  }
-  .memoInputBox{
-    width: 400px;
-    height: 200px;
-  }
-  .inputBox .ant-form-item{
-    margin-bottom: 0px;
-    display: inline-block;
-    vertical-align: middle;
-    margin-left: 10px;
-  }
-  .priceText{
-    display: inline-block;
-    vertical-align: middle;
-    margin-left: 5px;
-    font-size: 20px;
-    color: #000;
-  }
-  .btnInsert .ant-btn{
-    width: 130px;
-    font-size: 18px;
-    border-radius: 2px;
-    vertical-align: middle;
-    padding: 0px;
-    height: 40px;
-    float: right;
-  }
-
-  
-  /* 콜등록 dialog */
-  .registCall-Dialog{
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 1000px;
-    border-radius: 30px;
-    z-index: 2;
-  }
-  .registCall-container{
-    background-color: white;
-    padding:30px;
-    text-align: left;
-    color: #777;
-  }
-  .registCall-title{
-    /* font-size: 28px; */
-    letter-spacing: -1px;
-    font-weight: bold;
-    color: #333;
-    text-align: right;             
-    display: inline-block;
-    font-size: 25px;
-    line-height: 30px;
-  }
-  .registCall-close{
-    width: 30px;
-    background-color: #fddc00;
-    padding: 8px;
-    cursor: pointer;
-    /* display: inline-block; */
-    float: right;
-  }
-  .registCallLayout{ 
-    margin-top: 20px;
-    width: 100%; 
-    /* height: 725px;  */
-    overflow-y: scroll; 
-    border: 1px solid #ccc; 
-    padding:20px; 
-    text-align: left;
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
-  }
-  .registCallLayout::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera*/
-  }
-  /* 왼쪽 wrappper */
-  .registCallWrapper{
-    display: inline-block;
-  }
-  .registCallWrapper .mainTitle{
-    display: inline-block;
-    /* font-size: 20px; */
-    vertical-align: middle;
-    font-weight: bold;
-    width: 75px;
-  }
-  .mainTitle.sub{
-    display: inline-block;
-    font-size: 18px;
-    vertical-align: middle;
-    font-weight: bold;
-    margin-left: 10px;
-  }
-  .registCallLayout .contentBlock{
-    margin-top: 15px;
-  }
-  .contentBlock .ant-form-item{
-    margin-bottom: 0px;
-  }
-  .contentBlock .selectItem{
-    display: inline-block;
-  }
-  .contentBlock .override-select{
-    margin-left: 20px;
-    width: 250px;
-    font-size: 15px;
-  }
-  .contentBlock .override-select.branch{
-    margin-left: 20px;
-    width: 400px;
-    font-size: 15px;
-    display: inline-block;
-    vertical-align: middle;
-  }
-  .contentBlock .override-select.fran{
-    margin-left: 20px;
-    width: 201px;
-    font-size: 15px;
-    display: inline-block;
-    vertical-align: middle;
-  }
-  .contentBlock .override-select.time{
-    margin-left: 20px;
-    width: 201px;
-    font-size: 15px;
-    display: inline-block;
-    vertical-align: middle;
-  }
-  .contentBlock .override-input{
-    margin-left: 20px;
-    width: 400px;
-  }
-  /* 오른쪽 wrappper */
-  .registCallWrapper.sub{
-    vertical-align: top;
-    display: inline-block;
-    width: 300px;
-    margin-left: 100px;
-  }
-  .registCallWrapper.sub .mainTitle{
-    display: inline-block;
-    /* font-size: 20px; */
-    vertical-align: middle;
-    font-weight: bold;
-    width: 75px;
-  }
-  .contentBlock .override-input.memo{
-    /* margin-left: -30px; */
-    width: 205px;
-  }
-  .contentBlock .override-input.price{
-    /* margin-left: -30px; */
-    width: 205px;
-  }
-  .contentBlock .override-input.delprice{
-    /* margin-left: -30px; */
-    width: 205px;
-  }
-  .registCallWrapper.sub .callTab{
-    width: 300px;
-    height: 40px;
-    font-size: 18px;
-    margin-top: 12px;
-  }
-  .registCallLayout .mapLayout{
-    margin-top: 20px;
-    width:1000px;
-    height:400px;
+/* 할증 dialog */
+.surcharge-Dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -65%);
+  width: 1000px;
+  border-radius: 30px;
+  z-index: 2;
 }
-  .registCallLayout #myMap{
-    width:895px;
+.surcharge-container {
+  background-color: white;
+  padding: 30px;
+  text-align: left;
+  color: #777;
 }
-  
+.surcharge-title {
+  /* font-size: 28px; */
+  letter-spacing: -1px;
+  font-weight: bold;
+  color: #333;
+  text-align: right;
+  display: inline-block;
+  font-size: 25px;
+  line-height: 30px;
+}
+.surcharge-close {
+  width: 30px;
+  background-color: #fddc00;
+  padding: 8px;
+  cursor: pointer;
+  /* display: inline-block; */
+  float: right;
+}
+.surchargeLayout {
+  margin-top: 20px;
+  width: 100%;
+  /* height: 675px;  */
+  overflow-y: scroll;
+  border: 1px solid #ccc;
+  padding: 20px;
+  text-align: left;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+.surchargeLayout::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera*/
+}
+.selectBlock .ant-form-item {
+  margin-bottom: 0px;
+}
+.selectBlock .selectItem {
+  display: inline-block;
+}
+.selectBlock .override-select {
+  margin-left: 20px;
+  width: 250px;
+  font-size: 15px;
+}
+.listBlock {
+  margin-top: 20px;
+}
+.listBlock .ant-btn {
+  margin-left: -5px;
+}
+.surchargeLayout .insertBlock {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #b5b5b5;
+}
 
-  /* 가맹점등록 dialog */
-.registFran-Dialog{
+.mainTitle {
+  display: inline-block;
+  font-size: 18px;
+  vertical-align: middle;
+  font-weight: bold;
+  /* width: 75px; */
+}
+.subTitle {
+  display: inline-block;
+  font-size: 18px;
+  vertical-align: middle;
+}
+.subDatePrice {
+  display: inline-block;
+  margin-left: 18px;
+  font-size: 18px;
+  vertical-align: middle;
+}
+.selectBox {
+  display: inline-block;
+  margin-left: 10px;
+  font-size: 18px;
+  vertical-align: middle;
+  color: #fddc00;
+  border-radius: 10px;
+}
+.selectBox .ant-form-item {
+  margin-bottom: 0px;
+}
+.selectBox .ant-picker-input > input {
+  text-align: center;
+  width: 130px;
+}
+.btnInsert {
+  margin: 20px 0px;
+}
+.inputBox {
+  display: inline-block;
+  /* margin-left: 10px; */
+  font-size: 18px;
+  vertical-align: middle;
+  color: #fddc00;
+  border-radius: 10px;
+}
+.memoInputBox {
+  width: 400px;
+  height: 200px;
+}
+.inputBox .ant-form-item {
+  margin-bottom: 0px;
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 10px;
+}
+.priceText {
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 5px;
+  font-size: 20px;
+  color: #000;
+}
+.btnInsert .ant-btn {
+  width: 130px;
+  font-size: 18px;
+  border-radius: 2px;
+  vertical-align: middle;
+  padding: 0px;
+  height: 40px;
+  float: right;
+}
+
+/* 콜등록 dialog */
+.registCall-Dialog {
   position: fixed;
   top: 50%;
   left: 50%;
@@ -754,23 +595,23 @@
   border-radius: 30px;
   z-index: 2;
 }
-.registFran-container{
+.registCall-container {
   background-color: white;
-  padding:30px;
+  padding: 30px;
   text-align: left;
   color: #777;
 }
-.registFran-title{
+.registCall-title {
   /* font-size: 28px; */
   letter-spacing: -1px;
   font-weight: bold;
   color: #333;
-  text-align: right;             
+  text-align: right;
   display: inline-block;
   font-size: 25px;
   line-height: 30px;
 }
-.registFran-close{
+.registCall-close {
   width: 30px;
   background-color: #fddc00;
   padding: 8px;
@@ -778,13 +619,159 @@
   /* display: inline-block; */
   float: right;
 }
-.registFranLayout{ 
+.registCallLayout {
+  margin-top: 20px;
+  width: 100%;
+  /* height: 725px;  */
+  overflow-y: scroll;
+  border: 1px solid #ccc;
+  padding: 20px;
+  text-align: left;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+.registCallLayout::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera*/
+}
+/* 왼쪽 wrappper */
+.registCallWrapper {
+  display: inline-block;
+}
+.registCallWrapper .mainTitle {
+  display: inline-block;
+  /* font-size: 20px; */
+  vertical-align: middle;
+  font-weight: bold;
+  width: 75px;
+}
+.mainTitle.sub {
+  display: inline-block;
+  font-size: 18px;
+  vertical-align: middle;
+  font-weight: bold;
+  margin-left: 10px;
+}
+.registCallLayout .contentBlock {
+  margin-top: 15px;
+}
+.contentBlock .ant-form-item {
+  margin-bottom: 0px;
+}
+.contentBlock .selectItem {
+  display: inline-block;
+}
+.contentBlock .override-select {
+  margin-left: 20px;
+  width: 250px;
+  font-size: 15px;
+}
+.contentBlock .override-select.branch {
+  margin-left: 20px;
+  width: 400px;
+  font-size: 15px;
+  display: inline-block;
+  vertical-align: middle;
+}
+.contentBlock .override-select.fran {
+  margin-left: 20px;
+  width: 201px;
+  font-size: 15px;
+  display: inline-block;
+  vertical-align: middle;
+}
+.contentBlock .override-select.time {
+  margin-left: 20px;
+  width: 201px;
+  font-size: 15px;
+  display: inline-block;
+  vertical-align: middle;
+}
+.contentBlock .override-input {
+  margin-left: 20px;
+  width: 400px;
+}
+/* 오른쪽 wrappper */
+.registCallWrapper.sub {
+  vertical-align: top;
+  display: inline-block;
+  width: 300px;
+  margin-left: 100px;
+}
+.registCallWrapper.sub .mainTitle {
+  display: inline-block;
+  /* font-size: 20px; */
+  vertical-align: middle;
+  font-weight: bold;
+  width: 75px;
+}
+.contentBlock .override-input.memo {
+  /* margin-left: -30px; */
+  width: 205px;
+}
+.contentBlock .override-input.price {
+  /* margin-left: -30px; */
+  width: 205px;
+}
+.contentBlock .override-input.delprice {
+  /* margin-left: -30px; */
+  width: 205px;
+}
+.registCallWrapper.sub .callTab {
+  width: 300px;
+  height: 40px;
+  font-size: 18px;
+  margin-top: 12px;
+}
+.registCallLayout .mapLayout {
+  margin-top: 20px;
+  width: 1000px;
+  height: 400px;
+}
+.registCallLayout #myMap {
+  width: 895px;
+}
+
+/* 가맹점등록 dialog */
+.registFran-Dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 1000px;
+  border-radius: 30px;
+  z-index: 2;
+}
+.registFran-container {
+  background-color: white;
+  padding: 30px;
+  text-align: left;
+  color: #777;
+}
+.registFran-title {
+  /* font-size: 28px; */
+  letter-spacing: -1px;
+  font-weight: bold;
+  color: #333;
+  text-align: right;
+  display: inline-block;
+  font-size: 25px;
+  line-height: 30px;
+}
+.registFran-close {
+  width: 30px;
+  background-color: #fddc00;
+  padding: 8px;
+  cursor: pointer;
+  /* display: inline-block; */
+  float: right;
+}
+.registFranLayout {
   margin-top: 20px;
   width: 100%;
   /* height: 510px;  */
-  overflow-y: scroll; 
-  border: 1px solid #ccc; 
-  padding: 20px; 
+  overflow-y: scroll;
+  border: 1px solid #ccc;
+  padding: 20px;
   text-align: left;
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
@@ -793,24 +780,24 @@
   display: none; /* Chrome, Safari, Opera*/
 }
 /* 왼쪽 wrappper */
-.registFranWrapper{
+.registFranWrapper {
   display: inline-block;
 }
-.registFranTitle{
+.registFranTitle {
   display: inline-block;
   font-size: 20px;
   vertical-align: middle;
   font-weight: bold;
   color: #1890ff;
 }
-.registFranWrapper .mainTitle{
+.registFranWrapper .mainTitle {
   display: inline-block;
   /* font-size: 20px; */
   vertical-align: middle;
   font-weight: bold;
   width: 100px;
 }
-.registFranWrapper .mainTitle.red{
+.registFranWrapper .mainTitle.red {
   display: inline-block;
   /* font-size: 20px; */
   vertical-align: middle;
@@ -818,113 +805,113 @@
   width: 100px;
   color: #1890ff;
 }
-.mainTitle.sub{
+.mainTitle.sub {
   display: inline-block;
   font-size: 18px;
   vertical-align: middle;
   font-weight: bold;
   margin-left: 10px;
 }
-.registFranLayout .contentBlock{
+.registFranLayout .contentBlock {
   margin-top: 15px;
 }
-.registFranWrapper .ant-form-item{
+.registFranWrapper .ant-form-item {
   margin-bottom: 0px;
 }
-.registFranWrapper .selectItem{
+.registFranWrapper .selectItem {
   display: inline-block;
 }
-.registFranWrapper .override-select{
+.registFranWrapper .override-select {
   margin-left: 20px;
   width: 250px;
   font-size: 15px;
 }
-.registFranWrapper .override-select.branch{
+.registFranWrapper .override-select.branch {
   margin-left: 20px;
   width: 300px;
   font-size: 15px;
   display: inline-block;
   vertical-align: middle;
 }
-.registFranWrapper .override-input{
+.registFranWrapper .override-input {
   margin-left: 20px;
   width: 300px;
 }
 /* 오른쪽 wrappper */
-.registFranWrapper.sub{
+.registFranWrapper.sub {
   vertical-align: top;
   display: inline-block;
   /* width: 340px; */
   margin-top: 46px;
   margin-left: 70px;
 }
-.registFranWrapper.sub .mainTitle{
+.registFranWrapper.sub .mainTitle {
   display: inline-block;
   /* font-size: 20px; */
   vertical-align: middle;
   font-weight: bold;
   width: 75px;
 }
-.registFranWrapper.sub .override-input.sub{
+.registFranWrapper.sub .override-input.sub {
   /* margin-left: -30px; */
   width: 300px;
 }
-.registFranWrapper.sub .override-input.price{
+.registFranWrapper.sub .override-input.price {
   /* margin-left: -30px; */
   width: 200px;
   margin-right: 10px;
 }
-.registFranWrapper.sub .callTab{
+.registFranWrapper.sub .callTab {
   width: 400px;
   height: 40px;
   font-size: 18px;
   margin-top: 60px;
 }
 /* 하단 랩퍼 */
-.registFranWrapper.bot{
+.registFranWrapper.bot {
   margin-top: 40px;
   padding-top: 30px;
   border-top: 1px solid #b5b5b5;
   display: inline-block;
 }
-.registFranWrapper.bot .registFranTitle{
+.registFranWrapper.bot .registFranTitle {
   font-size: 20px;
   vertical-align: middle;
   font-weight: bold;
   color: #1890ff;
 }
-.registFranWrapper.bot .mainTitle{
+.registFranWrapper.bot .mainTitle {
   /* font-size: 20px; */
   vertical-align: middle;
   font-weight: bold;
   width: 75px;
 }
-.registFranWrapper.bot .subTitle{
+.registFranWrapper.bot .subTitle {
   font-size: 18px;
   vertical-align: middle;
   font-weight: bold;
   /* width: 70px; */
   margin-left: 20px;
 }
-.registFranWrapper.bot .ant-checkbox-inner{
+.registFranWrapper.bot .ant-checkbox-inner {
   width: 20px;
   height: 20px;
 }
-.registFranWrapper.bot .override-input.sub{
+.registFranWrapper.bot .override-input.sub {
   /* margin-left: -30px; */
   margin-left: 10px;
   width: 150px;
 }
-.registFranWrapper.bot .selectItem{
+.registFranWrapper.bot .selectItem {
   vertical-align: middle;
 }
-.registFranWrapper.bot .override-select{
+.registFranWrapper.bot .override-select {
   margin-left: 10px;
   width: 230px;
   font-size: 15px;
   vertical-align: middle;
 }
-.registFranWrapper.bot .callTab{
+.registFranWrapper.bot .callTab {
   width: 185px;
   height: 40px;
   font-size: 18px;
@@ -934,108 +921,106 @@
   vertical-align: middle;
 }
 
-
 /* 코인이체 dialog */
-.coinTran-Dialog{
-  position:fixed;
-  top:50%;
-  left:50%;
+.coinTran-Dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
   transform: translate(-50%, -50%);
-  width:800px;
+  width: 800px;
   z-index: 2;
 }
 
-.coinTran-content{
-  padding:30px;
-  background-color:white;
+.coinTran-content {
+  padding: 30px;
+  background-color: white;
 }
 
-.coinTran-title{
-  font-size:25px;
-  font-weight:bold;
-  line-height:30px;
+.coinTran-title {
+  font-size: 25px;
+  font-weight: bold;
+  line-height: 30px;
   /* width:300px; */
   display: inline-block;
   vertical-align: middle;
 }
-.coinTran-close{
-    width:30px;
-    cursor:pointer;
-    background-color:#fddc00;
-    /* display: inline-block; */
-    float: right;
-    padding:8px;
-
+.coinTran-close {
+  width: 30px;
+  cursor: pointer;
+  background-color: #fddc00;
+  /* display: inline-block; */
+  float: right;
+  padding: 8px;
 }
-.coinTran-title-sub{
-  text-align:center;
-  margin-top:20px;
-  font-size:16px;
-  background-color:#222;
-  color:#fff;
-  height:32px;
-  line-height:32px;
+.coinTran-title-sub {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 16px;
+  background-color: #222;
+  color: #fff;
+  height: 32px;
+  line-height: 32px;
 }
-.coinTran-inner { 
-    width: 100%; 
-    overflow-y: scroll; 
-    border: 1px solid #ccc; 
-    padding: 20px; 
-    text-align: left;
-    margin-top:5px;
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
+.coinTran-inner {
+  width: 100%;
+  overflow-y: scroll;
+  border: 1px solid #ccc;
+  padding: 20px;
+  text-align: left;
+  margin-top: 5px;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 .coinTran-inner::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Opera*/
 }
-.coinTran-list{
+.coinTran-list {
   text-align: center;
   margin-top: 10px;
 }
-.coinTran-list td{
-  width:100px;
-  font-size:16px;
-  display:inline-block;
-}
-.coinTran-list .coinTran-place1{
+.coinTran-list td {
+  width: 100px;
+  font-size: 16px;
   display: inline-block;
 }
-.coinTran-list .twl{
-  width:400px;
-  display:inline-block;
-  line-height:30px;
+.coinTran-list .coinTran-place1 {
+  display: inline-block;
 }
-.coinTran-btn-01{
-  margin-top:20px;
-  text-align:center;
+.coinTran-list .twl {
+  width: 400px;
+  display: inline-block;
+  line-height: 30px;
 }
-.coinTran-btn-01 .tabBtn{
-  margin:0px!important;
+.coinTran-btn-01 {
+  margin-top: 20px;
+  text-align: center;
 }
-.coinTran-btn-01 > button{
-  height:40px;
-  width:200px;
-  font-size:18px;
-  background-color:#1890ff;
-  color:#fff;
-  font-size:20px;
-  text-align:center;
-  display:inline-block;
-  padding: 0px!important;
+.coinTran-btn-01 .tabBtn {
+  margin: 0px !important;
 }
-.coinTran-list .inputBox-coinTran.sub .ant-input{
+.coinTran-btn-01 > button {
+  height: 40px;
+  width: 200px;
+  font-size: 18px;
+  background-color: #1890ff;
+  color: #fff;
+  font-size: 20px;
+  text-align: center;
+  display: inline-block;
+  padding: 0px !important;
+}
+.coinTran-list .inputBox-coinTran.sub .ant-input {
   margin-left: -20px;
-  width:200px;
+  width: 200px;
   text-align: right;
 }
-.coinTran-title-02{
+.coinTran-title-02 {
   font-size: 15px;
   font-family: NotoSansBold;
 }
 /* 코인이체모달-antd 수정 */
 
-.coinTran-Dialog .coinTran-inner .dataTableLayout{
+.coinTran-Dialog .coinTran-inner .dataTableLayout {
   margin: 0;
 }
 
@@ -1044,10 +1029,8 @@
   padding: 10px;
 }
 
-
-
 /* 가맹점수정 dialog */
-.modifyFran-Dialog{
+.modifyFran-Dialog {
   position: fixed;
   top: 50%;
   left: 50%;
@@ -1056,23 +1039,23 @@
   border-radius: 30px;
   z-index: 2;
 }
-.modifyFran-container{
+.modifyFran-container {
   background-color: white;
-  padding:30px;
+  padding: 30px;
   text-align: left;
   color: #777;
 }
-.modifyFran-title{
+.modifyFran-title {
   /* font-size: 28px; */
   letter-spacing: -1px;
   font-weight: bold;
   color: #333;
-  text-align: right;             
+  text-align: right;
   display: inline-block;
   font-size: 25px;
   line-height: 30px;
 }
-.modifyFran-close{
+.modifyFran-close {
   width: 30px;
   background-color: #fddc00;
   padding: 8px;
@@ -1080,13 +1063,13 @@
   /* display: inline-block; */
   float: right;
 }
-.modifyFranLayout{ 
+.modifyFranLayout {
   margin-top: 20px;
   width: 100%;
   /* height: 510px;  */
-  overflow-y: scroll; 
-  border: 1px solid #ccc; 
-  padding: 10px 20px 20px; 
+  overflow-y: scroll;
+  border: 1px solid #ccc;
+  padding: 10px 20px 20px;
   text-align: left;
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
@@ -1095,24 +1078,24 @@
   display: none; /* Chrome, Safari, Opera*/
 }
 /* 왼쪽 wrappper */
-.modifyFranWrapper{
+.modifyFranWrapper {
   display: inline-block;
 }
-.modifyFranTitle{
+.modifyFranTitle {
   display: inline-block;
   font-size: 23px;
   vertical-align: middle;
   font-weight: bold;
   color: #1890ff;
 }
-.modifyFranWrapper .mainTitle{
+.modifyFranWrapper .mainTitle {
   display: inline-block;
   /* font-size: 20px; */
   vertical-align: middle;
   font-weight: bold;
   width: 100px;
 }
-.modifyFranWrapper .mainTitle.red{
+.modifyFranWrapper .mainTitle.red {
   display: inline-block;
   font-size: 20px;
   vertical-align: middle;
@@ -1120,76 +1103,76 @@
   width: 100px;
   color: #1890ff;
 }
-.mainTitle.sub{
+.mainTitle.sub {
   display: inline-block;
   font-size: 18px;
   vertical-align: middle;
   font-weight: bold;
   margin-left: 10px;
 }
-.modifyFranLayout .contentBlock{
+.modifyFranLayout .contentBlock {
   margin-top: 15px;
 }
-.modifyFranWrapper .ant-form-item{
+.modifyFranWrapper .ant-form-item {
   margin-bottom: 0px;
 }
-.modifyFranWrapper .selectItem{
+.modifyFranWrapper .selectItem {
   display: inline-block;
 }
-.modifyFranWrapper .override-select{
+.modifyFranWrapper .override-select {
   margin-left: 20px;
   width: 250px;
   font-size: 15px;
 }
-.modifyFranWrapper .override-select.branch{
+.modifyFranWrapper .override-select.branch {
   margin-left: 20px;
   width: 300px;
   font-size: 15px;
   display: inline-block;
   vertical-align: middle;
 }
-.modifyFranWrapper .override-input{
+.modifyFranWrapper .override-input {
   margin-left: 20px;
   width: 300px;
 }
 /* 오른쪽 wrappper */
-.modifyFranWrapper.sub{
+.modifyFranWrapper.sub {
   vertical-align: top;
   display: inline-block;
   /* width: 340px; */
   margin-top: 36px;
   margin-left: 70px;
 }
-.modifyFranWrapper.sub .mainTitle{
+.modifyFranWrapper.sub .mainTitle {
   display: inline-block;
   font-size: 20px;
   vertical-align: middle;
   font-weight: bold;
   width: 75px;
 }
-.modifyFranWrapper.sub .override-input.sub{
+.modifyFranWrapper.sub .override-input.sub {
   /* margin-left: -30px; */
   width: 300px;
 }
-.modifyFranWrapper.sub .override-input.price{
+.modifyFranWrapper.sub .override-input.price {
   /* margin-left: -30px; */
   width: 200px;
   margin-right: 10px;
 }
-.modifyFranWrapper.sub .callTab{
+.modifyFranWrapper.sub .callTab {
   width: 400px;
   height: 40px;
   font-size: 18px;
   margin-top: 60px;
 }
 /* 하단 랩퍼 */
-.modifyFranWrapper.bot{
+.modifyFranWrapper.bot {
   padding-top: 30px;
   display: inline-block;
   float: right;
   margin-right: 13px;
 }
-.modifyFranWrapper.bot .callTab{
+.modifyFranWrapper.bot .callTab {
   width: 185px;
   height: 40px;
   font-size: 18px;
@@ -1199,14 +1182,14 @@
 }
 
 /* 출금 비밀번호 초기화 */
-.updatePassword-inner { 
-  width: 100%; 
-  height: 80px; 
-  overflow-y: scroll; 
-  border: 1px solid #ccc; 
-  padding: 20px; 
+.updatePassword-inner {
+  width: 100%;
+  height: 80px;
+  overflow-y: scroll;
+  border: 1px solid #ccc;
+  padding: 20px;
   text-align: left;
-  margin-top:5px;
+  margin-top: 5px;
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
@@ -1216,262 +1199,257 @@
 }
 
 /* 라이더 코인충전 dialog */
-.coinRider-Dialog{
-  position:fixed;
-  top:50%;
-  left:50%;
+.coinRider-Dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
   transform: translate(-50%, -50%);
-  width:500px;
+  width: 500px;
   z-index: 2;
 }
 
-.coinRider-content{
-  padding:20px;
-  background-color:white;
+.coinRider-content {
+  padding: 20px;
+  background-color: white;
 }
 
-.coinRider-title{
-  font-size:25px;
-  font-weight:bold;
-  line-height:30px;
+.coinRider-title {
+  font-size: 25px;
+  font-weight: bold;
+  line-height: 30px;
   /* width:300px; */
   display: inline-block;
   vertical-align: middle;
 }
-.coinRider-close{
-    width:30px;
-    cursor:pointer;
-    background-color:#fddc00;
-    /* display: inline-block; */
-    float: right;
-    padding:8px;
-
+.coinRider-close {
+  width: 30px;
+  cursor: pointer;
+  background-color: #fddc00;
+  /* display: inline-block; */
+  float: right;
+  padding: 8px;
 }
-.coinRider-title-sub{
-  text-align:center;
-  margin-top:20px;
-  font-size:16px;
-  background-color:#222;
-  color:#fff;
-  height:32px;
-  line-height:32px;
+.coinRider-title-sub {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 16px;
+  background-color: #222;
+  color: #fff;
+  height: 32px;
+  line-height: 32px;
 }
-.coinRider-inner { 
-    width: 100%; 
-    height: 200px; 
-    overflow-y: scroll; 
-    border: 1px solid #ccc; 
-    padding: 20px; 
-    text-align: left;
-    margin-top:5px;
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
+.coinRider-inner {
+  width: 100%;
+  height: 200px;
+  overflow-y: scroll;
+  border: 1px solid #ccc;
+  padding: 20px;
+  text-align: left;
+  margin-top: 5px;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 .coinRider-inner::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Opera*/
 }
-.coinRider-list{
+.coinRider-list {
   text-align: center;
 }
-.coinRider-list td{
-  width:100px;
-  font-size:16px;
-  display:inline-block;
-}
-.coinRider-list .coinRider-place1{
+.coinRider-list td {
+  width: 100px;
+  font-size: 16px;
   display: inline-block;
 }
-.coinRider-list .twl{
-  width:400px;
-  display:inline-block;
-  height:60px;
-  line-height:30px;
+.coinRider-list .coinRider-place1 {
+  display: inline-block;
 }
-.coinRider-btn-01{
-  margin-top:20px;
-  text-align:right;
+.coinRider-list .twl {
+  width: 400px;
+  display: inline-block;
+  height: 60px;
+  line-height: 30px;
 }
-.coinRider-btn-01 .tabBtn{
-  margin:0px!important;
+.coinRider-btn-01 {
+  margin-top: 20px;
+  text-align: right;
 }
-.coinRider-btn-01 > button{
-  height:40px;
-  width:200px;
-  font-size:18px;
-  background-color:#1890ff;
-  color:#fff;
-  font-size:20px;
-  text-align:center;
-  display:inline-block;
-  padding: 0px!important;
+.coinRider-btn-01 .tabBtn {
+  margin: 0px !important;
 }
-.coinRider-list .inputBox-coinRider.sub .ant-input{
+.coinRider-btn-01 > button {
+  height: 40px;
+  width: 200px;
+  font-size: 18px;
+  background-color: #1890ff;
+  color: #fff;
+  font-size: 20px;
+  text-align: center;
+  display: inline-block;
+  padding: 0px !important;
+}
+.coinRider-list .inputBox-coinRider.sub .ant-input {
   margin-left: -20px;
-  width:300px;
+  width: 300px;
 }
 
 /*입출금내역 dialog*/
 
-.riderBank-Dialog{
-  position:fixed;
-  top:50%;
-  left:50%;
+.riderBank-Dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
   transform: translate(-50%, -50%);
-  width:1000px;
+  width: 1000px;
   z-index: 2;
 }
 
-.riderBank-content{
-  padding:30px;
-  background-color:white;
+.riderBank-content {
+  padding: 30px;
+  background-color: white;
 }
 
-.riderBank-title{
-  font-size:25px;
-  font-weight:bold;
-  line-height:30px;
+.riderBank-title {
+  font-size: 25px;
+  font-weight: bold;
+  line-height: 30px;
   /* width:300px; */
   display: inline-block;
   vertical-align: middle;
 }
 
-.riderBank-close{
-    width:30px;
-    cursor:pointer;
-    background-color:#fddc00;
-    /* display: inline-block; */
-    float: right;
-    padding:8px;
-
+.riderBank-close {
+  width: 30px;
+  cursor: pointer;
+  background-color: #fddc00;
+  /* display: inline-block; */
+  float: right;
+  padding: 8px;
 }
 
-.riderBank-inner { 
-    width: 100%; 
-    height: 650px; 
-    overflow-y: scroll; 
-    border: 1px solid #ccc; 
-    padding: 20px; 
-    text-align: left;
-    margin-top:20px;
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
+.riderBank-inner {
+  width: 100%;
+  height: 650px;
+  overflow-y: scroll;
+  border: 1px solid #ccc;
+  padding: 20px;
+  text-align: left;
+  margin-top: 20px;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 
 .riderBank-inner::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Opera*/
 }
-.riderBank-list{
+.riderBank-list {
   height: 500px;
 }
-.riderBank-list-01{
-  display:inline-block;
-  width:950px;
+.riderBank-list-01 {
+  display: inline-block;
+  width: 950px;
   text-align: left;
-  margin-top:30px;
+  margin-top: 30px;
 }
 
-.riderBank-list-01 .riderBank-datepicker{
+.riderBank-list-01 .riderBank-datepicker {
   display: inline-block;
 }
 
-.riderBank-list-01 td{
+.riderBank-list-01 td {
   display: inline-block;
-  width:100px;
-  font-size:25px;
-  text-align: center!important;
+  width: 100px;
+  font-size: 25px;
+  text-align: center !important;
 }
 .riderBank-list-01 Button {
-  margin-left:30px;
+  margin-left: 30px;
   background-color: #40a9ff;
-  color:#fff;
+  color: #fff;
 }
 /* 시간지연 dialog */
-.timeDelay-Dialog{
-  position:fixed;
-  top:50%;
-  left:50%;
+.timeDelay-Dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
   transform: translate(-50%, -50%);
-  width:690px;
+  width: 690px;
   z-index: 2;
 }
 
-.timeDelay-content{
-  padding:20px;
-  background-color:white;
+.timeDelay-content {
+  padding: 20px;
+  background-color: white;
 }
 
-.timeDelay-title{
-  font-size:25px;
-  font-weight:bold;
-  line-height:30px;
+.timeDelay-title {
+  font-size: 25px;
+  font-weight: bold;
+  line-height: 30px;
   /* width:300px; */
   display: inline-block;
   vertical-align: middle;
 }
 
-.timeDelay-close{
-    width:30px;
-    cursor:pointer;
-    background-color:#fddc00;
-    /* display: inline-block; */
-    float: right;
-    padding:8px;
-
+.timeDelay-close {
+  width: 30px;
+  cursor: pointer;
+  background-color: #fddc00;
+  /* display: inline-block; */
+  float: right;
+  padding: 8px;
 }
 
-.timeDelay-inner { 
-    width: 100%; 
-    overflow-y: scroll; 
-    border: 1px solid #ccc; 
-    /* padding: 20px;  */
-    text-align: left;
-    margin-top:20px;
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
+.timeDelay-inner {
+  width: 100%;
+  overflow-y: scroll;
+  border: 1px solid #ccc;
+  /* padding: 20px;  */
+  text-align: left;
+  margin-top: 20px;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 
 .timeDelay-inner::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Opera*/
 }
 
-.timeDelay-box{
+.timeDelay-box {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
-  width:610px;
-  height:300px;
-  margin:1rem;
+  width: 610px;
+  height: 300px;
+  margin: 1rem;
 }
 
-.timeDelay-box > .ant-btn:hover{
+.timeDelay-box > .ant-btn:hover {
   color: #000;
   border: #000 1px solid;
 }
 
-.timeDelay-box > button{
-  width:144px;
-  height:144px;
-  border:1px solid #777;
-  border-radius:10px;
-  font-size:25px;
+.timeDelay-box > button {
+  width: 144px;
+  height: 144px;
+  border: 1px solid #777;
+  border-radius: 10px;
+  font-size: 25px;
 }
 
-.timeDelay-box > .timeDelay-box-off{
+.timeDelay-box > .timeDelay-box-off {
   background-color: grey;
   opacity: 0.3;
 }
 
-.timeDelay-box > .ant-btn:active{
+.timeDelay-box > .ant-btn:active {
   color: none;
-  border:1px solid #777;
+  border: 1px solid #777;
 }
 
-
-.timeDelay-box > .ant-btn:focus{
-  border:1px solid #777;
-  color:black;
+.timeDelay-box > .ant-btn:focus {
+  border: 1px solid #777;
+  color: black;
 }
-
 
 /* .timeDelay-box .timeDelay-box-01, .timeDelay-box-05, .timeDelay-box-09 {
   margin-left:0px!important;
@@ -1481,74 +1459,74 @@
   margin-bottom:0px!important;
 } */
 
-.timeDelay-place1{
+.timeDelay-place1 {
   text-align: center;
-  display:inline-block;
+  display: inline-block;
 }
-.timeDelay-place1 .ant-select:not(.ant-select-customize-input) .ant-select-selector{
-  width:220px;
+.timeDelay-place1
+  .ant-select:not(.ant-select-customize-input)
+  .ant-select-selector {
+  width: 220px;
 }
 
-.timeDelay-btn{
-  display:inline-block;
-  vertical-align: middle; 
+.timeDelay-btn {
+  display: inline-block;
+  vertical-align: middle;
   height: 40px;
-  line-height:32px;
+  line-height: 32px;
 }
 /* .timeDelay-btn .ant-checkbox-input{
   display:inline-block;
   vertical-align: middle; 
 } */
 
-
-.timeDelay-btn-01{
-  width:80px;
-  color:#000;
-  text-align:left;
-  font-size:18px;
-  display:inline-block;
-  margin-left:15px;
+.timeDelay-btn-01 {
+  width: 80px;
+  color: #000;
+  text-align: left;
+  font-size: 18px;
+  display: inline-block;
+  margin-left: 15px;
 }
 
 .timeDelay-btn .ant-checkbox-inner {
-  width:20px;
-  height:22px;
-  display:inline-block;
+  width: 20px;
+  height: 22px;
+  display: inline-block;
   vertical-align: middle;
-  margin-top:-10px;
+  margin-top: -10px;
 }
 
 .timeDelay-btn .ant-checkbox-inner::after {
-  width:10px;
-  height:10px;
+  width: 10px;
+  height: 10px;
 }
 
 /* .timeDelay-btn .ant-checkbox-input {
   height:40px;
 } */
 
-
-.timeDelay-btn-02{
-  text-align:center;
-  display:inline-block;
+.timeDelay-btn-02 {
+  text-align: center;
+  display: inline-block;
   vertical-align: middle;
-  margin-left:55px;
-  float:right;
+  margin-left: 55px;
+  float: right;
   background-color: grey;
-} 
-
-.timeDelay-btn-02 > button{
-  width:130px;
-  height:40px;
-  font-size:18px;
-  background:#40a9ff; 
-  color:#fff;
-  text-align:center;
-  padding: 0px!important;
-  display:inline-block;
 }
-.timeDelay-btn-02 .timeDelay-btn{
-  margin:0px!important;
+
+.timeDelay-btn-02 > button {
+  width: 130px;
+  height: 40px;
+  font-size: 18px;
+  background: #40a9ff;
+  color: #fff;
+  text-align: center;
+  padding: 0px !important;
+  display: inline-block;
+}
+.timeDelay-btn-02 .timeDelay-btn {
+  margin: 0px !important;
 }
 
 .timeDelay-box .anticon {
@@ -1556,166 +1534,164 @@
   height:2em; */
   /* font-size: 20px; */
   width: 20px;
-
 }
 
-.timeDelay-box td{
-  width:200px;
-  font-size:20px;
-  text-align:center;
+.timeDelay-box td {
+  width: 200px;
+  font-size: 20px;
+  text-align: center;
 }
-
-
 
 /* 필터링 dialog */
-.filtering-Dialog{
-  position:fixed;
-  top:50%;
-  left:50%;
+.filtering-Dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
   transform: translate(-50%, -50%);
-  width:345px;
+  width: 345px;
   z-index: 2;
 }
 
-.filtering-content{
-  padding:30px;
-  background-color:white;
+.filtering-content {
+  padding: 30px;
+  background-color: white;
 }
 
-.filtering-title{
-  font-size:25px;
-  font-weight:bold;
-  line-height:30px;
+.filtering-title {
+  font-size: 25px;
+  font-weight: bold;
+  line-height: 30px;
   /* width:300px; */
   display: inline-block;
   vertical-align: middle;
 }
 
-.filtering-close{
-
-    width:30px;
-    cursor:pointer;
-    background-color:#fddc00;
-    /* display: inline-block; */
-    float: right;
-    padding:8px;
-
+.filtering-close {
+  width: 30px;
+  cursor: pointer;
+  background-color: #fddc00;
+  /* display: inline-block; */
+  float: right;
+  padding: 8px;
 }
 
-.filtering-inner { 
-    width: 100%; 
-    overflow-y: scroll; 
-    border: 1px solid #ccc; 
-    padding: 20px; 
-    text-align: left;
-    margin-top:20px;
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
+.filtering-inner {
+  width: 100%;
+  overflow-y: scroll;
+  border: 1px solid #ccc;
+  padding: 20px;
+  text-align: left;
+  margin-top: 20px;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 
 .filtering-inner::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Opera*/
 }
 
-
-.filtering-box .ant-checkbox{
-  top: 0em!important;
+.filtering-box {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  flex: 1;
+  height: 210px;
 }
-.filtering-box .ant-checkbox-wrapper{
-  display:table;
+.filtering-box .ant-checkbox {
+  top: 0em !important;
+}
+.filtering-box .ant-checkbox-wrapper {
+  display: table;
 }
 
-.filtering-box .ant-checkbox-wrapper >span{
-  display:table-cell;
+.filtering-box .ant-checkbox-wrapper > span {
+  display: table-cell;
   text-align: center;
 }
 
 .filtering-box > div {
-  width:120px;
-  height:52px;
-  float:left;
+  width: 120px;
+  height: 52px;
+  float: left;
   /* margin:20px; */
 }
 
-.filtering-box .ant-checkbox-inner{
-  width:45px;
-  height:45px;
+.filtering-box .ant-checkbox-inner {
+  width: 45px;
+  height: 45px;
 }
 .filtering-box .ant-checkbox-inner::after {
   width: 25px;
   height: 25px;
 }
 
-.filtering-box .ant-checkbox + span{
-  font-size:20px;
+.filtering-box .ant-checkbox + span {
+  font-size: 20px;
   vertical-align: middle;
 }
 
-
-.riderManageBtn{
+.riderManageBtn {
   margin-left: 10px;
 }
 
 /*기사관리*/
 /*일차감*/
 
-.taskScheduler-Dialog{
-  position:fixed;
-  top:50%;
-  left:50%;
+.taskScheduler-Dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
   transform: translate(-50%, -50%);
-  width:1200px;
+  width: 1200px;
   z-index: 2;
 }
 
-.taskScheduler-content{
-  padding:30px;
-  background-color:white;
+.taskScheduler-content {
+  padding: 30px;
+  background-color: white;
 }
 
-.taskScheduler-title{
-  font-size:25px;
-  font-weight:bold;
-  line-height:30px;
+.taskScheduler-title {
+  font-size: 25px;
+  font-weight: bold;
+  line-height: 30px;
   /* width:300px; */
   display: inline-block;
   vertical-align: middle;
 }
 
-.taskScheduler-close{
-    width:30px;
-    cursor:pointer;
-    background-color:#fddc00;
-    /* display: inline-block; */
-    float: right;
-    padding:8px;
-
+.taskScheduler-close {
+  width: 30px;
+  cursor: pointer;
+  background-color: #fddc00;
+  /* display: inline-block; */
+  float: right;
+  padding: 8px;
 }
 
-.taskScheduler-inner { 
-    width: 100%; 
-    overflow-y: scroll; 
-    border: 1px solid #ccc; 
-    padding: 20px; 
-    text-align: left;
-    margin-top:20px;
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
+.taskScheduler-inner {
+  width: 100%;
+  overflow-y: scroll;
+  border: 1px solid #ccc;
+  padding: 20px;
+  text-align: left;
+  margin-top: 20px;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 
 .taskScheduler-inner::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Opera*/
 }
 
-
-.listBlock{
+.listBlock {
   margin-top: 20px;
 }
-.listBlock .ant-btn{
+.listBlock .ant-btn {
   margin-left: -5px;
 }
 
-.mainTitle{
+.mainTitle {
   display: inline-block;
   /* font-size: 20px; */
   vertical-align: middle;
@@ -1723,378 +1699,364 @@
   /* width: 75px; */
 }
 
-
-.taskScheduler-btn{
-  display:inline-block;
-  width:1098px;
+.taskScheduler-btn {
+  display: inline-block;
+  width: 1098px;
 }
 
-
-.taskScheduler-btn-01{
-  text-align:center;
+.taskScheduler-btn-01 {
+  text-align: center;
   vertical-align: middle;
-  display:inline-block;
+  display: inline-block;
 }
 
-.rtaskScheduler-btn-01 .tabBtn{
-  margin:0px!important;
-
+.rtaskScheduler-btn-01 .tabBtn {
+  margin: 0px !important;
 }
-.taskScheduler-btn-01 > button{
-  height:40px;
-  width:130px;
-  font-size:18px;
-  color:#222;
-  text-align:center;
-  display:inline-block;
-  padding: 0px!important;
+.taskScheduler-btn-01 > button {
+  height: 40px;
+  width: 130px;
+  font-size: 18px;
+  color: #222;
+  text-align: center;
+  display: inline-block;
+  padding: 0px !important;
 }
-.taskScheduler-btn-02{
+.taskScheduler-btn-02 {
   vertical-align: middle;
-  display:inline-block;
-} 
-
-.taskScheduler-btn-02 > button{
-  height:40px;
-  width:130px;
-  font-size:18px;
-  color:#222;
-  padding: 0px!important;
-  display:inline-block;
+  display: inline-block;
 }
 
-.taskScheduler-btn-03{
+.taskScheduler-btn-02 > button {
+  height: 40px;
+  width: 130px;
+  font-size: 18px;
+  color: #222;
+  padding: 0px !important;
+  display: inline-block;
+}
+
+.taskScheduler-btn-03 {
   vertical-align: middle;
-  display:inline-block;
-  float:right;
-} 
-.taskScheduler-btn-03 > button{
-  height:40px;
-  width:130px;
-  font-size:18px;
-  background:#1890ff;
-  color:#fff;
-  padding: 0px!important;
-  display:inline-block;
+  display: inline-block;
+  float: right;
+}
+.taskScheduler-btn-03 > button {
+  height: 40px;
+  width: 130px;
+  font-size: 18px;
+  background: #1890ff;
+  color: #fff;
+  padding: 0px !important;
+  display: inline-block;
 }
 /*일차감 그룹 설정*/
 
-.taskGroup-Dialog{
-  position:fixed;
-  top:50%;
-  left:50%;
+.taskGroup-Dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
   transform: translate(-50%, -50%);
   /* width:650px; */
   z-index: 2;
 }
 
-.taskGroup-content{
-  padding:30px;
-  background-color:white;
+.taskGroup-content {
+  padding: 30px;
+  background-color: white;
 }
 
-.taskGroup-title{
-  font-size:25px;
-  font-weight:bold;
-  line-height:30px;
+.taskGroup-title {
+  font-size: 25px;
+  font-weight: bold;
+  line-height: 30px;
   /* width:300px; */
   display: inline-block;
   vertical-align: middle;
 }
 
-.taskGroup-close{
-    width:30px;
-    cursor:pointer;
-    background-color:#fddc00;
-    /* display: inline-block; */
-    float: right;
-    padding:8px;
-
+.taskGroup-close {
+  width: 30px;
+  cursor: pointer;
+  background-color: #fddc00;
+  /* display: inline-block; */
+  float: right;
+  padding: 8px;
 }
 
-.taskGroup-inner { 
-    width: 100%; 
-    overflow-y: scroll; 
-    border: 1px solid #ccc; 
-    padding: 20px; 
-    text-align: left;
-    margin-top:20px;
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
+.taskGroup-inner {
+  width: 100%;
+  overflow-y: scroll;
+  border: 1px solid #ccc;
+  padding: 20px;
+  text-align: left;
+  margin-top: 20px;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 
 .taskGroup-inner::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Opera*/
 }
 
-.taskGroup-inner .subTable .ant-table-thead{
+.taskGroup-inner .subTable .ant-table-thead {
   /* display: none; */
 }
-.taskGroup-inner .subTable .ant-table-cell{
+.taskGroup-inner .subTable .ant-table-cell {
   padding: 13px;
 }
-.taskGroup-inner .subTable .ant-table-row{
+.taskGroup-inner .subTable .ant-table-row {
   display: inline-block;
 }
 
-
-.taskGroup-btn{
-  display:inline-block;
+.taskGroup-btn {
+  display: inline-block;
 }
 
-.taskGroup-btn-01{
-  text-align:center;
+.taskGroup-btn-01 {
+  text-align: center;
   vertical-align: middle;
-  display:inline-block;
+  display: inline-block;
 }
 
-.taskGroup-btn-01 .tabBtn{
-  margin:0px!important;
+.taskGroup-btn-01 .tabBtn {
+  margin: 0px !important;
+}
+.taskGroup-btn-01 > button {
+  height: 40px;
+  width: 130px;
+  font-size: 18px;
+  color: #222;
+  text-align: center;
+  display: inline-block;
+  padding: 0px !important;
+}
 
+.taskGroup-list {
+  border: 1px solid red;
+  width: 900px;
+  display: inline-block;
+  margin-top: 20px;
+  font-size: 15px;
 }
-.taskGroup-btn-01 > button{
-  height:40px;
-  width:130px;
-  font-size:18px;
-  color:#222;
-  text-align:center;
-  display:inline-block;
-  padding: 0px!important;
+.taskGroup-list-01 {
+  display: inline-block;
+  width: 326.67px;
+  height: 32px;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  line-height: 32px;
 }
-
-.taskGroup-list{
-  border:1px solid red;
-  width:900px;
-  display:inline-block;
-  margin-top:20px;
-  font-size:15px;
-
+.taskGroup-list-02 {
+  display: inline-block;
+  width: 173.33px;
+  height: 32px;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  line-height: 32px;
 }
-.taskGroup-list-01{
-  display:inline-block;
-  width:326.67px;
-  height:32px;
-  background-color:#333;
-  color:#fff;
-  text-align:center;
-  line-height:32px;
+.taskGroup-list-03-place1 {
+  display: inline-block;
+  float: right;
 }
-.taskGroup-list-02{
-  display:inline-block;
-  width:173.33px;
-  height:32px;
-  background-color:#333;
-  color:#fff;
-  text-align:center;
-  line-height:32px;
-}
-.taskGroup-list-03-place1{
-  display:inline-block;
-  float:right;
-
-}
-.taskGroup-content .listBlock{
-  width:550px;
+.taskGroup-content .listBlock {
+  width: 550px;
 }
 
 /*일차감 작업등록*/
 
-.taskWork-Dialog{
-  position:fixed;
-  top:50%;
-  left:50%;
+.taskWork-Dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
   transform: translate(-50%, -50%);
-  width:700px;
+  width: 700px;
   z-index: 2;
 }
 
-.taskWork-content{
-  padding:20px;
-  background-color:white;
+.taskWork-content {
+  padding: 20px;
+  background-color: white;
 }
 
-.taskWork-title{
-  font-size:25px;
-  font-weight:bold;
-  line-height:30px;
+.taskWork-title {
+  font-size: 25px;
+  font-weight: bold;
+  line-height: 30px;
   /* width:300px; */
   display: inline-block;
   vertical-align: middle;
 }
 
-.taskWork-close{
-    width:30px;
-    cursor:pointer;
-    background-color:#fddc00;
-    /* display: inline-block; */
-    float: right;
-    padding:8px;
-
+.taskWork-close {
+  width: 30px;
+  cursor: pointer;
+  background-color: #fddc00;
+  /* display: inline-block; */
+  float: right;
+  padding: 8px;
 }
 
-.taskWork-title-sub{
-  text-align:center;
-  margin-top:20px;
-  font-size:16px;
-  background-color:#222;
-  color:#fff;
-  height:32px;
-  line-height:32px;
+.taskWork-title-sub {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 16px;
+  background-color: #222;
+  color: #fff;
+  height: 32px;
+  line-height: 32px;
 }
 
-.taskWork-inner { 
-    width: 100%; 
-    overflow-y: scroll; 
-    border: 1px solid #ccc; 
-    padding: 20px; 
-    text-align: left;
-    margin-top:5px;
-    height:340px;
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
+.taskWork-inner {
+  width: 100%;
+  overflow-y: scroll;
+  border: 1px solid #ccc;
+  padding: 20px;
+  text-align: left;
+  margin-top: 5px;
+  height: 340px;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 
 .taskWork-inner::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Opera*/
 }
 
-.taskWork-list{
+.taskWork-list {
   /* border:1px solid red; */
   /* height:360px; */
 }
-.taskWork-list td{
-  width:100px;
-  font-size:18px;
-  display:inline-block;
+.taskWork-list td {
+  width: 100px;
+  font-size: 18px;
+  display: inline-block;
   /* border:1px solid blue; */
-  
 }
 
-.taskWork-list-01 .taskWorkSub, .taskWork-list-05 .taskWorkSub{
-  width:90px;
-  font-size:16px;
-  display:inline-block;
+.taskWork-list-01 .taskWorkSub,
+.taskWork-list-05 .taskWorkSub {
+  width: 90px;
+  font-size: 16px;
+  display: inline-block;
   /* border:1px solid blue; */
-  
 }
 
-.taskWork-list-05 .taskWorkSub1{
-  width:60px;
+.taskWork-list-05 .taskWorkSub1 {
+  width: 60px;
 }
 
-
-.taskWork-list .taskWork-place1{
+.taskWork-list .taskWork-place1 {
   display: inline-block;
 }
 
-.taskWork-list .twl{
-  width:670px;
-  display:inline-block;
-  height:60px;
-  line-height:60px;
+.taskWork-list .twl {
+  width: 670px;
+  display: inline-block;
+  height: 60px;
+  line-height: 60px;
   /* border:1px solid red */
 }
 
-.twl:nth-child(1){
-  margin-top:-10px;
+.twl:nth-child(1) {
+  margin-top: -10px;
 }
 
-
-.taskWork-btn-01{
-  margin-top:20px;
+.taskWork-btn-01 {
+  margin-top: 20px;
   text-align: center;
 }
 
-.taskWork-btn-01 .tabBtn{
-  margin:0px!important;
-
+.taskWork-btn-01 .tabBtn {
+  margin: 0px !important;
 }
-.taskWork-btn-01 > button{
-  height:40px;
-  width:130px;
-  font-size:18px;
-  background-color:#1890ff;
-  color:#fff;
-  text-align:center;
-  display:inline-block;
-  padding: 0px!important;
-}
-
-.taskWork-list-05 .taskWork-datepicker{
-  margin-left:10px;
+.taskWork-btn-01 > button {
+  height: 40px;
+  width: 130px;
+  font-size: 18px;
+  background-color: #1890ff;
+  color: #fff;
+  text-align: center;
+  display: inline-block;
+  padding: 0px !important;
 }
 
-.taskWork-list-06 .ant-select:not(.ant-select-customize-input) .ant-select-selector{
-  margin-left:10px;
+.taskWork-list-05 .taskWork-datepicker {
+  margin-left: 10px;
 }
-.taskWork-list-04 .inputBox{
-  color: #222 !important;;
+
+.taskWork-list-06
+  .ant-select:not(.ant-select-customize-input)
+  .ant-select-selector {
+  margin-left: 10px;
 }
-.taskWork-list .inputBox-taskWork.sub .ant-input{
+.taskWork-list-04 .inputBox {
+  color: #222 !important;
+}
+.taskWork-list .inputBox-taskWork.sub .ant-input {
   margin-left: -20px;
-  width:180px;
-
+  width: 180px;
 }
 
 /*기사 그룹관리*/
-.riderGroup-Dialog{
-  position:fixed;
-  top:50%;
-  left:50%;
+.riderGroup-Dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
   transform: translate(-50%, -50%);
-  width:1000px;
+  width: 1000px;
   z-index: 2;
 }
 
-.riderGroup-content{
-  padding:30px;
-  background-color:white;
+.riderGroup-content {
+  padding: 30px;
+  background-color: white;
 }
 
-.riderGroup-title{
-  font-size:25px;
-  font-weight:bold;
-  line-height:30px;
+.riderGroup-title {
+  font-size: 25px;
+  font-weight: bold;
+  line-height: 30px;
   /* width:300px; */
   display: inline-block;
   vertical-align: middle;
 }
 
-.riderGroup-close{
-    width:30px;
-    cursor:pointer;
-    background-color:#fddc00;
-    /* display: inline-block; */
-    float: right;
-    padding:8px;
-
+.riderGroup-close {
+  width: 30px;
+  cursor: pointer;
+  background-color: #fddc00;
+  /* display: inline-block; */
+  float: right;
+  padding: 8px;
 }
 
-.riderGroup-inner { 
-    width: 100%; 
-    height: 610px; 
-    overflow-y: scroll; 
-    border: 1px solid #ccc; 
-    padding: 20px; 
-    text-align: left;
-    margin-top:20px;
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
+.riderGroup-inner {
+  width: 100%;
+  height: 610px;
+  overflow-y: scroll;
+  border: 1px solid #ccc;
+  padding: 20px;
+  text-align: left;
+  margin-top: 20px;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 
 .riderGroup-inner::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Opera*/
 }
 
-
-.riderGroup-inner .listBlock{
+.riderGroup-inner .listBlock {
   margin-top: 20px;
 }
-.riderGroup-inner .listBlock .ant-btn{
+.riderGroup-inner .listBlock .ant-btn {
   margin-left: -5px;
 }
 
-.riderGroup-inner .mainTitle{
+.riderGroup-inner .mainTitle {
   display: inline-block;
   font-size: 20px;
   vertical-align: middle;
@@ -2102,117 +2064,112 @@
   /* width: 75px; */
 }
 
-.riderGroup-ftline{
-  line-height:30px;
-  font-size:18px;
-  height:215px;
-  padding:20px;
-  margin-top:10px;
+.riderGroup-ftline {
+  line-height: 30px;
+  font-size: 18px;
+  height: 215px;
+  padding: 20px;
+  margin-top: 10px;
   /* border:1px solid #ccc; */
 }
 
-.riderGroup-ftline td{
-  width:150px;
-  display:inline-block;
-}
-
-.riderGroup-ftline-02 .riderSubtext, 
-.riderGroup-ftline-03 .riderSubtext, 
-.riderGroup-ftline-04 .riderSubtext {
-  margin-left:20px;
-}
-
-
-
-.riderGroup-ftline .ant-radio-wrapper{
-  font-size:16px!important;
-}
-.riderGroup-ftline-06{
+.riderGroup-ftline td {
+  width: 150px;
   display: inline-block;
 }
 
-.riderGroup-btn{
-  display:inline-block;
-  float:right;
+.riderGroup-ftline-02 .riderSubtext,
+.riderGroup-ftline-03 .riderSubtext,
+.riderGroup-ftline-04 .riderSubtext {
+  margin-left: 20px;
 }
 
+.riderGroup-ftline .ant-radio-wrapper {
+  font-size: 16px !important;
+}
+.riderGroup-ftline-06 {
+  display: inline-block;
+}
 
-.riderGroup-btn-01{
-  text-align:center;
+.riderGroup-btn {
+  display: inline-block;
+  float: right;
+}
+
+.riderGroup-btn-01 {
+  text-align: center;
   vertical-align: middle;
-  display:inline-block;
+  display: inline-block;
   /* margin-left:20px; */
 }
 
-.riderGroup-btn-01 .tabBtn{
-  margin:0px!important;
-  display:inline-block;
-
+.riderGroup-btn-01 .tabBtn {
+  margin: 0px !important;
+  display: inline-block;
 }
-.riderGroup-btn-01 > button{
-  height:40px;
-  width:130px;
-  background:#1890ff;
-  color:#fff;
-  font-size:18px;
-  text-align:center;
-  padding: 0px!important;
+.riderGroup-btn-01 > button {
+  height: 40px;
+  width: 130px;
+  background: #1890ff;
+  color: #fff;
+  font-size: 18px;
+  text-align: center;
+  padding: 0px !important;
 }
 
-
-.riderGroup-ftline-01, .riderGroup-ftline-05 {
-  display:inline-block;
-  }
-
- .riderGroup-ftline-05 .ant-input {
-    margin-left:20px;
-    }
-.riderGroup-ftline-05 td{
-  margin-left:35.15px;
+.riderGroup-ftline-01,
+.riderGroup-ftline-05 {
+  display: inline-block;
 }
-.riderGroup-ftline .inputBox .ant-form-item{
+
+.riderGroup-ftline-05 .ant-input {
+  margin-left: 20px;
+}
+.riderGroup-ftline-05 td {
+  margin-left: 35.15px;
+}
+.riderGroup-ftline .inputBox .ant-form-item {
   margin-bottom: 0px;
   display: inline-block;
   vertical-align: middle;
 }
-.riderGText{
+.riderGText {
   display: inline-block;
   vertical-align: middle;
   margin-left: 10px;
-  color: #000!important;
+  color: #000 !important;
 }
-.riderGroup-ftline .ant-input{
-  padding:0px!important;
+.riderGroup-ftline .ant-input {
+  padding: 0px !important;
 }
 
-.riderGroup-ftline .inputBox{
+.riderGroup-ftline .inputBox {
   display: inline-block;
   vertical-align: middle;
-  margin-left:0px!important;
+  margin-left: 0px !important;
 }
 
 .riderGroup-ftline .inputBox-rider.sub .ant-input {
   margin-left: -10px;
 }
 
-.riderGroup-inner .listBlock .ant-pagination{
-display:none;
+.riderGroup-inner .listBlock .ant-pagination {
+  display: none;
 }
 
-.riderGroup-inner .ant-table-row-level-0-active{
+.riderGroup-inner .ant-table-row-level-0-active {
   background-color: #1a1a1a;
 }
 
-.ant-checkbox-checked:checked .ant-table-row-level-0:active{
+.ant-checkbox-checked:checked .ant-table-row-level-0:active {
   background-color: #fddc00;
 }
 
 /*기사 그룹관리 라인활성화*/
 
- 
-.clickRowStyl{
+.clickRowStyl {
   background-color: #40a9ff;
-} 
+}
 
 /* .riderGroup-inner .ant-table-row-level-0:hover{
   background-color: #40a9ff !important;
@@ -2225,7 +2182,7 @@ display:none;
 } */
 
 /*기사 등록*/
-.registRider-Dialog{
+.registRider-Dialog {
   position: fixed;
   top: 50%;
   left: 50%;
@@ -2235,19 +2192,19 @@ display:none;
   z-index: 2;
 }
 
-.registRider-content{
+.registRider-content {
   background-color: white;
-  padding:30px;
+  padding: 30px;
   text-align: left;
   color: #777;
 }
 
-.registRider-Dialog .layout{ 
+.registRider-Dialog .layout {
   margin-top: 20px;
   width: 100%;
-  overflow-y: scroll; 
-  border: 1px solid #ccc; 
-  padding: 20px 20px; 
+  overflow-y: scroll;
+  border: 1px solid #ccc;
+  padding: 20px 20px;
   text-align: left;
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
@@ -2256,73 +2213,72 @@ display:none;
   display: none; /* Chrome, Safari, Opera*/
 }
 
-.registRdierWrapper .contentBlock{
+.registRdierWrapper .contentBlock {
   margin-top: 25px;
 }
 
-.registRider-title{
+.registRider-title {
   letter-spacing: -1px;
   font-weight: bold;
   color: #333;
-  text-align: right;             
+  text-align: right;
   display: inline-block;
   font-size: 25px;
   line-height: 30px;
 }
 
-.registRider-close{
-    width:30px;
-    cursor:pointer;
-    background-color:#fddc00;
-    /* display: inline-block; */
-    float: right;
-    padding:8px;
-
+.registRider-close {
+  width: 30px;
+  cursor: pointer;
+  background-color: #fddc00;
+  /* display: inline-block; */
+  float: right;
+  padding: 8px;
 }
 
-.registRiderWrapper .contentBlock{
-  margin-top:25px;
+.registRiderWrapper .contentBlock {
+  margin-top: 25px;
 }
 
-.registRiderWrapper .mainTitle{
-  width:130px;
+.registRiderWrapper .mainTitle {
+  width: 130px;
 }
 
-.registRiderWrapper .registRiderCheck{
+.registRiderWrapper .registRiderCheck {
   display: inline-block;
-  margin-left:22px;
+  /* margin-left: 22px; */
 }
 
-/* .registRider-Dialog .layout{
-  height:700px;
-} */
-
-.registRiderWrapper .submitBlock{
+.registRiderWrapper .submitBlock {
   margin-top: 30px;
   text-align: center;
 }
 
-.registRiderWrapper .clearBtn{
+.registRiderWrapper .clearBtn {
   margin-left: 20px;
 }
 
-.registRiderWrapper .contentBlock .override-select.branch{
-  width:240px!important;
+.registRiderWrapper .contentBlock .override-input {
+  margin-left: 0px;
 }
 
-
-.registRiderWrapper .contentBlock .override-input{
-width:240px!important;
+.registRiderWrapper .contentBlock .override-select.branch {
+  width: 260px !important;
+  margin-left: 0px;
 }
 
-.registRider-Dialog .ant-btn{
-  width:130px;
-  height:40px;
-  font-size:18px!important;
+.registRiderWrapper .contentBlock .override-input {
+  width: 260px !important;
+}
+
+.registRider-Dialog .ant-btn {
+  width: 130px;
+  height: 40px;
+  font-size: 18px !important;
 }
 
 /*직원 등록*/
-.registStaff-Dialog{
+.registStaff-Dialog {
   position: fixed;
   top: 50%;
   left: 50%;
@@ -2332,49 +2288,47 @@ width:240px!important;
   z-index: 2;
 }
 
-.registStaff-content{
+.registStaff-content {
   background-color: white;
-  padding:30px;
+  padding: 30px;
   text-align: left;
   color: #777;
 }
 
-.registStaff-title{
+.registStaff-title {
   letter-spacing: -1px;
   font-weight: bold;
   color: #333;
-  text-align: right;             
+  text-align: right;
   display: inline-block;
   font-size: 25px;
   line-height: 30px;
 }
 
-.registStaff-close{
-    width:30px;
-    cursor:pointer;
-    background-color:#fddc00;
-    /* display: inline-block; */
-    float: right;
-    padding:8px;
-
+.registStaff-close {
+  width: 30px;
+  cursor: pointer;
+  background-color: #fddc00;
+  /* display: inline-block; */
+  float: right;
+  padding: 8px;
 }
 
-
-.registStaffWrapper .mainTitle{
-  width:130px;
+.registStaffWrapper .mainTitle {
+  width: 130px;
 }
 
-.registStaffWrapper .registStaffCheck{
+.registStaffWrapper .registStaffCheck {
   display: inline-block;
-  margin-left:22px;
+  margin-left: 22px;
 }
 
-.registStaff-Dialog .layout{
+.registStaff-Dialog .layout {
   margin-top: 20px;
   width: 100%;
-  overflow-y: scroll; 
-  border: 1px solid #ccc; 
-  padding: 20px 20px; 
+  overflow-y: scroll;
+  border: 1px solid #ccc;
+  padding: 20px 20px;
   text-align: left;
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
@@ -2384,48 +2338,46 @@ width:240px!important;
   display: none; /* Chrome, Safari, Opera*/
 }
 
-.registStaff-Dialog .layout .contentBlock{
+.registStaff-Dialog .layout .contentBlock {
   margin-top: 25px;
 }
 
-
-.registStaffWrapper .submitBlock{
+.registStaffWrapper .submitBlock {
   margin-top: 30px;
   text-align: center;
 }
 
-.registStaffWrapper .clearBtn{
+.registStaffWrapper .clearBtn {
   margin-left: 20px;
 }
 
-.registStaffWrapper .contentBlock .override-select.branch{
-  width:240px;
+.registStaffWrapper .contentBlock .override-select.branch {
+  width: 240px;
 }
 
-.registStaffWrapper .override-select.sub{
-  width:270px!important;
+.registStaffWrapper .override-select.sub {
+  width: 270px !important;
 }
 
-.registStaffWrapper .contentBlock .override-input{
-  width:240px;
+.registStaffWrapper .contentBlock .override-input {
+  width: 240px;
 }
-.registStaffWrapper .ant-radio-group{
+.registStaffWrapper .ant-radio-group {
   margin-left: 20px;
 }
-.registStaffWrapper span.ant-radio + *{
+.registStaffWrapper span.ant-radio + * {
   padding-left: 5px;
   padding-right: 5px;
 }
-.registStaff-Dialog .ant-btn{
-  width:130px;
-  height:40px!important;
-  font-size:18px!important;
+.registStaff-Dialog .ant-btn {
+  width: 130px;
+  height: 40px !important;
+  font-size: 18px !important;
 }
-
 
 /*기사 차단*/
 
-.blackRider-Dialog{
+.blackRider-Dialog {
   position: fixed;
   top: 50%;
   left: 50%;
@@ -2435,139 +2387,133 @@ width:240px!important;
   z-index: 2;
 }
 
-.blackRider-content{
+.blackRider-content {
   background-color: white;
-  padding:30px;
+  padding: 30px;
   text-align: left;
   color: #777;
 }
 
-.blackRider-title{
+.blackRider-title {
   letter-spacing: -1px;
   font-weight: bold;
   color: #333;
-  text-align: right;             
+  text-align: right;
   display: inline-block;
   font-size: 25px;
   line-height: 30px;
 }
 
-.blackRider-close{
-    width:30px;
-    cursor:pointer;
-    background-color:#fddc00;
-    /* display: inline-block; */
-    float: right;
-    padding:8px;
-
+.blackRider-close {
+  width: 30px;
+  cursor: pointer;
+  background-color: #fddc00;
+  /* display: inline-block; */
+  float: right;
+  padding: 8px;
 }
 
-.blackRider-Dialog .layout{
+.blackRider-Dialog .layout {
   margin-top: 20px;
   width: 100%;
-  overflow-y: scroll; 
-  border: 1px solid #ccc; 
-  padding: 20px 20px; 
+  overflow-y: scroll;
+  border: 1px solid #ccc;
+  padding: 20px 20px;
   text-align: left;
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
-
 }
 
 .blackRider-Dialog .layout::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Opera*/
 }
 
-
-.blackRiderWrapper .mainTitle{
-  width:130px;
+.blackRiderWrapper .mainTitle {
+  width: 130px;
 }
 
-.blackRiderWrapper .contentBlock{
-  margin-top:25px;
+.blackRiderWrapper .contentBlock {
+  margin-top: 25px;
 }
 
-
-.blackRiderWrapper .submitBlock{
+.blackRiderWrapper .submitBlock {
   margin-top: 30px;
   text-align: center;
 }
 
-.blackRiderWrapper .clearBtn{
+.blackRiderWrapper .clearBtn {
   margin-left: 20px;
 }
 
-
-.blackRiderWrapper .submitBlock button{
-  height:40px;
-  width:130px;
-  font-size:18px;
+.blackRiderWrapper .submitBlock button {
+  height: 40px;
+  width: 130px;
+  font-size: 18px;
 }
-.blackRiderWrapper .contentBlock .override-select.branch{
-  width:240px!important;
-}
-
-
-.blackRiderWrapper .contentBlock .override-input{
-width:240px!important;
+.blackRiderWrapper .contentBlock .override-select.branch {
+  width: 240px !important;
 }
 
-.blackRiderWrapper .contentBlock .override-input.branch{
-  width:240px!important;
-  height:200px;
-  }
+.blackRiderWrapper .contentBlock .override-input {
+  width: 240px !important;
+}
 
-  /* 환경설정 */
+.blackRiderWrapper .contentBlock .override-input.branch {
+  width: 240px !important;
+  height: 200px;
+}
 
-.pwChange-root{
+/* 환경설정 */
+
+.pwChange-root {
   padding: 24px;
 }
-.pwChange-Layout{
+.pwChange-Layout {
   border: 1px solid #ccc;
   padding: 20px;
   width: 40%;
   margin: 0 auto;
 }
-.pwChange-title{
-    font-size: 15px;
-    font-family: NotoSansBold;
-    text-align: center;
-    margin-top: 20px;
- }
-.pwChange-box { 
-    width: 100%; 
-    padding: 20px; 
-    text-align: left;
-    margin-top:5px;
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
-}  
-.pwChange-list{
+.pwChange-title {
+  font-size: 15px;
+  font-family: NotoSansBold;
+  text-align: center;
+  margin-top: 20px;
+}
+.pwChange-box {
+  width: 100%;
+  padding: 20px;
+  text-align: left;
+  margin-top: 5px;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+.pwChange-list {
   text-align: center;
   padding: 5px 0;
 }
-.pwChange-list td{
-  width:110px;
-  font-size:14px;
-  display:inline-block;
+.pwChange-list td {
+  width: 110px;
+  font-size: 14px;
+  display: inline-block;
 }
-.pwChange-list .twl{
-  width:80px;
-  display:inline-block;
-  height:60px;
-  line-height:30px;
+.pwChange-list .twl {
+  width: 80px;
+  display: inline-block;
+  height: 60px;
+  line-height: 30px;
 }
-.inputBox-pwChange input{
+.inputBox-pwChange input {
   width: 250px;
 }
-.pwChange-btn{
+.pwChange-btn {
   text-align: center;
   padding: 10px 0;
 }
 
 /* 주소검색관리 */
 
-.serchAddress-Dialog{
+.serchAddress-Dialog {
   position: fixed;
   top: 50%;
   left: 50%;
@@ -2577,74 +2523,74 @@ width:240px!important;
   z-index: 2;
 }
 
-.serchAddress-content{
+.serchAddress-content {
   background-color: white;
-  padding:30px;
+  padding: 30px;
   text-align: left;
   color: #777;
 }
 
-.serchAddress-title{
+.serchAddress-title {
   letter-spacing: -1px;
   font-weight: bold;
   color: #333;
-  text-align: right;             
+  text-align: right;
   display: inline-block;
   font-size: 25px;
   line-height: 30px;
 }
 
-.serchAddress-close{
-    width:30px;
-    cursor:pointer;
-    background-color:#fddc00;
-    /* display: inline-block; */
-    float: right;
-    padding:8px;
+.serchAddress-close {
+  width: 30px;
+  cursor: pointer;
+  background-color: #fddc00;
+  /* display: inline-block; */
+  float: right;
+  padding: 8px;
 }
-.serchAddress-Dialog .layout{
+.serchAddress-Dialog .layout {
   margin-top: 20px;
   width: 100%;
-  overflow-y: scroll; 
-  border: 1px solid #ccc; 
-  padding: 20px 20px; 
+  overflow-y: scroll;
+  border: 1px solid #ccc;
+  padding: 20px 20px;
   text-align: left;
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
 
-.serchAddress-Dialog .layout .contentBlock{
+.serchAddress-Dialog .layout .contentBlock {
   display: inline-block;
   line-height: 20px;
 }
 
-.serchAddress-Dialog .layout .contentBlock span{
-   font-size: 18px;
+.serchAddress-Dialog .layout .contentBlock span {
+  font-size: 18px;
 }
 
-.serchAddress-list{
+.serchAddress-list {
   display: inline-block;
   vertical-align: bottom;
 }
-.serchAddress-list input{
+.serchAddress-list input {
   width: 400px;
 }
 
-.searchAddress-btn{
+.searchAddress-btn {
   display: inline-block;
   vertical-align: bottom;
 }
 
-.searchAddress-btn .ant-btn-primary{
+.searchAddress-btn .ant-btn-primary {
   background-color: black;
   border-style: none;
 }
-.serchAddress-searchbox{
+.serchAddress-searchbox {
   float: right;
   margin: 20px 0;
 }
 
-.serchAddress-Dialog .layout .dataTableLayout-01{
+.serchAddress-Dialog .layout .dataTableLayout-01 {
   margin-top: 30px;
 }
 
@@ -2652,14 +2598,13 @@ width:240px!important;
   padding: 10px;
 }
 
-.serchAddress-Dialog .layout .ant-table-tbody > tr > td{
+.serchAddress-Dialog .layout .ant-table-tbody > tr > td {
   padding: 0;
 }
 
-
 /* 강제배차 Dialog */
 
-.forceAllocate-Dialog{
+.forceAllocate-Dialog {
   position: fixed;
   top: 50%;
   left: 50%;
@@ -2669,12 +2614,12 @@ width:240px!important;
   z-index: 2;
 }
 
-.forceAllocate-content{
-  padding:30px;
-  background-color:white;
+.forceAllocate-content {
+  padding: 30px;
+  background-color: white;
 }
 
-.forceAllocate-title{
+.forceAllocate-title {
   letter-spacing: -1px;
   font-weight: bold;
   color: #333;
@@ -2685,61 +2630,59 @@ width:240px!important;
   float: left;
 }
 
-.forceAllocate-close{
-    width:30px;
-    cursor:pointer;
-    background-color:#fddc00;
-    /* display: inline-block; */
-    float: right;
-    padding:8px;
-
+.forceAllocate-close {
+  width: 30px;
+  cursor: pointer;
+  background-color: #fddc00;
+  /* display: inline-block; */
+  float: right;
+  padding: 8px;
 }
 
-.forceAllocate-inner { 
-    width: 100%; 
-    border: 1px solid #ccc; 
-    padding: 20px; 
-    margin-top:5px;
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
-    clear: both;
+.forceAllocate-inner {
+  width: 100%;
+  border: 1px solid #ccc;
+  padding: 20px;
+  margin-top: 5px;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+  clear: both;
 }
 
 .forceAllocate-inner::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Opera*/
 }
 
-.forceAllocate-list{
- text-align: left;
- margin: 20px 0;
-} 
+.forceAllocate-list {
+  text-align: left;
+  margin: 20px 0;
+}
 
-.forceAllocate-list span{
+.forceAllocate-list span {
   text-align: left;
 }
 
-
-.forceAllocate-btn-01{
-  margin-top:20px;
-  text-align:center;
+.forceAllocate-btn-01 {
+  margin-top: 20px;
+  text-align: center;
 }
 
-.forceAllocate-btn-01 .tabBtn{
-  margin:0px!important;
+.forceAllocate-btn-01 .tabBtn {
+  margin: 0px !important;
 }
-.forceAllocate-btn-01 > button{
-  height:40px;
-  width:200px;
-  font-size:18px;
-  background-color:#1890ff;
-  color:#fff;
-  font-size:20px;
-  text-align:center;
-  display:inline-block;
-  padding: 0px!important;
+.forceAllocate-btn-01 > button {
+  height: 40px;
+  width: 200px;
+  font-size: 18px;
+  background-color: #1890ff;
+  color: #fff;
+  font-size: 20px;
+  text-align: center;
+  display: inline-block;
+  padding: 0px !important;
 }
 
-.forceAllocate-select-btn .ant-checkbox-wrapper{
+.forceAllocate-select-btn .ant-checkbox-wrapper {
   margin: 0 !important;
 }
 
@@ -2747,54 +2690,52 @@ width:240px!important;
   padding: 10px;
 }
 
-.forceAllocate-Dialog .forceAllocate-inner .ant-spin-container .ant-table{
+.forceAllocate-Dialog .forceAllocate-inner .ant-spin-container .ant-table {
   margin: 0 !important;
 }
 /* 메세지 dialog */
 
-
-.message-Dialog{
-  position:fixed;
-  top:50%;
-  left:50%;
+.message-Dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
   transform: translate(-50%, -50%);
-  width:345px;
+  width: 345px;
   z-index: 2;
 }
 
-.message-content{
-  padding:30px;
-  background-color:white;
+.message-content {
+  padding: 30px;
+  background-color: white;
 }
 
-.message-title{
-  font-size:25px;
-  font-weight:bold;
-  line-height:30px;
+.message-title {
+  font-size: 25px;
+  font-weight: bold;
+  line-height: 30px;
   /* width:300px; */
   display: inline-block;
   vertical-align: middle;
 }
 
-.message-close{
-    width:30px;
-    cursor:pointer;
-    background-color:#fddc00;
-    /* display: inline-block; */
-    float: right;
-    padding:8px;
-
+.message-close {
+  width: 30px;
+  cursor: pointer;
+  background-color: #fddc00;
+  /* display: inline-block; */
+  float: right;
+  padding: 8px;
 }
 
-.message-inner { 
-    width: 100%; 
-    overflow-y: scroll; 
-    border: 1px solid #ccc; 
-    padding: 20px; 
-    text-align: left;
-    margin-top:20px;
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
+.message-inner {
+  width: 100%;
+  overflow-y: scroll;
+  border: 1px solid #ccc;
+  padding: 20px;
+  text-align: left;
+  margin-top: 20px;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 
 .message-inner::-webkit-scrollbar {

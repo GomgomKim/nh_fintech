@@ -1,15 +1,11 @@
 import React, { Component } from "react";
 import {
-    Form, Modal, Input, DatePicker, Descriptions, Table,
-    Upload, Button, Select, Icon, Radio, Carousel, Text, Checkbox
+    Form, Input, Button, Select, Modal
 } from "antd";
 import '../../../css/modal.css';
-import { httpGet, httpUrl, httpDownload, httpPost, httpPut } from '../../../api/httpClient';
-
+import { httpUrl, httpPost } from '../../../api/httpClient';
 const Option = Select.Option;
 const FormItem = Form.Item;
-const { RangePicker } = DatePicker;
-const Search = Input.Search;
 
 class RegistStaffDialog extends Component {
     constructor(props) {
@@ -30,53 +26,83 @@ class RegistStaffDialog extends Component {
     }
 
     onChange = e => {
-        // console.log('radio checked', e.target.value);
         this.setState({
             staffAuth: e.target.value,
         });
     };
 
     handleSubmit = () => {
-        console.log(this.formRef.current.getFieldsValue())
-        httpPost(httpUrl.registStaff, [], {
-            riderName: this.formRef.current.getFieldsValue().riderName,
-            id: this.formRef.current.getFieldsValue().id,
-            email: this.formRef.current.getFieldsValue().email,
-            password: this.formRef.current.getFieldsValue().password,
-            phone: this.formRef.current.getFieldsValue().phone,
-            memo: this.formRef.current.getFieldsValue().memo,
-            riderStatus: this.formRef.current.getFieldsValue().riderStatus,
-            ncash: 0,
-            userStatus: 1,
-            withdrawPassword: 0,
-            bank: "한국은행",
-            bankAccount: "111-111-1111",
-            depositor: "냠냠박스",
-            userType: 1,
-            userGroup: 1,
-            riderLevel: 1,
-        }).then((result) => {
-            console.log("## result: " + JSON.stringify(result, null, 4));
-            alert('직원 등록이 완료되었습니다.');
-            this.props.close()
-            // this.props.history.push('/staff/StaffMain')
-        }).catch(e => {
-            alert('에러가 발생하였습니다 다시 시도해주세요.')
+        let self = this;
+        let { data } = this.props;
+        Modal.confirm({
+            title: <div> {data ? "직원 수정" : "직원 등록" } </div>,
+            content:  
+            <div> {data ? '직원정보를 수정하시겠습니까?' : '새로운 직원을 등록하시겠습니까?'} </div>,
+            okText: "확인",
+            cancelText: "취소",
+            onOk() {
+                data ? 
+                // 수정 api
+                httpPost(httpUrl.staffUpdate, [], {
+                    ...self.formRef.current.getFieldsValue(),
+                    idx: data.idx,
+                    ncash: 0,
+                    userStatus: 1,
+                    withdrawPassword: 0,
+                    bank: "한국은행",
+                    bankAccount: "111-111-1111",
+                    depositor: "냠냠박스",
+                    userType: 1,
+                    userGroup: 1,
+                    riderLevel: 1,
+                })
+                .then((result) => {
+                    Modal.info({
+                        title: "직원 수정",
+                        content: <div>{self.formRef.current.getFieldsValue().riderName + '의 정보를 수정하였습니다'} </div>
+                    });
+                    self.props.close()
+                }).catch(e => {
+                    Modal.info({
+                        title: "수정 오류",
+                        content: "수정 오류가 발생하였습니다. 다시 시도해 주십시오."
+                    });
+                })
+                :
+                // 등록 api
+                httpPost(httpUrl.registStaff, [], {
+                    ...self.formRef.current.getFieldsValue(),
+                    ncash: 0,
+                    userStatus: 1,
+                    withdrawPassword: 0,
+                    bank: "한국은행",
+                    bankAccount: "111-111-1111",
+                    depositor: "냠냠박스",
+                    userType: 1,
+                    userGroup: 1,
+                    riderLevel: 1,
+                })
+                .then((result) => {
+                    Modal.info({
+                        title: "직원 등록",
+                        content: <div>{self.formRef.current.getFieldsValue().riderName + '을 등록하였습니다'} </div>
+                    });
+                    self.props.close()
+                }).catch(e => {
+                    Modal.info({
+                        title: "등록 오류",
+                        content: "등록 오류가 발생하였습니다. 다시 시도해 주십시오."
+                    });
+                });
+            },
+            onCancel() {},
         });
+        
     }
 
 
     handleClear = () => {
-        this.formRef.current.setFieldsValue({
-            riderName: undefined,
-            password: undefined,
-            phoneNumber: undefined,
-            memo: undefined,
-            rank: undefined,
-            auth: undefined,
-            id: undefined,
-            email: undefined,
-        });
+        this.formRef.current.resetFields();
     };
 
 
@@ -93,13 +119,9 @@ class RegistStaffDialog extends Component {
                             <div className="registStaff-Dialog">
                                 <div className="registStaff-content">
                                     <div className="registStaff-title">
-                                    {data ? 
-                                        "직원 수정" :
-                                        "직원 등록" }
+                                        {data ? "직원 수정" : "직원 등록" }
                                     </div>
-                                    <img onClick={close} src={require('../../../img/login/close.png').default} className="surcharge-close" />
-
-
+                                    <img onClick={close} src={require('../../../img/login/close.png').default} className="surcharge-close" alt="profile" />
                                     <Form ref={this.formRef} onFinish={this.handleSubmit}>
                                         <div className="layout">
                                             <div className="registStaffWrapper">
@@ -110,11 +132,9 @@ class RegistStaffDialog extends Component {
                                                     <FormItem
                                                         name="riderName"
                                                         className="selectItem"
+                                                        initialValue={data ? data.riderName : ''}
                                                     >   
-                                                        {data ? 
-                                                            <Input placeholder="직원명을 입력해 주세요." className="override-input" defaultValue={data.riderName}/> :
-                                                            <Input placeholder="직원명을 입력해 주세요." className="override-input"/>
-                                                        }
+                                                        <Input placeholder="직원명을 입력해 주세요." className="override-input"/> 
                                                     </FormItem>
                                                 </div>
                                                 <div className="contentBlock">
@@ -124,11 +144,9 @@ class RegistStaffDialog extends Component {
                                                     <FormItem
                                                         name="id"
                                                         className="selectItem"
+                                                        initialValue={data ? data.id : ''}
                                                     >
-                                                        {data ? 
-                                                            <Input placeholder="아이디를 입력해 주세요." className="override-input" defaultValue={data.id}/> :
-                                                            <Input placeholder="아이디를 입력해 주세요." className="override-input"/>
-                                                        }
+                                                        <Input placeholder="아이디를 입력해 주세요." className="override-input"/>
                                                     </FormItem>
                                                 </div>
                                                 <div className="contentBlock">
@@ -138,11 +156,9 @@ class RegistStaffDialog extends Component {
                                                     <FormItem
                                                         name="email"
                                                         className="selectItem"
+                                                        initialValue={data ? data.email : ''}
                                                     >
-                                                        {data ? 
-                                                            <Input placeholder="ex) example@naver.com" className="override-input" defaultValue={data.email}/> :
-                                                            <Input placeholder="ex) example@naver.com" className="override-input"/>
-                                                        }
+                                                        <Input placeholder="ex) example@naver.com" className="override-input"/>
                                                     </FormItem>
                                                 </div>
                                                 <div className="contentBlock">
@@ -163,11 +179,9 @@ class RegistStaffDialog extends Component {
                                                     <FormItem
                                                         name="phone"
                                                         className="selectItem"
+                                                        initialValue={data ? data.phone : ''}
                                                     >
-                                                        {data ? 
-                                                            <Input placeholder="휴대전화 번호를 입력해 주세요." className="override-input" defaultValue={data.phone}/> :
-                                                            <Input placeholder="휴대전화 번호를 입력해 주세요." className="override-input"/>
-                                                        }
+                                                        <Input placeholder="휴대전화 번호를 입력해 주세요." className="override-input"/>
                                                     </FormItem>
                                                 </div>
                                                 <div className="contentBlock">
@@ -177,11 +191,9 @@ class RegistStaffDialog extends Component {
                                                     <FormItem
                                                         name="memo"
                                                         className="selectItem"
+                                                        initialValue={data ? data.memo : ''}
                                                     >
-                                                        {data ? 
-                                                            <Input placeholder="메모를 입력해 주세요." className="override-input" defaultValue={data.memo}/> :
-                                                            <Input placeholder="메모를 입력해 주세요." className="override-input"/>
-                                                        }
+                                                        <Input placeholder="메모를 입력해 주세요." className="override-input"/>
                                                     </FormItem>
                                                 </div>
                                                 <div className="contentBlock">
@@ -203,26 +215,9 @@ class RegistStaffDialog extends Component {
                                                         </Select>
                                                     </FormItem>
                                                 </div>
-                                                {/* <div className="contentBlock">
-                                                    <div className="mainTitle">
-                                                        권한
-                                                    </div>
-
-                                                    <FormItem
-                                                        name="auth"
-                                                        className="selectItem"
-                                                    >
-                                                        <Radio.Group onChange={this.onChange} value={this.state.staffAuth}>
-                                                            <Radio value={1}>주문</Radio>
-                                                            <Radio value={2}>기사</Radio>
-                                                            <Radio value={3}>직원</Radio>
-                                                            <Radio value={4}>가맹</Radio>
-                                                        </Radio.Group>
-                                                    </FormItem>
-                                                </div> */}
                                                 <div className="submitBlock">
                                                     <Button type="primary" htmlType="submit">
-                                                        등록하기
+                                                        {data ? "수정하기":"등록하기"}
                                                     </Button>
 
                                                     {!data &&
