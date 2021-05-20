@@ -165,6 +165,9 @@ class ReceptionStatus extends Component {
       .then((res) => {
         if (res.result === "SUCCESS") {
           // alert("성공적으로 처리되었습니다.");
+          this.setState({
+            list: res.data.orders,
+          });      
         } else {
           alert("res는 왔는데 result가 SUCCESS가 아닌 경우.");
         }
@@ -172,9 +175,6 @@ class ReceptionStatus extends Component {
       .catch((e) => {
         alert("처리가 실패했습니다.");
       });
-    this.setState({
-      list: list,
-    });
   };
 
   getCompleteList = () => {
@@ -183,7 +183,7 @@ class ReceptionStatus extends Component {
     httpGet(httpUrl.orderCompleteList, [pageNum, pageSize], {})
       .then((res) => {
         if (res.result === "SUCCESS") {
-          alert("성공적으로 처리되었습니다.");
+          // alert("성공적으로 처리되었습니다.");
         } else {
           alert("res는 왔는데 result가 SUCCESS가 아닌 경우.");
         }

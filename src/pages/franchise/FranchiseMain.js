@@ -1,4 +1,4 @@
-import { Modal, Input, Table, Button, Radio} from 'antd';
+import { Modal, Input, Table, Button, Radio } from 'antd';
 import React, { Component } from 'react';
 import { httpUrl, httpPost } from '../../api/httpClient';
 import RegistFranDialog from "../../components/dialog/franchise/RegistFranDialog";
@@ -8,7 +8,7 @@ import "../../css/franchise.css";
 import { comma } from "../../lib/util/numberUtil";
 import { BankOutlined } from '@ant-design/icons';
 import { formatDate } from '../../lib/util/dateUtil';
-import { 
+import {
   statusString,
   withdrawString,
   cardStatus,
@@ -33,7 +33,7 @@ class FranchiseMain extends Component {
       franGroup: 0,
       franSelectStatus: 0,
       ResistFranchiseOpen: false,
-      modifyFranOpen:false,
+      modifyFranOpen: false,
       coinTransferOpen: false,
       SearchAddressOpen: false,
       dialogData: [],
@@ -136,18 +136,18 @@ class FranchiseMain extends Component {
 
   // 가맹점 상태변경
   onChangeStatus = (idx, value) => {
-      httpPost(httpUrl.franchiseUpdate, [], {
-        idx: idx,
-        frStatus: value,
-      })
+    httpPost(httpUrl.franchiseUpdate, [], {
+      idx: idx,
+      frStatus: value,
+    })
       .then((res) => {
         if (res.result === "SUCCESS") {
           Modal.info({
             title: "변경 완료",
             content: (
-                <div>
-                    상태가 변경되었습니다.
-                </div>
+              <div>
+                상태가 변경되었습니다.
+              </div>
             ),
             onOk() { },
           });
@@ -155,9 +155,9 @@ class FranchiseMain extends Component {
           Modal.error({
             title: "변경 실패",
             content: (
-                <div>
-                    변경에 실패했습니다. 관리자에게 문의하세요.
-                </div>
+              <div>
+                변경에 실패했습니다. 관리자에게 문의하세요.
+              </div>
             ),
             onOk() { },
           });
@@ -168,9 +168,9 @@ class FranchiseMain extends Component {
         Modal.error({
           title: "변경 실패",
           content: (
-              <div>
-                  변경에 실패했습니다. 관리자에게 문의하세요.
-              </div>
+            <div>
+              변경에 실패했습니다. 관리자에게 문의하세요.
+            </div>
           ),
           onOk() { },
         });
@@ -183,41 +183,41 @@ class FranchiseMain extends Component {
       idx: idx,
       withdrawEnabled: value,
     })
-    .then((res) => {
-      if (res.result === "SUCCESS") {
-        Modal.info({
-          title: "변경 완료",
-          content: (
+      .then((res) => {
+        if (res.result === "SUCCESS") {
+          Modal.info({
+            title: "변경 완료",
+            content: (
               <div>
-                  상태가 변경되었습니다.
+                상태가 변경되었습니다.
               </div>
-          ),
-          onOk() { },
-        });
-      } else {
+            ),
+            onOk() { },
+          });
+        } else {
+          Modal.error({
+            title: "변경 실패",
+            content: (
+              <div>
+                변경에 실패했습니다. 관리자에게 문의하세요.
+              </div>
+            ),
+            onOk() { },
+          });
+        }
+        this.getList();
+      })
+      .catch((e) => {
         Modal.error({
           title: "변경 실패",
           content: (
-              <div>
-                  변경에 실패했습니다. 관리자에게 문의하세요.
-              </div>
+            <div>
+              변경에 실패했습니다. 관리자에게 문의하세요.
+            </div>
           ),
           onOk() { },
         });
-      }
-      this.getList();
-    })
-    .catch((e) => {
-      Modal.error({
-        title: "변경 실패",
-        content: (
-            <div>
-                변경에 실패했습니다. 관리자에게 문의하세요.
-            </div>
-        ),
-        onOk() { },
       });
-    });
   }
 
   render() {
@@ -327,7 +327,7 @@ class FranchiseMain extends Component {
             <RegistFranDialog isOpen={this.state.modifyFranOpen} close={this.closeModifyFranModal} data={this.state.dialogData} />
             <Button
               className="tabBtn surchargeTab"
-              onClick={() => this.setState({modifyFranOpen:true, dialogData: row})}
+              onClick={() => this.setState({ modifyFranOpen: true, dialogData: row })}
             >수정하기</Button>
           </div>
       },
@@ -416,12 +416,12 @@ class FranchiseMain extends Component {
       <div className="franchiseContainer">
 
         <div className="selectLayout">
-          <span className="searchRequirementText">검색조건</span><br/>
+          <span className="searchRequirementText">검색조건</span><br />
           <Radio.Group className="searchRequirement" onChange={onChange} value={this.state.franStatus}>
             {Object.entries(statusString).map(([key, value]) => {
-                return(
-                  <Radio value={key}>{value}</Radio>
-                );
+              return (
+                <Radio value={key}>{value}</Radio>
+              );
             })}
           </Radio.Group>
           <Search

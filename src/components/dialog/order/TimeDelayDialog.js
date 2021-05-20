@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Form, Button, Checkbox, Select } from "antd";
+import { Form, Button, Checkbox, Select, Modal } from "antd";
 import "../../../css/modal.css";
 import { ClockCircleOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
@@ -87,7 +87,13 @@ class TimeDelayDialog extends Component {
   };
 
   handleSubmit = () => {
-    console.log(this.props.branchIdx);
+    // 2021-05-18 수정 중
+    // 적용이나 확인 버튼 입력 확인창 하나씩 꼭 만들어주기!
+    
+    // Modal.confirm({
+    //   title:'호출설정',
+    //   content:'설정하시겠습니까?'
+    // })
     if (this.props.branchIdx) {
       const btnInfos = this.state.btnInfos;
       httpPost(httpUrl.updateBranch, [], {

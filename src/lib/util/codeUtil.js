@@ -30,11 +30,11 @@ const cardStatus = [
 // 접수현황 - 상태 변경 가능한 경우
 // key : 기존 값 / value : 변경 가능한 값
 const modifyType = {
-    1 : [2, 5],
-    2 : [3, 5],
-    3 : [4, 5],
-    4 : [1, 2, 3],
-    5 : [1],
+    1: [2, 5],
+    2: [3, 5],
+    3: [4, 5],
+    4: [1, 2, 3],
+    5: [1],
 }
 
 // 접수현황 - 상태 값에 따라 테이블 색 변경
@@ -78,7 +78,7 @@ const enabledString = {
 }
 
 const enabledCode = [
-    false, 
+    false,
     true,
 ]
 
