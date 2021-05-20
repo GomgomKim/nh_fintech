@@ -5,6 +5,7 @@ import {
 import '../../../css/modal.css';
 import { httpUrl, httpPost } from '../../../api/httpClient';
 import SelectBox from '../../../components/input/SelectBox';
+import { riderLevelText, riderGroupString } from '../../../lib/util/codeUtil';
 const Option = Select.Option;
 const FormItem = Form.Item;
 
@@ -125,16 +126,20 @@ class RegistRiderDialog extends Component {
                                                         className="selectItem"
                                                         rules={[{ required: true, message: "그룹을 선택해주세요" }]}
                                                     >
-                                                        {/* <SelectBox
-                                                            value={enabledString}
-                                                            code={enabledCode}
-                                                            codeString={enabledString}
-                                                            onChange={(value) => {
-                                                                if (parseInt(value) !== row.enabled) {
-                                                                    this.onChangeStatus(row.idx, value);
-                                                                }
-                                                            }}
-                                                        /> */}
+                                                        <Select
+                                                            defaultValue={data}
+                                                            value={riderGroupString.map((value, index) => {
+                                                                if (index === 0) return <></>;
+                                                                else return <Option value={index}>{value}</Option>;
+                                                              })}
+                                                            code={Object.keys(riderGroupString)}
+                                                            codeString={riderGroupString}
+                                                            // onChange={(value) => {
+                                                            //     if (parseInt(value) !== row.enabled) {
+                                                            //         this.onChangeStatus(row.idx, value);
+                                                            //     }
+                                                            // }}
+                                                        />
                                                     </FormItem>
                                                 </div>
                                                 <div className="contentBlock">

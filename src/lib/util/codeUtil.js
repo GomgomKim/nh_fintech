@@ -87,6 +87,16 @@ const staffString = {
     2: "중지",
     3: "퇴사",
 }
+
+const riderGroupString = [
+    '',
+    'A',
+    'B',
+    'C',
+    'D',
+    'E',
+]
+
 const riderLevelText = [
     "", 
     "라이더", 
@@ -98,7 +108,7 @@ const riderLevelText = [
     "지점장", 
     "부센터장", 
     "센터장"
-];
+]
 
 export { 
     deliveryStatusCode,
@@ -114,5 +124,6 @@ export {
     paymentMethod, 
     modifyType, 
     rowColorName,
-    riderLevelText
+    riderLevelText,
+    riderGroupString
 };
