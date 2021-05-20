@@ -164,7 +164,7 @@ class ReceptionStatus extends Component {
     )
       .then((res) => {
         if (res.result === "SUCCESS") {
-          alert("성공적으로 처리되었습니다.");
+          // alert("성공적으로 처리되었습니다.");
         } else {
           alert("res는 왔는데 result가 SUCCESS가 아닌 경우.");
         }

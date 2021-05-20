@@ -72,17 +72,6 @@ class Header extends React.Component {
                 </div>
               );
             })}
-            <Select 
-            style={{ paddingLeft: "20px" }}
-            placeholder="소속지사를 선택해 주세요." 
-            className="override-select branch"
-            onChange={(value) => {
-            }}
-            >
-                <Option value={0}>플러스김포 / 플러스김포</Option>
-                <Option value={1}>김포1지점 / 플러스김포</Option>
-                <Option value={2}>김포2지점 / 플러스김포</Option>
-            </Select>
           </div>
 
           <div className="menu-right">

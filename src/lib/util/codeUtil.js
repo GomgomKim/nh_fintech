@@ -88,29 +88,15 @@ const staffString = {
     3: "퇴사",
 }
 
-const statusCode = [
-    1, 
-    2, 
-    3,
-]
-
-// 상태 2개일 때
-const statusCodeTwo = [
-    1,
-    2,
-]
-
 export { 
     deliveryStatusCode,
     blockString,
     withdrawString,
     toggleCode,
     enabledString,
-    statusCodeTwo,
     enabledCode,
     statusString,
     staffString,
-    statusCode,
     preparationStatus, 
     cardStatus, 
     paymentMethod, 
