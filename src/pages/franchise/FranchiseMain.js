@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { httpUrl, httpPost } from '../../api/httpClient';
 import RegistFranDialog from "../../components/dialog/franchise/RegistFranDialog";
 import SearchAddressDialog from "../../components/dialog/franchise/SearchAddressDialog";
+import BlindListDialog from "../../components/dialog/BlindListDialog";
 import SelectBox from '../../components/input/SelectBox';
 import "../../css/franchise.css";
 import { comma } from "../../lib/util/numberUtil";
@@ -36,6 +37,7 @@ class FranchiseMain extends Component {
       modifyFranOpen: false,
       coinTransferOpen: false,
       SearchAddressOpen: false,
+      blindListOpen: false,
       dialogData: [],
     };
   }
@@ -103,6 +105,13 @@ class FranchiseMain extends Component {
   }
   closeSearchAddressModal = () => {
     this.setState({ SearchAddressOpen: false });
+  }
+  // 블라인드 dialog
+  openBlindModal = () => {
+    this.setState({ blindListOpen: true });
+  }
+  closeBlindModal = () => {
+    this.setState({ blindListOpen: false });
   }
 
   // 출금설정
@@ -312,10 +321,10 @@ class FranchiseMain extends Component {
         className: "table-column-center",
         render: () =>
           <div>
-            <RegistFranDialog isOpen={this.state.addFranchiseOpen} close={this.closeAddFranchiseModal} />
+            <BlindListDialog isOpen={this.state.blindListOpen} close={this.closeBlindModal} />
             <Button
               className="tabBtn surchargeTab"
-            // onClick={this.onChangeDeleted}
+              onClick={this.openBlindModal}
             >블라인드</Button>
           </div>
       },

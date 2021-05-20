@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import {
     Form, Table,
 } from "antd";
-import '../../../css/modal.css';
+import '../../css/modal.css';
 
-class BlackListDialog extends Component {
+class BlindListDialog extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -162,7 +162,7 @@ class BlackListDialog extends Component {
                                     <div className="surcharge-title">
                                         기사 차단 목록
                                     </div>
-                                    <img onClick={close} src={require('../../../img/login/close.png').default} className="surcharge-close" />
+                                    <img onClick={close} src={require('../../img/login/close.png').default} className="surcharge-close" />
 
 
                                     <div className="surchargeLayout">
@@ -193,4 +193,4 @@ class BlackListDialog extends Component {
     }
 }
 
-export default (BlackListDialog);
+export default (BlindListDialog);
