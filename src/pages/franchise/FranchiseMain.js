@@ -10,8 +10,6 @@ import { BankOutlined } from '@ant-design/icons';
 import { formatDate } from '../../lib/util/dateUtil';
 import {
   statusString,
-  statusCode,
-  statusCodeTwo,
   withdrawString,
   cardStatus,
 } from '../../lib/util/codeUtil';
@@ -44,7 +42,7 @@ class FranchiseMain extends Component {
 
   componentDidMount() {
     this.getList()
-    console.log("props tag :" + this.props)
+    // console.log("props tag :"+this.props)
   }
 
   handleTableChange = (pagination) => {
@@ -229,16 +227,16 @@ class FranchiseMain extends Component {
         dataIndex: "frStatus",
         className: "table-column-center",
         render: (data, row) => <div>
-          <SelectBox
-            value={statusString[data]}
-            code={statusCode}
-            codeString={statusString}
-            onChange={(value) => {
-              if (parseInt(value) !== row.frStatus) {
-                this.onChangeStatus(row.idx, value);
-              }
-            }}
-          />
+            <SelectBox
+                value={statusString[data]}
+                code={Object.keys(statusString)}
+                codeString={statusString}
+                onChange={(value) => {
+                    if (parseInt(value) !== row.frStatus) {
+                        this.onChangeStatus(row.idx, value);
+                    }
+                }}
+            />
         </div>
       },
       {
@@ -284,17 +282,17 @@ class FranchiseMain extends Component {
         dataIndex: "withdrawEnabled",
         className: "table-column-center",
         render: (data, row) => <div>
-          <SelectBox
-            value={withdrawString[data]}
-            code={statusCodeTwo}
-            codeString={withdrawString}
-            onChange={(value) => {
-              console.log(value, row.withdrawEnabled)
-              if (value !== row.withdrawEnabled.toString()) {
-                this.onChangeWithdraw(row.idx, value);
-              }
-            }}
-          />
+            <SelectBox
+                value={withdrawString[data]}
+                code={Object.keys(withdrawString)}
+                codeString={withdrawString}
+                onChange={(value) => {
+                    console.log(value, row.withdrawEnabled)
+                    if (value !== row.withdrawEnabled.toString()) {
+                      this.onChangeWithdraw(row.idx, value);
+                    }
+                }}
+            />
         </div>
       },
       {

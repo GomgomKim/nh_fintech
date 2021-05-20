@@ -425,16 +425,16 @@
 
 .noticeLayout .noticelistBlock {
   float: left;
-  width: 47%;
+  width: 55%;
 }
 
 .noticeLayout .noticeDetailBlock {
   float: right;
-  width: 47%;
+  width: 35%;
 }
 
-.noticeLayout .inputBox {
-  width: 530px;
+.noticeLayout .inputBox{
+  width: 370px;
   height: 380px;
 }
 
@@ -2246,12 +2246,8 @@
 
 .registRiderWrapper .registRiderCheck {
   display: inline-block;
-  margin-left: 22px;
+  /* margin-left: 22px; */
 }
-
-/* .registRider-Dialog .layout{
-  height:700px;
-} */
 
 .registRiderWrapper .submitBlock {
   margin-top: 30px;
@@ -2262,12 +2258,17 @@
   margin-left: 20px;
 }
 
+.registRiderWrapper .contentBlock .override-input {
+  margin-left: 0px;
+}
+
 .registRiderWrapper .contentBlock .override-select.branch {
-  width: 240px !important;
+  width: 260px !important;
+  margin-left: 0px;
 }
 
 .registRiderWrapper .contentBlock .override-input {
-  width: 240px !important;
+  width: 260px !important;
 }
 
 .registRider-Dialog .ant-btn {

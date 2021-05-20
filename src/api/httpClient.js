@@ -185,6 +185,12 @@ const httpUrl = {
 
   // 지점 수정
   updateBranch:"/branch/update",
+
+  // 공지사항
+  noticeList: "/notice/list?pageNum=%s&pageSize=%s",
+  registNotice: "/notice/create",
+  updateNotice: "/notice/update",
+  specificNoticeList:"/notice/%s"
 };
 
 const imageType = ["image/jpeg", "image/png", "image/bmp"];

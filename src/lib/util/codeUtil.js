@@ -87,40 +87,32 @@ const staffString = {
     2: "중지",
     3: "퇴사",
 }
+const riderLevelText = [
+    "", 
+    "라이더", 
+    "부팀장", 
+    "팀장", 
+    "부본부장", 
+    "본부장", 
+    "부지점장", 
+    "지점장", 
+    "부센터장", 
+    "센터장"
+];
 
-const statusCode = [
-    1,
-    2,
-    3,
-]
-
-const riderStatusCode = [
-    1,
-    2,
-    3,
-]
-
-// 상태 2개일 때
-const statusCodeTwo = [
-    1,
-    2,
-]
-
-export {
+export { 
     deliveryStatusCode,
     blockString,
     withdrawString,
     toggleCode,
     enabledString,
-    statusCodeTwo,
     enabledCode,
     statusString,
     staffString,
-    statusCode,
-    riderStatusCode,
-    preparationStatus,
-    cardStatus,
-    paymentMethod,
-    modifyType,
+    preparationStatus, 
+    cardStatus, 
+    paymentMethod, 
+    modifyType, 
     rowColorName,
+    riderLevelText
 };
