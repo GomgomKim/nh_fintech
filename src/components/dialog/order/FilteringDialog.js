@@ -6,44 +6,44 @@ const FormItem = Form.Item;
 const { Option } = Radio;
 
 class FilteringDialog extends Component {
-  constructor(props) {
+  constructor(props) { 
     super(props);
     this.state = {
       orderStatus: [
         {
-          key:"orderStatus-1",
+          key: "orderStatus-1",
           value: 1,
           text: "접수",
         },
         {
-          key:"orderStatus-2",
+          key: "orderStatus-2",
           value: 2,
           text: "배차",
         },
         {
-          key:"orderStatus-3",
+          key: "orderStatus-3",
           value: 3,
           text: "픽업",
         },
         {
-          key:"orderStatus-4",
+          key: "orderStatus-4",
           value: 4,
           text: "취소",
         },
       ],
       paymentMethod: [
         {
-          key:"paymentMethod-1",
+          key: "paymentMethod-1",
           value: 1,
           text: "현금",
         },
         {
-          key:"paymentMethod-2",
+          key: "paymentMethod-2",
           value: 2,
           text: "카드",
         },
         {
-          key:"paymentMethod-3",
+          key: "paymentMethod-3",
           value: 3,
           text: "선결",
         },
@@ -60,12 +60,25 @@ class FilteringDialog extends Component {
       <React.Fragment>
         {isOpen ? (
           <React.Fragment>
-            <div className="Dialog-overlay" onClick={() => close(this.state.selectedOrderStatus,this.state.selectedPaymentMethods)} />
+            <div
+              className="Dialog-overlay"
+              onClick={() =>
+                close(
+                  this.state.selectedOrderStatus,
+                  this.state.selectedPaymentMethods
+                )
+              }
+            />
             <div className="filtering-Dialog">
               <div className="filtering-content">
                 <div className="timeDelay-title">상태 필터링</div>
                 <img
-                  onClick={() => close(this.state.selectedOrderStatus,this.state.selectedPaymentMethods)}
+                  onClick={() =>
+                    close(
+                      this.state.selectedOrderStatus,
+                      this.state.selectedPaymentMethods
+                    )
+                  }
                   src={require("../../../img/login/close.png").default}
                   className="filtering-close"
                   alt="closeModal"
@@ -88,7 +101,7 @@ class FilteringDialog extends Component {
                               } else {
                                 const result =
                                   this.state.selectedOrderStatus.filter(
-                                    el => el !== e.target.value
+                                    (el) => el !== e.target.value
                                   );
                                 this.setState({ selectedOrderStatus: result });
                               }
@@ -118,7 +131,7 @@ class FilteringDialog extends Component {
                               } else {
                                 const result =
                                   this.state.selectedPaymentMethods.filter(
-                                    el => el !== e.target.value
+                                    (el) => el !== e.target.value
                                   );
                                 this.setState({
                                   selectedPaymentMethods: result,

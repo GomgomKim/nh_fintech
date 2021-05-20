@@ -10,7 +10,7 @@ import UpdatePasswordDialog from "../../components/dialog/rider/UpdatePasswordDi
 import '../../css/modal.css'
 import { comma } from "../../lib/util/numberUtil";
 import SelectBox from '../../components/input/SelectBox';
-import { statusString, riderStatusCode, riderLevelText } from '../../lib/util/codeUtil';
+import { statusString, riderLevelText } from '../../lib/util/codeUtil';
 
 
 const Search = Input.Search;
@@ -276,7 +276,7 @@ class RiderMain extends Component {
         render: (data, row) => <div>
           <SelectBox
             value={statusString[data]}
-            code={riderStatusCode}
+            code={Object.keys(statusString)}
             codeString={statusString}
             onChange={(value) => {
               if (parseInt(value) !== row.riderStatus) {
