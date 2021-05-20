@@ -5,7 +5,7 @@ import "../../css/staff.css";
 import "../../css/common.css";
 import RegistStaffDialog from "../../components/dialog/staff/RegistStaffDialog";
 import SelectBox from '../../components/input/SelectBox';
-import { staffString, statusCode } from '../../lib/util/codeUtil';
+import { staffString} from '../../lib/util/codeUtil';
 
 
 class StaffMain extends Component {
@@ -151,7 +151,7 @@ class StaffMain extends Component {
         render: (data, row) => <div>
             <SelectBox
                 value={staffString[data]}
-                code={statusCode}
+                code={Object.keys(staffString)}
                 codeString={staffString}
                 onChange={(value) => {
                     if (parseInt(value) !== row.userStatus) {
