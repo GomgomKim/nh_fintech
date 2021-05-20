@@ -21,7 +21,7 @@ class RiderMain extends Component {
     this.state = {
       riderLevel: [1],
       userData: 1,
-      riderName: "",
+      searchName: "",
       taskSchedulerOpen: false, // 일차감
       riderGroupOpen: false, // 기사 그룹 관리
       registRiderOpen: false, // 기사등록
@@ -59,9 +59,9 @@ class RiderMain extends Component {
     let pageNum = this.state.pagination.current;
     let riderLevel = this.state.riderLevel;
     let userStatus = this.state.userStatus;
-    let riderName = this.state.riderName;
+    let searchName = this.state.searchName;
 
-    httpGet(httpUrl.riderList, [10, pageNum, riderLevel, riderName, userStatus], {}).then((result) => {
+    httpGet(httpUrl.riderList, [10, pageNum, riderLevel, searchName, userStatus], {}).then((result) => {
       console.log('## nnbox result=' + JSON.stringify(result, null, 4))
       const pagination = { ...this.state.pagination };
       pagination.current = result.data.currentPage;
@@ -103,7 +103,7 @@ class RiderMain extends Component {
 
   onSearchRider = (value) => {
     this.setState({
-      riderName: value,
+      searchName: value,
     }, () => {
       this.getList()
     })

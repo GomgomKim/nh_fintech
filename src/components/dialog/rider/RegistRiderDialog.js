@@ -37,7 +37,6 @@ class RegistRiderDialog extends Component {
 
     handleSubmit = () => {
         let self = this;
-        
         Modal.confirm({
             title: "기사 등록",
             content: (
@@ -126,12 +125,8 @@ class RegistRiderDialog extends Component {
                                                         className="selectItem"
                                                         rules={[{ required: true, message: "그룹을 선택해주세요" }]}
                                                     >
-                                                        <Select
-                                                            defaultValue={data}
-                                                            value={riderGroupString.map((value, index) => {
-                                                                if (index === 0) return <></>;
-                                                                else return <Option value={index}>{value}</Option>;
-                                                              })}
+                                                        {/* <SelectBox
+                                                            value={riderGroupString}
                                                             code={Object.keys(riderGroupString)}
                                                             codeString={riderGroupString}
                                                             // onChange={(value) => {
@@ -139,7 +134,7 @@ class RegistRiderDialog extends Component {
                                                             //         this.onChangeStatus(row.idx, value);
                                                             //     }
                                                             // }}
-                                                        />
+                                                        /> */}
                                                     </FormItem>
                                                 </div>
                                                 <div className="contentBlock">
