@@ -16,9 +16,10 @@ const preparationStatus = [
 
 // 접수현황 - 결재방식
 const paymentMethod = [
+    '',
+    '카드',
     '현금',
     '선결',
-    '카드',
 ]
 
 // 접수현황, 가맹점관리 - 카드상태
