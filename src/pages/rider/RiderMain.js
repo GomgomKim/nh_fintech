@@ -1,4 +1,4 @@
-import { Input, Table, Button, Radio, Modal } from 'antd';
+import { Input, Table, Button, Radio, Modal, DatePicker } from 'antd';
 import React, { Component } from 'react';
 import { httpGet, httpUrl, httpPost } from '../../api/httpClient';
 import RiderGroupDialog from "../../components/dialog/rider/RiderGroupDialog";
@@ -11,7 +11,10 @@ import '../../css/modal.css'
 import { comma } from "../../lib/util/numberUtil";
 import SelectBox from '../../components/input/SelectBox';
 import { statusString, riderLevelText } from '../../lib/util/codeUtil';
+import moment from 'moment';
 
+const dateFormat = 'YYYY/MM/DD';
+const today = new Date();
 
 const Search = Input.Search;
 
@@ -75,30 +78,30 @@ class RiderMain extends Component {
 
   onChangeStatus = (index, value) => {
     let self = this;
-        httpPost(httpUrl.updateRider, [], {
-          idx: index, userStatus: value
-        })
-          .then((result) => {
-            Modal.info({
-              title: "변경 완료",
-              content: (
-                <div>
-                  상태가 변경되었습니다.
-                </div>
-              ),
-            });
-            self.getList();
-          })
-          .catch((error) => {
-            Modal.error({
-              title: "변경 실패",
-              content: (
-                <div>
-                  변경에 실패했습니다.
-                </div>
-              ),
-            });
-          });
+    httpPost(httpUrl.updateRider, [], {
+      idx: index, userStatus: value
+    })
+      .then((result) => {
+        Modal.info({
+          title: "변경 완료",
+          content: (
+            <div>
+              상태가 변경되었습니다.
+            </div>
+          ),
+        });
+        self.getList();
+      })
+      .catch((error) => {
+        Modal.error({
+          title: "변경 실패",
+          content: (
+            <div>
+              변경에 실패했습니다.
+            </div>
+          ),
+        });
+      });
   }
 
   onSearchRider = (value) => {
@@ -235,29 +238,49 @@ class RiderMain extends Component {
           </div>
       },
       {
-        title: "충전",
+        title: "입사일",
         className: "table-column-center",
-        render: () =>
-          <div>
-            <RiderCoinDialog isOpen={this.state.riderCoinOpen} close={this.closeRiderCoinModal} />
-            <Button
-              className="tabBtn surchargeTab"
-              onClick={this.openRiderCoinModal}
-            >코인충전</Button>
-          </div>
+        render: (data, row) => <div>
+          <DatePicker
+            defaultValue={moment(today, dateFormat)}
+            format={dateFormat}
+            onChange={date => this.setState({ selected: date })} />
+        </div>
       },
       {
-        title: "출금내역",
+        title: "퇴사일",
         className: "table-column-center",
-        render: () =>
-          <div>
-            <RiderBankDialog isOpen={this.state.riderBankOpen} close={this.closeRiderBankModal} />
-            <Button
-              className="tabBtn surchargeTab"
-              onClick={this.openRiderBankModal}
-            >내역보기</Button>
-          </div>
+        render: (data, row) => <div>
+          <DatePicker
+            defaultValue={moment(today, dateFormat)}
+            format={dateFormat}
+            onChange={date => this.setState({ selected: date })} />
+        </div>
       },
+      // {
+      //   title: "충전",
+      //   className: "table-column-center",
+      //   render: () =>
+      //     <div>
+      //       <RiderCoinDialog isOpen={this.state.riderCoinOpen} close={this.closeRiderCoinModal} />
+      //       <Button
+      //         className="tabBtn surchargeTab"
+      //         onClick={this.openRiderCoinModal}
+      //       >코인충전</Button>
+      //     </div>
+      // },
+      // {
+      //   title: "출금내역",
+      //   className: "table-column-center",
+      //   render: () =>
+      //     <div>
+      //       <RiderBankDialog isOpen={this.state.riderBankOpen} close={this.closeRiderBankModal} />
+      //       <Button
+      //         className="tabBtn surchargeTab"
+      //         onClick={this.openRiderBankModal}
+      //       >내역보기</Button>
+      //     </div>
+      // },
       {
         title: "상태",
         dataIndex: "userStatus",

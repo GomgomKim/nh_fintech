@@ -112,8 +112,9 @@ class RegistRiderDialog extends Component {
 
 
                                     <Form ref={this.formRef} onFinish={this.handleSubmit}>
-                                        <div className="layout">
+                                        <div className="registRiderLayout">
                                             <div className="registRiderWrapper">
+
                                                 <div className="contentBlock">
                                                     <div className="mainTitle">
                                                         기사그룹
@@ -214,7 +215,7 @@ class RegistRiderDialog extends Component {
                                                         rules={[{ required: true, message: "이메일을 입력해주세요" }]}
                                                         initialValue={data ? data.email : ''}
                                                     >
-                                                        <Input placeholder="ex) example@naver.com" className="override-input"/>
+                                                        <Input placeholder="ex) example@naver.com" className="override-input" />
                                                     </FormItem>
                                                 </div>
                                                 <div className="contentBlock">
@@ -228,6 +229,8 @@ class RegistRiderDialog extends Component {
                                                         <Input.Password placeholder="패스워드를 입력해 주세요." className="override-input" />
                                                     </FormItem>
                                                 </div>
+                                            </div>
+                                            <div className="registRiderWrapper sub">
                                                 <div className="contentBlock">
                                                     <div className="mainTitle">
                                                         전화번호
