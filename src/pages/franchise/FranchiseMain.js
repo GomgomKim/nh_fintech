@@ -119,7 +119,7 @@ class FranchiseMain extends Component {
     closeSearchAddressModal = () => {
       this.setState({ SearchAddressOpen: false });
     }
-    
+
     // 블라인드 dialog
     openBlindModal = () => {
       this.setState({ blindListOpen: true });
