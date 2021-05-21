@@ -382,7 +382,7 @@
 }
 
 .noticeLayout {
-  margin-top: 20px;
+  margin-top: 5px;
   width: 100%;
   overflow-y: scroll;
   border: 1px solid #ccc;
@@ -390,6 +390,10 @@
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
   padding: 20px;
+}
+
+.deleteBox{
+  float: right;
 }
 
 .noticeDialog .container {
@@ -430,11 +434,11 @@
 
 .noticeLayout .noticeDetailBlock {
   float: right;
-  width: 35%;
+  width: 40%;
 }
 
 .noticeLayout .inputBox{
-  width: 370px;
+  width: 450px;
   height: 380px;
 }
 
