@@ -18,10 +18,11 @@ import {
 import { httpUrl, httpPost, httpGet } from '../../../api/httpClient';
 import '../../../css/modal.css';
 import { connect } from "react-redux";
-import { formatDate } from '../../../lib/util/dateUtil';
+import { formatDate, formatDateSecond } from '../../../lib/util/dateUtil';
 import moment from 'moment';
 const Option = Select.Option;
 const FormItem = Form.Item;
+const today = new Date();
 
 class NoticeDialog extends Component {
   constructor(props) {
@@ -33,6 +34,12 @@ class NoticeDialog extends Component {
         current: 1,
         pageSize: 5,
       },
+      date: "",
+      title: "",
+      content: "",
+      category: 0,
+      sortOrder: 30,
+      important: 0,
       branchCode: 1,
       createdate: '',
       deleteDate: '',
@@ -82,7 +89,7 @@ class NoticeDialog extends Component {
   };
 
   //공지 전송
-  handleIdSubmit = () => {
+  handleSubmit = () => {
     let self = this;
     
     Modal.confirm({
