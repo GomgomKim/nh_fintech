@@ -174,11 +174,11 @@ const httpUrl = {
   staffUpdate: "/rider/update",
 
   // rider
-  riderList: "/rider/list?pageSize=%s&pageNum=%s&riderLevels=%s&searchName=%s&userStatus=%s",
+  riderList: "/rider/list?pageSize=%s&pageNum=%s&searchName=%s&userStatus=%s",
   registRider: "/rider/create",
   updateRider: "/rider/update",
   riderLocate: "/rider/location/%s",
-
+  riderListOne: "/rider/list",
   // 가맹점 관리
   registFranchise: "/fr/create",
   franchiseList: "/fr/list",
