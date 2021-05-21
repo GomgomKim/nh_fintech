@@ -522,7 +522,7 @@
   padding: 20px;
 }
 
-.deleteBox{
+.deleteBox {
   float: right;
 }
 
@@ -2356,7 +2356,6 @@
   display: none; /* Chrome, Safari, Opera*/
 }
 
-
 .registRider-title {
   letter-spacing: -1px;
   font-weight: bold;
@@ -2376,7 +2375,7 @@
   padding: 8px;
 }
 
-.registRiderWrapper{
+.registRiderWrapper {
   display: inline-block;
 }
 
@@ -2416,14 +2415,10 @@
 }
 
 /*오른쪽*/
-.registRiderWrapper.sub{
+.registRiderWrapper.sub {
   display: inline-block;
   margin-left: 70px;
 }
-
-
-
-
 
 .registRider-Dialog .ant-btn {
   width: 130px;
@@ -2922,6 +2917,7 @@
   z-index: 2;
 }
 .modifyOrder-container {
+}
 /* 블라인드 */
 .blind-Dialog {
   position: fixed;
