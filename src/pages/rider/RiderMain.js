@@ -158,6 +158,13 @@ class RiderMain extends Component {
     this.setState({ searchRiderOpen: false });
   }
 
+  // sns dialog
+  openSendSnsModal = () => {
+    this.setState({ sendSnsOpen: true });
+  }
+  closeSendSnsModal = () => {
+    this.setState({ sendSnsOpen: false });
+  }
   //일차감
   openTaskSchedulerModal = () => {
     this.setState({ taskSchedulerOpen: true });
@@ -445,7 +452,7 @@ class RiderMain extends Component {
             onClick={this.openTaskSchedulerModal}
           >일차감</Button>
 
-          <SendSnsDialog isOpen={this.state.SendSnsOpen} close={this.closeSendSnsModal} />
+          <SendSnsDialog isOpen={this.state.sendSnsOpen} close={this.closeSendSnsModal} />
           <Button className="riderManageBtn"
             onClick={this.openSendSnsModal}
           >SNS 전송</Button>

@@ -84,16 +84,13 @@ class SendSnsDialog extends Component {
             onOk() {
                 httpPost(httpUrl.registNotice, [], {
                     ...self.formRef.current.getFieldsValue(),
-                    // idx: self.state.idx,
                     date: self.state.date,
                     title: self.state.title,
-                    // content: self.state.content,
                     deleted: false,
                     category: self.state.category,
                     sortOrder: self.state.sortOrder,
                     important: self.state.important,
                     branchCode: self.state.branchCode,
-                    // deleted: false,
                 }).then((result) => {
                     Modal.info({
                         title: " 완료",
@@ -111,12 +108,6 @@ class SendSnsDialog extends Component {
                         content: "오류가 발생하였습니다. 다시 시도해 주십시오."
                     });
                 })
-                    .catch((error) => {
-                        Modal.info({
-                            title: "수정 오류",
-                            content: "오류가 발생하였습니다. 다시 시도해 주십시오."
-                        });
-                    });
             }
         });
     }
@@ -129,27 +120,7 @@ class SendSnsDialog extends Component {
 
     render() {
         const columns = [
-            {
-                className: "table-column-center",
-                render: (data, row) => (
-                    <div>
-                        <Button
-                            className="tabBtn surchargeTab"
-                            onClick={() => {
-                                this.onDelete(row);
-                            }}
-                        >
-                            삭제
-            </Button>
-                    </div>
-                ),
-            },
-            {
-                title: "날짜",
-                dataIndex: "createDate",
-                className: "table-column-center",
-                render: (data) => <div>{formatDate(data)}</div>,
-            },
+
             {
                 title: "내용",
                 dataIndex: "content",
@@ -163,6 +134,12 @@ class SendSnsDialog extends Component {
                     </div>
                 ),
             },
+            {
+                title: "날짜",
+                dataIndex: "createDate",
+                className: "table-column-center",
+                render: (data) => <div>{formatDate(data)}</div>,
+            },
         ];
 
         const { isOpen, close } = this.props;
@@ -174,7 +151,7 @@ class SendSnsDialog extends Component {
                         <div className="Dialog-overlay" onClick={close} />
                         <div className="snsDialog">
                             <div className="container">
-                                <div className="notice-title">메세지 전송</div>
+                                <div className="sns-title">메세지 전송</div>
                                 <img
                                     onClick={close}
                                     src={require("../../../img/login/close.png").default}
@@ -196,14 +173,14 @@ class SendSnsDialog extends Component {
 
                                     <Form ref={this.formRef} onFinish={this.handleSubmit}>
                                         <div className="snsDetailBlock">
-                                            <div className="mainTitle">추가 및 수정</div>
+                                            <div className="mainTitle">sns</div>
                                             <div className="inputBox">
                                                 <FormItem
-                                                    className="noticeInputBox"
+                                                    className="snsInputBox"
                                                     name="content"
                                                 >
                                                     <Input
-                                                        className="noticeInputBox"
+                                                        className="snsInputBox"
                                                         placeholder="메세지 내용"
                                                     />
                                                 </FormItem>
