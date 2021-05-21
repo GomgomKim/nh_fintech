@@ -2383,6 +2383,11 @@
   margin-top: 25px;
 }
 
+.registRiderWrapper .ant-form-item-control-input-content{
+  width:260px;
+}
+
+
 .registRiderWrapper .mainTitle {
   width: 130px;
 }
@@ -3045,4 +3050,79 @@
   margin-left: 45px;
   display: inline-block;
   vertical-align: middle;
+}
+
+
+/*sns전송ㅇ*/
+.snsDialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 1320px;
+  border-radius: 30px;
+  padding: 20px;
+  z-index: 2;
+}
+
+.snsLayout {
+  margin-top: 5px;
+  width: 100%;
+  overflow-y: scroll;
+  border: 1px solid #ccc;
+  text-align: left;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+  padding: 20px;
+}
+
+.snsDialog .container {
+  background-color: white;
+  padding: 30px;
+  text-align: left;
+  color: #777;
+}
+
+.sns-title {
+  /* font-size: 28px; */
+  letter-spacing: -1px;
+  font-weight: bold;
+  color: #333;
+  text-align: right;
+  display: inline-block;
+  font-size: 25px;
+  line-height: 30px;
+}
+
+.sns-close {
+  width: 30px;
+  background-color: #fddc00;
+  padding: 8px;
+  cursor: pointer;
+  /* display: inline-block; */
+  float: right;
+}
+
+.snsLayout::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera*/
+}
+
+.snsLayout .snslistBlock {
+  float: left;
+  width: 55%;
+}
+
+.snsLayout .snsDetailBlock {
+  float: right;
+  width: 40%;
+}
+
+.snsLayout .inputBox {
+  width: 370px;
+  height: 380px;
+}
+
+.snsLayout .snsInputBox {
+  width: 100%;
+  height: 380px;
 }

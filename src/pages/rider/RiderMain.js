@@ -2,6 +2,7 @@ import { Input, Table, Button, Radio, Modal, DatePicker } from 'antd';
 import React, { Component } from 'react';
 import { httpGet, httpUrl, httpPost } from '../../api/httpClient';
 import RiderGroupDialog from "../../components/dialog/rider/RiderGroupDialog";
+import SendSnsDialog from "../../components/dialog/rider/SendSnsDialog";
 import TaskSchedulerDialog from "../../components/dialog/rider/TaskSchedulerDialog";
 import RegistRiderDialog from "../../components/dialog/rider/RegistRiderDialog";
 import RiderCoinDialog from "../../components/dialog/rider/RiderCoinDialog";
@@ -12,8 +13,8 @@ import '../../css/modal.css'
 import { comma } from "../../lib/util/numberUtil";
 import SelectBox from '../../components/input/SelectBox';
 import SearchRiderDialog from '../../components/dialog/common/SearchRiderDialog';
-import { 
-  statusString, 
+import {
+  statusString,
   riderLevelText
 } from '../../lib/util/codeUtil';
 import moment from 'moment';
@@ -28,6 +29,7 @@ class RiderMain extends Component {
       riderLevel: [1],
       userData: 1,
       searchName: "",
+      sendSnsOpen: false, //sns전송
       taskSchedulerOpen: false, // 일차감
       riderGroupOpen: false, // 기사 그룹 관리
       registRiderOpen: false, // 기사등록
@@ -116,21 +118,25 @@ class RiderMain extends Component {
     }, () => {
       this.getList()
     })
-        .then((result) => {
-            Modal.info(
-                {title: "변경 완료", content: (<div>
-                    상태가 변경되었습니다.
-                </div>)}
-            );
-            self.getList();
-        })
-        .catch((error) => {
-            Modal.error(
-                {title: "변경 실패", content: (<div>
-                    변경에 실패했습니다.
-                </div>)}
-            );
-        });
+      .then((result) => {
+        Modal.info(
+          {
+            title: "변경 완료", content: (<div>
+              상태가 변경되었습니다.
+            </div>)
+          }
+        );
+        self.getList();
+      })
+      .catch((error) => {
+        Modal.error(
+          {
+            title: "변경 실패", content: (<div>
+              변경에 실패했습니다.
+            </div>)
+          }
+        );
+      });
   }
 
   onChange = e => {
@@ -141,15 +147,15 @@ class RiderMain extends Component {
 
   onSearchRider = (data) => {
     console.log("### get fran list data : " + data)
-    this.setState({results: data});
+    this.setState({ results: data });
   }
 
   // 기사조회 dialog
   openSearchRiderModal = () => {
-    this.setState({searchRiderOpen: true});
+    this.setState({ searchRiderOpen: true });
   }
   closeSearchRiderModal = () => {
-    this.setState({searchRiderOpen: false});
+    this.setState({ searchRiderOpen: false });
   }
 
   //일차감
@@ -180,7 +186,7 @@ class RiderMain extends Component {
   closeUpdateRiderModal = () => {
     this.setState({ riderUpdateOpen: false });
   }
-  
+
   // 블라인드 dialog
   openBlindModal = () => {
     this.setState({ blindListOpen: true });
@@ -270,10 +276,10 @@ class RiderMain extends Component {
         className: "table-column-center",
         render: (data, row) =>
           <div>
-            <BlindListDialog isOpen={this.state.blindListOpen} close={this.closeBlindModal} date={this.state.blindData}/>
+            <BlindListDialog isOpen={this.state.blindListOpen} close={this.closeBlindModal} date={this.state.blindData} />
             <Button
               className="tabBtn surchargeTab"
-              onClick={()=>this.setState({blindListOpen:true, blindRiderData: row})}
+              onClick={() => this.setState({ blindListOpen: true, blindRiderData: row })}
             >블라인드</Button>
           </div>
       },
@@ -420,9 +426,9 @@ class RiderMain extends Component {
       <div className="">
         <div className="selectLayout">
           <SearchRiderDialog
-              callback={(data) => this.onSearchRider(data)}
-              isOpen={this.state.searchRiderOpen}
-              close={this.closeSearchRiderModal}/>
+            callback={(data) => this.onSearchRider(data)}
+            isOpen={this.state.searchRiderOpen}
+            close={this.closeSearchRiderModal} />
           <Button className="tabBtn searchTab" onClick={this.openSearchRiderModal}>기사조회</Button>
           <RegistRiderDialog isOpen={this.state.registRiderOpen} close={this.closeRegistRiderModal} />
           <Button className="riderManageBtn"
@@ -439,6 +445,10 @@ class RiderMain extends Component {
             onClick={this.openTaskSchedulerModal}
           >일차감</Button>
 
+          <SendSnsDialog isOpen={this.state.SendSnsOpen} close={this.closeSendSnsModal} />
+          <Button className="riderManageBtn"
+            onClick={this.openSendSnsModal}
+          >SNS 전송</Button>
 
         </div>
 

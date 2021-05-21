@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Form, Input, Table, Button, Radio} from "antd";
+import {Form, Input, Table, Button} from "antd";
 import {httpUrl, httpPost} from '../../../api/httpClient';
 import '../../../css/modal.css';
 import SelectBox from '../../../components/input/SelectBox';

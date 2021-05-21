@@ -193,7 +193,7 @@ class RegistCallDialog extends Component {
                                             </div>
 
                                             <div className="mapLayout regist-call-map" id="myMap">
-                                                {/* <MapContainer /> */}
+                                                {/* <MapContainer /> */}{/* 
                                                 {navermaps &&
                                                     <NaverMap
                                                         className='map-navermap'
@@ -218,7 +218,7 @@ class RegistCallDialog extends Component {
                                                     strokeWeight={5}        
                                                     />
                                                     </NaverMap>
-                                                }
+                                                } */}
                                             </div>
 
 
