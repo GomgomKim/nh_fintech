@@ -1,9 +1,10 @@
-import {Modal, Input, Table, Button, Radio} from 'antd';
+import {Modal, Table, Button} from 'antd';
 import React, {Component} from 'react';
 import {httpUrl, httpPost} from '../../api/httpClient';
 import RegistFranDialog from "../../components/dialog/franchise/RegistFranDialog";
 import SearchAddressDialog from "../../components/dialog/franchise/SearchAddressDialog";
 import SearchFranchiseDialog from '../../components/dialog/common/SearchFranchiseDialog';
+import BlindListDialog from "../../components/dialog/BlindListDialog";
 import SelectBox from '../../components/input/SelectBox';
 import "../../css/franchise.css";
 import {comma} from "../../lib/util/numberUtil";
@@ -33,6 +34,7 @@ class FranchiseMain extends Component {
             coinTransferOpen: false,
             SearchAddressOpen: false,
             dialogData: [],
+            blindListOpen: false,
             searchFranchiseOpen: false
         };
     }
@@ -97,11 +99,32 @@ class FranchiseMain extends Component {
         this.setState({coinTransferOpen: false});
     }
 
-    // 가맹점수정 dialog openModifyFranModal = (row) => {   this.setState({
-    // modifyFranOpen: true, dialogData: row }); }
+    // 가맹점수정 dialog 
+    openModifyFranModal = (row) => {   
+      this.setState({
+        modifyFranOpen: true, 
+        dialogData: row 
+      }); 
+    }
+    
     closeModifyFranModal = () => {
         this.setState({modifyFranOpen: false});
     }
+    
+    // 주소검색관리 dialog
+    openSearchAddressModal = () => {
+      this.setState({ SearchAddressOpen: true });
+    }
+    closeSearchAddressModal = () => {
+      this.setState({ SearchAddressOpen: false });
+    }
+    // 블라인드 dialog
+    openBlindModal = () => {
+      this.setState({ blindListOpen: true });
+    }
+    closeBlindModal = () => {
+      this.setState({ blindListOpen: false });
+  }
 
     // 주소검색관리 dialog
     openSearchAddressModal = () => {
