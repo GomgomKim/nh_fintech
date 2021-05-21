@@ -119,6 +119,7 @@ class FranchiseMain extends Component {
     closeSearchAddressModal = () => {
       this.setState({ SearchAddressOpen: false });
     }
+    
     // 블라인드 dialog
     openBlindModal = () => {
       this.setState({ blindListOpen: true });
@@ -164,14 +165,14 @@ class FranchiseMain extends Component {
             .then((res) => {
                 if (res.result === "SUCCESS") {
                     /* Modal.info({
-            title: "변경 완료",
-            content: (
-              <div>
-                상태가 변경되었습니다.
-              </div>
-            ),
-            onOk() { },
-          }); */
+                        title: "변경 완료",
+                        content: (
+                        <div>
+                            상태가 변경되었습니다.
+                        </div>
+                        ),
+                        onOk() { },
+                    }); */
                 } else {
                     Modal.error(
                         {title: "변경 실패", content: (<div>
@@ -199,14 +200,14 @@ class FranchiseMain extends Component {
             .then((res) => {
                 if (res.result === "SUCCESS") {
                     /* Modal.info({
-            title: "변경 완료",
-            content: (
-              <div>
-                상태가 변경되었습니다.
-              </div>
-            ),
-            onOk() { },
-          }); */
+                        title: "변경 완료",
+                        content: (
+                        <div>
+                            상태가 변경되었습니다.
+                        </div>
+                        ),
+                        onOk() { },
+                    }); */
                 } else {
                     Modal.error(
                         {title: "변경 실패", content: (<div>
