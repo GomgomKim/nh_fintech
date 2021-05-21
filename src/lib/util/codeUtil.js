@@ -22,6 +22,16 @@ const paymentMethod = [
     '선결',
 ]
 
+// 접수현황 - 결제 상태
+const paymentStatus = [
+    '',
+    '요청',
+    '완료',
+    '취소',
+    '에러',
+    '삭제',
+]
+
 // 접수현황, 가맹점관리 - 카드상태
 const cardStatus = [
     '요청',
@@ -113,6 +123,7 @@ export {
     preparationStatus, 
     cardStatus, 
     paymentMethod, 
+    paymentStatus,
     modifyType, 
     rowColorName,
     riderLevelText

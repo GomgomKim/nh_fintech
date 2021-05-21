@@ -14,7 +14,7 @@ class TimeDelayDialog extends Component {
     this.state = {
       branchIdx: null,
       deliveryNotAvailable: false,
-      confirmLoading:false,
+      confirmLoading: false,
       btnInfos: [
         {
           value: 5,
@@ -92,7 +92,7 @@ class TimeDelayDialog extends Component {
       title: "호출설정",
       content: "설정하시겠습니까?",
       onOk: () => {
-        this.setState({confirmLoading:true});
+        this.setState({ confirmLoading: true });
         const btnInfos = this.state.btnInfos;
         httpPost(httpUrl.updateBranch, [], {
           idx: this.props.branchIdx,
@@ -111,13 +111,13 @@ class TimeDelayDialog extends Component {
         })
           .then((res) => {
             if (res.result === "SUCCESS") {
-              this.setState({confirmLoading:false});
+              this.setState({ confirmLoading: false });
               Modal.info({
                 title: "적용 완료",
                 content: "성공적으로 처리되었습니다.",
               });
             } else {
-              this.setState({confirmLoading:false});
+              this.setState({ confirmLoading: false });
               Modal.info({
                 title: "적용 오류",
                 content: "처리가 실패했습니다.",
@@ -126,7 +126,7 @@ class TimeDelayDialog extends Component {
             }
           })
           .catch((e) => {
-            this.setState({confirmLoading:false});
+            this.setState({ confirmLoading: false });
             console.log(e);
             Modal.info({
               title: "적용 오류",
@@ -137,7 +137,7 @@ class TimeDelayDialog extends Component {
       onCancel: () => {
         console.log("task cancelled");
       },
-      confirmLoading:this.state.confirmLoading,
+      confirmLoading: this.state.confirmLoading,
     });
   };
 
@@ -164,6 +164,7 @@ class TimeDelayDialog extends Component {
                     {btnInfos.map((btnInfo) => {
                       return (
                         <Button
+                          key={btnInfo.value}
                           icon={
                             <ClockCircleOutlined
                               style={{ fontSize: 60, width: 100 }}
@@ -174,9 +175,16 @@ class TimeDelayDialog extends Component {
                               ? "timeDelay-box-on"
                               : "timeDelay-box-off"
                           }
-                          onClick={() => this.handleToggle(btnInfo.value)}
+                          onClick={btnInfo.value > 1000 ? () => {
+                            Modal.info({
+                              title:"수정 불가",
+                              content:"후5분, 후10분 옵션은 비활성화 할 수 없습니다."
+                            })
+                          } : () => this.handleToggle(btnInfo.value)}
                         >
-                          <td>{btnInfo.text}</td>
+                          <div style={{ fontSize: "1.3rem" }}>
+                            {btnInfo.text}
+                          </div>
                         </Button>
                       );
                     })}
