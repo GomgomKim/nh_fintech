@@ -4,6 +4,9 @@ import {
 } from "antd";
 import '../../../css/modal.css';
 import { httpUrl, httpPost } from '../../../api/httpClient';
+import SelectBox from '../../../components/input/SelectBox';
+import { riderGroupString } from '../../../lib/util/codeUtil';
+
 const Option = Select.Option;
 const FormItem = Form.Item;
 
@@ -123,17 +126,20 @@ class RegistRiderDialog extends Component {
                                                         name="riderGroup"
                                                         className="selectItem"
                                                         rules={[{ required: true, message: "그룹을 선택해주세요" }]}
+
                                                     >
-                                                        {/* <SelectBox
+                                                        <SelectBox
                                                             value={riderGroupString}
                                                             code={Object.keys(riderGroupString)}
                                                             codeString={riderGroupString}
-                                                            // onChange={(value) => {
-                                                            //     if (parseInt(value) !== row.enabled) {
-                                                            //         this.onChangeStatus(row.idx, value);
-                                                            //     }
-                                                            // }}
-                                                        /> */}
+                                                            style={{ width: "260px" }}
+
+                                                        // onChange={(value) => {
+                                                        //     if (parseInt(value) !== row.enabled) {
+                                                        //         this.onChangeStatus(row.idx, value);
+                                                        //     }
+                                                        // }}
+                                                        />
                                                     </FormItem>
                                                 </div>
                                                 <div className="contentBlock">

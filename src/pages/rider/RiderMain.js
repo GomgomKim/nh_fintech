@@ -2,6 +2,7 @@ import { Input, Table, Button, Radio, Modal, DatePicker } from 'antd';
 import React, { Component } from 'react';
 import { httpGet, httpUrl, httpPost } from '../../api/httpClient';
 import RiderGroupDialog from "../../components/dialog/rider/RiderGroupDialog";
+import SendSnsDialog from "../../components/dialog/rider/SendSnsDialog";
 import TaskSchedulerDialog from "../../components/dialog/rider/TaskSchedulerDialog";
 import RegistRiderDialog from "../../components/dialog/rider/RegistRiderDialog";
 import RiderCoinDialog from "../../components/dialog/rider/RiderCoinDialog";
@@ -26,6 +27,7 @@ class RiderMain extends Component {
       riderLevel: [1],
       userData: 1,
       searchName: "",
+      sendSnsOpen: false, //sns전송
       taskSchedulerOpen: false, // 일차감
       riderGroupOpen: false, // 기사 그룹 관리
       registRiderOpen: false, // 기사등록
@@ -120,6 +122,13 @@ class RiderMain extends Component {
     }, () => this.getList());
   };
 
+  //sns
+  openSendSnsModal = () => {
+    this.setState({ sendSnsOpen: true });
+  }
+  closeSendSnsModal = () => {
+    this.setState({ sendSnsrOpen: false });
+  }
 
 
   //일차감
@@ -150,7 +159,7 @@ class RiderMain extends Component {
   closeUpdateRiderModal = () => {
     this.setState({ riderUpdateOpen: false });
   }
-  
+
   // 블라인드 dialog
   openBlindModal = () => {
     this.setState({ blindListOpen: true });
@@ -240,10 +249,10 @@ class RiderMain extends Component {
         className: "table-column-center",
         render: (data, row) =>
           <div>
-            <BlindListDialog isOpen={this.state.blindListOpen} close={this.closeBlindModal} date={this.state.blindData}/>
+            <BlindListDialog isOpen={this.state.blindListOpen} close={this.closeBlindModal} date={this.state.blindData} />
             <Button
               className="tabBtn surchargeTab"
-              onClick={()=>this.setState({blindListOpen:true, blindRiderData: row})}
+              onClick={() => this.setState({ blindListOpen: true, blindRiderData: row })}
             >블라인드</Button>
           </div>
       },
@@ -422,6 +431,10 @@ class RiderMain extends Component {
             onClick={this.openTaskSchedulerModal}
           >일차감</Button>
 
+          <SendSnsDialog isOpen={this.state.SendSnsOpen} close={this.closeSendSnsModal} />
+          <Button className="riderManageBtn"
+            onClick={this.openSendSnsModal}
+          >SNS 전송</Button>
 
         </div>
 
