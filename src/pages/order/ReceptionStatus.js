@@ -38,15 +38,15 @@ import {
   NotificationFilled,
   FilterOutlined,
 } from "@ant-design/icons";
-import createDummyCallApi from "../../lib/util/createCall";
-import { httpGet, httpPost, httpUrl } from "../../api/httpClient";
+import { httpPost, httpUrl } from "../../api/httpClient";
 import { connect } from "react-redux";
+import InfiniteScroll from "react-infinite-scroller";
+import ModifyOrderDialog from "../../components/dialog/order/ModifyOrderDialog";
 
 const Option = Select.Option;
 const Search = Input.Search;
 const dateFormat = "YYYY/MM/DD";
 const today = new Date();
-const list = createDummyCallApi(100);
 
 class ReceptionStatus extends Component {
   constructor(props) {
@@ -56,8 +56,9 @@ class ReceptionStatus extends Component {
       pagination: {
         total: 0,
         current: 1,
-        pageSize: 10,
+        pageSize: 30,
       },
+      data: null,
 
       // modal open / close
       timeDelayOpen: false,
@@ -69,16 +70,18 @@ class ReceptionStatus extends Component {
       MessageOpen: false,
       activeIndex: -1,
       mapControlOpen: false,
+      modifyOrder: false,
 
       // data
       list: [],
+      totalList: [],
       // api param
       franchisee: "",
       rider: "",
-      selectedDate: today,
-      selectedOrderStatus: [1, 2, 3, 4],
+      selectedDate: new Date(1990, 1, 1),
+      selectedOrderStatus: [1, 2, 3, 5],
       selectedPaymentMethods: [1, 2, 3],
-      checkedCompleteCall: true,
+      checkedCompleteCall: false,
     };
   }
 
@@ -93,9 +96,19 @@ class ReceptionStatus extends Component {
       },
       () => {
         if (!this.state.checkedCompleteCall) {
-          this.getExceptCompleteList();
+          this.setState(
+            {
+              selectedDate: new Date(1900, 1, 1),
+            },
+            () => this.getList()
+          );
         } else {
-          this.getList();
+          this.setState(
+            {
+              selectedDate: today,
+            },
+            () => this.getCompleteList()
+          );
         }
       }
     );
@@ -110,23 +123,30 @@ class ReceptionStatus extends Component {
   };
 
   getList = () => {
-    httpPost(httpUrl.orderList, [], {
-      frName: this.state.franchisee,
-      orderDate: formatDate(this.state.selectedDate).split(" ")[0],
+    const startDate = this.state.selectedDate;
+    const endDate = today;
+    var data = {
       orderStatuses: this.state.selectedOrderStatus,
       pageNum: this.state.pagination.current,
       pageSize: this.state.pagination.pageSize,
       paymentMethods: this.state.selectedPaymentMethods,
-      riderName: this.state.rider,
-    })
+      startDate: formatDate(startDate).split(" ")[0],
+      endDate: formatDate(endDate).split(" ")[0],
+    };
+    if (this.state.franchisee) {
+      data.frName = this.state.franchisee;
+    }
+    if (this.state.rider) {
+      data.riderName = this.state.rider;
+    }
+    console.log(data);
+    httpPost(httpUrl.orderList, [], data)
       .then((res) => {
         if (res.result === "SUCCESS") {
-          // alert("성공적으로 처리되었습니다.");
           console.log(res);
           this.setState({
             list: res.data.orders,
           });
-          console.log("완료 포함 조회");
         } else {
           Modal.info({
             title: "적용 오류",
@@ -142,16 +162,28 @@ class ReceptionStatus extends Component {
       });
   };
 
-  getExceptCompleteList = () => {
-    const pageNum = this.state.pagination.current;
-    const pageSize = this.state.pagination.pageSize;
-    httpGet(httpUrl.orderExceptCompleteList, [pageNum, pageSize], {})
+  // api 다시 확인 해보기
+  // frName, riderName 은 빈스트링 보내지 말고 내용 없으면 아예 안보내야 됨
+  // + startDate, endDate 로 나눠졋음
+
+  getCompleteList = () => {
+    const startDate = this.state.selectedDate;
+    const endDate = startDate.setDate(startDate.getDate() + 1);
+    httpPost(httpUrl.orderList, [], {
+      frName: this.state.franchisee,
+      orderStatuses: [4],
+      pageNum: this.state.pagination.current,
+      pageSize: this.state.pagination.pageSize,
+      paymentMethods: [1, 2, 3],
+      riderName: this.state.rider,
+      startDate: formatDate(startDate).split(" ")[0],
+      endDate: formatDate(endDate).split(" ")[0],
+    })
       .then((res) => {
         if (res.result === "SUCCESS") {
-          // alert("성공적으로 처리되었습니다.");
-          console.log("완료 제외 조회");
+          console.log(res);
           this.setState({
-            list: res.orders,
+            totalList: res.data.orders,
           });
         } else {
           Modal.info({
@@ -175,6 +207,17 @@ class ReceptionStatus extends Component {
     this.setState(
       {
         pagination: pager,
+      },
+      () => this.getList()
+    );
+  };
+
+  handleInfiniteOnLoad = () => {
+    this.setState(
+      {
+        pagination: {
+          current: this.state.pagination.current + 1,
+        },
       },
       () => this.getList()
     );
@@ -217,11 +260,14 @@ class ReceptionStatus extends Component {
     this.setState({ filteringOpen: true });
   };
   closeFilteringModal = (selectedOrderStatus, selectedPaymentMethods) => {
-    this.setState({
-      filteringOpen: false,
-      selectedOrderStatus: selectedOrderStatus,
-      selectedPaymentMethods: selectedPaymentMethods,
-    });
+    this.setState(
+      {
+        filteringOpen: false,
+        selectedOrderStatus: selectedOrderStatus,
+        selectedPaymentMethods: selectedPaymentMethods,
+      },
+      () => this.getList()
+    );
   };
 
   // 공지사항 dialog
@@ -248,6 +294,15 @@ class ReceptionStatus extends Component {
     this.setState({ MessageOpen: false });
   };
 
+  // 주문수정 dialog
+  openModifyOrderModal = (order) => {
+    console.log(order);
+    this.setState({ data: order, modifyOrder: true });
+  };
+  closeModifyOrderModal = () => {
+    this.setState({ modifyOrder: false });
+  };
+
   getStatusVal = (idx) => {
     // console.log("idx : "+idx)
   };
@@ -262,13 +317,12 @@ class ReceptionStatus extends Component {
           <div className="table-column-sub">
             <Select
               defaultValue={data}
-              value={list.find((x) => x.idx === row.idx).orderStatus}
+              value={row.orderStatus}
               onChange={(value) => {
-                console.log(
-                  "idx : " + row.idx + " val : " + value,
-                  " row : " + row
-                );
-
+                // console.log(
+                //   "idx : " + row.idx + " val : " + value,
+                //   " row : " + row
+                // );
                 var flag = true;
 
                 // 제약조건 미성립
@@ -289,10 +343,18 @@ class ReceptionStatus extends Component {
 
                 // 제약조건 성립 시 상태 변경
                 if (flag) {
-                  list.find((x) => x.idx === row.idx).orderStatus = value;
-                  this.setState({
-                    list: list,
-                  });
+                  // const list = this.state.list;
+                  // list.find((x) => x.idx === row.idx).orderStatus = value;
+                  row.orderStatus = value;
+                  httpPost(httpUrl.orderUpdate, [], row)
+                    .then((res) => {
+                      console.log(res);
+                    })
+                    .catch((e) => {});
+                  this.getList();
+                  // this.setState({
+                  //   list: list,
+                  // });
                 }
               }}
             >
@@ -308,7 +370,7 @@ class ReceptionStatus extends Component {
         title: "음식준비",
         dataIndex: "itemPrepared",
         className: "table-column-center",
-        render: (data) => <div>{preparationStatus[data]}</div>,
+        render: (data) => <div>{data ? "완료" : "준비중"}</div>,
       },
       {
         title: "요청 시간",
@@ -330,13 +392,13 @@ class ReceptionStatus extends Component {
         title: "픽업시간",
         dataIndex: "pickupDate",
         className: "table-column-center",
-        render: (data) => <div>{formatDate(data)}</div>,
+        render: (data) => <div>{data ? formatDate(data) : "대기중"}</div>,
       },
       {
         title: "완료시간",
         dataIndex: "completeDate",
         className: "table-column-center",
-        render: (data) => <div>{formatDate(data)}</div>,
+        render: (data) => <div>{data ? formatDate(data) : "배달중"}</div>,
       },
       {
         title: "기사명",
@@ -380,6 +442,28 @@ class ReceptionStatus extends Component {
           ) : (
             <div>{paymentMethod[data[0]["paymentMethod"]]}</div>
           ),
+      },
+      {
+        title: "주문수정",
+        dataIndex: "updateOrder",
+        className: "table-column-center",
+        render: (data, row) => (
+          <>
+            <ModifyOrderDialog
+              isOpen={this.state.modifyOrder}
+              close={this.closeModifyOrderModal}
+              data={this.state.data}
+            />
+            <Button
+              onClick={() => {
+                console.log(row);
+                this.openModifyOrderModal(row);
+              }}
+            >
+              수정
+            </Button>
+          </>
+        ),
       },
     ];
 
@@ -454,12 +538,6 @@ class ReceptionStatus extends Component {
         {
           title: "가맹점 번호",
           dataIndex: "frPhone",
-          className: "table-column-center",
-        },
-        // 아마도 중복컬럼?
-        {
-          title: "가맹점 번호",
-          dataIndex: "franchisePhoneNum",
           className: "table-column-center",
         },
         {
@@ -598,29 +676,6 @@ class ReceptionStatus extends Component {
         </div>
 
         <div className="selectLayout">
-          <DatePicker
-            defaultValue={moment(today, dateFormat)}
-            format={dateFormat}
-            onChange={(date) =>
-              this.setState({ selectedDate: date }, () => {
-                date && this.getList();
-              })
-            }
-          />
-          <FilteringDialog
-            isOpen={this.state.filteringOpen}
-            close={this.closeFilteringModal}
-            selectedOrderStatus={this.state.selectedOrderStatus}
-            selectedPaymentMethods={this.state.selectedPaymentMethods}
-          />
-          <Button
-            icon={<FilterOutlined />}
-            className="tabBtn filterTab"
-            onClick={this.openFilteringModal}
-          >
-            필터링 설정
-          </Button>
-
           <Search
             placeholder="가맹점검색"
             enterButton
@@ -629,10 +684,8 @@ class ReceptionStatus extends Component {
             onSearch={this.onSearch}
             style={{
               width: 200,
-              marginLeft: 20,
             }}
           />
-
           <Search
             placeholder="기사명검색"
             enterButton
@@ -644,36 +697,69 @@ class ReceptionStatus extends Component {
               marginLeft: 20,
             }}
           />
+          <FilteringDialog
+            isOpen={this.state.filteringOpen}
+            close={this.closeFilteringModal}
+            selectedOrderStatus={this.state.selectedOrderStatus}
+            selectedPaymentMethods={this.state.selectedPaymentMethods}
+          />
+          {!this.state.checkedCompleteCall && (
+            <Button
+              icon={<FilterOutlined />}
+              className="tabBtn filterTab"
+              onClick={this.openFilteringModal}
+            >
+              필터링 설정
+            </Button>
+          )}
+          {this.state.checkedCompleteCall && (
+            <DatePicker
+              style={{ marginLeft: 20 }}
+              defaultValue={moment(today, dateFormat)}
+              format={dateFormat}
+              onChange={(date) => {
+                if (date) {
+                  const newDate = new Date(
+                    date.get("year"),
+                    date.get("month"),
+                    date.get("date")
+                  );
 
+                  this.setState({ selectedDate: newDate }, () => {
+                    this.getCompleteList();
+                  });
+                }
+              }}
+            />
+          )}
           <Checkbox
             defaultChecked={this.state.checkedCompleteCall ? "checked" : ""}
             onChange={this.handleToggleCompleteCall}
           ></Checkbox>
           <span className="span1">완료조회</span>
         </div>
-
-        <div className="dataTableLayout">
-          <Table
-            rowKey={(record) => record}
-            rowClassName={(record) => rowColorName[record.orderStatus]}
-            dataSource={this.state.list}
-            columns={columns}
-            pagination={false}
-            onChange={this.handleTableChange}
-            expandedRowRender={expandedRowRender}
-            // onRow={(record, index) => ({
-            //   onClick: () => {
-            //     // console.log(record.pickupStatus)
-            //     // console.log(record, index)
-            //     // rowClassName: 'table-red'
-            //     this.setState({
-            //       activeIndex: index,
-            //     })
-            //   }
-            // })}
-            // rowClassName ={this.setClassName}
-          />
-        </div>
+        <InfiniteScroll
+          initialLoad={true}
+          loadMore={this.handleInfiniteOnLoad}
+          threshold={this.state.pagination.pageSize}
+          useWindow={false}
+        >
+          <div className="dataTableLayout">
+            <Table
+              rowKey={(record) => record}
+              rowClassName={(record) => rowColorName[record.orderStatus]}
+              dataSource={
+                this.state.checkedCompleteCall
+                  ? this.state.totalList
+                  : this.state.list
+              }
+              columns={columns}
+              pagination={false}
+              onChange={this.handleTableChange}
+              expandedRowRender={expandedRowRender}
+            />
+          </div>
+        </InfiniteScroll>
       </div>
     );
   }

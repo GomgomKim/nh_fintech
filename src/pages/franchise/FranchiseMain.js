@@ -34,6 +34,7 @@ class FranchiseMain extends Component {
             coinTransferOpen: false,
             SearchAddressOpen: false,
             dialogData: [],
+            blindFrData: [],
             blindListOpen: false,
             searchFranchiseOpen: false
         };

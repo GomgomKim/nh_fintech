@@ -37,7 +37,7 @@ class StaffMain extends Component {
       staffStatus: e.target.value,
     }, () => this.getList());
   };
-  
+
   handleTableChange = (pagination) => {
     console.log(pagination)
     const pager = { ...this.state.pagination };
@@ -47,7 +47,7 @@ class StaffMain extends Component {
       pagination: pager,
     }, () => this.getList());
   };
-  
+
   onChangeStatus = (index, value) => {
     let self = this;
     Modal.confirm({
@@ -58,26 +58,26 @@ class StaffMain extends Component {
       onOk() {
         httpPost(httpUrl.staffUpdate, [], {
           idx: index, userStatus: value
-         })
-            .then((result) => {
-              Modal.info({
-                title: "변경 완료",
-                content: (
-                    <div>
-                        상태가 변경되었습니다.
-                    </div>
-                ),
-              });
+        })
+          .then((result) => {
+            Modal.info({
+              title: "변경 완료",
+              content: (
+                <div>
+                  상태가 변경되었습니다.
+                </div>
+              ),
+            });
             self.getList();
-            })
-            .catch((error) => {
-              Modal.info({
-                title: "변경 오류",
-                content: "오류가 발생하였습니다. 다시 시도해 주십시오."
+          })
+          .catch((error) => {
+            Modal.info({
+              title: "변경 오류",
+              content: "오류가 발생하였습니다. 다시 시도해 주십시오."
             });
-            });
+          });
       },
-  });
+    });
   }
 
   getList = () => {
@@ -149,7 +149,7 @@ class StaffMain extends Component {
         dataIndex: "userStatus",
         className: "table-column-center",
         render: (data, row) => <div>
-            <SelectBox
+          <SelectBox
             value={statusString[data]}
             code={Object.keys(statusString)}
             codeString={statusString}
@@ -183,7 +183,7 @@ class StaffMain extends Component {
             <Button
               className="tabBtn surchargeTab"
               onClick={() => { this.setState({ updateStaff: true, dialogData: row }) }}
-              // onClick={() => { alert(row.id) }}
+            // onClick={() => { alert(row.id) }}
             >수정</Button>
           </div>
       },

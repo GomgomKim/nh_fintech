@@ -161,7 +161,8 @@ const httpUrl = {
 
   // 주문 현황
   orderList: "/order/list",
-  orderExceptCompleteList: "/order/allListExceptCompleted?pageNum=%s&pageSize=%s",
+  orderExceptCompleteList:"/order/allListExceptCompleted?pageNum=%s&pageSize=%s",
+  orderUpdate:"/order/update",
 
   priceExtraList: "/branch/deliveryPriceExtra/list?pageNum=%s&pageSize=%s",
   priceExtraRegist: "/branch/deliveryPriceExtra/create",
@@ -191,7 +192,13 @@ const httpUrl = {
   noticeList: "/notice/list?pageNum=%s&pageSize=%s",
   registNotice: "/notice/create",
   updateNotice: "/notice/update",
-  specificNoticeList: "/notice/%s"
+  specificNoticeList: "/notice/%s",
+
+  // 블라인드
+  blindList: "/rider/admin/block/list",
+  registBlind: "/rider/admin/block/create",
+  deleteBlind: "/rider/admin/block/delete",
+
 };
 
 const imageType = ["image/jpeg", "image/png", "image/bmp"];
