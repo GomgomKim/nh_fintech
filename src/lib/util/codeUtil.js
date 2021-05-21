@@ -50,6 +50,7 @@ const rowColorName = [
 
 // 가맹점, 기사관리 - 상태
 const statusString = {
+    0: "전체",
     1: "사용",
     2: "중지",
     3: "탈퇴",
@@ -59,6 +60,15 @@ const statusString = {
 const withdrawString = {
     true: "출금 가능",
     false: "출금 금지",
+}
+
+// 유저 그룹
+const userGroupString = {
+    1: 'A',
+    2: 'B',
+    3: 'C',
+    4: 'D',
+    5: 'E',
 }
 
 
@@ -126,5 +136,6 @@ export {
     modifyType, 
     rowColorName,
     riderLevelText,
+    userGroupString,
     riderGroupString
 };

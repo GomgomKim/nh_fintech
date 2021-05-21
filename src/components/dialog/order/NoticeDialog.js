@@ -23,7 +23,7 @@ class NoticeDialog extends Component {
             title: "",
             content: "",
             category: 0,
-            sortOrder: 0,
+            sortOrder: 30,
             important: 0,
             branchCode: 1,
         };
@@ -66,11 +66,12 @@ class NoticeDialog extends Component {
     //공지 전송
     handleIdSubmit = () => {
         let self = this;
+        
         Modal.confirm({
             title: "공지사항 등록",
             content: (
                 <div>
-                    {self.formRef.current.getFieldsValue().memo + '을 등록하시겠습니까?'}
+                    {self.formRef.current.getFieldsValue().content + '을 등록하시겠습니까?'}
                 </div>
             ),
             okText: "확인",
@@ -89,10 +90,10 @@ class NoticeDialog extends Component {
                     // deleted: false,
                 }).then((result) => {
                     Modal.info({
-                        title: "전송 완료",
+                        title: " 완료",
                         content: (
                             <div>
-                                {self.formRef.current.getFieldsValue().memo}이(가) 등록되었습니다.
+                                {self.formRef.current.getFieldsValue().content}이(가) 등록되었습니다.
                             </div>
                         ),
                     });
@@ -100,11 +101,43 @@ class NoticeDialog extends Component {
                     self.getList();
                 }).catch((error) => {
                     Modal.info({
-                        title: "전송 오류",
+                        title: "등록 오류",
                         content: "오류가 발생하였습니다. 다시 시도해 주십시오."
                     });
-                });
-            },
+                })
+
+                
+        //     httpPost(httpUrl.registNotice, [], {
+        //         ...self.formRef.current.getFieldsValue(),
+        //         date: self.state.date,
+        //         title: self.state.title,
+        //         category: self.state.category,
+        //         sortOrder: self.state.sortOrder,
+        //         important: self.state.important,
+        //         branchCode: self.state.branchCode,
+        //     })
+        //         .then((result) => {
+        //             Modal.info({
+        //                 title: "공지사항",
+        //                 content: (
+        //                     <div>
+        //                        adfds
+        //                     </div>
+        //                 ),
+        //             });
+        //             // self.getList();
+        //             self.props.close()
+
+        // //     this.setState({content});
+        // //     this.getList();
+        // // 
+    .catch((error) => {
+            Modal.info({
+                title: "수정 오류",
+                content: "오류가 발생하였습니다. 다시 시도해 주십시오."
+            });
+        });
+    }
         });
     }
 
@@ -137,6 +170,71 @@ class NoticeDialog extends Component {
                 });
             });
     };
+ //공지 수정   
+    // onOpen = () => {
+    //     // let = this;
+    //     Modal.confirm({
+    //         title: "공지사항을 수정하시겠습니까?",
+    //         onOk() {
+    // const form= this.formRef.current;
+    //             httpPost(httpUrl.registNotice, [], {
+    //                 // ...self.formRef.current.getFieldsValue(),
+    //                 // date: self.state.date,
+    //                 // title: self.state.title,
+    //                 // category: self.state.category,
+    //                 // sortOrder: self.state.sortOrder,
+    //                 // important: self.state.important,
+    //                 // branchCode: self.state.branchCode,
+    //                 updateNotice: form.getFieldsValue('updateNotice')
+    //             })
+    //                 .then((result) => {
+    //                     // Modal.info({
+    //                     //     title: "공지사항",
+    //                     //     content: (
+    //                     //         <div>
+    //                     //            adfds
+    //                     //         </div>
+    //                     //     ),
+                            
+    //                     // });
+    //                     // const pagination = { ...this.state.pagination };
+    //                     // pagination.current = result.data.currentPage;
+    //                     // pagination.total = result.data.tota;
+    //                     // this.setState({
+    //                     //   list: result.data.notices,
+    //                     //   pagination,
+    //                     alert('공지사항 수정이 완료되었습니다.')
+    //                     // });
+    //                     // self.getList();
+    //                     this.props.close()
+
+    //         //     this.setState({content});
+    //         //     this.getList();
+    //         // 
+    //     }).catch((error) => {
+    //             Modal.info({
+    //                 title: "수정 오류",
+    //                 content: "오류가 발생하였습니다. 다시 시도해 주십시오."
+    //             });
+    //         });
+    //     }
+    //     });
+    // };
+
+    // onOpen = () => {
+    //     const form = this.formRef.current;
+
+    //     httpPost(httpUrl.updateNotice, [], {
+    //         updateNotice: form.getFieldValue('updateNotice')
+    //     }).then((result) => {
+    //         console.log("## result: " + JSON.stringify(result, null, 4));
+    //         alert('직원정보 수정이 완료되었습니다.')
+
+    //     });
+    // }
+
+
+
 
     updateData = () => {
 
@@ -165,7 +263,7 @@ class NoticeDialog extends Component {
                 title: "내용",
                 dataIndex: "content",
                 className: "table-column-center",
-                render: (data) =>
+                render: (data, row) =>
                     <div
                         style={{ display: "inline-block", cursor: "pointer" }}
                         onClick={() => { }}>
@@ -174,7 +272,7 @@ class NoticeDialog extends Component {
             },
         ];
 
-        const { isOpen, close } = this.props;
+        const { isOpen, close} = this.props;
 
         return (
             <React.Fragment>
@@ -186,6 +284,7 @@ class NoticeDialog extends Component {
                                 <div className="container">
                                     <div className="notice-title">
                                         공지사항
+                                    
                                     </div>
                                     <img onClick={close} src={require('../../../img/login/close.png').default} className="surcharge-close" />
 
@@ -206,19 +305,20 @@ class NoticeDialog extends Component {
                                         <Form ref={this.formRef} onFinish={this.handleIdSubmit}>
                                             <div className="noticeDetailBlock">
                                                 <div className="mainTitle">
-                                                    공지사항 추가 및 수정
+                                                    공지란
                                             </div>
                                                 <div className="inputBox">
                                                     <FormItem
-                                                        className="noticeInputBox"
                                                         name="content"
+                                                        className="noticeInputBox"
+                                                        // initialValue={data ? data.content : ''}
                                                     >
                                                         <Input className="noticeInputBox" placeholder="공지 내용" />
                                                     </FormItem>
                                                 </div>
                                                 <div className="btnInsert">
                                                     <Button type="primary" htmlType="submit" className="tabBtn insertTab noticeBtn">
-                                                        전송
+                                                        등록
                                                     </Button>
                                                 </div>
                                             </div>

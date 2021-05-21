@@ -4,8 +4,6 @@ import {
 } from "antd";
 import '../../../css/modal.css';
 import { httpUrl, httpPost } from '../../../api/httpClient';
-import SelectBox from '../../../components/input/SelectBox';
-import { riderLevelText, riderGroupString } from '../../../lib/util/codeUtil';
 const Option = Select.Option;
 const FormItem = Form.Item;
 
