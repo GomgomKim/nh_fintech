@@ -35,7 +35,6 @@ class RegistRiderDialog extends Component {
 
     handleSubmit = () => {
         let self = this;
-        
         Modal.confirm({
             title: "기사 등록",
             content: (
@@ -125,14 +124,14 @@ class RegistRiderDialog extends Component {
                                                         rules={[{ required: true, message: "그룹을 선택해주세요" }]}
                                                     >
                                                         {/* <SelectBox
-                                                            value={enabledString}
-                                                            code={enabledCode}
-                                                            codeString={enabledString}
-                                                            onChange={(value) => {
-                                                                if (parseInt(value) !== row.enabled) {
-                                                                    this.onChangeStatus(row.idx, value);
-                                                                }
-                                                            }}
+                                                            value={riderGroupString}
+                                                            code={Object.keys(riderGroupString)}
+                                                            codeString={riderGroupString}
+                                                            // onChange={(value) => {
+                                                            //     if (parseInt(value) !== row.enabled) {
+                                                            //         this.onChangeStatus(row.idx, value);
+                                                            //     }
+                                                            // }}
                                                         /> */}
                                                     </FormItem>
                                                 </div>

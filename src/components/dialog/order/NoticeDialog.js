@@ -1,16 +1,13 @@
 import React, { Component } from "react";
 import {
-    Form, Modal, Input, DatePicker, Descriptions, Table,
-    Upload, Button, Select, Icon, Radio, Carousel, Text,
+    Form, Input, Table, Button, Modal,
 } from "antd";
 import { httpUrl, httpPost, httpGet } from '../../../api/httpClient';
 import '../../../css/modal.css';
+import { connect } from "react-redux";
 import { formatDate } from '../../../lib/util/dateUtil';
 import moment from 'moment';
-const Option = Select.Option;
 const FormItem = Form.Item;
-const { RangePicker } = DatePicker;
-const today = new Date();
 
 class NoticeDialog extends Component {
     constructor(props) {
@@ -23,7 +20,12 @@ class NoticeDialog extends Component {
                 pageSize: 5,
             },
             date: "",
-            Idx: 1,
+            title: "",
+            content: "",
+            category: 0,
+            sortOrder: 0,
+            important: 0,
+            branchCode: 1,
         };
         this.formRef = React.createRef();
     }
@@ -54,30 +56,60 @@ class NoticeDialog extends Component {
                 list: res.data.notices,
                 pagination,
             });
+        }).catch(e => {
+            Modal.info({
+                title: "시스템 에러",
+                content: "시스템 에러가 발생하였습니다. 다시 시도해 주십시오."
+            });
         });
     }
-
+    //공지 전송
     handleIdSubmit = () => {
-        let enabled = true;
-        httpPost(httpUrl.registNotice, [], {
-            ...this.formRef.current.getFieldsValue(),
-            // name: this.formRef.current.getFieldsValue().surchargeName,
-            // extraPrice: this.formRef.current.getFieldsValue().feeAdd,
-            enabled,
-            idx: this.state.idx,
-            date: moment(today.format('YYYY-MM-DD')),
-            deleted: false,
-        }).then((result) => {
-            alert('공지사항이 전송되었습니다.');
-            this.handleClear();
-            this.getList();
-        }).catch((error) => {
-            alert('에러가 발생하였습니다 다시 시도해주세요.')
+        let self = this;
+        Modal.confirm({
+            title: "공지사항 등록",
+            content: (
+                <div>
+                    {self.formRef.current.getFieldsValue().memo + '을 등록하시겠습니까?'}
+                </div>
+            ),
+            okText: "확인",
+            cancelText: "취소",
+            onOk() {
+                httpPost(httpUrl.registNotice, [], {
+                    ...self.formRef.current.getFieldsValue(),
+                    // idx: self.state.idx,
+                    date: self.state.date,
+                    title: self.state.title,
+                    // content: self.state.content,
+                    category: self.state.category,
+                    sortOrder: self.state.sortOrder,
+                    important: self.state.important,
+                    branchCode: self.state.branchCode,
+                    // deleted: false,
+                }).then((result) => {
+                    Modal.info({
+                        title: "전송 완료",
+                        content: (
+                            <div>
+                                {self.formRef.current.getFieldsValue().memo}이(가) 등록되었습니다.
+                            </div>
+                        ),
+                    });
+                    self.handleClear();
+                    self.getList();
+                }).catch((error) => {
+                    Modal.info({
+                        title: "전송 오류",
+                        content: "오류가 발생하였습니다. 다시 시도해 주십시오."
+                    });
+                });
+            },
         });
     }
 
     handleClear = () => {
-        this.formRef.current.resetFieldsValue()
+        this.formRef.current.resetFields()
     };
 
     onDelete = (row) => {
@@ -86,13 +118,23 @@ class NoticeDialog extends Component {
         httpGet(httpUrl.registNotice, [idx, deleted], {})
             .then((result) => {
                 // console.log('## delete result=' + JSON.stringify(result, null, 4))
-                alert('해당공지사항을 삭제합니다.')
+                Modal.info({
+                    title: "공지사항 삭제",
+                    content: (
+                        <div>
+                            해당 공지사항이 삭제되었습니다.
+                        </div>
+                    ),
+                });
 
-                this.setState({deleted: true});
+                this.setState({ deleted: true });
                 this.getList();
             })
             .catch((error) => {
-                alert('에러가 발생하였습니다 다시 시도해주세요.')
+                Modal.info({
+                    title: "삭제 오류",
+                    content: "오류가 발생하였습니다. 다시 시도해 주십시오."
+                });
             });
     };
 
@@ -100,17 +142,16 @@ class NoticeDialog extends Component {
 
     }
 
-
     render() {
 
         const columns = [
             {
                 className: "table-column-center",
-                render: (data,row) =>
+                render: (data, row) =>
                     <div>
                         <Button
                             className="tabBtn surchargeTab"
-                            onClick={() => {this.onDelete(row)}}
+                            onClick={() => { this.onDelete(row) }}
                         >삭제</Button>
                     </div>
             },
@@ -125,11 +166,11 @@ class NoticeDialog extends Component {
                 dataIndex: "content",
                 className: "table-column-center",
                 render: (data) =>
-                <div
-                style={{ display: "inline-block", cursor: "pointer" }}
-                onClick={()=>{}}>
-                    {data}
-                </div>
+                    <div
+                        style={{ display: "inline-block", cursor: "pointer" }}
+                        onClick={() => { }}>
+                        {data}
+                    </div>
             },
         ];
 
@@ -150,30 +191,29 @@ class NoticeDialog extends Component {
 
 
                                     <div className="noticeLayout">
-                                        <Form ref={this.formIdRef} onFinish={this.handleIdSubmit}>
-                                            <div className="noticelistBlock">
-                                                <Table
-                                                    // rowKey={(record) => record.idx}
-                                                    dataSource={this.state.list}
-                                                    columns={columns}
-                                                    pagination={this.state.pagination}
-                                                    onChange={this.handleTableChange}
-                                                />
-                                            </div>
-                                        </Form>
+                                        <div className="noticelistBlock">
+                                            <Table
+                                                // rowKey={(record) => record.idx}
+                                                dataSource={this.state.list}
+                                                columns={columns}
+                                                pagination={this.state.pagination}
+                                                onChange={this.handleTableChange}
+                                            />
+                                        </div>
 
 
-                                        <Form ref={this.formIdRef} onFinish={this.handleIdSubmit}>
+
+                                        <Form ref={this.formRef} onFinish={this.handleIdSubmit}>
                                             <div className="noticeDetailBlock">
-                                            <div className="mainTitle">
-                                                공지사항 추가 및 수정
+                                                <div className="mainTitle">
+                                                    공지사항 추가 및 수정
                                             </div>
                                                 <div className="inputBox">
                                                     <FormItem
                                                         className="noticeInputBox"
-                                                        name="surchargeName"
+                                                        name="content"
                                                     >
-                                                        <Input className="noticeInputBox" placeholder="공지 내용"/>
+                                                        <Input className="noticeInputBox" placeholder="공지 내용" />
                                                     </FormItem>
                                                 </div>
                                                 <div className="btnInsert">
@@ -198,5 +238,14 @@ class NoticeDialog extends Component {
         )
     }
 }
+const mapStateToProps = (state) => {
+    return {
+        branchIdx: state.login.branch,
+    };
+}
+const mapDispatchToProps = (dispatch) => {
+    return {
 
-export default (NoticeDialog);
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(NoticeDialog);

@@ -10,7 +10,6 @@ import {comma} from "../../lib/util/numberUtil";
 import {BankOutlined} from '@ant-design/icons';
 import {formatDate} from '../../lib/util/dateUtil';
 import {statusString, withdrawString, cardStatus} from '../../lib/util/codeUtil';
-const Search = Input.Search;
 
 class FranchiseMain extends Component {
     constructor(props) {
