@@ -169,7 +169,7 @@ const httpUrl = {
   priceExtraDelete: "/branch/deliveryPriceExtra/delete/{idx}?idx=%s",
 
   // 직원 관리
-  registStaffList: "/rider/list?pageSize=%s&pageNum=%s&riderLevels=%s&userStatus=%s",
+  staffList: "/rider/list?pageSize=%s&pageNum=%s&riderLevels=%s&userStatus=%s",
   registStaff: "/rider/create",
   staffUpdate: "/rider/update",
 

@@ -5,7 +5,7 @@ import "../../css/staff.css";
 import "../../css/common.css";
 import RegistStaffDialog from "../../components/dialog/staff/RegistStaffDialog";
 import SelectBox from '../../components/input/SelectBox';
-import { staffString } from '../../lib/util/codeUtil';
+import { statusString } from '../../lib/util/codeUtil';
 
 
 class StaffMain extends Component {
@@ -23,7 +23,7 @@ class StaffMain extends Component {
       registStaff: false,
       updateStaff: false,
       riderLevel: [1, 2],
-      userData: 1,
+      userStatus: 1,
       dialogData: [],
     };
   }
@@ -84,9 +84,9 @@ class StaffMain extends Component {
     let pageSize = this.state.pagination.pageSize;
     let pageNum = this.state.pagination.current;
     let riderLevel = this.state.riderLevel;
-    let userData = this.state.userData;
+    let userStatus = this.state.userStatus;
 
-    httpGet(httpUrl.registStaffList, [pageSize, pageNum, riderLevel, userData], {}).then((result) => {
+    httpGet(httpUrl.staffList, [pageSize, pageNum, riderLevel, userStatus], {}).then((result) => {
       console.log('## nnbox result=' + JSON.stringify(result, null, 4))
       const pagination = { ...this.state.pagination };
       pagination.current = result.data.currentPage;
@@ -150,9 +150,9 @@ class StaffMain extends Component {
         className: "table-column-center",
         render: (data, row) => <div>
           <SelectBox
-            value={staffString[data]}
-            code={Object.keys(staffString)}
-            codeString={staffString}
+            value={statusString[data]}
+            code={Object.keys(statusString)}
+            codeString={statusString}
             onChange={(value) => {
               if (parseInt(value) !== row.userStatus) {
                 this.onChangeStatus(row.idx, value);
