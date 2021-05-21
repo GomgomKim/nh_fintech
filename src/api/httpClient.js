@@ -156,11 +156,12 @@ const httpUrl = {
 
   // 접수 현황
   receptionStatusList: "/order/assignList?pageSize=%s&pageNum=%s",
-  
+
+
+
   // 주문 현황
-  // orderList: "/order/list",
-  orderList: "/order/list?frName=%s&orderDate=%s&orderStatuses=%s&pageNum=%s&paymentMethods=%s&riderName=%s",
-  orderCompleteList:"/order/completeListFr?pageNum=%s&pageSize=%s",
+  orderList: "/order/list",
+  orderExceptCompleteList: "/order/allListExceptCompleted?pageNum=%s&pageSize=%s",
 
   priceExtraList: "/branch/deliveryPriceExtra/list?pageNum=%s&pageSize=%s",
   priceExtraRegist: "/branch/deliveryPriceExtra/create",
@@ -168,7 +169,7 @@ const httpUrl = {
   priceExtraDelete: "/branch/deliveryPriceExtra/delete/{idx}?idx=%s",
 
   // 직원 관리
-  registStaffList: "/rider/list?pageSize=%s&pageNum=%s&riderLevels=%s&userStatus=%s",
+  staffList: "/rider/list?pageSize=%s&pageNum=%s&riderLevels=%s&userStatus=%s",
   registStaff: "/rider/create",
   staffUpdate: "/rider/update",
 
@@ -177,20 +178,26 @@ const httpUrl = {
   registRider: "/rider/create",
   updateRider: "/rider/update",
   riderLocate: "/rider/location/%s",
-  
+
   // 가맹점 관리
   registFranchise: "/fr/create",
   franchiseList: "/fr/list",
   franchiseUpdate: "/fr/update",
 
   // 지점 수정
-  updateBranch:"/branch/update",
+  updateBranch: "/branch/update",
 
   // 공지사항
   noticeList: "/notice/list?pageNum=%s&pageSize=%s",
   registNotice: "/notice/create",
   updateNotice: "/notice/update",
-  specificNoticeList:"/notice/%s"
+  specificNoticeList: "/notice/%s",
+
+  // 블라인드
+  blindList: "/rider/admin/block/list",
+  registBlind: "/rider/admin/block/create",
+  deleteBlind: "/rider/admin/block/delete",
+
 };
 
 const imageType = ["image/jpeg", "image/png", "image/bmp"];

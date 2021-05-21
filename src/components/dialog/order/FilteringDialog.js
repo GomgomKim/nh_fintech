@@ -48,8 +48,8 @@ class FilteringDialog extends Component {
           text: "선결",
         },
       ],
-      selectedOrderStatus: [1, 2, 3, 4],
-      selectedPaymentMethods: [1, 2, 3],
+      selectedOrderStatus: this.props.selectedOrderStatus,
+      selectedPaymentMethods: this.props.selectedPaymentMethods,
     };
     this.formRef = React.createRef();
   }
@@ -106,7 +106,7 @@ class FilteringDialog extends Component {
                                 this.setState({ selectedOrderStatus: result });
                               }
                             }}
-                            defaultChecked="checked"
+                            defaultChecked={this.state.selectedOrderStatus.includes(o.value) ? "checked" : ""}
                           >
                             {o.text}
                           </Checkbox>
@@ -138,7 +138,7 @@ class FilteringDialog extends Component {
                                 });
                               }
                             }}
-                            defaultChecked="checked"
+                            defaultChecked={this.state.selectedPaymentMethods.includes(o.value) ? "checked" : ""}
                           >
                             {o.text}
                           </Checkbox>

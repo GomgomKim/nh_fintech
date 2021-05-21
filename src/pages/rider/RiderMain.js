@@ -6,6 +6,7 @@ import TaskSchedulerDialog from "../../components/dialog/rider/TaskSchedulerDial
 import RegistRiderDialog from "../../components/dialog/rider/RegistRiderDialog";
 import RiderCoinDialog from "../../components/dialog/rider/RiderCoinDialog";
 import RiderBankDialog from "../../components/dialog/rider/RiderBankDialog";
+import BlindListDialog from "../../components/dialog/BlindListDialog";
 import UpdatePasswordDialog from "../../components/dialog/rider/UpdatePasswordDialog";
 import '../../css/modal.css'
 import { comma } from "../../lib/util/numberUtil";
@@ -19,10 +20,9 @@ class RiderMain extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      riderStatus: 1,
       riderLevel: [1],
       userData: 1,
-      riderName: "",
+      searchName: "",
       taskSchedulerOpen: false, // 일차감
       riderGroupOpen: false, // 기사 그룹 관리
       registRiderOpen: false, // 기사등록
@@ -31,13 +31,15 @@ class RiderMain extends Component {
       workTabOpen: false, // 작업
       riderUpdateOpen: false, // 기사 수정
       updatePasswordOpen: false, // 출금 비밀번호
-      // blackListOpen: false, // 블라인드
+      blindListOpen: false, // 블라인드
+      blindRiderData: [], //블라인드 정보
       pagination: {
         total: 0,
         current: 1,
         pageSize: 10,
       },
       dialogData: [],
+      userStatus: 1,
     };
   }
 
@@ -55,20 +57,28 @@ class RiderMain extends Component {
     }, () => this.getList());
   };
 
+  getList = () => {
+    let pageNum = this.state.pagination.current;
+    let riderLevel = this.state.riderLevel;
+    let userStatus = this.state.userStatus;
+    let searchName = this.state.searchName;
+
+    httpGet(httpUrl.riderList, [10, pageNum, riderLevel, searchName, userStatus], {}).then((result) => {
+      console.log('## nnbox result=' + JSON.stringify(result, null, 4))
+      const pagination = { ...this.state.pagination };
+      pagination.current = result.data.currentPage;
+      pagination.total = result.data.totalCount;
+      this.setState({
+        results: result.data.riders,
+        pagination,
+      });
+    })
+  };
+
   onChangeStatus = (index, value) => {
     let self = this;
-    Modal.confirm({
-      title: "상태 변경",
-      content:
-        <div>
-          {value + ' 상태로 수정하시겠습니까?'}
-        </div>,
-      okText: "확인",
-      cancelText: "취소",
-      onOk() {
         httpPost(httpUrl.updateRider, [], {
-          idx: index,
-          riderStatus: value,
+          idx: index, userStatus: value
         })
           .then((result) => {
             Modal.info({
@@ -91,13 +101,11 @@ class RiderMain extends Component {
               ),
             });
           });
-      },
-    });
   }
 
   onSearchRider = (value) => {
     this.setState({
-      riderName: value,
+      searchName: value,
     }, () => {
       this.getList()
     })
@@ -105,27 +113,10 @@ class RiderMain extends Component {
 
   onChange = e => {
     this.setState({
-      riderStatus: e.target.value,
+      userStatus: e.target.value,
     }, () => this.getList());
   };
 
-  getList = () => {
-    let pageNum = this.state.pagination.current;
-    let riderLevel = this.state.riderLevel;
-    let userData = this.state.userData;
-    let riderName = this.state.riderName;
-
-    httpGet(httpUrl.riderList, [10, pageNum, riderLevel, riderName, userData], {}).then((result) => {
-      console.log('## nnbox result=' + JSON.stringify(result, null, 4))
-      const pagination = { ...this.state.pagination };
-      pagination.current = result.data.currentPage;
-      pagination.total = result.data.totalCount;
-      this.setState({
-        results: result.data.riders,
-        pagination,
-      });
-    })
-  };
 
 
   //일차감
@@ -155,6 +146,14 @@ class RiderMain extends Component {
   //기사 수정 
   closeUpdateRiderModal = () => {
     this.setState({ riderUpdateOpen: false });
+  }
+  
+  // 블라인드 dialog
+  openBlindModal = () => {
+    this.setState({ blindListOpen: true });
+  }
+  closeBlindModal = () => {
+    this.setState({ blindListOpen: false });
   }
 
   //코인충전
@@ -236,12 +235,12 @@ class RiderMain extends Component {
       {
         title: "블라인드",
         className: "table-column-center",
-        render: () =>
+        render: (data, row) =>
           <div>
-            {/* <BlackListDialog isOpen={this.state.blackListOpen} close={this.closeBlackListModal} /> */}
+            <BlindListDialog isOpen={this.state.blindListOpen} close={this.closeBlindModal} date={this.state.blindData}/>
             <Button
               className="tabBtn surchargeTab"
-              onClick={this.setBlackList}
+              onClick={()=>this.setState({blindListOpen:true, blindRiderData: row})}
             >블라인드</Button>
           </div>
       },
@@ -271,7 +270,7 @@ class RiderMain extends Component {
       },
       {
         title: "상태",
-        dataIndex: "riderStatus",
+        dataIndex: "userStatus",
         className: "table-column-center",
         render: (data, row) => <div>
           <SelectBox
@@ -279,7 +278,7 @@ class RiderMain extends Component {
             code={Object.keys(statusString)}
             codeString={statusString}
             onChange={(value) => {
-              if (parseInt(value) !== row.riderStatus) {
+              if (parseInt(value) !== row.userStatus) {
                 this.onChangeStatus(row.idx, value);
               }
             }}
@@ -336,7 +335,7 @@ class RiderMain extends Component {
           title: "수수료방식",
           dataIndex: "feeManner",
           className: "table-column-center",
-          render: (data) => <div>{data == 1 ? "정량" : "정률"}</div>
+          render: (data) => <div>{data === 1 ? "정량" : "정률"}</div>
         },
         {
           title: "은행명",
@@ -368,10 +367,12 @@ class RiderMain extends Component {
       <div className="">
         <div className="selectLayout">
           <span className="searchRequirementText">검색조건</span><br></br>
-          <Radio.Group className="searchRequirement" onChange={this.onChange} value={this.state.riderStatus}>
-            <Radio value={1}>사용</Radio>
-            <Radio value={2}>중지</Radio>
-            <Radio value={3}>탈퇴</Radio>
+          <Radio.Group className="searchRequirement" onChange={this.onChange} value={this.state.userStatus}>
+            {Object.entries(statusString).map(([key, value]) => {
+              return (
+                <Radio value={key}>{value}</Radio>
+              );
+            })}
           </Radio.Group>
 
           <Search placeholder="기사명"
