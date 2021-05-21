@@ -12,13 +12,15 @@ import UpdatePasswordDialog from "../../components/dialog/rider/UpdatePasswordDi
 import '../../css/modal.css'
 import { comma } from "../../lib/util/numberUtil";
 import SelectBox from '../../components/input/SelectBox';
-import { statusString, riderLevelText } from '../../lib/util/codeUtil';
+import SearchRiderDialog from '../../components/dialog/common/SearchRiderDialog';
+import {
+  statusString,
+  riderLevelText
+} from '../../lib/util/codeUtil';
 import moment from 'moment';
 
 const dateFormat = 'YYYY/MM/DD';
 const today = new Date();
-
-const Search = Input.Search;
 
 class RiderMain extends Component {
   constructor(props) {
@@ -45,6 +47,7 @@ class RiderMain extends Component {
       },
       dialogData: [],
       userStatus: 1,
+      searchRiderOpen: false,
     };
   }
 
@@ -109,11 +112,31 @@ class RiderMain extends Component {
   }
 
   onSearchRider = (value) => {
+    var self = this
     this.setState({
       searchName: value,
     }, () => {
       this.getList()
     })
+      .then((result) => {
+        Modal.info(
+          {
+            title: "변경 완료", content: (<div>
+              상태가 변경되었습니다.
+            </div>)
+          }
+        );
+        self.getList();
+      })
+      .catch((error) => {
+        Modal.error(
+          {
+            title: "변경 실패", content: (<div>
+              변경에 실패했습니다.
+            </div>)
+          }
+        );
+      });
   }
 
   onChange = e => {
@@ -122,14 +145,18 @@ class RiderMain extends Component {
     }, () => this.getList());
   };
 
-  //sns
-  openSendSnsModal = () => {
-    this.setState({ sendSnsOpen: true });
-  }
-  closeSendSnsModal = () => {
-    this.setState({ sendSnsrOpen: false });
+  onSearchRider = (data) => {
+    console.log("### get fran list data : " + data)
+    this.setState({ results: data });
   }
 
+  // 기사조회 dialog
+  openSearchRiderModal = () => {
+    this.setState({ searchRiderOpen: true });
+  }
+  closeSearchRiderModal = () => {
+    this.setState({ searchRiderOpen: false });
+  }
 
   //일차감
   openTaskSchedulerModal = () => {
@@ -398,24 +425,11 @@ class RiderMain extends Component {
     return (
       <div className="">
         <div className="selectLayout">
-          <span className="searchRequirementText">검색조건</span><br></br>
-          <Radio.Group className="searchRequirement" onChange={this.onChange} value={this.state.userStatus}>
-            {Object.entries(statusString).map(([key, value]) => {
-              return (
-                <Radio value={key}>{value}</Radio>
-              );
-            })}
-          </Radio.Group>
-
-          <Search placeholder="기사명"
-            onSearch={this.onSearchRider}
-            enterButton
-            style={{
-              width: 200,
-              marginLeft: 20,
-              verticalAlign: 'bottom'
-            }} />
-
+          <SearchRiderDialog
+            callback={(data) => this.onSearchRider(data)}
+            isOpen={this.state.searchRiderOpen}
+            close={this.closeSearchRiderModal} />
+          <Button className="tabBtn searchTab" onClick={this.openSearchRiderModal}>기사조회</Button>
           <RegistRiderDialog isOpen={this.state.registRiderOpen} close={this.closeRegistRiderModal} />
           <Button className="riderManageBtn"
             onClick={this.openRegistRiderModal}
