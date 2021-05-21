@@ -2917,6 +2917,10 @@
   z-index: 2;
 }
 .modifyOrder-container {
+  background-color: white;
+  padding: 30px;
+  text-align: left;
+  color: #777;
 }
 /* 블라인드 */
 .blind-Dialog {
