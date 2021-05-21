@@ -32,10 +32,12 @@ export default class SelectBox extends Component {
       type,
       page,
       onChange,
-      disable
+      disable,
+      className
     } = this.props;
     return (
       <Select
+        className={className}
         size={size}
         mode={mode}
         disabled={disable}

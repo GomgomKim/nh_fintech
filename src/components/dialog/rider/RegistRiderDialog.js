@@ -4,7 +4,6 @@ import {
 } from "antd";
 import '../../../css/modal.css';
 import { httpUrl, httpPost } from '../../../api/httpClient';
-import SelectBox from '../../../components/input/SelectBox';
 const Option = Select.Option;
 const FormItem = Form.Item;
 

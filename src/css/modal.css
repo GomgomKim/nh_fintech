@@ -21,6 +21,136 @@
   margin-top: 0px !important;
 }
 
+/* 가맹점조회 */
+.searchFranchise-Dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 800px;
+  border-radius: 30px;
+  z-index: 2;
+}
+
+.searchFranchise-Dialog .layout::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera*/
+}
+
+.searchFranchise-content {
+  background-color: white;
+  padding: 30px;
+  text-align: left;
+  color: #777;
+}
+
+.searchFranchise-title {
+  letter-spacing: -1px;
+  font-weight: bold;
+  color: #333;
+  text-align: right;
+  display: inline-block;
+  font-size: 25px;
+  line-height: 30px;
+}
+
+.searchFranchise-close {
+  width: 30px;
+  cursor: pointer;
+  background-color: #fddc00;
+  /* display: inline-block; */
+  float: right;
+  padding: 8px;
+}
+.searchFranchise-Dialog .layout {
+  margin-top: 20px;
+  width: 100%;
+  overflow-y: scroll;
+  border: 1px solid #ccc;
+  padding: 20px 20px;
+  text-align: left;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.searchFranchise-Dialog .layout .contentBlock {
+  display: inline-block;
+  line-height: 20px;
+}
+
+.searchFranchise-Dialog .layout .contentBlock span {
+  font-size: 18px;
+}
+
+.searchFranchise-Dialog .layout .submitBtn {
+  float: right;
+}
+
+.searchFranchise-list {
+  display: inline-block;
+  vertical-align: bottom;
+  width: 100%;
+}
+.searchFranchise-list input {
+  width: 400px;
+}
+
+.searchFranchise-btn {
+  display: inline-block;
+  vertical-align: bottom;
+}
+
+.searchFranchise-btn .ant-btn-primary {
+  background-color: black;
+  border-style: none;
+}
+.searchFranchise-searchbox {
+  float: right;
+  margin: 20px 0;
+}
+
+.searchFranchise-Dialog .layout .dataTableLayout-01 {
+  margin-top: 30px;
+}
+
+.searchFranchise-Dialog .ant-table-content thead th {
+  padding: 10px;
+}
+
+.searchFranchise-Dialog .layout .ant-table-tbody > tr > td {
+  padding: 0;
+}
+
+/* 우편번호 팝업 */
+.postCode-Dialog {
+  position: fixed;
+  top: 20%;
+  left: 48%;
+  transform: translate(-50%, -50%);
+  width: 530px;
+  border-radius: 30px;
+  z-index: 3;
+}
+
+.postCode-Dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.postCode-close {
+  width: 30px;
+  position: absolute;
+  right: -93px;
+  top: 7px;
+  cursor: pointer;
+  background-color: #fddc00;
+  padding: 8px;
+}
+
 /* 직원 수정 dialog */
 .updateStaff-Dialog-overlay {
   position: fixed;
@@ -433,7 +563,7 @@
   width: 35%;
 }
 
-.noticeLayout .inputBox{
+.noticeLayout .inputBox {
   width: 370px;
   height: 380px;
 }
@@ -837,6 +967,15 @@
   margin-left: 20px;
   width: 300px;
 }
+
+.registFranWrapper .override-input.addrText {
+  width: 160px;
+}
+
+.registFranWrapper .override-input.addrBtn {
+  width: 120px;
+}
+
 /* 오른쪽 wrappper */
 .registFranWrapper.sub {
   vertical-align: top;
