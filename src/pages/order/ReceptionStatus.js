@@ -216,7 +216,8 @@ class ReceptionStatus extends Component {
     this.setState(
       {
         pagination: {
-          current: this.state.pagination.current + 1,
+          ...this.state.pagination,
+          pageSize: this.state.pagination.pageSize + 30,
         },
       },
       () => this.getList()

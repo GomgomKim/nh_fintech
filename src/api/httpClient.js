@@ -139,8 +139,7 @@ const httpDownload = (url, params, data) => {
     })
       .then((response) => {
         var blob = new Blob([response.data], {
-          type:
-            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+          type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         });
         resolve(blob);
       })
@@ -157,12 +156,9 @@ const httpUrl = {
   // 접수 현황
   receptionStatusList: "/order/assignList?pageSize=%s&pageNum=%s",
 
-
-
   // 주문 현황
   orderList: "/order/list",
-  orderExceptCompleteList:"/order/allListExceptCompleted?pageNum=%s&pageSize=%s",
-  orderUpdate:"/order/update",
+  orderUpdate: "/order/update",
 
   priceExtraList: "/branch/deliveryPriceExtra/list?pageNum=%s&pageSize=%s",
   priceExtraRegist: "/branch/deliveryPriceExtra/create",
@@ -199,6 +195,8 @@ const httpUrl = {
   registBlind: "/rider/admin/block/create",
   deleteBlind: "/rider/admin/block/delete",
 
+  // 채팅
+  chatList: "/chat/chatList?pageSize=%s&pageNum=%s",
 };
 
 const imageType = ["image/jpeg", "image/png", "image/bmp"];
