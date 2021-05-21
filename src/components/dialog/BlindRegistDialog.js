@@ -6,7 +6,7 @@ import '../../../css/modal.css';
 const Option = Select.Option;
 const FormItem = Form.Item;
 
-class BlindRiderDialog extends Component {
+class BlindRegistDialog extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -144,4 +144,4 @@ class BlindRiderDialog extends Component {
     }
 }
 
-export default (BlindRiderDialog);
+export default (BlindRegistDialog);

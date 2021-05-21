@@ -38,6 +38,7 @@ class FranchiseMain extends Component {
       coinTransferOpen: false,
       SearchAddressOpen: false,
       blindListOpen: false,
+      blindFrData: [],
       dialogData: [],
     };
   }
@@ -319,12 +320,12 @@ class FranchiseMain extends Component {
       {
         title: "블라인드",
         className: "table-column-center",
-        render: () =>
+        render: (data, row) =>
           <div>
-            <BlindListDialog isOpen={this.state.blindListOpen} close={this.closeBlindModal} />
+            <BlindListDialog isOpen={this.state.blindListOpen} close={this.closeBlindModal} date={this.state.blindData}/>
             <Button
               className="tabBtn surchargeTab"
-              onClick={this.openBlindModal}
+              onClick={()=>this.setState({blindListOpen:true, blindData: row})}
             >블라인드</Button>
           </div>
       },
@@ -336,7 +337,7 @@ class FranchiseMain extends Component {
             <RegistFranDialog isOpen={this.state.modifyFranOpen} close={this.closeModifyFranModal} data={this.state.dialogData} />
             <Button
               className="tabBtn surchargeTab"
-              onClick={() => this.setState({ modifyFranOpen: true, dialogData: row })}
+              onClick={()=>this.setState({blindListOpen:true, blindFrData: row})}
             >수정하기</Button>
           </div>
       },
