@@ -1,10 +1,13 @@
 import React, { Component } from "react";
 import {
-    Form, Table,
+    Form, Table, Checkbox, Input, Button
 } from "antd";
-import '../../../css/modal.css';
+import '../../css/modal.css';
+import { blockString } from '../../lib/util/codeUtil';
+import SelectBox from '../../components/input/SelectBox';
+const FormItem = Form.Item;
 
-class BlackListDialog extends Component {
+class BlindListDialog extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -98,32 +101,37 @@ class BlackListDialog extends Component {
 
         const columns = [
             {
-                title: "차단날짜",
+                title: "설정일",
                 dataIndex: "blockDate",
                 className: "table-column-center",
             },
             {
-                title: "가맹점명",
+                title: "해제일",
+                dataIndex: "blockDate",
+                className: "table-column-center",
+            },
+            {
+                title: "기사명(가맹점명)",
                 dataIndex: "FranchiseName",
                 className: "table-column-center",
             },
+            // {
+            //     title: "기사명",
+            //     dataIndex: "riderName",
+            //     className: "table-column-center",
+            // },
+            // {
+            //     title: "기사의 소속지사",
+            //     dataIndex: "riderBranch",
+            //     className: "table-column-center",
+            // },
+            // {
+            //     title: "기사단말기번호",
+            //     dataIndex: "riderPhone",
+            //     className: "table-column-center",
+            // },
             {
-                title: "기사명",
-                dataIndex: "riderName",
-                className: "table-column-center",
-            },
-            {
-                title: "기사의 소속지사",
-                dataIndex: "riderBranch",
-                className: "table-column-center",
-            },
-            {
-                title: "기사단말기번호",
-                dataIndex: "riderPhone",
-                className: "table-column-center",
-            },
-            {
-                title: "차단사항",
+                title: "차단메모",
                 dataIndex: "blockMemo",
                 className: "table-column-center",
             },
@@ -134,16 +142,16 @@ class BlackListDialog extends Component {
                 render:
                     (data, row) => (
                         <div>
-                            {/* <SelectBox
-                                value={string.blockString[data]}
-                                code={string.toggleCode}
-                                codeString={string.blockString}
+                            <SelectBox
+                                value={blockString[data]}
+                                code={Object.keys(blockString)}
+                                codeString={blockString}
                                 onChange={(value) => {
                                     if (parseInt(value) !== row.blocked) {
                                         this.onDelete(value, row.idx);
                                     }
                                 }}
-                            /> */}
+                            />
                         </div>
                     ),
             },
@@ -157,15 +165,23 @@ class BlackListDialog extends Component {
                     isOpen ?
                         <React.Fragment>
                             <div className="Dialog-overlay" onClick={close} />
-                            <div className="surcharge-Dialog">
-                                <div className="surcharge-container">
-                                    <div className="surcharge-title">
-                                        기사 차단 목록
+                            <div className="blind-Dialog">
+                                <div className="blind-container">
+                                    <div className="blind-title">
+                                        블라인드 목록
                                     </div>
-                                    <img onClick={close} src={require('../../../img/login/close.png').default} className="surcharge-close" />
+                                    <img onClick={close} src={require('../../img/login/close.png').default} className="surcharge-close" />
 
+                                    <div style={{
+                                        textAlign:'right', 
+                                        marginTop:20,
+                                        fontSize: 15
+                                        }}>
+                                        해제 조회
+                                        <Checkbox style={{ marginLeft:6,verticalAlign: 'bottom' }}/>
+                                    </div>
 
-                                    <div className="surchargeLayout">
+                                    <div className="blindLayout">
                                         <Form ref={this.formIdRef} onFinish={this.handleIdSubmit}>
                                             <div className="listBlock">
                                                 <Table
@@ -178,8 +194,44 @@ class BlackListDialog extends Component {
                                             </div>
                                         </Form>
                                     </div>
+                                    <div className="blindWrapper bot">
+                                        <div className="contentBlock">
+                                        <div className="subTitle">
+                                                기사명(가맹점명)
+                                            </div>
+                                            <FormItem
+                                                name="name"
+                                                className="selectItem"
+                                            >
+                                                <Input placeholder="차단대상 입력" className="override-input sub">
+                                                </Input>
+                                            </FormItem>
+                                            {/* <div className="subTitle">
+                                                차단사유 
+                                            </div>
+                                            <FormItem
+                                                name="managePrice"
+                                                className="selectItem"
+                                            >
+                                                <Input defaultValue={'100,000'} placeholder="관리비 입력" className="override-input sub">
+                                                </Input> */}
+                                            {/* </FormItem> */}
+                                            <div className="subTitle">
+                                                차단 메모
+                                            </div>
+                                            <FormItem
+                                                name="memo"
+                                                className="selectItem"
+                                            >
+                                                <Input placeholder="차단메모 입력" className="override-input sub">
+                                                </Input>
+                                            </FormItem>
 
-
+                                            <Button type="primary" htmlType="submit" className="callTab">
+                                                차단하기
+                                            </Button>
+                                                </div>
+                                            </div>
 
 
                                 </div>
@@ -193,4 +245,4 @@ class BlackListDialog extends Component {
     }
 }
 
-export default (BlackListDialog);
+export default (BlindListDialog);

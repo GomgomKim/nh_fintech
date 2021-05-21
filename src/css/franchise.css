@@ -1,19 +1,25 @@
-
-
-.franchiseContainer .selectLayout{
-    /* margin-top: 20px; */
-    vertical-align: middle;
+.franchiseContainer .selectLayout {
+  /* margin-top: 20px; */
+  vertical-align: middle;
 }
 
-.franchiseContainer .dataTableLayout{
-    margin-top: 40px;
+.franchiseContainer .dataTableLayout {
+  margin-top: 40px;
 }
 
-.franchiseContainer .override-select.fran{
-    width: 220px;
-    margin-left:10px;
+.franchiseContainer .override-select.fran {
+  width: 220px;
+  margin-left: 10px;
 }
 
+.searchTab {
+  margin-left: 0px !important;
+}
+
+.searchFranchiseInput {
+  width: 200px !important;
+  margin-left: 15px;
+}
 
 /* 상세 */
 /* .franchiseContainer .ant-table-tbody > tr > td > 

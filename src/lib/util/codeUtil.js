@@ -60,6 +60,7 @@ const rowColorName = [
 
 // 가맹점, 기사관리 - 상태
 const statusString = {
+    0: "전체",
     1: "사용",
     2: "중지",
     3: "탈퇴",
@@ -69,6 +70,15 @@ const statusString = {
 const withdrawString = {
     true: "출금 가능",
     false: "출금 금지",
+}
+
+// 유저 그룹
+const userGroupString = {
+    1: 'A',
+    2: 'B',
+    3: 'C',
+    4: 'D',
+    5: 'E',
 }
 
 
@@ -98,6 +108,16 @@ const staffString = {
     2: "중지",
     3: "퇴사",
 }
+
+const riderGroupString = [
+    '',
+    'A',
+    'B',
+    'C',
+    'D',
+    'E',
+]
+
 const riderLevelText = [
     "", 
     "라이더", 
@@ -109,7 +129,7 @@ const riderLevelText = [
     "지점장", 
     "부센터장", 
     "센터장"
-];
+]
 
 export { 
     deliveryStatusCode,
@@ -126,5 +146,7 @@ export {
     paymentStatus,
     modifyType, 
     rowColorName,
-    riderLevelText
+    riderLevelText,
+    userGroupString,
+    riderGroupString
 };
