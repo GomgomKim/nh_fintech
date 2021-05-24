@@ -3,7 +3,9 @@ import {Form, Input, Table, Button} from "antd";
 import {httpUrl, httpPost} from '../../../api/httpClient';
 import '../../../css/modal.css';
 import SelectBox from '../../../components/input/SelectBox';
-import {statusString} from '../../../lib/util/codeUtil';
+import {
+    tableStatusString
+} from '../../../lib/util/codeUtil';
 
 const Search = Input.Search;
 const today = new Date();
@@ -29,10 +31,6 @@ class SearchFranchiseDialog extends Component {
     }
     componentDidMount() {
         this.getList()
-    }
-
-    setDate = (date) => {
-        console.log(date)
     }
 
     // 가맹점 검색
@@ -128,12 +126,12 @@ class SearchFranchiseDialog extends Component {
                                                     <div className="searchFranchise-list">
                                                         <div className="inputBox inputBox-searchFranchise sub">
                                                             <SelectBox
-                                                                value={statusString[this.state.franStatus]}
-                                                                code={Object.keys(statusString)}
-                                                                codeString={statusString}
+                                                                value={tableStatusString[this.state.franStatus]}
+                                                                code={Object.keys(tableStatusString)}
+                                                                codeString={tableStatusString}
                                                                 onChange={(value) => {
                                                                     if (parseInt(value) !== this.state.franStatus) {
-                                                                        this.setState({franStatus: value}, () => this.getList());
+                                                                        this.setState({franStatus: parseInt(value)}, () => this.getList());
                                                                     }
                                                                 }}/>
 
