@@ -1,10 +1,13 @@
 import React, { Component } from "react";
 import {
-    Form, Table, Checkbox, Input, Button
+    Form, Table, Checkbox, Input, Button,  Modal,
 } from "antd";
 import '../../css/modal.css';
 import { blockString } from '../../lib/util/codeUtil';
+import { httpPost, httpUrl } from "../../api/httpClient";
 import SelectBox from '../../components/input/SelectBox';
+import { formatDate } from "../../lib/util/dateUtil";
+import { connect } from "react-redux";
 const FormItem = Form.Item;
 
 class BlindListDialog extends Component {
@@ -26,6 +29,12 @@ class BlindListDialog extends Component {
         this.getList()
     }
 
+    componentDidUpdate(prevProps) {
+        if(prevProps.isOpen !== this.props.isOpen) {
+            this.getList()
+        }
+    }
+
     handleTableChange = (pagination) => {
         console.log(pagination)
         const pager = { ...this.state.pagination };
@@ -36,104 +45,95 @@ class BlindListDialog extends Component {
         }, () => this.getList());
     };
 
-    onDelete = (value) => {
-        // alert(JSON.stringify(value))
-        let blocked = value
-        this.setState({
-            blocked: blocked
-        }, () => {
-            // alert([gradeLevel] + ' 등급 으로 수정합니다.')
-            this.getList();
+    onDelete = (idx) => {
+        Modal.confirm({
+            title: "차단 해제",
+            content: "차단을 해제하시겠습니까?",
+            okText: "확인",
+            cancelText: "취소",
+            onOk(){
+                httpPost(httpUrl.deleteBlind, [], {
+                    idx: idx,
+                })
+                .then((res) => {
+                    if (res.result === "SUCCESS") {
+                        console.log(res.result);
+                        this.getList();
+                    } else {
+                        Modal.info({
+                        title: "적용 오류",
+                        content: "처리가 실패했습니다.",
+                        });
+                    }
+                })
+                .catch((e) => {
+                    Modal.info({
+                    title: "적용 오류",
+                    content: "처리가 실패했습니다.",
+                    });
+                });
+            }
         })
     }
 
 
     getList = () => {
-        var list = [
-            {
-                idx: 4,
-                blockDate: '21-02-17',
-                FranchiseName: '구래반도4차)소통',
-                riderName: '배지현',
-                riderBranch: '플러스김포',
-                riderPhone: '010-7755-6466',
-                blockMemo: '배송지연 및 픽업지연',
-                blocked: this.state.blocked
-            },
-            {
-                idx: 3,
-                blockDate: '21-02-17',
-                FranchiseName: '구래반도4차)소통',
-                riderName: '배지현',
-                riderBranch: '플러스김포',
-                riderPhone: '010-7755-6466',
-                blockMemo: '배송지연 및 픽업지연',
-                blocked: this.state.blocked
-            },
-            {
-                idx: 2,
-                blockDate: '21-02-17',
-                FranchiseName: '구래반도4차)소통',
-                riderName: '배지현',
-                riderBranch: '플러스김포',
-                riderPhone: '010-7755-6466',
-                blockMemo: '배송지연 및 픽업지연',
-                blocked: this.state.blocked
-            },
-            {
-                idx: 1,
-                blockDate: '21-02-17',
-                FranchiseName: '구래반도4차)소통',
-                riderName: '배지현',
-                riderBranch: '플러스김포',
-                riderPhone: '010-7755-6466',
-                blockMemo: '배송지연 및 픽업지연',
-                blocked: this.state.blocked
-            },
-
-        ];
-        this.setState({
-            list: list,
-        });
-    }
+        let {data} = this.props;
+        let riderIdx = data.idx;
+        httpPost(httpUrl.blindList, [], {
+            riderIdx: riderIdx,
+            pageNum: this.state.pagination.current,
+            pageSize: this.state.pagination.pageSize,
+        })
+          .then((res) => {
+            if (res.result === "SUCCESS") {
+              console.log(res);
+              this.setState({
+                list: res.data.riderFrBlocks,
+              });
+            } else {
+              Modal.info({
+                title: "적용 오류",
+                content: "처리가 실패했습니다.",
+              });
+            }
+          })
+          .catch((e) => {
+            Modal.info({
+              title: "적용 오류",
+              content: "처리가 실패했습니다.",
+            });
+          });
+      };
 
     render() {
-
         const columns = [
             {
-                title: "설정일",
-                dataIndex: "blockDate",
+                title: "차단자",
+                dataIndex: "direction",
+                className: "table-column-center",
+                render: (data, row) => <div>{data === 1 ? "기사" : "가맹점"}</div>
+            },
+            {
+                title: "가맹점명",
+                dataIndex: "frName",
                 className: "table-column-center",
             },
             {
-                title: "해제일",
-                dataIndex: "blockDate",
+                title: "기사명",
+                dataIndex: "riderName",
                 className: "table-column-center",
             },
-            {
-                title: "기사명(가맹점명)",
-                dataIndex: "FranchiseName",
-                className: "table-column-center",
-            },
-            // {
-            //     title: "기사명",
-            //     dataIndex: "riderName",
-            //     className: "table-column-center",
-            // },
-            // {
-            //     title: "기사의 소속지사",
-            //     dataIndex: "riderBranch",
-            //     className: "table-column-center",
-            // },
-            // {
-            //     title: "기사단말기번호",
-            //     dataIndex: "riderPhone",
-            //     className: "table-column-center",
-            // },
             {
                 title: "차단메모",
-                dataIndex: "blockMemo",
+                dataIndex: "memo",
                 className: "table-column-center",
+            },
+            {
+                title: "설정일",
+                dataIndex: "createDate",
+                className: "table-column-center",
+                render: (data) => <div>{formatDate(data)}</div>,
             },
             {
                 title: "상태",
@@ -142,23 +142,25 @@ class BlindListDialog extends Component {
                 render:
                     (data, row) => (
                         <div>
-                            <SelectBox
+                            {/* <SelectBox
                                 value={blockString[data]}
                                 code={Object.keys(blockString)}
                                 codeString={blockString}
                                 onChange={(value) => {
                                     if (parseInt(value) !== row.blocked) {
-                                        this.onDelete(value, row.idx);
+                                        this.onDelete(row.idx);
                                     }
                                 }}
-                            />
+                            /> */}
+                            <Button className="tabBtn surchargeTab" 
+                            onClick={()=>this.onDelete(row.idx)}>블라인드</Button>
                         </div>
                     ),
             },
         ];
 
         const { isOpen, close } = this.props;
-
+        // console.log(JSON.stringify(data))
         return (
             <React.Fragment>
                 {
@@ -177,12 +179,11 @@ class BlindListDialog extends Component {
                                         marginTop:20,
                                         fontSize: 15
                                         }}>
-                                        해제 조회
+                                        해제 포함
                                         <Checkbox style={{ marginLeft:6,verticalAlign: 'bottom' }}/>
                                     </div>
 
                                     <div className="blindLayout">
-                                        <Form ref={this.formIdRef} onFinish={this.handleIdSubmit}>
                                             <div className="listBlock">
                                                 <Table
                                                     // rowKey={(record) => record.idx}
@@ -192,32 +193,44 @@ class BlindListDialog extends Component {
                                                     onChange={this.handleTableChange}
                                                 />
                                             </div>
-                                        </Form>
+                                       
                                     </div>
                                     <div className="blindWrapper bot">
+                                    <Form ref={this.formRef} onFinish={this.handleSubmit}>
                                         <div className="contentBlock">
                                         <div className="subTitle">
-                                                기사명(가맹점명)
+                                                차단자
                                             </div>
                                             <FormItem
-                                                name="name"
+                                                name="direction"
                                                 className="selectItem"
+                                                // initialValue={this.props.loginInfo.id}
                                             >
-                                                <Input placeholder="차단대상 입력" className="override-input sub">
+                                                <Input placeholder="차단자 입력" className="override-input sub">
                                                 </Input>
                                             </FormItem>
-                                            {/* <div className="subTitle">
-                                                차단사유 
+                                        <div className="subTitle">
+                                                가맹점명
                                             </div>
                                             <FormItem
-                                                name="managePrice"
+                                                name="frName"
                                                 className="selectItem"
                                             >
-                                                <Input defaultValue={'100,000'} placeholder="관리비 입력" className="override-input sub">
-                                                </Input> */}
-                                            {/* </FormItem> */}
+                                                <Input placeholder="가맹점명 입력" className="override-input sub">
+                                                </Input>
+                                            </FormItem>
+                                        <div className="subTitle">
+                                                기사명
+                                            </div>
+                                            <FormItem
+                                                name="riderName"
+                                                className="selectItem"
+                                            >
+                                                <Input placeholder="기사명 입력" className="override-input sub">
+                                                </Input>
+                                            </FormItem>
                                             <div className="subTitle">
-                                                차단 메모
+                                                메모
                                             </div>
                                             <FormItem
                                                 name="memo"
@@ -231,9 +244,8 @@ class BlindListDialog extends Component {
                                                 차단하기
                                             </Button>
                                                 </div>
-                                            </div>
-
-
+                                        </Form>
+                                    </div>
                                 </div>
                             </div>
                         </React.Fragment>
@@ -245,4 +257,14 @@ class BlindListDialog extends Component {
     }
 }
 
-export default (BlindListDialog);
+const mapStateToProps = (state) => {
+    return {
+        loginInfo: state.login.loginInfo,
+    };
+  };
+  
+  const mapDispatchToProps = (dispatch) => {
+    return {};
+  };
+  
+  export default connect(mapStateToProps, mapDispatchToProps)(BlindListDialog);
