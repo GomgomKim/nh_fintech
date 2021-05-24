@@ -3,18 +3,18 @@ import {
     Form,
     Modal,
     Input,
-    Table,
     Button,
     Select,
-    Checkbox,
 } from "antd";
 import { httpUrl, httpPost, httpGet } from '../../../api/httpClient';
 import '../../../css/modal.css';
-import { formatDate, formatDateSecond } from '../../../lib/util/dateUtil';
+import { formatDate } from '../../../lib/util/dateUtil';
+import SelectBox from '../../../components/input/SelectBox';
+import { statusString } from '../../../lib/util/codeUtil';
+
 import moment from 'moment';
 const Option = Select.Option;
 const FormItem = Form.Item;
-const today = new Date();
 
 class SendSnsDialog extends Component {
     constructor(props) {
@@ -158,7 +158,7 @@ class SendSnsDialog extends Component {
                                     className="surcharge-close"
                                 />
                                 <div className="snsLayout">
-                                    <Form ref={this.formRef} onFinish={this.handleSubmit}>
+                                    {/* <Form ref={this.formRef} onFinish={this.handleSubmit}>
                                         <div className="snslistBlock">
 
                                             <Table
@@ -169,14 +169,35 @@ class SendSnsDialog extends Component {
                                                 onChange={this.handleTableChange}
                                             />
                                         </div>
-                                    </Form>
+                                    </Form> */}
 
                                     <Form ref={this.formRef} onFinish={this.handleSubmit}>
                                         <div className="snsDetailBlock">
-                                            <div className="mainTitle">sns</div>
+                                            <div className="mainTitle">
+                                                <div className="contentBlock">
+
+                                                    <FormItem
+                                                        name="rider"
+                                                        className="selectItem"
+                                                        initialValue={statusString[0]}
+                                                        rules={[{ required: true, message: "보낼사람을 선택해주세요" }]}
+
+                                                    >
+                                                        <SelectBox
+                                                            value={statusString}
+                                                            code={Object.keys(statusString)}
+                                                            codeString={statusString}
+                                                            style={{ width: "260px" }}
+
+                                                        />
+                                                    </FormItem>
+                                                </div>
+
+
+                                            </div>
                                             <div className="inputBox">
                                                 <FormItem
-                                                    className="snsInputBox"
+                                                    className="selectItem"
                                                     name="content"
                                                 >
                                                     <Input
@@ -192,7 +213,7 @@ class SendSnsDialog extends Component {
                                                     className="tabBtn insertTab snsBtn"
                                                 >
                                                     전송
-                        </Button>
+                                                </Button>
                                             </div>
                                         </div>
                                     </Form>
@@ -200,7 +221,8 @@ class SendSnsDialog extends Component {
                             </div>
                         </div>
                     </React.Fragment>
-                ) : null}
+                ) : null
+                }
             </React.Fragment>
         );
     }

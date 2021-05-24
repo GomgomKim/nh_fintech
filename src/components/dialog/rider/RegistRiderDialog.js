@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import {
-    Form, Input, Button, Select, Radio, Modal
+    Form, Input, Button, Select, Radio, Modal, CheckBox,
 } from "antd";
 import '../../../css/modal.css';
 import { httpUrl, httpPost } from '../../../api/httpClient';
@@ -300,6 +300,24 @@ class RegistRiderDialog extends Component {
                                                         <Input placeholder="최소보유잔액을 입력해 주세요." className="override-input" />
                                                     </FormItem>
                                                 </div>
+                                                <div className="contentBlock">
+                                                    <div className="mainTitle">
+                                                        비품지급
+                                                    </div>
+                                                    <FormItem
+                                                        name="contentBlock"
+                                                        className="selectItem"
+                                                        rules={[{ required: true, message: "지급된 비품을 확인해주세요" }]}
+                                                        initialValue={data ? data.minCashAmount : ''}
+                                                    >
+                                                        <Input placeholder="최소보유잔액을 입력해 주세요." className="override-input" />
+                                                    </FormItem>
+                                                </div>
+
+
+
+
+
                                                 <div className="submitBlock">
                                                     <Button type="primary" htmlType="submit">
                                                         등록하기
