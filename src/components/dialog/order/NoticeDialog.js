@@ -129,80 +129,81 @@ class NoticeDialog extends Component {
   //공지 전송
   handleSubmit = () => {
     let self = this;
-    
+
     Modal.confirm({
-        title: "공지사항 등록",
-        content: (
-            <div>
-                {self.formRef.current.getFieldsValue().content + '을 등록하시겠습니까?'}
-            </div>
-        ),
-        okText: "확인",
-        cancelText: "취소",
-        onOk() {
-            httpPost(httpUrl.registNotice, [], {
-                ...self.formRef.current.getFieldsValue(),
-                // idx: self.state.idx,
-                date: self.state.date,
-                title: self.state.title,
-                // content: self.state.content,
-                category: self.state.category,
-                sortOrder: self.state.sortOrder,
-                important: self.state.important,
-                branchCode: self.state.branchCode,
-                // deleted: false,
-            }).then((result) => {
-                Modal.info({
-                    title: " 완료",
-                    content: (
-                        <div>
-                            {self.formRef.current.getFieldsValue().content}이(가) 등록되었습니다.
-                        </div>
-                    ),
-                });
-                self.handleClear();
-                self.getList();
-            }).catch((error) => {
-                Modal.info({
-                    title: "등록 오류",
-                    content: "오류가 발생하였습니다. 다시 시도해 주십시오."
-                });
-            })
-
-            
-    //     httpPost(httpUrl.registNotice, [], {
-    //         ...self.formRef.current.getFieldsValue(),
-    //         date: self.state.date,
-    //         title: self.state.title,
-    //         category: self.state.category,
-    //         sortOrder: self.state.sortOrder,
-    //         important: self.state.important,
-    //         branchCode: self.state.branchCode,
-    //     })
-    //         .then((result) => {
-    //             Modal.info({
-    //                 title: "공지사항",
-    //                 content: (
-    //                     <div>
-    //                        adfds
-    //                     </div>
-    //                 ),
-    //             });
-    //             // self.getList();
-    //             self.props.close()
-
-    // //     this.setState({content});
-    // //     this.getList();
-    // // 
-.catch((error) => {
-        Modal.info({
-            title: "수정 오류",
+      title: "공지사항 등록",
+      content: (
+        <div>
+          {self.formRef.current.getFieldsValue().content + '을 등록하시겠습니까?'}
+        </div>
+      ),
+      okText: "확인",
+      cancelText: "취소",
+      onOk() {
+        httpPost(httpUrl.registNotice, [], {
+          ...self.formRef.current.getFieldsValue(),
+          // idx: self.state.idx,
+          date: self.state.date,
+          title: self.state.title,
+          // content: self.state.content,
+          deleted: false,
+          category: self.state.category,
+          sortOrder: self.state.sortOrder,
+          important: self.state.important,
+          branchCode: self.state.branchCode,
+          // deleted: false,
+        }).then((result) => {
+          Modal.info({
+            title: " 완료",
+            content: (
+              <div>
+                {self.formRef.current.getFieldsValue().content}이(가) 등록되었습니다.
+              </div>
+            ),
+          });
+          self.handleClear();
+          self.getList();
+        }).catch((error) => {
+          Modal.info({
+            title: "등록 오류",
             content: "오류가 발생하였습니다. 다시 시도해 주십시오."
-        });
+          });
+        })
+
+
+          //     httpPost(httpUrl.registNotice, [], {
+          //         ...self.formRef.current.getFieldsValue(),
+          //         date: self.state.date,
+          //         title: self.state.title,
+          //         category: self.state.category,
+          //         sortOrder: self.state.sortOrder,
+          //         important: self.state.important,
+          //         branchCode: self.state.branchCode,
+          //     })
+          //         .then((result) => {
+          //             Modal.info({
+          //                 title: "공지사항",
+          //                 content: (
+          //                     <div>
+          //                        adfds
+          //                     </div>
+          //                 ),
+          //             });
+          //             // self.getList();
+          //             self.props.close()
+
+          // //     this.setState({content});
+          // //     this.getList();
+          // // 
+          .catch((error) => {
+            Modal.info({
+              title: "수정 오류",
+              content: "오류가 발생하였습니다. 다시 시도해 주십시오."
+            });
+          });
+      }
     });
-}
-    });
-}
+  }
 
   handleClear = () => {
     this.formRef.current.resetFields();
@@ -240,7 +241,7 @@ class NoticeDialog extends Component {
       });
   };
 
-  updateData = () => {};
+  updateData = () => { };
 
   render() {
     const columns = [
@@ -343,13 +344,13 @@ class NoticeDialog extends Component {
   }
 }
 const mapStateToProps = (state) => {
-    return {
-        branchIdx: state.login.branch,
-    };
+  return {
+    branchIdx: state.login.branch,
+  };
 }
 const mapDispatchToProps = (dispatch) => {
-    return {
+  return {
 
-    }
+  }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(NoticeDialog);

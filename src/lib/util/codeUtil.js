@@ -22,6 +22,16 @@ const paymentMethod = [
     '선결',
 ]
 
+// 접수현황 - 결제 상태
+const paymentStatus = [
+    '',
+    '요청',
+    '완료',
+    '취소',
+    '에러',
+    '삭제',
+]
+
 // 접수현황, 가맹점관리 - 카드상태
 const cardStatus = [
     '요청',
@@ -50,6 +60,13 @@ const rowColorName = [
 
 // 가맹점, 기사관리 - 상태
 const statusString = {
+    1: "사용",
+    2: "중지",
+    3: "탈퇴",
+}
+
+// 가맹점, 기사관리 - 상태 선택
+const tableStatusString = {
     0: "전체",
     1: "사용",
     2: "중지",
@@ -133,9 +150,11 @@ export {
     preparationStatus, 
     cardStatus, 
     paymentMethod, 
+    paymentStatus,
     modifyType, 
     rowColorName,
     riderLevelText,
     userGroupString,
-    riderGroupString
+    riderGroupString,
+    tableStatusString
 };

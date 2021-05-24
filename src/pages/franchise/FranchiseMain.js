@@ -1,4 +1,4 @@
-import {Modal, Table, Button} from 'antd';
+import {Modal, Table, Button, Input} from 'antd';
 import React, {Component} from 'react';
 import {httpUrl, httpPost} from '../../api/httpClient';
 import RegistFranDialog from "../../components/dialog/franchise/RegistFranDialog";
@@ -10,7 +10,9 @@ import "../../css/franchise.css";
 import {comma} from "../../lib/util/numberUtil";
 import {BankOutlined} from '@ant-design/icons';
 import {formatDate} from '../../lib/util/dateUtil';
-import {statusString, withdrawString, cardStatus} from '../../lib/util/codeUtil';
+import { statusString, tableStatusString, withdrawString, cardStatus} from '../../lib/util/codeUtil';
+
+const Search = Input.Search;
 
 class FranchiseMain extends Component {
     constructor(props) {
@@ -25,7 +27,7 @@ class FranchiseMain extends Component {
             // test data
             list: [],
             withdrawSet: 0,
-            franStatus: 1,
+            franStatus: 0,
             frName: "",
             franGroup: 0,
             franSelectStatus: 0,
@@ -45,6 +47,15 @@ class FranchiseMain extends Component {
         // console.log("props tag :"+this.props)
     }
 
+    // 가맹점 검색
+    onSearchFranchisee = (value) => {
+        this.setState({
+            frName: value
+        }, () => {
+            this.getList();
+        })
+    }
+
     handleTableChange = (pagination) => {
         console.log(pagination)
         const pager = {
@@ -59,8 +70,13 @@ class FranchiseMain extends Component {
     };
 
     getList = () => {
+        console.log(this.state.franStatus)
         httpPost(httpUrl.franchiseList, [], {
-            pageSize: 10
+            frName: this.state.frName,
+            pageNum: 1,
+            pageSize: 10,
+            userGroup: this.state.franGroup,
+            userStatus: this.state.franStatus === 0 ? "" : this.state.franStatus
         }).then((result) => {
             console.log('## result=' + JSON.stringify(result, null, 4))
             const pagination = {
@@ -72,7 +88,7 @@ class FranchiseMain extends Component {
         })
     }
 
-    onSearchFranchise = (data) => {
+    onSearchFranchiseDetail = (data) => {
         console.log("### get fran list data : " + data)
         this.setState({list: data});
     }
@@ -119,6 +135,7 @@ class FranchiseMain extends Component {
     closeSearchAddressModal = () => {
       this.setState({ SearchAddressOpen: false });
     }
+
     // 블라인드 dialog
     openBlindModal = () => {
       this.setState({ blindListOpen: true });
@@ -164,14 +181,14 @@ class FranchiseMain extends Component {
             .then((res) => {
                 if (res.result === "SUCCESS") {
                     /* Modal.info({
-            title: "변경 완료",
-            content: (
-              <div>
-                상태가 변경되었습니다.
-              </div>
-            ),
-            onOk() { },
-          }); */
+                        title: "변경 완료",
+                        content: (
+                        <div>
+                            상태가 변경되었습니다.
+                        </div>
+                        ),
+                        onOk() { },
+                    }); */
                 } else {
                     Modal.error(
                         {title: "변경 실패", content: (<div>
@@ -199,14 +216,14 @@ class FranchiseMain extends Component {
             .then((res) => {
                 if (res.result === "SUCCESS") {
                     /* Modal.info({
-            title: "변경 완료",
-            content: (
-              <div>
-                상태가 변경되었습니다.
-              </div>
-            ),
-            onOk() { },
-          }); */
+                        title: "변경 완료",
+                        content: (
+                        <div>
+                            상태가 변경되었습니다.
+                        </div>
+                        ),
+                        onOk() { },
+                    }); */
                 } else {
                     Modal.error(
                         {title: "변경 실패", content: (<div>
@@ -386,11 +403,33 @@ class FranchiseMain extends Component {
             <div className="franchiseContainer">
 
                 <div className="selectLayout">
+                    <span className="searchRequirementText">검색조건</span><br/><br/>
+
+                    <SelectBox
+                        value={tableStatusString[this.state.franStatus]}
+                        code={Object.keys(tableStatusString)}
+                        codeString={tableStatusString}
+                        onChange={(value) => {
+                            if (parseInt(value) !== this.state.franStatus) {
+                                this.setState({franStatus: parseInt(value)}, () => this.getList());
+                            }
+                        }}/>
+
+                    <Search
+                        placeholder="가맹점검색"
+                        className="searchFranchiseInput"
+                        enterButton
+                        allowClear
+                        onSearch={this.onSearchFranchisee}
+                        style={{
+                            
+                        }}/>
+
                     <SearchFranchiseDialog
-                        callback={(data) => this.onSearchFranchise(data)}
+                        callback={(data) => this.onSearchFranchiseDetail(data)}
                         isOpen={this.state.searchFranchiseOpen}
                         close={this.closeSearchFranchiseModal}/>
-                    <Button className="tabBtn searchTab" onClick={this.openSearchFranchiseModal}>가맹점조회</Button>
+                    <Button className="tabBtn" onClick={this.openSearchFranchiseModal}>가맹점조회</Button>
                     <RegistFranDialog
                         isOpen={this.state.ResistFranchiseOpen}
                         close={this.closeRegistFranchiseModal}/>

@@ -27,7 +27,7 @@ class FilteringDialog extends Component {
         },
         {
           key: "orderStatus-4",
-          value: 4,
+          value: 5,
           text: "취소",
         },
       ],

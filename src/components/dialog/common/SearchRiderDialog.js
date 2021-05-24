@@ -1,16 +1,17 @@
 import React, {Component} from "react";
-import {Form, Input, Table, Button} from "antd";
-import {httpUrl, httpPost} from '../../../api/httpClient';
+import {Form, Input, Table, Button, Radio} from "antd";
+import {httpUrl, httpGet} from '../../../api/httpClient';
 import '../../../css/modal.css';
-import SelectBox from '../../../components/input/SelectBox';
+import SelectBox from '../../input/SelectBox';
 import {
-    tableStatusString
+    tableStatusString,
+    riderLevelText
 } from '../../../lib/util/codeUtil';
 
 const Search = Input.Search;
 const today = new Date();
 
-class SearchFranchiseDialog extends Component {
+class SearchRiderDialog extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -22,10 +23,12 @@ class SearchFranchiseDialog extends Component {
                 pageSize: 10
             },
             addressType: 0,
-            franStatus: 0,
-            frName: "",
-            franGroup: 0,
-            selectedRowKeys: []
+            selectedRowKeys: [],
+
+            // data param
+            riderLevel: [],
+            searchName: "",
+            userStatus: 0,
         };
         this.formRef = React.createRef();
     }
@@ -33,10 +36,14 @@ class SearchFranchiseDialog extends Component {
         this.getList()
     }
 
-    // 가맹점 검색
-    onSearchFranchisee = (value) => {
+    setDate = (date) => {
+        console.log(date)
+    }
+
+    // 라이더 검색
+    onSearchRider = (value) => {
         this.setState({
-            frName: value
+            searchName: value
         }, () => {
             this.getList();
         })
@@ -55,21 +62,19 @@ class SearchFranchiseDialog extends Component {
     };
 
     getList = () => {
-        console.log(this.state.franStatus)
-        httpPost(httpUrl.franchiseList, [], {
-            frName: this.state.frName,
-            pageNum: 1,
-            pageSize: 10,
-            userGroup: this.state.franGroup,
-            userStatus: this.state.franStatus == 0 ? null : this.state.franStatus
-        }).then((result) => {
-            console.log('## result=' + JSON.stringify(result, null, 4))
-            const pagination = {
-                ...this.state.pagination
-            };
-            pagination.current = result.data.currentPage;
-            pagination.total = result.data.total;
-            this.setState({list: result.data.franchises, pagination});
+        let pageNum = this.state.pagination.current;
+        let userStatus = this.state.userStatus === 0 ? "" : this.state.userStatus;
+        let searchName = this.state.searchName;
+
+        httpGet(httpUrl.riderList, [10, pageNum, searchName, userStatus], {}).then((result) => {
+          console.log('## nnbox result=' + JSON.stringify(result, null, 4))
+          const pagination = { ...this.state.pagination };
+          pagination.current = result.data.currentPage;
+          pagination.total = result.data.totalCount;
+          this.setState({
+            list: result.data.riders,
+            pagination,
+          });
         })
     }
 
@@ -89,11 +94,29 @@ class SearchFranchiseDialog extends Component {
                 title: "순번",
                 dataIndex: "idx",
                 className: "table-column-center"
-            }, {
-                title: "가맹점명",
-                dataIndex: "frName",
-                className: "table-column-center"
-            }
+            }, 
+            {
+                title: "기사명",
+                dataIndex: "riderName",
+                className: "table-column-center",
+            },
+            {
+                title: "직급",
+                dataIndex: "riderLevel",
+                className: "table-column-center",
+                width: "200px",
+                render: (data) => <div>{riderLevelText[data]}</div>
+            },
+            {
+                title: "기사그룹",
+                dataIndex: "userGroup",
+                className: "table-column-center",
+                // render: (data) => <div>{data == "A" ? "A"
+                //   : data == "B" ? "B"
+                //     : data == "C" ? "C"
+                //       : data == "D" ? "D" : "-"}</div>
+                render: (data) => <div>{'A'}</div>
+            },
         ];
 
         const selectedRowKeys = this.state.selectedRowKeys
@@ -113,7 +136,7 @@ class SearchFranchiseDialog extends Component {
                                 <div className="searchFranchise-Dialog">
                                     <div className="searchFranchise-content">
                                         <div className="searchFranchise-title">
-                                            가맹점조회
+                                            기사조회
                                         </div>
                                         <img
                                             onClick={close}
@@ -126,21 +149,21 @@ class SearchFranchiseDialog extends Component {
                                                     <div className="searchFranchise-list">
                                                         <div className="inputBox inputBox-searchFranchise sub">
                                                             <SelectBox
-                                                                value={tableStatusString[this.state.franStatus]}
+                                                                value={tableStatusString[this.state.userStatus]}
                                                                 code={Object.keys(tableStatusString)}
                                                                 codeString={tableStatusString}
                                                                 onChange={(value) => {
-                                                                    if (parseInt(value) !== this.state.franStatus) {
-                                                                        this.setState({franStatus: parseInt(value)}, () => this.getList());
+                                                                    if (parseInt(value) !== this.state.userStatus) {
+                                                                        this.setState({userStatus: parseInt(value)}, () => this.getList());
                                                                     }
                                                                 }}/>
 
                                                             <Search
-                                                                placeholder="가맹점검색"
+                                                                placeholder="기사검색"
                                                                 className="searchFranchiseInput"
                                                                 enterButton
                                                                 allowClear
-                                                                onSearch={this.onSearchFranchisee}
+                                                                onSearch={this.onSearchRider}
                                                                 style={{
                                                                     
                                                                 }}/>
@@ -173,4 +196,4 @@ class SearchFranchiseDialog extends Component {
     }
 }
 
-export default(SearchFranchiseDialog);
+export default(SearchRiderDialog);
