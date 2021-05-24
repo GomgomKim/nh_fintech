@@ -22,10 +22,11 @@ class RegistRiderDialog extends Component {
             },
             staffAuth: 1,
             riderLevelSelected: false,
+            riderGroupSelected: false,
             feeManner: 0,
-            userGroup: 0,
+            userGroup: 1,
             riderLevel: 1,
-
+            riderGroup: 0,
             withdrawLimit: 100000,
 
         };
@@ -33,13 +34,15 @@ class RegistRiderDialog extends Component {
     }
 
     componentDidMount() {
+        this.getList()
     }
 
-    onChange = e => {
-        this.setState({
-            staffAuth: e.target.value,
-        });
-    };
+
+    // onChange = e => {
+    //     this.setState({
+    //         staffAuth: e.target.value,
+    //     });
+    // };
 
     handleSubmit = () => {
         let self = this;
@@ -55,9 +58,9 @@ class RegistRiderDialog extends Component {
             onOk() {
                 httpPost(httpUrl.registRider, [], {
                     ...self.formRef.current.getFieldsValue(),
-                    userGroup: self.state.userGroup,
                     ncash: 123,
                     userType: 1,
+                    userGroup: 3,
                     // riderLevel: self.state.riderLevel,
                     // riderName: self.state.riderName,
                     // id: self.state.id,
@@ -74,7 +77,7 @@ class RegistRiderDialog extends Component {
                             </div>
                         ),
                     });
-                    this.props.close();
+                    self.getList()
                 }).catch((error) => {
                     Modal.info({
                         title: "등록 오류",
@@ -97,13 +100,49 @@ class RegistRiderDialog extends Component {
         }
     }
 
+    handleChangeRiderGroup = (value) => {
+        if (value === 1) {
+            this.setState({ riderGroupSelected: true });
+        } else {
+            this.setState({ riderGroupSelected: false });
+        }
+    }
+
     onChangFeeManner = (e) => {
         console.log(`selected ${e.target.value}`);
         this.setState({ feeManner: e.target.value });
     }
 
+    getList = () => {
+        console.log(this.state.riderGroup)
+        httpPost(httpUrl.riderList, [], {
+            riderName: this.state.riderName,
+            pageNum: 1,
+            pageSize: 10,
+            userStatus: this.state.riderStatus == 0 ? null : this.state.riderStatus
+        }).then((result) => {
+            console.log('## result=' + JSON.stringify(result, null, 4))
+            const pagination = {
+                ...this.state.pagination
+            };
+            pagination.current = result.data.currentPage;
+            pagination.total = result.data.total;
+            this.setState({ list: result.data.riders, pagination });
+        })
+    }
+
+
+    onSelectChange = (selectedRowKeys) => {
+        console.log('selectedRowKeys changed: ', selectedRowKeys);
+        this.setState({ selectedRowKeys: selectedRowKeys });
+    };
 
     render() {
+        const selectedRowKeys = this.state.selectedRowKeys
+        const rowSelection = {
+            selectedRowKeys,
+            onChange: this.onSelectChange
+        };
         const { isOpen, close, data } = this.props;
 
         return (
@@ -135,17 +174,27 @@ class RegistRiderDialog extends Component {
 
                                                     >
                                                         <SelectBox
-                                                            value={riderGroupString}
+                                                            value={riderGroupString[this.state.riderGroup]}
                                                             code={Object.keys(riderGroupString)}
                                                             codeString={riderGroupString}
                                                             style={{ width: "260px" }}
-
+                                                            onChange={(value) => {
+                                                                if (parseInt(value) !== this.state.riderGroup) {
+                                                                    this.setState({ riderGroup: parseInt(value) }, () => this.getList());
+                                                                }
+                                                            }}
                                                         // onChange={(value) => {
                                                         //     if (parseInt(value) !== row.enabled) {
                                                         //         this.onChangeStatus(row.idx, value);
                                                         //     }
                                                         // }}
                                                         />
+
+
+
+
+
+
                                                     </FormItem>
                                                 </div>
                                                 <div className="contentBlock">
@@ -162,19 +211,12 @@ class RegistRiderDialog extends Component {
                                                             code={Object.keys(riderLevelText)}
                                                             codeString={riderLevelText}
                                                             style={{ width: "260px" }}
+                                                            onChange={(value) => {
+                                                                if (parseInt(value) !== this.state.riderLevel) {
+                                                                    this.setState({ riderLevel: parseInt(value) }, () => this.getList());
+                                                                }
+                                                            }}
                                                         />
-
-                                                        {/* <Select placeholder="직급을 선택해주세요." onChange={this.handleChangeRiderLevel} className="override-select branch" >
-                                                            <Option value={1}>라이더</Option>
-                                                            <Option value={2}>부팀장</Option>
-                                                            <Option value={3}>팀장</Option>
-                                                            <Option value={4}>부본부장</Option>
-                                                            <Option value={5}>본부장</Option>
-                                                            <Option value={6}>부지점장</Option>
-                                                            <Option value={7}>지점장</Option>
-                                                            <Option value={8}>부센터장</Option>
-                                                            <Option value={9}>센터장</Option>
-                                                        </Select> */}
                                                     </FormItem>
                                                 </div>
                                                 {this.state.riderLevelSelected &&
@@ -328,9 +370,9 @@ class RegistRiderDialog extends Component {
                                                         <Checkbox>보냉</Checkbox>
                                                         <Checkbox>우의</Checkbox>
                                                         <Checkbox>피자가방</Checkbox>
-                                                        <Checkbox>바람막이</Checkbox>
                                                         <Checkbox>여름티</Checkbox>
                                                         <Checkbox>토시</Checkbox>
+                                                        <Checkbox>바람막이</Checkbox>
 
                                                     </FormItem>
                                                 </div>
