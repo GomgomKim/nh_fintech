@@ -5,19 +5,22 @@ const updateComplete = () => {
         title: "변경 완료",
         content: (
         <div>
-            상태가 변경되었습니다.
+            변경되었습니다.
         </div>
         ),
-        onOk() { },
+        onOk() {},
     });
 }
 
 const updateError = () => {
-    Modal.error(
-        {title: "변경 실패", content: (<div>
+    Modal.error({
+        title: "변경 실패", 
+        content: (
+        <div>
             변경에 실패했습니다. 관리자에게 문의하세요.
-        </div>), onOk() {}}
-    );
+        </div>),
+        onOk() {},
+    });
 }
 
 const registComplete = () => {
@@ -28,16 +31,19 @@ const registComplete = () => {
             등록되었습니다.
         </div>
         ),
-        onOk() { },
+        onOk() {},
     });
 }
 
 const registError = () => {
-    Modal.error(
-        {title: "등록 실패", content: (<div>
+    Modal.error({
+        title: "등록 실패", 
+        content: (
+        <div>
             등록에 실패했습니다. 관리자에게 문의하세요.
-        </div>), onOk() {}}
-    );
+        </div>), 
+        onOk() {}
+    });
 }
 
 const deleteComplete = () => {
@@ -48,16 +54,19 @@ const deleteComplete = () => {
             삭제되었습니다.
         </div>
         ),
-        onOk() { },
+        onOk() {},
     });
 }
 
 const deleteError = () => {
-    Modal.error(
-        {title: "삭제 실패", content: (<div>
+    Modal.error({
+        title: "삭제 실패", 
+        content: (
+        <div>
             삭제에 실패했습니다. 관리자에게 문의하세요.
-        </div>), onOk() {}}
-    );
+        </div>), 
+        onOk() {},
+    });
 }
 
 export {
