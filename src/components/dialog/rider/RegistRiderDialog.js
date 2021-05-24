@@ -22,7 +22,7 @@ class RegistRiderDialog extends Component {
             },
             staffAuth: 1,
             riderLevelSelected: false,
-            feeManner: 0,
+            feeManner: '100%',
         };
         this.formRef = React.createRef();
     }

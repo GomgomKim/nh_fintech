@@ -986,14 +986,14 @@
   display: inline-block;
   /* width: 340px; */
   margin-top: 46px;
-  margin-left: 70px;
+  margin-left: 40px;
 }
 .registFranWrapper.sub .mainTitle {
   display: inline-block;
   /* font-size: 20px; */
   vertical-align: middle;
   font-weight: bold;
-  width: 75px;
+  width: 100px;
 }
 .registFranWrapper.sub .override-input.sub {
   /* margin-left: -30px; */
@@ -1012,6 +1012,7 @@
 }
 /* 하단 랩퍼 */
 .registFranWrapper.bot {
+  width: 100%;
   margin-top: 40px;
   padding-top: 30px;
   border-top: 1px solid #b5b5b5;
@@ -1050,7 +1051,7 @@
 }
 .registFranWrapper.bot .override-select {
   margin-left: 10px;
-  width: 230px;
+
   font-size: 15px;
   vertical-align: middle;
 }
@@ -1059,9 +1060,27 @@
   height: 40px;
   font-size: 18px;
   /* margin-top: 12px; */
-  margin-left: 45px;
-  display: inline-block;
+  margin-left: 70px;
   vertical-align: middle;
+}
+.registFranWrapper .ant-btn-primary.excel-upload {
+  background-color: #fff;
+  box-shadow: none;
+  color: #222;
+  padding: 5px;
+  text-align: center;
+  vertical-align: top;
+  margin-bottom: 10px;
+}
+
+.registFranWrapper .ant-btn-primary.excel-upload:hover {
+  background-color: #1890ff;
+  color: #fff;
+}
+.excel-upload img {
+  width: 25px;
+  margin-right: 5px;
+  vertical-align: bottom;
 }
 
 /* 코인이체 dialog */
@@ -2383,16 +2402,16 @@
   margin-top: 25px;
 }
 
-.registRiderWrapper .ant-form-item-control-input-content{
-  width:260px;
+.registRiderWrapper .ant-form-item-control-input-content {
+  width: 260px;
 }
-
 
 .registRiderWrapper .mainTitle {
   width: 130px;
 }
 
-.registRiderWrapper .registRiderCheck {
+.registRiderCheck {
+  margin-left: 20px;
   display: inline-block;
   /* margin-left: 22px; */
 }
@@ -2927,6 +2946,179 @@
   text-align: left;
   color: #777;
 }
+.chat-container {
+  padding: 0px;
+  width: 440px;
+  height: 700px;
+  border-radius: 10px;
+  background-color: white;
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+}
+.chat-title {
+  width: 100%;
+  background-color: #fddc00;
+  padding: 20px;
+  text-align: center;
+  font-size: 24px;
+  letter-spacing: -1px;
+  font-family: NotoSansMedium;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.chat-item-container {
+  padding: 20px;
+  cursor: pointer;
+}
+.chat-item-image {
+  display: inline-block;
+}
+.chat-item-image img {
+  width: 70px;
+}
+.chat-item-content {
+  display: inline-block;
+  width: 300px;
+  vertical-align: middle;
+  padding-left: 20px;
+}
+.chat-item-top {
+  width: 100%;
+}
+.chat-item-top-title {
+  font-size: 24px;
+  letter-spacing: -1px;
+  font-family: NotoSansBold;
+}
+.chat-item-top-time {
+  float: right;
+  font-size: 18px;
+  letter-spacing: -1px;
+  font-family: NotoSansRegular;
+  color: #b1b1b1;
+}
+.chat-item-bottom {
+  font-size: 18px;
+  letter-spacing: -1px;
+  font-family: NotoSansMedium;
+  color: #999999;
+  width: 280px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.chat-message-container {
+  float: right;
+  padding: 0px;
+  width: 440px;
+  height: 700px;
+  border-radius: 10px;
+  background-color: #ededed;
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+}
+.chat-input {
+  border-radius: 12px;
+  border: 1px solid #000;
+  margin: 10px;
+  height: 55px;
+  background-color: #fff;
+}
+.chat-send-input {
+  width: 330px;
+  font-size: 18px;
+  letter-spacing: -1px;
+  font-family: NotoSansMedium;
+  margin-top: 10px;
+  border: 0px !important;
+  margin-left: 15px;
+}
+.chat-send-input:focus {
+  outline: none;
+}
+.chat-send-btn {
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  float: right;
+  background-color: #000;
+  height: 100%;
+  width: 60px;
+  padding-top: 10px;
+  text-align: center;
+  font-size: 18px;
+  letter-spacing: -1px;
+  font-family: NotoSansMedium;
+  color: #fff;
+  cursor: pointer;
+}
+
+.msginput-container {
+  padding: 10px;
+  background-color: #000;
+  border-radius: 7px;
+}
+
+.msginput-basic {
+  margin: 10px;
+  padding: 10px;
+  background-color: #fbdd01;
+  color: #000;
+  font-family: NotoSansRegular;
+  font-size: 24px;
+  letter-spacing: -1px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.chat-message {
+  height: 540px;
+  padding: 20px;
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column-reverse;
+}
+.chat-message-item {
+  margin: 10px 0px;
+}
+.chat-message-item.my {
+  text-align: right;
+}
+.chat-message-icon {
+  display: inline-block;
+}
+.chat-message-icon img {
+  width: 40px;
+}
+.chat-message-content {
+  display: inline-block;
+  width: 320px;
+  margin-left: 10px;
+  vertical-align: top;
+}
+.chat-message-content-text {
+  background-color: #fff;
+  border-radius: 20px;
+  padding: 5px 20px;
+  color: #000;
+  font-family: NotoSansRegular;
+  font-size: 16px;
+  letter-spacing: -1px;
+  display: inline-block;
+}
+.chat-message-content-text.my {
+  background-color: #fbdd01;
+}
+.chat-message-content-date {
+  text-align: right;
+  color: #999999;
+  font-family: NotoSansRegular;
+  font-size: 14px;
+  letter-spacing: -1px;
+}
+.chat-message-content-date.my {
+  padding-right: 10px;
+}
+
 /* 블라인드 */
 .blind-Dialog {
   position: fixed;
@@ -3051,7 +3243,6 @@
   display: inline-block;
   vertical-align: middle;
 }
-
 
 /*sns전송ㅇ*/
 .snsDialog {

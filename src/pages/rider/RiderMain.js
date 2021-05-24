@@ -17,6 +17,7 @@ import {
   statusString,
   riderLevelText
 } from '../../lib/util/codeUtil';
+import { formatDate } from "../../lib/util/dateUtil";
 import moment from 'moment';
 
 const dateFormat = 'YYYY/MM/DD';
@@ -285,23 +286,27 @@ class RiderMain extends Component {
       },
       {
         title: "입사일",
+        // dataIndex: "wdawdDate",
         className: "table-column-center",
-        render: (data, row) => <div>
-          <DatePicker
-            defaultValue={moment(today, dateFormat)}
-            format={dateFormat}
-            onChange={date => this.setState({ selected: date })} />
-        </div>
+        render: (data) => <div>{formatDate("2021-03-21 12:00")}</div>
+        // render: (data, row) => <div>
+        //   <DatePicker
+        //     defaultValue={moment(today, dateFormat)}
+        //     format={dateFormat}
+        //     onChange={date => this.setState({ selected: date })} />
+        // </div>
       },
       {
         title: "퇴사일",
+        // dataIndex: "wdawdDate",
         className: "table-column-center",
-        render: (data, row) => <div>
-          <DatePicker
-            defaultValue={moment(today, dateFormat)}
-            format={dateFormat}
-            onChange={date => this.setState({ selected: date })} />
-        </div>
+        render: (data) => <div>{formatDate("2021-04-29 11:00:21")}</div>
+        // render: (data, row) => <div>
+        //   <DatePicker
+        //     defaultValue={moment(today, dateFormat)}
+        //     format={dateFormat}
+        //     onChange={date => this.setState({ selected: date })} />
+        // </div>
       },
       // {
       //   title: "충전",
