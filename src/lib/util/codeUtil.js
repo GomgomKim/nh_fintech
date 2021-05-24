@@ -60,6 +60,13 @@ const rowColorName = [
 
 // 가맹점, 기사관리 - 상태
 const statusString = {
+    1: "사용",
+    2: "중지",
+    3: "탈퇴",
+}
+
+// 가맹점, 기사관리 - 상태 선택
+const tableStatusString = {
     0: "전체",
     1: "사용",
     2: "중지",
@@ -131,6 +138,12 @@ const riderLevelText = [
     "센터장"
 ]
 
+const pgUseRate = [
+    // "",
+    "100%",
+    "0%"
+]
+
 export { 
     deliveryStatusCode,
     blockString,
@@ -148,5 +161,7 @@ export {
     rowColorName,
     riderLevelText,
     userGroupString,
-    riderGroupString
+    riderGroupString,
+    pgUseRate,
+    tableStatusString,
 };

@@ -189,7 +189,8 @@ const httpUrl = {
   updateBranch: "/branch/update",
 
   // 공지사항
-  noticeList: "/notice/list?pageNum=%s&pageSize=%s",
+  noticeList: "/notice/list?deleted=false&pageNum=%s&pageSize=%s",
+  noticeListDeleted: "/notice/list?deleted=true&pageNum=%s&pageSize=%s",
   registNotice: "/notice/create",
   updateNotice: "/notice/update",
   specificNoticeList: "/notice/%s",

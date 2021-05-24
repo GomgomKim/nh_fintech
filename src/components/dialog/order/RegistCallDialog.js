@@ -63,12 +63,13 @@ class RegistCallDialog extends Component {
                                                     </FormItem> */}
                                                     <Search
                                                         placeholder="가맹점검색"
+                                                        className="override-select"
                                                         enterButton
                                                         allowClear
                                                         onSearch={this.onSearchFranchisee}
                                                         style={{
                                                             width: 190,
-                                                            marginLeft: 10
+                                                            // marginLeft: 10
                                                         }}
                                                     />
                                                 </div>
@@ -193,7 +194,7 @@ class RegistCallDialog extends Component {
                                             </div>
 
                                             <div className="mapLayout regist-call-map" id="myMap">
-                                                {/* <MapContainer /> */}
+                                                {/* <MapContainer /> */}{/* 
                                                 {navermaps &&
                                                     <NaverMap
                                                         className='map-navermap'
@@ -218,7 +219,7 @@ class RegistCallDialog extends Component {
                                                     strokeWeight={5}        
                                                     />
                                                     </NaverMap>
-                                                }
+                                                } */}
                                             </div>
 
 
