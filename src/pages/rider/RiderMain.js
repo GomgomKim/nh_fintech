@@ -16,8 +16,10 @@ import SearchRiderDialog from '../../components/dialog/common/SearchRiderDialog'
 import {
   tableStatusString,
   statusString,
-  riderLevelText
+  riderLevelText,
+  riderGroupString
 } from '../../lib/util/codeUtil';
+import { formatDate } from "../../lib/util/dateUtil";
 import moment from 'moment';
 
 const Search = Input.Search;
@@ -246,7 +248,8 @@ class RiderMain extends Component {
         //   : data == "B" ? "B"
         //     : data == "C" ? "C"
         //       : data == "D" ? "D" : "-"}</div>
-        render: (data) => <div>{'A'}</div>
+        // render: (data) => <div>{'A'}</div>
+        render: (data) => <div>{riderGroupString[data]}</div>
       },
       {
         title: "출금비밀번호",
@@ -274,23 +277,27 @@ class RiderMain extends Component {
       },
       {
         title: "입사일",
+        // dataIndex: "wdawdDate",
         className: "table-column-center",
-        render: (data, row) => <div>
-          <DatePicker
-            defaultValue={moment(today, dateFormat)}
-            format={dateFormat}
-            onChange={date => this.setState({ selected: date })} />
-        </div>
+        render: (data) => <div>{formatDate("2021-03-21 12:00")}</div>
+        // render: (data, row) => <div>
+        //   <DatePicker
+        //     defaultValue={moment(today, dateFormat)}
+        //     format={dateFormat}
+        //     onChange={date => this.setState({ selected: date })} />
+        // </div>
       },
       {
         title: "퇴사일",
+        // dataIndex: "wdawdDate",
         className: "table-column-center",
-        render: (data, row) => <div>
-          <DatePicker
-            defaultValue={moment(today, dateFormat)}
-            format={dateFormat}
-            onChange={date => this.setState({ selected: date })} />
-        </div>
+        render: (data) => <div>{formatDate("2021-04-29 11:00:21")}</div>
+        // render: (data, row) => <div>
+        //   <DatePicker
+        //     defaultValue={moment(today, dateFormat)}
+        //     format={dateFormat}
+        //     onChange={date => this.setState({ selected: date })} />
+        // </div>
       },
       // {
       //   title: "충전",
@@ -415,28 +422,28 @@ class RiderMain extends Component {
       <div className="">
         <div className="selectLayout">
 
-          <span className="searchRequirementText">검색조건</span><br/><br/>
+          <span className="searchRequirementText">검색조건</span><br /><br />
 
           <SelectBox
-              value={tableStatusString[this.state.userStatus]}
-              code={Object.keys(tableStatusString)}
-              codeString={tableStatusString}
-              onChange={(value) => {
-                  if (parseInt(value) !== this.state.userStatus) {
-                      this.setState({userStatus: parseInt(value)}, () => this.getList());
-                  }
-              }}/>
+            value={tableStatusString[this.state.userStatus]}
+            code={Object.keys(tableStatusString)}
+            codeString={tableStatusString}
+            onChange={(value) => {
+              if (parseInt(value) !== this.state.userStatus) {
+                this.setState({ userStatus: parseInt(value) }, () => this.getList());
+              }
+            }} />
 
           <Search
-              placeholder="기사검색"
-              className="searchFranchiseInput"
-              enterButton
-              allowClear
-              onSearch={this.onSearchRider}
-              style={{
-                  
-              }}/>
-              
+            placeholder="기사검색"
+            className="searchFranchiseInput"
+            enterButton
+            allowClear
+            onSearch={this.onSearchRider}
+            style={{
+
+            }} />
+
           <SearchRiderDialog
             callback={(data) => this.onSearchRiderDetail(data)}
             isOpen={this.state.searchRiderOpen}

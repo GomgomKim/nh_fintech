@@ -1,16 +1,17 @@
-import React, { Component } from "react";
+import React, { Component, } from "react";
 import {
     Form, Input, DatePicker, Select,
-    Button, Checkbox, Modal, Radio,
+    Button, Checkbox, Modal, Radio, Upload,
 } from "antd";
 import '../../../css/modal.css';
-import { httpUrl, httpPost } from '../../../api/httpClient';
+import { httpUrl, httpPost, serverUrl } from '../../../api/httpClient';
 import moment from 'moment';
 import SelectBox from '../../../components/input/SelectBox';
 import PostCodeDialog from '../common/PostCodeDialog';
 import { 
-    userGroupString,  
+    userGroupString,  pgUseRate
 } from '../../../lib/util/codeUtil';
+
 
 
 const FormItem = Form.Item;
@@ -26,6 +27,7 @@ class RegistFranDialog extends Component {
             isPostCodeOpen: false,
             roadAddr: "",
             localAddr: "",
+            PgRate: '0',
         };
         this.formRef = React.createRef();
     }
@@ -158,10 +160,43 @@ class RegistFranDialog extends Component {
             localAddr: addrData.autoJibunAddress, // 지번
         })
     }
+    
+    onChangePgRate = (e) => {
+        console.log(e.target.value);
+        this.setState({ PgRate: e.target.value }, 
+            () => { });
+    }
 
     render() {
 
         const { isOpen, close, data } = this.props;
+
+        const uploadFileProps ={
+            aciton: serverUrl + httpUrl.fileUpload,
+            multiple: false,
+            withCredentials: true,
+            beforeUpload: (file, fileList) => {
+
+            },
+            onSuccess: (file) => {
+                if (file.data.result) {
+                    Modal.info({
+                        title: "업로드 결과",
+                        content: "파일 업로드 성공"
+                    });
+                    this.state.uploadRiles.push({ idx: file.data.idx, name: file.data.filename})
+                    this.setState({
+                        uploadFiles: this.state.uploadFiles
+                    });
+                }
+            },
+            onError(err) {
+                Modal.error({
+                    title:"업로드 결과",
+                    content:"파일 업로드 실패"
+                });
+            }
+        };
 
         return (
             <React.Fragment>
@@ -177,6 +212,9 @@ class RegistFranDialog extends Component {
                                         "가맹점 등록"
                                     }   
                                     </div>
+
+                                  
+
                                     <img onClick={close} src={require('../../../img/login/close.png').default} className="surcharge-close" alt="exit" />
 
                                     <Form ref={this.formRef} onFinish={this.handleSubmit}>
@@ -249,25 +287,10 @@ class RegistFranDialog extends Component {
                                                         }
                                                     </FormItem>
                                                 </div>
+                                             
                                                 <div className="contentBlock">
                                                     <div className="mainTitle">
-                                                        PG 사용비율
-                                                    </div>
-                                                    <FormItem
-                                                        name="businessCardName"
-                                                        className="selectItem"
-                                                    >
-                                                         {data ?
-                                                            <Input placeholder="PG 사용비율을 입력해 주세요." className="override-input" defaultValue={data.businessCardName}/> :
-                                                            <Input placeholder="PG 사용비율을 입력해 주세요." className="override-input" defaultValue={10}/>
-                                                            // <Input placeholder="PG 사용비율을 입력해 주세요." className="override-input"/>
-                                                        }
-                                                       
-                                                    </FormItem>
-                                                </div>
-                                                <div className="contentBlock">
-                                                    <div className="mainTitle">
-                                                        기사그룹
+                                                        그룹
                                                     </div>
                                                     <FormItem
                                                         name="userGroup"
@@ -284,7 +307,7 @@ class RegistFranDialog extends Component {
                                                         />
                                                     </FormItem>
                                                 </div>
-                                                {this.state.riderLevelSelected &&
+                                                {/* {this.state.riderLevelSelected &&
                                                     <div className="contentBlock">
                                                         <div className="mainTitle">
                                                             소속팀장
@@ -303,21 +326,8 @@ class RegistFranDialog extends Component {
                                                             </Select>
                                                         </FormItem>
                                                     </div>
-                                                }
-
-                                                <div className="contentBlock">
-                                                    <div className="mainTitle">
-                                                        기사명
-                                                    </div>
-                                                    <FormItem
-                                                        name="riderName"
-                                                        className="selectItem"
-                                                        rules={[{ required: true, message: "직원명을 입력해주세요" }]}
-                                                        initialValue={data ? data.riderName : ''}
-                                                    >
-                                                        <Input placeholder="직원명을 입력해주세요." className="override-input" />
-                                                    </FormItem>
-                                                </div>
+                                                } */}
+                                               
                                                 <div className="contentBlock">
                                                     <div className="mainTitle">
                                                         아이디
@@ -344,9 +354,7 @@ class RegistFranDialog extends Component {
                                                         <Input placeholder="ex) example@naver.com" className="override-input"/>
                                                     </FormItem>
                                                 </div>
-                                            </div>
-                                            <div className="registFranWrapper sub">                                               
-                                             
+                                                                                             
                                                 <div className="contentBlock">
                                                     <div className="mainTitle">
                                                         주소
@@ -390,6 +398,46 @@ class RegistFranDialog extends Component {
                                                         <Input placeholder="상세주소를 입력해 주세요." className="override-input sub" defaultValue={this.state.localAddr}/>
                                                     </FormItem>
                                                 </div>
+                                            </div>
+
+
+                                            <div className="registFranWrapper sub">  
+
+                                               <div className="contentBlock">
+                                                    <div className="mainTitle">
+                                                        PG 사용비율
+                                                    </div>
+                                                    <div className="registRiderCheck">
+                                                    <FormItem
+                                                     name="businessCardName"
+                                                     initialValue={0}>
+                                                        {/* <Radio.Group onChange={this.onChangePgRate} value={this.state.PgRate}>
+                                                                <Radio value={0}>사용</Radio>
+                                                                <Radio value={1}>비사용</Radio>
+                                                        </Radio.Group> */}
+                                                        <Radio.Group className="searchRequirement" onChange={this.onChangePgRate} value={this.state.PgRate}>
+                                                            {Object.entries(pgUseRate).map(([key, value]) => {
+                                                            return (
+                                                                <Radio value={key}>{value === "100%" ? "사용" : "미사용"}</Radio>
+                                                            );
+                                                            })}
+                                                        </Radio.Group>
+
+                                                    </FormItem>
+                                                    </div>
+                                                    {/* <FormItem
+                                                        name="businessCardName"
+                                                        className="selectItem"
+                                                    >
+                                                         {data ?
+                                                            <Input placeholder="PG 사용비율을 입력해 주세요." className="override-input" defaultValue={data.businessCardName}/> :
+                                                            <Input placeholder="PG 사용비율을 입력해 주세요." className="override-input" defaultValue={10}/>
+                                                            // <Input placeholder="PG 사용비율을 입력해 주세요." className="override-input"/>
+                                                        }
+                                                       
+                                                    </FormItem> */}
+                                                </div>                                             
+
                                                 <div className="contentBlock">
                                                     <div className="mainTitle">
                                                         배달요금
@@ -405,6 +453,22 @@ class RegistFranDialog extends Component {
                                                     }
                                                     </FormItem>
                                                     * 기본배달요금
+
+                                                    <br/>
+                                                <div className="contentBlock">
+                                                    <div className="mainTitle"/>
+                                                    <FormItem
+                                                        name="distanceDeliveryPrice"
+                                                        className="selectItem"
+                                                    >
+
+                                                         {data ?
+                                                        <Input placeholder="거리별요금을 입력해 주세요." className="override-input price" defaultValue={data.distanceDeliveryPrice}/> :
+                                                        <Input placeholder="거리별요금을 입력해 주세요." className="override-input price"/>
+                                                    }
+                                                    </FormItem>
+                                                    * 거리별요금
+                                                    </div>
                                                 </div>
 
                                                 <div className="contentBlock">
@@ -421,22 +485,8 @@ class RegistFranDialog extends Component {
                                                     }
                                                     </FormItem>
                                                 </div>
-                                                <div className="contentBlock">
-                                                    <div className="mainTitle">
-                                                        메모
-                                                </div>
-                                                    <FormItem
-                                                        name="memo"
-                                                        className="selectItem"
-                                                    >
-                                                         {data ?
-                                                            <Input placeholder="메모를 입력해 주세요." className="override-input sub" defaultValue={data.memo}/> :
-                                                            <Input placeholder="메모를 입력해 주세요." className="override-input sub"/>
-                                                        }
-
-                                                    </FormItem>
-                                                </div>
-                                                <div className="contentBlock">
+                                               
+                                                {/* <div className="contentBlock">
                                                     <div className="mainTitle">
                                                         전화번호
                                                     </div>
@@ -461,7 +511,7 @@ class RegistFranDialog extends Component {
                                                     >
                                                         <Input placeholder="메모를 입력해 주세요." className="override-input" />
                                                     </FormItem>
-                                                </div>
+                                                </div> */}
                                                 <div className="contentBlock">
                                                     <div className="mainTitle">
                                                         수수료
@@ -499,46 +549,91 @@ class RegistFranDialog extends Component {
                                                         <Input placeholder="최소보유잔액을 입력해 주세요." className="override-input" />
                                                     </FormItem>
                                                 </div>
-                                            </div>
+                                                <div className="contentBlock">
+                                                    <div className="mainTitle">
+                                                        메모
+                                                </div>
+                                                    <FormItem
+                                                        name="memo"
+                                                        className="selectItem"
+                                                    >
+                                                         {data ?
+                                                            <Input placeholder="메모를 입력해 주세요." className="override-input sub" defaultValue={data.memo}/> :
+                                                            <Input placeholder="메모를 입력해 주세요." className="override-input sub"/>
+                                                        }
 
-
-                                            <div className="registFranWrapper bot">
-                                                <div className="registFranTitle">
-                                                    월관리비 설정
+                                                    </FormItem>
                                                 </div>
                                                 <div className="contentBlock">
                                                     <div className="mainTitle">
-                                                        사용여부
-                                                    </div>
-                                                    <Checkbox style={{ verticalAlign: 'middle' }}></Checkbox>
-                                                    <div className="subTitle">
-                                                        월회비 최초납부일
+                                                        가입일자
                                                     </div>
                                                     <FormItem
-                                                        name="payDate"
-                                                        className="selectItem"
+                                                        name="frJoinDate"
+                                                        className="selectItem"                                                        
                                                     >
-                                                        <DatePicker
-                                                            style={{ marginLeft: 10 }}
+                                                       <DatePicker
+                                                            style={{ marginLeft: 20 , width: 300}}
                                                             defaultValue={moment(today, dateFormat)}
                                                             format={dateFormat}
                                                         // onChange={date => this.setState({ selectedDate: date })}
                                                         />
                                                     </FormItem>
-                                                    <div className="subTitle">
-                                                        관리비
-                                                    </div>
-                                                    <FormItem
-                                                        name="managePrice"
-                                                        className="selectItem"
-                                                    >
-                                                        <Input defaultValue={'100,000'} placeholder="관리비 입력" className="override-input sub">
-                                                        </Input>
-                                                    </FormItem>
+                                                </div>
+                                            </div>
 
+
+                                            <div className="registFranWrapper bot">
+                                                <div className="registFranWrapper">
+                                                    <div className="registFranTitle">
+                                                        월관리비 설정
+                                                    </div>
+                                                    <div className="contentBlock">
+                                                        <div className="mainTitle">
+                                                            사용여부
+                                                        </div>
+                                                        <Checkbox style={{ verticalAlign: 'middle' }}></Checkbox>
+                                                        <div className="subTitle">
+                                                            월회비 최초납부일
+                                                        </div>
+                                                        <FormItem
+                                                            name="payDate"
+                                                            className="selectItem"
+                                                        >
+                                                            <DatePicker
+                                                                style={{ marginLeft: 10 }}
+                                                                defaultValue={moment(today, dateFormat)}
+                                                                format={dateFormat}
+                                                            // onChange={date => this.setState({ selectedDate: date })}
+                                                            />
+                                                        </FormItem>
+                                                        <div className="subTitle">
+                                                            관리비
+                                                        </div>
+                                                        <FormItem
+                                                            name="managePrice"
+                                                            className="selectItem"
+                                                        >
+                                                            <Input defaultValue={'100,000'} placeholder="관리비 입력" className="override-input sub">
+                                                            </Input>
+                                                        </FormItem>
+                                                    </div>
+                                                </div>
+                                                <div className="registFranWrapper">
+                                                    <div>
+                                                       
+                                                    <Upload {...uploadFileProps} showUploadList={false}>
+                                                        <Button type="primary" htmlType="submit" className="excel-upload callTab">
+                                                        <img src={require('../../../img/login/excel.png').default} />올리기
+                                                        </Button>
+                                                    </Upload>
+                                        
+                                                    </div>
+                                                    <div>
                                                     <Button type="primary" htmlType="submit" className="callTab">
                                                         등록하기
                                                     </Button>
+                                                    </div>
                                                 </div>
                                             </div>
 

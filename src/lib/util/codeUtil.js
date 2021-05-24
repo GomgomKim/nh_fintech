@@ -138,6 +138,12 @@ const riderLevelText = [
     "센터장"
 ]
 
+const pgUseRate = [
+    // "",
+    "100%",
+    "0%"
+]
+
 export { 
     deliveryStatusCode,
     blockString,
@@ -156,5 +162,6 @@ export {
     riderLevelText,
     userGroupString,
     riderGroupString,
-    tableStatusString
+    pgUseRate,
+    tableStatusString,
 };
