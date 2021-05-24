@@ -268,11 +268,8 @@ class RiderMain extends Component {
         className: "table-column-center",
         render: (data, row) =>
           <div>
-            <BlindListDialog isOpen={this.state.blindListOpen} close={this.closeBlindModal} date={this.state.blindData} />
-            <Button
-              className="tabBtn surchargeTab"
-              onClick={() => this.setState({ blindListOpen: true, blindRiderData: row })}
-            >블라인드</Button>
+            <BlindListDialog isOpen={this.state.blindListOpen} close={this.closeBlindModal} data={this.state.blindRiderData}/>
+            <Button className="tabBtn surchargeTab" onClick={()=>this.setState({ blindRiderData: row, blindListOpen: true })} >블라인드</Button>
           </div>
       },
       {
@@ -299,30 +296,6 @@ class RiderMain extends Component {
         //     onChange={date => this.setState({ selected: date })} />
         // </div>
       },
-      // {
-      //   title: "충전",
-      //   className: "table-column-center",
-      //   render: () =>
-      //     <div>
-      //       <RiderCoinDialog isOpen={this.state.riderCoinOpen} close={this.closeRiderCoinModal} />
-      //       <Button
-      //         className="tabBtn surchargeTab"
-      //         onClick={this.openRiderCoinModal}
-      //       >코인충전</Button>
-      //     </div>
-      // },
-      // {
-      //   title: "출금내역",
-      //   className: "table-column-center",
-      //   render: () =>
-      //     <div>
-      //       <RiderBankDialog isOpen={this.state.riderBankOpen} close={this.closeRiderBankModal} />
-      //       <Button
-      //         className="tabBtn surchargeTab"
-      //         onClick={this.openRiderBankModal}
-      //       >내역보기</Button>
-      //     </div>
-      // },
       {
         title: "상태",
         dataIndex: "userStatus",

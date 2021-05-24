@@ -290,25 +290,17 @@ class FranchiseMain extends Component {
             }, {
                 title: "블라인드",
                 className: "table-column-center",
-                render: () => <div>
-                        <RegistFranDialog
-                            isOpen={this.state.addFranchiseOpen}
-                            close={this.closeAddFranchiseModal}/>
-                        <Button className="tabBtn surchargeTab"
-                            // onClick={this.onChangeDeleted}
-                        >블라인드</Button>
+                render: (data, row) => <div>
+                        <BlindListDialog isOpen={this.state.blindListOpen} close={this.closeBlindModal} data={this.state.blindFrData}/>
+                        <Button className="tabBtn surchargeTab" onClick={()=>this.setState({blindListOpen: true, blindFrData: row})}>블라인드</Button>
                     </div>
             }, {
                 title: "수정",
                 className: "table-column-center",
                 render: (data, row) => <div>
-                        <RegistFranDialog
-                            isOpen={this.state.modifyFranOpen}
-                            close={this.closeModifyFranModal}
-                            data={this.state.dialogData}/>
-                        <Button
-                            className="tabBtn surchargeTab"
-                            onClick={() => this.setState({modifyFranOpen: true, dialogData: row})}>수정하기</Button>
+                        <RegistFranDialog isOpen={this.state.modifyFranOpen} close={this.closeModifyFranModal} data={this.state.dialogData}/>
+                        <Button className="tabBtn surchargeTab"
+                        onClick={() => this.setState({modifyFranOpen: true, dialogData: row})}>수정하기</Button>
                     </div>
             }
         ]
