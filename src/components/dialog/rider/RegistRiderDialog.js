@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import {
-    Form, Input, Button, Select, Radio, Modal, CheckBox,
+    Form, Input, Button, Select, Radio, Modal, Checkbox,
 } from "antd";
 import '../../../css/modal.css';
 import { httpUrl, httpPost } from '../../../api/httpClient';
@@ -235,8 +235,6 @@ class RegistRiderDialog extends Component {
                                                         <Input.Password placeholder="패스워드를 입력해 주세요." className="override-input" />
                                                     </FormItem>
                                                 </div>
-                                            </div>
-                                            <div className="registRiderWrapper sub">
                                                 <div className="contentBlock">
                                                     <div className="mainTitle">
                                                         전화번호
@@ -250,6 +248,8 @@ class RegistRiderDialog extends Component {
                                                         <Input placeholder="휴대전화 번호를 입력해 주세요." className="override-input" />
                                                     </FormItem>
                                                 </div>
+                                            </div>
+                                            <div className="registRiderWrapper sub">
                                                 <div className="contentBlock">
                                                     <div className="mainTitle">
                                                         메모
@@ -305,12 +305,20 @@ class RegistRiderDialog extends Component {
                                                         비품지급
                                                     </div>
                                                     <FormItem
-                                                        name="contentBlock"
-                                                        className="selectItem"
-                                                        rules={[{ required: true, message: "지급된 비품을 확인해주세요" }]}
-                                                        initialValue={data ? data.minCashAmount : ''}
+                                                        name=""
+                                                        className="giveBox selectItem"
                                                     >
-                                                        <Input placeholder="최소보유잔액을 입력해 주세요." className="override-input" />
+
+                                                        <Checkbox>헬멧</Checkbox>
+                                                        <Checkbox>조끼</Checkbox>
+                                                        <Checkbox>배달통</Checkbox>
+                                                        <Checkbox>보냉</Checkbox>
+                                                        <Checkbox>우의</Checkbox>
+                                                        <Checkbox>피자가방</Checkbox>
+                                                        <Checkbox>바람막이</Checkbox>
+                                                        <Checkbox>여름티</Checkbox>
+                                                        <Checkbox>토시</Checkbox>
+
                                                     </FormItem>
                                                 </div>
 

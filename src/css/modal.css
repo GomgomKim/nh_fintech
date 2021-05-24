@@ -2399,7 +2399,7 @@
 
 .registRiderWrapper .submitBlock {
   margin-top: 30px;
-  text-align: center;
+  text-align: right;
 }
 
 .registRiderWrapper .clearBtn {
@@ -2431,6 +2431,13 @@
   font-size: 18px !important;
 }
 
+.giveBox{
+}
+
+.giveBox .ant-checkbox-wrapper{
+  width:86px;
+  margin:0px!important;
+}
 /*직원 등록*/
 .registStaff-Dialog {
   position: fixed;
