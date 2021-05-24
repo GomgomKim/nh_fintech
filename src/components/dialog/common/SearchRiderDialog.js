@@ -4,7 +4,7 @@ import {httpUrl, httpGet} from '../../../api/httpClient';
 import '../../../css/modal.css';
 import SelectBox from '../../input/SelectBox';
 import {
-    statusString,
+    tableStatusString,
     riderLevelText
 } from '../../../lib/util/codeUtil';
 
@@ -63,7 +63,7 @@ class SearchRiderDialog extends Component {
 
     getList = () => {
         let pageNum = this.state.pagination.current;
-        let userStatus = this.state.userStatus == 0 ? "" : this.state.userStatus;
+        let userStatus = this.state.userStatus === 0 ? "" : this.state.userStatus;
         let searchName = this.state.searchName;
 
         httpGet(httpUrl.riderList, [10, pageNum, searchName, userStatus], {}).then((result) => {
@@ -149,12 +149,12 @@ class SearchRiderDialog extends Component {
                                                     <div className="searchFranchise-list">
                                                         <div className="inputBox inputBox-searchFranchise sub">
                                                             <SelectBox
-                                                                value={statusString[this.state.userStatus]}
-                                                                code={Object.keys(statusString)}
-                                                                codeString={statusString}
+                                                                value={tableStatusString[this.state.userStatus]}
+                                                                code={Object.keys(tableStatusString)}
+                                                                codeString={tableStatusString}
                                                                 onChange={(value) => {
                                                                     if (parseInt(value) !== this.state.userStatus) {
-                                                                        this.setState({userStatus: value}, () => this.getList());
+                                                                        this.setState({userStatus: parseInt(value)}, () => this.getList());
                                                                     }
                                                                 }}/>
 

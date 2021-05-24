@@ -1,4 +1,4 @@
-import { Input, Table, Button, Radio, Modal, DatePicker } from 'antd';
+import { Input, Table, Button, Modal, DatePicker } from 'antd';
 import React, { Component } from 'react';
 import { httpGet, httpUrl, httpPost } from '../../api/httpClient';
 import RiderGroupDialog from "../../components/dialog/rider/RiderGroupDialog";
@@ -14,11 +14,13 @@ import { comma } from "../../lib/util/numberUtil";
 import SelectBox from '../../components/input/SelectBox';
 import SearchRiderDialog from '../../components/dialog/common/SearchRiderDialog';
 import {
+  tableStatusString,
   statusString,
   riderLevelText
 } from '../../lib/util/codeUtil';
 import moment from 'moment';
 
+const Search = Input.Search;
 const dateFormat = 'YYYY/MM/DD';
 const today = new Date();
 
@@ -46,7 +48,7 @@ class RiderMain extends Component {
         pageSize: 10,
       },
       dialogData: [],
-      userStatus: 1,
+      userStatus: 0,
       searchRiderOpen: false,
     };
   }
@@ -67,11 +69,11 @@ class RiderMain extends Component {
 
   getList = () => {
     let pageNum = this.state.pagination.current;
-    let riderLevel = this.state.riderLevel;
-    let userStatus = this.state.userStatus;
+    // let riderLevel = this.state.riderLevel;
+    let userStatus = this.state.userStatus === 0 ? "" : this.state.userStatus;
     let searchName = this.state.searchName;
 
-    httpGet(httpUrl.riderList, [10, pageNum, riderLevel, searchName, userStatus], {}).then((result) => {
+    httpGet(httpUrl.riderList, [10, pageNum, searchName, userStatus], {}).then((result) => {
       console.log('## nnbox result=' + JSON.stringify(result, null, 4))
       const pagination = { ...this.state.pagination };
       pagination.current = result.data.currentPage;
@@ -112,31 +114,11 @@ class RiderMain extends Component {
   }
 
   onSearchRider = (value) => {
-    var self = this
     this.setState({
       searchName: value,
     }, () => {
       this.getList()
     })
-      .then((result) => {
-        Modal.info(
-          {
-            title: "변경 완료", content: (<div>
-              상태가 변경되었습니다.
-            </div>)
-          }
-        );
-        self.getList();
-      })
-      .catch((error) => {
-        Modal.error(
-          {
-            title: "변경 실패", content: (<div>
-              변경에 실패했습니다.
-            </div>)
-          }
-        );
-      });
   }
 
   onChange = e => {
@@ -145,7 +127,7 @@ class RiderMain extends Component {
     }, () => this.getList());
   };
 
-  onSearchRider = (data) => {
+  onSearchRiderDetail = (data) => {
     console.log("### get fran list data : " + data)
     this.setState({ results: data });
   }
@@ -432,11 +414,35 @@ class RiderMain extends Component {
     return (
       <div className="">
         <div className="selectLayout">
+
+          <span className="searchRequirementText">검색조건</span><br/><br/>
+
+          <SelectBox
+              value={tableStatusString[this.state.userStatus]}
+              code={Object.keys(tableStatusString)}
+              codeString={tableStatusString}
+              onChange={(value) => {
+                  if (parseInt(value) !== this.state.userStatus) {
+                      this.setState({userStatus: parseInt(value)}, () => this.getList());
+                  }
+              }}/>
+
+          <Search
+              placeholder="기사검색"
+              className="searchFranchiseInput"
+              enterButton
+              allowClear
+              onSearch={this.onSearchRider}
+              style={{
+                  
+              }}/>
+              
           <SearchRiderDialog
-            callback={(data) => this.onSearchRider(data)}
+            callback={(data) => this.onSearchRiderDetail(data)}
             isOpen={this.state.searchRiderOpen}
             close={this.closeSearchRiderModal} />
-          <Button className="tabBtn searchTab" onClick={this.openSearchRiderModal}>기사조회</Button>
+
+          <Button className="tabBtn" onClick={this.openSearchRiderModal}>기사조회</Button>
           <RegistRiderDialog isOpen={this.state.registRiderOpen} close={this.closeRegistRiderModal} />
           <Button className="riderManageBtn"
             onClick={this.openRegistRiderModal}
