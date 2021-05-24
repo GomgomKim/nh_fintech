@@ -63,12 +63,13 @@ class RegistCallDialog extends Component {
                                                     </FormItem> */}
                                                     <Search
                                                         placeholder="가맹점검색"
+                                                        className="override-select"
                                                         enterButton
                                                         allowClear
                                                         onSearch={this.onSearchFranchisee}
                                                         style={{
                                                             width: 190,
-                                                            marginLeft: 10
+                                                            // marginLeft: 10
                                                         }}
                                                     />
                                                 </div>

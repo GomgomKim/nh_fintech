@@ -11,6 +11,10 @@ import {comma} from "../../lib/util/numberUtil";
 import {BankOutlined} from '@ant-design/icons';
 import {formatDate} from '../../lib/util/dateUtil';
 import { statusString, tableStatusString, withdrawString, cardStatus} from '../../lib/util/codeUtil';
+import {
+    updateComplete,
+    updateError,
+} from '../../api/Modals'
 
 const Search = Input.Search;
 
@@ -189,21 +193,24 @@ class FranchiseMain extends Component {
                         ),
                         onOk() { },
                     }); */
+                    updateComplete()
                 } else {
-                    Modal.error(
+                    /* Modal.error(
                         {title: "변경 실패", content: (<div>
                             변경에 실패했습니다. 관리자에게 문의하세요.
                         </div>), onOk() {}}
-                    );
+                    ); */
+                    updateError()
                 }
                 this.getList();
             })
             .catch((e) => {
-                Modal.error(
+                /* Modal.error(
                     {title: "변경 실패", content: (<div>
                         변경에 실패했습니다. 관리자에게 문의하세요.
                     </div>), onOk() {}}
-                );
+                ); */
+                updateError()
             });
     }
 
