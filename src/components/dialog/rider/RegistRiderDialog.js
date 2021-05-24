@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import {
-    Form, Input, Button, Select, Radio, Modal
+    Form, Input, Button, Select, Radio, Modal, Checkbox,
 } from "antd";
 import '../../../css/modal.css';
 import { httpUrl, httpPost } from '../../../api/httpClient';
 import SelectBox from '../../../components/input/SelectBox';
-import { riderGroupString } from '../../../lib/util/codeUtil';
+import { riderGroupString, riderLevelText } from '../../../lib/util/codeUtil';
 
 const Option = Select.Option;
 const FormItem = Form.Item;
@@ -22,19 +22,27 @@ class RegistRiderDialog extends Component {
             },
             staffAuth: 1,
             riderLevelSelected: false,
-            feeManner: '100%',
+            riderGroupSelected: false,
+            feeManner: 0,
+            userGroup: 1,
+            riderLevel: 1,
+            riderGroup: 0,
+            withdrawLimit: 100000,
+
         };
         this.formRef = React.createRef();
     }
 
     componentDidMount() {
+        this.getList()
     }
 
-    onChange = e => {
-        this.setState({
-            staffAuth: e.target.value,
-        });
-    };
+
+    // onChange = e => {
+    //     this.setState({
+    //         staffAuth: e.target.value,
+    //     });
+    // };
 
     handleSubmit = () => {
         let self = this;
@@ -42,7 +50,7 @@ class RegistRiderDialog extends Component {
             title: "기사 등록",
             content: (
                 <div>
-                    {self.formRef.current.getFieldsValue().name + '을 등록하시겠습니까?'}
+                    {self.formRef.current.getFieldsValue().id + '을 등록하시겠습니까?'}
                 </div>
             ),
             okText: "확인",
@@ -50,14 +58,16 @@ class RegistRiderDialog extends Component {
             onOk() {
                 httpPost(httpUrl.registRider, [], {
                     ...self.formRef.current.getFieldsValue(),
-                    ncash: 0,
-                    userStatus: 1,
-                    withdrawPassword: 0,
-                    bank: "",
-                    bankAccount: "",
-                    depositor: "",
+                    ncash: 123,
                     userType: 1,
-                    userGroup: 1
+                    userGroup: 3,
+                    // riderLevel: self.state.riderLevel,
+                    // riderName: self.state.riderName,
+                    // id: self.state.id,
+                    // password: self.state.password,
+                    // phone: self.state.phone,
+                    // memo: self.state.memo,
+                    // withdrawLimit: self.state.withdrawLimit,
                 }).then((result) => {
                     Modal.info({
                         title: "등록 완료",
@@ -67,8 +77,7 @@ class RegistRiderDialog extends Component {
                             </div>
                         ),
                     });
-                    self.handleClear();
-                    self.getList();
+                    self.getList()
                 }).catch((error) => {
                     Modal.info({
                         title: "등록 오류",
@@ -91,13 +100,49 @@ class RegistRiderDialog extends Component {
         }
     }
 
+    handleChangeRiderGroup = (value) => {
+        if (value === 1) {
+            this.setState({ riderGroupSelected: true });
+        } else {
+            this.setState({ riderGroupSelected: false });
+        }
+    }
+
     onChangFeeManner = (e) => {
         console.log(`selected ${e.target.value}`);
         this.setState({ feeManner: e.target.value });
     }
 
+    getList = () => {
+        console.log(this.state.riderGroup)
+        httpPost(httpUrl.riderList, [], {
+            riderName: this.state.riderName,
+            pageNum: 1,
+            pageSize: 10,
+            userStatus: this.state.riderStatus == 0 ? null : this.state.riderStatus
+        }).then((result) => {
+            console.log('## result=' + JSON.stringify(result, null, 4))
+            const pagination = {
+                ...this.state.pagination
+            };
+            pagination.current = result.data.currentPage;
+            pagination.total = result.data.total;
+            this.setState({ list: result.data.riders, pagination });
+        })
+    }
+
+
+    onSelectChange = (selectedRowKeys) => {
+        console.log('selectedRowKeys changed: ', selectedRowKeys);
+        this.setState({ selectedRowKeys: selectedRowKeys });
+    };
 
     render() {
+        const selectedRowKeys = this.state.selectedRowKeys
+        const rowSelection = {
+            selectedRowKeys,
+            onChange: this.onSelectChange
+        };
         const { isOpen, close, data } = this.props;
 
         return (
@@ -123,23 +168,33 @@ class RegistRiderDialog extends Component {
                                                         기사그룹
                                                     </div>
                                                     <FormItem
-                                                        name="riderGroup"
+                                                        name="userGroup"
                                                         className="selectItem"
                                                         rules={[{ required: true, message: "그룹을 선택해주세요" }]}
 
                                                     >
                                                         <SelectBox
-                                                            value={riderGroupString}
+                                                            value={riderGroupString[this.state.riderGroup]}
                                                             code={Object.keys(riderGroupString)}
                                                             codeString={riderGroupString}
                                                             style={{ width: "260px" }}
-
+                                                            onChange={(value) => {
+                                                                if (parseInt(value) !== this.state.riderGroup) {
+                                                                    this.setState({ riderGroup: parseInt(value) }, () => this.getList());
+                                                                }
+                                                            }}
                                                         // onChange={(value) => {
                                                         //     if (parseInt(value) !== row.enabled) {
                                                         //         this.onChangeStatus(row.idx, value);
                                                         //     }
                                                         // }}
                                                         />
+
+
+
+
+
+
                                                     </FormItem>
                                                 </div>
                                                 <div className="contentBlock">
@@ -151,17 +206,17 @@ class RegistRiderDialog extends Component {
                                                         className="selectItem"
                                                         rules={[{ required: true, message: "직급을 선택해주세요" }]}
                                                     >
-                                                        <Select placeholder="직급을 선택해주세요." onChange={this.handleChangeRiderLevel} className="override-select branch" >
-                                                            <Option value={1}>라이더</Option>
-                                                            {/* <Option value={2}>부팀장</Option> */}
-                                                            <Option value={3}>팀장</Option>
-                                                            {/* <Option value={4}>부본부장</Option> */}
-                                                            <Option value={5}>본부장</Option>
-                                                            <Option value={6}>부지점장</Option>
-                                                            <Option value={7}>지점장</Option>
-                                                            <Option value={8}>부센터장</Option>
-                                                            <Option value={9}>센터장</Option>
-                                                        </Select>
+                                                        <SelectBox
+                                                            value={riderLevelText}
+                                                            code={Object.keys(riderLevelText)}
+                                                            codeString={riderLevelText}
+                                                            style={{ width: "260px" }}
+                                                            onChange={(value) => {
+                                                                if (parseInt(value) !== this.state.riderLevel) {
+                                                                    this.setState({ riderLevel: parseInt(value) }, () => this.getList());
+                                                                }
+                                                            }}
+                                                        />
                                                     </FormItem>
                                                 </div>
                                                 {this.state.riderLevelSelected &&
@@ -235,8 +290,6 @@ class RegistRiderDialog extends Component {
                                                         <Input.Password placeholder="패스워드를 입력해 주세요." className="override-input" />
                                                     </FormItem>
                                                 </div>
-                                            </div>
-                                            <div className="registRiderWrapper sub">
                                                 <div className="contentBlock">
                                                     <div className="mainTitle">
                                                         전화번호
@@ -250,6 +303,8 @@ class RegistRiderDialog extends Component {
                                                         <Input placeholder="휴대전화 번호를 입력해 주세요." className="override-input" />
                                                     </FormItem>
                                                 </div>
+                                            </div>
+                                            <div className="registRiderWrapper sub">
                                                 <div className="contentBlock">
                                                     <div className="mainTitle">
                                                         메모
@@ -257,7 +312,7 @@ class RegistRiderDialog extends Component {
                                                     <FormItem
                                                         name="memo"
                                                         className="selectItem"
-                                                        rules={[{ required: true, message: "메모를 입력해주세요" }]}
+                                                        // rules={[{ required: true, message: "메모를 입력해주세요" }]}
                                                         initialValue={data ? data.memo : ''}
                                                     >
                                                         <Input placeholder="메모를 입력해 주세요." className="override-input" />
@@ -292,7 +347,7 @@ class RegistRiderDialog extends Component {
                                                         최소보유잔액
                                                     </div>
                                                     <FormItem
-                                                        name="minCashAmount"
+                                                        name="ncash"
                                                         className="selectItem"
                                                         rules={[{ required: true, message: "최소보유잔액을 입력해주세요" }]}
                                                         initialValue={data ? data.minCashAmount : ''}
@@ -300,6 +355,32 @@ class RegistRiderDialog extends Component {
                                                         <Input placeholder="최소보유잔액을 입력해 주세요." className="override-input" />
                                                     </FormItem>
                                                 </div>
+                                                <div className="contentBlock">
+                                                    <div className="mainTitle">
+                                                        비품지급
+                                                    </div>
+                                                    <FormItem
+                                                        name=""
+                                                        className="giveBox selectItem"
+                                                    >
+
+                                                        <Checkbox>헬멧</Checkbox>
+                                                        <Checkbox>조끼</Checkbox>
+                                                        <Checkbox>배달통</Checkbox>
+                                                        <Checkbox>보냉</Checkbox>
+                                                        <Checkbox>우의</Checkbox>
+                                                        <Checkbox>피자가방</Checkbox>
+                                                        <Checkbox>여름티</Checkbox>
+                                                        <Checkbox>토시</Checkbox>
+                                                        <Checkbox>바람막이</Checkbox>
+
+                                                    </FormItem>
+                                                </div>
+
+
+
+
+
                                                 <div className="submitBlock">
                                                     <Button type="primary" htmlType="submit">
                                                         등록하기
