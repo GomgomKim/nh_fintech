@@ -25,6 +25,9 @@ class BlindListDialog extends Component {
     componentDidMount() {
         this.getList()
     }
+    componentDidUpdate() {
+        
+    }
 
     handleTableChange = (pagination) => {
         console.log(pagination)

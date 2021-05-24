@@ -128,6 +128,7 @@ class FranchiseMain extends Component {
     
     closeModifyFranModal = () => {
         this.setState({modifyFranOpen: false});
+        this.getList()
     }
     
     // 주소검색관리 dialog

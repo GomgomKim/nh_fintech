@@ -42,6 +42,12 @@
   text-decoration: underline;
 }
 
+.riderNameTag {
+  cursor: pointer;
+  color: blue;
+  text-decoration: underline;
+}
+
 .selMulti {
   margin-left: 20px !important;
 }

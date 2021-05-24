@@ -131,7 +131,7 @@ class RiderMain extends Component {
 
   onSearchRiderDetail = (data) => {
     console.log("### get fran list data : " + data)
-    this.setState({ results: data });
+    // this.setState({ results: data });
   }
 
   // 기사조회 dialog
