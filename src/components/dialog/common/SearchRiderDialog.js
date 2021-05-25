@@ -142,22 +142,28 @@ class SearchRiderDialog extends Component {
         this.props.close()
     }
 
-    assignRider = (riderName) => {
+    assignRider = (data) => {
         var self = this
         Modal.confirm({
             title: "강제배차",
-            content: riderName+" 라이더 에게 강제배차 하시겠습니까?",
+            content: data.riderName+" 라이더 에게 강제배차 하시겠습니까?",
             okText: "확인",
             cancelText: "취소",
             onOk(){
-                /* httpPost(httpUrl.deleteBlind, [], {
-                    idx: idx,
+                httpPost(httpUrl.assignRider, [], {
+                    orderIdx: self.props.orderIdx,
+                    userIdx: data.idx,
                 })
                 .then((res) => {
-                    if (res.result === "SUCCESS") {
-                        console.log(res.result);
-                        this.getList();
-                    } else {
+                    console.log(res);
+                    if (res.data === "SUCCESS") {
+                        // console.log(res.result);
+                    } else if(res.data === "ALREADY_ASSIGNED") {
+                        Modal.info({
+                            content: "이미 배차된 주문입니다.",
+                            });
+                    }
+                    else {
                         Modal.info({
                         title: "적용 오류",
                         content: "처리가 실패했습니다.",
@@ -169,7 +175,7 @@ class SearchRiderDialog extends Component {
                     title: "적용 오류",
                     content: "처리가 실패했습니다.",
                     });
-                }); */
+                });
                 self.props.close()
             }
         })
@@ -194,7 +200,7 @@ class SearchRiderDialog extends Component {
                         <div>{data}</div> :
                         <div className='riderNameTag' onClick={()=>{
                             assign ?
-                                this.assignRider(data) :
+                                this.assignRider(row) :
                                 this.onRiderSelected(row.idx)
                     }}>{data}</div>
             },

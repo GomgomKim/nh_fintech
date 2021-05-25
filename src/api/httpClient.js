@@ -177,6 +177,10 @@ const httpUrl = {
   updateRider: "/rider/update",
   riderLocate: "/rider/location/%s",
   riderListOne: "/rider/list",
+
+  // 배차
+  assignRider: "/order/assignRider",
+
   // 가맹점 관리
   registFranchise: "/fr/create",
   franchiseList: "/fr/list",
