@@ -560,13 +560,14 @@ class ReceptionStatus extends Component {
           title: "배차",
           dataIndex: "forceLocate",
           className: "table-column-center",
-          render: (data) => (
+          render: (data, row) => (
             <span>
               {/* <ForceAllocateDialog */}
               <SearchRiderDialog
                 isOpen={this.state.forceOpen}
                 close={this.closeForceingModal}
                 assign={true}
+                orderIdx={row.idx}
               />
               <Button className="tabBtn" onClick={this.openForceModal}>
                 강제배차

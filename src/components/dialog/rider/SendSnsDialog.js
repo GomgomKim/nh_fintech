@@ -35,8 +35,12 @@ class SendSnsDialog extends Component {
             riderLevel:0,
             searchName: "",
             isMulti:false,
+
+            background: '#fff',
+             
         };
         this.formRef = React.createRef();
+        this.onRiderSelected = this.onRiderSelected.bind(this);
     }
 
     componentDidMount() {
@@ -165,18 +169,15 @@ class SendSnsDialog extends Component {
         this.setState({isMulti: e.target.value});
     }
     
-    onRiderSelected = (data) => {
-        // console.log(data)
-        var dataIdx = this.state.dataIdxs
-        dataIdx[data] = true
-        this.props.callback(dataIdx)
-        this.props.close()
+    onRiderSelected = () => {
+        // post
+        this.setState({ background:'#222'});
     }
 
     // 메세지 전송
     handleSubmit = () => {
         let self = this;
-
+        console.log("handle submit")
         Modal.confirm({
             title: "메세지 전송",
             content: (
@@ -294,52 +295,24 @@ class SendSnsDialog extends Component {
                                         enterButton
                                         allowClear
                                         onSearch={this.onSearchRider}
-                                         style={{
-                                                                    
+                                         style={{                                                                    
                                          }}/>
-                                       <Radio.Group onChange={this.onChangeMulti} value={this.state.isMulti} className="selMulti">
-                                                                <Radio value={true}>multi</Radio>
-                                    </Radio.Group>
+
 
                                         <Button type="primary" className="submitBtn">
                                             전송 내역
                                         </Button>
 
 
-                                    
-                                    {/* <Form ref={this.formRef} onFinish={this.handleSubmit}>
-                                        <div className="snslistBlock">
-                                            <Table
-                                                // rowKey={(record) => record.idx}
-                                                dataSource={this.state.list}
-                                                columns={columns}
-                                                pagination={this.state.pagination}
-                                                onChange={this.handleTableChange}
-                                            />
+                                        <div className="dataTableLayout-01">
+                                         <Table
+                                            rowKey={(record) => record.idx}
+                                            rowSelection={rowSelection}
+                                            dataSource={this.state.list}
+                                            columns={columns}
+                                            pagination={this.state.pagination}
+                                            onChange={this.handleTableChange}/>                                                                                                
                                         </div>
-                                    </Form> */}
-
-                                                <div className="dataTableLayout-01">
-                                                    {this.state.isMulti ?
-                                                        <Table
-                                                            rowKey={(record) => record.idx}
-                                                            rowSelection={rowSelection}
-                                                            dataSource={this.state.list}
-                                                            columns={columns}
-                                                            pagination={this.state.pagination}
-                                                            onChange={this.handleTableChange}/>
-
-                                                    :
-
-                                                        <Table
-                                                            rowKey={(record) => record.idx}
-                                                            dataSource={this.state.list}
-                                                            columns={columns}
-                                                            pagination={this.state.pagination}
-                                                            onChange={this.handleTableChange}/>
-                                                    }
-                                                    
-                                                </div>
 
                                     <Form ref={this.formRef} onFinish={this.handleSubmit}>
                                         <div className="snsDetailBlock">
@@ -347,7 +320,7 @@ class SendSnsDialog extends Component {
                                                 <FormItem
                                                     className="selectItem"
                                                     name="content"
-                                                    rules={[{ required: true, message: "보낼사람을 선택해주세요" }]}
+                                                    rules={[{ required: true, message: "메세지를 입력해주세요" }]}
                                                 >
                                                     <Input
                                                         className="snsInputBox"

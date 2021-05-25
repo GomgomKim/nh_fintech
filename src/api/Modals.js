@@ -69,6 +69,63 @@ const deleteError = () => {
     });
 }
 
+const blindComplete = () => {
+    Modal.info({
+        title: "차단 완료",
+        content: (
+        <div>
+            차단 되었습니다.
+        </div>
+        ),
+        onOk() {},
+    });
+}
+
+const blindError = () => {
+    Modal.error({
+        title: "차단 실패", 
+        content: (
+        <div>
+            차단에 실패했습니다.
+        </div>), 
+        onOk() {},
+    });
+}
+
+const blindNowError = () => {
+    Modal.error({
+        title: "차단 에러", 
+        content: (
+        <div>
+            같은 차단중으로는 바꿀수 없습니다.
+        </div>), 
+        onOk() {},
+    });
+}
+
+const unBlindComplete = () => {
+    Modal.info({
+        title: "차단 해제",
+        content: (
+        <div>
+            차단 해제되었습니다.
+        </div>
+        ),
+        onOk() {},
+    });
+}
+
+const unBlindError = () => {
+    Modal.error({
+        title: "해제 실패", 
+        content: (
+        <div>
+            차단해제에 실패했습니다.
+        </div>), 
+        onOk() {},
+    });
+}
+
 export {
     updateComplete,
     updateError,
@@ -76,4 +133,9 @@ export {
     registError,
     deleteComplete,
     deleteError,
+    blindComplete,
+    blindError,
+    blindNowError,
+    unBlindComplete,
+    unBlindError,
 }
