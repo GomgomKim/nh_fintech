@@ -32,6 +32,7 @@ class ModifyOrderDialog extends Component {
   };
 
   handleSubmit = () => {
+    console.log(this.state.data);
     httpPost(httpUrl.orderUpdate, [], this.state.data)
       .then((res) => {
         console.log(res);
