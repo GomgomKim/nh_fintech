@@ -17,10 +17,11 @@ import {
   tableStatusString,
   statusString,
   riderLevelText,
-  riderGroupString
+  riderGroupString,
 } from '../../lib/util/codeUtil';
 import { formatDate } from "../../lib/util/dateUtil";
 import moment from 'moment';
+
 
 const Search = Input.Search;
 const dateFormat = 'YYYY/MM/DD';
@@ -170,7 +171,9 @@ class RiderMain extends Component {
     this.setState({ registRiderOpen: true });
   }
   closeRegistRiderModal = () => {
+    console.log("in")
     this.setState({ registRiderOpen: false });
+    this.getList()
   }
 
   //기사 수정 
@@ -263,7 +266,7 @@ class RiderMain extends Component {
         className: "table-column-center",
         render: (data, row) =>
           <div>
-            <BlindListDialog isOpen={this.state.blindListOpen} close={this.closeBlindModal} data={this.state.blindRiderData}/>
+            {/* <BlindListDialog isOpen={this.state.blindListOpen} close={this.closeBlindModal} data={this.state.blindRiderData}/> */}
             <Button className="tabBtn surchargeTab" onClick={()=>this.setState({ blindRiderData: row, blindListOpen: true })} >블라인드</Button>
           </div>
       },
@@ -328,8 +331,7 @@ class RiderMain extends Component {
           title: "최소보유잔액",
           dataIndex: "minCashAmount",
           className: "table-column-center",
-          // render: (data) => <div>{comma(data)}</div>
-          render: (data) => <div>{1000}</div>
+          render: (data) => <div>{comma(data)}</div>
         },
         {
           title: "전화번호",

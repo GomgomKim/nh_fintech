@@ -1,11 +1,12 @@
 import React, {Component} from "react";
-import {Form, Input, Table, Button, Radio} from "antd";
-import {httpUrl, httpGet} from '../../../api/httpClient';
+import {Form, Input, Table, Button, Radio, Modal} from "antd";
+import {httpUrl, httpGet, httpPost} from '../../../api/httpClient';
 import '../../../css/modal.css';
 import SelectBox from '../../input/SelectBox';
 import {
     tableStatusString,
-    riderLevelText
+    riderLevelText,
+    userGroupString
 } from '../../../lib/util/codeUtil';
 
 const Search = Input.Search;
@@ -141,7 +142,43 @@ class SearchRiderDialog extends Component {
         this.props.close()
     }
 
+    assignRider = (riderName) => {
+        var self = this
+        Modal.confirm({
+            title: "강제배차",
+            content: riderName+" 라이더 에게 강제배차 하시겠습니까?",
+            okText: "확인",
+            cancelText: "취소",
+            onOk(){
+                /* httpPost(httpUrl.deleteBlind, [], {
+                    idx: idx,
+                })
+                .then((res) => {
+                    if (res.result === "SUCCESS") {
+                        console.log(res.result);
+                        this.getList();
+                    } else {
+                        Modal.info({
+                        title: "적용 오류",
+                        content: "처리가 실패했습니다.",
+                        });
+                    }
+                })
+                .catch((e) => {
+                    Modal.info({
+                    title: "적용 오류",
+                    content: "처리가 실패했습니다.",
+                    });
+                }); */
+                self.props.close()
+            }
+        })
+    }
+
     render() {
+        const {isOpen, close, assign} = this.props;
+
+
         const columns = [
             {
                 title: "순번",
@@ -156,7 +193,9 @@ class SearchRiderDialog extends Component {
                     this.state.isMulti ? 
                         <div>{data}</div> :
                         <div className='riderNameTag' onClick={()=>{
-                            this.onRiderSelected(row.idx)
+                            assign ?
+                                this.assignRider(data) :
+                                this.onRiderSelected(row.idx)
                     }}>{data}</div>
             },
             {
@@ -170,11 +209,7 @@ class SearchRiderDialog extends Component {
                 title: "기사그룹",
                 dataIndex: "userGroup",
                 className: "table-column-center",
-                // render: (data) => <div>{data == "A" ? "A"
-                //   : data == "B" ? "B"
-                //     : data == "C" ? "C"
-                //       : data == "D" ? "D" : "-"}</div>
-                render: (data) => <div>{'A'}</div>
+                render: (data) => <div>{userGroupString[data]}</div>
             },
         ];
 
@@ -184,7 +219,6 @@ class SearchRiderDialog extends Component {
             onChange: this.onSelectChange
         };
 
-        const {isOpen, close} = this.props;
 
         return (
             <React.Fragment>
@@ -226,16 +260,22 @@ class SearchRiderDialog extends Component {
                                                                 style={{
                                                                     
                                                                 }}/>
-
+                                                            
+                                                            {/* 강제배차일 때는 멀티기능 없음 */}
+                                                            {!assign &&
                                                             <Radio.Group onChange={this.onChangeMulti} value={this.state.isMulti} className="selMulti">
                                                                 <Radio value={false}>single</Radio>
                                                                 <Radio value={true}>multi</Radio>
                                                             </Radio.Group>
+                                                            }
                                                         </div>
-
+                                                            
+                                                        {/* 강제배차일 때는 기사명 클릭 */}
+                                                        {!assign &&
                                                         <Button type="primary" onClick={this.onSubmit} className="submitBtn">
                                                             조회
                                                         </Button>
+                                                        }
                                                     </div>
                                                 </div>
 
