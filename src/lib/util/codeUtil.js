@@ -150,6 +150,7 @@ const pgUseRate = [
     "0%"
 ]
 
+
 export { 
     deliveryStatusCode,
     blockString,
@@ -171,4 +172,5 @@ export {
     pgUseRate,
     tableStatusString,
     feeManner,
+
 };
