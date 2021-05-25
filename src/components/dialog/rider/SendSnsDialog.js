@@ -3,18 +3,21 @@ import {
     Form,
     Modal,
     Input,
-    Table,
     Button,
     Select,
-    Checkbox,
+    Radio,
+    Table
 } from "antd";
 import { httpUrl, httpPost, httpGet } from '../../../api/httpClient';
 import '../../../css/modal.css';
-import { formatDate, formatDateSecond } from '../../../lib/util/dateUtil';
-import moment from 'moment';
+import { formatDate } from '../../../lib/util/dateUtil';
+import SelectBox from '../../../components/input/SelectBox';
+import { riderLevelText, multiChange } from '../../../lib/util/codeUtil';
+
+
 const Option = Select.Option;
 const FormItem = Form.Item;
-const today = new Date();
+const Search = Input.Search;
 
 class SendSnsDialog extends Component {
     constructor(props) {
@@ -26,12 +29,41 @@ class SendSnsDialog extends Component {
                 current: 1,
                 pageSize: 5,
             },
+            dataIdxs:[],
+            selectedRowKeys: [],
+
+            riderLevel:0,
+            searchName: "",
+            isMulti:false,
         };
         this.formRef = React.createRef();
     }
 
     componentDidMount() {
-        this.getList();
+        this.getList(true);
+    }
+
+    componentDidUpdate(prevProps,prevState) {
+        if (prevProps.isOpen !== this.props.isOpen) {
+            this.getList();
+        }
+    }
+
+    // 라이더검색
+
+    onSearchRider = (value) => {
+        this.setState({
+            searchName: value
+        }, () => {
+            this.getList();
+        })
+    }
+
+    // 라디오버튼
+    
+    onChangeMulti = (e) => {
+        // console.log(e.target.value)
+        this.setState({isMulti: e.target.value});
     }
 
     handleToggleCompleteCall = () => {
@@ -54,29 +86,102 @@ class SendSnsDialog extends Component {
         );
     };
 
-    getList = () => {
+    getList = (isInit) => {
         let pageNum = this.state.pagination.current;
-        let pageSize = this.state.pagination.pageSize;
-        httpGet(httpUrl.noticeList, [pageNum, pageSize], {}).then((res) => {
-            const pagination = { ...this.state.pagination };
-            pagination.current = res.data.currentPage;
-            pagination.total = res.data.totalCount;
-            this.setState({
-                list: res.data.notices,
-                pagination,
-            });
+        // let userStatus = this.state.userStatus === 0 ? "" : this.state.userStatus;
+        let searchName = this.state.searchName;
+        let riderLevels = this.state.riderLevel;
+
+        httpGet(httpUrl.riderList, [10, pageNum, searchName, '',riderLevels], {})
+        .then((result) => {
+          console.log('## nnbox result=' + JSON.stringify(result, null, 4))
+          const pagination = { ...this.state.pagination };
+          pagination.current = result.data.currentPage;
+          pagination.total = result.data.totalCount;
+          this.setState({
+            list: result.data.riders,
+            pagination,
+          })
+
+        //   mount될 때 data idx 배열 초기화
+          if(isInit){
+                // console.log(result.data.franchises[0].idx)
+                var totCnt = result.data.riders[0].idx;
+                var lists = []
+                for (let i = 0; i < totCnt; i++) {
+                    lists.push(false)
+                    // console.log(lists)
+                }
+                this.setState({
+                    dataIdxs : lists,
+                })
+            }
+        })
+        .catch((e) => {
+            console.log(e);
+        })
+    }
+
+    onSelectChange = (selectedRowKeys) => {
+        // console.log('selectedRowKeys changed: ', selectedRowKeys)
+        // console.log("selectedRowKeys.length :"+selectedRowKeys.length)
+
+        // console.log(this.state.list)
+        var cur_list = this.state.list
+        var overrideData = {}
+        for (let i = 0; i < cur_list.length; i++) {
+            var idx = cur_list[i].idx
+            if(selectedRowKeys.includes(idx)) overrideData[idx] = true
+            else overrideData[idx] = false
+        }
+        // console.log(overrideData)
+
+
+        var curIdxs = this.state.dataIdxs
+        curIdxs = Object.assign(curIdxs, overrideData)
+
+        selectedRowKeys = []
+        for (let i = 0; i < curIdxs.length; i++) {
+            if(curIdxs[i]) {
+                console.log("push  :"+i)
+                selectedRowKeys = [...selectedRowKeys, i]
+                console.log(selectedRowKeys)
+            }
+        }
+        console.log("#### :"+selectedRowKeys)
+        this.setState({
+            selectedRowKeys: selectedRowKeys,
+            dataIdxs: curIdxs
         });
     };
 
-    //공지 전송
+    // onSubmit = () => {
+    //     this.props.callback(this.state.selectedRowKeys)
+    //     this.props.close()
+    // }
+
+    onChangeMulti = (e) => {
+        // console.log(e.target.value)
+        this.setState({isMulti: e.target.value});
+    }
+    
+    onRiderSelected = (data) => {
+        // console.log(data)
+        var dataIdx = this.state.dataIdxs
+        dataIdx[data] = true
+        this.props.callback(dataIdx)
+        this.props.close()
+    }
+
+    // 메세지 전송
     handleSubmit = () => {
         let self = this;
 
         Modal.confirm({
-            title: "공지사항 등록",
+            title: "메세지 전송",
             content: (
                 <div>
-                    {self.formRef.current.getFieldsValue().content + '을 등록하시겠습니까?'}
+                    {'메세지를 전송하시겠습니까?'}
                 </div>
             ),
             okText: "확인",
@@ -84,22 +189,19 @@ class SendSnsDialog extends Component {
             onOk() {
                 httpPost(httpUrl.registNotice, [], {
                     ...self.formRef.current.getFieldsValue(),
-                    // idx: self.state.idx,
                     date: self.state.date,
                     title: self.state.title,
-                    // content: self.state.content,
                     deleted: false,
                     category: self.state.category,
                     sortOrder: self.state.sortOrder,
                     important: self.state.important,
                     branchCode: self.state.branchCode,
-                    // deleted: false,
                 }).then((result) => {
                     Modal.info({
                         title: " 완료",
                         content: (
                             <div>
-                                {self.formRef.current.getFieldsValue().content}이(가) 등록되었습니다.
+                                메세지가 전송되었습니다.
                             </div>
                         ),
                     });
@@ -107,16 +209,10 @@ class SendSnsDialog extends Component {
                     self.getList();
                 }).catch((error) => {
                     Modal.info({
-                        title: "등록 오류",
+                        title: " 오류",
                         content: "오류가 발생하였습니다. 다시 시도해 주십시오."
                     });
                 })
-                    .catch((error) => {
-                        Modal.info({
-                            title: "수정 오류",
-                            content: "오류가 발생하였습니다. 다시 시도해 주십시오."
-                        });
-                    });
             }
         });
     }
@@ -125,46 +221,46 @@ class SendSnsDialog extends Component {
         this.formRef.current.resetFields();
     };
 
-
-
     render() {
-        const columns = [
+
+         const columns = [
             {
+                title: "기사명",
+                dataIndex: "riderName",
                 className: "table-column-center",
-                render: (data, row) => (
-                    <div>
-                        <Button
-                            className="tabBtn surchargeTab"
-                            onClick={() => {
-                                this.onDelete(row);
-                            }}
-                        >
-                            삭제
-            </Button>
-                    </div>
-                ),
+                width: '40%',
+                render: (data, row) => 
+                    this.state.isMulti ? 
+                        <div>{data}</div> :
+                        <div className='riderNameTag' onClick={()=>{
+                            this.onRiderSelected(row.idx)
+                    }}>{data}</div>
             },
             {
-                title: "날짜",
-                dataIndex: "createDate",
+                title: "직급",
+                dataIndex: "riderLevel",
                 className: "table-column-center",
-                render: (data) => <div>{formatDate(data)}</div>,
+                width: '30%',
+                render: (data) => <div>{riderLevelText[data]}</div>
             },
             {
-                title: "내용",
-                dataIndex: "content",
+                title: "기사그룹",
+                dataIndex: "userGroup",
                 className: "table-column-center",
-                render: (data) => (
-                    <div
-                        style={{ display: "inline-block", cursor: "pointer" }}
-                        onClick={() => { }}
-                    >
-                        {data}
-                    </div>
-                ),
+                width: '30%',
+                // render: (data) => <div>{data == "A" ? "A"
+                //   : data == "B" ? "B"
+                //     : data == "C" ? "C"
+                //       : data == "D" ? "D" : "-"}</div>
+                render: (data) => <div>{'A'}</div>
             },
         ];
 
+        const selectedRowKeys = this.state.selectedRowKeys
+        const rowSelection = {
+            selectedRowKeys,
+            onChange: this.onSelectChange
+        };
         const { isOpen, close } = this.props;
 
         return (
@@ -174,16 +270,45 @@ class SendSnsDialog extends Component {
                         <div className="Dialog-overlay" onClick={close} />
                         <div className="snsDialog">
                             <div className="container">
-                                <div className="notice-title">메세지 전송</div>
+                                <div className="sns-title">메세지 전송</div>
                                 <img
                                     onClick={close}
                                     src={require("../../../img/login/close.png").default}
                                     className="surcharge-close"
                                 />
                                 <div className="snsLayout">
-                                    <Form ref={this.formRef} onFinish={this.handleSubmit}>
-                                        <div className="snslistBlock">
 
+                                     <SelectBox
+                                        value={riderLevelText[this.state.riderLevel]}
+                                        code={Object.keys(riderLevelText)}
+                                        codeString={riderLevelText}
+                                        onChange={(value) => {
+                                            if (parseInt(value) !== this.state.riderLevel) {
+                                                this.setState({ riderLevel: parseInt(value) }, () => this.getList());
+                                            }
+                                     }} />
+                                     
+                                        <Search
+                                        placeholder="기사검색"
+                                        className="searchFranchiseInput"
+                                        enterButton
+                                        allowClear
+                                        onSearch={this.onSearchRider}
+                                         style={{
+                                                                    
+                                         }}/>
+                                       <Radio.Group onChange={this.onChangeMulti} value={this.state.isMulti} className="selMulti">
+                                                                <Radio value={true}>multi</Radio>
+                                    </Radio.Group>
+
+                                        <Button type="primary" className="submitBtn">
+                                            전송 내역
+                                        </Button>
+
+
+                                    
+                                    {/* <Form ref={this.formRef} onFinish={this.handleSubmit}>
+                                        <div className="snslistBlock">
                                             <Table
                                                 // rowKey={(record) => record.idx}
                                                 dataSource={this.state.list}
@@ -192,18 +317,40 @@ class SendSnsDialog extends Component {
                                                 onChange={this.handleTableChange}
                                             />
                                         </div>
-                                    </Form>
+                                    </Form> */}
+
+                                                <div className="dataTableLayout-01">
+                                                    {this.state.isMulti ?
+                                                        <Table
+                                                            rowKey={(record) => record.idx}
+                                                            rowSelection={rowSelection}
+                                                            dataSource={this.state.list}
+                                                            columns={columns}
+                                                            pagination={this.state.pagination}
+                                                            onChange={this.handleTableChange}/>
+
+                                                    :
+
+                                                        <Table
+                                                            rowKey={(record) => record.idx}
+                                                            dataSource={this.state.list}
+                                                            columns={columns}
+                                                            pagination={this.state.pagination}
+                                                            onChange={this.handleTableChange}/>
+                                                    }
+                                                    
+                                                </div>
 
                                     <Form ref={this.formRef} onFinish={this.handleSubmit}>
                                         <div className="snsDetailBlock">
-                                            <div className="mainTitle">추가 및 수정</div>
                                             <div className="inputBox">
                                                 <FormItem
-                                                    className="noticeInputBox"
+                                                    className="selectItem"
                                                     name="content"
+                                                    rules={[{ required: true, message: "보낼사람을 선택해주세요" }]}
                                                 >
                                                     <Input
-                                                        className="noticeInputBox"
+                                                        className="snsInputBox"
                                                         placeholder="메세지 내용"
                                                     />
                                                 </FormItem>
@@ -215,7 +362,7 @@ class SendSnsDialog extends Component {
                                                     className="tabBtn insertTab snsBtn"
                                                 >
                                                     전송
-                        </Button>
+                                                </Button>
                                             </div>
                                         </div>
                                     </Form>
@@ -223,7 +370,8 @@ class SendSnsDialog extends Component {
                             </div>
                         </div>
                     </React.Fragment>
-                ) : null}
+                ) : null
+                }
             </React.Fragment>
         );
     }

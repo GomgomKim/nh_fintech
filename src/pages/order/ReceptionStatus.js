@@ -41,6 +41,8 @@ import { httpPost, httpUrl } from "../../api/httpClient";
 import { connect } from "react-redux";
 import InfiniteScroll from "react-infinite-scroller";
 import PaymentDialog from "../../components/dialog/order/PaymentDialog";
+import ModifyOrderDialog from "../../components/dialog/order/ModifyOrderDialog";
+import SearchRiderDialog from "../../components/dialog/common/SearchRiderDialog";
 
 const Option = Select.Option;
 const Search = Input.Search;
@@ -327,10 +329,6 @@ class ReceptionStatus extends Component {
               defaultValue={data}
               value={row.orderStatus}
               onChange={(value) => {
-                // console.log(
-                //   "idx : " + row.idx + " val : " + value,
-                //   " row : " + row
-                // );
                 var flag = true;
 
                 // 제약조건 미성립
@@ -564,9 +562,11 @@ class ReceptionStatus extends Component {
           className: "table-column-center",
           render: (data) => (
             <span>
-              <ForceAllocateDialog
+              {/* <ForceAllocateDialog */}
+              <SearchRiderDialog
                 isOpen={this.state.forceOpen}
                 close={this.closeForceingModal}
+                assign={true}
               />
               <Button className="tabBtn" onClick={this.openForceModal}>
                 강제배차

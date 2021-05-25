@@ -172,7 +172,7 @@ const httpUrl = {
   staffUpdate: "/rider/update",
 
   // rider
-  riderList: "/rider/list?pageSize=%s&pageNum=%s&searchName=%s&userStatus=%s",
+  riderList: "/rider/list?pageSize=%s&pageNum=%s&searchName=%s&userStatus=%s&riderLevels=%s",
   registRider: "/rider/create",
   updateRider: "/rider/update",
   riderLocate: "/rider/location/%s",
@@ -186,7 +186,8 @@ const httpUrl = {
   updateBranch: "/branch/update",
 
   // 공지사항
-  noticeList: "/notice/list?pageNum=%s&pageSize=%s",
+  noticeList: "/notice/list?deleted=false&pageNum=%s&pageSize=%s",
+  noticeListDeleted: "/notice/list?deleted=true&pageNum=%s&pageSize=%s",
   registNotice: "/notice/create",
   updateNotice: "/notice/update",
   specificNoticeList: "/notice/%s",

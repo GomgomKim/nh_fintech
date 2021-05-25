@@ -1,20 +1,25 @@
 import React, { Component } from "react";
 import '../../../css/modal.css';
-import { Form, Input, Table, Button } from 'antd';
+import { Form, Input, Table, Button, Modal, Select } from 'antd';
 import { formatDate } from "../../../lib/util/dateUtil";
 import "../../../css/order.css";
 import { comma } from "../../../lib/util/numberUtil";
 // import MapContainer from "./MapContainer";
-import { httpGet, httpUrl} from '../../../api/httpClient';
+import { httpGet, httpUrl, httpPost} from '../../../api/httpClient';
 import { NaverMap, Marker, Polyline } from 'react-naver-maps';
+import {
+  riderLevelText,
+  riderGroupString,
+  modifyType,
+  deliveryStatusCode
+} from '../../../lib/util/codeUtil';
 
 
-
+const Option = Select.Option;
 const FormItem = Form.Item;
 const navermaps = window.naver.maps;
 // const { Option } = Radio;
 const Search = Input.Search;
-const riderLevelText = ["none", "라이더", "부팀장", "팀장", "부본부장", "본부장", "부지점장", "지점장", "부센터장", "센터장"];
 const lat = 37.643623625321474;
 const lng = 126.66509442649551;
 
@@ -33,7 +38,7 @@ class MapControlDialog extends Component {
             paginationRiderList: {
                 total: 0,
                 current: 1,
-                pageSize: 5,
+                pageSize: 10,
             },
             // test data
             list: [],
@@ -81,32 +86,25 @@ class MapControlDialog extends Component {
     }
 
     onSearchWorkerSelected = (value) => {
-      var riderIdx = -1;
-      if(this.state.results.find(x => x.id == value)){
-        riderIdx = this.state.results.find(x => x.id == value).idx;
+      console.log(value)
+      if(this.state.results.find(x => x.id === value)){
+        var riderIdx = this.state.results.find(x => x.id === value).idx;
+        var name = this.state.results.find(x => x.id === value).riderName;
         this.setState({
           selectedRiderIdx: riderIdx,
-          riderName: value,
+          riderName: name,
         }, () => {
           this.getList()
         })
       }
     }
     
-    onSearchPhoneNum = (value) => {
-        this.setState({
-          phoneNum: value,
-        }, () => {
-          this.getList()
-        })
-    }
-    
     
     getList = ()  => {
         let selectedRiderIdx = this.state.selectedRiderIdx;
-        // console.log(selectedRiderIdx)
+        console.log(selectedRiderIdx)
         httpGet(httpUrl.riderLocate, [selectedRiderIdx], {}).then((result) => {
-          // console.log('### nnbox result=' + JSON.stringify(result, null, 4))
+          console.log('### nnbox result=' + JSON.stringify(result, null, 4))
           // console.log('### nnbox result=' + JSON.stringify(result.data.orders, null, 4))
           const pagination = { ...this.state.pagination };
           if(result.data != null){
@@ -125,22 +123,20 @@ class MapControlDialog extends Component {
         })
     }
     getRiderList = () => {
-        let pageNum = this.state.pagination.current;
-        let riderLevel = this.state.riderLevel;
-        let userData = this.state.userData;
-        let searchName = this.state.searchName;
-        // console.log("searchName :: "+searchName)
-
-        httpGet(httpUrl.riderList, [10, pageNum, riderLevel, searchName, userData], {}).then((result) => {
-          console.log('## nnbox result=' + JSON.stringify(result, null, 4))
-          const pagination = { ...this.state.pagination };
-          pagination.current = result.data.currentPage;
-          pagination.total = result.data.totalCount;
-          this.setState({
-            results: result.data.riders,
-            pagination,
-          });
-        })
+      let pageNum = this.state.paginationRiderList.current;
+      let userStatus = 1;
+      let searchName = this.state.searchName;
+  
+      httpGet(httpUrl.riderList, [10, pageNum, searchName, userStatus], {}).then((result) => {
+        console.log('## nnbox result=' + JSON.stringify(result, null, 4))
+        const pagination = { ...this.state.paginationRiderList };
+        pagination.current = result.data.currentPage;
+        pagination.total = result.data.totalCount;
+        this.setState({
+          results: result.data.riders,
+          paginationRiderList: pagination,
+        });
+      })
     };
     
     handleTableChange = (pagination) => {
@@ -160,7 +156,7 @@ class MapControlDialog extends Component {
       pager.pageSize = pagination.pageSize
       this.setState({
         paginationRiderList: pager,
-      }, () => this.getList());
+      }, () => this.getRiderList());
   };
 
       
@@ -170,12 +166,56 @@ class MapControlDialog extends Component {
         const columns = [
           {
             title: "상태",
-            dataIndex: 0,
+            dataIndex: "orderStatus",
             className: "table-column-center",
-            render: (data) => <div>{data.orderStatus == 1 ? "대기중"
-              : data.orderStatus == 2 ? "픽업중"
-                : data.orderStatus == 3 ? "배달중"
-                  : data.orderStatus == 4 ? "완료" : "취소"}</div>
+            render: (data, row) => (
+              <div className="table-column-sub">
+                <Select
+                  defaultValue={data}
+                  value={row.orderStatus}
+                  onChange={(value) => {
+                    var flag = true;
+    
+                    // 제약조건 미성립
+                    // console.log([row.pickupStatus, value]+" / "+modifyType[row.pickupStatus])
+                    if (!modifyType[row.orderStatus].includes(value)) {
+                      Modal.info({
+                        content: <div>상태를 바꿀 수 없습니다.</div>,
+                      });
+                      flag = false;
+                    }
+    
+                    // 대기중 -> 픽업중 변경 시 강제배차 알림
+                    if (row.orderStatus === 1 && value === 2) {
+                      Modal.info({
+                        content: <div>강제배차를 사용하세요.</div>,
+                      });
+                    }
+    
+                    // 제약조건 성립 시 상태 변경
+                    if (flag) {
+                      // const list = this.state.list;
+                      // list.find((x) => x.idx === row.idx).orderStatus = value;
+                      row.orderStatus = value;
+                      httpPost(httpUrl.orderUpdate, [], row)
+                        .then((res) => {
+                          console.log(res);
+                        })
+                        .catch((e) => {});
+                      this.getList();
+                      // this.setState({
+                      //   list: list,
+                      // });
+                    }
+                  }}
+                >
+                  {deliveryStatusCode.map((value, index) => {
+                    if (index === 0) return <></>;
+                    else return <Option value={index}>{value}</Option>;
+                  })}
+                </Select>
+              </div>
+            ),
           },
           {
             title: "주문시간",
@@ -236,6 +276,15 @@ class MapControlDialog extends Component {
 
         const columns_riderList = [
             {
+              title: "아이디",
+              dataIndex: "id",
+              className: "table-column-center",
+              width: "200px",
+              render: (data) => <div className='riderName' onClick={()=>{
+                this.onSearchWorkerSelected(data)
+              }}>{data}</div>
+            },
+            {
               title: "지사명",
               dataIndex: "id",
               className: "table-column-center",
@@ -244,16 +293,6 @@ class MapControlDialog extends Component {
               title: "기사명",
               dataIndex: "riderName",
               className: "table-column-center",
-              render: (data) => <div className='riderName' onClick={()=>{
-                // this.setState({selectedRider: 55})
-                this.onSearchWorkerSelected(data)
-              }}>{data}</div>
-            },
-            {
-              title: "아이디",
-              dataIndex: "id",
-              className: "table-column-center",
-              width: "200px",
             },
             {
               title: "직급",
@@ -266,10 +305,7 @@ class MapControlDialog extends Component {
               title: "기사그룹",
               dataIndex: "userGroup",
               className: "table-column-center",
-              render: (data) => <div>{data == "A" ? "A"
-                : data == "B" ? "B"
-                  : data == "C" ? "C"
-                    : data == "D" ? "D" : "-"}</div>
+              render: (data) => <div>{riderGroupString[data]}</div>
             },
         ];
 
@@ -449,7 +485,7 @@ class MapControlDialog extends Component {
     
                                               </div>
                                                 <Table
-                                                    rowKey={(record) => record}
+                                                    rowKey={(record) => record.idx}
                                                     dataSource={this.state.results}
                                                     columns={columns_riderList}
                                                     pagination={this.state.paginationRiderList}

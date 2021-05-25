@@ -1,11 +1,12 @@
 import React, {Component} from "react";
-import {Form, Input, Table, Button, Radio} from "antd";
-import {httpUrl, httpGet} from '../../../api/httpClient';
+import {Form, Input, Table, Button, Radio, Modal} from "antd";
+import {httpUrl, httpGet, httpPost} from '../../../api/httpClient';
 import '../../../css/modal.css';
 import SelectBox from '../../input/SelectBox';
 import {
-    statusString,
-    riderLevelText
+    tableStatusString,
+    riderLevelText,
+    userGroupString
 } from '../../../lib/util/codeUtil';
 
 const Search = Input.Search;
@@ -24,6 +25,7 @@ class SearchRiderDialog extends Component {
             },
             addressType: 0,
             selectedRowKeys: [],
+            isMulti: false,
 
             // data param
             riderLevel: [],
@@ -33,12 +35,9 @@ class SearchRiderDialog extends Component {
         this.formRef = React.createRef();
     }
     componentDidMount() {
-        this.getList()
+        this.getList(true)
     }
 
-    setDate = (date) => {
-        console.log(date)
-    }
 
     // 라이더 검색
     onSearchRider = (value) => {
@@ -61,9 +60,9 @@ class SearchRiderDialog extends Component {
         }, () => this.getList());
     };
 
-    getList = () => {
+    getList = (isInit) => {
         let pageNum = this.state.pagination.current;
-        let userStatus = this.state.userStatus == 0 ? "" : this.state.userStatus;
+        let userStatus = this.state.userStatus === 0 ? "" : this.state.userStatus;
         let searchName = this.state.searchName;
 
         httpGet(httpUrl.riderList, [10, pageNum, searchName, userStatus], {}).then((result) => {
@@ -75,12 +74,54 @@ class SearchRiderDialog extends Component {
             list: result.data.riders,
             pagination,
           });
+
+          // mount될 때 data idx 배열 초기화
+          if(isInit){
+                // console.log(result.data.franchises[0].idx)
+                var totCnt = result.data.riders[0].idx;
+                var lists = []
+                for (let i = 0; i < totCnt; i++) {
+                    lists.push(false)
+                    // console.log(lists)
+                }
+                this.setState({
+                    dataIdxs : lists,
+                })
+            }
         })
     }
 
     onSelectChange = (selectedRowKeys) => {
-        console.log('selectedRowKeys changed: ', selectedRowKeys);
-        this.setState({selectedRowKeys: selectedRowKeys});
+        // console.log('selectedRowKeys changed: ', selectedRowKeys)
+        // console.log("selectedRowKeys.length :"+selectedRowKeys.length)
+
+        // console.log(this.state.list)
+        var cur_list = this.state.list
+        var overrideData = {}
+        for (let i = 0; i < cur_list.length; i++) {
+            var idx = cur_list[i].idx
+            if(selectedRowKeys.includes(idx)) overrideData[idx] = true
+            else overrideData[idx] = false
+        }
+        // console.log(overrideData)
+
+
+        var curIdxs = this.state.dataIdxs
+        curIdxs = Object.assign(curIdxs, overrideData)
+
+        selectedRowKeys = []
+        for (let i = 0; i < curIdxs.length; i++) {
+            if(curIdxs[i]) {
+                console.log("push  :"+i)
+                selectedRowKeys = [...selectedRowKeys, i]
+                console.log(selectedRowKeys)
+            }
+        }
+        console.log("#### :"+selectedRowKeys)
+        this.setState({
+            selectedRowKeys: selectedRowKeys,
+            dataIdxs: curIdxs
+        });
     };
 
     onSubmit = () => {
@@ -88,7 +129,56 @@ class SearchRiderDialog extends Component {
         this.props.close()
     }
 
+    onChangeMulti = (e) => {
+        // console.log(e.target.value)
+        this.setState({isMulti: e.target.value});
+    }
+
+    onRiderSelected = (data) => {
+        // console.log(data)
+        var dataIdx = this.state.dataIdxs
+        dataIdx[data] = true
+        this.props.callback(dataIdx)
+        this.props.close()
+    }
+
+    assignRider = (riderName) => {
+        var self = this
+        Modal.confirm({
+            title: "강제배차",
+            content: riderName+" 라이더 에게 강제배차 하시겠습니까?",
+            okText: "확인",
+            cancelText: "취소",
+            onOk(){
+                /* httpPost(httpUrl.deleteBlind, [], {
+                    idx: idx,
+                })
+                .then((res) => {
+                    if (res.result === "SUCCESS") {
+                        console.log(res.result);
+                        this.getList();
+                    } else {
+                        Modal.info({
+                        title: "적용 오류",
+                        content: "처리가 실패했습니다.",
+                        });
+                    }
+                })
+                .catch((e) => {
+                    Modal.info({
+                    title: "적용 오류",
+                    content: "처리가 실패했습니다.",
+                    });
+                }); */
+                self.props.close()
+            }
+        })
+    }
+
     render() {
+        const {isOpen, close, assign} = this.props;
+
+
         const columns = [
             {
                 title: "순번",
@@ -99,6 +189,14 @@ class SearchRiderDialog extends Component {
                 title: "기사명",
                 dataIndex: "riderName",
                 className: "table-column-center",
+                render: (data, row) => 
+                    this.state.isMulti ? 
+                        <div>{data}</div> :
+                        <div className='riderNameTag' onClick={()=>{
+                            assign ?
+                                this.assignRider(data) :
+                                this.onRiderSelected(row.idx)
+                    }}>{data}</div>
             },
             {
                 title: "직급",
@@ -111,11 +209,7 @@ class SearchRiderDialog extends Component {
                 title: "기사그룹",
                 dataIndex: "userGroup",
                 className: "table-column-center",
-                // render: (data) => <div>{data == "A" ? "A"
-                //   : data == "B" ? "B"
-                //     : data == "C" ? "C"
-                //       : data == "D" ? "D" : "-"}</div>
-                render: (data) => <div>{'A'}</div>
+                render: (data) => <div>{userGroupString[data]}</div>
             },
         ];
 
@@ -125,7 +219,6 @@ class SearchRiderDialog extends Component {
             onChange: this.onSelectChange
         };
 
-        const {isOpen, close} = this.props;
 
         return (
             <React.Fragment>
@@ -149,12 +242,12 @@ class SearchRiderDialog extends Component {
                                                     <div className="searchFranchise-list">
                                                         <div className="inputBox inputBox-searchFranchise sub">
                                                             <SelectBox
-                                                                value={statusString[this.state.userStatus]}
-                                                                code={Object.keys(statusString)}
-                                                                codeString={statusString}
+                                                                value={tableStatusString[this.state.userStatus]}
+                                                                code={Object.keys(tableStatusString)}
+                                                                codeString={tableStatusString}
                                                                 onChange={(value) => {
                                                                     if (parseInt(value) !== this.state.userStatus) {
-                                                                        this.setState({userStatus: value}, () => this.getList());
+                                                                        this.setState({userStatus: parseInt(value)}, () => this.getList());
                                                                     }
                                                                 }}/>
 
@@ -167,22 +260,45 @@ class SearchRiderDialog extends Component {
                                                                 style={{
                                                                     
                                                                 }}/>
+                                                            
+                                                            {/* 강제배차일 때는 멀티기능 없음 */}
+                                                            {!assign &&
+                                                            <Radio.Group onChange={this.onChangeMulti} value={this.state.isMulti} className="selMulti">
+                                                                <Radio value={false}>single</Radio>
+                                                                <Radio value={true}>multi</Radio>
+                                                            </Radio.Group>
+                                                            }
                                                         </div>
-
+                                                            
+                                                        {/* 강제배차일 때는 기사명 클릭 */}
+                                                        {!assign &&
                                                         <Button type="primary" onClick={this.onSubmit} className="submitBtn">
                                                             조회
                                                         </Button>
+                                                        }
                                                     </div>
                                                 </div>
 
                                                 <div className="dataTableLayout-01">
-                                                    <Table
-                                                        rowKey={(record) => record}
-                                                        rowSelection={rowSelection}
-                                                        dataSource={this.state.list}
-                                                        columns={columns}
-                                                        pagination={this.state.pagination}
-                                                        onChange={this.handleTableChange}/>
+                                                    {this.state.isMulti ?
+                                                        <Table
+                                                            rowKey={(record) => record.idx}
+                                                            rowSelection={rowSelection}
+                                                            dataSource={this.state.list}
+                                                            columns={columns}
+                                                            pagination={this.state.pagination}
+                                                            onChange={this.handleTableChange}/>
+
+                                                    :
+
+                                                        <Table
+                                                            rowKey={(record) => record.idx}
+                                                            dataSource={this.state.list}
+                                                            columns={columns}
+                                                            pagination={this.state.pagination}
+                                                            onChange={this.handleTableChange}/>
+                                                    }
+                                                    
                                                 </div>
                                             </div>
                                         </Form>
