@@ -725,7 +725,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 1000px;
+  width: 1200px;
   border-radius: 30px;
   z-index: 2;
 }
@@ -769,14 +769,18 @@
 }
 /* 왼쪽 wrappper */
 .registCallWrapper {
-  display: inline-block;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-content: space-around;
+  justify-content: space-around;
+  height: 300px;
 }
 .registCallWrapper .mainTitle {
   display: inline-block;
-  /* font-size: 20px; */
   vertical-align: middle;
   font-weight: bold;
-  width: 75px;
+  width: 120px;
 }
 .mainTitle.sub {
   display: inline-block;
@@ -784,6 +788,9 @@
   vertical-align: middle;
   font-weight: bold;
   margin-left: 10px;
+}
+.registCallLayout .first-child {
+  margin-top: 15px !important;
 }
 .registCallLayout .contentBlock {
   margin-top: 15px;
@@ -824,6 +831,10 @@
   margin-left: 20px;
   width: 400px;
 }
+.callTab {
+  float: right;
+  width: 100px;
+}
 /* 오른쪽 wrappper */
 .registCallWrapper.sub {
   vertical-align: top;
@@ -858,12 +869,12 @@
 }
 .registCallLayout .mapLayout {
   margin-top: 20px;
-  width: 1000px;
-  height: 400px;
+  /* width: 1200px; */
+  height: 300px;
 }
-.registCallLayout #myMap {
+/* .registCallLayout #myMap {
   width: 895px;
-}
+} */
 
 /* 가맹점등록 dialog */
 .registFran-Dialog {
@@ -2383,10 +2394,9 @@
   margin-top: 25px;
 }
 
-.registRiderWrapper .ant-form-item-control-input-content{
-  width:260px;
+.registRiderWrapper .ant-form-item-control-input-content {
+  width: 260px;
 }
-
 
 .registRiderWrapper .mainTitle {
   width: 130px;
@@ -2961,6 +2971,7 @@
   text-align: center;
 }
 
+/* paymentModal */
 .orderPayment-wrapper {
   display: flex;
 }
@@ -2969,6 +2980,15 @@
   display: flex;
   flex-direction: column;
 }
+.orderPayment-col {
+  width: auto;
+}
+.change {
+  vertical-align: middle;
+  text-align: center;
+  width: 100px;
+}
+
 .blind-title {
   /* font-size: 28px; */
   letter-spacing: -1px;
@@ -3052,7 +3072,6 @@
   vertical-align: middle;
 }
 
-
 /*sns전송ㅇ*/
 .snsDialog {
   position: fixed;
@@ -3125,4 +3144,34 @@
 .snsLayout .snsInputBox {
   width: 100%;
   height: 380px;
+}
+
+/* paymentDialog */
+.plusBtn {
+  width: 30px;
+  height: 30px;
+  padding: none;
+  text-align: center;
+  vertical-align: center;
+  color: white;
+  font-size: 2rem;
+  background-color: #fddc00;
+  cursor: pointer;
+  float: right;
+}
+.minusBtn {
+  width: 100px;
+  height: 30px;
+  padding: none;
+  text-align: center;
+  vertical-align: center;
+  color: white;
+  font-size: 2rem;
+  background-color: #fddc00;
+  cursor: pointer;
+}
+.btnWrapper {
+  display: flex;
+  flex-direction: row-reverse;
+  margin-top: 15px;
 }

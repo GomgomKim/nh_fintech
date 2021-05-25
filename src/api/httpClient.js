@@ -159,6 +159,7 @@ const httpUrl = {
   // 주문 현황
   orderList: "/order/list",
   orderUpdate: "/order/update",
+  orderCreate:"/order/create",
 
   priceExtraList: "/branch/deliveryPriceExtra/list?pageNum=%s&pageSize=%s",
   priceExtraRegist: "/branch/deliveryPriceExtra/create",
