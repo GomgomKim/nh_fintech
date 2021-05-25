@@ -435,7 +435,7 @@ class RiderMain extends Component {
             onClick={this.openTaskSchedulerModal}
           >일차감</Button>
 
-          <SendSnsDialog isOpen={this.state.sendSnsOpen} close={this.closeSendSnsModal} />
+          <SendSnsDialog isOpen={this.state.sendSnsOpen} close={this.closeSendSnsModal} callback={this.onSearchRiderDetail} />
           <Button className="riderManageBtn"
             onClick={this.openSendSnsModal}
           >SNS 전송</Button>
