@@ -128,6 +128,7 @@ class FranchiseMain extends Component {
     
     closeModifyFranModal = () => {
         this.setState({modifyFranOpen: false});
+        this.getList()
     }
     
     // 주소검색관리 dialog
@@ -290,7 +291,7 @@ class FranchiseMain extends Component {
                 title: "블라인드",
                 className: "table-column-center",
                 render: (data, row) => <div>
-                        <BlindListDialog isOpen={this.state.blindListOpen} close={this.closeBlindModal} data={this.state.blindFrData}/>
+                        {/* <BlindListDialog isOpen={this.state.blindListOpen} close={this.closeBlindModal} data={this.state.blindFrData}/> */}
                         <Button className="tabBtn surchargeTab" onClick={()=>this.setState({blindListOpen: true, blindFrData: row})}>블라인드</Button>
                     </div>
             }, {

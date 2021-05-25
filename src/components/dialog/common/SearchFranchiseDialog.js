@@ -66,7 +66,7 @@ class SearchFranchiseDialog extends Component {
             userGroup: this.state.franGroup,
             userStatus: this.state.franStatus === 0 ? null : this.state.franStatus
         }).then((result) => {
-            console.log('## result=' + JSON.stringify(result, null, 4))
+            // console.log('## result=' + JSON.stringify(result, null, 4))
             const pagination = {
                 ...this.state.pagination
             };
@@ -95,13 +95,20 @@ class SearchFranchiseDialog extends Component {
     onSelectChange = (selectedRowKeys) => {
         console.log('selectedRowKeys changed: ', selectedRowKeys)
         console.log("selectedRowKeys.length :"+selectedRowKeys.length)
+
+        // console.log(this.state.list)
+        var cur_list = this.state.list
+        var overrideData = {}
+        for (let i = 0; i < cur_list.length; i++) {
+            var idx = cur_list[i].idx
+            if(selectedRowKeys.includes(idx)) overrideData[idx] = true
+            else overrideData[idx] = false
+        }
+        // console.log(overrideData)
+
+
         var curIdxs = this.state.dataIdxs
-        var idx = selectedRowKeys[selectedRowKeys.length-1]
-        // console.log(selectedRowKeys[selectedRowKeys.length-1])
-        if(curIdxs[idx])
-            curIdxs[idx] = false;
-        else
-            curIdxs[idx] = true;
+        curIdxs = Object.assign(curIdxs, overrideData)
 
         selectedRowKeys = []
         for (let i = 0; i < curIdxs.length; i++) {
@@ -109,7 +116,6 @@ class SearchFranchiseDialog extends Component {
                 console.log("push  :"+i)
                 selectedRowKeys = [...selectedRowKeys, i]
                 console.log(selectedRowKeys)
-
             }
         }
         console.log(selectedRowKeys)
@@ -120,7 +126,8 @@ class SearchFranchiseDialog extends Component {
     };
 
     onSubmit = () => {
-        this.props.callback(this.state.dataIdxs)
+        // console.log("click")
+        this.props.callback(this.state.selectedRowKeys)
         this.props.close()
     }
 
@@ -212,7 +219,7 @@ class SearchFranchiseDialog extends Component {
                                                         </div>
                                                        
 
-                                                        <Button type="primary" onClick={this.onSubmit} className="submitBtn">
+                                                        <Button type="primary" onClick={() => this.onSubmit()} className="submitBtn">
                                                             조회
                                                         </Button>
                                                     </div>

@@ -20,6 +20,8 @@ import '../../../css/modal.css';
 import { connect } from "react-redux";
 import { formatDate, formatDateSecond } from '../../../lib/util/dateUtil';
 import moment from 'moment';
+// import RegistNoticeDialog from "../../components/dialog/order/RegistNoticeDialog";
+
 const Option = Select.Option;
 const FormItem = Form.Item;
 const today = new Date();
@@ -29,7 +31,13 @@ class NoticeDialog extends Component {
     super(props);
     this.state = {
       list: [],
+      deletedList:[],
       pagination: {
+        total: 0,
+        current: 1,
+        pageSize: 5,
+      },
+      paginationDeleted: {
         total: 0,
         current: 1,
         pageSize: 5,
@@ -46,6 +54,7 @@ class NoticeDialog extends Component {
       readDate: '',
       deleted: false,
       checkedCompleteCall: false,
+      registNotice: false,
     //   idx: 1,
     };
     this.formRef = React.createRef();
@@ -62,11 +71,26 @@ class NoticeDialog extends Component {
       },
       () => {
         if (this.state.checkedCompleteCall) {
-          this.getExceptCompleteList();
+          this.getDeletedList();
         } else {
           this.getList();
         }
       }
+    );
+  };
+
+  handleDeletedTableChange = (pagination) => {
+    console.log(pagination);
+    const pager = { ...this.state.paginationDeleted };
+    pager.current = pagination.current;
+    pager.pageSize = pagination.pageSize;
+    this.setState(
+      {
+        paginationDeleted: pager,
+      },
+      () => {
+        this.getDeletedList();
+        }
     );
   };
 
@@ -79,37 +103,45 @@ class NoticeDialog extends Component {
       {
         pagination: pager,
       },
-      () => this.getList()
+      () => {
+        this.getList();
+      }
     );
   };
 
   getList = () => {
+    // console.log("### "+ this.state.pagination.current)
     let pageNum = this.state.pagination.current;
     let pageSize = this.state.pagination.pageSize;
-    httpGet(httpUrl.noticeList, [pageNum, pageSize], {}).then((res) => {
+    let deleted = false;
+    httpGet(httpUrl.noticeList, [deleted, pageNum, pageSize], {}).then((res) => {
+      console.log(res)
       const pagination = { ...this.state.pagination };
       pagination.current = res.data.currentPage;
       pagination.total = res.data.totalCount;
       this.setState({
         list: res.data.notices,
-        pagination,
+        pagination: pagination,
       });
     });}
 
-  getExceptCompleteList = () => {
-    let pageNum = this.state.pagination.current;
-    let pageSize = this.state.pagination.pageSize;
-    httpGet(httpUrl.noticeListDeleted, [pageNum, pageSize], {})
+  getDeletedList = () => {
+    let pageNum = this.state.paginationDeleted.current;
+    let pageSize = this.state.paginationDeleted.pageSize;
+    let deleted = true;
+    httpGet(httpUrl.noticeListDeleted, [deleted, pageNum, pageSize], {})
       .then((res) => {
         if (res.result === "SUCCESS") {
           // alert("성공적으로 처리되었습니다.");
-          console.log("완료 제외 조회");
-          const pagination = { ...this.state.pagination };
+          console.log(res)
+          console.log("삭제목록 조회");
+          const pagination = { ...this.state.paginationDeleted };
           pagination.current = res.data.currentPage;
           pagination.total = res.data.totalCount;
+          // console.log(pagination.total)
           this.setState({
-            list: res.data.notices,
-            pagination,
+            deletedList: res.data.notices,
+            paginationDeleted: pagination,
           });
         } else {
           Modal.info({
@@ -211,37 +243,100 @@ class NoticeDialog extends Component {
 
   onDelete = (row) => {
     let self = this;
-    httpPost(httpUrl.updateNotice, [], {
-      // category:row.category,
-      // important:row.important,
-      // title:row.title,
-      // sortOrder:row.sortOrder,
-      // content:row.content,
-      // // name: this.formRef.current.getFieldsValue().surchargeName,
-      // // extraPrice: this.formRef.current.getFieldsValue().feeAdd,
-      // branchCode: self.state.branchCode,
-      // createDate: formatDateSecond(row.createDate),
-      deleted: 1,
-      // name: this.formRef.current.getFieldsValue().surchargeName,
-      // extraPrice: this.formRef.current.getFieldsValue().feeAdd,
-      // deleteDate: formatDateSecond(today),
-      // readDate: row.readDate,
-      idx: row.idx,
-    })
+    if (!this.state.checkedCompleteCall) {
+    Modal.confirm({
+      title:"공지사항 삭제",
+      content: "해당 공지사항을 삭제하시겠습니까?",
+      okText: "확인",
+      cancelText:"취소",
+      onOk() {
+        httpPost(httpUrl.updateNotice, [], {
+          // category:row.category,
+          // important:row.important,
+          // title:row.title,
+         // sortOrder:row.sortOrder,
+         // content:row.content,
+         // // name: this.formRef.current.getFieldsValue().surchargeName,
+         // // extraPrice: this.formRef.current.getFieldsValue().feeAdd,
+         // branchCode: self.state.branchCode,
+         // createDate: formatDateSecond(row.createDate),
+         deleted: true,
+         // name: this.formRef.current.getFieldsValue().surchargeName,
+         // extraPrice: this.formRef.current.getFieldsValue().feeAdd,
+         // deleteDate: formatDateSecond(today),
+         // readDate: row.readDate,
+         idx: row.idx,
+        })
       .then((result) => {
-        console.log(row);
         // console.log('## delete result=' + JSON.stringify(result, null, 4))
-        alert("해당공지사항을 삭제합니다.");
-        self.handleClear();
+        Modal.info({
+          title:"공지사항 삭제",
+          content: (
+            <div>
+              해당공지사항을 삭제합니다.
+            </div>
+          ),
+        });
         self.getList();
       })
       .catch((error) => {
         console.log(error);
-        alert("에러가 발생하였습니다 다시 시도해주세요.");
+        Modal.info({
+          title: "삭제 오류",
+          content: "에러가 발생하였습니다 다시 시도해주세요."
+        });
       });
-  };
+  }});
+}
+  else {
+    Modal.confirm({
+      title:"공지사항 재공지",
+      content: "해당 공지사항을 재공지하시겠습니까?",
+      okText: "확인",
+      cancelText:"취소",
+      onOk() {
+        httpPost(httpUrl.updateNotice, [], {
+          // category:row.category,
+          // important:row.important,
+          // title:row.title,
+         // sortOrder:row.sortOrder,
+         // content:row.content,
+         // // name: this.formRef.current.getFieldsValue().surchargeName,
+         // // extraPrice: this.formRef.current.getFieldsValue().feeAdd,
+         // branchCode: self.state.branchCode,
+         // createDate: formatDateSecond(row.createDate),
+         deleted: false,
+         // name: this.formRef.current.getFieldsValue().surchargeName,
+         // extraPrice: this.formRef.current.getFieldsValue().feeAdd,
+         // deleteDate: formatDateSecond(today),
+         // readDate: row.readDate,
+         idx: row.idx,
+        })
+      .then((result) => {
+        // console.log('## delete result=' + JSON.stringify(result, null, 4))
+        Modal.info({
+          title:"공지사항 등록",
+          content: (
+            <div>
+              해당공지사항을 재공지합니다.
+            </div>
+          ),
+        });
+        self.getDeletedList();
+      })
+      .catch((error) => {
+        console.log(error);
+        Modal.info({
+          title: "삭제 오류",
+          content: "에러가 발생하였습니다 다시 시도해주세요."
+        });
+      });
+  }})};
+  }
 
-  updateData = () => { };
+  closeNoticeRegistrationModal = () => {
+    this.setState({ registNotice: false });
+  }
 
   render() {
     const columns = [
@@ -250,12 +345,7 @@ class NoticeDialog extends Component {
         dataIndex: "content",
         className: "table-column-center",
         render: (data) => (
-          <div
-            style={{ display: "inline-block", cursor: "pointer" }}
-            onClick={() => {}}
-          >
-            {data}
-          </div>
+          <div>{data}</div>
         ),
       },
       {
@@ -287,7 +377,11 @@ class NoticeDialog extends Component {
                 this.onDelete(row);
               }}
             >
-              삭제
+              {!this.state.checkedCompleteCall ? (
+                <div>삭제</div>
+                ) : (
+                  <div>등록</div>
+                  )}
             </Button>
           </div>
         ),
@@ -318,21 +412,36 @@ class NoticeDialog extends Component {
                         <span className="span1">삭제목록</span>
                       </div>
                       <div className="registBtn">
+                      {/* <RegistNoticeDialog data={this.state.dialogData} isOpen={this.state.registNotice} close={this.closeNoticeRegistrationModal} /> */}
                         <Button
                           type="primary"
                           htmlType="submit"
                           className="tabBtn insertTab noticeBtn"
+                          onClick={() => {}}
                         >
                           등록하기
                         </Button>
                       </div>
-                      <Table
-                        // rowKey={(record) => record.idx}
-                        dataSource={this.state.list}
-                        columns={columns}
-                        pagination={this.state.pagination}
-                        onChange={this.handleTableChange}
-                      />
+
+                      {this.state.checkedCompleteCall ?
+                        <Table
+                          className="noticeListTable"
+                          rowKey={(record) => record.idx}
+                          dataSource={this.state.deletedList}
+                          columns={columns}
+                          pagination={this.state.paginationDeleted}
+                          onChange={this.handleDeletedTableChange}
+                        /> :
+
+                        <Table
+                          className="noticeListTable"
+                          rowKey={(record) => record.idx}
+                          dataSource={this.state.list}
+                          columns={columns}
+                          pagination={this.state.pagination}
+                          onChange={this.handleTableChange}
+                        />
+                      }
                     </div>
                 </div>
               </div>

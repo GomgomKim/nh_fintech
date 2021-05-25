@@ -29,6 +29,9 @@ class BlindListDialog extends Component {
     componentDidMount() {
         this.getList()
     }
+    componentDidUpdate() {
+        
+    }
 
     componentDidUpdate(prevProps) {
         if(prevProps.isOpen !== this.props.isOpen) {

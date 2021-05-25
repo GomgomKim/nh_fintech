@@ -85,6 +85,7 @@ const httpExec = (method, url, data) => {
 };
 
 const httpGet = (url, params, data) => {
+  console.log(makeUrl(url, params))
   return httpExec("GET", makeUrl(url, params), data);
   // return new Promise((resolve, reject) => {
   //   Axios.get(makeUrl(url, params), data)
@@ -139,8 +140,7 @@ const httpDownload = (url, params, data) => {
     })
       .then((response) => {
         var blob = new Blob([response.data], {
-          type:
-            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+          type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         });
         resolve(blob);
       })
@@ -157,12 +157,10 @@ const httpUrl = {
   // 접수 현황
   receptionStatusList: "/order/assignList?pageSize=%s&pageNum=%s",
 
-
-
   // 주문 현황
   orderList: "/order/list",
-  orderExceptCompleteList:"/order/allListExceptCompleted?pageNum=%s&pageSize=%s",
-  orderUpdate:"/order/update",
+  orderUpdate: "/order/update",
+  orderCreate:"/order/create",
 
   priceExtraList: "/branch/deliveryPriceExtra/list?pageNum=%s&pageSize=%s",
   priceExtraRegist: "/branch/deliveryPriceExtra/create",
@@ -175,7 +173,7 @@ const httpUrl = {
   staffUpdate: "/rider/update",
 
   // rider
-  riderList: "/rider/list?pageSize=%s&pageNum=%s&searchName=%s&userStatus=%s",
+  riderList: "/rider/list?pageSize=%s&pageNum=%s&searchName=%s&userStatus=%s&riderLevels=%s",
   registRider: "/rider/create",
   updateRider: "/rider/update",
   riderLocate: "/rider/location/%s",
@@ -189,8 +187,8 @@ const httpUrl = {
   updateBranch: "/branch/update",
 
   // 공지사항
-  noticeList: "/notice/list?deleted=false&pageNum=%s&pageSize=%s",
-  noticeListDeleted: "/notice/list?deleted=true&pageNum=%s&pageSize=%s",
+  noticeList: "/notice/list?deleted=%s&pageNum=%s&pageSize=%s",
+  noticeListDeleted: "/notice/list?deleted=%s&pageNum=%s&pageSize=%s",
   registNotice: "/notice/create",
   updateNotice: "/notice/update",
   specificNoticeList: "/notice/%s",
@@ -200,6 +198,8 @@ const httpUrl = {
   registBlind: "/rider/admin/block/create",
   deleteBlind: "/rider/admin/block/delete",
 
+  // 채팅
+  chatList: "/chat/chatList?pageSize=%s&pageNum=%s",
 };
 
 const imageType = ["image/jpeg", "image/png", "image/bmp"];
