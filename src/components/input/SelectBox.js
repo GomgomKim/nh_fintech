@@ -12,6 +12,7 @@ export default class SelectBox extends Component {
     const { codeString } = this.props;
     let result = [];
     for (const property in codeString) {
+      if (codeString[property] === "") continue
       result.push(
         <Option key={`${property}`} value={property}>
           {codeString[property]}

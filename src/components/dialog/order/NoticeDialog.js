@@ -20,6 +20,7 @@ import '../../../css/modal.css';
 import { connect } from "react-redux";
 import { formatDate, formatDateSecond } from '../../../lib/util/dateUtil';
 import moment from 'moment';
+// import RegistNoticeDialog from "../../components/dialog/order/RegistNoticeDialog";
 
 const Option = Select.Option;
 const FormItem = Form.Item;
@@ -30,10 +31,16 @@ class NoticeDialog extends Component {
     super(props);
     this.state = {
       list: [],
+      deletedList:[],
       pagination: {
         total: 0,
         current: 1,
-        pageSize: 12,
+        pageSize: 5,
+      },
+      paginationDeleted: {
+        total: 0,
+        current: 1,
+        pageSize: 5,
       },
       date: "",
       title: "",
@@ -47,6 +54,7 @@ class NoticeDialog extends Component {
       readDate: '',
       deleted: false,
       checkedCompleteCall: false,
+      registNotice: false,
     //   idx: 1,
     };
     this.formRef = React.createRef();
@@ -71,6 +79,21 @@ class NoticeDialog extends Component {
     );
   };
 
+  handleDeletedTableChange = (pagination) => {
+    console.log(pagination);
+    const pager = { ...this.state.paginationDeleted };
+    pager.current = pagination.current;
+    pager.pageSize = pagination.pageSize;
+    this.setState(
+      {
+        paginationDeleted: pager,
+      },
+      () => {
+        this.getDeletedList();
+        }
+    );
+  };
+
   handleTableChange = (pagination) => {
     console.log(pagination);
     const pager = { ...this.state.pagination };
@@ -80,39 +103,45 @@ class NoticeDialog extends Component {
       {
         pagination: pager,
       },
-      () => this.getList()
+      () => {
+        this.getList();
+      }
     );
   };
 
   getList = () => {
+    // console.log("### "+ this.state.pagination.current)
     let pageNum = this.state.pagination.current;
     let pageSize = this.state.pagination.pageSize;
     let deleted = false;
-    httpGet(httpUrl.noticeList, [pageNum, pageSize, deleted], {}).then((res) => {
+    httpGet(httpUrl.noticeList, [deleted, pageNum, pageSize], {}).then((res) => {
+      console.log(res)
       const pagination = { ...this.state.pagination };
       pagination.current = res.data.currentPage;
       pagination.total = res.data.totalCount;
       this.setState({
         list: res.data.notices,
-        pagination,
+        pagination: pagination,
       });
     });}
 
   getDeletedList = () => {
-    let pageNum = this.state.pagination.current;
-    let pageSize = this.state.pagination.pageSize;
+    let pageNum = this.state.paginationDeleted.current;
+    let pageSize = this.state.paginationDeleted.pageSize;
     let deleted = true;
-    httpGet(httpUrl.noticeListDeleted, [pageNum, pageSize, deleted], {})
+    httpGet(httpUrl.noticeListDeleted, [deleted, pageNum, pageSize], {})
       .then((res) => {
         if (res.result === "SUCCESS" && res.data==="SUCCESS") {
           // alert("성공적으로 처리되었습니다.");
+          console.log(res)
           console.log("삭제목록 조회");
-          const pagination = { ...this.state.pagination };
+          const pagination = { ...this.state.paginationDeleted };
           pagination.current = res.data.currentPage;
           pagination.total = res.data.totalCount;
+          // console.log(pagination.total)
           this.setState({
-            list: res.data.notices,
-            pagination,
+            deletedList: res.data.notices,
+            paginationDeleted: pagination,
           });
         } else {
           Modal.info({
@@ -305,6 +334,10 @@ class NoticeDialog extends Component {
   }})};
   }
 
+  closeNoticeRegistrationModal = () => {
+    this.setState({ registNotice: false });
+  }
+
   render() {
     const columns = [
       {
@@ -379,22 +412,36 @@ class NoticeDialog extends Component {
                         <span className="span1">삭제목록</span>
                       </div>
                       <div className="registBtn">
+                      {/* <RegistNoticeDialog data={this.state.dialogData} isOpen={this.state.registNotice} close={this.closeNoticeRegistrationModal} /> */}
                         <Button
                           type="primary"
                           htmlType="submit"
                           className="tabBtn insertTab noticeBtn"
+                          onClick={() => {}}
                         >
                           등록하기
                         </Button>
                       </div>
-                      <Table
-                        className="noticeListTable"
-                        // rowKey={(record) => record.idx}
-                        dataSource={this.state.list}
-                        columns={columns}
-                        pagination={this.state.pagination}
-                        onChange={this.handleTableChange}
-                      />
+
+                      {this.state.checkedCompleteCall ?
+                        <Table
+                          className="noticeListTable"
+                          rowKey={(record) => record.idx}
+                          dataSource={this.state.deletedList}
+                          columns={columns}
+                          pagination={this.state.paginationDeleted}
+                          onChange={this.handleDeletedTableChange}
+                        /> :
+
+                        <Table
+                          className="noticeListTable"
+                          rowKey={(record) => record.idx}
+                          dataSource={this.state.list}
+                          columns={columns}
+                          pagination={this.state.pagination}
+                          onChange={this.handleTableChange}
+                        />
+                      }
                     </div>
                 </div>
               </div>

@@ -3,11 +3,12 @@ import {
     Form, Table, Checkbox, Input, Button,  Modal,
 } from "antd";
 import '../../css/modal.css';
-import { blockString } from '../../lib/util/codeUtil';
+import { frRiderString, blockString } from '../../lib/util/codeUtil';
 import { httpPost, httpUrl } from "../../api/httpClient";
 import SelectBox from '../../components/input/SelectBox';
 import { formatDate } from "../../lib/util/dateUtil";
 import { connect } from "react-redux";
+import { blindComplete, blindError, blindNowError, unBlindComplete, unBlindError } from "../../api/Modals";
 const FormItem = Form.Item;
 
 class BlindListDialog extends Component {
@@ -20,7 +21,7 @@ class BlindListDialog extends Component {
                 current: 1,
                 pageSize: 5,
             },
-            blocked: 0,
+            deletedCheck: false
         };
         this.formRef = React.createRef();
     }
@@ -48,6 +49,7 @@ class BlindListDialog extends Component {
         }, () => this.getList());
     };
 
+<<<<<<< HEAD
     onDelete = (idx) => {
         Modal.confirm({
             title: "차단 해제",
@@ -80,6 +82,8 @@ class BlindListDialog extends Component {
     }
 
 
+=======
+>>>>>>> 136f7bbeae18fa848fc80ac372497212bd4850a7
     getList = () => {
         let {data} = this.props;
         let riderIdx = data.idx;
@@ -87,27 +91,90 @@ class BlindListDialog extends Component {
             riderIdx: riderIdx,
             pageNum: this.state.pagination.current,
             pageSize: this.state.pagination.pageSize,
+            deletedList: [0],
         })
           .then((res) => {
+<<<<<<< HEAD
             if (res.result === "SUCCESS" && res.data==="SUCCESS") {
               console.log(res);
+=======
+>>>>>>> 136f7bbeae18fa848fc80ac372497212bd4850a7
               this.setState({
                 list: res.data.riderFrBlocks,
               });
-            } else {
-              Modal.info({
-                title: "적용 오류",
-                content: "처리가 실패했습니다.",
-              });
-            }
           })
-          .catch((e) => {
-            Modal.info({
-              title: "적용 오류",
-              content: "처리가 실패했습니다.",
-            });
-          });
       };
+    
+      getDeletedList = () => {
+        let {data} = this.props;
+        let riderIdx = data.idx;
+        httpPost(httpUrl.blindList, [], {
+            riderIdx: riderIdx,
+            deletedList: [0, 1],
+            pageNum: this.state.pagination.current,
+            pageSize: this.state.pagination.pageSize,
+        })
+          .then((res) => {
+              this.setState({
+                list: res.data.riderFrBlocks,
+              });
+          })
+      };
+    
+
+    getUserList = () => {
+
+    }
+
+    onDeleteCheck = (e) => {
+        // alert(e)
+        this.setState(
+          {
+            deletedCheck: e.target.checked,
+          },
+          () => {
+            if (!this.state.deletedCheck) {
+              this.getList();
+            } else {
+              this.getDeletedList();
+            }
+          }
+        );
+      };
+
+    onDelete = (idx,deleted) => {
+        let self = this;
+        if(deleted == true) {
+            Modal.confirm({
+                title: "차단 해제",
+                content: "차단을 해제하시겠습니까?",
+                okText: "확인",
+                cancelText: "취소",
+                onOk(){
+                    httpPost(httpUrl.deleteBlind, [], {
+                        idx: idx,
+                    })
+                    .then((result) => {
+                        if (result.result === "SUCCESS") {
+                            unBlindComplete();
+                            self.getList();
+                        } else {
+                            unBlindError();
+                        }
+                        self.getList();
+                    })
+                    .catch((e) => {
+                        unBlindError();
+                    });
+                }
+            })
+        }
+        else {
+            blindNowError();
+        }
+    }
+
+
 
     render() {
         const columns = [
@@ -139,30 +206,38 @@ class BlindListDialog extends Component {
                 render: (data) => <div>{formatDate(data)}</div>,
             },
             {
+                title: "해제일",
+                dataIndex: "deleteDate",
+                className: "table-column-center",
+                render: (data) => <div>{formatDate(data)}</div>,
+            },
+            {
                 title: "상태",
-                dataIndex: "blocked",
+                dataIndex: "deleted",
                 className: "table-column-center",
                 render:
                     (data, row) => (
                         <div>
-                            {/* <SelectBox
+                            <SelectBox
+                                placeholder={row.deleted !== true ? "차단중" : "차단해제"}
                                 value={blockString[data]}
                                 code={Object.keys(blockString)}
                                 codeString={blockString}
                                 onChange={(value) => {
-                                    if (parseInt(value) !== row.blocked) {
-                                        this.onDelete(row.idx);
+                                    if (parseInt(value) !== row.deleted) {
+                                        this.onDelete(row.idx, value);
                                     }
                                 }}
-                            /> */}
-                            <Button className="tabBtn surchargeTab" 
-                            onClick={()=>this.onDelete(row.idx)}>블라인드</Button>
+                            />
+                            {/* <Button className="tabBtn surchargeTab" 
+                                onClick={(value)=>this.onDelete(row.idx, row.deleted)}>
+                            {row.deleted === false ? "차단중" : "차단해제"}</Button> */}
                         </div>
                     ),
             },
         ];
 
-        const { isOpen, close } = this.props;
+        const { isOpen, close, data } = this.props;
         // console.log(JSON.stringify(data))
         return (
             <React.Fragment>
@@ -183,7 +258,9 @@ class BlindListDialog extends Component {
                                         fontSize: 15
                                         }}>
                                         해제 포함
-                                        <Checkbox style={{ marginLeft:6,verticalAlign: 'bottom' }}/>
+                                        <Checkbox
+                                            defaultChecked={this.state.checkedCompleteCall ? "checked" : ""}
+                                            onChange={this.onDeleteCheck}/>
                                     </div>
 
                                     <div className="blindLayout">
@@ -209,8 +286,16 @@ class BlindListDialog extends Component {
                                                 className="selectItem"
                                                 // initialValue={this.props.loginInfo.id}
                                             >
-                                                <Input placeholder="차단자 입력" className="override-input sub">
-                                                </Input>
+                                                <SelectBox
+                                                    value={frRiderString[this.state.blindStatus]}
+                                                    code={Object.keys(frRiderString)}
+                                                    codeString={frRiderString}
+                                                    onChange={(value) => {
+                                                        if (parseInt(value) !== this.state.blindStatus) {
+                                                            this.setState({blindStatus: parseInt(value)})
+                                                        }
+                                                    }}
+                                                />
                                             </FormItem>
                                         <div className="subTitle">
                                                 가맹점명
@@ -228,6 +313,7 @@ class BlindListDialog extends Component {
                                             <FormItem
                                                 name="riderName"
                                                 className="selectItem"
+                                                initialValue={data.riderName}
                                             >
                                                 <Input placeholder="기사명 입력" className="override-input sub">
                                                 </Input>

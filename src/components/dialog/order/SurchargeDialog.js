@@ -313,7 +313,7 @@ class SurchargeDialog extends Component {
 }
 const mapStateToProps = (state) => {
     return {
-        branchIdx: state.login.branch,
+        loginInfo: state.login.loginInfo,
     };
 }
 const mapDispatchToProps = (dispatch) => {
