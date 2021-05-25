@@ -6,10 +6,8 @@ import {
 import '../../../css/modal.css';
 import { httpUrl, httpPost, serverUrl } from '../../../api/httpClient';
 import moment from 'moment';
-import SelectBox from '../../../components/input/SelectBox';
 import PostCodeDialog from '../common/PostCodeDialog';
 import { 
-    userGroupString,  
     pgUseRate,
     feeManner
 } from '../../../lib/util/codeUtil';
@@ -20,10 +18,7 @@ import {
     updateError,
 } from '../../../api/Modals'
 
-
-
 const FormItem = Form.Item;
-const Option = Select.Option;
 const dateFormat = 'YYYY/MM/DD';
 const today = new Date();
 
@@ -86,8 +81,6 @@ class RegistFranDialog extends Component {
                 chargeDate: 13,
                 duesAutoChargeEnabled: false,
                 dues: 0,
-
-
             }).then((result) => {
                 console.log("## result: " + JSON.stringify(result, null, 4));
                 if (result.result === "SUCCESS") {
@@ -111,13 +104,13 @@ class RegistFranDialog extends Component {
         this.setState({ isPostCodeOpen: false,})
     }
 
+    // 우편번호 - 주소 저장
     getAddr = (addrData) => {
         console.log(addrData)
-        console.log(addrData.address)
-        console.log(addrData.autoJibunAddress)
-        this.setState({ 
-            roadAddr: addrData.address, // 도로명 주소
-            localAddr: addrData.autoJibunAddress, // 지번
+        // console.log(addrData.address)
+        this.formRef.current.setFieldsValue({
+            addr1: addrData.roadAddress, // 도로명 주소
+            addr3: addrData.autoJibunAddress // 지번
         })
     }
     
@@ -309,18 +302,6 @@ class RegistFranDialog extends Component {
                                                 </div>
                                                 <div className="contentBlock">
                                                     <div className="mainTitle">
-                                                        상세주소
-                                                    </div>
-                                                    <FormItem
-                                                        name="addr2"
-                                                        className="selectItem"
-                                                        initialValue={data && data.addr2}
-                                                    >
-                                                        <Input placeholder="상세주소를 입력해 주세요." className="override-input sub"/>
-                                                    </FormItem>
-                                                </div>
-                                                <div className="contentBlock">
-                                                    <div className="mainTitle">
                                                         지번주소
                                                     </div>
                                                     <FormItem
@@ -328,6 +309,18 @@ class RegistFranDialog extends Component {
                                                         className="selectItem"
                                                         // initialValue={data && data.addr3}
                                                         initialValue={data && 'test'}
+                                                    >
+                                                        <Input placeholder="상세주소를 입력해 주세요." className="override-input sub"/>
+                                                    </FormItem>
+                                                </div>
+                                                <div className="contentBlock">
+                                                    <div className="mainTitle">
+                                                        상세주소
+                                                    </div>
+                                                    <FormItem
+                                                        name="addr2"
+                                                        className="selectItem"
+                                                        initialValue={data && data.addr2}
                                                     >
                                                         <Input placeholder="상세주소를 입력해 주세요." className="override-input sub"/>
                                                     </FormItem>
