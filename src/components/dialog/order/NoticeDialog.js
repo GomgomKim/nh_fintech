@@ -20,6 +20,7 @@ import '../../../css/modal.css';
 import { connect } from "react-redux";
 import { formatDate, formatDateSecond } from '../../../lib/util/dateUtil';
 import moment from 'moment';
+
 const Option = Select.Option;
 const FormItem = Form.Item;
 const today = new Date();
@@ -32,7 +33,7 @@ class NoticeDialog extends Component {
       pagination: {
         total: 0,
         current: 1,
-        pageSize: 5,
+        pageSize: 12,
       },
       date: "",
       title: "",
@@ -62,7 +63,7 @@ class NoticeDialog extends Component {
       },
       () => {
         if (this.state.checkedCompleteCall) {
-          this.getExceptCompleteList();
+          this.getDeletedList();
         } else {
           this.getList();
         }
@@ -86,7 +87,8 @@ class NoticeDialog extends Component {
   getList = () => {
     let pageNum = this.state.pagination.current;
     let pageSize = this.state.pagination.pageSize;
-    httpGet(httpUrl.noticeList, [pageNum, pageSize], {}).then((res) => {
+    let deleted = false;
+    httpGet(httpUrl.noticeList, [pageNum, pageSize, deleted], {}).then((res) => {
       const pagination = { ...this.state.pagination };
       pagination.current = res.data.currentPage;
       pagination.total = res.data.totalCount;
@@ -96,14 +98,15 @@ class NoticeDialog extends Component {
       });
     });}
 
-  getExceptCompleteList = () => {
+  getDeletedList = () => {
     let pageNum = this.state.pagination.current;
     let pageSize = this.state.pagination.pageSize;
-    httpGet(httpUrl.noticeListDeleted, [pageNum, pageSize], {})
+    let deleted = true;
+    httpGet(httpUrl.noticeListDeleted, [pageNum, pageSize, deleted], {})
       .then((res) => {
         if (res.result === "SUCCESS") {
           // alert("성공적으로 처리되었습니다.");
-          console.log("완료 제외 조회");
+          console.log("삭제목록 조회");
           const pagination = { ...this.state.pagination };
           pagination.current = res.data.currentPage;
           pagination.total = res.data.totalCount;
@@ -211,37 +214,96 @@ class NoticeDialog extends Component {
 
   onDelete = (row) => {
     let self = this;
-    httpPost(httpUrl.updateNotice, [], {
-      // category:row.category,
-      // important:row.important,
-      // title:row.title,
-      // sortOrder:row.sortOrder,
-      // content:row.content,
-      // // name: this.formRef.current.getFieldsValue().surchargeName,
-      // // extraPrice: this.formRef.current.getFieldsValue().feeAdd,
-      // branchCode: self.state.branchCode,
-      // createDate: formatDateSecond(row.createDate),
-      deleted: 1,
-      // name: this.formRef.current.getFieldsValue().surchargeName,
-      // extraPrice: this.formRef.current.getFieldsValue().feeAdd,
-      // deleteDate: formatDateSecond(today),
-      // readDate: row.readDate,
-      idx: row.idx,
-    })
+    if (!this.state.checkedCompleteCall) {
+    Modal.confirm({
+      title:"공지사항 삭제",
+      content: "해당 공지사항을 삭제하시겠습니까?",
+      okText: "확인",
+      cancelText:"취소",
+      onOk() {
+        httpPost(httpUrl.updateNotice, [], {
+          // category:row.category,
+          // important:row.important,
+          // title:row.title,
+         // sortOrder:row.sortOrder,
+         // content:row.content,
+         // // name: this.formRef.current.getFieldsValue().surchargeName,
+         // // extraPrice: this.formRef.current.getFieldsValue().feeAdd,
+         // branchCode: self.state.branchCode,
+         // createDate: formatDateSecond(row.createDate),
+         deleted: true,
+         // name: this.formRef.current.getFieldsValue().surchargeName,
+         // extraPrice: this.formRef.current.getFieldsValue().feeAdd,
+         // deleteDate: formatDateSecond(today),
+         // readDate: row.readDate,
+         idx: row.idx,
+        })
       .then((result) => {
-        console.log(row);
         // console.log('## delete result=' + JSON.stringify(result, null, 4))
-        alert("해당공지사항을 삭제합니다.");
-        self.handleClear();
+        Modal.info({
+          title:"공지사항 삭제",
+          content: (
+            <div>
+              해당공지사항을 삭제합니다.
+            </div>
+          ),
+        });
         self.getList();
       })
       .catch((error) => {
         console.log(error);
-        alert("에러가 발생하였습니다 다시 시도해주세요.");
+        Modal.info({
+          title: "삭제 오류",
+          content: "에러가 발생하였습니다 다시 시도해주세요."
+        });
       });
-  };
-
-  updateData = () => { };
+  }});
+}
+  else {
+    Modal.confirm({
+      title:"공지사항 재공지",
+      content: "해당 공지사항을 재공지하시겠습니까?",
+      okText: "확인",
+      cancelText:"취소",
+      onOk() {
+        httpPost(httpUrl.updateNotice, [], {
+          // category:row.category,
+          // important:row.important,
+          // title:row.title,
+         // sortOrder:row.sortOrder,
+         // content:row.content,
+         // // name: this.formRef.current.getFieldsValue().surchargeName,
+         // // extraPrice: this.formRef.current.getFieldsValue().feeAdd,
+         // branchCode: self.state.branchCode,
+         // createDate: formatDateSecond(row.createDate),
+         deleted: false,
+         // name: this.formRef.current.getFieldsValue().surchargeName,
+         // extraPrice: this.formRef.current.getFieldsValue().feeAdd,
+         // deleteDate: formatDateSecond(today),
+         // readDate: row.readDate,
+         idx: row.idx,
+        })
+      .then((result) => {
+        // console.log('## delete result=' + JSON.stringify(result, null, 4))
+        Modal.info({
+          title:"공지사항 등록",
+          content: (
+            <div>
+              해당공지사항을 재공지합니다.
+            </div>
+          ),
+        });
+        self.getDeletedList();
+      })
+      .catch((error) => {
+        console.log(error);
+        Modal.info({
+          title: "삭제 오류",
+          content: "에러가 발생하였습니다 다시 시도해주세요."
+        });
+      });
+  }})};
+  }
 
   render() {
     const columns = [
@@ -250,12 +312,7 @@ class NoticeDialog extends Component {
         dataIndex: "content",
         className: "table-column-center",
         render: (data) => (
-          <div
-            style={{ display: "inline-block", cursor: "pointer" }}
-            onClick={() => {}}
-          >
-            {data}
-          </div>
+          <div>{data}</div>
         ),
       },
       {
@@ -287,7 +344,11 @@ class NoticeDialog extends Component {
                 this.onDelete(row);
               }}
             >
-              삭제
+              {!this.state.checkedCompleteCall ? (
+                <div>삭제</div>
+                ) : (
+                  <div>등록</div>
+                  )}
             </Button>
           </div>
         ),
@@ -327,6 +388,7 @@ class NoticeDialog extends Component {
                         </Button>
                       </div>
                       <Table
+                        className="noticeListTable"
                         // rowKey={(record) => record.idx}
                         dataSource={this.state.list}
                         columns={columns}
