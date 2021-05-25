@@ -87,9 +87,8 @@ class MapControlDialog extends Component {
 
     onSearchWorkerSelected = (value) => {
       console.log(value)
-      var riderIdx = -1;
       if(this.state.results.find(x => x.id === value)){
-        riderIdx = this.state.results.find(x => x.id === value).idx;
+        var riderIdx = this.state.results.find(x => x.id === value).idx;
         var name = this.state.results.find(x => x.id === value).riderName;
         this.setState({
           selectedRiderIdx: riderIdx,
@@ -105,7 +104,7 @@ class MapControlDialog extends Component {
         let selectedRiderIdx = this.state.selectedRiderIdx;
         console.log(selectedRiderIdx)
         httpGet(httpUrl.riderLocate, [selectedRiderIdx], {}).then((result) => {
-          // console.log('### nnbox result=' + JSON.stringify(result, null, 4))
+          console.log('### nnbox result=' + JSON.stringify(result, null, 4))
           // console.log('### nnbox result=' + JSON.stringify(result.data.orders, null, 4))
           const pagination = { ...this.state.pagination };
           if(result.data != null){

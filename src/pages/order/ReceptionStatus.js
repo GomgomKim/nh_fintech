@@ -25,7 +25,6 @@ import {
   deliveryStatusCode,
   modifyType,
   rowColorName,
-  preparationStatus,
   paymentMethod,
   cardStatus,
 } from "../../lib/util/codeUtil";
@@ -41,7 +40,9 @@ import {
 import { httpPost, httpUrl } from "../../api/httpClient";
 import { connect } from "react-redux";
 import InfiniteScroll from "react-infinite-scroller";
+import PaymentDialog from "../../components/dialog/order/PaymentDialog";
 import ModifyOrderDialog from "../../components/dialog/order/ModifyOrderDialog";
+import SearchRiderDialog from "../../components/dialog/common/SearchRiderDialog";
 
 const Option = Select.Option;
 const Search = Input.Search;
@@ -71,6 +72,9 @@ class ReceptionStatus extends Component {
       activeIndex: -1,
       mapControlOpen: false,
       modifyOrder: false,
+      paymentOpen: false,
+      editable:false,
+      orderData: null,
 
       // data
       list: [],
@@ -124,14 +128,14 @@ class ReceptionStatus extends Component {
 
   getList = () => {
     const startDate = this.state.selectedDate;
-    const endDate = today;
+    const endDate = new moment();
     var data = {
       orderStatuses: this.state.selectedOrderStatus,
       pageNum: this.state.pagination.current,
       pageSize: this.state.pagination.pageSize,
       paymentMethods: this.state.selectedPaymentMethods,
       startDate: formatDate(startDate).split(" ")[0],
-      endDate: formatDate(endDate).split(" ")[0],
+      endDate: formatDate(endDate.add("1","d")).split(" ")[0],
     };
     if (this.state.franchisee) {
       data.frName = this.state.franchisee;
@@ -155,16 +159,13 @@ class ReceptionStatus extends Component {
         }
       })
       .catch((e) => {
+        console.log(e);
         Modal.info({
           title: "적용 오류",
           content: "처리가 실패했습니다.",
         });
       });
   };
-
-  // api 다시 확인 해보기
-  // frName, riderName 은 빈스트링 보내지 말고 내용 없으면 아예 안보내야 됨
-  // + startDate, endDate 로 나눠졋음
 
   getCompleteList = () => {
     const startDate = this.state.selectedDate;
@@ -216,7 +217,8 @@ class ReceptionStatus extends Component {
     this.setState(
       {
         pagination: {
-          current: this.state.pagination.current + 1,
+          ...this.state.pagination,
+          pageSize: this.state.pagination.pageSize + 30,
         },
       },
       () => this.getList()
@@ -301,6 +303,14 @@ class ReceptionStatus extends Component {
   };
   closeModifyOrderModal = () => {
     this.setState({ modifyOrder: false });
+  };
+
+  // 주문수정 dialog
+  openPaymentModal = () => {
+    this.setState({ paymentOpen: true });
+  };
+  closePaymentModal = () => {
+    this.setState({ paymentOpen: false });
   };
 
   getStatusVal = (idx) => {
@@ -434,7 +444,16 @@ class ReceptionStatus extends Component {
         className: "table-column-center",
         render: (data, row) =>
           data.length > 1 ? (
-            <Button>보기</Button>
+            <>
+              <PaymentDialog
+                isOpen={this.state.paymentOpen}
+                close={this.closePaymentModal}
+                orderPayments={data}
+              />
+              <Button onClick={this.openPaymentModal} close={this.clos}>
+                보기
+              </Button>
+            </>
           ) : (
             <div>{paymentMethod[data[0]["paymentMethod"]]}</div>
           ),
@@ -445,9 +464,10 @@ class ReceptionStatus extends Component {
         className: "table-column-center",
         render: (data, row) => (
           <>
-            <ModifyOrderDialog
+            <RegistCallDialog
               isOpen={this.state.modifyOrder}
               close={this.closeModifyOrderModal}
+              editable={this.state.editable}
               data={this.state.data}
             />
             <Button
@@ -542,9 +562,11 @@ class ReceptionStatus extends Component {
           className: "table-column-center",
           render: (data) => (
             <span>
-              <ForceAllocateDialog
+              {/* <ForceAllocateDialog */}
+              <SearchRiderDialog
                 isOpen={this.state.forceOpen}
                 close={this.closeForceingModal}
+                assign={true}
               />
               <Button className="tabBtn" onClick={this.openForceModal}>
                 강제배차
