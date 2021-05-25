@@ -319,10 +319,6 @@ class ReceptionStatus extends Component {
               defaultValue={data}
               value={row.orderStatus}
               onChange={(value) => {
-                // console.log(
-                //   "idx : " + row.idx + " val : " + value,
-                //   " row : " + row
-                // );
                 var flag = true;
 
                 // 제약조건 미성립

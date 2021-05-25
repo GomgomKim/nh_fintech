@@ -1,6 +1,6 @@
 import React, { Component, } from "react";
 import {
-    Form, Input, DatePicker, Select,
+    Form, Input, DatePicker,
     Button, Checkbox, Modal, Radio, Upload,
 } from "antd";
 import '../../../css/modal.css';
@@ -78,7 +78,7 @@ class RegistFranDialog extends Component {
                 tidPrepay: "",
                 tidNormalRate: 0,
                 frPhone: "010-1234-5678",
-                chargeDate: 13,
+                chargeDate: 1,
                 duesAutoChargeEnabled: false,
                 dues: 0,
             }).then((result) => {
