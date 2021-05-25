@@ -104,7 +104,7 @@ class NoticeDialog extends Component {
     let deleted = true;
     httpGet(httpUrl.noticeListDeleted, [pageNum, pageSize, deleted], {})
       .then((res) => {
-        if (res.result === "SUCCESS") {
+        if (res.result === "SUCCESS" && res.data==="SUCCESS") {
           // alert("성공적으로 처리되었습니다.");
           console.log("삭제목록 조회");
           const pagination = { ...this.state.pagination };

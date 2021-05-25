@@ -59,7 +59,7 @@ class BlindListDialog extends Component {
                     idx: idx,
                 })
                 .then((res) => {
-                    if (res.result === "SUCCESS") {
+                    if (res.result === "SUCCESS" && res.data==="SUCCESS") {
                         console.log(res.result);
                         this.getList();
                     } else {
@@ -89,7 +89,7 @@ class BlindListDialog extends Component {
             pageSize: this.state.pagination.pageSize,
         })
           .then((res) => {
-            if (res.result === "SUCCESS") {
+            if (res.result === "SUCCESS" && res.data==="SUCCESS") {
               console.log(res);
               this.setState({
                 list: res.data.riderFrBlocks,
