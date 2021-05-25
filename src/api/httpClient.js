@@ -188,7 +188,6 @@ const httpUrl = {
 
   // 공지사항
   noticeList: "/notice/list?deleted=%s&pageNum=%s&pageSize=%s",
-  noticeListDeleted: "/notice/list?deleted=%s&pageNum=%s&pageSize=%s",
   registNotice: "/notice/create",
   updateNotice: "/notice/update",
   specificNoticeList: "/notice/%s",

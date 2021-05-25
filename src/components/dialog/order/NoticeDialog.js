@@ -31,13 +31,7 @@ class NoticeDialog extends Component {
     super(props);
     this.state = {
       list: [],
-      deletedList:[],
       pagination: {
-        total: 0,
-        current: 1,
-        pageSize: 5,
-      },
-      paginationDeleted: {
         total: 0,
         current: 1,
         pageSize: 5,
@@ -64,32 +58,18 @@ class NoticeDialog extends Component {
     this.getList();
   }
 
-  handleToggleCompleteCall = (e) => {
+  handleToggleDeletedCall = (e) => {
     this.setState(
       {
-        checkedCompleteCall: e.target.checked,
+        checkedDeletedCall: e.target.checked,
+        pagination:{
+          total: 0,
+          current: 1,
+          pageSize: 5,
+        },        
       },
       () => {
-        if (this.state.checkedCompleteCall) {
-          this.getDeletedList();
-        } else {
           this.getList();
-        }
-      }
-    );
-  };
-
-  handleDeletedTableChange = (pagination) => {
-    console.log(pagination);
-    const pager = { ...this.state.paginationDeleted };
-    pager.current = pagination.current;
-    pager.pageSize = pagination.pageSize;
-    this.setState(
-      {
-        paginationDeleted: pager,
-      },
-      () => {
-        this.getDeletedList();
         }
     );
   };
@@ -113,6 +93,7 @@ class NoticeDialog extends Component {
     // console.log("### "+ this.state.pagination.current)
     let pageNum = this.state.pagination.current;
     let pageSize = this.state.pagination.pageSize;
+    if (!this.state.checkedDeletedCall) {
     let deleted = false;
     httpGet(httpUrl.noticeList, [deleted, pageNum, pageSize], {}).then((res) => {
       console.log(res)
@@ -121,42 +102,24 @@ class NoticeDialog extends Component {
       pagination.total = res.data.totalCount;
       this.setState({
         list: res.data.notices,
-        pagination: pagination,
+        pagination,
       });
-    });}
-
-  getDeletedList = () => {
-    let pageNum = this.state.paginationDeleted.current;
-    let pageSize = this.state.paginationDeleted.pageSize;
+    });
+    }
+    else {
     let deleted = true;
-    httpGet(httpUrl.noticeListDeleted, [deleted, pageNum, pageSize], {})
-      .then((res) => {
-        if (res.result === "SUCCESS") {
-          // alert("성공적으로 처리되었습니다.");
-          console.log(res)
-          console.log("삭제목록 조회");
-          const pagination = { ...this.state.paginationDeleted };
-          pagination.current = res.data.currentPage;
-          pagination.total = res.data.totalCount;
-          // console.log(pagination.total)
-          this.setState({
-            deletedList: res.data.notices,
-            paginationDeleted: pagination,
-          });
-        } else {
-          Modal.info({
-            title: "적용 오류",
-            content: "처리가 실패했습니다.",
-          });
-        }
-      })
-      .catch((e) => {
-        Modal.info({
-          title: "적용 오류",
-          content: "처리가 실패했습니다.",
-        });
+    httpGet(httpUrl.noticeList, [deleted, pageNum, pageSize], {}).then((res) => {
+      console.log(res)
+      const pagination = { ...this.state.pagination };
+      pagination.current = res.data.currentPage;
+      pagination.total = res.data.totalCount;
+      this.setState({
+        list: res.data.notices,
+        pagination,
       });
-  };
+    });
+    }
+  }
 
   //공지 전송
   handleSubmit = () => {
@@ -243,7 +206,7 @@ class NoticeDialog extends Component {
 
   onDelete = (row) => {
     let self = this;
-    if (!this.state.checkedCompleteCall) {
+    if (!this.state.checkedDeletedCall) {
     Modal.confirm({
       title:"공지사항 삭제",
       content: "해당 공지사항을 삭제하시겠습니까?",
@@ -322,7 +285,7 @@ class NoticeDialog extends Component {
             </div>
           ),
         });
-        self.getDeletedList();
+        self.getList();
       })
       .catch((error) => {
         console.log(error);
@@ -377,7 +340,7 @@ class NoticeDialog extends Component {
                 this.onDelete(row);
               }}
             >
-              {!this.state.checkedCompleteCall ? (
+              {!this.state.checkedDeletedCall ? (
                 <div>삭제</div>
                 ) : (
                   <div>등록</div>
@@ -408,7 +371,7 @@ class NoticeDialog extends Component {
                     <div className="noticelistBlock">
                       <div className="deleteBox">
                         <Checkbox
-                        onChange={this.handleToggleCompleteCall}></Checkbox>
+                        onChange={this.handleToggleDeletedCall}></Checkbox>
                         <span className="span1">삭제목록</span>
                       </div>
                       <div className="registBtn">
@@ -422,17 +385,6 @@ class NoticeDialog extends Component {
                           등록하기
                         </Button>
                       </div>
-
-                      {this.state.checkedCompleteCall ?
-                        <Table
-                          className="noticeListTable"
-                          rowKey={(record) => record.idx}
-                          dataSource={this.state.deletedList}
-                          columns={columns}
-                          pagination={this.state.paginationDeleted}
-                          onChange={this.handleDeletedTableChange}
-                        /> :
-
                         <Table
                           className="noticeListTable"
                           rowKey={(record) => record.idx}
@@ -440,8 +392,7 @@ class NoticeDialog extends Component {
                           columns={columns}
                           pagination={this.state.pagination}
                           onChange={this.handleTableChange}
-                        />
-                      }
+                        />                      
                     </div>
                 </div>
               </div>
