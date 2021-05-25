@@ -244,11 +244,6 @@ class RiderMain extends Component {
         title: "기사그룹",
         dataIndex: "userGroup",
         className: "table-column-center",
-        // render: (data) => <div>{data == "A" ? "A"
-        //   : data == "B" ? "B"
-        //     : data == "C" ? "C"
-        //       : data == "D" ? "D" : "-"}</div>
-        // render: (data) => <div>{'A'}</div>
         render: (data) => <div>{riderGroupString[data]}</div>
       },
       {
