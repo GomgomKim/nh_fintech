@@ -150,6 +150,7 @@ class RegistFranDialog extends Component {
                 }
             },
             onError(err) {
+                console.log(err)
                 Modal.error({
                     title:"업로드 결과",
                     content:"파일 업로드 실패"

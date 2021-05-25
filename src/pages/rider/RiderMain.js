@@ -263,7 +263,7 @@ class RiderMain extends Component {
         className: "table-column-center",
         render: (data, row) =>
           <div>
-            <BlindListDialog isOpen={this.state.blindListOpen} close={this.closeBlindModal} data={this.state.blindRiderData}/>
+            {/* <BlindListDialog isOpen={this.state.blindListOpen} close={this.closeBlindModal} data={this.state.blindRiderData}/> */}
             <Button className="tabBtn surchargeTab" onClick={()=>this.setState({ blindRiderData: row, blindListOpen: true })} >블라인드</Button>
           </div>
       },
