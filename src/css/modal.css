@@ -3148,6 +3148,7 @@
   left: 50%;
   transform: translate(-50%, -65%);
   width: 1000px;
+  height: 500px;
   border-radius: 30px;
   z-index: 2;
 }
@@ -3204,7 +3205,7 @@
 .blindLayout {
   margin-top: 20px;
   width: 100%;
-  /* height: 675px;  */
+  height: 350px;
   overflow-y: scroll;
   border: 1px solid #ccc;
   padding: 20px;
@@ -3260,7 +3261,7 @@
   width: 185px;
   height: 40px;
   font-size: 18px;
-  /* margin-top: 12px; */
+  margin-top: 12px;
   margin-left: 45px;
   display: inline-block;
   vertical-align: middle;
