@@ -942,7 +942,7 @@
 .registFranWrapper .mainTitle {
   display: inline-block;
   /* font-size: 20px; */
-  vertical-align: middle;
+  vertical-align: top;
   font-weight: bold;
   width: 100px;
 }
@@ -1006,7 +1006,7 @@
 .registFranWrapper.sub .mainTitle {
   display: inline-block;
   /* font-size: 20px; */
-  vertical-align: middle;
+  vertical-align: top;
   font-weight: bold;
   width: 100px;
 }
@@ -2428,9 +2428,11 @@
 .registRiderCheck {
   margin-left: 20px;
   display: inline-block;
-  /* margin-left: 22px; */
+  height: 31.7px;
 }
-
+.registRiderCheck .ant-radio-group {
+  margin-top: 4px !important;
+}
 .registRiderWrapper .submitBlock {
   margin-top: 40px;
   text-align: right;
