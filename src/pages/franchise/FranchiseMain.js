@@ -11,6 +11,10 @@ import {comma} from "../../lib/util/numberUtil";
 import {BankOutlined} from '@ant-design/icons';
 import {formatDate} from '../../lib/util/dateUtil';
 import { statusString, tableStatusString, withdrawString, cardStatus} from '../../lib/util/codeUtil';
+import {
+    updateComplete,
+    updateError,
+} from '../../api/Modals'
 
 const Search = Input.Search;
 
@@ -62,19 +66,17 @@ class FranchiseMain extends Component {
             ...this.state.pagination
         };
         pager.current = pagination.current;
-        pager.pageSize = pagination
-            .pageSize
-            this.setState({
-                pagination: pager
-            }, () => this.getList());
+        pager.pageSize = pagination.pageSize;
+        this.setState({
+            pagination: pager
+        }, () => this.getList());
     };
 
     getList = () => {
         console.log(this.state.franStatus)
         httpPost(httpUrl.franchiseList, [], {
             frName: this.state.frName,
-            pageNum: 1,
-            pageSize: 10,
+            pageNum: this.state.pagination.current,
             userGroup: this.state.franGroup,
             userStatus: this.state.franStatus === 0 ? "" : this.state.franStatus
         }).then((result) => {
@@ -83,14 +85,14 @@ class FranchiseMain extends Component {
                 ...this.state.pagination
             };
             pagination.current = result.data.currentPage;
-            pagination.total = result.data.total;
+            pagination.total = result.data.totalCount;
             this.setState({list: result.data.franchises, pagination});
         })
     }
 
     onSearchFranchiseDetail = (data) => {
         console.log("### get fran list data : " + data)
-        this.setState({list: data});
+        // this.setState({list: data});
     }
 
     // 가맹점조회 dialog
@@ -126,6 +128,7 @@ class FranchiseMain extends Component {
     
     closeModifyFranModal = () => {
         this.setState({modifyFranOpen: false});
+        this.getList()
     }
     
     // 주소검색관리 dialog
@@ -180,32 +183,17 @@ class FranchiseMain extends Component {
         })
             .then((res) => {
                 if (res.result === "SUCCESS") {
-                    /* Modal.info({
-                        title: "변경 완료",
-                        content: (
-                        <div>
-                            상태가 변경되었습니다.
-                        </div>
-                        ),
-                        onOk() { },
-                    }); */
+                    updateComplete()
                 } else {
-                    Modal.error(
-                        {title: "변경 실패", content: (<div>
-                            변경에 실패했습니다. 관리자에게 문의하세요.
-                        </div>), onOk() {}}
-                    );
+                    updateError()
                 }
                 this.getList();
             })
             .catch((e) => {
-                Modal.error(
-                    {title: "변경 실패", content: (<div>
-                        변경에 실패했습니다. 관리자에게 문의하세요.
-                    </div>), onOk() {}}
-                );
+                updateError()
             });
     }
+
 
     // 출금설정 변경
     onChangeWithdraw = (idx, value) => {
@@ -215,30 +203,14 @@ class FranchiseMain extends Component {
         })
             .then((res) => {
                 if (res.result === "SUCCESS") {
-                    /* Modal.info({
-                        title: "변경 완료",
-                        content: (
-                        <div>
-                            상태가 변경되었습니다.
-                        </div>
-                        ),
-                        onOk() { },
-                    }); */
+                    updateComplete()
                 } else {
-                    Modal.error(
-                        {title: "변경 실패", content: (<div>
-                            변경에 실패했습니다. 관리자에게 문의하세요.
-                        </div>), onOk() {}}
-                    );
+                    updateError()
                 }
                 this.getList();
             })
             .catch((e) => {
-                Modal.error(
-                    {title: "변경 실패", content: (<div>
-                        변경에 실패했습니다. 관리자에게 문의하세요.
-                    </div>), onOk() {}}
-                );
+                updateError()
             });
     }
 
@@ -318,25 +290,17 @@ class FranchiseMain extends Component {
             }, {
                 title: "블라인드",
                 className: "table-column-center",
-                render: () => <div>
-                        <RegistFranDialog
-                            isOpen={this.state.addFranchiseOpen}
-                            close={this.closeAddFranchiseModal}/>
-                        <Button className="tabBtn surchargeTab"
-                            // onClick={this.onChangeDeleted}
-                        >블라인드</Button>
+                render: (data, row) => <div>
+                        <BlindListDialog isOpen={this.state.blindListOpen} close={this.closeBlindModal} data={this.state.blindFrData}/>
+                        <Button className="tabBtn surchargeTab" onClick={()=>this.setState({blindListOpen: true, blindFrData: row})}>블라인드</Button>
                     </div>
             }, {
                 title: "수정",
                 className: "table-column-center",
                 render: (data, row) => <div>
-                        <RegistFranDialog
-                            isOpen={this.state.modifyFranOpen}
-                            close={this.closeModifyFranModal}
-                            data={this.state.dialogData}/>
-                        <Button
-                            className="tabBtn surchargeTab"
-                            onClick={() => this.setState({modifyFranOpen: true, dialogData: row})}>수정하기</Button>
+                        <RegistFranDialog isOpen={this.state.modifyFranOpen} close={this.closeModifyFranModal} data={this.state.dialogData}/>
+                        <Button className="tabBtn surchargeTab"
+                        onClick={() => this.setState({modifyFranOpen: true, dialogData: row})}>수정하기</Button>
                     </div>
             }
         ]

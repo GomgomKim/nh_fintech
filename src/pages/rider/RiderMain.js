@@ -16,8 +16,10 @@ import SearchRiderDialog from '../../components/dialog/common/SearchRiderDialog'
 import {
   tableStatusString,
   statusString,
-  riderLevelText
+  riderLevelText,
+  riderGroupString
 } from '../../lib/util/codeUtil';
+import { formatDate } from "../../lib/util/dateUtil";
 import moment from 'moment';
 
 const Search = Input.Search;
@@ -129,7 +131,7 @@ class RiderMain extends Component {
 
   onSearchRiderDetail = (data) => {
     console.log("### get fran list data : " + data)
-    this.setState({ results: data });
+    // this.setState({ results: data });
   }
 
   // 기사조회 dialog
@@ -242,11 +244,7 @@ class RiderMain extends Component {
         title: "기사그룹",
         dataIndex: "userGroup",
         className: "table-column-center",
-        // render: (data) => <div>{data == "A" ? "A"
-        //   : data == "B" ? "B"
-        //     : data == "C" ? "C"
-        //       : data == "D" ? "D" : "-"}</div>
-        render: (data) => <div>{'A'}</div>
+        render: (data) => <div>{riderGroupString[data]}</div>
       },
       {
         title: "출금비밀번호",
@@ -265,57 +263,34 @@ class RiderMain extends Component {
         className: "table-column-center",
         render: (data, row) =>
           <div>
-            <BlindListDialog isOpen={this.state.blindListOpen} close={this.closeBlindModal} date={this.state.blindData} />
-            <Button
-              className="tabBtn surchargeTab"
-              onClick={() => this.setState({ blindListOpen: true, blindRiderData: row })}
-            >블라인드</Button>
+            <BlindListDialog isOpen={this.state.blindListOpen} close={this.closeBlindModal} data={this.state.blindRiderData}/>
+            <Button className="tabBtn surchargeTab" onClick={()=>this.setState({ blindRiderData: row, blindListOpen: true })} >블라인드</Button>
           </div>
       },
       {
         title: "입사일",
+        // dataIndex: "wdawdDate",
         className: "table-column-center",
-        render: (data, row) => <div>
-          <DatePicker
-            defaultValue={moment(today, dateFormat)}
-            format={dateFormat}
-            onChange={date => this.setState({ selected: date })} />
-        </div>
+        render: (data) => <div>{formatDate("2021-03-21 12:00")}</div>
+        // render: (data, row) => <div>
+        //   <DatePicker
+        //     defaultValue={moment(today, dateFormat)}
+        //     format={dateFormat}
+        //     onChange={date => this.setState({ selected: date })} />
+        // </div>
       },
       {
         title: "퇴사일",
+        // dataIndex: "wdawdDate",
         className: "table-column-center",
-        render: (data, row) => <div>
-          <DatePicker
-            defaultValue={moment(today, dateFormat)}
-            format={dateFormat}
-            onChange={date => this.setState({ selected: date })} />
-        </div>
+        render: (data) => <div>{formatDate("2021-04-29 11:00:21")}</div>
+        // render: (data, row) => <div>
+        //   <DatePicker
+        //     defaultValue={moment(today, dateFormat)}
+        //     format={dateFormat}
+        //     onChange={date => this.setState({ selected: date })} />
+        // </div>
       },
-      // {
-      //   title: "충전",
-      //   className: "table-column-center",
-      //   render: () =>
-      //     <div>
-      //       <RiderCoinDialog isOpen={this.state.riderCoinOpen} close={this.closeRiderCoinModal} />
-      //       <Button
-      //         className="tabBtn surchargeTab"
-      //         onClick={this.openRiderCoinModal}
-      //       >코인충전</Button>
-      //     </div>
-      // },
-      // {
-      //   title: "출금내역",
-      //   className: "table-column-center",
-      //   render: () =>
-      //     <div>
-      //       <RiderBankDialog isOpen={this.state.riderBankOpen} close={this.closeRiderBankModal} />
-      //       <Button
-      //         className="tabBtn surchargeTab"
-      //         onClick={this.openRiderBankModal}
-      //       >내역보기</Button>
-      //     </div>
-      // },
       {
         title: "상태",
         dataIndex: "userStatus",
@@ -415,28 +390,28 @@ class RiderMain extends Component {
       <div className="">
         <div className="selectLayout">
 
-          <span className="searchRequirementText">검색조건</span><br/><br/>
+          <span className="searchRequirementText">검색조건</span><br /><br />
 
           <SelectBox
-              value={tableStatusString[this.state.userStatus]}
-              code={Object.keys(tableStatusString)}
-              codeString={tableStatusString}
-              onChange={(value) => {
-                  if (parseInt(value) !== this.state.userStatus) {
-                      this.setState({userStatus: parseInt(value)}, () => this.getList());
-                  }
-              }}/>
+            value={tableStatusString[this.state.userStatus]}
+            code={Object.keys(tableStatusString)}
+            codeString={tableStatusString}
+            onChange={(value) => {
+              if (parseInt(value) !== this.state.userStatus) {
+                this.setState({ userStatus: parseInt(value) }, () => this.getList());
+              }
+            }} />
 
           <Search
-              placeholder="기사검색"
-              className="searchFranchiseInput"
-              enterButton
-              allowClear
-              onSearch={this.onSearchRider}
-              style={{
-                  
-              }}/>
-              
+            placeholder="기사검색"
+            className="searchFranchiseInput"
+            enterButton
+            allowClear
+            onSearch={this.onSearchRider}
+            style={{
+
+            }} />
+
           <SearchRiderDialog
             callback={(data) => this.onSearchRiderDetail(data)}
             isOpen={this.state.searchRiderOpen}

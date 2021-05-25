@@ -88,6 +88,12 @@ const userGroupString = {
     5: 'E',
 }
 
+// 수수료 방식
+const feeManner = {
+    1: "정량",
+    2: "정률"
+}
+
 
 const blockString = {
     0: " - ",
@@ -138,6 +144,12 @@ const riderLevelText = [
     "센터장"
 ]
 
+const pgUseRate = [
+    // "",
+    "100%",
+    "0%"
+]
+
 export { 
     deliveryStatusCode,
     blockString,
@@ -156,5 +168,7 @@ export {
     riderLevelText,
     userGroupString,
     riderGroupString,
-    tableStatusString
+    pgUseRate,
+    tableStatusString,
+    feeManner,
 };
