@@ -6,6 +6,7 @@ import '../../../css/modal.css';
 import { httpUrl, httpPost } from '../../../api/httpClient';
 import SelectBox from '../../../components/input/SelectBox';
 import { riderGroupString, riderLevelText } from '../../../lib/util/codeUtil';
+import { updateComplete, updateError } from '../../../api/Modals'
 
 const Option = Select.Option;
 const FormItem = Form.Item;
@@ -34,7 +35,7 @@ class RegistRiderDialog extends Component {
     }
 
     componentDidMount() {
-        this.getList()
+        // this.getList()
     }
 
 
@@ -46,44 +47,54 @@ class RegistRiderDialog extends Component {
 
     handleSubmit = () => {
         let self = this;
+        let { data } = this.props;
         Modal.confirm({
-            title: "기사 등록",
-            content: (
+            title: <div> {data ? "기사 수정" : "기사 등록"}</div>,
+            content:
                 <div>
-                    {self.formRef.current.getFieldsValue().id + '을 등록하시겠습니까?'}
-                </div>
-            ),
+                    {data ? '기사 정보를 수정하시겠습니까?' : '새로운 기사를 등록하시겠습니까??'}
+                </div>,
+
             okText: "확인",
             cancelText: "취소",
             onOk() {
-                httpPost(httpUrl.registRider, [], {
-                    ...self.formRef.current.getFieldsValue(),
-                    ncash: 123,
-                    userType: 1,
-                    userGroup: 3,
-                    // riderLevel: self.state.riderLevel,
-                    // riderName: self.state.riderName,
-                    // id: self.state.id,
-                    // password: self.state.password,
-                    // phone: self.state.phone,
-                    // memo: self.state.memo,
-                    // withdrawLimit: self.state.withdrawLimit,
-                }).then((result) => {
-                    Modal.info({
-                        title: "등록 완료",
-                        content: (
-                            <div>
-                                {self.formRef.current.getFieldsValue().id}이(가) 등록되었습니다.
-                            </div>
-                        ),
-                    });
-                    self.getList()
-                }).catch((error) => {
-                    Modal.info({
-                        title: "등록 오류",
-                        content: "오류가 발생하였습니다. 다시 시도해 주십시오."
-                    });
-                });
+                data ?
+                    //수정
+                    httpPost(httpUrl.updateRider, [], {
+                        ...self.formRef.current.getFieldsValue(),
+                        ncash: 123,
+                        userType: 1,
+                    })
+                        .then((res) => {
+                            if (res.result === "SUCCESS") {
+                                updateComplete()
+                            } else {
+                                updateError()
+                            }
+                            self.props.close()
+                            // this.getList();
+                        }).catch(e => {
+                            updateError()
+                        })
+                    :
+                    //등록
+                    httpPost(httpUrl.registRider, [], {
+                        ...self.formRef.current.getFieldsValue(),
+                        ncash: 123,
+                        userType: 1,
+                    }).then((res) => {
+                        console.log(res)
+                        if (res.result === "SUCCESS") {
+                            updateComplete()
+                        } else {
+                            updateError()
+                        }
+                        self.props.close()
+                        // this.getList();
+                    }).catch(e => {
+                        updateError()
+                    })
+
             },
         });
     }
@@ -111,24 +122,6 @@ class RegistRiderDialog extends Component {
     onChangFeeManner = (e) => {
         console.log(`selected ${e.target.value}`);
         this.setState({ feeManner: e.target.value });
-    }
-
-    getList = () => {
-        console.log(this.state.riderGroup)
-        httpPost(httpUrl.riderList, [], {
-            riderName: this.state.riderName,
-            pageNum: 1,
-            pageSize: 10,
-            userStatus: this.state.riderStatus == 0 ? null : this.state.riderStatus
-        }).then((result) => {
-            console.log('## result=' + JSON.stringify(result, null, 4))
-            const pagination = {
-                ...this.state.pagination
-            };
-            pagination.current = result.data.currentPage;
-            pagination.total = result.data.total;
-            this.setState({ list: result.data.riders, pagination });
-        })
     }
 
 
@@ -180,19 +173,11 @@ class RegistRiderDialog extends Component {
                                                             style={{ width: "260px" }}
                                                             onChange={(value) => {
                                                                 if (parseInt(value) !== this.state.riderGroup) {
-                                                                    this.setState({ riderGroup: parseInt(value) }, () => this.getList());
+                                                                    this.setState({ riderGroup: parseInt(value) });
                                                                 }
                                                             }}
-                                                        // onChange={(value) => {
-                                                        //     if (parseInt(value) !== row.enabled) {
-                                                        //         this.onChangeStatus(row.idx, value);
-                                                        //     }
-                                                        // }}
+
                                                         />
-
-
-
-
 
 
                                                     </FormItem>
@@ -213,7 +198,7 @@ class RegistRiderDialog extends Component {
                                                             style={{ width: "260px" }}
                                                             onChange={(value) => {
                                                                 if (parseInt(value) !== this.state.riderLevel) {
-                                                                    this.setState({ riderLevel: parseInt(value) }, () => this.getList());
+                                                                    this.setState({ riderLevel: parseInt(value) });
                                                                 }
                                                             }}
                                                         />
