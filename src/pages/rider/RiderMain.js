@@ -268,7 +268,7 @@ class RiderMain extends Component {
         className: "table-column-center",
         render: (data, row) =>
           <div>
-            {/* <BlindListDialog isOpen={this.state.blindListOpen} close={this.closeBlindModal} data={this.state.blindRiderData}/> */}
+            <BlindListDialog isOpen={this.state.blindListOpen} close={this.closeBlindModal} data={this.state.blindRiderData}/>
             <Button className="tabBtn surchargeTab" onClick={() => this.setState({ blindRiderData: row, blindListOpen: true })} >블라인드</Button>
           </div>
       },
@@ -438,7 +438,7 @@ class RiderMain extends Component {
             onClick={this.openTaskSchedulerModal}
           >일차감</Button>
 
-          <SendSnsDialog isOpen={this.state.sendSnsOpen} close={this.closeSendSnsModal} />
+          <SendSnsDialog isOpen={this.state.sendSnsOpen} close={this.closeSendSnsModal} callback={this.onSearchRiderDetail} />
           <Button className="riderManageBtn"
             onClick={this.openSendSnsModal}
           >SNS 전송</Button>
