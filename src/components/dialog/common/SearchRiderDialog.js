@@ -24,6 +24,7 @@ class SearchRiderDialog extends Component {
             },
             addressType: 0,
             selectedRowKeys: [],
+            isMulti: false,
 
             // data param
             riderLevel: [],
@@ -33,12 +34,9 @@ class SearchRiderDialog extends Component {
         this.formRef = React.createRef();
     }
     componentDidMount() {
-        this.getList()
+        this.getList(true)
     }
 
-    setDate = (date) => {
-        console.log(date)
-    }
 
     // 라이더 검색
     onSearchRider = (value) => {
@@ -61,7 +59,7 @@ class SearchRiderDialog extends Component {
         }, () => this.getList());
     };
 
-    getList = () => {
+    getList = (isInit) => {
         let pageNum = this.state.pagination.current;
         let userStatus = this.state.userStatus === 0 ? "" : this.state.userStatus;
         let searchName = this.state.searchName;
@@ -75,16 +73,71 @@ class SearchRiderDialog extends Component {
             list: result.data.riders,
             pagination,
           });
+
+          // mount될 때 data idx 배열 초기화
+          if(isInit){
+                // console.log(result.data.franchises[0].idx)
+                var totCnt = result.data.riders[0].idx;
+                var lists = []
+                for (let i = 0; i < totCnt; i++) {
+                    lists.push(false)
+                    // console.log(lists)
+                }
+                this.setState({
+                    dataIdxs : lists,
+                })
+            }
         })
     }
 
     onSelectChange = (selectedRowKeys) => {
-        console.log('selectedRowKeys changed: ', selectedRowKeys);
-        this.setState({selectedRowKeys: selectedRowKeys});
+        // console.log('selectedRowKeys changed: ', selectedRowKeys)
+        // console.log("selectedRowKeys.length :"+selectedRowKeys.length)
+
+        // console.log(this.state.list)
+        var cur_list = this.state.list
+        var overrideData = {}
+        for (let i = 0; i < cur_list.length; i++) {
+            var idx = cur_list[i].idx
+            if(selectedRowKeys.includes(idx)) overrideData[idx] = true
+            else overrideData[idx] = false
+        }
+        // console.log(overrideData)
+
+
+        var curIdxs = this.state.dataIdxs
+        curIdxs = Object.assign(curIdxs, overrideData)
+
+        selectedRowKeys = []
+        for (let i = 0; i < curIdxs.length; i++) {
+            if(curIdxs[i]) {
+                console.log("push  :"+i)
+                selectedRowKeys = [...selectedRowKeys, i]
+                console.log(selectedRowKeys)
+            }
+        }
+        console.log("#### :"+selectedRowKeys)
+        this.setState({
+            selectedRowKeys: selectedRowKeys,
+            dataIdxs: curIdxs
+        });
     };
 
     onSubmit = () => {
         this.props.callback(this.state.selectedRowKeys)
+        this.props.close()
+    }
+
+    onChangeMulti = (e) => {
+        // console.log(e.target.value)
+        this.setState({isMulti: e.target.value});
+    }
+
+    onRiderSelected = (data) => {
+        // console.log(data)
+        var dataIdx = this.state.dataIdxs
+        dataIdx[data] = true
+        this.props.callback(dataIdx)
         this.props.close()
     }
 
@@ -99,6 +152,12 @@ class SearchRiderDialog extends Component {
                 title: "기사명",
                 dataIndex: "riderName",
                 className: "table-column-center",
+                render: (data, row) => 
+                    this.state.isMulti ? 
+                        <div>{data}</div> :
+                        <div className='riderNameTag' onClick={()=>{
+                            this.onRiderSelected(row.idx)
+                    }}>{data}</div>
             },
             {
                 title: "직급",
@@ -167,6 +226,11 @@ class SearchRiderDialog extends Component {
                                                                 style={{
                                                                     
                                                                 }}/>
+
+                                                            <Radio.Group onChange={this.onChangeMulti} value={this.state.isMulti} className="selMulti">
+                                                                <Radio value={false}>single</Radio>
+                                                                <Radio value={true}>multi</Radio>
+                                                            </Radio.Group>
                                                         </div>
 
                                                         <Button type="primary" onClick={this.onSubmit} className="submitBtn">
@@ -176,13 +240,25 @@ class SearchRiderDialog extends Component {
                                                 </div>
 
                                                 <div className="dataTableLayout-01">
-                                                    <Table
-                                                        rowKey={(record) => record}
-                                                        rowSelection={rowSelection}
-                                                        dataSource={this.state.list}
-                                                        columns={columns}
-                                                        pagination={this.state.pagination}
-                                                        onChange={this.handleTableChange}/>
+                                                    {this.state.isMulti ?
+                                                        <Table
+                                                            rowKey={(record) => record.idx}
+                                                            rowSelection={rowSelection}
+                                                            dataSource={this.state.list}
+                                                            columns={columns}
+                                                            pagination={this.state.pagination}
+                                                            onChange={this.handleTableChange}/>
+
+                                                    :
+
+                                                        <Table
+                                                            rowKey={(record) => record.idx}
+                                                            dataSource={this.state.list}
+                                                            columns={columns}
+                                                            pagination={this.state.pagination}
+                                                            onChange={this.handleTableChange}/>
+                                                    }
+                                                    
                                                 </div>
                                             </div>
                                         </Form>
