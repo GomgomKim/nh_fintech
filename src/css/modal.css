@@ -1044,7 +1044,6 @@
   margin-top: 40px;
   padding-top: 30px;
   border-top: 1px solid #b5b5b5;
-  display: inline-block;
 }
 .registFranWrapper.bot .registFranTitle {
   font-size: 20px;
@@ -1063,7 +1062,6 @@
   vertical-align: middle;
   font-weight: bold;
   /* width: 70px; */
-  margin-left: 20px;
 }
 .registFranWrapper.bot .ant-checkbox-inner {
   width: 20px;
@@ -1077,19 +1075,10 @@
 .registFranWrapper.bot .selectItem {
   vertical-align: top;
 }
-.registFranWrapper.bot .override-select {
-  margin-left: 10px;
-
-  font-size: 15px;
-  vertical-align: middle;
-}
 .registFranWrapper.bot .callTab {
   width: 185px;
   height: 40px;
   font-size: 18px;
-  /* margin-top: 12px; */
-  margin-left: 70px;
-  vertical-align: middle;
 }
 
 /* 코인이체 dialog */
