@@ -257,7 +257,7 @@ class RiderMain extends Component {
           <div>
             <UpdatePasswordDialog isOpen={this.state.updatePasswordOpen} close={this.closeUpdatePasswordModal} />
             <Button
-              className="tabBtn surchargeTab" ㅞㅡ
+              className="tabBtn surchargeTab"
               onClick={this.openUpdatePasswordModal}
             >초기화</Button>
           </div>
