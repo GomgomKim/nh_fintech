@@ -167,6 +167,45 @@ class ReceptionStatus extends Component {
       });
   };
 
+  assignRider = (data) => {
+    var self = this
+    Modal.confirm({
+        title: "강제배차",
+        content: data.riderName+" 라이더 에게 강제배차 하시겠습니까?",
+        okText: "확인",
+        cancelText: "취소",
+        onOk(){
+            httpPost(httpUrl.assignRider, [], {
+                orderIdx: self.props.orderIdx,
+                userIdx: data.idx,
+            })
+            .then((res) => {
+                console.log(res);
+                if (res.data === "SUCCESS") {
+                    // console.log(res.result);
+                } else if(res.data === "ALREADY_ASSIGNED") {
+                    Modal.info({
+                        content: "이미 배차된 주문입니다.",
+                        });
+                }
+                else {
+                    Modal.info({
+                    title: "적용 오류",
+                    content: "처리가 실패했습니다.",
+                    });
+                }
+            })
+            .catch((e) => {
+                Modal.info({
+                title: "적용 오류",
+                content: "처리가 실패했습니다.",
+                });
+            });
+            self.props.close()
+        }
+    })
+}
+
   getCompleteList = () => {
     const startDate = this.state.selectedDate;
     const endDate = startDate.setDate(startDate.getDate() + 1);
@@ -566,8 +605,6 @@ class ReceptionStatus extends Component {
               <SearchRiderDialog
                 isOpen={this.state.forceOpen}
                 close={this.closeForceingModal}
-                assign={true}
-                orderIdx={row.idx}
               />
               <Button className="tabBtn" onClick={this.openForceModal}>
                 강제배차

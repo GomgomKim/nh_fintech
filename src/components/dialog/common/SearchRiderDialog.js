@@ -142,47 +142,8 @@ class SearchRiderDialog extends Component {
         this.props.close()
     }
 
-    assignRider = (data) => {
-        var self = this
-        Modal.confirm({
-            title: "강제배차",
-            content: data.riderName+" 라이더 에게 강제배차 하시겠습니까?",
-            okText: "확인",
-            cancelText: "취소",
-            onOk(){
-                httpPost(httpUrl.assignRider, [], {
-                    orderIdx: self.props.orderIdx,
-                    userIdx: data.idx,
-                })
-                .then((res) => {
-                    console.log(res);
-                    if (res.data === "SUCCESS") {
-                        // console.log(res.result);
-                    } else if(res.data === "ALREADY_ASSIGNED") {
-                        Modal.info({
-                            content: "이미 배차된 주문입니다.",
-                            });
-                    }
-                    else {
-                        Modal.info({
-                        title: "적용 오류",
-                        content: "처리가 실패했습니다.",
-                        });
-                    }
-                })
-                .catch((e) => {
-                    Modal.info({
-                    title: "적용 오류",
-                    content: "처리가 실패했습니다.",
-                    });
-                });
-                self.props.close()
-            }
-        })
-    }
-
     render() {
-        const {isOpen, close, assign} = this.props;
+        const {isOpen, close, multi} = this.props;
 
 
         const columns = [
@@ -199,9 +160,7 @@ class SearchRiderDialog extends Component {
                     this.state.isMulti ? 
                         <div>{data}</div> :
                         <div className='riderNameTag' onClick={()=>{
-                            assign ?
-                                this.assignRider(row) :
-                                this.onRiderSelected(row.idx)
+                            this.onRiderSelected(row.idx)
                     }}>{data}</div>
             },
             {
@@ -242,7 +201,7 @@ class SearchRiderDialog extends Component {
                                             src={require('../../../img/login/close.png').default}
                                             className="surcharge-close"/>
 
-                                        <Form ref={this.formRef} onFinish={this.handleSubmit}>
+                                        <Form ref={this.formRef} onFinish={this.onSubmit}>
                                             <div className="layout">
                                                 <div className="searchFranchiseWrapper">
                                                     <div className="searchFranchise-list">
@@ -267,8 +226,8 @@ class SearchRiderDialog extends Component {
                                                                     
                                                                 }}/>
                                                             
-                                                            {/* 강제배차일 때는 멀티기능 없음 */}
-                                                            {!assign &&
+                                                            {/* 멀티기능 */}
+                                                            {multi &&
                                                             <Radio.Group onChange={this.onChangeMulti} value={this.state.isMulti} className="selMulti">
                                                                 <Radio value={false}>single</Radio>
                                                                 <Radio value={true}>multi</Radio>
@@ -276,9 +235,9 @@ class SearchRiderDialog extends Component {
                                                             }
                                                         </div>
                                                             
-                                                        {/* 강제배차일 때는 기사명 클릭 */}
-                                                        {!assign &&
-                                                        <Button type="primary" onClick={this.onSubmit} className="submitBtn">
+                                                        {/* 멀티기능 */}
+                                                        {multi &&
+                                                        <Button type="primary" htmlType="submit" className="submitBtn">
                                                             조회
                                                         </Button>
                                                         }
