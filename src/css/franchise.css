@@ -21,6 +21,11 @@
   margin-left: 15px;
 }
 
+.exel img {
+  width: 20px;
+  margin-right: 5px;
+  margin-bottom: 3px;
+}
 /* 상세 */
 /* .franchiseContainer .ant-table-tbody > tr > td > 
 .ant-table-wrapper:only-child .ant-table{

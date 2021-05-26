@@ -161,6 +161,7 @@ const httpUrl = {
   orderList: "/order/list",
   orderUpdate: "/order/update",
   orderCreate:"/order/create",
+  getDeliveryPrice:"/fr/expectDeliveryPrice?destLatitude=%s&destLongitude=%s",
 
   priceExtraList: "/branch/deliveryPriceExtra/list?pageNum=%s&pageSize=%s",
   priceExtraRegist: "/branch/deliveryPriceExtra/create",
@@ -192,7 +193,6 @@ const httpUrl = {
 
   // 공지사항
   noticeList: "/notice/list?deleted=%s&pageNum=%s&pageSize=%s",
-  noticeListDeleted: "/notice/list?deleted=%s&pageNum=%s&pageSize=%s",
   registNotice: "/notice/create",
   updateNotice: "/notice/update",
   specificNoticeList: "/notice/%s",

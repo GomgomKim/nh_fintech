@@ -24,23 +24,21 @@ const PaymentDialog = ({
   const FormItem = Form.Item;
   const [data, setData] = useState(orderPayments);
   const [change, setChange] = useState(0);
+  const [maxIdx, setMaxIdx] = useState(1);
   const handlePlus = () => {
     setData(
       data.concat({
+        idx: maxIdx,
         paymentAmount: 0,
         paymentMethod: 1,
         paymentStatus: 1,
       })
     );
+    setMaxIdx(maxIdx + 1);
   };
 
   const handleMinus = (index) => {
-    // const newData = data;
-    // newData.splice(index,1);
-    // console.log(newData,index);
-    // setData(newData);
-    console.log(data.filter((v, idx) => index !== idx));
-    setData(data.filter((v, idx) => index !== idx));
+    setData(data.filter((v, idx) => v.idx !== index));
   };
   const calcSum = () => {
     var res = 0;
@@ -55,7 +53,12 @@ const PaymentDialog = ({
 
   useEffect(() => {
     calcChange();
-  })
+    let initialIndex = 0;
+    for (let i = 0; data.length > i; i++) {
+      initialIndex = Math.max(initialIndex, data[i].idx);
+    }
+    setMaxIdx(initialIndex + 1);
+  });
 
   return (
     <React.Fragment>
@@ -92,9 +95,12 @@ const PaymentDialog = ({
                       <FormItem name="orderPayments">
                         <div className="orderPayments-wrapper">
                           {data.map((orderPayment, i) => {
-                            console.log(orderPayment,i);
+                            console.log(orderPayment, i);
                             return (
-                              <div className="orderPayment-wrapper">
+                              <div
+                                className="orderPayment-wrapper"
+                                key={orderPayment.idx}
+                              >
                                 {editable ? (
                                   <Select
                                     defaultValue={orderPayment.paymentMethod}
@@ -177,7 +183,9 @@ const PaymentDialog = ({
                                 {editable && (
                                   <Button
                                     type="primary"
-                                    onClick={() => handleMinus(i)}
+                                    onClick={() =>
+                                      handleMinus(orderPayment.idx)
+                                    }
                                   >
                                     -
                                   </Button>
@@ -196,7 +204,10 @@ const PaymentDialog = ({
                       {editable && (
                         <Button
                           type="primary"
-                          onClick={() => handlePaymentChange(data)}
+                          onClick={() => {
+                            handlePaymentChange(data);
+                            close();
+                          }}
                         >
                           등록하기
                         </Button>
