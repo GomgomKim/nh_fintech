@@ -146,7 +146,7 @@ class ReceptionStatus extends Component {
     console.log(data);
     httpPost(httpUrl.orderList, [], data)
       .then((res) => {
-        if (res.result === "SUCCESS" && res.data==="SUCCESS") {
+        if (res.result === "SUCCESS") {
           console.log(res);
           this.setState({
             list: res.data.orders,
@@ -181,7 +181,7 @@ class ReceptionStatus extends Component {
       endDate: formatDate(endDate).split(" ")[0],
     })
       .then((res) => {
-        if (res.result === "SUCCESS" && res.data==="SUCCESS") {
+        if (res.result === "SUCCESS") {
           console.log(res);
           this.setState({
             totalList: res.data.orders,

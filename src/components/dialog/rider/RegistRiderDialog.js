@@ -166,7 +166,7 @@ class RegistRiderDialog extends Component {
                                                         name="userGroup"
                                                         className="selectItem"
                                                         rules={[{ required: true, message: "그룹을 선택해주세요" }]}
-
+                                                        initialValue={riderGroupString[1]}
                                                     >
                                                         <SelectBox
                                                             value={riderGroupString[this.state.riderGroup]}
@@ -178,7 +178,6 @@ class RegistRiderDialog extends Component {
                                                                     this.setState({ riderGroup: parseInt(value) });
                                                                 }
                                                             }}
-                                                            defaultValue={'C'} spq
 
                                                         />
 

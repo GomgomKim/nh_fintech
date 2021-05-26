@@ -80,6 +80,7 @@ class BlindListDialog extends Component {
         })
     }
 
+
     getList = () => {
         let {data} = this.props;
         let riderIdx = data.idx;
