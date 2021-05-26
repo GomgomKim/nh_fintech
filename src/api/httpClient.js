@@ -85,6 +85,7 @@ const httpExec = (method, url, data) => {
 };
 
 const httpGet = (url, params, data) => {
+  console.log(makeUrl(url, params))
   return httpExec("GET", makeUrl(url, params), data);
   // return new Promise((resolve, reject) => {
   //   Axios.get(makeUrl(url, params), data)
@@ -178,6 +179,10 @@ const httpUrl = {
   updateRider: "/rider/update",
   riderLocate: "/rider/location/%s",
   riderListOne: "/rider/list",
+
+  // 배차
+  assignRider: "/order/assignRider",
+
   // 가맹점 관리
   registFranchise: "/fr/create",
   franchiseList: "/fr/list",
@@ -187,8 +192,7 @@ const httpUrl = {
   updateBranch: "/branch/update",
 
   // 공지사항
-  noticeList: "/notice/list?deleted=false&pageNum=%s&pageSize=%s",
-  noticeListDeleted: "/notice/list?deleted=true&pageNum=%s&pageSize=%s",
+  noticeList: "/notice/list?deleted=%s&pageNum=%s&pageSize=%s",
   registNotice: "/notice/create",
   updateNotice: "/notice/update",
   specificNoticeList: "/notice/%s",

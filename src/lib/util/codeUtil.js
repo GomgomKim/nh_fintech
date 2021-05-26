@@ -96,9 +96,15 @@ const feeManner = {
 
 
 const blockString = {
-    0: " - ",
+    0: "차단중",
     1: "차단해제",
 }
+
+const frRiderString = {
+    0: "기사",
+    1: "가맹점",
+}
+
 
 
 const toggleCode = [
@@ -165,6 +171,7 @@ const arriveReqTime = {
 export { 
     deliveryStatusCode,
     blockString,
+    frRiderString,
     withdrawString,
     toggleCode,
     enabledString,

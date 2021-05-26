@@ -182,7 +182,7 @@ class FranchiseMain extends Component {
             userStatus: value
         })
             .then((res) => {
-                if (res.result === "SUCCESS") {
+                if (res.result === "SUCCESS" && res.data==="SUCCESS") {
                     updateComplete()
                 } else {
                     updateError()
@@ -202,7 +202,7 @@ class FranchiseMain extends Component {
             withdrawEnabled: value
         })
             .then((res) => {
-                if (res.result === "SUCCESS") {
+                if (res.result === "SUCCESS" && res.data==="SUCCESS") {
                     updateComplete()
                 } else {
                     updateError()
@@ -405,6 +405,9 @@ class FranchiseMain extends Component {
                         isOpen={this.state.SearchAddressOpen}
                         close={this.closeSearchAddressModal}/>
                     <Button className="tabBtn sectionTab" onClick={this.openSearchAddressModal}>주소검색관리</Button>
+
+                    {/* 엑셀업로드버튼 */}
+                    <Button className="tabBtn sectionTab exel" onClick={this.openSearchAddressModal}><img src={require('../../img/login/excel.png').default} alt="" />양식 다운로드</Button>
 
                 </div>
 
