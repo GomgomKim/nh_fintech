@@ -136,9 +136,9 @@ class SearchRiderDialog extends Component {
 
     onRiderSelected = (data) => {
         // console.log(data)
-        var dataIdx = this.state.dataIdxs
-        dataIdx[data] = true
-        this.props.callback(dataIdx)
+        if (this.props.callback) {
+            this.props.callback(data);
+        }
         this.props.close()
     }
 
@@ -160,7 +160,7 @@ class SearchRiderDialog extends Component {
                     this.state.isMulti ? 
                         <div>{data}</div> :
                         <div className='riderNameTag' onClick={()=>{
-                            this.onRiderSelected(row.idx)
+                            this.onRiderSelected(row)
                     }}>{data}</div>
             },
             {

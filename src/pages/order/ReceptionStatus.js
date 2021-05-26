@@ -44,6 +44,9 @@ import InfiniteScroll from "react-infinite-scroller";
 import PaymentDialog from "../../components/dialog/order/PaymentDialog";
 import ModifyOrderDialog from "../../components/dialog/order/ModifyOrderDialog";
 import SearchRiderDialog from "../../components/dialog/common/SearchRiderDialog";
+import {
+  customError,
+} from "../../api/Modals"
 
 const Option = Select.Option;
 const Search = Input.Search;
@@ -168,40 +171,36 @@ class ReceptionStatus extends Component {
       });
   };
 
-  assignRider = (data) => {
-    var self = this;
+  assignRider = (data, orderIdx) => {
+    // console.log(data)
+    // console.log(orderIdx)
     Modal.confirm({
       title: "강제배차",
       content: data.riderName + " 라이더 에게 강제배차 하시겠습니까?",
       okText: "확인",
       cancelText: "취소",
       onOk() {
-        httpPost(httpUrl.assignRider, [], {
-          orderIdx: self.props.orderIdx,
+        httpPost(httpUrl.assignRiderAdmin, [], {
+          orderIdx: orderIdx,
           userIdx: data.idx,
         })
           .then((res) => {
             console.log(res);
-            if (res.data === "SUCCESS") {
-              // console.log(res.result);
-            } else if (res.data === "ALREADY_ASSIGNED") {
-              Modal.info({
-                content: "이미 배차된 주문입니다.",
-              });
-            } else {
-              Modal.info({
-                title: "적용 오류",
-                content: "처리가 실패했습니다.",
-              });
-            }
+            if(res.result === "SUCCESS"){
+              switch(res.data){
+                case "SUCCESS":
+                  console.log(res.result);
+                  break;
+                case "ALREADY_ASSIGNED": customError("배차 오류", "이미 배차된 주문입니다."); break;
+                case "ORDER_NOT_EXISTS": customError("배차 오류", "존재하지 않은 주문입니다."); break;
+                case "NCASH_MINUS": customError("배차 오류", "NCash 잔액이 부족합니다."); break;
+                case "ASSIGN_LIMIT_EXCEEDED": customError("배차 오류", "배차 목록이 가득 찼습니다."); break;
+                case "NOT_ADMIN": customError("배차 오류", "관리자만 강제배차할 수 있습니다."); break;
+                default: customError("배차 오류", "배차에 실패했습니다. 관리자에게 문의하세요."); break;
+              }
+            } else customError("배차 오류", "배차에 실패했습니다. 관리자에게 문의하세요.");
+            
           })
-          .catch((e) => {
-            Modal.info({
-              title: "적용 오류",
-              content: "처리가 실패했습니다.",
-            });
-          });
-        self.props.close();
       },
     });
   };
@@ -599,6 +598,7 @@ class ReceptionStatus extends Component {
               <SearchRiderDialog
                 isOpen={this.state.forceOpen}
                 close={this.closeForceingModal}
+                callback={(data) => this.assignRider(data, row.idx)}
               />
               <Button className="tabBtn" onClick={this.openForceModal}>
                 강제배차
