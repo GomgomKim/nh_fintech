@@ -407,7 +407,9 @@ class FranchiseMain extends Component {
                     <Button className="tabBtn sectionTab" onClick={this.openSearchAddressModal}>주소검색관리</Button>
 
                     {/* 엑셀업로드버튼 */}
-                    <Button className="tabBtn sectionTab exel" onClick={this.openSearchAddressModal}><img src={require('../../img/login/excel.png').default} alt="" />양식 다운로드</Button>
+                    <a href="/franchise_regist_templete.xlsx" download> 
+                    <Button className="tabBtn sectionTab exel" ><img src={require('../../img/login/excel.png').default} alt="" />양식 다운로드</Button>
+                    </a>
 
                 </div>
 
