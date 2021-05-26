@@ -1,7 +1,19 @@
 import { Modal } from 'antd';
 
-const customError = (t, c) => {
+const customAlert = (t, c) => {
     Modal.info({
+        title: t,
+        content: (
+        <div>
+            {c}
+        </div>
+        ),
+        onOk() {},
+    });
+}
+
+const customError = (t, c) => {
+    Modal.error({
         title: t,
         content: (
         <div>
@@ -151,4 +163,5 @@ export {
     unBlindComplete,
     unBlindError,
     customError,
+    customAlert,
 }
