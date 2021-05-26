@@ -20,7 +20,7 @@ import '../../../css/modal.css';
 import { connect } from "react-redux";
 import { formatDate, formatDateSecond } from '../../../lib/util/dateUtil';
 import moment from 'moment';
-// import RegistNoticeDialog from "../../components/dialog/order/RegistNoticeDialog";
+import RegistNoticeDialog from "./RegistNoticeDialog";
 
 const Option = Select.Option;
 const FormItem = Form.Item;
@@ -49,6 +49,7 @@ class NoticeDialog extends Component {
       deleted: false,
       checkedDeletedCall: false,
       registNotice: false,
+      updateNotice: false,
     //   idx: 1,
     };
     this.formRef = React.createRef();
@@ -299,7 +300,14 @@ class NoticeDialog extends Component {
 
   closeNoticeRegistrationModal = () => {
     this.setState({ registNotice: false });
+    this.getList()
   }
+
+  closeNoticeUpdateModal = () => {
+    this.setState({ updateNotice: false });
+    this.getList()
+  }
+
 
   render() {
     const columns = [
@@ -307,8 +315,9 @@ class NoticeDialog extends Component {
         title: "내용",
         dataIndex: "content",
         className: "table-column-center",
+        width: 550,
         render: (data) => (
-          <div>{data}</div>
+          <div className="table-column-left">{data}</div>
         ),
       },
       {
@@ -321,9 +330,10 @@ class NoticeDialog extends Component {
         className: "table-column-center",
         render: (data, row) => (
           <div>
+            <RegistNoticeDialog data={this.state.dialogData} isOpen={this.state.updateNotice} close={this.closeNoticeUpdateModal} />
             <Button
               className="tabBtn surchargeTab"
-              onClick={() => {}}
+              onClick={() => {this.setState({ updateNotice: true, dialogData: row })}}
             >
               수정
             </Button>
@@ -375,12 +385,12 @@ class NoticeDialog extends Component {
                         <span className="span1">삭제목록</span>
                       </div>
                       <div className="registBtn">
-                      {/* <RegistNoticeDialog data={this.state.dialogData} isOpen={this.state.registNotice} close={this.closeNoticeRegistrationModal} /> */}
+                      <RegistNoticeDialog isOpen={this.state.registNotice} close={this.closeNoticeRegistrationModal} />
                         <Button
                           type="primary"
                           htmlType="submit"
                           className="tabBtn insertTab noticeBtn"
-                          onClick={() => {}}
+                          onClick={() => {this.setState({ registNotice: true })}}
                         >
                           등록하기
                         </Button>

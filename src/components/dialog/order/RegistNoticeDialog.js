@@ -4,6 +4,7 @@ import {
 } from "antd";
 import '../../../css/modal.css';
 import { httpUrl, httpPost } from '../../../api/httpClient';
+
 const Option = Select.Option;
 const FormItem = Form.Item;
 
@@ -28,11 +29,35 @@ class RegistNoticeDialog extends Component {
             deleteDate: '',
             readDate: '',
             deleted: false,
-            checkedCompleteCall: false,
             registNotice: false,
+            checkedImportantCall: false
         };
         this.formRef = React.createRef();
     }
+
+    handleToggleImportantCall = (e) => {
+      this.setState(
+        {
+          checkedImportantCall: e.target.checked,      
+        },
+        () => {
+          if (!this.state.checkedImportantCall) {
+            this.setState(
+              {
+                important: false,
+              },
+              () => this.getList()
+            );
+          } else {
+            this.setState(
+              {
+                important: true,
+              },
+            );
+          }
+        }
+      );
+    };
 
     componentDidMount() {
     }
@@ -62,12 +87,11 @@ class RegistNoticeDialog extends Component {
                 title: "완료",
                 content: (
                   <div>
-                    {self.formRef.current.getFieldsValue().content}이(가) 등록되었습니다.
+                    {self.formRef.current.getFieldsValue().content}이(가) 수정되었습니다.
                   </div>
                 ),
               });
-              self.handleClear();
-              self.getList();
+              self.props.close()
             }).catch((error) => {
               Modal.info({
                 title: "등록 오류",
@@ -115,7 +139,6 @@ class RegistNoticeDialog extends Component {
                 deleted: false,
                 category: self.state.category,
                 branchCode: self.state.branchCode,
-                // deleted: false,
               }).then((result) => {
                 Modal.info({
                   title: " 완료",
@@ -125,8 +148,7 @@ class RegistNoticeDialog extends Component {
                     </div>
                   ),
                 });
-                self.handleClear();
-                self.getList();
+                self.props.close()
               }).catch((error) => {
                 Modal.info({
                   title: "등록 오류",
@@ -185,15 +207,15 @@ class RegistNoticeDialog extends Component {
                     isOpen ?
                         <React.Fragment>
                             <div className="Dialog-overlay" onClick={close} />
-                            <div className="registStaff-Dialog">
-                                <div className="registStaff-content">
+                            <div className="registNoticeDialog">
+                                <div className="registNotice-content">
                                     <div className="registStaff-title">
                                         {data ? "공지 수정" : "공지 등록" }
                                     </div>
                                     <img onClick={close} src={require('../../../img/login/close.png').default} className="surcharge-close" alt="profile" />
                                     <Form ref={this.formRef} onFinish={this.handleSubmit}>
                                         <div className="layout">
-                                            <div className="registStaffWrapper">
+                                            <div className="registNoticeWrapper">
                                                 <div className="contentBlock">
                                                     <div className="mainTitle">
                                                         제목
@@ -204,18 +226,6 @@ class RegistNoticeDialog extends Component {
                                                         initialValue={data ? data.title : ''}
                                                     >   
                                                         <Input placeholder="제목을 입력해 주세요." className="override-input"/> 
-                                                    </FormItem>
-                                                </div>
-                                                <div className="contentBlock">
-                                                    <div className="mainTitle">
-                                                        내용
-                                                    </div>
-                                                    <FormItem
-                                                        name="content"
-                                                        className="selectItem"
-                                                        initialValue={data ? data.content : ''}
-                                                    >
-                                                        <Input placeholder="내용을 입력해 주세요." className="override-input"/>
                                                     </FormItem>
                                                 </div>
                                                 <div className="contentBlock">
@@ -232,19 +242,37 @@ class RegistNoticeDialog extends Component {
                                                 </div>
                                                 <div className="contentBlock">
                                                     <div className="mainTitle">
-                                                        중요도
+                                                        중요
                                                     </div>
                                                     <FormItem
                                                         name="important"
                                                         className="selectItem"
                                                     >
-                                                        <div className="important">
+                                                        <div className="importantBox">
                                                         <Checkbox
-                                                        onChange={this.handleToggleCompleteCall}></Checkbox>
-                                                        <span className="span1">중요</span>
+                                                        onChange={this.handleToggleImportantCall}></Checkbox>
                                                         </div>
                                                     </FormItem>
                                                 </div>
+                                            </div>
+                                                <div className= "registNoticeWrapper sub">
+                                                <div className="contentBlock">
+                                                    <div className="mainTitle">
+                                                        내용
+                                                    </div>
+                                                    <FormItem
+                                                        name="content"
+                                                        className="selectItem"
+                                                        initialValue={data ? data.content : ''}
+                                                    >
+                                                        <Input
+                                                        placeholder="내용을 입력해 주세요."
+                                                        className="override-input"
+                                                        />
+                                                    </FormItem>
+                                                </div>
+
+
                                                 <div className="submitBlock">
                                                     <Button type="primary" htmlType="submit">
                                                         {data ? "수정하기":"등록하기"}
@@ -256,7 +284,7 @@ class RegistNoticeDialog extends Component {
                                                         </Button>
                                                     }
                                                 </div>
-                                            </div>
+                                                </div>
 
                                         </div>
                                     </Form>
@@ -271,4 +299,4 @@ class RegistNoticeDialog extends Component {
     }
 }
 
-export default (RegistNoticeDialo);
+export default (RegistNoticeDialog);
