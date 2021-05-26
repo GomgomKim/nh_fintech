@@ -78,21 +78,6 @@ class SearchFranchiseDialog extends Component {
       pagination.total = result.data.totalCount;
       this.setState({ list: result.data.franchises, pagination });
 
-      // mount될 때 data idx 배열 초기화
-      if (isInit) {
-        // console.log(result.data.franchises[0].idx)
-        var totCnt = result.data.franchises[0].idx;
-        var lists = [];
-        for (let i = 0; i < totCnt; i++) {
-          lists.push(false);
-          // console.log(lists)
-        }
-        this.setState({
-          dataIdxs: lists,
-        });
-      }
-
-      // console.log(this.state.dataIdxs)
     });
   };
 

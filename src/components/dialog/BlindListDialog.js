@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import {
-    Form, Table, Checkbox, Input, Button,  Modal,
+    Form, Table, Checkbox, Input, Button, Modal,
 } from "antd";
 import '../../css/modal.css';
 import { frRiderString, blockString } from '../../lib/util/codeUtil';
@@ -30,11 +30,11 @@ class BlindListDialog extends Component {
         this.getList()
     }
     componentDidUpdate() {
-        
+
     }
 
     componentDidUpdate(prevProps) {
-        if(prevProps.isOpen !== this.props.isOpen) {
+        if (prevProps.isOpen !== this.props.isOpen) {
             this.getList()
         }
     }
@@ -55,33 +55,33 @@ class BlindListDialog extends Component {
             content: "차단을 해제하시겠습니까?",
             okText: "확인",
             cancelText: "취소",
-            onOk(){
+            onOk() {
                 httpPost(httpUrl.deleteBlind, [], {
                     idx: idx,
                 })
-                .then((res) => {
-                    if (res.result === "SUCCESS" && res.data==="SUCCESS") {
-                        console.log(res.result);
-                        this.getList();
-                    } else {
+                    .then((res) => {
+                        if (res.result === "SUCCESS" && res.data === "SUCCESS") {
+                            console.log(res.result);
+                            this.getList();
+                        } else {
+                            Modal.info({
+                                title: "적용 오류",
+                                content: "처리가 실패했습니다.",
+                            });
+                        }
+                    })
+                    .catch((e) => {
                         Modal.info({
-                        title: "적용 오류",
-                        content: "처리가 실패했습니다.",
+                            title: "적용 오류",
+                            content: "처리가 실패했습니다.",
                         });
-                    }
-                })
-                .catch((e) => {
-                    Modal.info({
-                    title: "적용 오류",
-                    content: "처리가 실패했습니다.",
                     });
-                });
             }
         })
     }
 
     getList = () => {
-        let {data} = this.props;
+        let { data } = this.props;
         let riderIdx = data.idx;
         httpPost(httpUrl.blindList, [], {
             riderIdx: riderIdx,
@@ -89,18 +89,18 @@ class BlindListDialog extends Component {
             pageSize: this.state.pagination.pageSize,
             deletedList: [0],
         })
-          .then((res) => {
-            if (res.result === "SUCCESS" && res.data==="SUCCESS") {
-              console.log(res);
-              this.setState({
-                list: res.data.riderFrBlocks,
-              });
-            }
-          })
-      };
-    
-      getDeletedList = () => {
-        let {data} = this.props;
+            .then((res) => {
+                if (res.result === "SUCCESS" && res.data === "SUCCESS") {
+                    console.log(res);
+                    this.setState({
+                        list: res.data.riderFrBlocks,
+                    });
+                }
+            })
+    };
+
+    getDeletedList = () => {
+        let { data } = this.props;
         let riderIdx = data.idx;
         httpPost(httpUrl.blindList, [], {
             riderIdx: riderIdx,
@@ -108,13 +108,13 @@ class BlindListDialog extends Component {
             pageNum: this.state.pagination.current,
             pageSize: this.state.pagination.pageSize,
         })
-          .then((res) => {
-              this.setState({
-                list: res.data.riderFrBlocks,
-              });
-          })
-      };
-    
+            .then((res) => {
+                this.setState({
+                    list: res.data.riderFrBlocks,
+                });
+            })
+    };
+
 
     getUserList = () => {
 
@@ -123,43 +123,43 @@ class BlindListDialog extends Component {
     onDeleteCheck = (e) => {
         // alert(e)
         this.setState(
-          {
-            deletedCheck: e.target.checked,
-          },
-          () => {
-            if (!this.state.deletedCheck) {
-              this.getList();
-            } else {
-              this.getDeletedList();
+            {
+                deletedCheck: e.target.checked,
+            },
+            () => {
+                if (!this.state.deletedCheck) {
+                    this.getList();
+                } else {
+                    this.getDeletedList();
+                }
             }
-          }
         );
-      };
+    };
 
-    onDelete = (idx,deleted) => {
+    onDelete = (idx, deleted) => {
         let self = this;
-        if(deleted == true) {
+        if (deleted == true) {
             Modal.confirm({
                 title: "차단 해제",
                 content: "차단을 해제하시겠습니까?",
                 okText: "확인",
                 cancelText: "취소",
-                onOk(){
+                onOk() {
                     httpPost(httpUrl.deleteBlind, [], {
                         idx: idx,
                     })
-                    .then((result) => {
-                        if (result.result === "SUCCESS") {
-                            unBlindComplete();
+                        .then((result) => {
+                            if (result.result === "SUCCESS") {
+                                unBlindComplete();
+                                self.getList();
+                            } else {
+                                unBlindError();
+                            }
                             self.getList();
-                        } else {
+                        })
+                        .catch((e) => {
                             unBlindError();
-                        }
-                        self.getList();
-                    })
-                    .catch((e) => {
-                        unBlindError();
-                    });
+                        });
                 }
             })
         }
@@ -247,86 +247,86 @@ class BlindListDialog extends Component {
                                     <img onClick={close} src={require('../../img/login/close.png').default} className="surcharge-close" />
 
                                     <div style={{
-                                        textAlign:'right', 
-                                        marginTop:20,
+                                        textAlign: 'right',
+                                        marginTop: 20,
                                         fontSize: 15
-                                        }}>
+                                    }}>
                                         해제 포함
                                         <Checkbox
                                             defaultChecked={this.state.checkedCompleteCall ? "checked" : ""}
-                                            onChange={this.onDeleteCheck}/>
+                                            onChange={this.onDeleteCheck} />
                                     </div>
 
                                     <div className="blindLayout">
-                                            <div className="listBlock">
-                                                <Table
-                                                    // rowKey={(record) => record.idx}
-                                                    dataSource={this.state.list}
-                                                    columns={columns}
-                                                    pagination={this.state.pagination}
-                                                    onChange={this.handleTableChange}
-                                                />
-                                            </div>
-                                       
+                                        <div className="listBlock">
+                                            <Table
+                                                // rowKey={(record) => record.idx}
+                                                dataSource={this.state.list}
+                                                columns={columns}
+                                                pagination={this.state.pagination}
+                                                onChange={this.handleTableChange}
+                                            />
+                                        </div>
+
                                     </div>
                                     <div className="blindWrapper bot">
-                                    <Form ref={this.formRef} onFinish={this.handleSubmit}>
-                                        <div className="contentBlock">
-                                        <div className="subTitle">
-                                                차단자
+                                        <Form ref={this.formRef} onFinish={this.handleSubmit}>
+                                            <div className="contentBlock">
+                                                <div className="subTitle">
+                                                    차단자
                                             </div>
-                                            <FormItem
-                                                name="direction"
-                                                className="selectItem"
+                                                <FormItem
+                                                    name="direction"
+                                                    className="selectItem"
                                                 // initialValue={this.props.loginInfo.id}
-                                            >
-                                                <SelectBox
-                                                    value={frRiderString[this.state.blindStatus]}
-                                                    code={Object.keys(frRiderString)}
-                                                    codeString={frRiderString}
-                                                    onChange={(value) => {
-                                                        if (parseInt(value) !== this.state.blindStatus) {
-                                                            this.setState({blindStatus: parseInt(value)})
-                                                        }
-                                                    }}
-                                                />
-                                            </FormItem>
-                                        <div className="subTitle">
-                                                가맹점명
+                                                >
+                                                    <SelectBox
+                                                        value={frRiderString[this.state.blindStatus]}
+                                                        code={Object.keys(frRiderString)}
+                                                        codeString={frRiderString}
+                                                        onChange={(value) => {
+                                                            if (parseInt(value) !== this.state.blindStatus) {
+                                                                this.setState({ blindStatus: parseInt(value) })
+                                                            }
+                                                        }}
+                                                    />
+                                                </FormItem>
+                                                <div className="subTitle">
+                                                    가맹점명
                                             </div>
-                                            <FormItem
-                                                name="frName"
-                                                className="selectItem"
-                                            >
-                                                <Input placeholder="가맹점명 입력" className="override-input sub">
-                                                </Input>
-                                            </FormItem>
-                                        <div className="subTitle">
-                                                기사명
+                                                <FormItem
+                                                    name="frName"
+                                                    className="selectItem"
+                                                >
+                                                    <Input placeholder="가맹점명 입력" className="override-input sub">
+                                                    </Input>
+                                                </FormItem>
+                                                <div className="subTitle">
+                                                    기사명
                                             </div>
-                                            <FormItem
-                                                name="riderName"
-                                                className="selectItem"
-                                                initialValue={data.riderName}
-                                            >
-                                                <Input placeholder="기사명 입력" className="override-input sub">
-                                                </Input>
-                                            </FormItem>
-                                            <div className="subTitle">
-                                                메모
+                                                <FormItem
+                                                    name="riderName"
+                                                    className="selectItem"
+                                                    initialValue={data.riderName}
+                                                >
+                                                    <Input placeholder="기사명 입력" className="override-input sub">
+                                                    </Input>
+                                                </FormItem>
+                                                <div className="subTitle">
+                                                    메모
                                             </div>
-                                            <FormItem
-                                                name="memo"
-                                                className="selectItem"
-                                            >
-                                                <Input placeholder="차단메모 입력" className="override-input sub">
-                                                </Input>
-                                            </FormItem>
+                                                <FormItem
+                                                    name="memo"
+                                                    className="selectItem"
+                                                >
+                                                    <Input placeholder="차단메모 입력" className="override-input sub">
+                                                    </Input>
+                                                </FormItem>
 
-                                            <Button type="primary" htmlType="submit" className="callTab">
-                                                차단하기
+                                                <Button type="primary" htmlType="submit" className="callTab">
+                                                    차단하기
                                             </Button>
-                                                </div>
+                                            </div>
                                         </Form>
                                     </div>
                                 </div>
@@ -344,10 +344,10 @@ const mapStateToProps = (state) => {
     return {
         loginInfo: state.login.loginInfo,
     };
-  };
-  
-  const mapDispatchToProps = (dispatch) => {
+};
+
+const mapDispatchToProps = (dispatch) => {
     return {};
-  };
-  
-  export default connect(mapStateToProps, mapDispatchToProps)(BlindListDialog);
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(BlindListDialog);
