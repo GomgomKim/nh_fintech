@@ -113,7 +113,7 @@ class RegistFranDialog extends Component {
         // console.log(addrData.address)
         this.formRef.current.setFieldsValue({
             addr1: addrData.roadAddress, // 도로명 주소
-            addr3: addrData.autoJibunAddress // 지번
+            addr3: addrData.jibunAddress === "" ? addrData.autoJibunAddress : addrData.jibunAddress // 지번
         })
 
         // 좌표변환
@@ -121,18 +121,34 @@ class RegistFranDialog extends Component {
             let result = JSON.parse(res.data.json);
             // console.log(result)
             // console.log(result.addresses.length)
-            if(result.addresses.length > 0){
+            if(res.result === "SUCCESS" && result.addresses.length > 0){
                 const lat = result.addresses[0].y;
                 const lng = result.addresses[0].x;
-                console.log(lat)
-                console.log(lng)
+                // console.log(lat)
+                // console.log(lng)
 
                 this.setState({
                     targetLat: lat,
                     targetLng: lng
                 }) 
+
+                // 예상 배송 요금
+                httpGet(httpUrl.expectDeliveryPrice, [lat, lng], {}).then((res) => {
+                    // console.log("expectDeliveryPrice data :"+res.data)
+                    // console.log("expectDeliveryPrice data :"+res.data.distance)
+                    // console.log("expectDeliveryPrice data :"+res.data.deliveryPriceBasic)
+                    // console.log("expectDeliveryPrice data :"+res.data.deliveryPriceExtra)
+                    if(res.result === "SUCCESS" && res.data != null){
+                        this.formRef.current.setFieldsValue({
+                            distance: res.data.distance,
+                            basicDeliveryPrice: res.data.deliveryPriceBasic,
+                            deliveryPriceExtra: res.data.deliveryPriceExtra,
+                        })
+
+                    } else customError("배송 요금 오류", "예상 배송요금을 불러오는 데 실패했습니다. 관리자에게 문의하세요.") 
+                });
             } else{
-                customError("위치 반환 오류", "해당 위치 데이터가 존재하지 않습니다.")
+                customError("위치 반환 오류", "위치 데이터가 존재하지 않습니다. 관리자에게 문의하세요.")
             }
           
         });
@@ -197,9 +213,9 @@ class RegistFranDialog extends Component {
                                                         사업자번호
                                                     </div>
                                                     <FormItem
-                                                        name="businessNumber"
+                                                        name="corporateNumber"
                                                         className="selectItem"
-                                                        initialValue={data && data.businessNumber}
+                                                        initialValue={data && data.corporateNumber}
                                                     >
                                                         <Input placeholder="사업자번호를 입력해 주세요." className="override-input"/>
                                                         
@@ -378,7 +394,21 @@ class RegistFranDialog extends Component {
                                                         </Radio.Group>
                                                     </FormItem>
                                                     </div>
-                                                </div>                                             
+                                                </div>    
+                                                <div className="contentBlock">
+                                                    <div className="mainTitle">
+                                                        배달거리
+                                                    </div>
+                                                    <FormItem
+                                                        name="distance"
+                                                        className="selectItem"
+                                                        // initialValue={data && data.basicDeliveryPrice}
+                                                        initialValue={data && 10000}
+                                                    >
+
+                                                        <Input placeholder="배달거리를 입력해 주세요." className="override-input"/>
+                                                    </FormItem>
+                                                </div>                                         
                                                 <div className="contentBlock">
                                                     <div className="mainTitle">
                                                         배달요금
@@ -398,7 +428,7 @@ class RegistFranDialog extends Component {
                                                         할증요금
                                                     </div>
                                                     <FormItem
-                                                        name="basicDeliveryPrice"
+                                                        name="deliveryPriceExtra"
                                                         className="selectItem"
                                                         // initialValue={data && data.basicDeliveryPrice}
                                                         initialValue={data && 10000}

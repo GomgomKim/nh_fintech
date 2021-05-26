@@ -176,6 +176,9 @@ const httpUrl = {
   // 라이더 위치
   getGeocode: '/geometry/geocode/%s',
 
+  // 예상 배달요금
+  expectDeliveryPrice: '/fr/expectDeliveryPrice?destLatitude=%s&destLongitude=%s',
+
   // rider
   riderList: "/rider/list?pageSize=%s&pageNum=%s&searchName=%s&userStatus=%s&riderLevels=%s",
   registRider: "/rider/create",
