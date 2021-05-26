@@ -108,7 +108,6 @@ class NoticeDialog extends Component {
     }
     else {
     let deleted = true;
-<<<<<<< HEAD
     httpGet(httpUrl.noticeList, [deleted, pageNum, pageSize], {}).then((res) => {
       console.log(res)
       const pagination = { ...this.state.pagination };
@@ -117,34 +116,6 @@ class NoticeDialog extends Component {
       this.setState({
         list: res.data.notices,
         pagination,
-=======
-    httpGet(httpUrl.noticeListDeleted, [deleted, pageNum, pageSize], {})
-      .then((res) => {
-        if (res.result === "SUCCESS" && res.data==="SUCCESS") {
-          // alert("성공적으로 처리되었습니다.");
-          console.log(res)
-          console.log("삭제목록 조회");
-          const pagination = { ...this.state.paginationDeleted };
-          pagination.current = res.data.currentPage;
-          pagination.total = res.data.totalCount;
-          // console.log(pagination.total)
-          this.setState({
-            deletedList: res.data.notices,
-            paginationDeleted: pagination,
-          });
-        } else {
-          Modal.info({
-            title: "적용 오류",
-            content: "처리가 실패했습니다.",
-          });
-        }
-      })
-      .catch((e) => {
-        Modal.info({
-          title: "적용 오류",
-          content: "처리가 실패했습니다.",
-        });
->>>>>>> 69e5e071b9a17c2177585beee4e8029865bc24e7
       });
     });
     }
