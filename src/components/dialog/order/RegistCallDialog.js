@@ -58,7 +58,7 @@ const Option = Select.Option;
 const FormItem = Form.Item;
 const Search = Input.Search;
 const newOrder = {
-  arriveReqDate: "",
+  arriveReqTime: "",
   assignDate: "",
   cancelReason: "",
   completeDate: "",
@@ -71,6 +71,7 @@ const newOrder = {
   destAddr3: "",
   distance: 0,
   frId: "",
+  frIdx: 0,
   frLatitude: 0,
   frLongitude: 0,
   frName: "",
@@ -111,18 +112,41 @@ class RegistCallDialog extends Component {
       paymentOpen: false,
       searchFranchiseOpen: false,
 
-      // 조회 / 수정창 구분
-      editable: true,
+      // 가맹점, 도착지 정보
       selectedFr: null,
       selectedDest: null,
+
+      // 조회 / 수정창 구분
+      editable: true,
     };
     this.formRef = React.createRef();
   }
 
-  componentDidMount() {
-    this.setState({
-      data: this.props.data ? this.props.data : newOrder,
-    });
+  componentDidMount() {}
+
+  setDefaultState = () => {
+    this.setState(
+      {
+        data: this.props.data ? this.props.data : newOrder,
+        selectedDest: {
+          address: this.props.data ? this.props.data.destAddr1 : "",
+        },
+        selectedFr: {
+          frIdx: this.props.data ? this.props.data.frIdx : 0,
+          frLatitude: this.props.data ? this.props.data.frLatitude : 0,
+          frLongitude: this.props.data ? this.props.data.frLongitude : 0,
+          frName: this.props.data ? this.props.data.frName : "",
+          frPhone: this.props.data ? this.props.data.frPhone : "",
+        },
+      },
+      () => console.log("this.state : " + this.state)
+    );
+  };
+
+  componentDidUpdate(prevProps) {
+    if (this.props.isOpen !== prevProps.isOpen) {
+      this.setDefaultState();
+    }
   }
 
   handleChangeInput = (value, stateKey) => {
@@ -187,6 +211,7 @@ class RegistCallDialog extends Component {
 
   handleSubmit = () => {
     if (this.props.data) {
+      console.log('update');
       console.log(this.state.data);
       httpPost(httpUrl.orderUpdate, [], this.state.data)
         .then((res) => {
@@ -200,6 +225,7 @@ class RegistCallDialog extends Component {
           updateError();
         });
     } else {
+      console.log('creaTE');
       console.log(this.state.data);
       httpPost(httpUrl.orderCreate, [], this.state.data)
         .then((res) => {
@@ -258,7 +284,7 @@ class RegistCallDialog extends Component {
                                     frName: fr.frName,
                                     frPhone: fr.frPhone,
                                     // 이건 뭐지
-                                    packAmount:0,
+                                    packAmount: 0,
                                   },
                                 });
                               });
@@ -272,6 +298,8 @@ class RegistCallDialog extends Component {
                               value={
                                 this.state.selectedFr
                                   ? this.state.selectedFr.frName
+                                  : this.props.data
+                                  ? this.props.data.frName
                                   : ""
                               }
                               style={{ marginLeft: "20px" }}
@@ -300,6 +328,8 @@ class RegistCallDialog extends Component {
                               value={
                                 this.state.selectedDest
                                   ? this.state.selectedDest.address
+                                  : this.props.data
+                                  ? this.props.data.destAddr1
                                   : ""
                               }
                               style={{ marginLeft: "20px" }}
@@ -335,6 +365,8 @@ class RegistCallDialog extends Component {
                             value={
                               this.state.data
                                 ? this.state.data.deliveryPrice
+                                : this.props.data
+                                ? this.props.data.deliveryPrice
                                 : ""
                             }
                             onChange={(e) =>
@@ -375,7 +407,9 @@ class RegistCallDialog extends Component {
                           orderPrice={
                             this.state.data
                               ? this.state.data.orderPrice
-                              : this.props.data.orderPrice
+                              : this.props.data
+                              ? this.props.data.orderPrice
+                              : ""
                           }
                         />
                         <Button
@@ -403,10 +437,20 @@ class RegistCallDialog extends Component {
                         <div className="mainTitle">요청시간</div>
                         <FormItem name="arriveReqTime" className="selectItem">
                           <Select
+                            value={
+                              this.state.data
+                                ? this.state.data.arriveReqTime
+                                : this.props.data
+                                ? this.props.data.arriveReqTime
+                                : 1
+                            }
                             placeholder="시간단위"
                             className="override-input"
                             onChange={(value) =>
-                              this.handleChangeInput(parseInt(value), "arriveReqTime")
+                              this.handleChangeInput(
+                                parseInt(value),
+                                "arriveReqTime"
+                              )
                             }
                           >
                             {Object.keys(arriveReqTime).map((key) => (
