@@ -99,7 +99,6 @@ const PaymentDialog = ({
                       <FormItem name="orderPayments">
                         <div className="orderPayments-wrapper">
                           {data.map((orderPayment, i) => {
-                            console.log(orderPayment, i);
                             return (
                               <div
                                 className="orderPayment-wrapper"

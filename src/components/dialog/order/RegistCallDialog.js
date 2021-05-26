@@ -18,6 +18,7 @@ import {
   paymentStatus,
   deliveryStatusCode,
   arriveReqTime,
+  packAmount,
 } from "../../../lib/util/codeUtil";
 import { formatDate, formatDateSecond } from "../../../lib/util/dateUtil";
 import PaymentDialog from "./PaymentDialog";
@@ -58,7 +59,7 @@ const Option = Select.Option;
 const FormItem = Form.Item;
 const Search = Input.Search;
 const newOrder = {
-  arriveReqTime: "",
+  arriveReqTime: 5,
   assignDate: "",
   cancelReason: "",
   completeDate: "",
@@ -102,6 +103,7 @@ const newOrder = {
   tidNormalRate: 0,
   tidPrepay: "",
   userIdx: 0,
+  packAmount: 1,
 };
 
 class RegistCallDialog extends Component {
@@ -209,10 +211,14 @@ class RegistCallDialog extends Component {
       });
   };
 
+  clearData = () => {
+    this.setState({ data: newOrder });
+  };
+
   handleSubmit = () => {
     if (this.props.data) {
-      console.log('update');
       console.log(this.state.data);
+      console.log("update");
       httpPost(httpUrl.orderUpdate, [], this.state.data)
         .then((res) => {
           if (res.result === "SUCCESS") {
@@ -225,12 +231,13 @@ class RegistCallDialog extends Component {
           updateError();
         });
     } else {
-      console.log('creaTE');
       console.log(this.state.data);
+      console.log("create");
       httpPost(httpUrl.orderCreate, [], this.state.data)
         .then((res) => {
           if (res.result === "SUCCESS") {
             updateComplete();
+            this.clearData();
           } else {
             updateError();
           }
@@ -239,6 +246,7 @@ class RegistCallDialog extends Component {
           updateError();
         });
     }
+    this.props.getList();
   };
 
   render() {
@@ -272,7 +280,6 @@ class RegistCallDialog extends Component {
                           <SearchFranchiseDialog
                             onSelect={(fr) => {
                               this.setState({ selectedFr: fr }, () => {
-                                console.log(this.state.selectedFr);
                                 const fr = this.state.selectedFr;
                                 this.setState({
                                   data: {
@@ -283,8 +290,6 @@ class RegistCallDialog extends Component {
                                     frLongitude: fr.longitude,
                                     frName: fr.frName,
                                     frPhone: fr.frPhone,
-                                    // 이건 뭐지
-                                    packAmount: 0,
                                   },
                                 });
                               });
@@ -303,6 +308,7 @@ class RegistCallDialog extends Component {
                                   : ""
                               }
                               style={{ marginLeft: "20px" }}
+                              required
                             />
                             <Button onClick={this.openSearchFranchiseModal}>
                               가맹점조회
@@ -333,6 +339,7 @@ class RegistCallDialog extends Component {
                                   : ""
                               }
                               style={{ marginLeft: "20px" }}
+                              required
                             />
                             <Button onClick={this.openPostCode}>
                               우편번호 검색
@@ -375,12 +382,13 @@ class RegistCallDialog extends Component {
                                 "deliveryPrice"
                               )
                             }
+                            required
                           ></Input>
                         </FormItem>
                       </div>
                       <div className="contentBlock">
                         <div className="mainTitle">가격</div>
-                        <FormItem name="callprice" className="selectItem">
+                        <FormItem name="orderPrice" className="selectItem">
                           <Input
                             placeholder="가격 입력"
                             className="override-input"
@@ -391,6 +399,7 @@ class RegistCallDialog extends Component {
                                 "orderPrice"
                               )
                             }
+                            required
                           ></Input>
                         </FormItem>
                       </div>
@@ -420,7 +429,7 @@ class RegistCallDialog extends Component {
                         </Button>
                       </div>
                       <div className="contentBlock">
-                        <div className="mainTitle">음식준비 완료</div>
+                        <div className="mainTitle">음식준비완료</div>
                         <FormItem name="itemPrepared" className="selectItem">
                           <Checkbox
                             defaultChecked={data.itemPrepared}
@@ -437,12 +446,12 @@ class RegistCallDialog extends Component {
                         <div className="mainTitle">요청시간</div>
                         <FormItem name="arriveReqTime" className="selectItem">
                           <Select
-                            value={
+                            defaultValue={
                               this.state.data
-                                ? this.state.data.arriveReqTime
+                                ? arriveReqTime[this.state.data.arriveReqTime]
                                 : this.props.data
-                                ? this.props.data.arriveReqTime
-                                : 1
+                                ? arriveReqTime[this.props.data.arriveReqTime]
+                                : arriveReqTime[5]
                             }
                             placeholder="시간단위"
                             className="override-input"
@@ -452,9 +461,37 @@ class RegistCallDialog extends Component {
                                 "arriveReqTime"
                               )
                             }
+                            required
                           >
                             {Object.keys(arriveReqTime).map((key) => (
                               <Option value={key}>{arriveReqTime[key]}</Option>
+                            ))}
+                          </Select>
+                        </FormItem>
+                      </div>
+                      <div className="contentBlock">
+                        <div className="mainTitle">배달갯수</div>
+                        <FormItem name="packAmount" className="selectItem">
+                          <Select
+                            defaultValue={
+                              this.state.data
+                                ? packAmount[this.state.data.packAmount]
+                                : this.props.data
+                                ? packAmount[this.props.data.packAmount]
+                                : packAmount[1]
+                            }
+                            placeholder="배달갯수"
+                            className="override-input"
+                            onChange={(value) =>
+                              this.handleChangeInput(
+                                parseInt(value),
+                                "packAmount"
+                              )
+                            }
+                            required
+                          >
+                            {Object.keys(packAmount).map((key) => (
+                              <Option value={key}>{packAmount[key]}</Option>
                             ))}
                           </Select>
                         </FormItem>
@@ -474,6 +511,7 @@ class RegistCallDialog extends Component {
                                 },
                               })
                             }
+                            required
                           ></Input>
                         </FormItem>
                       </div>
@@ -490,6 +528,7 @@ class RegistCallDialog extends Component {
                                 "custMessage"
                               )
                             }
+                            required
                           ></Input>
                         </FormItem>
                       </div>
