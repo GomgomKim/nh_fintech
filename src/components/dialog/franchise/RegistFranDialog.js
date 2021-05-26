@@ -116,7 +116,7 @@ class RegistFranDialog extends Component {
             addr3: addrData.autoJibunAddress // 지번
         })
 
-        //좌표변환
+        // 좌표변환
         httpGet(httpUrl.getGeocode, [addrData.roadAddress], {}).then((res) => {
             let result = JSON.parse(res.data.json);
             // console.log(result)
