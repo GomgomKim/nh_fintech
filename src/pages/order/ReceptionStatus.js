@@ -27,6 +27,7 @@ import {
   rowColorName,
   paymentMethod,
   cardStatus,
+  arriveReqTime,
 } from "../../lib/util/codeUtil";
 import {
   FieldTimeOutlined,
@@ -43,6 +44,9 @@ import InfiniteScroll from "react-infinite-scroller";
 import PaymentDialog from "../../components/dialog/order/PaymentDialog";
 import ModifyOrderDialog from "../../components/dialog/order/ModifyOrderDialog";
 import SearchRiderDialog from "../../components/dialog/common/SearchRiderDialog";
+import {
+  customError,
+} from "../../api/Modals"
 
 const Option = Select.Option;
 const Search = Input.Search;
@@ -73,7 +77,7 @@ class ReceptionStatus extends Component {
       mapControlOpen: false,
       modifyOrder: false,
       paymentOpen: false,
-      editable:false,
+      editable: false,
       orderData: null,
 
       // data
@@ -135,7 +139,7 @@ class ReceptionStatus extends Component {
       pageSize: this.state.pagination.pageSize,
       paymentMethods: this.state.selectedPaymentMethods,
       startDate: formatDate(startDate).split(" ")[0],
-      endDate: formatDate(endDate.add("1","d")).split(" ")[0],
+      endDate: formatDate(endDate.add("1", "d")).split(" ")[0],
     };
     if (this.state.franchisee) {
       data.frName = this.state.franchisee;
@@ -146,7 +150,7 @@ class ReceptionStatus extends Component {
     console.log(data);
     httpPost(httpUrl.orderList, [], data)
       .then((res) => {
-        if (res.result === "SUCCESS" && res.data==="SUCCESS") {
+        if (res.result === "SUCCESS") {
           console.log(res);
           this.setState({
             list: res.data.orders,
@@ -167,6 +171,40 @@ class ReceptionStatus extends Component {
       });
   };
 
+  assignRider = (data, orderIdx) => {
+    // console.log(data)
+    // console.log(orderIdx)
+    Modal.confirm({
+      title: "강제배차",
+      content: data.riderName + " 라이더 에게 강제배차 하시겠습니까?",
+      okText: "확인",
+      cancelText: "취소",
+      onOk() {
+        httpPost(httpUrl.assignRiderAdmin, [], {
+          orderIdx: orderIdx,
+          userIdx: data.idx,
+        })
+          .then((res) => {
+            console.log(res);
+            if(res.result === "SUCCESS"){
+              switch(res.data){
+                case "SUCCESS":
+                  console.log(res.result);
+                  break;
+                case "ALREADY_ASSIGNED": customError("배차 오류", "이미 배차된 주문입니다."); break;
+                case "ORDER_NOT_EXISTS": customError("배차 오류", "존재하지 않은 주문입니다."); break;
+                case "NCASH_MINUS": customError("배차 오류", "NCash 잔액이 부족합니다."); break;
+                case "ASSIGN_LIMIT_EXCEEDED": customError("배차 오류", "배차 목록이 가득 찼습니다."); break;
+                case "NOT_ADMIN": customError("배차 오류", "관리자만 강제배차할 수 있습니다."); break;
+                default: customError("배차 오류", "배차에 실패했습니다. 관리자에게 문의하세요."); break;
+              }
+            } else customError("배차 오류", "배차에 실패했습니다. 관리자에게 문의하세요.");
+            
+          })
+      },
+    });
+  };
+
   getCompleteList = () => {
     const startDate = this.state.selectedDate;
     const endDate = startDate.setDate(startDate.getDate() + 1);
@@ -181,7 +219,7 @@ class ReceptionStatus extends Component {
       endDate: formatDate(endDate).split(" ")[0],
     })
       .then((res) => {
-        if (res.result === "SUCCESS" && res.data==="SUCCESS") {
+        if (res.result === "SUCCESS") {
           console.log(res);
           this.setState({
             totalList: res.data.orders,
@@ -373,27 +411,22 @@ class ReceptionStatus extends Component {
         ),
       },
       {
+        title: "요청시간",
+        dataIndex: "arriveReqTime",
+        className: "table-column-center",
+        render: (data) => <div>{arriveReqTime[data]}</div>,
+      },
+      {
         title: "음식준비",
         dataIndex: "itemPrepared",
         className: "table-column-center",
         render: (data) => <div>{data ? "완료" : "준비중"}</div>,
       },
-      {
-        title: "요청 시간",
-        dataIndex: "arriveReqDate",
-        className: "table-column-center",
-        render: (data) => <div>{formatDate(data)}</div>,
-      },
-      {
-        title: "준비 시간",
-        dataIndex: "itemPreparingTime",
-        className: "table-column-center",
-      },
-      {
-        title: "경과(분)",
-        dataIndex: "elapsedTime",
-        className: "table-column-center",
-      },
+      // {
+      //   title: "경과(분)",
+      //   dataIndex: "elapsedTime",
+      //   className: "table-column-center",
+      // },
       {
         title: "픽업시간",
         dataIndex: "pickupDate",
@@ -412,52 +445,28 @@ class ReceptionStatus extends Component {
         className: "table-column-center",
       },
       {
-        title: "가맹점명",
-        dataIndex: "frName",
+        title: "기사소속",
+        dataIndex: "riderBelong",
         className: "table-column-center",
       },
       {
-        title: "배달 요금",
-        dataIndex: "deliveryPrice",
+        title: "기사 연락처",
+        dataIndex: "riderPhone",
         className: "table-column-center",
-        render: (data) => <div>{comma(data)}</div>,
       },
       {
         title: "도착지",
         // dataIndex: "destAddr1",
         className: "table-column-center",
-        render: (row) => (
-          <div>{row.destAddr1 + row.destAddr2 + row.destAddr3}</div>
-        ),
+        render: (row) => <div>{row.destAddr1 + " " + row.destAddr2}</div>,
       },
       {
-        title: "가격",
-        dataIndex: "orderPrice",
+        title: "거리(km)",
+        dataIndex: "distance",
         className: "table-column-center",
-        render: (data) => <div>{comma(data)}</div>,
       },
       // antd 찾아봐야 될 듯
       // orderPayments - paymentMethod 라서 dataIndex 설정 필요
-      {
-        title: "결제방식",
-        dataIndex: "orderPayments",
-        className: "table-column-center",
-        render: (data, row) =>
-          data.length > 1 ? (
-            <>
-              <PaymentDialog
-                isOpen={this.state.paymentOpen}
-                close={this.closePaymentModal}
-                orderPayments={data}
-              />
-              <Button onClick={this.openPaymentModal} close={this.clos}>
-                보기
-              </Button>
-            </>
-          ) : (
-            <div>{paymentMethod[data[0]["paymentMethod"]]}</div>
-          ),
-      },
       {
         title: "주문수정",
         dataIndex: "updateOrder",
@@ -469,6 +478,7 @@ class ReceptionStatus extends Component {
               close={this.closeModifyOrderModal}
               editable={this.state.editable}
               data={this.state.data}
+              getList={this.getList}
             />
             <Button
               onClick={() => {
@@ -485,76 +495,98 @@ class ReceptionStatus extends Component {
 
     const expandedRowRender = (record) => {
       const dropColumns = [
-        {
-          title: "수수료",
-          dataIndex: "deliveryPriceFee",
-          className: "table-column-center",
-          render: (data) => <div>{comma(data)}</div>,
-        },
-        {
-          title: "거리(km)",
-          dataIndex: "distance",
-          className: "table-column-center",
-        },
+        // {
+        //   title: "수수료",
+        //   dataIndex: "deliveryPriceFee",
+        //   className: "table-column-center",
+        //   render: (data) => <div>{comma(data)}</div>,
+        // },
         // 내용 확인 필요
-        {
-          title: "카드상태",
-          dataIndex: "cardStatus",
-          className: "table-column-center",
-          render: (data) => <div>{cardStatus[data]}</div>,
-        },
+        // {
+        //   title: "카드상태",
+        //   dataIndex: "cardStatus",
+        //   className: "table-column-center",
+        //   render: (data) => <div>{cardStatus[data]}</div>,
+        // },
+        // // 내용 확인 필요
+        // {
+        //   title: "승인번호",
+        //   dataIndex: "authNum",
+        //   className: "table-column-center",
+        // },
+        // {
+        //   title: "카드사",
+        //   dataIndex: "businessCardName",
+        //   className: "table-column-center",
+        // },
+        // {
+        //   title: "지사명",
+        //   dataIndex: "frName",
+        //   className: "table-column-center",
+        // },
+        // orderPayments - paymentAmount
+        // {
+        //   title: "카드승인금액",
+        //   dataIndex: "orderPayments",
+        //   className: "table-column-center",
+        //   render: (data) => <div>{comma(data[0]["paymentAmount"])}</div>,
+        // },
         // 내용 확인 필요
+        // {
+        //   title: "변경내역",
+        //   dataIndex: "cancelReason",
+        //   className: "table-column-center",
+        // },
+        // 내용 확인 필요
+        // 내용 확인 필요
+        // {
+        //   title: "접수건수",
+        //   dataIndex: "receiptAmount",
+        //   className: "table-column-center",
+        //   render: (data) => <div>{comma(data)}</div>,
+        // },
+        // 아마도 중복컬럼?
         {
-          title: "승인번호",
-          dataIndex: "authNum",
-          className: "table-column-center",
-        },
-        {
-          title: "카드사",
-          dataIndex: "businessCardName",
-          className: "table-column-center",
-        },
-        {
-          title: "기사 연락처",
-          dataIndex: "riderPhone",
-          className: "table-column-center",
-        },
-        {
-          title: "지사명",
+          title: "가맹점명",
           dataIndex: "frName",
           className: "table-column-center",
         },
-        // orderPayments - paymentAmount
-        {
-          title: "카드승인금액",
-          dataIndex: "orderPayments",
-          className: "table-column-center",
-          render: (data) => <div>{comma(data[0]["paymentAmount"])}</div>,
-        },
-        // 내용 확인 필요
-        {
-          title: "변경내역",
-          dataIndex: "cancelReason",
-          className: "table-column-center",
-        },
-        // 내용 확인 필요
-        {
-          title: "기사소속",
-          dataIndex: "riderBelong",
-          className: "table-column-center",
-        },
-        // 내용 확인 필요
-        {
-          title: "접수건수",
-          dataIndex: "receiptAmount",
-          className: "table-column-center",
-          render: (data) => <div>{comma(data)}</div>,
-        },
-        // 아마도 중복컬럼?
         {
           title: "가맹점 번호",
           dataIndex: "frPhone",
           className: "table-column-center",
+        },
+        {
+          title: "가격",
+          dataIndex: "orderPrice",
+          className: "table-column-center",
+          render: (data) => <div>{comma(data)}</div>,
+        },
+        {
+          title: "배달요금",
+          dataIndex: "deliveryPrice",
+          className: "table-column-center",
+          render: (data) => <div>{comma(data)}</div>,
+        },
+        {
+          title: "결제방식",
+          dataIndex: "orderPayments",
+          className: "table-column-center",
+          render: (data, row) =>
+            data.length > 1 ? (
+              <>
+                <PaymentDialog
+                  isOpen={this.state.paymentOpen}
+                  close={this.closePaymentModal}
+                  orderPayments={data}
+                />
+                <Button onClick={this.openPaymentModal} close={this.clos}>
+                  보기
+                </Button>
+              </>
+            ) : (
+              <div>{paymentMethod[data[0]["paymentMethod"]]}</div>
+            ),
         },
         {
           title: "배차",
@@ -566,23 +598,10 @@ class ReceptionStatus extends Component {
               <SearchRiderDialog
                 isOpen={this.state.forceOpen}
                 close={this.closeForceingModal}
-                assign={true}
-                orderIdx={row.idx}
+                callback={(data) => this.assignRider(data, row.idx)}
               />
               <Button className="tabBtn" onClick={this.openForceModal}>
                 강제배차
-              </Button>
-            </span>
-          ),
-        },
-        {
-          title: "주문수정",
-          dataIndex: "forceLocate",
-          className: "table-column-center",
-          render: (data) => (
-            <span>
-              <Button className="tabBtn" onClick={this.openAddCallModal}>
-                주문수정
               </Button>
             </span>
           ),

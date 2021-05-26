@@ -60,6 +60,10 @@ const PaymentDialog = ({
     setMaxIdx(initialIndex + 1);
   });
 
+  useEffect(() => {
+    calcChange();
+  },[isOpen])
+
   return (
     <React.Fragment>
       {isOpen ? (
@@ -95,7 +99,6 @@ const PaymentDialog = ({
                       <FormItem name="orderPayments">
                         <div className="orderPayments-wrapper">
                           {data.map((orderPayment, i) => {
-                            console.log(orderPayment, i);
                             return (
                               <div
                                 className="orderPayment-wrapper"
@@ -205,6 +208,13 @@ const PaymentDialog = ({
                         <Button
                           type="primary"
                           onClick={() => {
+                            if (calcSum() > orderPrice) {
+                              Modal.info({
+                                title:"설정 오류",
+                                content:"결제 금액이 초과 되었습니다."
+                              })
+                              return;
+                            }
                             handlePaymentChange(data);
                             close();
                           }}

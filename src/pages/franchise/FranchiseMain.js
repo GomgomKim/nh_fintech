@@ -1,10 +1,10 @@
-import {Modal, Table, Button, Input} from 'antd';
+import {Modal, Table, Button, Input, Upload} from 'antd';
 import React, {Component} from 'react';
-import {httpUrl, httpPost} from '../../api/httpClient';
+import {httpUrl, httpPost,  serverUrl } from '../../api/httpClient';
 import RegistFranDialog from "../../components/dialog/franchise/RegistFranDialog";
 import SearchAddressDialog from "../../components/dialog/franchise/SearchAddressDialog";
 import SearchFranchiseDialog from '../../components/dialog/common/SearchFranchiseDialog';
-import BlindListDialog from "../../components/dialog/BlindListDialog";
+import BlindFranListDialog from "../../components/dialog/franchise/BlindFranListDialog";
 import SelectBox from '../../components/input/SelectBox';
 import "../../css/franchise.css";
 import {comma} from "../../lib/util/numberUtil";
@@ -17,6 +17,7 @@ import {
 } from '../../api/Modals'
 
 const Search = Input.Search;
+
 
 class FranchiseMain extends Component {
     constructor(props) {
@@ -291,7 +292,6 @@ class FranchiseMain extends Component {
                 title: "블라인드",
                 className: "table-column-center",
                 render: (data, row) => <div>
-                        {/* <BlindListDialog isOpen={this.state.blindListOpen} close={this.closeBlindModal} data={this.state.blindFrData}/> */}
                         <Button className="tabBtn surchargeTab" onClick={()=>this.setState({blindListOpen: true, blindFrData: row})}>블라인드</Button>
                     </div>
             }, {
@@ -363,6 +363,34 @@ class FranchiseMain extends Component {
             );
         };
 
+        const uploadFileProps ={
+            aciton: serverUrl + httpUrl.fileUpload,
+            multiple: false,
+            withCredentials: true,
+            beforeUpload: (file, fileList) => {
+
+            },
+            onSuccess: (file) => {
+                if (file.data.result) {
+                    Modal.info({
+                        title: "업로드 결과",
+                        content: "파일 업로드 성공"
+                    });
+                    this.state.uploadRiles.push({ idx: file.data.idx, name: file.data.filename})
+                    this.setState({
+                        uploadFiles: this.state.uploadFiles
+                    });
+                }
+            },
+            onError(err) {
+                console.log(err)
+                Modal.error({
+                    title:"업로드 결과",
+                    content:"파일 업로드 실패"
+                });
+            }
+        };
+
         return (
             <div className="franchiseContainer">
 
@@ -392,7 +420,9 @@ class FranchiseMain extends Component {
                     <SearchFranchiseDialog
                         callback={(data) => this.onSearchFranchiseDetail(data)}
                         isOpen={this.state.searchFranchiseOpen}
-                        close={this.closeSearchFranchiseModal}/>
+                        close={this.closeSearchFranchiseModal}
+                        multi={true}
+                        />
                     <Button className="tabBtn" onClick={this.openSearchFranchiseModal}>가맹점조회</Button>
                     <RegistFranDialog
                         isOpen={this.state.ResistFranchiseOpen}
@@ -405,10 +435,16 @@ class FranchiseMain extends Component {
                         isOpen={this.state.SearchAddressOpen}
                         close={this.closeSearchAddressModal}/>
                     <Button className="tabBtn sectionTab" onClick={this.openSearchAddressModal}>주소검색관리</Button>
+                    
+                    <BlindFranListDialog isOpen={this.state.blindListOpen} close={this.closeBlindModal} data={this.state.blindFrData}/>
 
                     {/* 엑셀업로드버튼 */}
-                    <Button className="tabBtn sectionTab exel" onClick={this.openSearchAddressModal}><img src={require('../../img/login/excel.png').default} alt="" />양식 다운로드</Button>
-
+                    <a href="/franchise_regist_templete.xlsx" download> 
+                    <Button className="tabBtn sectionTab exel" ><img src={require('../../img/login/excel.png').default} alt="" />양식 다운로드</Button>
+                    </a>
+                    <Upload {...uploadFileProps} showUploadList={false}>
+                    <Button className="tabBtn sectionTab exel" ><img src={require('../../img/login/excel.png').default} alt="" />올리기</Button>
+                    </Upload>
                 </div>
 
                 <div className="dataTableLayout">

@@ -1062,33 +1062,6 @@
 .registFranLayout::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Opera*/
 }
-/* 엑셀업로드 */
-.excel-upload {
-  display: inline-block;
-  float: right;
-  margin-right: 20px;
-}
-.excel-upload .ant-btn-primary {
-  background-color: #f1f1f1;
-  box-shadow: none;
-  border: none;
-  color: #222;
-  padding: 5px 25px;
-  text-align: center;
-  vertical-align: top;
-  margin-bottom: 10px;
-  border-radius: 30px;
-}
-
-.excel-upload .ant-btn-primary:hover {
-  background-color: #1890ff;
-  color: #fff;
-}
-.excel-upload img {
-  width: 20px;
-  margin-right: 5px;
-  vertical-align: bottom;
-}
 
 /* 왼쪽 wrappper */
 .registFranWrapper {
@@ -1194,7 +1167,6 @@
   margin-top: 40px;
   padding-top: 30px;
   border-top: 1px solid #b5b5b5;
-  display: inline-block;
 }
 .registFranWrapper.bot .registFranTitle {
   font-size: 20px;
@@ -1213,7 +1185,6 @@
   vertical-align: middle;
   font-weight: bold;
   /* width: 70px; */
-  margin-left: 20px;
 }
 .registFranWrapper.bot .ant-checkbox-inner {
   width: 20px;
@@ -1227,19 +1198,10 @@
 .registFranWrapper.bot .selectItem {
   vertical-align: top;
 }
-.registFranWrapper.bot .override-select {
-  margin-left: 10px;
-
-  font-size: 15px;
-  vertical-align: middle;
-}
 .registFranWrapper.bot .callTab {
   width: 185px;
   height: 40px;
   font-size: 18px;
-  /* margin-top: 12px; */
-  margin-left: 70px;
-  vertical-align: middle;
 }
 
 /* 코인이체 dialog */
@@ -3300,44 +3262,9 @@
 }
 .blind-container {
   background-color: white;
-  padding: 30px;
+  padding: 30px 30px 70px 30px;
   text-align: left;
   color: #777;
-}
-
-.modifyOrderWrapper {
-  display: inline-block;
-}
-
-.modifyOrderLayout .contentBlock {
-  margin-top: 1rem;
-}
-
-.modifyOrderLayout .mainTitle {
-  width: 8rem;
-}
-
-.modifyOrderBtn {
-  margin-top: 3rem;
-  text-align: center;
-}
-
-/* paymentModal */
-.orderPayment-wrapper {
-  display: flex;
-}
-
-.orderPayments-wrapper {
-  display: flex;
-  flex-direction: column;
-}
-.orderPayment-col {
-  width: auto;
-}
-.change {
-  vertical-align: middle;
-  text-align: center;
-  width: 100px;
 }
 
 .blind-title {
@@ -3374,7 +3301,7 @@
 }
 .blindWrapper.bot {
   margin-top: 10px;
-  text-align: right;
+  text-align: left;
 }
 .blindWrapper.bot .blindTitle {
   font-size: 20px;
@@ -3402,7 +3329,7 @@
 .blindWrapper.bot .override-input.sub {
   /* margin-left: -30px; */
   margin-left: 10px;
-  width: 150px;
+  width: 135px;
 }
 .blindWrapper.bot .selectItem {
   vertical-align: middle;
@@ -3423,6 +3350,40 @@
   vertical-align: middle;
 }
 
+.modifyOrderWrapper {
+  display: inline-block;
+}
+
+.modifyOrderLayout .contentBlock {
+  margin-top: 1rem;
+}
+
+.modifyOrderLayout .mainTitle {
+  width: 8rem;
+}
+
+.modifyOrderBtn {
+  margin-top: 3rem;
+  text-align: center;
+}
+
+/* paymentModal */
+.orderPayment-wrapper {
+  display: flex;
+}
+
+.orderPayments-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+.orderPayment-col {
+  width: auto;
+}
+.change {
+  vertical-align: middle;
+  text-align: center;
+  width: 100px;
+}
 /*sns전송ㅇ*/
 .snsDialog {
   position: fixed;

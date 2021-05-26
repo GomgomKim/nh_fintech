@@ -1,5 +1,29 @@
 import { Modal } from 'antd';
 
+const customAlert = (t, c) => {
+    Modal.info({
+        title: t,
+        content: (
+        <div>
+            {c}
+        </div>
+        ),
+        onOk() {},
+    });
+}
+
+const customError = (t, c) => {
+    Modal.error({
+        title: t,
+        content: (
+        <div>
+            {c}
+        </div>
+        ),
+        onOk() {},
+    });
+}
+
 const updateComplete = () => {
     Modal.info({
         title: "변경 완료",
@@ -138,4 +162,6 @@ export {
     blindNowError,
     unBlindComplete,
     unBlindError,
+    customError,
+    customAlert,
 }

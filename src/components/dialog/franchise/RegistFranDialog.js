@@ -1,10 +1,10 @@
 import React, { Component, } from "react";
 import {
     Form, Input, DatePicker,
-    Button, Checkbox, Modal, Radio, Upload,
+    Button, Checkbox, Modal, Radio,
 } from "antd";
 import '../../../css/modal.css';
-import { httpUrl, httpPost, serverUrl } from '../../../api/httpClient';
+import { httpUrl, httpPost, serverUrl, httpGet } from '../../../api/httpClient';
 import moment from 'moment';
 import PostCodeDialog from '../common/PostCodeDialog';
 import { 
@@ -16,6 +16,7 @@ import {
     registError,
     updateComplete,
     updateError,
+    customError,
 } from '../../../api/Modals'
 
 const FormItem = Form.Item;
@@ -32,6 +33,9 @@ class RegistFranDialog extends Component {
             localAddr: "",
             PgRate: 0,
             feeManner: 1,
+            // 좌표
+            targetLat: 0,
+            targetLng: 0,
         };
         this.formRef = React.createRef();
     }
@@ -70,14 +74,13 @@ class RegistFranDialog extends Component {
                 bankAccount: 0,
                 depositor: "",
                 userGroup: 0,
-                latitude: 0,
-                longitude: 0,
+                latitude: this.state.targetLat,
+                longitude: this.state.targetLng,
                 frStatus: 1,
                 ncashPayEnabled: false,
                 tidNormal: "",
                 tidPrepay: "",
-                tidNormalRate: this.state.PgRate,
-                frPhone: "010-1234-5678",
+                tidNormalRate: this.state.PgRate, // 100 or 0
                 chargeDate: 1,
                 duesAutoChargeEnabled: false,
                 dues: 0,
@@ -110,8 +113,45 @@ class RegistFranDialog extends Component {
         // console.log(addrData.address)
         this.formRef.current.setFieldsValue({
             addr1: addrData.roadAddress, // 도로명 주소
-            addr3: addrData.autoJibunAddress // 지번
+            addr3: addrData.jibunAddress === "" ? addrData.autoJibunAddress : addrData.jibunAddress // 지번
         })
+
+        // 좌표변환
+        httpGet(httpUrl.getGeocode, [addrData.roadAddress], {}).then((res) => {
+            let result = JSON.parse(res.data.json);
+            // console.log(result)
+            // console.log(result.addresses.length)
+            if(res.result === "SUCCESS" && result.addresses.length > 0){
+                const lat = result.addresses[0].y;
+                const lng = result.addresses[0].x;
+                // console.log(lat)
+                // console.log(lng)
+
+                this.setState({
+                    targetLat: lat,
+                    targetLng: lng
+                }) 
+
+                // 예상 배송 요금
+                httpGet(httpUrl.expectDeliveryPrice, [lat, lng], {}).then((res) => {
+                    // console.log("expectDeliveryPrice data :"+res.data)
+                    // console.log("expectDeliveryPrice data :"+res.data.distance)
+                    // console.log("expectDeliveryPrice data :"+res.data.deliveryPriceBasic)
+                    // console.log("expectDeliveryPrice data :"+res.data.deliveryPriceExtra)
+                    if(res.result === "SUCCESS" && res.data != null){
+                        this.formRef.current.setFieldsValue({
+                            distance: res.data.distance,
+                            basicDeliveryPrice: res.data.deliveryPriceBasic,
+                            deliveryPriceExtra: res.data.deliveryPriceExtra,
+                        })
+
+                    } else customError("배송 요금 오류", "예상 배송요금을 불러오는 데 실패했습니다. 관리자에게 문의하세요.") 
+                });
+            } else{
+                customError("위치 반환 오류", "위치 데이터가 존재하지 않습니다. 관리자에게 문의하세요.")
+            }
+          
+        });
     }
     
     onChangePgRate = (e) => {
@@ -130,34 +170,6 @@ class RegistFranDialog extends Component {
 
         const { isOpen, close, data } = this.props;
 
-        const uploadFileProps ={
-            aciton: serverUrl + httpUrl.fileUpload,
-            multiple: false,
-            withCredentials: true,
-            beforeUpload: (file, fileList) => {
-
-            },
-            onSuccess: (file) => {
-                if (file.data.result) {
-                    Modal.info({
-                        title: "업로드 결과",
-                        content: "파일 업로드 성공"
-                    });
-                    this.state.uploadRiles.push({ idx: file.data.idx, name: file.data.filename})
-                    this.setState({
-                        uploadFiles: this.state.uploadFiles
-                    });
-                }
-            },
-            onError(err) {
-                console.log(err)
-                Modal.error({
-                    title:"업로드 결과",
-                    content:"파일 업로드 실패"
-                });
-            }
-        };
-
         return (
             <React.Fragment>
                 {
@@ -175,16 +187,7 @@ class RegistFranDialog extends Component {
 
                                     <img onClick={close} src={require('../../../img/login/close.png').default} className="surcharge-close" alt="exit" />
 
-                                    <div className="excel-upload">
-                                                       
-                                                       <Upload {...uploadFileProps} showUploadList={false}>
-                                                           <Button type="primary" htmlType="submit" >
-                                                               <img src={require('../../../img/login/excel.png').default} alt="" />올리기
-                                                           </Button>
-                                                       </Upload>
-                                                          
-                                                   </div>
-
+                                   
                                     <Form ref={this.formRef} onFinish={this.handleSubmit}>
                                         <div className="registFranLayout">
                                             <div className="registFranWrapper">
@@ -210,25 +213,11 @@ class RegistFranDialog extends Component {
                                                         사업자번호
                                                     </div>
                                                     <FormItem
-                                                        name="businessNumber"
+                                                        name="corporateNumber"
                                                         className="selectItem"
-                                                        initialValue={data && data.businessNumber}
+                                                        initialValue={data && data.corporateNumber}
                                                     >
                                                         <Input placeholder="사업자번호를 입력해 주세요." className="override-input"/>
-                                                        
-                                                    </FormItem>
-                                                </div>
-
-                                                <div className="contentBlock">
-                                                    <div className="mainTitle">
-                                                        가맹점전화
-                                                    </div>
-                                                    <FormItem
-                                                        name="frPhone"
-                                                        className="selectItem"
-                                                        initialValue={data && data.frPhone}
-                                                    >
-                                                        <Input placeholder="가맹점 전화번호를 입력해 주세요." className="override-input"/>
                                                         
                                                     </FormItem>
                                                 </div>
@@ -244,6 +233,20 @@ class RegistFranDialog extends Component {
                                                         initialValue={data && "대표자명"}                                                
                                                     >
                                                         <Input placeholder="대표자명을 입력해 주세요." className="override-input"/>
+                                                    </FormItem>
+                                                </div>
+
+                                                <div className="contentBlock">
+                                                    <div className="mainTitle">
+                                                        가맹점전화
+                                                    </div>
+                                                    <FormItem
+                                                        name="frPhone"
+                                                        className="selectItem"
+                                                        initialValue={data && data.frPhone}
+                                                    >
+                                                        <Input placeholder="가맹점 전화번호를 입력해 주세요." className="override-input"/>
+                                                        
                                                     </FormItem>
                                                 </div>
                                                
@@ -281,7 +284,7 @@ class RegistFranDialog extends Component {
                                                         />
                                                     </FormItem>
                                                 </div> */}
-                                                                                                                                    
+                                                                                                                                                                                
                                                 <div className="contentBlock">
                                                     <div className="mainTitle">
                                                         주소
@@ -323,11 +326,29 @@ class RegistFranDialog extends Component {
                                                         <Input placeholder="상세주소를 입력해 주세요." className="override-input sub"/>
                                                     </FormItem>
                                                 </div>
+                                                 <div className="contentBlock">
+                                                    <div className="mainTitle">
+                                                        가입일자
+                                                    </div>
+                                                    <FormItem
+                                                        name="frJoinDate"
+                                                        className="selectItem"                                                        
+                                                    >
+                                                       <DatePicker
+                                                            style={{ marginLeft: 20 , width: 300}}
+                                                            defaultValue={moment(today, dateFormat)}
+                                                            format={dateFormat}
+                                                        // onChange={date => this.setState({ selectedDate: date })}
+                                                        />
+                                                    </FormItem>
+                                                </div>
                                             </div>
 
 
-                                            <div className="registFranWrapper sub">  
-                                              <div className="contentBlock">
+                                            <div className="registFranWrapper sub">                                               
+
+
+                                            <div className="contentBlock">
                                                     <div className="mainTitle">
                                                         아이디
                                                     </div>
@@ -354,6 +375,8 @@ class RegistFranDialog extends Component {
                                                     </FormItem>
                                                 </div>
 
+
+
                                                <div className="contentBlock">
                                                     <div className="mainTitle">
                                                         PG 사용여부
@@ -371,37 +394,48 @@ class RegistFranDialog extends Component {
                                                         </Radio.Group>
                                                     </FormItem>
                                                     </div>
-                                                </div>                                             
+                                                </div>    
+                                                <div className="contentBlock">
+                                                    <div className="mainTitle">
+                                                        배달거리
+                                                    </div>
+                                                    <FormItem
+                                                        name="distance"
+                                                        className="selectItem"
+                                                        // initialValue={data && data.basicDeliveryPrice}
+                                                        initialValue={data && 10000}
+                                                    >
+
+                                                        <Input placeholder="배달거리를 입력해 주세요." className="override-input"/>
+                                                    </FormItem>
+                                                </div>                                         
                                                 <div className="contentBlock">
                                                     <div className="mainTitle">
                                                         배달요금
                                                     </div>
                                                     <FormItem
                                                         name="basicDeliveryPrice"
+                                                        className="selectItem"                                                       
+                                                        initialValue={data && 10000}
+                                                    >
+
+                                                        <Input placeholder="배달요금을 입력해 주세요."  disabled className="override-input price"/>
+                                                    </FormItem>
+                                                    * 기본배달요금
+                                                </div>
+                                                <div className="contentBlock">
+                                                    <div className="mainTitle">
+                                                        할증요금
+                                                    </div>
+                                                    <FormItem
+                                                        name="deliveryPriceExtra"
                                                         className="selectItem"
                                                         // initialValue={data && data.basicDeliveryPrice}
                                                         initialValue={data && 10000}
                                                     >
 
-                                                        <Input placeholder="배달요금을 입력해 주세요." className="override-input price"/>
+                                                        <Input placeholder="할증요금을 입력해 주세요." className="override-input"/>
                                                     </FormItem>
-                                                    * 기본배달요금
-
-                                                    <br/>
-                                              {/*   <div className="contentBlock">
-                                                    <div className="mainTitle"/>
-                                                    <FormItem
-                                                        name="distanceDeliveryPrice"
-                                                        className="selectItem"
-                                                    >
-
-                                                         {data ?
-                                                        <Input placeholder="거리별요금을 입력해 주세요." className="override-input price" defaultValue={data.distanceDeliveryPrice}/> :
-                                                        <Input placeholder="거리별요금을 입력해 주세요." className="override-input price"/>
-                                                    }
-                                                    </FormItem>
-                                                    * 거리별요금
-                                                    </div> */}
                                                 </div>
 
                                                 <div className="contentBlock">
@@ -489,37 +523,21 @@ class RegistFranDialog extends Component {
 
                                                     </FormItem>
                                                 </div>
-                                                <div className="contentBlock">
-                                                    <div className="mainTitle">
-                                                        가입일자
-                                                    </div>
-                                                    <FormItem
-                                                        name="frJoinDate"
-                                                        className="selectItem"                                                        
-                                                    >
-                                                       <DatePicker
-                                                            style={{ marginLeft: 20 , width: 300}}
-                                                            defaultValue={moment(today, dateFormat)}
-                                                            format={dateFormat}
-                                                        // onChange={date => this.setState({ selectedDate: date })}
-                                                        />
-                                                    </FormItem>
-                                                </div>
+                                               
                                             </div>
 
 
                                             <div className="registFranWrapper bot">
-                                                <div className="registFranWrapper">
                                                     
                                                     <div className="registFranTitle">
                                                         월관리비 설정
                                                     </div>
                                                     
                                                     <div className="contentBlock">
-                                                        <div className="mainTitle">
+                                                        {/* <div className="mainTitle">
                                                             사용여부
                                                         </div>
-                                                        <Checkbox style={{ verticalAlign: 'middle' }}></Checkbox>
+                                                        <Checkbox style={{ verticalAlign: 'middle' }}></Checkbox> */}
 
                                                         <div className="subTitle">
                                                             월회비 최초납부일
@@ -537,7 +555,7 @@ class RegistFranDialog extends Component {
                                                             />
                                                         </FormItem>
 
-                                                        <div className="subTitle">
+                                                        <div className="subTitle" style={{marginLeft: 20}}>
                                                             관리비
                                                         </div>
 
@@ -554,8 +572,6 @@ class RegistFranDialog extends Component {
                                                         </Button>
 
                                                     </div>
-
-                                                </div>
 
                                             </div>
 

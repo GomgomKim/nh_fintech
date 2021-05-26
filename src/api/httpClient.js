@@ -173,6 +173,12 @@ const httpUrl = {
   registStaff: "/rider/create",
   staffUpdate: "/rider/update",
 
+  // 라이더 위치
+  getGeocode: '/geometry/geocode/%s',
+
+  // 예상 배달요금
+  expectDeliveryPrice: '/fr/expectDeliveryPrice?destLatitude=%s&destLongitude=%s',
+
   // rider
   riderList: "/rider/list?pageSize=%s&pageNum=%s&searchName=%s&userStatus=%s&riderLevels=%s",
   registRider: "/rider/create",
@@ -181,7 +187,7 @@ const httpUrl = {
   riderListOne: "/rider/list",
 
   // 배차
-  assignRider: "/order/assignRider",
+  assignRiderAdmin: "/order/admin/assignRider",
 
   // 가맹점 관리
   registFranchise: "/fr/create",

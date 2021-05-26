@@ -78,21 +78,6 @@ class SearchFranchiseDialog extends Component {
       pagination.total = result.data.totalCount;
       this.setState({ list: result.data.franchises, pagination });
 
-      // mount될 때 data idx 배열 초기화
-      if (isInit) {
-        // console.log(result.data.franchises[0].idx)
-        var totCnt = result.data.franchises[0].idx;
-        var lists = [];
-        for (let i = 0; i < totCnt; i++) {
-          lists.push(false);
-          // console.log(lists)
-        }
-        this.setState({
-          dataIdxs: lists,
-        });
-      }
-
-      // console.log(this.state.dataIdxs)
     });
   };
 
@@ -143,10 +128,8 @@ class SearchFranchiseDialog extends Component {
 
   onFrSelected = (data) => {
     // console.log(data)
-    var dataIdx = this.state.dataIdxs;
-    dataIdx[data] = true;
     if (this.props.callback) {
-      this.props.callback(dataIdx);
+      this.props.callback(data);
     }
     this.props.close();
   };
@@ -172,7 +155,7 @@ class SearchFranchiseDialog extends Component {
                 if (this.props.onSelect) {
                   this.props.onSelect(row);
                 }
-                this.onFrSelected(row.idx);
+                this.onFrSelected(row);
               }}
             >
               {data}
@@ -188,7 +171,7 @@ class SearchFranchiseDialog extends Component {
       onChange: this.onSelectChange,
     };
 
-    const { isOpen, close } = this.props;
+    const { isOpen, close, multi } = this.props;
 
     return (
       <React.Fragment>
@@ -205,7 +188,7 @@ class SearchFranchiseDialog extends Component {
                   alt="close"
                 />
 
-                <Form ref={this.formRef} onFinish={this.handleSubmit}>
+                <Form ref={this.formRef} onFinish={this.onSubmit}>
                   <div className="layout">
                     <div className="searchFranchiseWrapper">
                       <div className="searchFranchise-list">
@@ -232,23 +215,30 @@ class SearchFranchiseDialog extends Component {
                             onSearch={this.onSearchFranchisee}
                           />
 
-                          <Radio.Group
+                          {/* 멀티 기능 */}
+                          {multi &&
+                            <Radio.Group
                             onChange={this.onChangeMulti}
                             value={this.state.isMulti}
                             className="selMulti"
-                          >
-                            <Radio value={false}>single</Radio>
-                            <Radio value={true}>multi</Radio>
-                          </Radio.Group>
+                            >
+                              <Radio value={false}>single</Radio>
+                              <Radio value={true}>multi</Radio>
+                            </Radio.Group>
+                          }
+                          
                         </div>
-
-                        <Button
-                          type="primary"
-                          onClick={() => this.onSubmit()}
-                          className="submitBtn"
-                        >
-                          조회
-                        </Button>
+                        
+                        {/* 멀티 기능 */}
+                        {multi &&
+                          <Button
+                            type="primary"
+                            htmlType="submit"
+                            className="submitBtn"
+                          >
+                            조회
+                          </Button>
+                        }
                       </div>
                     </div>
 

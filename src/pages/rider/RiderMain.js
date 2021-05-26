@@ -7,7 +7,7 @@ import TaskSchedulerDialog from "../../components/dialog/rider/TaskSchedulerDial
 import RegistRiderDialog from "../../components/dialog/rider/RegistRiderDialog";
 import RiderCoinDialog from "../../components/dialog/rider/RiderCoinDialog";
 import RiderBankDialog from "../../components/dialog/rider/RiderBankDialog";
-import BlindListDialog from "../../components/dialog/BlindListDialog";
+import BlindRiderListDialog from "../../components/dialog/rider/BlindRiderListDialog";
 import UpdatePasswordDialog from "../../components/dialog/rider/UpdatePasswordDialog";
 import '../../css/modal.css'
 import { comma } from "../../lib/util/numberUtil";
@@ -257,7 +257,7 @@ class RiderMain extends Component {
           <div>
             <UpdatePasswordDialog isOpen={this.state.updatePasswordOpen} close={this.closeUpdatePasswordModal} />
             <Button
-              className="tabBtn surchargeTab" ㅞㅡ
+              className="tabBtn surchargeTab"
               onClick={this.openUpdatePasswordModal}
             >초기화</Button>
           </div>
@@ -267,7 +267,6 @@ class RiderMain extends Component {
         className: "table-column-center",
         render: (data, row) =>
           <div>
-            <BlindListDialog isOpen={this.state.blindListOpen} close={this.closeBlindModal} data={this.state.blindRiderData}/>
             <Button className="tabBtn surchargeTab" onClick={() => this.setState({ blindRiderData: row, blindListOpen: true })} >블라인드</Button>
           </div>
       },
@@ -419,7 +418,9 @@ class RiderMain extends Component {
           <SearchRiderDialog
             callback={(data) => this.onSearchRiderDetail(data)}
             isOpen={this.state.searchRiderOpen}
-            close={this.closeSearchRiderModal} />
+            close={this.closeSearchRiderModal}
+            multi={true}
+            />
 
           <Button className="tabBtn" onClick={this.openSearchRiderModal}>기사조회</Button>
           <RegistRiderDialog isOpen={this.state.registRiderOpen} close={this.closeRegistRiderModal} />
@@ -441,6 +442,8 @@ class RiderMain extends Component {
           <Button className="riderManageBtn"
             onClick={this.openSendSnsModal}
           >SNS 전송</Button>
+
+          <BlindRiderListDialog isOpen={this.state.blindListOpen} close={this.closeBlindModal} data={this.state.blindRiderData}/>
 
         </div>
 
