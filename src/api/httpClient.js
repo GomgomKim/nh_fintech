@@ -173,6 +173,9 @@ const httpUrl = {
   registStaff: "/rider/create",
   staffUpdate: "/rider/update",
 
+  // 라이더 위치
+  getGeocode: '/geometry/geocode/%s',
+
   // rider
   riderList: "/rider/list?pageSize=%s&pageNum=%s&searchName=%s&userStatus=%s&riderLevels=%s",
   registRider: "/rider/create",

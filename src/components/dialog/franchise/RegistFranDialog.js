@@ -4,7 +4,7 @@ import {
     Button, Checkbox, Modal, Radio,
 } from "antd";
 import '../../../css/modal.css';
-import { httpUrl, httpPost, serverUrl } from '../../../api/httpClient';
+import { httpUrl, httpPost, serverUrl, httpGet } from '../../../api/httpClient';
 import moment from 'moment';
 import PostCodeDialog from '../common/PostCodeDialog';
 import { 
@@ -16,6 +16,7 @@ import {
     registError,
     updateComplete,
     updateError,
+    customError,
 } from '../../../api/Modals'
 
 const FormItem = Form.Item;
@@ -32,6 +33,9 @@ class RegistFranDialog extends Component {
             localAddr: "",
             PgRate: 0,
             feeManner: 1,
+            // 좌표
+            targetLat: 0,
+            targetLng: 0,
         };
         this.formRef = React.createRef();
     }
@@ -70,14 +74,13 @@ class RegistFranDialog extends Component {
                 bankAccount: 0,
                 depositor: "",
                 userGroup: 0,
-                latitude: 0,
-                longitude: 0,
+                latitude: this.state.targetLat,
+                longitude: this.state.targetLng,
                 frStatus: 1,
                 ncashPayEnabled: false,
                 tidNormal: "",
                 tidPrepay: "",
-                tidNormalRate: this.state.PgRate,
-                frPhone: "010-1234-5678",
+                tidNormalRate: this.state.PgRate, // 100 or 0
                 chargeDate: 1,
                 duesAutoChargeEnabled: false,
                 dues: 0,
@@ -112,6 +115,27 @@ class RegistFranDialog extends Component {
             addr1: addrData.roadAddress, // 도로명 주소
             addr3: addrData.autoJibunAddress // 지번
         })
+
+        //좌표변환
+        httpGet(httpUrl.getGeocode, [addrData.roadAddress], {}).then((res) => {
+            let result = JSON.parse(res.data.json);
+            // console.log(result)
+            // console.log(result.addresses.length)
+            if(result.addresses.length > 0){
+                const lat = result.addresses[0].y;
+                const lng = result.addresses[0].x;
+                console.log(lat)
+                console.log(lng)
+
+                this.setState({
+                    targetLat: lat,
+                    targetLng: lng
+                }) 
+            } else{
+                customError("위치 반환 오류", "해당 위치 데이터가 존재하지 않습니다.")
+            }
+          
+        });
     }
     
     onChangePgRate = (e) => {
@@ -184,20 +208,6 @@ class RegistFranDialog extends Component {
 
                                                 <div className="contentBlock">
                                                     <div className="mainTitle">
-                                                        가맹점전화
-                                                    </div>
-                                                    <FormItem
-                                                        name="frPhone"
-                                                        className="selectItem"
-                                                        initialValue={data && data.frPhone}
-                                                    >
-                                                        <Input placeholder="가맹점 전화번호를 입력해 주세요." className="override-input"/>
-                                                        
-                                                    </FormItem>
-                                                </div>
-
-                                                <div className="contentBlock">
-                                                    <div className="mainTitle">
                                                         대표자명
                                                     </div>
                                                     <FormItem
@@ -207,6 +217,20 @@ class RegistFranDialog extends Component {
                                                         initialValue={data && "대표자명"}                                                
                                                     >
                                                         <Input placeholder="대표자명을 입력해 주세요." className="override-input"/>
+                                                    </FormItem>
+                                                </div>
+
+                                                <div className="contentBlock">
+                                                    <div className="mainTitle">
+                                                        가맹점전화
+                                                    </div>
+                                                    <FormItem
+                                                        name="frPhone"
+                                                        className="selectItem"
+                                                        initialValue={data && data.frPhone}
+                                                    >
+                                                        <Input placeholder="가맹점 전화번호를 입력해 주세요." className="override-input"/>
+                                                        
                                                     </FormItem>
                                                 </div>
                                                
