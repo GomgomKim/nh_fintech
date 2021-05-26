@@ -101,8 +101,8 @@ const blockString = {
 }
 
 const frRiderString = {
-    0: "기사",
-    1: "가맹점",
+    1: "기사",
+    2: "가맹점",
 }
 
 

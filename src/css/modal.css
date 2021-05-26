@@ -3150,44 +3150,9 @@
 }
 .blind-container {
   background-color: white;
-  padding: 30px;
+  padding: 30px 30px 70px 30px;
   text-align: left;
   color: #777;
-}
-
-.modifyOrderWrapper {
-  display: inline-block;
-}
-
-.modifyOrderLayout .contentBlock {
-  margin-top: 1rem;
-}
-
-.modifyOrderLayout .mainTitle {
-  width: 8rem;
-}
-
-.modifyOrderBtn {
-  margin-top: 3rem;
-  text-align: center;
-}
-
-/* paymentModal */
-.orderPayment-wrapper {
-  display: flex;
-}
-
-.orderPayments-wrapper {
-  display: flex;
-  flex-direction: column;
-}
-.orderPayment-col {
-  width: auto;
-}
-.change {
-  vertical-align: middle;
-  text-align: center;
-  width: 100px;
 }
 
 .blind-title {
@@ -3224,7 +3189,7 @@
 }
 .blindWrapper.bot {
   margin-top: 10px;
-  text-align: right;
+  text-align: left;
 }
 .blindWrapper.bot .blindTitle {
   font-size: 20px;
@@ -3252,7 +3217,7 @@
 .blindWrapper.bot .override-input.sub {
   /* margin-left: -30px; */
   margin-left: 10px;
-  width: 150px;
+  width: 135px;
 }
 .blindWrapper.bot .selectItem {
   vertical-align: middle;
@@ -3273,6 +3238,40 @@
   vertical-align: middle;
 }
 
+.modifyOrderWrapper {
+  display: inline-block;
+}
+
+.modifyOrderLayout .contentBlock {
+  margin-top: 1rem;
+}
+
+.modifyOrderLayout .mainTitle {
+  width: 8rem;
+}
+
+.modifyOrderBtn {
+  margin-top: 3rem;
+  text-align: center;
+}
+
+/* paymentModal */
+.orderPayment-wrapper {
+  display: flex;
+}
+
+.orderPayments-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+.orderPayment-col {
+  width: auto;
+}
+.change {
+  vertical-align: middle;
+  text-align: center;
+  width: 100px;
+}
 /*sns전송ㅇ*/
 .snsDialog {
   position: fixed;

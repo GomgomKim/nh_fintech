@@ -125,7 +125,9 @@ class SearchRiderDialog extends Component {
     };
 
     onSubmit = () => {
-        this.props.callback(this.state.selectedRowKeys)
+        if (this.props.callback) {
+            this.props.callback(this.state.selectedRowKeys);
+          }
         this.props.close()
     }
 
@@ -138,7 +140,9 @@ class SearchRiderDialog extends Component {
         // console.log(data)
         var dataIdx = this.state.dataIdxs
         dataIdx[data] = true
-        this.props.callback(dataIdx)
+        if (this.props.callback) {
+            this.props.callback(dataIdx);
+          }
         this.props.close()
     }
 
@@ -159,9 +163,15 @@ class SearchRiderDialog extends Component {
                 render: (data, row) => 
                     this.state.isMulti ? 
                         <div>{data}</div> :
-                        <div className='riderNameTag' onClick={()=>{
-                            this.onRiderSelected(row.idx)
-                    }}>{data}</div>
+                        <div
+                        className="frNameTag"
+                        onClick={() => {
+                          if (this.props.onSelect) {
+                            this.props.onSelect(row);
+                          }
+                          this.onRiderSelected(row.idx);
+                        }}
+                      >{data}</div>
             },
             {
                 title: "직급",
