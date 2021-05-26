@@ -49,6 +49,37 @@ class BlindListDialog extends Component {
         }, () => this.getList());
     };
 
+    onDelete = (idx) => {
+        Modal.confirm({
+            title: "차단 해제",
+            content: "차단을 해제하시겠습니까?",
+            okText: "확인",
+            cancelText: "취소",
+            onOk(){
+                httpPost(httpUrl.deleteBlind, [], {
+                    idx: idx,
+                })
+                .then((res) => {
+                    if (res.result === "SUCCESS" && res.data==="SUCCESS") {
+                        console.log(res.result);
+                        this.getList();
+                    } else {
+                        Modal.info({
+                        title: "적용 오류",
+                        content: "처리가 실패했습니다.",
+                        });
+                    }
+                })
+                .catch((e) => {
+                    Modal.info({
+                    title: "적용 오류",
+                    content: "처리가 실패했습니다.",
+                    });
+                });
+            }
+        })
+    }
+
     getList = () => {
         let {data} = this.props;
         let riderIdx = data.idx;
@@ -59,9 +90,12 @@ class BlindListDialog extends Component {
             deletedList: [0],
         })
           .then((res) => {
+            if (res.result === "SUCCESS" && res.data==="SUCCESS") {
+              console.log(res);
               this.setState({
                 list: res.data.riderFrBlocks,
               });
+            }
           })
       };
     

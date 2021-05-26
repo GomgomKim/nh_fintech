@@ -47,7 +47,7 @@ class NoticeDialog extends Component {
       deleteDate: '',
       readDate: '',
       deleted: false,
-      checkedCompleteCall: false,
+      checkedDeletedCall: false,
       registNotice: false,
     //   idx: 1,
     };
