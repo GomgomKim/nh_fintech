@@ -268,7 +268,7 @@ class RegistFranDialog extends Component {
                                                         />
                                                     </FormItem>
                                                 </div> */}
-                                                                                                                                    
+                                                                                                                                                                                
                                                 <div className="contentBlock">
                                                     <div className="mainTitle">
                                                         주소
@@ -310,11 +310,29 @@ class RegistFranDialog extends Component {
                                                         <Input placeholder="상세주소를 입력해 주세요." className="override-input sub"/>
                                                     </FormItem>
                                                 </div>
+                                                 <div className="contentBlock">
+                                                    <div className="mainTitle">
+                                                        가입일자
+                                                    </div>
+                                                    <FormItem
+                                                        name="frJoinDate"
+                                                        className="selectItem"                                                        
+                                                    >
+                                                       <DatePicker
+                                                            style={{ marginLeft: 20 , width: 300}}
+                                                            defaultValue={moment(today, dateFormat)}
+                                                            format={dateFormat}
+                                                        // onChange={date => this.setState({ selectedDate: date })}
+                                                        />
+                                                    </FormItem>
+                                                </div>
                                             </div>
 
 
-                                            <div className="registFranWrapper sub">  
-                                              <div className="contentBlock">
+                                            <div className="registFranWrapper sub">                                               
+
+
+                                            <div className="contentBlock">
                                                     <div className="mainTitle">
                                                         아이디
                                                     </div>
@@ -341,6 +359,8 @@ class RegistFranDialog extends Component {
                                                     </FormItem>
                                                 </div>
 
+
+
                                                <div className="contentBlock">
                                                     <div className="mainTitle">
                                                         PG 사용여부
@@ -365,30 +385,27 @@ class RegistFranDialog extends Component {
                                                     </div>
                                                     <FormItem
                                                         name="basicDeliveryPrice"
+                                                        className="selectItem"                                                       
+                                                        initialValue={data && 10000}
+                                                    >
+
+                                                        <Input placeholder="배달요금을 입력해 주세요."  disabled className="override-input price"/>
+                                                    </FormItem>
+                                                    * 기본배달요금
+                                                </div>
+                                                <div className="contentBlock">
+                                                    <div className="mainTitle">
+                                                        할증요금
+                                                    </div>
+                                                    <FormItem
+                                                        name="basicDeliveryPrice"
                                                         className="selectItem"
                                                         // initialValue={data && data.basicDeliveryPrice}
                                                         initialValue={data && 10000}
                                                     >
 
-                                                        <Input placeholder="배달요금을 입력해 주세요." className="override-input price"/>
+                                                        <Input placeholder="할증요금을 입력해 주세요." className="override-input"/>
                                                     </FormItem>
-                                                    * 기본배달요금
-
-                                                    <br/>
-                                              {/*   <div className="contentBlock">
-                                                    <div className="mainTitle"/>
-                                                    <FormItem
-                                                        name="distanceDeliveryPrice"
-                                                        className="selectItem"
-                                                    >
-
-                                                         {data ?
-                                                        <Input placeholder="거리별요금을 입력해 주세요." className="override-input price" defaultValue={data.distanceDeliveryPrice}/> :
-                                                        <Input placeholder="거리별요금을 입력해 주세요." className="override-input price"/>
-                                                    }
-                                                    </FormItem>
-                                                    * 거리별요금
-                                                    </div> */}
                                                 </div>
 
                                                 <div className="contentBlock">
@@ -476,22 +493,7 @@ class RegistFranDialog extends Component {
 
                                                     </FormItem>
                                                 </div>
-                                                <div className="contentBlock">
-                                                    <div className="mainTitle">
-                                                        가입일자
-                                                    </div>
-                                                    <FormItem
-                                                        name="frJoinDate"
-                                                        className="selectItem"                                                        
-                                                    >
-                                                       <DatePicker
-                                                            style={{ marginLeft: 20 , width: 300}}
-                                                            defaultValue={moment(today, dateFormat)}
-                                                            format={dateFormat}
-                                                        // onChange={date => this.setState({ selectedDate: date })}
-                                                        />
-                                                    </FormItem>
-                                                </div>
+                                               
                                             </div>
 
 
