@@ -538,7 +538,7 @@ class RegistFranDialog extends Component {
                                                     <div>
                                                        
                                                     <Upload {...uploadFileProps} showUploadList={false}>
-                                                        <Button type="primary" htmlType="submit" className="excel-upload callTab">
+                                                        <Button type="primary" className="excel-upload callTab">
                                                         <img src={require('../../../img/login/excel.png').default} />올리기
                                                         </Button>
                                                     </Upload>

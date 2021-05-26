@@ -150,6 +150,17 @@ const pgUseRate = [
     "0%"
 ]
 
+const arriveReqTime = {
+    5:'5분',
+    10:'10분',
+    15:'15분',
+    20:'20분',
+    30:'30분',
+    40:'40분',
+    1005:'후5분',
+    1010:'후10분',
+}
+
 
 export { 
     deliveryStatusCode,
@@ -172,5 +183,5 @@ export {
     pgUseRate,
     tableStatusString,
     feeManner,
-
+    arriveReqTime
 };
