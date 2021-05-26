@@ -167,6 +167,14 @@ const arriveReqTime = {
     1010:'후10분',
 }
 
+const packAmount = {
+    1:"1개",
+    2:"2개",
+    3:"3개",
+    4:"4개",
+    5:"5개",
+    6:"5개이상",
+}
 
 export { 
     deliveryStatusCode,
@@ -190,5 +198,6 @@ export {
     pgUseRate,
     tableStatusString,
     feeManner,
-    arriveReqTime
+    arriveReqTime,
+    packAmount,
 };
