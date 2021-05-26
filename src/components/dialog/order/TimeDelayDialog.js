@@ -110,7 +110,7 @@ class TimeDelayDialog extends Component {
           pickupAvTime70: true,
         })
           .then((res) => {
-            if (res.result === "SUCCESS") {
+            if (res.result === "SUCCESS" && res.data==="SUCCESS") {
               this.setState({ confirmLoading: false });
               Modal.info({
                 title: "적용 완료",

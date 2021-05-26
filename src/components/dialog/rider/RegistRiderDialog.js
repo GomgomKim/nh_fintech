@@ -58,7 +58,6 @@ class RegistRiderDialog extends Component {
             okText: "확인",
             cancelText: "취소",
             onOk() {
-                console.log(data.idx)
                 data ?
                     //수정
                     httpPost(httpUrl.updateRider, [], {
@@ -81,12 +80,12 @@ class RegistRiderDialog extends Component {
                     //등록
                     httpPost(httpUrl.registRider, [], {
                         ...self.formRef.current.getFieldsValue(),
-                        idx: self.props.data.idx,
+                        userType: 1,
                         deliveryPriceFeeType: self.state.feeManner,
 
                     }).then((res) => {
                         console.log(res)
-                        if (res.result === "SUCCESS" && res.data === "SUCCESS") {
+                        if (res.result === "SUCCESS") {
                             registComplete()
                         } else {
                             registError()
@@ -179,6 +178,7 @@ class RegistRiderDialog extends Component {
                                                                     this.setState({ riderGroup: parseInt(value) });
                                                                 }
                                                             }}
+                                                            defaultValue={'C'} spq
 
                                                         />
 
@@ -261,7 +261,7 @@ class RegistRiderDialog extends Component {
                                                     <FormItem
                                                         name="email"
                                                         className="selectItem"
-                                                        rules={[{ required: true, message: "이메일을 입력해주세요" }]}
+                                                        // rules={[{ required: true, message: "이메일을 입력해주세요" }]}
                                                         initialValue={data ? data.email : ''}
                                                     >
                                                         <Input placeholder="ex) example@naver.com" className="override-input" />
@@ -278,6 +278,8 @@ class RegistRiderDialog extends Component {
                                                         <Input.Password placeholder="패스워드를 입력해 주세요." className="override-input" />
                                                     </FormItem>
                                                 </div>
+                                            </div>
+                                            <div className="registRiderWrapper sub">
                                                 <div className="contentBlock">
                                                     <div className="mainTitle">
                                                         전화번호
@@ -291,8 +293,6 @@ class RegistRiderDialog extends Component {
                                                         <Input placeholder="휴대전화 번호를 입력해 주세요." className="override-input" />
                                                     </FormItem>
                                                 </div>
-                                            </div>
-                                            <div className="registRiderWrapper sub">
                                                 <div className="contentBlock">
                                                     <div className="mainTitle">
                                                         메모
@@ -306,7 +306,7 @@ class RegistRiderDialog extends Component {
                                                         <Input placeholder="메모를 입력해 주세요." className="override-input" />
                                                     </FormItem>
                                                 </div>
-                                                <div className="contentBlock">
+                                                {/* <div className="contentBlock">
                                                     <div className="mainTitle">
                                                         수수료
                                                     </div>
@@ -324,10 +324,6 @@ class RegistRiderDialog extends Component {
                                                         수수료방식
                                                     </div>
                                                     <div className="registRiderCheck">
-                                                        {/* <Radio.Group onChange={this.onChangFeeManner} value={this.state.feeManner}>
-                                                            <Radio value={1}>정량</Radio>
-                                                            <Radio value={2}>정률</Radio>
-                                                        </Radio.Group> */}
                                                         <Radio.Group className="searchRequirement" onChange={this.onChangFeeManner} value={this.state.feeManner}>
                                                             {Object.entries(feeManner).map(([key, value]) => {
                                                                 return (
@@ -336,7 +332,7 @@ class RegistRiderDialog extends Component {
                                                             })}
                                                         </Radio.Group>
                                                     </div>
-                                                </div>
+                                                </div> */}
                                                 <div className="contentBlock">
                                                     <div className="mainTitle">
                                                         최소보유잔액
@@ -344,11 +340,11 @@ class RegistRiderDialog extends Component {
                                                     <FormItem
                                                         name="ncash"
                                                         className="selectItem"
-                                                        rules={[{ required: true, message: "최소보유잔액을 입력해주세요" }]}
+                                                        // rules={[{ required: true, message: "최소보유잔액을 입력해주세요" }]}
                                                         // initialValue={data ? data.minCashAmount : ''}
-                                                        initialValue={data && 1000}
+                                                        initialValue={data && 100000}
                                                     >
-                                                        <Input defaultValue={'1000'} placeholder="최소보유잔액을 입력해 주세요." className="override-input" />
+                                                        <Input defaultValue={'100000'} placeholder="최소보유잔액을 입력해 주세요." className="override-input" />
                                                     </FormItem>
                                                 </div>
                                                 <div className="contentBlock">

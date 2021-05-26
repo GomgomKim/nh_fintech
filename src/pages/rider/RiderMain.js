@@ -172,7 +172,6 @@ class RiderMain extends Component {
     this.setState({ registRiderOpen: true });
   }
   closeRegistRiderModal = () => {
-    console.log("in")
     this.setState({ registRiderOpen: false });
     this.getList()
   }
@@ -258,7 +257,7 @@ class RiderMain extends Component {
           <div>
             <UpdatePasswordDialog isOpen={this.state.updatePasswordOpen} close={this.closeUpdatePasswordModal} />
             <Button
-              className="tabBtn surchargeTab"
+              className="tabBtn surchargeTab" ㅞㅡ
               onClick={this.openUpdatePasswordModal}
             >초기화</Button>
           </div>
@@ -268,7 +267,7 @@ class RiderMain extends Component {
         className: "table-column-center",
         render: (data, row) =>
           <div>
-            {/* <BlindListDialog isOpen={this.state.blindListOpen} close={this.closeBlindModal} data={this.state.blindRiderData}/> */}
+            <BlindListDialog isOpen={this.state.blindListOpen} close={this.closeBlindModal} data={this.state.blindRiderData}/>
             <Button className="tabBtn surchargeTab" onClick={() => this.setState({ blindRiderData: row, blindListOpen: true })} >블라인드</Button>
           </div>
       },
