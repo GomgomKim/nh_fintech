@@ -17,10 +17,14 @@ import {
   paymentMethod,
   paymentStatus,
   deliveryStatusCode,
+  arriveReqTime,
 } from "../../../lib/util/codeUtil";
 import { formatDate, formatDateSecond } from "../../../lib/util/dateUtil";
 import PaymentDialog from "./PaymentDialog";
-import { httpUrl, httpPost } from "../../../api/httpClient";
+import { httpUrl, httpPost, httpGet } from "../../../api/httpClient";
+import { updateComplete, updateError } from "../../../api/Modals";
+import SearchFranchiseDialog from "../common/SearchFranchiseDialog";
+import PostCodeDialog from "../common/PostCodeDialog";
 
 // {
 //   "arriveReqDate": "2021-05-01 00:00:00",
@@ -71,6 +75,8 @@ const newOrder = {
   frLongitude: 0,
   frName: "",
   frPhone: "",
+  // idx 확인 해보기
+  // 이게 orederIdx 면 create에서는 없이 보내는게 맞지 않나
   idx: 0,
   itemPrepared: false,
   itemPreparingTime: 0,
@@ -101,8 +107,14 @@ class RegistCallDialog extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      // 모달창 관련
       paymentOpen: false,
+      searchFranchiseOpen: false,
+
+      // 조회 / 수정창 구분
       editable: true,
+      selectedFr: null,
+      selectedDest: null,
     };
     this.formRef = React.createRef();
   }
@@ -127,6 +139,21 @@ class RegistCallDialog extends Component {
   closePaymentModal = () => {
     this.setState({ paymentOpen: false });
   };
+  // 가맹점조회 dialog
+  openSearchFranchiseModal = () => {
+    this.setState({ searchFranchiseOpen: true });
+  };
+  closeSearchFranchiseModal = () => {
+    this.setState({ searchFranchiseOpen: false });
+  };
+  // 주소검색 dialog
+  openPostCode = () => {
+    this.setState({ isPostCodeOpen: true });
+  };
+  closePostCode = () => {
+    this.setState({ isPostCodeOpen: false });
+  };
+
   handlePaymentChange = (result) => {
     this.setState({
       data: {
@@ -136,36 +163,55 @@ class RegistCallDialog extends Component {
     });
   };
 
+  getDeliveryPrice = () => {
+    // 예시
+    const destLatitude = 37;
+    const destLongitude = 126;
+    httpGet(httpUrl.getDeliveryPrice, [destLatitude, destLongitude], {})
+      .then((res) => {
+        if (res.result === "SUCCESS") {
+          this.setState({
+            data: {
+              ...this.state.data,
+              deliveryPrice: res.data,
+            },
+          });
+        } else {
+          updateError();
+        }
+      })
+      .catch((e) => {
+        updateError();
+      });
+  };
+
   handleSubmit = () => {
     if (this.props.data) {
       console.log(this.state.data);
       httpPost(httpUrl.orderUpdate, [], this.state.data)
         .then((res) => {
-          console.log(res);
+          if (res.result === "SUCCESS") {
+            updateComplete();
+          } else {
+            updateError();
+          }
         })
-        .catch((e) => {});
+        .catch((e) => {
+          updateError();
+        });
     } else {
-      const { data } = this.state;
-      httpPost(httpUrl.orderCreate, [], {
-        arriveReqDate: data.arriveReqDate,
-        custMessage: data.custMessage,
-        custPhone: data.custPhone,
-        deliveryPrice: data.deliveryPrice,
-        destAddr1: data.destAddr1,
-        destAddr2: data.destAddr2,
-        destAddr3: data.destAddr3,
-        itemPrepared: data.itemPrepared,
-        itemPreparingTime: data.itemPreparingTime,
-        latitude: data.latitude,
-        longitude: data.longitude,
-        ncashPayEnabled: true,
-        orderPayments: data.orderPayments,
-        orderPrice: parseInt(data.orderPrice),
-      })
+      console.log(this.state.data);
+      httpPost(httpUrl.orderCreate, [], this.state.data)
         .then((res) => {
-          console.log(res);
+          if (res.result === "SUCCESS") {
+            updateComplete();
+          } else {
+            updateError();
+          }
         })
-        .catch((e) => {});
+        .catch((e) => {
+          updateError();
+        });
     }
   };
 
@@ -194,48 +240,74 @@ class RegistCallDialog extends Component {
                 <Form ref={this.formIdRef} onFinish={this.handleSubmit}>
                   <div className="registCallLayout">
                     <div className="registCallWrapper">
-                      <div className="contentBlock first-child">
+                      <div className="contentBlock">
                         <div className="mainTitle">가맹점명</div>
-                        {/* <FormItem
-                                                        name="franchiseName"
-                                                        className="selectItem"
-                                                    >
-                                                        <Select placeholder="가맹점을 선택해 주세요." className="override-select fran">
-                                                            <Option value={0}>플러스김포 / 플러스김포</Option>
-                                                            <Option value={1}>김포1지점 / 플러스김포</Option>
-                                                            <Option value={2}>김포2지점 / 플러스김포</Option>
-                                                        </Select>
-                                                    </FormItem> */}
-                        <Search
-                          placeholder="가맹점검색"
-                          className="selectItem"
-                          enterButton
-                          allowClear
-                          onChange={(e) =>
-                            this.handleChangeInput(e.target.value, "frName")
-                          }
-                          onSearch={this.onSearchFranchisee}
-                          defaultValue={data.frName}
-                          style={{
-                            width: 190,
-                            marginLeft: 10,
-                          }}
-                        />
+                        <FormItem name="addrMain" className="selectItem">
+                          <SearchFranchiseDialog
+                            onSelect={(fr) => {
+                              this.setState({ selectedFr: fr }, () => {
+                                console.log(this.state.selectedFr);
+                                const fr = this.state.selectedFr;
+                                this.setState({
+                                  data: {
+                                    ...this.state.data,
+                                    // idx
+                                    frIdx: fr.idx,
+                                    frLatitude: fr.latitude,
+                                    frLongitude: fr.longitude,
+                                    frName: fr.frName,
+                                    frPhone: fr.frPhone,
+                                    // 이건 뭐지
+                                    packAmount:0,
+                                  },
+                                });
+                              });
+                            }}
+                            isOpen={this.state.searchFranchiseOpen}
+                            close={this.closeSearchFranchiseModal}
+                          />
+
+                          <div className="orderPayment-wrapper">
+                            <Input
+                              value={
+                                this.state.selectedFr
+                                  ? this.state.selectedFr.frName
+                                  : ""
+                              }
+                              style={{ marginLeft: "20px" }}
+                            />
+                            <Button onClick={this.openSearchFranchiseModal}>
+                              가맹점조회
+                            </Button>
+                          </div>
+                        </FormItem>
                       </div>
                       <div className="contentBlock">
                         <div className="mainTitle">도착지</div>
                         <FormItem name="addrMain" className="selectItem">
-                          <Input
-                            placeholder="도착지를 선택해 주세요."
-                            className="override-input"
-                            defaultValue={data.destAddr1}
-                            onChange={(e) =>
-                              this.handleChangeInput(
-                                e.target.value,
-                                "destAddr1"
-                              )
+                          <PostCodeDialog
+                            onSelect={(value) =>
+                              this.setState({ selectedDest: value }, () => {
+                                console.log(this.state.selectedDest);
+                                this.getDeliveryPrice();
+                              })
                             }
-                          ></Input>
+                            isOpen={this.state.isPostCodeOpen}
+                            close={this.closePostCode}
+                          />
+                          <div className="orderPayment-wrapper">
+                            <Input
+                              value={
+                                this.state.selectedDest
+                                  ? this.state.selectedDest.address
+                                  : ""
+                              }
+                              style={{ marginLeft: "20px" }}
+                            />
+                            <Button onClick={this.openPostCode}>
+                              우편번호 검색
+                            </Button>
+                          </div>
                         </FormItem>
                       </div>
                       <div className="contentBlock">
@@ -260,10 +332,14 @@ class RegistCallDialog extends Component {
                           <Input
                             placeholder="배달요금 입력"
                             className="override-input"
-                            defaultValue={data.deliveryPrice}
+                            value={
+                              this.state.data
+                                ? this.state.data.deliveryPrice
+                                : ""
+                            }
                             onChange={(e) =>
                               this.handleChangeInput(
-                                e.target.value,
+                                parseInt(e.target.value),
                                 "deliveryPrice"
                               )
                             }
@@ -279,7 +355,7 @@ class RegistCallDialog extends Component {
                             defaultValue={data.orderPrice}
                             onChange={(e) =>
                               this.handleChangeInput(
-                                e.target.value,
+                                parseInt(e.target.value),
                                 "orderPrice"
                               )
                             }
@@ -296,149 +372,18 @@ class RegistCallDialog extends Component {
                             this.props.data ? this.props.data.orderPayments : []
                           }
                           editable={this.state.editable}
-                          orderPrice={this.props.data ? this.props.data.orderPrice : 0}
+                          orderPrice={
+                            this.state.data
+                              ? this.state.data.orderPrice
+                              : this.props.data.orderPrice
+                          }
                         />
                         <Button
                           onClick={this.openPaymentModal}
-                          className="selectItem"
+                          className="override-input"
                         >
                           결제방식 선택
                         </Button>
-                        {/* <FormItem name="orderPayments" className="selectItem">
-                          <div className="orderPayments-wrapper">
-                            {data.orderPayments.map((orderPayment) => {
-                              return (
-                                <div className="override-input orderPayment-wrapper">
-                                  <Select
-                                    defaultValue={orderPayment.paymentMethod}
-                                  >
-                                    {paymentMethod.map((value, index) => {
-                                      if (index == 0) {
-                                        return;
-                                      }
-                                      return (
-                                        <Option value={index}>{value}</Option>
-                                      );
-                                    })}
-                                  </Select>
-                                  <Select
-                                    defaultValue={orderPayment.paymentStatus}
-                                  >
-                                    {paymentStatus.map((value, index) => {
-                                      if (index == 0) {
-                                        return;
-                                      }
-                                      return (
-                                        <Option value={index}>{value}</Option>
-                                      );
-                                    })}
-                                  </Select>
-                                  <Input
-                                    placeholder="결제방식을 입력해 주세요."
-                                    defaultValue={orderPayment.paymentAmount}
-                                    onChange={(e) =>
-                                      this.handleChange(e, "orderPayments")
-                                    }
-                                  ></Input>
-                                </div>
-                              );
-                            })}
-                          </div>
-                        </FormItem> */}
-                      </div>
-                      {/* <FormItem
-                        style={{
-                          marginBottom: 0,
-                          display: "inline-block",
-                          verticalAlign: "middle",
-                        }}
-                        name="payType"
-                        initialValue={0}
-                      >
-                        <Radio.Group>
-                          <Radio style={{ fontSize: 18 }} value={0}>
-                            현금
-                          </Radio>
-                          <Radio style={{ fontSize: 18 }} value={1}>
-                            카드
-                          </Radio>
-                          <Radio style={{ fontSize: 18 }} value={2}>
-                            선결
-                          </Radio>
-                        </Radio.Group>
-                      </FormItem> */}
-                      {/* <div className="contentBlock">
-                        <div className="mainTitle">주문상태</div>
-                        <Select
-                          className="override-input"
-                          defaultValue={data.orderStatus}
-                          onChange={(value) => {
-                            var flag = true;
-
-                            if (!modifyType[data.orderStatus].includes(value)) {
-                              Modal.info({
-                                content: <div>상태를 바꿀 수 없습니다.</div>,
-                              });
-                              flag = false;
-                            }
-
-                            // 대기중 -> 픽업중 변경 시 강제배차 알림
-                            if (data.orderStatus === 1 && value === 2) {
-                              Modal.info({
-                                content: <div>강제배차를 사용하세요.</div>,
-                              });
-                            }
-
-                            // 제약조건 성립 시 상태 변경
-                            if (flag) {
-                              this.handleChangeInput(value, "orderStatus");
-                            }
-                          }}
-                        >
-                          {deliveryStatusCode.map((value, index) => {
-                            if (index === 0) return <></>;
-                            else return <Option value={index}>{value}</Option>;
-                          })}
-                        </Select>
-                      </div> */}
-
-                      <div className="contentBlock">
-                        <div className="mainTitle">준비시간</div>
-                        <FormItem name="preparationTime" className="selectItem">
-                          <Select
-                            placeholder="시간단위"
-                            className="override-input"
-                            onChange={(value) =>
-                              this.handleChangeInput(value, "itemPreparingTime")
-                            }
-                          >
-                            <Option value={5}>5분</Option>
-                            <Option value={10}>10분</Option>
-                            <Option value={15}>15분</Option>
-                            <Option value={20}>20분</Option>
-                            <Option value={30}>30분</Option>
-                            <Option value={40}>40분</Option>
-                            <Option value={1005}>후5분</Option>
-                            <Option value={1010}>후10분</Option>
-                          </Select>
-                        </FormItem>
-                        {/* <FormItem
-                          style={{
-                            marginLeft: 10,
-                            display: "inline-block",
-                            verticalAlign: "middle",
-                          }}
-                          name="payType"
-                          initialValue={0}
-                          className="selectItem"
-                        >
-                          <Checkbox style={{ fontSize: 16 }} value={0}>
-                            과금
-                          </Checkbox>
-                          <Checkbox style={{ fontSize: 18 }} value={1}>
-                            과적
-                          </Checkbox>
-                        </FormItem> */}
                       </div>
                       <div className="contentBlock">
                         <div className="mainTitle">음식준비 완료</div>
@@ -456,19 +401,18 @@ class RegistCallDialog extends Component {
                       </div>
                       <div className="contentBlock">
                         <div className="mainTitle">요청시간</div>
-                        <FormItem name="arriveReqDate" className="selectItem">
-                          <DatePicker
+                        <FormItem name="arriveReqTime" className="selectItem">
+                          <Select
+                            placeholder="시간단위"
                             className="override-input"
-                            showTime
-                            onOk={(value) => {
-                              const newDate = value.toDate();
-                              const data = this.state.data;
-                              data["arriveReqDate"] = formatDateSecond(newDate);
-                              this.setState({ data: data }, () =>
-                                console.log(this.state.data)
-                              );
-                            }}
-                          />
+                            onChange={(value) =>
+                              this.handleChangeInput(parseInt(value), "arriveReqTime")
+                            }
+                          >
+                            {Object.keys(arriveReqTime).map((key) => (
+                              <Option value={key}>{arriveReqTime[key]}</Option>
+                            ))}
+                          </Select>
                         </FormItem>
                       </div>
                       <div className="contentBlock">
