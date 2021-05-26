@@ -161,6 +161,7 @@ const httpUrl = {
   orderList: "/order/list",
   orderUpdate: "/order/update",
   orderCreate:"/order/create",
+  getDeliveryPrice:"/fr/expectDeliveryPrice?destLatitude=%s&destLongitude=%s",
 
   priceExtraList: "/branch/deliveryPriceExtra/list?pageNum=%s&pageSize=%s",
   priceExtraRegist: "/branch/deliveryPriceExtra/create",
