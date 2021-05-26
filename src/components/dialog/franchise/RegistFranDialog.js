@@ -1,7 +1,7 @@
 import React, { Component, } from "react";
 import {
     Form, Input, DatePicker,
-    Button, Checkbox, Modal, Radio, Upload,
+    Button, Checkbox, Modal, Radio,
 } from "antd";
 import '../../../css/modal.css';
 import { httpUrl, httpPost, serverUrl } from '../../../api/httpClient';
@@ -130,34 +130,6 @@ class RegistFranDialog extends Component {
 
         const { isOpen, close, data } = this.props;
 
-        const uploadFileProps ={
-            aciton: serverUrl + httpUrl.fileUpload,
-            multiple: false,
-            withCredentials: true,
-            beforeUpload: (file, fileList) => {
-
-            },
-            onSuccess: (file) => {
-                if (file.data.result) {
-                    Modal.info({
-                        title: "업로드 결과",
-                        content: "파일 업로드 성공"
-                    });
-                    this.state.uploadRiles.push({ idx: file.data.idx, name: file.data.filename})
-                    this.setState({
-                        uploadFiles: this.state.uploadFiles
-                    });
-                }
-            },
-            onError(err) {
-                console.log(err)
-                Modal.error({
-                    title:"업로드 결과",
-                    content:"파일 업로드 실패"
-                });
-            }
-        };
-
         return (
             <React.Fragment>
                 {
@@ -175,16 +147,7 @@ class RegistFranDialog extends Component {
 
                                     <img onClick={close} src={require('../../../img/login/close.png').default} className="surcharge-close" alt="exit" />
 
-                                    <div className="excel-upload">
-                                                       
-                                                       <Upload {...uploadFileProps} showUploadList={false}>
-                                                           <Button type="primary" htmlType="submit" >
-                                                               <img src={require('../../../img/login/excel.png').default} alt="" />올리기
-                                                           </Button>
-                                                       </Upload>
-                                                          
-                                                   </div>
-
+                                   
                                     <Form ref={this.formRef} onFinish={this.handleSubmit}>
                                         <div className="registFranLayout">
                                             <div className="registFranWrapper">

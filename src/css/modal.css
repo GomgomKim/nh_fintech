@@ -939,33 +939,6 @@
 .registFranLayout::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Opera*/
 }
-/* 엑셀업로드 */
-.excel-upload {
-  display: inline-block;
-  float: right;
-  margin-right: 20px;
-}
-.excel-upload .ant-btn-primary {
-  background-color: #f1f1f1;
-  box-shadow: none;
-  border: none;
-  color: #222;
-  padding: 5px 25px;
-  text-align: center;
-  vertical-align: top;
-  margin-bottom: 10px;
-  border-radius: 30px;
-}
-
-.excel-upload .ant-btn-primary:hover {
-  background-color: #1890ff;
-  color: #fff;
-}
-.excel-upload img {
-  width: 20px;
-  margin-right: 5px;
-  vertical-align: bottom;
-}
 
 /* 왼쪽 wrappper */
 .registFranWrapper {

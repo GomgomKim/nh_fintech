@@ -49,8 +49,6 @@ class BlindListDialog extends Component {
         }, () => this.getList());
     };
 
-<<<<<<< HEAD
-=======
     onDelete = (idx) => {
         Modal.confirm({
             title: "차단 해제",
@@ -82,7 +80,6 @@ class BlindListDialog extends Component {
         })
     }
 
->>>>>>> 7a5913bbc58603f7d1602141ca1f0e4db174a87f
     getList = () => {
         let {data} = this.props;
         let riderIdx = data.idx;
@@ -93,11 +90,8 @@ class BlindListDialog extends Component {
             deletedList: [0],
         })
           .then((res) => {
-<<<<<<< HEAD
-=======
             if (res.result === "SUCCESS" && res.data==="SUCCESS") {
               console.log(res);
->>>>>>> 7a5913bbc58603f7d1602141ca1f0e4db174a87f
               this.setState({
                 list: res.data.riderFrBlocks,
               });

@@ -1,6 +1,6 @@
-import {Modal, Table, Button, Input} from 'antd';
+import {Modal, Table, Button, Input, Upload} from 'antd';
 import React, {Component} from 'react';
-import {httpUrl, httpPost} from '../../api/httpClient';
+import {httpUrl, httpPost,  serverUrl } from '../../api/httpClient';
 import RegistFranDialog from "../../components/dialog/franchise/RegistFranDialog";
 import SearchAddressDialog from "../../components/dialog/franchise/SearchAddressDialog";
 import SearchFranchiseDialog from '../../components/dialog/common/SearchFranchiseDialog';
@@ -17,6 +17,7 @@ import {
 } from '../../api/Modals'
 
 const Search = Input.Search;
+
 
 class FranchiseMain extends Component {
     constructor(props) {
@@ -363,6 +364,34 @@ class FranchiseMain extends Component {
             );
         };
 
+        const uploadFileProps ={
+            aciton: serverUrl + httpUrl.fileUpload,
+            multiple: false,
+            withCredentials: true,
+            beforeUpload: (file, fileList) => {
+
+            },
+            onSuccess: (file) => {
+                if (file.data.result) {
+                    Modal.info({
+                        title: "업로드 결과",
+                        content: "파일 업로드 성공"
+                    });
+                    this.state.uploadRiles.push({ idx: file.data.idx, name: file.data.filename})
+                    this.setState({
+                        uploadFiles: this.state.uploadFiles
+                    });
+                }
+            },
+            onError(err) {
+                console.log(err)
+                Modal.error({
+                    title:"업로드 결과",
+                    content:"파일 업로드 실패"
+                });
+            }
+        };
+
         return (
             <div className="franchiseContainer">
 
@@ -410,7 +439,9 @@ class FranchiseMain extends Component {
                     <a href="/franchise_regist_templete.xlsx" download> 
                     <Button className="tabBtn sectionTab exel" ><img src={require('../../img/login/excel.png').default} alt="" />양식 다운로드</Button>
                     </a>
-
+                    <Upload {...uploadFileProps} showUploadList={false}>
+                    <Button className="tabBtn sectionTab exel" ><img src={require('../../img/login/excel.png').default} alt="" />올리기</Button>
+                    </Upload>
                 </div>
 
                 <div className="dataTableLayout">
