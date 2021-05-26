@@ -472,17 +472,16 @@ class RegistFranDialog extends Component {
 
 
                                             <div className="registFranWrapper bot">
-                                                <div className="registFranWrapper">
                                                     
                                                     <div className="registFranTitle">
                                                         월관리비 설정
                                                     </div>
                                                     
                                                     <div className="contentBlock">
-                                                        <div className="mainTitle">
+                                                        {/* <div className="mainTitle">
                                                             사용여부
                                                         </div>
-                                                        <Checkbox style={{ verticalAlign: 'middle' }}></Checkbox>
+                                                        <Checkbox style={{ verticalAlign: 'middle' }}></Checkbox> */}
 
                                                         <div className="subTitle">
                                                             월회비 최초납부일
@@ -500,7 +499,7 @@ class RegistFranDialog extends Component {
                                                             />
                                                         </FormItem>
 
-                                                        <div className="subTitle">
+                                                        <div className="subTitle" style={{marginLeft: 20}}>
                                                             관리비
                                                         </div>
 
@@ -517,8 +516,6 @@ class RegistFranDialog extends Component {
                                                         </Button>
 
                                                     </div>
-
-                                                </div>
 
                                             </div>
 
