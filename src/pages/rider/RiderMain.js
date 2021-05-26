@@ -419,7 +419,9 @@ class RiderMain extends Component {
           <SearchRiderDialog
             callback={(data) => this.onSearchRiderDetail(data)}
             isOpen={this.state.searchRiderOpen}
-            close={this.closeSearchRiderModal} />
+            close={this.closeSearchRiderModal}
+            multi={true}
+            />
 
           <Button className="tabBtn" onClick={this.openSearchRiderModal}>기사조회</Button>
           <RegistRiderDialog isOpen={this.state.registRiderOpen} close={this.closeRegistRiderModal} />

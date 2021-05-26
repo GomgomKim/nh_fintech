@@ -421,7 +421,9 @@ class FranchiseMain extends Component {
                     <SearchFranchiseDialog
                         callback={(data) => this.onSearchFranchiseDetail(data)}
                         isOpen={this.state.searchFranchiseOpen}
-                        close={this.closeSearchFranchiseModal}/>
+                        close={this.closeSearchFranchiseModal}
+                        multi={true}
+                        />
                     <Button className="tabBtn" onClick={this.openSearchFranchiseModal}>가맹점조회</Button>
                     <RegistFranDialog
                         isOpen={this.state.ResistFranchiseOpen}
