@@ -5,6 +5,7 @@ import {
 } from "antd";
 import { httpUrl, httpGet } from '../../../api/httpClient';
 import PostCodeDialog from '../common/PostCodeDialog';
+import SelfAddressDialog from '../franchise/SelfAddressDialog';
 import { 
     addType
 } from '../../../lib/util/codeUtil'
@@ -40,6 +41,8 @@ class SearchAddressDialog extends Component {
             localAddr: "",
             searchAddress: "",
 
+            selfAddOpen:false,
+
 
         };
         this.formRef = React.createRef();
@@ -64,42 +67,7 @@ class SearchAddressDialog extends Component {
 
 
     getList = () => {
-        var list = [
-            {
-                idx: 5,
-                KindOfAddress: '오피스텔',
-                addressList: '잠실 푸르지오시티 106동',
-                delete: this.state.blocked
-            },
-            {
-                idx: 4,
-                KindOfAddress: '오피스텔',
-                addressList: '잠실 푸르지오시티 106동',
-                delete: this.state.blocked
-            },
-            {
-                idx: 3,
-                KindOfAddress: '오피스텔',
-                addressList: '잠실 푸르지오시티 106동',
-                delete: this.state.blocked
-            },
-            {
-                idx: 2,
-                KindOfAddress: '아파트',
-                addressList: '잠실 푸르지오시티 106동',
-                delete: this.state.blocked
-            },
-            {
-                idx: 1,
-                KindOfAddress: '아파트',
-                addressList: '잠실 푸르지오시티 106동',
-                delete: this.state.blocked
-            },
-
-        ];
-        this.setState({
-            list: list,
-        });
+     
     }
 
     // 우편번호 검색
@@ -109,6 +77,13 @@ class SearchAddressDialog extends Component {
 
     closePostCode = () => {
         this.setState({ isPostCodeOpen: false,})
+    }
+
+    openSelfAdd = () => {
+        this.setState({selfAddOpen:true,})
+    }
+    closeSelfAdd = () => {
+        this.setState({selfAddOpen:false,})
     }
 
     // 우편번호 - 주소 저장
@@ -299,7 +274,8 @@ class SearchAddressDialog extends Component {
                                                     </div>  
 
                                                         <div className="searchAddress-btn">
-                                                            <Button type="primary" htmlType="submit">
+                                                            <SelfAddressDialog isOpen={this.state.selfAddOpen} close={this.closeSelfAdd}/>
+                                                            <Button type="primary" htmlType="submit" onClick={this.openSelfAdd}>
                                                                 등록하기
                                                             </Button>
                                                         </div>
