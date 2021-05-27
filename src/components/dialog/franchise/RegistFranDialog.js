@@ -526,18 +526,13 @@ class RegistFranDialog extends Component {
 
 
                                             <div className="registFranWrapper bot">
-                                                <div className="registFranWrapper">
                                                     
                                                     <div className="registFranTitle">
                                                         월관리비 설정
                                                     </div>
                                                     
                                                     <div className="contentBlock">
-                                                        <div className="mainTitle">
-                                                            사용여부
-                                                        </div>
-                                                        <Checkbox style={{ verticalAlign: 'middle' }}></Checkbox>
-
+                                                       
                                                         <div className="subTitle">
                                                             월회비 최초납부일
                                                         </div>
@@ -566,14 +561,12 @@ class RegistFranDialog extends Component {
                                                             </Input>
                                                         </FormItem>
 
+                                                        
                                                         <Button type="primary" htmlType="submit" className="callTab">
                                                             등록하기
                                                         </Button>
 
-                                                    </div>
-
-                                                </div>
-
+                                                     </div>                                
                                             </div>
 
 
