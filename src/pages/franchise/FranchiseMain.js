@@ -3,9 +3,9 @@ import React, { Component } from "react";
 import { httpUrl, httpPost, serverUrl } from "../../api/httpClient";
 import RegistFranDialog from "../../components/dialog/franchise/RegistFranDialog";
 import SearchAddressDialog from "../../components/dialog/franchise/SearchAddressDialog";
-import SearchFranchiseDialog from '../../components/dialog/common/SearchFranchiseDialog';
+import SearchFranchiseDialog from "../../components/dialog/common/SearchFranchiseDialog";
 import BlindFranListDialog from "../../components/dialog/franchise/BlindFranListDialog";
-import SelectBox from '../../components/input/SelectBox';
+import SelectBox from "../../components/input/SelectBox";
 import "../../css/franchise.css";
 import { comma } from "../../lib/util/numberUtil";
 import { BankOutlined, ConsoleSqlOutlined } from "@ant-design/icons";
@@ -87,14 +87,14 @@ class FranchiseMain extends Component {
   };
 
   getList = () => {
-    console.log(this.state.franStatus);
     httpPost(httpUrl.franchiseList, [], {
       frName: this.state.frName,
       pageNum: this.state.pagination.current,
       userGroup: this.state.franGroup,
       userStatus: this.state.franStatus === 0 ? "" : this.state.franStatus,
     }).then((result) => {
-      console.log("## result=" + JSON.stringify(result, null, 4));
+      console.log("다비켠어ㅏㅣ;;ㅣㅁ어ㅏㄴ하ㅣ먼ㅇㄹ히;ㅏㅓㅁㅇㄶ;ㅏㅣㅓㄴㅁ아ㅣㅎ;ㅓ")
+      console.log(result);
       const pagination = {
         ...this.state.pagination,
       };
@@ -371,7 +371,12 @@ class FranchiseMain extends Component {
         className: "table-column-center",
       },
       {
-        title: "전화번호",
+        title: "가맹점번호",
+        dataIndex: "frPhone",
+        className: "table-column-center",
+      },
+      {
+        title: "대표자번호",
         dataIndex: "phone",
         className: "table-column-center",
       },
@@ -452,11 +457,6 @@ class FranchiseMain extends Component {
         className: "table-column-center",
         render: (data, row) => (
           <div>
-            <RegistFranDialog
-              isOpen={this.state.modifyFranOpen}
-              close={this.closeModifyFranModal}
-              data={this.state.dialogData}
-            />
             <Button
               className="tabBtn surchargeTab"
               onClick={() =>
@@ -595,9 +595,13 @@ class FranchiseMain extends Component {
           >
             주소검색관리
           </Button>
-          
+
           {/* 블라인드 */}
-          <BlindFranListDialog isOpen={this.state.blindListOpen} close={this.closeBlindModal} data={this.state.blindFrData}/>
+          <BlindFranListDialog
+            isOpen={this.state.blindListOpen}
+            close={this.closeBlindModal}
+            data={this.state.blindFrData}
+          />
 
           {/* 엑셀업로드버튼 */}
           <a href="/franchise_regist_templete.xlsx" download>
@@ -642,6 +646,11 @@ class FranchiseMain extends Component {
             expandedRowRender={expandedRowRender}
           />
         </div>
+        <RegistFranDialog
+          isOpen={this.state.modifyFranOpen}
+          close={this.closeModifyFranModal}
+          data={this.state.dialogData}
+        />
       </div>
     );
   }

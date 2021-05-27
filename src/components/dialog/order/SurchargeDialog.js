@@ -208,7 +208,8 @@ class SurchargeDialog extends Component {
                 title: "추가요금",
                 dataIndex: "extraPrice",
                 className: "table-column-center",
-                render: (data) => <div>{comma(data)}</div>
+                render: (data, row) => 
+                <div>{comma(data)}</div>
             },
             {
                 className: "table-column-center",
@@ -240,6 +241,10 @@ class SurchargeDialog extends Component {
 
 
                                     <div className="surchargeLayout">
+                                    <SurchargeGroupDialog
+                                        isOpen={this.state.surchargeGroupOpen}
+                                        close={this.closeSurchargeGroupModal}
+                                    />
                                     <Button onClick={this.openSurchargeGroupModal}>
                                         할증 그룹관리
                                     </Button>

@@ -338,33 +338,6 @@ class RegistRiderDialog extends Component {
                           />
                         </FormItem>
                       </div>
-                      {/* <div className="contentBlock">
-                                                    <div className="mainTitle">
-                                                        수수료
-                                                    </div>
-                                                    <FormItem
-                                                        name="deliveryPriceFeeAmount"
-                                                        className="selectItem"
-                                                        rules={[{ required: true, message: "수수료를 입력해주세요" }]}
-                                                        initialValue={data ? data.deliveryPriceFeeAmount : ''}
-                                                    >
-                                                        <Input placeholder="수수료를 입력해 주세요." className="override-input" />
-                                                    </FormItem>
-                                                </div>
-                                                <div className="contentBlock">
-                                                    <div className="mainTitle mainTitle-sub">
-                                                        수수료방식
-                                                    </div>
-                                                    <div className="registRiderCheck">
-                                                        <Radio.Group className="searchRequirement" onChange={this.onChangFeeManner} value={this.state.feeManner}>
-                                                            {Object.entries(feeManner).map(([key, value]) => {
-                                                                return (
-                                                                    <Radio value={parseInt(key)}>{value}</Radio>
-                                                                );
-                                                            })}
-                                                        </Radio.Group>
-                                                    </div>
-                                                </div> */}
                       <div className="contentBlock">
                         <div className="mainTitle">최소보유잔액</div>
                         <FormItem

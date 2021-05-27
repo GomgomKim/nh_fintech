@@ -166,6 +166,9 @@ const httpUrl = {
   priceExtraRegist: "/branch/deliveryPriceExtra/create",
   priceExtraUpdate: "/branch/deliveryPriceExtra/update",
   priceExtraDelete: "/branch/deliveryPriceExtra/delete/{idx}?idx=%s",
+  priceExtraGroupList: "/fr/settingGroup/list",
+
+
 
   // 직원 관리
   staffList: "/rider/list?pageSize=%s&pageNum=%s&riderLevels=%s&userStatus=%s",
