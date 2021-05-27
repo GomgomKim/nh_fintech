@@ -11,8 +11,13 @@ import {
   riderLevelText,
   riderGroupString,
   modifyType,
-  deliveryStatusCode
+  deliveryStatusCode,
+  rowColorName,
+  arriveReqTime
 } from '../../../lib/util/codeUtil';
+import{
+  customError
+} from '../../../api/Modals'
 
 
 const Option = Select.Option;
@@ -106,26 +111,40 @@ class MapControlDialog extends Component {
     }
     
     
-    getList = ()  => {
-        let selectedRiderIdx = this.state.selectedRiderIdx;
+    getList = (riderIdx)  => {
+        let selectedRiderIdx
+        if(riderIdx) selectedRiderIdx = riderIdx
+        else selectedRiderIdx = this.state.selectedRiderIdx;
         console.log(selectedRiderIdx)
         httpGet(httpUrl.riderLocate, [selectedRiderIdx], {}).then((result) => {
-          // console.log('### nnbox result=' + JSON.stringify(result, null, 4))
-          // console.log('### nnbox result=' + JSON.stringify(result.data.orders, null, 4))
-          const pagination = { ...this.state.pagination };
-          if(result.data != null){
-            var list = [result.data.orders];
-            // console.log(list)
-            this.setState({
-              riderOrderList: list,
-              pagination,
-            });
-          }
-          else{
-            this.setState({
-              riderOrderList: [],
-            });
-          }
+          console.log('### nnbox result=' + JSON.stringify(result, null, 4))
+          if(result.result === "SUCCESS"){
+            if(result.data.orders.length > 0 && result.data != null){
+              // console.log('### nnbox result=' + JSON.stringify(result.data.orders, null, 4))
+            const pagination = { ...this.state.pagination };
+            if(result.data != null){
+              var list = result.data.orders;
+              // console.log(list)
+              this.setState({
+                riderOrderList: list,
+                pagination,
+              });
+            }
+            else{
+              this.setState({
+                riderOrderList: [],
+              });
+            }
+            } else {
+              this.setState({
+                riderOrderList: [],
+              });
+              customError("배차 목록 오류", "해당 라이더의 배차가 존재하지 않습니다.")
+            }
+            } else customError("배차 목록 오류", "배차목록을 불러오는 데 실패했습니다. 관리자에게 문의하세요.")
+          
+          
+          
         })
     }
 
@@ -138,12 +157,15 @@ class MapControlDialog extends Component {
       })
     };
 
-    getRiderLocate = () => {
-      httpGet(httpUrl.riderLocate, [], {}).then((result) => {
+    getRiderLocate = (riderIdx) => {
+      httpGet(httpUrl.riderLocate, [riderIdx], {}).then((result) => {
         console.log('## rider personal locate result=' + JSON.stringify(result, null, 4))
         this.setState({
-          riderLocates: result.data.riderLocations,
-        });
+          selectedRiderIdx: result.data.userIdx,
+          riderName: result.data.riderName,
+        }, () => {
+          this.getList()
+        })
       })
     };
 
@@ -243,60 +265,50 @@ class MapControlDialog extends Component {
             ),
           },
           {
-            title: "주문시간",
-            dataIndex: 0,
+            title: "요청시간",
+            dataIndex: "arriveReqTime",
             className: "table-column-center",
-            render: (data) => <div>{formatDate(data.orderDate)}</div>
+            render: (data) => <div>{arriveReqTime[data]}</div>,
           },
           {
-            title: "가맹점명",
-            dataIndex: 0,
+            title: "음식준비",
+            dataIndex: "itemPrepared",
             className: "table-column-center",
-            render: (data) => <div>{data.frName}</div>
-
+            render: (data) => <div>{data ? "완료" : "준비중"}</div>,
           },
           {
-            title: "가격",
-            dataIndex: 0,
+            title: "픽업시간",
+            dataIndex: "pickupDate",
             className: "table-column-center",
-            render: (data) => <div>{comma(data.orderPrice)}</div>
-          },
-          {
-            title: "배달 요금",
-            dataIndex: 0,
-            className: "table-column-center",
-            render: (data) => <div>{comma(data.deliveryPrice)}</div>
-          },
-          {
-            title: "도착지",
-            dataIndex: 0,
-            className: "table-column-center",
-            render: (data) => <div>{data.destAddr1+" "+data.destAddr2+" "+data.destAddr3}</div>
-          },
-          {
-            title: "배차시간",
-            dataIndex: 0,
-            className: "table-column-center",
-            render: (data) => <div>{formatDate(data.assignDate)}</div>
+            render: (data) => <div>{data ? formatDate(data) : "대기중"}</div>,
           },
           {
             title: "완료시간",
-            dataIndex: 0,
+            dataIndex: "completeDate",
             className: "table-column-center",
-            render: (data) => <div>{formatDate(data.arriveReqDate)}</div>
-          },
-          /* {
-            title: "결제방식",
-            dataIndex: 0,
-            className: "table-column-center",
-            render: (data, row) => <div>{data == 0 ? "선결" : "카드"}</div>
+            render: (data) => <div>{data ? formatDate(data) : "배달중"}</div>,
           },
           {
-            title: "카드상태",
-            dataIndex: "orderPayments",
+            title: "기사명",
+            dataIndex: "riderName",
             className: "table-column-center",
-            // render: (data) => <div>{data == 0 ? "요청" : "결제완료"}</div>
-          }, */
+          },
+          {
+            title: "기사 연락처",
+            dataIndex: "riderPhone",
+            className: "table-column-center",
+          },
+          {
+            title: "도착지",
+            // dataIndex: "destAddr1",
+            className: "table-column-center",
+            render: (data, row) => <div>{row.destAddr1 + " " + row.destAddr2}</div>,
+          },
+          {
+            title: "거리(km)",
+            dataIndex: "distance",
+            className: "table-column-center",
+          },
         ];
 
         const columns_riderList = [
@@ -316,6 +328,7 @@ class MapControlDialog extends Component {
             },
             {
               title: "기사명",
+
               dataIndex: "riderName",
               className: "table-column-center",
             },
@@ -354,7 +367,9 @@ class MapControlDialog extends Component {
                                               <span className="riderText">{this.state.riderName}의 배차 목록</span>
                                           </div>
                                             <Table
+                                            rowKey={(record) => record.idx}
                                             dataSource={this.state.riderOrderList}
+                                            rowClassName={(record) => rowColorName[record.orderStatus]}
                                             columns={columns}
                                             onChange={this.handleTableChange}
                                             pagination={false}
@@ -379,7 +394,8 @@ class MapControlDialog extends Component {
                                                   return (
                                                     <Marker
                                                       position={navermaps.LatLng(row.latitude, row.longitude)}
-                                                      icon={require('../../../img/login/map/marker_rider.png').default}
+                                                      // icon={require('../../../img/login/map/marker_rider.png').default}
+                                                      icon={require('../../../img/login/map/blue.png').default}
                                                       title={row.riderName}
                                                       onClick={()=>this.getRiderLocate(row.userIdx)}
                                                     />

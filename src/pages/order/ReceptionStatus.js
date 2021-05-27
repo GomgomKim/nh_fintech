@@ -773,7 +773,7 @@ class ReceptionStatus extends Component {
         >
           <div className="ant-table-tbody">
             <Table
-              rowKey={(record) => record}
+              rowKey={(record) => record.idx}
               rowClassName={(record) => rowColorName[record.orderStatus]}
               dataSource={
                 this.state.checkedCompleteCall
