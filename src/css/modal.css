@@ -3336,9 +3336,8 @@
   position: fixed;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -65%);
+  transform: translate(-50%, -50%);
   width: 1000px;
-  height: 500px;
   border-radius: 30px;
   z-index: 2;
 }
@@ -3370,7 +3369,7 @@
 .blindLayout {
   margin-top: 20px;
   width: 100%;
-  height: 350px;
+  /* height: 350px; */
   overflow-y: scroll;
   border: 1px solid #ccc;
   padding: 20px;
@@ -3381,6 +3380,16 @@
 .blindLayout::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Opera*/
 }
+.blindLayout .elipsis-table-row {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 130px;
+  display: inline-block;
+  vertical-align: middle;
+  /* text-align: center; */
+}
+
 .blindWrapper.bot {
   margin-top: 10px;
   text-align: left;
@@ -3395,14 +3404,14 @@
   /* font-size: 20px; */
   vertical-align: middle;
   font-weight: bold;
-  width: 75px;
+  /* width: 75px; */
 }
 .blindWrapper.bot .subTitle {
   font-size: 18px;
   vertical-align: middle;
   font-weight: bold;
   /* width: 70px; */
-  margin-left: 20px;
+  margin-left: 15px;
 }
 .blindWrapper.bot .ant-checkbox-inner {
   width: 20px;

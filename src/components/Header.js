@@ -18,11 +18,11 @@ class Header extends React.Component {
     };
   }
 
-  initializeUserInfo = () => {
-    const userInfo = reactLocalStorage.getObject(con.appName + "#adminUser");
-    if (!userInfo || !userInfo.id) return;
-    this.props.onLogin(userInfo);
-  };
+  // initializeUserInfo = () => {
+  //   const userInfo = reactLocalStorage.getObject(con.appName + "#adminUser");
+  //   if (!userInfo || !userInfo.id) return;
+  //   this.props.onLogin(userInfo);
+  // };
 
   logout = () => {
     httpPost(httpUrl.logout, [], {})
@@ -36,7 +36,7 @@ class Header extends React.Component {
   };
 
   componentDidMount() {
-    this.initializeUserInfo();
+    // this.initializeUserInfo();
   }
 
   render() {

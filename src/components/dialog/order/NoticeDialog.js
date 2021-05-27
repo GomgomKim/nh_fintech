@@ -21,7 +21,8 @@ import { connect } from "react-redux";
 import { formatDate, formatDateSecond } from '../../../lib/util/dateUtil';
 import moment from 'moment';
 import RegistNoticeDialog from "./RegistNoticeDialog";
-import { updateError } from "../../../api/Modals";
+import { customError, updateError } from "../../../api/Modals";
+import { rowColorName } from "../../../lib/util/codeUtil";
 
 const Option = Select.Option;
 const FormItem = Form.Item;
@@ -208,6 +209,8 @@ class NoticeDialog extends Component {
 
   onDelete = (row) => {
     let self = this;
+    console.log(row.important)
+    if (row.important === false){
     if (!this.state.checkedDeletedCall) {
     Modal.confirm({
       title:"공지사항 삭제",
@@ -304,6 +307,9 @@ class NoticeDialog extends Component {
       });
   }})};
   }
+  else
+  customError("삭제불가", "해당공지는 중요 공지사항입니다.")
+}
 
   closeNoticeRegistrationModal = () => {
     this.setState({ registNotice: false });
@@ -335,7 +341,8 @@ class NoticeDialog extends Component {
       },
       {
         className: "table-column-center",
-        render: (data, row) => (
+        render: !this.state.checkedDeletedCall && (
+          (data, row) => (
           <div>
             <RegistNoticeDialog data={this.state.dialogData} isOpen={this.state.updateNotice} close={this.closeNoticeUpdateModal} />
             <Button
@@ -345,7 +352,7 @@ class NoticeDialog extends Component {
               수정
             </Button>
           </div>
-        ),
+        )),
       },
       {
         className: "table-column-center",
@@ -388,6 +395,7 @@ class NoticeDialog extends Component {
                     <div className="noticelistBlock">
                       <div className="deleteBox">
                         <Checkbox
+                        defaultChecked={this.state.checkedDeletedCall ? "checked":""}
                         onChange={this.handleToggleDeletedCall}></Checkbox>
                         <span className="span1">삭제목록</span>
                       </div>
@@ -405,6 +413,7 @@ class NoticeDialog extends Component {
                         <Table
                           className="noticeListTable"
                           rowKey={(record) => record.idx}
+                          rowClassName={(record) => record.important === true ? "table-blue" : "table-white"}
                           dataSource={this.state.list}
                           columns={columns}
                           pagination={this.state.pagination}

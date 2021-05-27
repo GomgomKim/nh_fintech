@@ -124,25 +124,20 @@ class RegistCallDialog extends Component {
     this.formRef = React.createRef();
   }
 
-  componentDidMount() {}
-
   setDefaultState = () => {
-    this.setState(
-      {
-        data: this.props.data ? this.props.data : newOrder,
-        selectedDest: {
-          address: this.props.data ? this.props.data.destAddr1 : "",
-        },
-        selectedFr: {
-          frIdx: this.props.data ? this.props.data.frIdx : 0,
-          frLatitude: this.props.data ? this.props.data.frLatitude : 0,
-          frLongitude: this.props.data ? this.props.data.frLongitude : 0,
-          frName: this.props.data ? this.props.data.frName : "",
-          frPhone: this.props.data ? this.props.data.frPhone : "",
-        },
+    this.setState({
+      data: this.props.data ? this.props.data : newOrder,
+      selectedDest: {
+        address: this.props.data ? this.props.data.destAddr1 : "",
       },
-      () => console.log("this.state : " + this.state)
-    );
+      selectedFr: {
+        frIdx: this.props.data ? this.props.data.frIdx : 0,
+        frLatitude: this.props.data ? this.props.data.frLatitude : 0,
+        frLongitude: this.props.data ? this.props.data.frLongitude : 0,
+        frName: this.props.data ? this.props.data.frName : "",
+        frPhone: this.props.data ? this.props.data.frPhone : "",
+      },
+    });
   };
 
   componentDidUpdate(prevProps) {
@@ -191,23 +186,47 @@ class RegistCallDialog extends Component {
 
   getDeliveryPrice = () => {
     // 예시
-    const destLatitude = 37;
-    const destLongitude = 126;
-    httpGet(httpUrl.getDeliveryPrice, [destLatitude, destLongitude], {})
+    var self = this;
+    httpGet(httpUrl.getGeocode, [this.state.selectedDest.roadAddress], {})
       .then((res) => {
-        if (res.result === "SUCCESS") {
-          this.setState({
-            data: {
-              ...this.state.data,
-              deliveryPrice: res.data,
-            },
-          });
-        } else {
-          updateError();
+        let result = JSON.parse(res.data.json);
+        if (res.result === "SUCCESS" && result.addresses.length > 0) {
+          const lat = result.addresses[0].y;
+          const lng = result.addresses[0].x;
+          httpGet(httpUrl.getDeliveryPrice, [lat, lng], {})
+            .then((res) => {
+              if (res.result === "SUCCESS") {
+                self.formRef.current.setFieldsValue({
+                  deliveryPrice: res.data.deliveryPriceSum,
+                });
+                this.setState(
+                  {
+                    data: {
+                      ...this.state.data,
+                      deliveryPrice: res.data.deliveryPriceSum,
+                    },
+                  },
+                );
+              } else {
+                Modal.info({
+                  title: "등록오류",
+                  content: "배달요금 계산 오류1",
+                });
+              }
+            })
+            .catch((e) => {
+              Modal.info({
+                title: "등록오류",
+                content: "배달요금 계산 오류2",
+              });
+            });
         }
       })
       .catch((e) => {
-        updateError();
+        Modal.info({
+          title: "등록오류",
+          content: "좌표 계산 오류",
+        });
       });
   };
 
@@ -216,9 +235,8 @@ class RegistCallDialog extends Component {
   };
 
   handleSubmit = () => {
+    console.log(this.state.data);
     if (this.props.data) {
-      console.log(this.state.data);
-      console.log("update");
       httpPost(httpUrl.orderUpdate, [], this.state.data)
         .then((res) => {
           if (res.result === "SUCCESS") {
@@ -231,8 +249,6 @@ class RegistCallDialog extends Component {
           updateError();
         });
     } else {
-      console.log(this.state.data);
-      console.log("create");
       httpPost(httpUrl.orderCreate, [], this.state.data)
         .then((res) => {
           if (res.result === "SUCCESS") {
@@ -253,6 +269,11 @@ class RegistCallDialog extends Component {
     const { isOpen, close } = this.props;
     const data = this.props.data ? this.props.data : newOrder;
     const navermaps = window.naver.maps;
+    let deliveryPrice = this.state.data
+      ? this.state.data.deliveryPrice
+      : this.props.data
+      ? this.props.data.deliveryPrice
+      : "";
 
     return (
       <React.Fragment>
@@ -271,7 +292,7 @@ class RegistCallDialog extends Component {
                   alt="닫기"
                 />
 
-                <Form ref={this.formIdRef} onFinish={this.handleSubmit}>
+                <Form ref={this.formRef} onFinish={this.handleSubmit}>
                   <div className="registCallLayout">
                     <div className="registCallWrapper">
                       <div className="contentBlock">
@@ -322,7 +343,6 @@ class RegistCallDialog extends Component {
                           <PostCodeDialog
                             onSelect={(value) =>
                               this.setState({ selectedDest: value }, () => {
-                                console.log(this.state.selectedDest);
                                 this.setState({
                                   data: {
                                     ...this.state.data,
@@ -376,20 +396,29 @@ class RegistCallDialog extends Component {
                           ></Input>
                         </FormItem>
                       </div>
-                      <div className="contentBlock">
+                      {/* <div className="contentBlock">
                         <div className="mainTitle">배달요금</div>
-                        <FormItem name="callAmount" className="selectItem">
+                        <FormItem name="deliveryPrice" className="selectItem">
                           <Input
                             placeholder="배달요금 입력"
                             className="override-input"
-                            defaultValue={data.deliveryPrice}
-                            onChange={(e) =>
-                              this.handleChangeInput(
-                                parseInt(e.target.value),
-                                "deliveryPrice"
-                              )
-                            }
+                            value={deliveryPrice}
                             required
+                          ></Input>
+                          <div style={{ display: "none" }}>
+                            {deliveryPrice}
+                          </div>
+                        </FormItem>
+                      </div> */}
+                      <div className="contentBlock">
+                        <div className="mainTitle">배달요금</div>
+                        <FormItem name="deliveryPrice" className="selectItem">
+                          <Input
+                            placeholder="배달요금 입력"
+                            className="override-input"
+                            defaultValue={deliveryPrice}
+                            required
+                            disabled
                           ></Input>
                         </FormItem>
                       </div>
