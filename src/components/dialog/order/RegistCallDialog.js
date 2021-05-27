@@ -323,6 +323,12 @@ class RegistCallDialog extends Component {
                             onSelect={(value) =>
                               this.setState({ selectedDest: value }, () => {
                                 console.log(this.state.selectedDest);
+                                this.setState({
+                                  data: {
+                                    ...this.state.data,
+                                    destAddr1: this.state.selectedDest.address,
+                                  },
+                                });
                                 this.getDeliveryPrice();
                               })
                             }
@@ -331,6 +337,13 @@ class RegistCallDialog extends Component {
                           />
                           <div className="orderPayment-wrapper">
                             <Input
+                              initialValue={
+                                this.state.selectedDest
+                                  ? this.state.selectedDest.address
+                                  : this.props.data
+                                  ? this.props.data.destAddr1
+                                  : ""
+                              }
                               value={
                                 this.state.selectedDest
                                   ? this.state.selectedDest.address
@@ -369,13 +382,7 @@ class RegistCallDialog extends Component {
                           <Input
                             placeholder="배달요금 입력"
                             className="override-input"
-                            value={
-                              this.state.data
-                                ? this.state.data.deliveryPrice
-                                : this.props.data
-                                ? this.props.data.deliveryPrice
-                                : ""
-                            }
+                            defaultValue={data.deliveryPrice}
                             onChange={(e) =>
                               this.handleChangeInput(
                                 parseInt(e.target.value),

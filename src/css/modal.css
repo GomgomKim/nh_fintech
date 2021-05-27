@@ -3561,3 +3561,24 @@
   flex-direction: row-reverse;
   margin-top: 15px;
 }
+
+/* chatting */
+.Modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.56);
+  z-index: 10;
+}
+.Modal-chat {
+  z-index: 20;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 10px;
+  width: 900px;
+  height: 700px;
+}
