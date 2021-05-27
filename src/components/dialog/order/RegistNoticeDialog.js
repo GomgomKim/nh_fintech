@@ -83,9 +83,9 @@ class RegistNoticeDialog extends Component {
               important: self.state.important,
             }).then((result) => {
               console.log(result)
-              if(result.result == "SUCCESS" && result.data == "SUCCESS"){
+              if(result.result === "SUCCESS" && result.data === "SUCCESS"){
                 customAlert("완료", self.formRef.current.getFieldsValue().content+"이(가) 수정되었습니다.")
-              } else if(result.data == "NOT_ADMIN") updateError()
+              } else if(result.data === "NOT_ADMIN") updateError()
               else updateError()
               self.props.close()
             }).catch((error) => {
@@ -130,9 +130,9 @@ class RegistNoticeDialog extends Component {
                 branchCode: self.state.branchCode,
                 important: self.state.important,
               }).then((result) => {
-                  if(result.result == "SUCCESS" && result.data == "SUCCESS"){
+                  if(result.result === "SUCCESS" && result.data === "SUCCESS"){
                     customAlert("완료", self.formRef.current.getFieldsValue().content+"이(가) 등록되었습니다.")
-                  } else if(result.data == "NOT_ADMIN") updateError()
+                  } else if(result.data === "NOT_ADMIN") updateError()
                   else updateError()
                 self.props.close()
               }).catch((error) => {
@@ -228,6 +228,7 @@ class RegistNoticeDialog extends Component {
                                                     >
                                                         <div className="importantBox">
                                                         <Checkbox
+                                                        defaultChecked={data ? (data.important === true ? "checked" : "") : ""}
                                                         onChange={this.handleToggleImportantCall}></Checkbox>
                                                         </div>
                                                     </FormItem>
