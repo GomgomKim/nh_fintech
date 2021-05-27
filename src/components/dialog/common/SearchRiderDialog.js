@@ -125,7 +125,9 @@ class SearchRiderDialog extends Component {
     };
 
     onSubmit = () => {
-        this.props.callback(this.state.selectedRowKeys)
+        if (this.props.callback) {
+            this.props.callback(this.state.selectedRowKeys);
+          }
         this.props.close()
     }
 

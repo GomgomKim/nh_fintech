@@ -4,7 +4,7 @@ import {httpUrl, httpPost,  serverUrl } from '../../api/httpClient';
 import RegistFranDialog from "../../components/dialog/franchise/RegistFranDialog";
 import SearchAddressDialog from "../../components/dialog/franchise/SearchAddressDialog";
 import SearchFranchiseDialog from '../../components/dialog/common/SearchFranchiseDialog';
-import BlindListDialog from "../../components/dialog/BlindListDialog";
+import BlindFranListDialog from "../../components/dialog/franchise/BlindFranListDialog";
 import SelectBox from '../../components/input/SelectBox';
 import "../../css/franchise.css";
 import {comma} from "../../lib/util/numberUtil";
@@ -292,7 +292,6 @@ class FranchiseMain extends Component {
                 title: "블라인드",
                 className: "table-column-center",
                 render: (data, row) => <div>
-                        {/* <BlindListDialog isOpen={this.state.blindListOpen} close={this.closeBlindModal} data={this.state.blindFrData}/> */}
                         <Button className="tabBtn surchargeTab" onClick={()=>this.setState({blindListOpen: true, blindFrData: row})}>블라인드</Button>
                     </div>
             }, {
@@ -436,6 +435,8 @@ class FranchiseMain extends Component {
                         isOpen={this.state.SearchAddressOpen}
                         close={this.closeSearchAddressModal}/>
                     <Button className="tabBtn sectionTab" onClick={this.openSearchAddressModal}>주소검색관리</Button>
+                    
+                    <BlindFranListDialog isOpen={this.state.blindListOpen} close={this.closeBlindModal} data={this.state.blindFrData}/>
 
                     {/* 엑셀업로드버튼 */}
                     <a href="/franchise_regist_templete.xlsx" download> 

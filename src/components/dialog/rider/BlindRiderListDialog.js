@@ -2,16 +2,21 @@ import React, { Component } from "react";
 import {
     Form, Table, Checkbox, Input, Button, Modal,
 } from "antd";
-import '../../css/modal.css';
-import { frRiderString, blockString } from '../../lib/util/codeUtil';
-import { httpPost, httpUrl } from "../../api/httpClient";
-import SelectBox from '../../components/input/SelectBox';
-import { formatDate } from "../../lib/util/dateUtil";
+import '../../../css/modal.css';
+import { frRiderString, blockString } from '../../../lib/util/codeUtil';
+import { httpPost, httpUrl } from "../../../api/httpClient";
+import SelectBox from '../../../components/input/SelectBox';
+import { formatDate } from "../../../lib/util/dateUtil";
 import { connect } from "react-redux";
-import { blindComplete, blindError, blindNowError, unBlindComplete, unBlindError } from "../../api/Modals";
+import SearchRiderDialog from "../../dialog/common/SearchRiderDialog";
+import SearchFranchiseDialog from "../../dialog/common/SearchFranchiseDialog";
+import { blindComplete, blindError, blindNowError, unBlindComplete, unBlindError } from "../../../api/Modals";
 const FormItem = Form.Item;
-
-class BlindListDialog extends Component {
+const riderInfo = {
+    idx: 0,
+    id: ""
+}
+class BlindRiderListDialog extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -21,22 +26,28 @@ class BlindListDialog extends Component {
                 current: 1,
                 pageSize: 5,
             },
-            deletedCheck: false
+            deletedCheck: false,
+            selectedRider: null,
+            selectedFr: null,
+            searchRiderOpen: false,
+            searchFranchiseOpen: false,
+            blindStatus: 0,
         };
         this.formRef = React.createRef();
     }
 
     componentDidMount() {
         this.getList()
-    }
-    componentDidUpdate() {
-
+        this.setState({
+            data: this.props.data ? this.props.data : riderInfo,
+        })
     }
 
     componentDidUpdate(prevProps) {
         if (prevProps.isOpen !== this.props.isOpen) {
             this.getList()
         }
+        // alert(JSON.stringify(this.props.data))
     }
 
     handleTableChange = (pagination) => {
@@ -49,37 +60,6 @@ class BlindListDialog extends Component {
         }, () => this.getList());
     };
 
-    onDelete = (idx) => {
-        Modal.confirm({
-            title: "차단 해제",
-            content: "차단을 해제하시겠습니까?",
-            okText: "확인",
-            cancelText: "취소",
-            onOk() {
-                httpPost(httpUrl.deleteBlind, [], {
-                    idx: idx,
-                })
-                    .then((res) => {
-                        if (res.result === "SUCCESS" && res.data === "SUCCESS") {
-                            console.log(res.result);
-                            this.getList();
-                        } else {
-                            Modal.info({
-                                title: "적용 오류",
-                                content: "처리가 실패했습니다.",
-                            });
-                        }
-                    })
-                    .catch((e) => {
-                        Modal.info({
-                            title: "적용 오류",
-                            content: "처리가 실패했습니다.",
-                        });
-                    });
-            }
-        })
-    }
-
     getList = () => {
         let { data } = this.props;
         let riderIdx = data.idx;
@@ -87,10 +67,10 @@ class BlindListDialog extends Component {
             riderIdx: riderIdx,
             pageNum: this.state.pagination.current,
             pageSize: this.state.pagination.pageSize,
-            deletedList: [0],
+            deletedList: this.state.deletedCheck !== true ? [0] : [0, 1],
         })
             .then((res) => {
-                if (res.result === "SUCCESS" && res.data === "SUCCESS") {
+                if (res.result === "SUCCESS") {
                     console.log(res);
                     this.setState({
                         list: res.data.riderFrBlocks,
@@ -99,42 +79,33 @@ class BlindListDialog extends Component {
             })
     };
 
-    getDeletedList = () => {
-        let { data } = this.props;
-        let riderIdx = data.idx;
-        httpPost(httpUrl.blindList, [], {
-            riderIdx: riderIdx,
-            deletedList: [0, 1],
-            pageNum: this.state.pagination.current,
-            pageSize: this.state.pagination.pageSize,
-        })
-            .then((res) => {
-                this.setState({
-                    list: res.data.riderFrBlocks,
-                });
-            })
-    };
-
-
-    getUserList = () => {
-
-    }
-
     onDeleteCheck = (e) => {
-        // alert(e)
-        this.setState(
-            {
-                deletedCheck: e.target.checked,
-            },
-            () => {
-                if (!this.state.deletedCheck) {
-                    this.getList();
-                } else {
-                    this.getDeletedList();
-                }
-            }
+        this.setState({ deletedCheck: e.target.checked }
+        ,() => { this.getList() }
         );
     };
+
+    handleSubmit = (idx, deleted) =>{
+        const form = this.formRef.current;
+        let self = this;
+            Modal.confirm({
+                title: "차단 등록",
+                content: "새로운 차단을 등록하시겠습니까?",
+                okText: "확인",
+                cancelText: "취소",
+                onOk() {
+                    httpPost(httpUrl.registBlind, [], {
+                        direction: self.state.blindStatus === 0 ? "" : self.state.blindStatus,
+                        deleted: false,
+                        frIdx: 10101,
+                        memo: form.getFieldValue('memo'),
+                        riderIdx: 11357
+                    }).then(
+                        self.getList()
+                    )
+                }
+            })
+    }
 
     onDelete = (idx, deleted) => {
         let self = this;
@@ -168,7 +139,21 @@ class BlindListDialog extends Component {
         }
     }
 
+    // 가맹점조회 dialog
+    openSearchFranchiseModal = () => {
+        this.setState({ searchFranchiseOpen: true });
+    };
+    closeSearchFranchiseModal = () => {
+        this.setState({ searchFranchiseOpen: false });
+    };
 
+    // 기사조회 dialog
+    openSearchRiderModal = () => {
+        this.setState({ searchRiderOpen: true });
+    };
+    closeSearchRiderModal = () => {
+        this.setState({ searchRiderOpen: false });
+    };
 
     render() {
         const columns = [
@@ -223,16 +208,13 @@ class BlindListDialog extends Component {
                                     }
                                 }}
                             />
-                            {/* <Button className="tabBtn surchargeTab" 
-                                onClick={(value)=>this.onDelete(row.idx, row.deleted)}>
-                            {row.deleted === false ? "차단중" : "차단해제"}</Button> */}
+                            {data}
                         </div>
                     ),
             },
         ];
 
         const { isOpen, close, data } = this.props;
-        // console.log(JSON.stringify(data))
         return (
             <React.Fragment>
                 {
@@ -244,7 +226,8 @@ class BlindListDialog extends Component {
                                     <div className="blind-title">
                                         블라인드 목록
                                     </div>
-                                    <img onClick={close} src={require('../../img/login/close.png').default} className="surcharge-close" />
+                                    <img onClick={close} src={require('../../../img/login/close.png').default} 
+                                    className="surcharge-close" alt='close'/>
 
                                     <div style={{
                                         textAlign: 'right',
@@ -253,7 +236,7 @@ class BlindListDialog extends Component {
                                     }}>
                                         해제 포함
                                         <Checkbox
-                                            defaultChecked={this.state.checkedCompleteCall ? "checked" : ""}
+                                            defaultChecked={this.state.deletedCheck ? "checked" : ""}
                                             onChange={this.onDeleteCheck} />
                                     </div>
 
@@ -278,9 +261,10 @@ class BlindListDialog extends Component {
                                                 <FormItem
                                                     name="direction"
                                                     className="selectItem"
-                                                // initialValue={this.props.loginInfo.id}
                                                 >
                                                     <SelectBox
+                                                        placeholder={'선택'}
+                                                        style={{ marginLeft:10 }}
                                                         value={frRiderString[this.state.blindStatus]}
                                                         code={Object.keys(frRiderString)}
                                                         codeString={frRiderString}
@@ -293,28 +277,73 @@ class BlindListDialog extends Component {
                                                 </FormItem>
                                                 <div className="subTitle">
                                                     가맹점명
-                                            </div>
+                                                </div>
+                                                <SearchFranchiseDialog
+                                                    onSelect={(franChise) => {
+                                                    this.setState({ selectedFr: franChise }
+                                                    ,() => {
+                                                        const fr = this.state.selectedFr;
+                                                        this.setState({
+                                                        data: {
+                                                            ...this.state.data,
+                                                            frIdx: fr.idx,
+                                                            frName: fr.frName,
+                                                        },
+                                                        });
+                                                    });
+                                                    }}
+                                                    isOpen={this.state.searchFranchiseOpen}
+                                                    close={this.closeSearchFranchiseModal}
+                                                />
                                                 <FormItem
                                                     name="frName"
                                                     className="selectItem"
                                                 >
-                                                    <Input placeholder="가맹점명 입력" className="override-input sub">
+                                                    <Input placeholder="가맹점명 입력" className="override-input sub"
+                                                        value={ this.state.selectedFr ? this.state.selectedFr.frName : ""}>
                                                     </Input>
+                                                    <Button onClick={this.openSearchFranchiseModal}>
+                                                    조회
+                                                    </Button>
                                                 </FormItem>
+
                                                 <div className="subTitle">
                                                     기사명
-                                            </div>
+                                                </div>
+                                                <SearchRiderDialog
+                                                    onSelect={(rider) => {
+                                                    this.setState({ selectedRider: rider }
+                                                    ,() => {
+                                                        const rider = this.state.selectedRider;
+                                                        this.setState({
+                                                        data: {
+                                                            ...this.state.data,
+                                                            // idx
+                                                            riderIdx: rider.idx,
+                                                            riderName: rider.id,
+                                                        },
+                                                        });
+                                                    });
+                                                    }}
+                                                    isOpen={this.state.searchRiderOpen}
+                                                    close={this.closeSearchRiderModal}
+                                                />
                                                 <FormItem
                                                     name="riderName"
                                                     className="selectItem"
                                                     initialValue={data.riderName}
                                                 >
-                                                    <Input placeholder="기사명 입력" className="override-input sub">
+                                                     <Input placeholder="기사명 입력" className="override-input sub"
+                                                     value={ this.state.selectedRider ? this.state.selectedRider.riderName : "" }>
                                                     </Input>
+                                                    <Button onClick={this.openSearchRiderModal}>
+                                                    조회
+                                                    </Button>
                                                 </FormItem>
+
                                                 <div className="subTitle">
                                                     메모
-                                            </div>
+                                                </div>
                                                 <FormItem
                                                     name="memo"
                                                     className="selectItem"
@@ -350,4 +379,4 @@ const mapDispatchToProps = (dispatch) => {
     return {};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(BlindListDialog);
+export default connect(mapStateToProps, mapDispatchToProps)(BlindRiderListDialog);
