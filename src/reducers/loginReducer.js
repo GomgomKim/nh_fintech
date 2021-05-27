@@ -26,6 +26,8 @@ const login = (state = loginInitialState, action) => {
         isLogin: true,
         loginInfo: action.loginInfo,
       }));
+      alert('reducer')
+      alert(JSON.stringify(action.loginInfo));
       return Object.assign({}, state, {
         isLogin: true,
         loginInfo: action.loginInfo,

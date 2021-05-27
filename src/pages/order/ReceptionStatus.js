@@ -86,6 +86,8 @@ class ReceptionStatus extends Component {
 
   componentDidMount() {
     this.getList();
+    alert('reception');
+    alert(JSON.stringify(this.props.info))
   }
 
   handleToggleCompleteCall = (e) => {
@@ -792,11 +794,10 @@ class ReceptionStatus extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    branchIdx: state.login.loginInfo.userGroup,
-  };
-};
+const mapStateToProps = (state) => ({
+  branchIdx: state.login.loginInfo.userGroup,
+  info: state
+});
 
 const mapDispatchToProps = (dispatch) => {
   return {};

@@ -80,48 +80,47 @@ class BlindFranListDialog extends Component {
             }
         })
     };
-
+    
+    handleSubmit = () =>{
+        const form = this.formRef.current;
+        let self = this;
+        Modal.confirm({
+            title: "차단 등록",
+            content: "새로운 차단을 등록하시겠습니까?",
+            okText: "확인",
+            cancelText: "취소",
+            onOk() {
+                httpPost(httpUrl.registBlind, [], {
+                    direction: self.state.blindStatus === 0 ? "" : self.state.blindStatus,
+                    deleted: false,
+                    frIdx: self.state.selectedFr.idx,
+                    memo: form.getFieldValue('memo'),
+                    riderIdx: self.state.selectedRider.idx
+                }).then((result) =>{
+                    if(result.result === "SUCCESS" && result.data === "SUCCESS") {
+                        blindComplete();
+                        self.handleClear();
+                        self.getList();
+                    } else {
+                        blindError();
+                    }
+                })
+                .catch((e) => {
+                    blindError();
+                });    
+            }
+        })
+    }
+    
+    handleClear = () => {
+        this.formRef.current.resetFields();
+    };
+    
     onDeleteCheck = (e) => {
         this.setState({ deletedCheck: e.target.checked }
         ,() => { this.getList() }
         );
     };
-
-    handleSubmit = () =>{
-        const form = this.formRef.current;
-        let self = this;
-            Modal.confirm({
-                title: "차단 등록",
-                content: "새로운 차단을 등록하시겠습니까?",
-                okText: "확인",
-                cancelText: "취소",
-                onOk() {
-                    httpPost(httpUrl.registBlind, [], {
-                        direction: self.state.blindStatus === 0 ? "" : self.state.blindStatus,
-                        deleted: false,
-                        frIdx: self.state.selectedFr.idx,
-                        memo: form.getFieldValue('memo'),
-                        riderIdx: self.state.selectedRider.idx
-                    }).then((result) =>{
-                        if(result.result === "SUCCESS" && result.data === "SUCCESS") {
-                            blindComplete();
-                            self.handleClear();
-                            self.getList();
-                        } else {
-                            blindError();
-                        }
-                    })
-                    .catch((e) => {
-                        blindError();
-                    });    
-                }
-            })
-    }
-
-    handleClear = () => {
-        this.formRef.current.resetFields();
-    };
-
 
     onDelete = (idx, deleted) => {
         let self = this;
@@ -151,7 +150,7 @@ class BlindFranListDialog extends Component {
             })
         }
         else {
-            blindNowError();
+            unBlindError();
         }
     }
 
@@ -219,7 +218,7 @@ class BlindFranListDialog extends Component {
                 render:
                     (data, row) => (
                         <div>
-                            {row.deleted !== true ? blockString[0] : blockString[1]}
+                            {data !== true ? blockString[0] : blockString[1]}
                         </div>
                     ),
             },
@@ -227,15 +226,16 @@ class BlindFranListDialog extends Component {
                 title: "해제",
                 className: "table-column-center",
                 render: (data, row) =>
-                  <div>
-                    {row.deleted !== true &&
-
+                    <div>
+                    {row.deleted !== true ?
                         <Button className="tabBtn surchargeTab" 
                         onClick={(value) => {
                             if (parseInt(value) !== row.deleted) {
                                 this.onDelete(row.idx, row.deleted);
                             }
-                        }}>차단해제</Button>
+                        }}>해제</Button>
+                        :
+                        <Button className="tabBtn surchargeTab">-</Button>
                     }
                     </div>
               },
@@ -251,7 +251,7 @@ class BlindFranListDialog extends Component {
                             <div className="blind-Dialog">
                                 <div className="blind-container">
                                     <div className="blind-title">
-                                        블라인드 목록
+                                        {data.frName} 가맹점의 블라인드 목록
                                     </div>
                                     <img onClick={close} src={require('../../../img/login/close.png').default} 
                                     className="blind-close" alt='close'/>
@@ -263,6 +263,7 @@ class BlindFranListDialog extends Component {
                                     }}>
                                         해제 포함
                                         <Checkbox
+                                            style={{marginLeft:5}}
                                             defaultChecked={this.state.deletedCheck ? "checked" : ""}
                                             onChange={this.onDeleteCheck} />
                                     </div>
@@ -318,7 +319,7 @@ class BlindFranListDialog extends Component {
                                                     name="frName"
                                                     className="selectItem"
                                                 >
-                                                    <Input placeholder="가맹점명 입력" className="override-input sub"
+                                                    <Input placeholder="가맹점명 입력" className="override-input sub" required
                                                         value={ this.state.selectedFr ? this.state.selectedFr.frName : ""}>
                                                     </Input>
                                                     <Button onClick={this.openSearchFranchiseModal}>
@@ -339,10 +340,9 @@ class BlindFranListDialog extends Component {
                                                 <FormItem
                                                     name="riderName"
                                                     className="selectItem"
-                                                    initialValue={data.riderName}
                                                 >
-                                                     <Input placeholder="기사명 입력" className="override-input sub"
-                                                     value={ this.state.selectedRider ? this.state.selectedRider.riderName : data.riderName }>
+                                                     <Input placeholder="기사명 입력" className="override-input sub" required
+                                                     value={ this.state.selectedRider ? this.state.selectedRider.riderName : "" }>
                                                     </Input>
                                                     <Button onClick={this.openSearchRiderModal}>
                                                     조회
