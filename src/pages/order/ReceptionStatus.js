@@ -92,8 +92,8 @@ class ReceptionStatus extends Component {
 
   componentDidMount() {
     this.getList();
-    alert('reception');
-    alert(JSON.stringify(this.props.info))
+    // alert('reception');
+    // alert(JSON.stringify(this.props.info))
   }
 
   handleToggleCompleteCall = (e) => {
