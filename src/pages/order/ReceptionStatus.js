@@ -653,10 +653,11 @@ class ReceptionStatus extends Component {
             호출설정
           </Button>
 
-          <MapControlDialog
-            isOpen={this.state.mapControlOpen}
-            close={this.closeMapControlModal}
-          />
+          {this.state.mapControlOpen &&
+            <MapControlDialog
+              close={this.closeMapControlModal}
+            />
+          }
           <Button
             icon={<EnvironmentFilled />}
             className="tabBtn mapTab"

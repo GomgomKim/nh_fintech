@@ -182,8 +182,9 @@ const httpUrl = {
   riderList: "/rider/list?pageSize=%s&pageNum=%s&searchName=%s&userStatus=%s&riderLevels=%s",
   registRider: "/rider/create",
   updateRider: "/rider/update",
-  riderLocate: "/rider/location/%s",
   riderListOne: "/rider/list",
+  riderLocateList: "/rider/location/list",
+  riderLocate: "/rider/location/%s",
 
   // 배차
   assignRiderAdmin: "/order/admin/assignRider",
