@@ -10,11 +10,10 @@ import { comma } from "../../../lib/util/numberUtil";
 import moment from 'moment';
 import SelectBox from '../../../components/input/SelectBox';
 import { enabledString, enabledCode } from '../../../lib/util/codeUtil';
-import SurchargeGroupDialog from './SurchargeGroupDialog';
 const FormItem = Form.Item;
 const { RangePicker } = DatePicker;
 
-class SurchargeDialog extends Component {
+class SurchargeGroupDialog extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -163,13 +162,14 @@ class SurchargeDialog extends Component {
             });
     }
 
-    // 할증그룹관리 dialog
+    // 콜등록 dialog
     openSurchargeGroupModal = () => {
         this.setState({ surchargeGroupOpen: true });
     };
     closeSurchargeGroupModal = () => {
         this.setState({ surchargeGroupOpen: false });
     };
+
 
 
     render() {
@@ -332,4 +332,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SurchargeDialog);
+export default connect(mapStateToProps, mapDispatchToProps)(SurchargeGroupDialog);

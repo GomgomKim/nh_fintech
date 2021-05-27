@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Route, Switch, withRouter } from 'react-router-dom';
 import { reactLocalStorage } from 'reactjs-localstorage';
+import { logout, login, changeBranch } from "./actions/loginAction";
+import { connect } from "react-redux";
 
 import './App.css';
 import Layout from './components/Layout';
@@ -9,8 +11,9 @@ import con from './const';
 
 class App extends Component {
   componentDidMount() {
-    const userInfo = reactLocalStorage.getObject(`${con.appName}#adminUser`);
-    const pathname = this.props.location.pathname.split('/');
+    this.initializeUserInfo();
+    // const userInfo = reactLocalStorage.getObject(`${con.appName}#adminUser`);
+    // const pathname = this.props.location.pathname.split('/');
 
     // if (!userInfo.idx && this.props.location.pathname !== "/") {
     //   alert("로그인이 필요합니다.");
@@ -21,6 +24,11 @@ class App extends Component {
     // }
   }
 
+  initializeUserInfo = () => {
+    const userInfo = reactLocalStorage.getObject(con.appName + "#adminUser");
+    if (!userInfo || !userInfo.id) return;
+    this.props.onLogin(userInfo);
+  };
   render() {
     const { location } = this.props;
     return (
@@ -36,4 +44,17 @@ class App extends Component {
   }
 }
 
-export default withRouter(App);
+let mapStateToProps = (state) => {
+  return {
+    isLogin: state.login.isLogin,
+    loginInfo: state.login.loginInfo,
+  };
+};
+
+let mapDispatchToProps = (dispatch) => {
+  return {
+    onLogin: (userinfo) => dispatch(login(userinfo)),
+    onLogout: () => dispatch(logout()),
+  };
+};
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));
