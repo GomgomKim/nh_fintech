@@ -4,6 +4,10 @@ import {
 } from "antd";
 import '../../../css/modal.css';
 import { httpUrl, httpPost } from '../../../api/httpClient';
+import{
+  customAlert,
+  updateError
+} from '../../../api/Modals'
 
 const Option = Select.Option;
 const FormItem = Form.Item;
@@ -45,8 +49,7 @@ class RegistNoticeDialog extends Component {
             this.setState(
               {
                 important: false,
-              },
-              () => this.getList()
+              }
             );
           } else {
             this.setState(
@@ -65,6 +68,7 @@ class RegistNoticeDialog extends Component {
     handleSubmit = () => {
         let self = this;
         let { data } = this.props;
+        console.log(data)
         Modal.confirm({
             title: <div> {data ? "공지 수정" : "공지 등록" } </div>,
             content:  
@@ -75,28 +79,17 @@ class RegistNoticeDialog extends Component {
               data ?
             httpPost(httpUrl.updateNotice, [], {
               ...self.formRef.current.getFieldsValue(),
-              // idx: self.state.idx,
-              date: self.state.date,
-              // content: self.state.content,
-              deleted: false,
-              category: self.state.category,
-              branchCode: self.state.branchCode,
-              // deleted: false,
+              idx: data.idx,
+              important: self.state.important,
             }).then((result) => {
-              Modal.info({
-                title: "완료",
-                content: (
-                  <div>
-                    {self.formRef.current.getFieldsValue().content}이(가) 수정되었습니다.
-                  </div>
-                ),
-              });
+              console.log(result)
+              if(result.result == "SUCCESS" && result.data == "SUCCESS"){
+                customAlert("완료", self.formRef.current.getFieldsValue().content+"이(가) 수정되었습니다.")
+              } else if(result.data == "NOT_ADMIN") updateError()
+              else updateError()
               self.props.close()
             }).catch((error) => {
-              Modal.info({
-                title: "등록 오류",
-                content: "오류가 발생하였습니다. 다시 시도해 주십시오."
-              });
+              updateError()
             })
     
     
@@ -124,13 +117,9 @@ class RegistNoticeDialog extends Component {
               // //     this.setState({content});
               // //     this.getList();
               // // 
-              .catch((error) => {
-                Modal.info({
-                  title: "수정 오류",
-                  content: "오류가 발생하였습니다. 다시 시도해 주십시오."
-                });
-              })
+
               :
+
               httpPost(httpUrl.registNotice, [], {
                 ...self.formRef.current.getFieldsValue(),
                 // idx: self.state.idx,
@@ -139,21 +128,15 @@ class RegistNoticeDialog extends Component {
                 deleted: false,
                 category: self.state.category,
                 branchCode: self.state.branchCode,
+                important: self.state.important,
               }).then((result) => {
-                Modal.info({
-                  title: " 완료",
-                  content: (
-                    <div>
-                      {self.formRef.current.getFieldsValue().content}이(가) 등록되었습니다.
-                    </div>
-                  ),
-                });
+                  if(result.result == "SUCCESS" && result.data == "SUCCESS"){
+                    customAlert("완료", self.formRef.current.getFieldsValue().content+"이(가) 등록되었습니다.")
+                  } else if(result.data == "NOT_ADMIN") updateError()
+                  else updateError()
                 self.props.close()
               }).catch((error) => {
-                Modal.info({
-                  title: "등록 오류",
-                  content: "오류가 발생하였습니다. 다시 시도해 주십시오."
-                });
+                updateError()
               })
       
       
@@ -181,15 +164,10 @@ class RegistNoticeDialog extends Component {
                 // //     this.setState({content});
                 // //     this.getList();
                 // // 
-                .catch((error) => {
-                  Modal.info({
-                    title: "수정 오류",
-                    content: "오류가 발생하였습니다. 다시 시도해 주십시오."
-                  });
-                })
+  
           }
-        });
-      }
+        })
+        }
 
 
     handleClear = () => {
@@ -267,7 +245,7 @@ class RegistNoticeDialog extends Component {
                                                     >
                                                         <Input
                                                         placeholder="내용을 입력해 주세요."
-                                                        className="override-input"
+                                                        className="override-input notice-content"
                                                         />
                                                     </FormItem>
                                                 </div>
