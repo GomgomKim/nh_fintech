@@ -20,14 +20,10 @@ class Login extends Component {
   }
 
   componentDidMount() {
-    console.log('2222');
     this.getStorageLoginInfo();
   }
   getStorageLoginInfo = () => {
-    console.log('2222');
     let value = reactLocalStorage.getObject(Const.appName + ':auth');
-    console.log('11111');
-    console.log(value);
     if (value !== null) {
       try {
         value = JSON.parse(value);

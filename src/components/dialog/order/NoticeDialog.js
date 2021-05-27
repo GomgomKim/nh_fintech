@@ -22,6 +22,7 @@ import { formatDate, formatDateSecond } from '../../../lib/util/dateUtil';
 import moment from 'moment';
 import RegistNoticeDialog from "./RegistNoticeDialog";
 import { customError, updateError } from "../../../api/Modals";
+import { rowColorName } from "../../../lib/util/codeUtil";
 
 const Option = Select.Option;
 const FormItem = Form.Item;
@@ -90,6 +91,7 @@ class NoticeDialog extends Component {
       }
     );
   };
+  
 
   getList = () => {
     // console.log("### "+ this.state.pagination.current)
@@ -375,11 +377,11 @@ class NoticeDialog extends Component {
 
     ];
 
-    const { isOpen, close } = this.props;
+    const { close } = this.props;
 
     return (
       <React.Fragment>
-        {isOpen ? (
+ 
           <React.Fragment>
             <div className="Dialog-overlay" onClick={close} />
             <div className="noticeDialog">
@@ -389,11 +391,13 @@ class NoticeDialog extends Component {
                   onClick={close}
                   src={require("../../../img/login/close.png").default}
                   className="surcharge-close"
+                  alt="img"
                 />
                 <div className="noticeLayout">
                     <div className="noticelistBlock">
                       <div className="deleteBox">
                         <Checkbox
+                        defaultChecked={this.state.checkedDeletedCall ? "checked":""}
                         onChange={this.handleToggleDeletedCall}></Checkbox>
                         <span className="span1">삭제목록</span>
                       </div>
@@ -411,6 +415,7 @@ class NoticeDialog extends Component {
                         <Table
                           className="noticeListTable"
                           rowKey={(record) => record.idx}
+                          rowClassName={(record) => record.important === true ? "table-blue" : "table-white"}
                           dataSource={this.state.list}
                           columns={columns}
                           pagination={this.state.pagination}
@@ -421,7 +426,6 @@ class NoticeDialog extends Component {
               </div>
             </div>
           </React.Fragment>
-        ) : null}
       </React.Fragment>
     );
   }
