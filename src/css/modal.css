@@ -521,7 +521,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 1320px;
+  width: 1000px;
   border-radius: 30px;
   padding: 20px;
   z-index: 2;
@@ -540,12 +540,18 @@
 
 .deleteBox {
   float: left;
-  margin-bottom: 5px;
+  margin-bottom: 20px;
 }
+
+.noticeLayout .ant-checkbox-wrapper{
+  height:32px;
+  margin-left: 0 !important;
+  vertical-align: top;
+} 
 
 .registBtn {
   float: right;
-  margin-bottom: 5px;
+  margin-bottom: 20px;
 }
 
 .noticeDialog .container {
@@ -584,12 +590,137 @@
   width: 100%;
 }
 
-.noticeDialog .ant-table-content thead th {
-  padding: 10px;
-}
+/* 공지사항 등록 dialog */
+.registNoticeDialog {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 1000px;
+    border-radius: 30px;
+    padding: 20px;
+    z-index: 2;
+  }
 
-.noticeDialog .layout .ant-table-tbody > tr > td {
-  padding: 0;
+  .registNotice-content {
+    background-color: white;
+    padding: 30px;
+    text-align: left;
+    color: #777;
+  }
+
+  .registNotice-title {
+    letter-spacing: -1px;
+    font-weight: bold;
+    color: #333;
+    text-align: right;
+    display: inline-block;
+    font-size: 25px;
+    line-height: 30px;
+  }
+
+  .registNotice-close {
+    width: 30px;
+    cursor: pointer;
+    background-color: #fddc00;
+    /* display: inline-block; */
+    float: right;
+    padding: 8px;
+  }
+
+  .registNoticeDialog .layout {
+    margin-top: 20px;
+    width: 100%;
+    overflow-y: scroll;
+    border: 1px solid #ccc;
+    padding: 20px 20px;
+    text-align: left;
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+
+  .registNoticeWrapper {
+    display: inline-block;
+  }
+
+  .registNoticeWrapper .mainTitle {
+    width: 130px;
+  }
+  
+  .registNoticeCheck {
+    display: inline-block;
+    margin-left: 20px;
+    height: 31.7px;
+  }
+
+  .registNoticeDialog .layout::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera*/
+  }
+
+  .registNoticeDialog .layout .contentBlock {
+    margin-top: 25px;
+  }
+
+  .registNoticeWrapper .submitBlock {
+    margin-top: 20px;
+    text-align: right;
+  }
+
+  .registNoticeWrapper .clearBtn {
+    margin-left: 20px;
+  }
+
+  .registNoticeWrapper .contentBlock .override-select.branch {
+    width: 240px;
+  }
+
+  .registNoticeWrapper .override-select.sub {
+    width: 270px !important;
+  }
+
+  .registNoticeWrapper .contentBlock .override-input {
+    width: 260px;
+    margin-left: 0 !important;
+  }
+
+  .registNoticeWrapper .ant-radio-group {
+    margin-left: 20px;
+  }
+
+  .registNoticeWrapper span.ant-radio + * {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+
+  .registNoticeDialog .ant-btn {
+    width: 130px;
+    height: 40px !important;
+    font-size: 18px !important;
+  }
+
+  .registNoticeWrapper.sub {
+    display: inline-block;
+    margin-left: 70px;
+  }
+
+  .registNoticeWrapper.sub .contentBlock .override-input {
+    width: 260px;
+    height: 85px;
+  }
+  
+  .notice-content{
+    display: inline-block !important;
+    overflow-wrap: break-word !important;
+    word-wrap: break-word !important;
+    /* max-width: 20px; */
+    /* height: 200px !important; */
+  }
+
+  
+.registNoticeDialog .ant-btn {
+  width: 130px;
+  height: 40px;
+  font-size: 18px !important;
 }
 
 /* 할증 dialog */

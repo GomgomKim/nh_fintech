@@ -174,6 +174,7 @@ class ReceptionStatus extends Component {
   assignRider = (data, orderIdx) => {
     // console.log(data)
     // console.log(orderIdx)
+    var self = this
     Modal.confirm({
       title: "강제배차",
       content: data.riderName + " 라이더 에게 강제배차 하시겠습니까?",
@@ -189,7 +190,8 @@ class ReceptionStatus extends Component {
             if(res.result === "SUCCESS"){
               switch(res.data){
                 case "SUCCESS":
-                  console.log(res.result);
+                  // console.log(res.result);
+                  self.getList()
                   break;
                 case "ALREADY_ASSIGNED": customError("배차 오류", "이미 배차된 주문입니다."); break;
                 case "ORDER_NOT_EXISTS": customError("배차 오류", "존재하지 않은 주문입니다."); break;
