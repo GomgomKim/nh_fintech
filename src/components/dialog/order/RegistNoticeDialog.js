@@ -215,7 +215,7 @@ class RegistNoticeDialog extends Component {
                                                         className="selectItem"
                                                         initialValue={data ? data.sortOrder : ''}
                                                     >
-                                                        <Input placeholder="공지하고 싶은 순서를 입력하세요" className="override-input"/>
+                                                        <Input placeholder="숫자가 클수록 위쪽에 공지됩니다." className="override-input"/>
                                                     </FormItem>
                                                 </div>
                                                 <div className="contentBlock">
