@@ -25,7 +25,8 @@
     "redux": "^4.0.5",
     "save": "^2.4.0",
     "shortid": "^2.2.16",
-    "web-vitals": "^1.1.1"
+    "web-vitals": "^1.1.1",
+    "xlsx": "^0.17.0"
   },
   "scripts": {
     "start": "react-scripts start",

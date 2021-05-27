@@ -8,7 +8,7 @@ global.language = "ko";
 global.lanList = ["ko", "en", "ja", "zh"];
 
 const serverUrl =
-  Const.serverProtocol + "://" + Const.serverIp + ":" + Const.serverPort;
+  Const.serverProtocol + "://" + Const.serverIp + ":" + Const.serverPort; 
 
 const makeUrl = (url, params) => {
   var result = serverUrl + url;
@@ -85,7 +85,6 @@ const httpExec = (method, url, data) => {
 };
 
 const httpGet = (url, params, data) => {
-  console.log(makeUrl(url, params))
   return httpExec("GET", makeUrl(url, params), data);
   // return new Promise((resolve, reject) => {
   //   Axios.get(makeUrl(url, params), data)
@@ -185,6 +184,7 @@ const httpUrl = {
   updateRider: "/rider/update",
   riderLocate: "/rider/location/%s",
   riderListOne: "/rider/list",
+  riderLocateList: "/rider/location/list",
 
   // 배차
   assignRiderAdmin: "/order/admin/assignRider",

@@ -2,10 +2,10 @@ import {
   DatePicker,
   Input,
   Select,
-  Table,
   Button,
   Checkbox,
   Modal,
+  Table,
 } from "antd";
 import moment from "moment";
 import React, { Component } from "react";
@@ -16,7 +16,6 @@ import SurchargeDialog from "./../../components/dialog/order/SurchargeDialog";
 import NoticeDialog from "../../components/dialog/order/NoticeDialog";
 import ForceAllocateDialog from "../../components/dialog/order/ForceAllocateDialog";
 import MapControlDialog from "../../components/dialog/order/MapControlDialog";
-import MessageDialog from "../../components/dialog/order/MessageDialog";
 import { formatDate } from "../../lib/util/dateUtil";
 import "../../css/order.css";
 import "../../css/common.css";
@@ -40,13 +39,11 @@ import {
 } from "@ant-design/icons";
 import { httpPost, httpUrl } from "../../api/httpClient";
 import { connect } from "react-redux";
-import InfiniteScroll from "react-infinite-scroller";
+import InfiniteScroll from "react-infinite-scroll-component";
 import PaymentDialog from "../../components/dialog/order/PaymentDialog";
-import ModifyOrderDialog from "../../components/dialog/order/ModifyOrderDialog";
 import SearchRiderDialog from "../../components/dialog/common/SearchRiderDialog";
-import {
-  customError,
-} from "../../api/Modals"
+import ChattingDialog from "../../components/dialog/common/ChattingDialog";
+import { customError } from "../../api/Modals";
 
 const Option = Select.Option;
 const Search = Input.Search;
@@ -61,7 +58,7 @@ class ReceptionStatus extends Component {
       pagination: {
         total: 0,
         current: 1,
-        pageSize: 30,
+        pageSize: 100,
       },
       data: null,
 
@@ -147,11 +144,9 @@ class ReceptionStatus extends Component {
     if (this.state.rider) {
       data.riderName = this.state.rider;
     }
-    console.log(data);
     httpPost(httpUrl.orderList, [], data)
       .then((res) => {
         if (res.result === "SUCCESS") {
-          console.log(res);
           this.setState({
             list: res.data.orders,
           });
@@ -163,7 +158,6 @@ class ReceptionStatus extends Component {
         }
       })
       .catch((e) => {
-        console.log(e);
         Modal.info({
           title: "적용 오류",
           content: "처리가 실패했습니다.",
@@ -172,9 +166,7 @@ class ReceptionStatus extends Component {
   };
 
   assignRider = (data, orderIdx) => {
-    // console.log(data)
-    // console.log(orderIdx)
-    var self = this
+    var self = this;
     Modal.confirm({
       title: "강제배차",
       content: data.riderName + " 라이더 에게 강제배차 하시겠습니까?",
@@ -184,25 +176,42 @@ class ReceptionStatus extends Component {
         httpPost(httpUrl.assignRiderAdmin, [], {
           orderIdx: orderIdx,
           userIdx: data.idx,
-        })
-          .then((res) => {
-            console.log(res);
-            if(res.result === "SUCCESS"){
-              switch(res.data){
-                case "SUCCESS":
-                  // console.log(res.result);
-                  self.getList()
-                  break;
-                case "ALREADY_ASSIGNED": customError("배차 오류", "이미 배차된 주문입니다."); break;
-                case "ORDER_NOT_EXISTS": customError("배차 오류", "존재하지 않은 주문입니다."); break;
-                case "NCASH_MINUS": customError("배차 오류", "NCash 잔액이 부족합니다."); break;
-                case "ASSIGN_LIMIT_EXCEEDED": customError("배차 오류", "배차 목록이 가득 찼습니다."); break;
-                case "NOT_ADMIN": customError("배차 오류", "관리자만 강제배차할 수 있습니다."); break;
-                default: customError("배차 오류", "배차에 실패했습니다. 관리자에게 문의하세요."); break;
-              }
-            } else customError("배차 오류", "배차에 실패했습니다. 관리자에게 문의하세요.");
-            
-          })
+        }).then((res) => {
+          console.log(res);
+          if (res.result === "SUCCESS") {
+            switch (res.data) {
+              case "SUCCESS":
+                // console.log(res.result);
+                self.getList();
+                break;
+              case "ALREADY_ASSIGNED":
+                customError("배차 오류", "이미 배차된 주문입니다.");
+                break;
+              case "ORDER_NOT_EXISTS":
+                customError("배차 오류", "존재하지 않은 주문입니다.");
+                break;
+              case "NCASH_MINUS":
+                customError("배차 오류", "NCash 잔액이 부족합니다.");
+                break;
+              case "ASSIGN_LIMIT_EXCEEDED":
+                customError("배차 오류", "배차 목록이 가득 찼습니다.");
+                break;
+              case "NOT_ADMIN":
+                customError("배차 오류", "관리자만 강제배차할 수 있습니다.");
+                break;
+              default:
+                customError(
+                  "배차 오류",
+                  "배차에 실패했습니다. 관리자에게 문의하세요."
+                );
+                break;
+            }
+          } else
+            customError(
+              "배차 오류",
+              "배차에 실패했습니다. 관리자에게 문의하세요."
+            );
+        });
       },
     });
   };
@@ -369,39 +378,29 @@ class ReceptionStatus extends Component {
               defaultValue={data}
               value={row.orderStatus}
               onChange={(value) => {
-                var flag = true;
-
                 // 제약조건 미성립
                 // console.log([row.pickupStatus, value]+" / "+modifyType[row.pickupStatus])
                 if (!modifyType[row.orderStatus].includes(value)) {
                   Modal.info({
                     content: <div>상태를 바꿀 수 없습니다.</div>,
                   });
-                  flag = false;
+                  return;
                 }
-
                 // 대기중 -> 픽업중 변경 시 강제배차 알림
                 if (row.orderStatus === 1 && value === 2) {
                   Modal.info({
                     content: <div>강제배차를 사용하세요.</div>,
                   });
+                  return;
                 }
-
                 // 제약조건 성립 시 상태 변경
-                if (flag) {
-                  // const list = this.state.list;
-                  // list.find((x) => x.idx === row.idx).orderStatus = value;
-                  row.orderStatus = value;
-                  httpPost(httpUrl.orderUpdate, [], row)
-                    .then((res) => {
-                      console.log(res);
-                    })
-                    .catch((e) => {});
-                  this.getList();
-                  // this.setState({
-                  //   list: list,
-                  // });
-                }
+                // const list = this.state.list;
+                // list.find((x) => x.idx === row.idx).orderStatus = value;
+                row.orderStatus = value;
+                httpPost(httpUrl.orderUpdate, [], row)
+                  .then((res) => {})
+                  .catch((e) => {});
+                this.getList();
               }}
             >
               {deliveryStatusCode.map((value, index) => {
@@ -460,7 +459,7 @@ class ReceptionStatus extends Component {
         title: "도착지",
         // dataIndex: "destAddr1",
         className: "table-column-center",
-        render: (row) => <div>{row.destAddr1 + " " + row.destAddr2}</div>,
+        render: (data, row) => <div>{row.destAddr1 + " " + row.destAddr2}</div>,
       },
       {
         title: "거리(km)",
@@ -474,23 +473,14 @@ class ReceptionStatus extends Component {
         dataIndex: "updateOrder",
         className: "table-column-center",
         render: (data, row) => (
-          <>
-            <RegistCallDialog
-              isOpen={this.state.modifyOrder}
-              close={this.closeModifyOrderModal}
-              editable={this.state.editable}
-              data={this.state.data}
-              getList={this.getList}
-            />
-            <Button
-              onClick={() => {
-                console.log(row);
-                this.openModifyOrderModal(row);
-              }}
-            >
-              수정
-            </Button>
-          </>
+          <Button
+            onClick={() => {
+              console.log(row);
+              this.openModifyOrderModal(row);
+            }}
+          >
+            수정
+          </Button>
         ),
       },
     ];
@@ -614,17 +604,9 @@ class ReceptionStatus extends Component {
           className: "table-column-center",
           render: (data) => (
             <span>
-              <MessageDialog
-                isOpen={this.state.MessageOpen}
-                close={this.closeMessageModal}
-              />
               <Button className="tabBtn" onClick={this.openMessageModal}>
                 라이더
               </Button>
-              <MessageDialog
-                isOpen={this.state.MessageOpen}
-                close={this.closeMessageModal}
-              />
               <Button className="tabBtn" onClick={this.openMessageModal}>
                 가맹점
               </Button>
@@ -638,12 +620,24 @@ class ReceptionStatus extends Component {
           columns={dropColumns}
           dataSource={[record]}
           pagination={false}
+          scroll
         />
       );
     };
 
     return (
       <div className="reception-box">
+        {this.state.MessageOpen && (
+          <ChattingDialog close={this.closeMessageModal} />
+        )}
+        <RegistCallDialog
+          isOpen={this.state.modifyOrder}
+          close={this.closeModifyOrderModal}
+          editable={this.state.editable}
+          data={this.state.data}
+          getList={this.getList}
+        />
+
         <div className="btnLayout">
           <TimeDelayDialog
             isOpen={this.state.timeDelayOpen}
@@ -779,13 +773,15 @@ class ReceptionStatus extends Component {
           <span className="span1">완료조회</span>
         </div>
         <InfiniteScroll
-          initialLoad={true}
-          loadMore={this.handleInfiniteOnLoad}
-          threshold={this.state.pagination.pageSize}
-          useWindow={false}
+          dataLength={this.state.pagination.pageSize}
+          next={this.handleInfiniteOnLoad}
+          inverse={true}
+          // hasMore={!this.chatMessageEnd}
+          scrollableTarget="reception-table"
         >
           <div className="dataTableLayout">
             <Table
+              id="reception-table"
               rowKey={(record) => record}
               rowClassName={(record) => rowColorName[record.orderStatus]}
               dataSource={

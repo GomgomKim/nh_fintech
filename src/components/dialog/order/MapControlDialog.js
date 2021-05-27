@@ -40,9 +40,11 @@ class MapControlDialog extends Component {
                 current: 1,
                 pageSize: 10,
             },
+
             // test data
             list: [],
             franchisee: "",
+
             // rider list
             riderListSave: [],
             results: [],
@@ -57,12 +59,16 @@ class MapControlDialog extends Component {
             // rider locate param
             selectedRiderIdx: 0,
             riderOrderList: [],
+
+            // rider locate list
+            riderLocates: [],
         }
     }
 
     componentDidMount() {
         //this.getList()
         this.getRiderList()
+        this.getRiderLocateList()
     }
     
     setDate = (date) => {
@@ -104,7 +110,7 @@ class MapControlDialog extends Component {
         let selectedRiderIdx = this.state.selectedRiderIdx;
         console.log(selectedRiderIdx)
         httpGet(httpUrl.riderLocate, [selectedRiderIdx], {}).then((result) => {
-          console.log('### nnbox result=' + JSON.stringify(result, null, 4))
+          // console.log('### nnbox result=' + JSON.stringify(result, null, 4))
           // console.log('### nnbox result=' + JSON.stringify(result.data.orders, null, 4))
           const pagination = { ...this.state.pagination };
           if(result.data != null){
@@ -122,13 +128,32 @@ class MapControlDialog extends Component {
           }
         })
     }
+
+    getRiderLocateList = () => {
+      httpGet(httpUrl.riderLocateList, [], {}).then((result) => {
+        console.log('## riderLocates result=' + JSON.stringify(result, null, 4))
+        this.setState({
+          riderLocates: result.data.riderLocations,
+        });
+      })
+    };
+
+    getRiderLocate = () => {
+      httpGet(httpUrl.riderLocate, [], {}).then((result) => {
+        console.log('## rider personal locate result=' + JSON.stringify(result, null, 4))
+        this.setState({
+          riderLocates: result.data.riderLocations,
+        });
+      })
+    };
+
     getRiderList = () => {
       let pageNum = this.state.paginationRiderList.current;
       let userStatus = 1;
       let searchName = this.state.searchName;
   
       httpGet(httpUrl.riderList, [10, pageNum, searchName, userStatus], {}).then((result) => {
-        console.log('## nnbox result=' + JSON.stringify(result, null, 4))
+        // console.log('## nnbox result=' + JSON.stringify(result, null, 4))
         const pagination = { ...this.state.paginationRiderList };
         pagination.current = result.data.currentPage;
         pagination.total = result.data.totalCount;
@@ -309,20 +334,6 @@ class MapControlDialog extends Component {
             },
         ];
 
-        const testPos = [
-          [37.643623625321474, 126.66509442649551],
-          [37.64343886140538, 126.65834481723877],
-          [37.65596523546722, 126.6787078755755],
-          [37.65733896727498, 126.63144924895946],
-          [37.640731270645524, 126.62466156284721],
-          [37.63693239487243, 126.669317392533],
-          [37.66251043552984, 126.61328070568158],
-          [37.65842985383964, 126.65206748346581],
-          [37.635598700929414, 126.65467028039605],
-          [37.66368204625145, 126.67901408697905],
-          [37.64444913118349, 126.59990947439282],
-          [37.6370536385893, 126.67334917601319],
-        ]
         return (
             <React.Fragment>
                 {
@@ -361,25 +372,21 @@ class MapControlDialog extends Component {
                                               defaultZoom={14}
                                               center={{ lat: lat, lng: lng }}
                                               >
-                                              <Marker
-                                                  position={navermaps.LatLng(testPos[0][0], testPos[0][1])}
-                                                  icon={require('../../../img/login/map/marker_target.png').default}
-                                                  title="강재훈"
-                                                  onClick={()=>this.setState({selectedRider: 55})}
-                                              />
-                                              <Marker
-                                                  position={navermaps.LatLng(testPos[1][0], testPos[1][1])}
-                                                  icon={require('../../../img/login/map/marker_target.png').default}
-                                                  title="김길동"
-                                                  onClick={()=>this.setState({selectedRider: 44})}
-                                              />
-                                              <Marker
-                                                  position={navermaps.LatLng(testPos[2][0], testPos[2][1])}
-                                                  icon={require('../../../img/login/map/marker_target.png').default}
-                                                  title="문재인"
-                                                  onClick={()=>this.setState({selectedRider: 0})}
-                                              />
-                                              {this.state.selectedRider == 55 && (
+
+                                              {
+                                                this.state.riderLocates.map(row => {
+                                                  // console.log(row.latitude, row.longitude)
+                                                  return (
+                                                    <Marker
+                                                      position={navermaps.LatLng(row.latitude, row.longitude)}
+                                                      icon={require('../../../img/login/map/marker_rider.png').default}
+                                                      title={row.riderName}
+                                                      onClick={()=>this.getRiderLocate(row.userIdx)}
+                                                    />
+                                                  );
+                                                })
+                                              }
+                                              {/* {this.state.selectedRider == 55 && (
                                               <>
                                               <Marker
                                                   position={navermaps.LatLng(testPos[3][0], testPos[3][1])}
@@ -457,7 +464,7 @@ class MapControlDialog extends Component {
                                               <Marker
                                                   position={navermaps.LatLng(this.props.frLat, this.props.frLng)}
                                                   icon={require('../../../img/login/map/marker_target.png').default}
-                                              />
+                                              /> */}
                                               </NaverMap>
                                               
                                             }
