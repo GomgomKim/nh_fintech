@@ -184,7 +184,6 @@ const httpUrl = {
   updateRider: "/rider/update",
   riderLocate: "/rider/location/%s",
   riderListOne: "/rider/list",
-  riderLocateList: "/rider/location/list",
 
   // 배차
   assignRiderAdmin: "/order/admin/assignRider",

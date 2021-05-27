@@ -110,7 +110,7 @@ class TimeDelayDialog extends Component {
           pickupAvTime70: true,
         })
           .then((res) => {
-            if (res.result === "SUCCESS" && res.data==="SUCCESS") {
+            if (res.result === "SUCCESS" && res.data === "SUCCESS") {
               this.setState({ confirmLoading: false });
               Modal.info({
                 title: "적용 완료",
@@ -175,12 +175,17 @@ class TimeDelayDialog extends Component {
                               ? "timeDelay-box-on"
                               : "timeDelay-box-off"
                           }
-                          onClick={btnInfo.value > 1000 ? () => {
-                            Modal.info({
-                              title:"수정 불가",
-                              content:"후5분, 후10분 옵션은 비활성화 할 수 없습니다."
-                            })
-                          } : () => this.handleToggle(btnInfo.value)}
+                          onClick={
+                            btnInfo.value > 1000
+                              ? () => {
+                                  Modal.info({
+                                    title: "수정 불가",
+                                    content:
+                                      "후5분, 후10분 옵션은 비활성화 할 수 없습니다.",
+                                  });
+                                }
+                              : () => this.handleToggle(btnInfo.value)
+                          }
                         >
                           <div style={{ fontSize: "1.3rem" }}>
                             {btnInfo.text}
@@ -220,11 +225,9 @@ class TimeDelayDialog extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    userGroup: state.login.loginInfo.userGroup,
-  };
-};
+const mapStateToProps = (state) => ({
+  branchIdx: state.login.loginInfo.userGroup,
+});
 
 const mapDispatchToProps = (dispatch) => {
   return {};
