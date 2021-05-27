@@ -708,6 +708,14 @@
   height: 85px;
 }
 
+.notice-content {
+  display: inline-block !important;
+  overflow-wrap: break-word !important;
+  word-wrap: break-word !important;
+  /* max-width: 20px; */
+  /* height: 200px !important; */
+}
+
 .registNoticeDialog .ant-btn {
   width: 130px;
   height: 40px;

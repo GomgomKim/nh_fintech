@@ -21,6 +21,7 @@ import { connect } from "react-redux";
 import { formatDate, formatDateSecond } from '../../../lib/util/dateUtil';
 import moment from 'moment';
 import RegistNoticeDialog from "./RegistNoticeDialog";
+import { updateError } from "../../../api/Modals";
 
 const Option = Select.Option;
 const FormItem = Form.Item;
@@ -232,6 +233,7 @@ class NoticeDialog extends Component {
          idx: row.idx,
         })
       .then((result) => {
+        if(result.result == "SUCCESS" && result.data == "SUCCESS"){
         // console.log('## delete result=' + JSON.stringify(result, null, 4))
         Modal.info({
           title:"공지사항 삭제",
@@ -240,7 +242,9 @@ class NoticeDialog extends Component {
               해당공지사항을 삭제합니다.
             </div>
           ),
-        });
+        });}
+        else if(result.data == "NOT_ADMIN") updateError()
+        else updateError()
         self.getList();
       })
       .catch((error) => {
@@ -277,6 +281,7 @@ class NoticeDialog extends Component {
          idx: row.idx,
         })
       .then((result) => {
+        if(result.result == "SUCCESS" && result.data == "SUCCESS"){
         // console.log('## delete result=' + JSON.stringify(result, null, 4))
         Modal.info({
           title:"공지사항 등록",
@@ -285,7 +290,9 @@ class NoticeDialog extends Component {
               해당공지사항을 재공지합니다.
             </div>
           ),
-        });
+        });}
+        else if(result.data == "NOT_ADMIN") updateError()
+        else updateError()
         self.getList();
       })
       .catch((error) => {

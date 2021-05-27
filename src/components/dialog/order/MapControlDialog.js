@@ -354,7 +354,7 @@ class MapControlDialog extends Component {
                                         <div className="mapLayout">
                                         
                                             {/* <MapContainer/> */}
-                                            {/*
+                                            
                                             {navermaps &&
                                               <NaverMap
                                               className='map-navermap'
@@ -461,7 +461,7 @@ class MapControlDialog extends Component {
                                               </NaverMap>
                                               
                                             }
-                                            */}
+                                           
                                             
                                             
                                         </div>

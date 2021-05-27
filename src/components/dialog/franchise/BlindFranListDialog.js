@@ -28,7 +28,7 @@ class BlindFranListDialog extends Component {
             selectedFr: null,
             searchRiderOpen: false,
             searchFranchiseOpen: false,
-            blindStatus: 1,
+            blindStatus: 0,
         };
         this.formRef = React.createRef();
     }
@@ -79,7 +79,8 @@ class BlindFranListDialog extends Component {
         );
     };
 
-    handleSubmit = (idx, deleted) =>{
+    handleSubmit = () =>{
+        const form = this.formRef.current;
         let self = this;
             Modal.confirm({
                 title: "차단 등록",
@@ -90,12 +91,20 @@ class BlindFranListDialog extends Component {
                     httpPost(httpUrl.registBlind, [], {
                         direction: self.state.blindStatus === 0 ? "" : self.state.blindStatus,
                         deleted: false,
-                        frIdx: 10101,
-                        memo: "차단 테스트 입니다asdasd",
-                        riderIdx: 11357
-                    }).then(
-                        self.getList()
-                    )
+                        frIdx: self.state.selectedFr.idx,
+                        memo: form.getFieldValue('memo'),
+                        riderIdx: self.state.selectedRider.idx
+                    }).then((result) =>{
+                        if(result.result === "SUCCESS" && result.data === "SUCCESS") {
+                            blindComplete();
+                            self.getList();
+                        } else {
+                            blindError();
+                        }
+                    })
+                    .catch((e) => {
+                        blindError();
+                    });    
                 }
             })
     }
@@ -154,7 +163,13 @@ class BlindFranListDialog extends Component {
                 title: "차단자",
                 dataIndex: "direction",
                 className: "table-column-center",
-                render: (data, row) => <div>{data === 1 ? "기사" : "가맹점"}</div>
+                render: (data, row) => 
+                <div>
+                    {data === 1 ? 
+                        <div style={{color: 'blue', fontWeight:'bold'}}>기사</div> 
+                        : <div style={{color: 'red', fontWeight:'bold'}}>가맹점</div> 
+                    }
+                </div>
             },
             {
                 title: "가맹점명",
@@ -272,12 +287,11 @@ class BlindFranListDialog extends Component {
                                                     가맹점명
                                                 </div>
                                                 <SearchFranchiseDialog
-                                                    onSelect={(franChise) => {
-                                                    this.setState({ selectedFr: franChise }
-                                                    ,() => {});
-                                                    }}
                                                     isOpen={this.state.searchFranchiseOpen}
                                                     close={this.closeSearchFranchiseModal}
+                                                    callback={(data) => this.setState({
+                                                        selectedFr: data
+                                                    })}
                                                 />
                                                 <FormItem
                                                     name="frName"
@@ -295,12 +309,11 @@ class BlindFranListDialog extends Component {
                                                     기사명
                                                 </div>
                                                 <SearchRiderDialog
-                                                    onSelect={(rider) => {
-                                                    this.setState({ selectedRider: rider }
-                                                    ,() => {});
-                                                    }}
                                                     isOpen={this.state.searchRiderOpen}
                                                     close={this.closeSearchRiderModal}
+                                                    callback={(data) => this.setState({
+                                                        selectedRider: data
+                                                    })}
                                                 />
                                                 <FormItem
                                                     name="riderName"
