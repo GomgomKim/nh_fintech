@@ -12,10 +12,6 @@ import SearchRiderDialog from "../../dialog/common/SearchRiderDialog";
 import SearchFranchiseDialog from "../../dialog/common/SearchFranchiseDialog";
 import { blindComplete, blindError, blindNowError, unBlindComplete, unBlindError } from "../../../api/Modals";
 const FormItem = Form.Item;
-const riderInfo = {
-    idx: 0,
-    id: ""
-}
 class BlindRiderListDialog extends Component {
     constructor(props) {
         super(props)
@@ -38,9 +34,9 @@ class BlindRiderListDialog extends Component {
 
     componentDidMount() {
         this.getList()
-        this.setState({
-            data: this.props.data ? this.props.data : riderInfo,
-        })
+        // this.setState({
+        //     data: this.props.data ? this.props.data : riderInfo,
+        // })
     }
 
     componentDidUpdate(prevProps) {
@@ -85,7 +81,7 @@ class BlindRiderListDialog extends Component {
         );
     };
 
-    handleSubmit = (idx, deleted) =>{
+    handleSubmit = () =>{
         const form = this.formRef.current;
         let self = this;
             Modal.confirm({
@@ -97,12 +93,20 @@ class BlindRiderListDialog extends Component {
                     httpPost(httpUrl.registBlind, [], {
                         direction: self.state.blindStatus === 0 ? "" : self.state.blindStatus,
                         deleted: false,
-                        frIdx: 10101,
+                        frIdx: self.state.selectedFr.idx,
                         memo: form.getFieldValue('memo'),
-                        riderIdx: 11357
-                    }).then(
-                        self.getList()
-                    )
+                        riderIdx: self.state.selectedRider.idx
+                    }).then((result) =>{
+                        if(result.result === "SUCCESS" && result.data === "SUCCESS") {
+                            blindComplete();
+                            self.getList();
+                        } else {
+                            blindError();
+                        }
+                    })
+                    .catch((e) => {
+                        blindError();
+                    });    
                 }
             })
     }
@@ -118,15 +122,13 @@ class BlindRiderListDialog extends Component {
                 onOk() {
                     httpPost(httpUrl.deleteBlind, [], {
                         idx: idx,
-                    })
-                        .then((result) => {
+                    }).then((result) => {
                             if (result.result === "SUCCESS") {
                                 unBlindComplete();
                                 self.getList();
                             } else {
                                 unBlindError();
                             }
-                            self.getList();
                         })
                         .catch((e) => {
                             unBlindError();
@@ -161,7 +163,13 @@ class BlindRiderListDialog extends Component {
                 title: "차단자",
                 dataIndex: "direction",
                 className: "table-column-center",
-                render: (data, row) => <div>{data === 1 ? "기사" : "가맹점"}</div>
+                render: (data, row) => 
+                <div>
+                    {data === 1 ? 
+                        <div style={{color: 'blue', fontWeight:'bold'}}>기사</div> 
+                        : <div style={{color: 'red', fontWeight:'bold'}}>가맹점</div> 
+                    }
+                </div>
             },
             {
                 title: "가맹점명",
@@ -279,21 +287,11 @@ class BlindRiderListDialog extends Component {
                                                     가맹점명
                                                 </div>
                                                 <SearchFranchiseDialog
-                                                    onSelect={(franChise) => {
-                                                    this.setState({ selectedFr: franChise }
-                                                    ,() => {
-                                                        const fr = this.state.selectedFr;
-                                                        this.setState({
-                                                        data: {
-                                                            ...this.state.data,
-                                                            frIdx: fr.idx,
-                                                            frName: fr.frName,
-                                                        },
-                                                        });
-                                                    });
-                                                    }}
                                                     isOpen={this.state.searchFranchiseOpen}
                                                     close={this.closeSearchFranchiseModal}
+                                                    callback={(data) => {
+                                                        this.setState({selectedFr:data})
+                                                    }}
                                                 />
                                                 <FormItem
                                                     name="frName"
@@ -311,22 +309,11 @@ class BlindRiderListDialog extends Component {
                                                     기사명
                                                 </div>
                                                 <SearchRiderDialog
-                                                    onSelect={(rider) => {
-                                                    this.setState({ selectedRider: rider }
-                                                    ,() => {
-                                                        const rider = this.state.selectedRider;
-                                                        this.setState({
-                                                        data: {
-                                                            ...this.state.data,
-                                                            // idx
-                                                            riderIdx: rider.idx,
-                                                            riderName: rider.id,
-                                                        },
-                                                        });
-                                                    });
-                                                    }}
                                                     isOpen={this.state.searchRiderOpen}
                                                     close={this.closeSearchRiderModal}
+                                                    callback={(data) => {
+                                                        this.setState({selectedRider:data})
+                                                    }}
                                                 />
                                                 <FormItem
                                                     name="riderName"
