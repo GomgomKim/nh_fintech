@@ -1,12 +1,4 @@
-import {
-  DatePicker,
-  Input,
-  Select,
-  Table,
-  Button,
-  Checkbox,
-  Modal,
-} from "antd";
+import { DatePicker, Input, Select, Button, Checkbox, Modal, Table } from "antd";
 import moment from "moment";
 import React, { Component } from "react";
 import TimeDelayDialog from "../../components/dialog/order/TimeDelayDialog";
@@ -16,7 +8,6 @@ import SurchargeDialog from "./../../components/dialog/order/SurchargeDialog";
 import NoticeDialog from "../../components/dialog/order/NoticeDialog";
 import ForceAllocateDialog from "../../components/dialog/order/ForceAllocateDialog";
 import MapControlDialog from "../../components/dialog/order/MapControlDialog";
-import MessageDialog from "../../components/dialog/order/MessageDialog";
 import { formatDate } from "../../lib/util/dateUtil";
 import "../../css/order.css";
 import "../../css/common.css";
@@ -40,10 +31,10 @@ import {
 } from "@ant-design/icons";
 import { httpPost, httpUrl } from "../../api/httpClient";
 import { connect } from "react-redux";
-import InfiniteScroll from "react-infinite-scroller";
+import InfiniteScroll from "react-infinite-scroll-component";
 import PaymentDialog from "../../components/dialog/order/PaymentDialog";
-import ModifyOrderDialog from "../../components/dialog/order/ModifyOrderDialog";
 import SearchRiderDialog from "../../components/dialog/common/SearchRiderDialog";
+import ChattingDialog from "../../components/dialog/common/ChattingDialog";
 
 const Option = Select.Option;
 const Search = Input.Search;
@@ -58,7 +49,7 @@ class ReceptionStatus extends Component {
       pagination: {
         total: 0,
         current: 1,
-        pageSize: 30,
+        pageSize: 100,
       },
       data: null,
 
@@ -144,7 +135,6 @@ class ReceptionStatus extends Component {
     if (this.state.rider) {
       data.riderName = this.state.rider;
     }
-    console.log(data);
     httpPost(httpUrl.orderList, [], data)
       .then((res) => {
         if (res.result === "SUCCESS") {
@@ -459,7 +449,7 @@ class ReceptionStatus extends Component {
         title: "도착지",
         // dataIndex: "destAddr1",
         className: "table-column-center",
-        render: (row) => <div>{row.destAddr1 + " " + row.destAddr2}</div>,
+        render: (data, row) => <div>{row.destAddr1 + " " + row.destAddr2}</div>,
       },
       {
         title: "거리(km)",
@@ -473,23 +463,14 @@ class ReceptionStatus extends Component {
         dataIndex: "updateOrder",
         className: "table-column-center",
         render: (data, row) => (
-          <>
-            <RegistCallDialog
-              isOpen={this.state.modifyOrder}
-              close={this.closeModifyOrderModal}
-              editable={this.state.editable}
-              data={this.state.data}
-              getList={this.getList}
-            />
-            <Button
-              onClick={() => {
-                console.log(row);
-                this.openModifyOrderModal(row);
-              }}
-            >
-              수정
-            </Button>
-          </>
+          <Button
+            onClick={() => {
+              console.log(row);
+              this.openModifyOrderModal(row);
+            }}
+          >
+            수정
+          </Button>
         ),
       },
     ];
@@ -612,17 +593,9 @@ class ReceptionStatus extends Component {
           className: "table-column-center",
           render: (data) => (
             <span>
-              <MessageDialog
-                isOpen={this.state.MessageOpen}
-                close={this.closeMessageModal}
-              />
               <Button className="tabBtn" onClick={this.openMessageModal}>
                 라이더
               </Button>
-              <MessageDialog
-                isOpen={this.state.MessageOpen}
-                close={this.closeMessageModal}
-              />
               <Button className="tabBtn" onClick={this.openMessageModal}>
                 가맹점
               </Button>
@@ -636,12 +609,24 @@ class ReceptionStatus extends Component {
           columns={dropColumns}
           dataSource={[record]}
           pagination={false}
+          scroll
         />
       );
     };
 
     return (
       <div className="reception-box">
+        {this.state.MessageOpen && (
+          <ChattingDialog close={this.closeMessageModal} />
+        )}
+        <RegistCallDialog
+          isOpen={this.state.modifyOrder}
+          close={this.closeModifyOrderModal}
+          editable={this.state.editable}
+          data={this.state.data}
+          getList={this.getList}
+        />
+
         <div className="btnLayout">
           <TimeDelayDialog
             isOpen={this.state.timeDelayOpen}
@@ -777,12 +762,14 @@ class ReceptionStatus extends Component {
           <span className="span1">완료조회</span>
         </div>
         <InfiniteScroll
-          initialLoad={true}
-          loadMore={this.handleInfiniteOnLoad}
-          threshold={this.state.pagination.pageSize}
-          useWindow={false}
+          dataLength={this.state.pagination.pageSize}
+          next={this.handleInfiniteOnLoad}
+          inverse={true}
+          style={{ marginTop: "15px" }}
+          // hasMore={!this.chatMessageEnd}
+          scrollableTarget="dataTableLayout"
         >
-          <div className="dataTableLayout">
+          <div className="ant-table-tbody">
             <Table
               rowKey={(record) => record}
               rowClassName={(record) => rowColorName[record.orderStatus]}

@@ -137,6 +137,50 @@ const statMonthFormat = date => {
   return newDate.getFullYear() + formatDateNumber(newDate.getMonth() + 1);
 };
 
+const formatDateUnit = num => {
+  num += "";
+  return num.length < 2 ? "0" + num : num;
+};
+
+
+const formatYMD = date => {
+  if (!date) return null;
+  if (date instanceof Date) {
+  }
+  else {
+    date = new Date((date + '').substring(0, 19));
+  }
+  return (
+    date.getFullYear() +
+    "-" +
+    formatDateUnit(date.getMonth() + 1) +
+    "-" +
+    formatDateUnit(date.getDate())
+  );
+}
+
+const formatYMDHMS = date => {
+  if (!date) return null;
+  if (date instanceof Date) {
+  }
+  else {
+    date = new Date((date + '').substring(0, 19));
+  }
+  return (
+    date.getFullYear() +
+    "-" +
+    formatDateUnit(date.getMonth() + 1) +
+    "-" +
+    formatDateUnit(date.getDate()) +
+    " " +
+    formatDateUnit(date.getHours()) +
+    ":" +
+    formatDateUnit(date.getMinutes()) +
+    ":" +
+    formatDateUnit(date.getSeconds())
+  );
+}
+
 
 
 export {
@@ -150,4 +194,6 @@ export {
   endDateFormat,
   statFormat,
   statMonthFormat,
+  formatYMD,
+  formatYMDHMS,
 };
