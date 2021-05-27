@@ -21,16 +21,13 @@ const loginInitialState = {
 const login = (state = loginInitialState, action) => {
   switch (action.type) {
     case LOGIN:
-      reactLocalStorage.setObject(con + "#adminUser", action.loginInfo);
-      console.log(
-        "LOGIN info 찍힌다아ㅏ앙ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ"
-      );
-      console.log(
-        Object.assign({}, state, {
-          isLogin: true,
-          loginInfo: action.loginInfo,
-        })
-      );
+      reactLocalStorage.setObject(con + '#adminUser', action.loginInfo);
+      console.log(Object.assign({}, state, {
+        isLogin: true,
+        loginInfo: action.loginInfo,
+      }));
+      // alert('reducer')
+      // alert(JSON.stringify(action.loginInfo));
       return Object.assign({}, state, {
         isLogin: true,
         loginInfo: action.loginInfo,

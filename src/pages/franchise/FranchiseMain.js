@@ -436,7 +436,6 @@ class FranchiseMain extends Component {
         className: "table-column-center",
         render: (data, row) => (
           <div>
-            {/* <BlindListDialog isOpen={this.state.blindListOpen} close={this.closeBlindModal} data={this.state.blindFrData}/> */}
             <Button
               className="tabBtn surchargeTab"
               onClick={() =>
@@ -596,6 +595,9 @@ class FranchiseMain extends Component {
           >
             주소검색관리
           </Button>
+          
+          {/* 블라인드 */}
+          <BlindFranListDialog isOpen={this.state.blindListOpen} close={this.closeBlindModal} data={this.state.blindFrData}/>
 
           {/* 엑셀업로드버튼 */}
           <a href="/franchise_regist_templete.xlsx" download>

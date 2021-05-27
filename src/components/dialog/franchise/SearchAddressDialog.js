@@ -5,8 +5,9 @@ import {
 } from "antd";
 import { httpUrl, httpGet } from '../../../api/httpClient';
 import PostCodeDialog from '../common/PostCodeDialog';
+import SelfAddressDialog from '../franchise/SelfAddressDialog';
 import { 
-
+    addType
 } from '../../../lib/util/codeUtil'
 import {
     customError,
@@ -33,11 +34,14 @@ class SearchAddressDialog extends Component {
                 current: 1,
                 pageSize: 5,
             },
-            addressType: 0,
+            RegistAddType: 0,
+            selectAddType: 0,
 
             roadAddr: "",
             localAddr: "",
             searchAddress: "",
+
+            selfAddOpen:false,
 
 
         };
@@ -63,42 +67,7 @@ class SearchAddressDialog extends Component {
 
 
     getList = () => {
-        var list = [
-            {
-                idx: 5,
-                KindOfAddress: '오피스텔',
-                addressList: '잠실 푸르지오시티 106동',
-                delete: this.state.blocked
-            },
-            {
-                idx: 4,
-                KindOfAddress: '오피스텔',
-                addressList: '잠실 푸르지오시티 106동',
-                delete: this.state.blocked
-            },
-            {
-                idx: 3,
-                KindOfAddress: '오피스텔',
-                addressList: '잠실 푸르지오시티 106동',
-                delete: this.state.blocked
-            },
-            {
-                idx: 2,
-                KindOfAddress: '아파트',
-                addressList: '잠실 푸르지오시티 106동',
-                delete: this.state.blocked
-            },
-            {
-                idx: 1,
-                KindOfAddress: '아파트',
-                addressList: '잠실 푸르지오시티 106동',
-                delete: this.state.blocked
-            },
-
-        ];
-        this.setState({
-            list: list,
-        });
+     
     }
 
     // 우편번호 검색
@@ -108,6 +77,13 @@ class SearchAddressDialog extends Component {
 
     closePostCode = () => {
         this.setState({ isPostCodeOpen: false,})
+    }
+
+    openSelfAdd = () => {
+        this.setState({selfAddOpen:true,})
+    }
+    closeSelfAdd = () => {
+        this.setState({selfAddOpen:false,})
     }
 
     // 우편번호 - 주소 저장
@@ -141,7 +117,8 @@ class SearchAddressDialog extends Component {
           
         });
     }
-       // 주소 검색
+    
+    // 주소 검색
        onSearchAddress = (value) => {
         this.setState({
             searchAddress: value
@@ -149,7 +126,19 @@ class SearchAddressDialog extends Component {
             this.getList();
         })
     }
+    
+    // 라디오
+    onChangeRegistAddType = (e) => {
+        this.setState({ RegistAddType: e.target.value }, 
+            () => { });
+    }
 
+    onChangeSelectAddType = (e) => {
+        this.setState({ selectAddType: e.target.value }, 
+            () => { });
+    }
+
+ 
     render() {
 
 
@@ -224,10 +213,13 @@ class SearchAddressDialog extends Component {
                                                                 유형
                                                             </div>
 
-                                                            <Radio.Group className="searchRequirement" onChange={onChange} value={this.state.addressType}>
-                                                                <Radio value={0}>아파트</Radio>
-                                                                <Radio value={1}>오피스텔</Radio>
-                                                            </Radio.Group> 
+                                                            <Radio.Group className="searchRequirement" onChange={this.onChangeRegistAddType} value={this.state.RegistAddType}>
+                                                                {Object.entries(addType).map(([key, value]) => {
+                                                                return (
+                                                                    <Radio value={parseInt(key)}>{value}</Radio>
+                                                                );
+                                                            })}
+                                                            </Radio.Group>
 
                                                         </div>
 
@@ -282,7 +274,8 @@ class SearchAddressDialog extends Component {
                                                     </div>  
 
                                                         <div className="searchAddress-btn">
-                                                            <Button type="primary" htmlType="submit">
+                                                            <SelfAddressDialog isOpen={this.state.selfAddOpen} close={this.closeSelfAdd}/>
+                                                            <Button type="primary" htmlType="submit" onClick={this.openSelfAdd}>
                                                                 등록하기
                                                             </Button>
                                                         </div>
@@ -292,7 +285,7 @@ class SearchAddressDialog extends Component {
                                                         주소 검색
                                                 </div>
 
-                                                <div className="contentbox-02">
+                                                <div className="contentBlock second">
 
                                                     <div className="contentBlock">
 
@@ -300,10 +293,13 @@ class SearchAddressDialog extends Component {
                                                             유형
                                                         </div>
 
-                                                        <Radio.Group className="searchRequirement" onChange={onChange} value={this.state.addressType}>
-                                                            <Radio value={0}>아파트</Radio>
-                                                            <Radio value={1}>오피스텔</Radio>
-                                                        </Radio.Group> 
+                                                        <Radio.Group className="searchRequirement" onChange={this.onChangeSelectAddType} value={this.state.selectAddType}>
+                                                                {Object.entries(addType).map(([key, value]) => {
+                                                                return (
+                                                                    <Radio value={parseInt(key)}>{value}</Radio>
+                                                                );
+                                                            })}
+                                                        </Radio.Group>                                                      
 
                                                     </div>
 
