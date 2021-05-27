@@ -1,4 +1,12 @@
-import { DatePicker, Input, Select, Button, Checkbox, Modal, Table } from "antd";
+import {
+  DatePicker,
+  Input,
+  Select,
+  Button,
+  Checkbox,
+  Modal,
+  Table,
+} from "antd";
 import moment from "moment";
 import React, { Component } from "react";
 import TimeDelayDialog from "../../components/dialog/order/TimeDelayDialog";
@@ -35,9 +43,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import PaymentDialog from "../../components/dialog/order/PaymentDialog";
 import SearchRiderDialog from "../../components/dialog/common/SearchRiderDialog";
 import ChattingDialog from "../../components/dialog/common/ChattingDialog";
-import {
-  customError,
-} from "../../api/Modals"
+import { customError } from "../../api/Modals";
 
 const Option = Select.Option;
 const Search = Input.Search;
@@ -86,6 +92,8 @@ class ReceptionStatus extends Component {
 
   componentDidMount() {
     this.getList();
+    // alert('reception');
+    // alert(JSON.stringify(this.props.info))
   }
 
   handleToggleCompleteCall = (e) => {
@@ -141,7 +149,6 @@ class ReceptionStatus extends Component {
     httpPost(httpUrl.orderList, [], data)
       .then((res) => {
         if (res.result === "SUCCESS") {
-          console.log(res);
           this.setState({
             list: res.data.orders,
           });
@@ -153,7 +160,6 @@ class ReceptionStatus extends Component {
         }
       })
       .catch((e) => {
-        console.log(e);
         Modal.info({
           title: "적용 오류",
           content: "처리가 실패했습니다.",
@@ -162,9 +168,7 @@ class ReceptionStatus extends Component {
   };
 
   assignRider = (data, orderIdx) => {
-    // console.log(data)
-    // console.log(orderIdx)
-    var self = this
+    var self = this;
     Modal.confirm({
       title: "강제배차",
       content: data.riderName + " 라이더 에게 강제배차 하시겠습니까?",
@@ -174,25 +178,42 @@ class ReceptionStatus extends Component {
         httpPost(httpUrl.assignRiderAdmin, [], {
           orderIdx: orderIdx,
           userIdx: data.idx,
-        })
-          .then((res) => {
-            console.log(res);
-            if(res.result === "SUCCESS"){
-              switch(res.data){
-                case "SUCCESS":
-                  // console.log(res.result);
-                  self.getList()
-                  break;
-                case "ALREADY_ASSIGNED": customError("배차 오류", "이미 배차된 주문입니다."); break;
-                case "ORDER_NOT_EXISTS": customError("배차 오류", "존재하지 않은 주문입니다."); break;
-                case "NCASH_MINUS": customError("배차 오류", "NCash 잔액이 부족합니다."); break;
-                case "ASSIGN_LIMIT_EXCEEDED": customError("배차 오류", "배차 목록이 가득 찼습니다."); break;
-                case "NOT_ADMIN": customError("배차 오류", "관리자만 강제배차할 수 있습니다."); break;
-                default: customError("배차 오류", "배차에 실패했습니다. 관리자에게 문의하세요."); break;
-              }
-            } else customError("배차 오류", "배차에 실패했습니다. 관리자에게 문의하세요.");
-            
-          })
+        }).then((res) => {
+          console.log(res);
+          if (res.result === "SUCCESS") {
+            switch (res.data) {
+              case "SUCCESS":
+                // console.log(res.result);
+                self.getList();
+                break;
+              case "ALREADY_ASSIGNED":
+                customError("배차 오류", "이미 배차된 주문입니다.");
+                break;
+              case "ORDER_NOT_EXISTS":
+                customError("배차 오류", "존재하지 않은 주문입니다.");
+                break;
+              case "NCASH_MINUS":
+                customError("배차 오류", "NCash 잔액이 부족합니다.");
+                break;
+              case "ASSIGN_LIMIT_EXCEEDED":
+                customError("배차 오류", "배차 목록이 가득 찼습니다.");
+                break;
+              case "NOT_ADMIN":
+                customError("배차 오류", "관리자만 강제배차할 수 있습니다.");
+                break;
+              default:
+                customError(
+                  "배차 오류",
+                  "배차에 실패했습니다. 관리자에게 문의하세요."
+                );
+                break;
+            }
+          } else
+            customError(
+              "배차 오류",
+              "배차에 실패했습니다. 관리자에게 문의하세요."
+            );
+        });
       },
     });
   };
@@ -359,39 +380,29 @@ class ReceptionStatus extends Component {
               defaultValue={data}
               value={row.orderStatus}
               onChange={(value) => {
-                var flag = true;
-
                 // 제약조건 미성립
                 // console.log([row.pickupStatus, value]+" / "+modifyType[row.pickupStatus])
                 if (!modifyType[row.orderStatus].includes(value)) {
                   Modal.info({
                     content: <div>상태를 바꿀 수 없습니다.</div>,
                   });
-                  flag = false;
+                  return;
                 }
-
                 // 대기중 -> 픽업중 변경 시 강제배차 알림
                 if (row.orderStatus === 1 && value === 2) {
                   Modal.info({
                     content: <div>강제배차를 사용하세요.</div>,
                   });
+                  return;
                 }
-
                 // 제약조건 성립 시 상태 변경
-                if (flag) {
-                  // const list = this.state.list;
-                  // list.find((x) => x.idx === row.idx).orderStatus = value;
-                  row.orderStatus = value;
-                  httpPost(httpUrl.orderUpdate, [], row)
-                    .then((res) => {
-                      console.log(res);
-                    })
-                    .catch((e) => {});
-                  this.getList();
-                  // this.setState({
-                  //   list: list,
-                  // });
-                }
+                // const list = this.state.list;
+                // list.find((x) => x.idx === row.idx).orderStatus = value;
+                row.orderStatus = value;
+                httpPost(httpUrl.orderUpdate, [], row)
+                  .then((res) => {})
+                  .catch((e) => {});
+                this.getList();
               }}
             >
               {deliveryStatusCode.map((value, index) => {
@@ -767,13 +778,13 @@ class ReceptionStatus extends Component {
           dataLength={this.state.pagination.pageSize}
           next={this.handleInfiniteOnLoad}
           inverse={true}
-          style={{ marginTop: "15px" }}
           // hasMore={!this.chatMessageEnd}
-          scrollableTarget="dataTableLayout"
+          scrollableTarget="reception-table"
         >
-          <div className="ant-table-tbody">
+          <div className="dataTableLayout">
             <Table
               rowKey={(record) => record.idx}
+              id="reception-table"
               rowClassName={(record) => rowColorName[record.orderStatus]}
               dataSource={
                 this.state.checkedCompleteCall
@@ -792,11 +803,10 @@ class ReceptionStatus extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    branchIdx: state.login.loginInfo.userGroup,
-  };
-};
+const mapStateToProps = (state) => ({
+  branchIdx: state.login.loginInfo.userGroup,
+  info: state
+});
 
 const mapDispatchToProps = (dispatch) => {
   return {};

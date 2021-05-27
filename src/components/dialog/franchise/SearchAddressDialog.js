@@ -48,11 +48,11 @@ class SearchAddressDialog extends Component {
     }
 
     setDate = (date) => {
-        console.log(date)
+        // console.log(date)
     }
 
     handleTableChange = (pagination) => {
-        console.log(pagination)
+        // console.log(pagination)
         const pager = { ...this.state.pagination };
         pager.current = pagination.current;
         pager.pageSize = pagination.pageSize
@@ -112,7 +112,7 @@ class SearchAddressDialog extends Component {
 
     // 우편번호 - 주소 저장
     getAddr = (addrData) => {
-        console.log(addrData)
+        // console.log(addrData)
         // console.log(addrData.address)
         this.formRef.current.setFieldsValue({
             addr1: addrData.roadAddress, // 도로명 주소
@@ -154,7 +154,7 @@ class SearchAddressDialog extends Component {
 
 
         const onChange = (e) => {
-            console.log(e.target.value)
+            // console.log(e.target.value)
             this.setState({
                 addressType: e.target.value
             }, () => {
