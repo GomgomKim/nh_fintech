@@ -109,6 +109,19 @@ body {
   text-align: center !important;
 }
 
+.table-column-left {
+  display: inline-block;
+  width: 550;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  height: 1.5em;
+  -webkit-box-orient: vertical;
+  line-height: 1.5em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: left;
+}
+
 
 .detailModal-wrapper {
   /* border: 1px solid #696968; */

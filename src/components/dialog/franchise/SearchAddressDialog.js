@@ -3,6 +3,15 @@ import {
     Form, Input, Table,
     Button, Select, Radio
 } from "antd";
+import { httpUrl, httpGet } from '../../../api/httpClient';
+import PostCodeDialog from '../common/PostCodeDialog';
+import { 
+
+} from '../../../lib/util/codeUtil'
+import {
+    customError,
+} from '../../../api/Modals'
+
 import '../../../css/rider.css';
 
 const FormItem = Form.Item;
@@ -18,12 +27,19 @@ class SearchAddressDialog extends Component {
         this.state = {
             selectedDate: today,
             list: [],
+            isPostCodeOpen: false,
             pagination: {
                 total: 0,
                 current: 1,
                 pageSize: 5,
             },
             addressType: 0,
+
+            roadAddr: "",
+            localAddr: "",
+            searchAddress: "",
+
+
         };
         this.formRef = React.createRef();
     }
@@ -34,6 +50,7 @@ class SearchAddressDialog extends Component {
     setDate = (date) => {
         console.log(date)
     }
+
     handleTableChange = (pagination) => {
         console.log(pagination)
         const pager = { ...this.state.pagination };
@@ -83,6 +100,56 @@ class SearchAddressDialog extends Component {
             list: list,
         });
     }
+
+    // 우편번호 검색
+    openPostCode = () => {
+        this.setState({ isPostCodeOpen: true,})
+    }
+
+    closePostCode = () => {
+        this.setState({ isPostCodeOpen: false,})
+    }
+
+    // 우편번호 - 주소 저장
+    getAddr = (addrData) => {
+        console.log(addrData)
+        // console.log(addrData.address)
+        this.formRef.current.setFieldsValue({
+            addr1: addrData.roadAddress, // 도로명 주소
+            addr3: addrData.jibunAddress === "" ? addrData.autoJibunAddress : addrData.jibunAddress // 지번
+        })
+
+        // 좌표변환
+        httpGet(httpUrl.getGeocode, [addrData.roadAddress], {}).then((res) => {
+            let result = JSON.parse(res.data.json);
+            // console.log(result)
+            // console.log(result.addresses.length)
+            if(res.result === "SUCCESS" && result.addresses.length > 0){
+                const lat = result.addresses[0].y;
+                const lng = result.addresses[0].x;
+                // console.log(lat)
+                // console.log(lng)
+
+                this.setState({
+                    targetLat: lat,
+                    targetLng: lng
+                }) 
+                
+            } else{
+                customError("위치 반환 오류", "위치 데이터가 존재하지 않습니다. 관리자에게 문의하세요.")
+            }
+          
+        });
+    }
+       // 주소 검색
+       onSearchAddress = (value) => {
+        this.setState({
+            searchAddress: value
+        }, () => {
+            this.getList();
+        })
+    }
+
     render() {
 
 
@@ -125,7 +192,7 @@ class SearchAddressDialog extends Component {
 
         ];
 
-        const { isOpen, close } = this.props;
+        const { isOpen, close, data } = this.props;
 
         return (
             <React.Fragment>
@@ -138,34 +205,128 @@ class SearchAddressDialog extends Component {
                                     <div className="serchAddress-title">
                                         주소 검색 관리
                                     </div>
-                                    <img onClick={close} src={require('../../../img/login/close.png').default} className="surcharge-close" />
+                                    <img onClick={close} src={require('../../../img/login/close.png').default} className="surcharge-close" alt=""/>
 
 
                                     <Form ref={this.formRef} onFinish={this.handleSubmit}>
-                                        <div className="layout">
+                                        <div className="layout">                                            
                                             <div className="serchAddressWrapper">
-                                                <div className="contentBlock">
-                                                    <Radio.Group className="searchRequirement" onChange={onChange} value={this.state.addressType}>
-                                                        <Radio value={0}>아파트</Radio>
-                                                        <Radio value={1}>오피스텔</Radio>
-                                                    </Radio.Group>
+
+                                                <div className="searchAddress-name">
+                                                    주소 등록
                                                 </div>
 
-                                                <div className="serchAddress-list">
-                                                    <div className="inputBox inputBox-serchAddress sub">
-                                                        <FormItem name="price">
-                                                            <Input placeholder="주소를 입력해주세요" />
-                                                        </FormItem>
-                                                    </div>
-                                                    <div className="searchAddress-btn">
-                                                        <Button type="primary" htmlType="submit">
-                                                            등록하기
-                                                        </Button>
-                                                    </div>
+                                                    <div className="contentbox">
 
-                                                </div>
+                                                        <div className="contentBlock frist">
 
+                                                            <div className="mainTitle">
+                                                                유형
+                                                            </div>
+
+                                                            <Radio.Group className="searchRequirement" onChange={onChange} value={this.state.addressType}>
+                                                                <Radio value={0}>아파트</Radio>
+                                                                <Radio value={1}>오피스텔</Radio>
+                                                            </Radio.Group> 
+
+                                                        </div>
+
+                                                        <div className="contentBlock">
+
+                                                            <div className="mainTitle">
+                                                                주소
+                                                            </div>
+
+                                                            <FormItem
+                                                                name="addr1"
+                                                                className="selectItem"                                                                                                                        >
+                                                                <Input placeholder="주소를 입력해 주세요." disabled className="override-input sub short" />
+                                                            </FormItem>
+
+                                                            <PostCodeDialog data={(addrData) => this.getAddr(addrData)} isOpen={this.state.isPostCodeOpen} close={this.closePostCode}/>
+
+                                                            <Button onClick={this.openPostCode} className="override-input addrBtn">
+                                                                우편번호 검색
+                                                            </Button>
+
+                                                        </div>
+
+
+                                                        <div className="contentBlock">
+
+                                                            <div className="mainTitle">
+                                                                지번주소
+                                                            </div>
+
+                                                            <FormItem
+                                                                name="addr3"
+                                                                className="selectItem"                                                                                                                                                                                >
+                                                                <Input placeholder="지번주소를 입력해 주세요." disabled className="override-input sub"/>
+                                                            </FormItem>
+                                                        </div>
+
+
+                                                        <div className="contentBlock">
+
+                                                            <div className="mainTitle">
+                                                                상세주소
+                                                            </div>
+
+                                                            <FormItem
+                                                                name="addr2"
+                                                                className="selectItem"                                                                                                                        >
+                                                                <Input placeholder="상세주소를 입력해 주세요." className="override-input sub"/>
+                                                            </FormItem>
+                                                        </div>       
+
+                                                    </div>  
+
+                                                        <div className="searchAddress-btn">
+                                                            <Button type="primary" htmlType="submit">
+                                                                등록하기
+                                                            </Button>
+                                                        </div>
                                             </div>
+
+                                                <div className="searchAddress-name">
+                                                        주소 검색
+                                                </div>
+
+                                                <div className="contentbox-02">
+
+                                                    <div className="contentBlock">
+
+                                                        <div className="mainTitle">
+                                                            유형
+                                                        </div>
+
+                                                        <Radio.Group className="searchRequirement" onChange={onChange} value={this.state.addressType}>
+                                                            <Radio value={0}>아파트</Radio>
+                                                            <Radio value={1}>오피스텔</Radio>
+                                                        </Radio.Group> 
+
+                                                    </div>
+
+                                                    <div className="contentBlock bottom">
+
+                                                                <div className="mainTitle">
+                                                                    주소
+                                                                </div>
+
+                                                                <Search
+                                                                    placeholder="주소를 검색해 주세요."
+                                                                    enterButton
+                                                                    allowClear
+                                                                    onSearch={this.onSearchAddress}
+                                                                    style={{
+                                                                        width: 480,
+                                                                        marginLeft: 20,
+                                                                        verticalAlign: 'bottom'
+                                                                    }}
+                                                                />
+                                                    </div>                                                
+
+                                                </div>                                     
 
 
                                             <div className="dataTableLayout-01">
@@ -177,28 +338,7 @@ class SearchAddressDialog extends Component {
                                                 />
                                             </div>
 
-                                            <div className="serchAddress-searchbox">
-
-                                                <Select
-                                                    defaultValue={0}
-                                                    style={{ width: 100 }}>
-                                                    <Option value={0}>아파트</Option>
-                                                    <Option value={1}>오피스텔</Option>
-                                                </Select>
-
-                                                <Search
-                                                    placeholder="주소 검색"
-                                                    enterButton
-                                                    allowClear
-                                                    style={{
-                                                        width: 350,
-                                                        marginLeft: 10,
-                                                        verticalAlign: 'bottom'
-                                                    }}
-                                                />
-
-                                            </div>
-
+                                            
                                         </div>
 
 

@@ -3,7 +3,7 @@ export default {
 
   //local
   serverProtocol: "http",
-  serverIp: "localhost",
+  serverIp: "127.0.0.1",
 
   //stage
   // serverProtocol: "https",

@@ -128,10 +128,8 @@ class SearchFranchiseDialog extends Component {
 
   onFrSelected = (data) => {
     // console.log(data)
-    var dataIdx = this.state.dataIdxs;
-    dataIdx[data] = true;
     if (this.props.callback) {
-      this.props.callback(dataIdx);
+      this.props.callback(data);
     }
     this.props.close();
   };
@@ -157,7 +155,7 @@ class SearchFranchiseDialog extends Component {
                 if (this.props.onSelect) {
                   this.props.onSelect(row);
                 }
-                this.onFrSelected(row.idx);
+                this.onFrSelected(row);
               }}
             >
               {data}
