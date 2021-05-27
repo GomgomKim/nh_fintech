@@ -6,7 +6,7 @@ import {
 import { httpUrl, httpGet } from '../../../api/httpClient';
 import PostCodeDialog from '../common/PostCodeDialog';
 import { 
-
+    addType
 } from '../../../lib/util/codeUtil'
 import {
     customError,
@@ -33,7 +33,8 @@ class SearchAddressDialog extends Component {
                 current: 1,
                 pageSize: 5,
             },
-            addressType: 0,
+            RegistAddType: 0,
+            selectAddType: 0,
 
             roadAddr: "",
             localAddr: "",
@@ -141,7 +142,8 @@ class SearchAddressDialog extends Component {
           
         });
     }
-       // 주소 검색
+    
+    // 주소 검색
        onSearchAddress = (value) => {
         this.setState({
             searchAddress: value
@@ -149,7 +151,19 @@ class SearchAddressDialog extends Component {
             this.getList();
         })
     }
+    
+    // 라디오
+    onChangeRegistAddType = (e) => {
+        this.setState({ RegistAddType: e.target.value }, 
+            () => { });
+    }
 
+    onChangeSelectAddType = (e) => {
+        this.setState({ selectAddType: e.target.value }, 
+            () => { });
+    }
+
+ 
     render() {
 
 
@@ -224,10 +238,13 @@ class SearchAddressDialog extends Component {
                                                                 유형
                                                             </div>
 
-                                                            <Radio.Group className="searchRequirement" onChange={onChange} value={this.state.addressType}>
-                                                                <Radio value={0}>아파트</Radio>
-                                                                <Radio value={1}>오피스텔</Radio>
-                                                            </Radio.Group> 
+                                                            <Radio.Group className="searchRequirement" onChange={this.onChangeRegistAddType} value={this.state.RegistAddType}>
+                                                                {Object.entries(addType).map(([key, value]) => {
+                                                                return (
+                                                                    <Radio value={parseInt(key)}>{value}</Radio>
+                                                                );
+                                                            })}
+                                                            </Radio.Group>
 
                                                         </div>
 
@@ -292,7 +309,7 @@ class SearchAddressDialog extends Component {
                                                         주소 검색
                                                 </div>
 
-                                                <div className="contentbox-02">
+                                                <div className="contentBlock second">
 
                                                     <div className="contentBlock">
 
@@ -300,10 +317,13 @@ class SearchAddressDialog extends Component {
                                                             유형
                                                         </div>
 
-                                                        <Radio.Group className="searchRequirement" onChange={onChange} value={this.state.addressType}>
-                                                            <Radio value={0}>아파트</Radio>
-                                                            <Radio value={1}>오피스텔</Radio>
-                                                        </Radio.Group> 
+                                                        <Radio.Group className="searchRequirement" onChange={this.onChangeSelectAddType} value={this.state.selectAddType}>
+                                                                {Object.entries(addType).map(([key, value]) => {
+                                                                return (
+                                                                    <Radio value={parseInt(key)}>{value}</Radio>
+                                                                );
+                                                            })}
+                                                        </Radio.Group>                                                      
 
                                                     </div>
 

@@ -176,6 +176,12 @@ const packAmount = {
     6:"5개이상",
 }
 
+const addType = [
+    // "",
+    "아파트",
+    "오피스텔"
+]
+
 export { 
     deliveryStatusCode,
     blockString,
@@ -200,4 +206,5 @@ export {
     feeManner,
     arriveReqTime,
     packAmount,
+    addType,
 };
