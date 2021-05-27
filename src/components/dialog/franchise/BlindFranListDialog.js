@@ -44,7 +44,6 @@ class BlindFranListDialog extends Component {
     }
 
     handleTableChange = (pagination) => {
-        console.log(pagination)
         const pager = { ...this.state.pagination };
         pager.current = pagination.current;
         pager.pageSize = pagination.pageSize
@@ -65,9 +64,18 @@ class BlindFranListDialog extends Component {
         })
         .then((res) => {
             if (res.result === "SUCCESS") {
-                console.log(res);
                 this.setState({
                     list: res.data.riderFrBlocks,
+                })
+            }
+            else {
+                Modal.info({
+                    title: "목록 에러",
+                    content: (
+                        <div>
+                            에러가 발생하여 목록을 불러올수 없습니다.
+                        </div>
+                    ),
                 });
             }
         })
@@ -97,6 +105,7 @@ class BlindFranListDialog extends Component {
                     }).then((result) =>{
                         if(result.result === "SUCCESS" && result.data === "SUCCESS") {
                             blindComplete();
+                            self.handleClear();
                             self.getList();
                         } else {
                             blindError();
@@ -109,9 +118,14 @@ class BlindFranListDialog extends Component {
             })
     }
 
+    handleClear = () => {
+        this.formRef.current.resetFields();
+    };
+
+
     onDelete = (idx, deleted) => {
         let self = this;
-        if (deleted == true) {
+        if (deleted !== true) {
             Modal.confirm({
                 title: "차단 해제",
                 content: "차단을 해제하시겠습니까?",
@@ -205,20 +219,26 @@ class BlindFranListDialog extends Component {
                 render:
                     (data, row) => (
                         <div>
-                            <SelectBox
-                                placeholder={row.deleted !== true ? "차단중" : "차단해제"}
-                                value={blockString[data]}
-                                code={Object.keys(blockString)}
-                                codeString={blockString}
-                                onChange={(value) => {
-                                    if (parseInt(value) !== row.deleted) {
-                                        this.onDelete(row.idx, value);
-                                    }
-                                }}
-                            />
+                            {row.deleted !== true ? blockString[0] : blockString[1]}
                         </div>
                     ),
             },
+            {
+                title: "해제",
+                className: "table-column-center",
+                render: (data, row) =>
+                  <div>
+                    {row.deleted !== true &&
+
+                        <Button className="tabBtn surchargeTab" 
+                        onClick={(value) => {
+                            if (parseInt(value) !== row.deleted) {
+                                this.onDelete(row.idx, row.deleted);
+                            }
+                        }}>차단해제</Button>
+                    }
+                    </div>
+              },
         ];
 
         const { isOpen, close, data } = this.props;
@@ -234,7 +254,7 @@ class BlindFranListDialog extends Component {
                                         블라인드 목록
                                     </div>
                                     <img onClick={close} src={require('../../../img/login/close.png').default} 
-                                    className="surcharge-close" alt='close'/>
+                                    className="blind-close" alt='close'/>
 
                                     <div style={{
                                         textAlign: 'right',
@@ -262,12 +282,13 @@ class BlindFranListDialog extends Component {
                                     <div className="blindWrapper bot">
                                         <Form ref={this.formRef} onFinish={this.handleSubmit}>
                                             <div className="contentBlock">
-                                                <div className="subTitle">
+                                                <div className="mainTitle">
                                                     차단자
                                             </div>
                                                 <FormItem
                                                     name="direction"
                                                     className="selectItem"
+                                                    rules={[{ required: true, message: "차단자를 선택해주세요." }]}
                                                 >
                                                     <SelectBox
                                                         placeholder={'선택'}
@@ -334,6 +355,7 @@ class BlindFranListDialog extends Component {
                                                 <FormItem
                                                     name="memo"
                                                     className="selectItem"
+                                                    rules={[{ required: true, message: "차단 메모를 입력해주세요." }]}
                                                 >
                                                     <Input placeholder="차단메모 입력" className="override-input sub">
                                                     </Input>

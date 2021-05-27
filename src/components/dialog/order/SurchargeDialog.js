@@ -123,18 +123,19 @@ class SurchargeDialog extends Component {
         let self = this;
         Modal.confirm({
             title: "할증 삭제",
-            content: "해당 할증을 삭제하시겠습니까?",
+            content: row.name + " 할증을 삭제하시겠습니까?",
             okText: "확인",
             cancelText: "취소",
             onOk() {
                 let idx = row.idx;
+                let name = row.name;
                 httpGet(httpUrl.priceExtraDelete, [idx], {})
                     .then((result) => {
                         Modal.info({
                             title: "할증 삭제",
                             content: (
                                 <div>
-                                    해당 할증이 삭제되었습니다.
+                                    {name} 할증이 삭제되었습니다.
                                 </div>
                             ),
                         });

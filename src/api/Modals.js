@@ -121,7 +121,7 @@ const blindNowError = () => {
         title: "차단 에러", 
         content: (
         <div>
-            같은 차단중으로는 바꿀수 없습니다.
+            같은 상태로는 바꿀수 없습니다.
         </div>), 
         onOk() {},
     });
