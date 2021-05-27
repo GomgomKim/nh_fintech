@@ -75,7 +75,8 @@ class MapControlDialog extends Component {
         this.getRiderList()
         this.getRiderLocateList()
     }
-    
+
+
     setDate = (date) => {
         console.log(date)
     }
@@ -402,12 +403,13 @@ class MapControlDialog extends Component {
                                                   );
                                                 })
                                               }
-                                              {/* {this.state.selectedRider == 55 && (
-                                              <>
                                               <Marker
-                                                  position={navermaps.LatLng(testPos[3][0], testPos[3][1])}
+                                                  position={navermaps.LatLng(37.6363194, 126.6713331)}
                                                   icon={require('../../../img/login/map/marker_rider.png').default}
                                               />
+                                              {/* {this.state.selectedRider == 55 && (
+                                              <>
+                                              
                                               <Marker
                                                   position={navermaps.LatLng(testPos[4][0], testPos[4][1])}
                                                   icon={require('../../../img/login/map/marker_rider.png').default}

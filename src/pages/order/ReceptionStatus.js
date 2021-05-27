@@ -698,10 +698,11 @@ class ReceptionStatus extends Component {
             상담메세지
           </Button>
 
-          <NoticeDialog
-            isOpen={this.state.noticeOpen}
-            close={this.closeNoticeModal}
-          />
+          {this.state.noticeOpen &&
+            <NoticeDialog
+              close={this.closeNoticeModal}
+            />
+          }
           <Button
             icon={<NotificationFilled />}
             className="tabBtn noticeTab"
