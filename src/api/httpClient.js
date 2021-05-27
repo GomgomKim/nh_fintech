@@ -8,7 +8,7 @@ global.language = "ko";
 global.lanList = ["ko", "en", "ja", "zh"];
 
 const serverUrl =
-  Const.serverProtocol + "://" + Const.serverIp + ":" + Const.serverPort;
+  Const.serverProtocol + "://" + Const.serverIp + ":" + Const.serverPort; 
 
 const makeUrl = (url, params) => {
   var result = serverUrl + url;
