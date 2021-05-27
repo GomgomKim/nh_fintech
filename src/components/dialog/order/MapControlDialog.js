@@ -67,6 +67,7 @@ class MapControlDialog extends Component {
 
             // rider locate list
             riderLocates: [],
+
         }
     }
 
@@ -395,8 +396,9 @@ class MapControlDialog extends Component {
                                                   return (
                                                     <Marker
                                                       position={navermaps.LatLng(row.latitude, row.longitude)}
+                                                      
                                                       // icon={require('../../../img/login/map/marker_rider.png').default}
-                                                      icon={require('../../../img/login/map/blue.png').default}
+                                                      icon={require('../../../img/login/map/marker_rider_blue.png').default}
                                                       title={row.riderName}
                                                       onClick={()=>this.getRiderLocate(row.userIdx)}
                                                     />
@@ -404,7 +406,7 @@ class MapControlDialog extends Component {
                                                 })
                                               }
                                               <Marker
-                                                  position={navermaps.LatLng(37.6363194, 126.6713331)}
+                                                  position={navermaps.LatLng(37.6363194, 126.6641331)}
                                                   icon={require('../../../img/login/map/marker_rider.png').default}
                                               />
                                               {/* {this.state.selectedRider == 55 && (
