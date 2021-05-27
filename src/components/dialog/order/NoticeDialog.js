@@ -91,6 +91,7 @@ class NoticeDialog extends Component {
       }
     );
   };
+  
 
   getList = () => {
     // console.log("### "+ this.state.pagination.current)
@@ -376,11 +377,11 @@ class NoticeDialog extends Component {
 
     ];
 
-    const { isOpen, close } = this.props;
+    const { close } = this.props;
 
     return (
       <React.Fragment>
-        {isOpen ? (
+ 
           <React.Fragment>
             <div className="Dialog-overlay" onClick={close} />
             <div className="noticeDialog">
@@ -390,6 +391,7 @@ class NoticeDialog extends Component {
                   onClick={close}
                   src={require("../../../img/login/close.png").default}
                   className="surcharge-close"
+                  alt="img"
                 />
                 <div className="noticeLayout">
                     <div className="noticelistBlock">
@@ -424,7 +426,6 @@ class NoticeDialog extends Component {
               </div>
             </div>
           </React.Fragment>
-        ) : null}
       </React.Fragment>
     );
   }
