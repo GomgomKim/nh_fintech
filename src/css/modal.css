@@ -2590,7 +2590,7 @@
 }
 
 .giveBox .ant-checkbox-wrapper {
-  width: 86px;
+  width: 100px;
   margin: 0px !important;
 }
 /*직원 등록*/
@@ -3734,4 +3734,26 @@
   width: 130px;
   height: 40px;
   font-size: 18px;
+}
+
+/* 채팅 */
+.Modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.56);
+  z-index: 10;
+}
+
+.Modal-chat {
+  z-index: 20;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 10px;
+  width: 900px;
+  height: 700px;
 }
