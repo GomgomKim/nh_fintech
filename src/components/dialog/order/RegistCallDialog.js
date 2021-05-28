@@ -102,19 +102,22 @@ class RegistCallDialog extends Component {
   }
 
   setDefaultState = () => {
-    this.setState({
-      data: this.props.data ? this.props.data : newOrder,
-      selectedDest: {
-        address: this.props.data ? this.props.data.destAddr1 : "",
+    this.setState(
+      {
+        data: this.props.data ? this.props.data : newOrder,
+        selectedDest: {
+          address: this.props.data ? this.props.data.destAddr1 : "",
+        },
+        selectedFr: {
+          frIdx: this.props.data ? this.props.data.frIdx : 0,
+          frLatitude: this.props.data ? this.props.data.frLatitude : 0,
+          frLongitude: this.props.data ? this.props.data.frLongitude : 0,
+          frName: this.props.data ? this.props.data.frName : "",
+          frPhone: this.props.data ? this.props.data.frPhone : "",
+        },
       },
-      selectedFr: {
-        frIdx: this.props.data ? this.props.data.frIdx : 0,
-        frLatitude: this.props.data ? this.props.data.frLatitude : 0,
-        frLongitude: this.props.data ? this.props.data.frLongitude : 0,
-        frName: this.props.data ? this.props.data.frName : "",
-        frPhone: this.props.data ? this.props.data.frPhone : "",
-      },
-    });
+      () => console.log(this.state.data)
+    );
   };
 
   componentDidMount() {
@@ -186,17 +189,13 @@ class RegistCallDialog extends Component {
   };
 
   getDeliveryPrice = () => {
-    // 예시
     var self = this;
-    console.log(this.state.selectedDest.roadAddress);
-
     httpGet(httpUrl.getGeocode, [this.state.selectedDest.roadAddress], {})
       .then((res) => {
         let result = JSON.parse(res.data.json);
         if (res.result === "SUCCESS" && result.addresses.length > 0) {
           const lat = result.addresses[0].y;
           const lng = result.addresses[0].x;
-          console.log(lat, lng);
           this.setState({
             mapLat: lat,
             mapLng: lng,
@@ -209,16 +208,21 @@ class RegistCallDialog extends Component {
           httpGet(httpUrl.getDeliveryPrice, [lat, lng], {})
             .then((res) => {
               if (res.result === "SUCCESS") {
-                console.log(res.data.deliveryPriceSum);
+                console.log(res.data);
                 self.formRef.current.setFieldsValue({
-                  deliveryPrice: comma(res.data.deliveryPriceSum),
+                  deliveryPrice: comma(res.data.deliveryPriceBasic),
+                  deliveryPriceFee: comma(res.data.deliveryPriceExtra),
                 });
-                this.setState({
-                  data: {
-                    ...this.state.data,
-                    deliveryPrice: res.data.deliveryPriceSum,
+                this.setState(
+                  {
+                    data: {
+                      ...this.state.data,
+                      deliveryPrice: res.data.deliveryPriceBasic,
+                      deliveryPriceFee: res.data.deliveryPriceExtra,
+                    },
                   },
-                });
+                  () => console.log(this.state.data)
+                );
               } else {
                 Modal.info({
                   title: "등록오류",
@@ -319,6 +323,12 @@ class RegistCallDialog extends Component {
       ? this.state.data.deliveryPrice
       : this.props.data
       ? this.props.data.deliveryPrice
+      : "";
+
+    let deliveryPriceFee = this.state.data
+      ? this.state.data.deliveryPriceFee
+      : this.props.data
+      ? this.props.data.deliveryPriceFee
       : "";
 
     const reverseGeocode = navermaps.Service.reverseGeocode;
@@ -454,6 +464,27 @@ class RegistCallDialog extends Component {
                     </FormItem>
                   </div>
                   <div className="contentBlock">
+                    <div className="mainTitle">할증 배달요금</div>
+                    <FormItem name="deliveryPriceFee" className="selectItem">
+                      <Input
+                        placeholder="할증 배달요금 입력"
+                        className="override-input"
+                        defaultValue={
+                          this.props.data
+                            ? comma(this.props.data.deliveryPriceFee)
+                            : ""
+                        }
+                        onChange={(e) =>
+                          this.handleChangeInput(
+                            parseInt(e.target.value),
+                            "deliveryPriceFee"
+                          )
+                        }
+                        required
+                      ></Input>
+                    </FormItem>
+                  </div>
+                  <div className="contentBlock">
                     <div className="mainTitle">가격</div>
                     <FormItem name="orderPrice" className="selectItem">
                       <Input
@@ -472,22 +503,23 @@ class RegistCallDialog extends Component {
                   </div>
                   <div className="contentBlock">
                     <div className="mainTitle">결제방식</div>
-                    <PaymentDialog
-                      isOpen={this.state.paymentOpen}
-                      close={this.closePaymentModal}
-                      handlePaymentChange={this.handlePaymentChange}
-                      orderPayments={
-                        this.props.data ? this.props.data.orderPayments : []
-                      }
-                      editable={this.state.editable}
-                      orderPrice={
-                        this.state.data
-                          ? this.state.data.orderPrice
-                          : this.props.data
-                          ? this.props.data.orderPrice
-                          : ""
-                      }
-                    />
+                    {this.state.paymentOpen && (
+                      <PaymentDialog
+                        close={this.closePaymentModal}
+                        handlePaymentChange={this.handlePaymentChange}
+                        orderPayments={
+                          this.props.data ? this.props.data.orderPayments : []
+                        }
+                        editable={this.state.editable}
+                        orderPrice={
+                          this.state.data
+                            ? this.state.data.orderPrice
+                            : this.props.data
+                            ? this.props.data.orderPrice
+                            : ""
+                        }
+                      />
+                    )}
                     <Button
                       onClick={this.openPaymentModal}
                       className="override-input"
@@ -537,7 +569,7 @@ class RegistCallDialog extends Component {
                     </FormItem>
                   </div>
                   <div className="contentBlock">
-                    <div className="mainTitle">묶음</div>
+                    <div className="mainTitle">배달갯수</div>
                     <FormItem name="packAmount" className="selectItem">
                       <Select
                         defaultValue={

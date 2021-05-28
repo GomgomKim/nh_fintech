@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import '../../../css/modal.css';
+import '../../../css/modal.scss';
 import { MessageOutlined } from '@ant-design/icons';
 
 class MsgInputModal extends Component {
