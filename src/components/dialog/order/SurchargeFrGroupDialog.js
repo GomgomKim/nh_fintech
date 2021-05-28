@@ -3,6 +3,7 @@ import {
     Form, Input, Button, Modal
 } from "antd";
 import '../../../css/modal.css';
+import { connect } from "react-redux";
 import { httpUrl, httpPost } from '../../../api/httpClient';
 const FormItem = Form.Item;
 
@@ -43,7 +44,7 @@ class SurchargeFrGroupDialog extends Component {
     handleSubmit = () => {
         const form = this.formRef.current;
         httpPost(httpUrl.priceExtraRegistGroup, [], {
-            branchIdx: 1,
+            branchIdx: this.props.userGroup,
             settingGroupName: form.getFieldValue("settingGroupName")
         })
         .then((res) => {
@@ -90,7 +91,6 @@ class SurchargeFrGroupDialog extends Component {
                                     </div>
                                     <img onClick={close} src={require('../../../img/login/close.png').default} className="addRider-close" />
 
-
                                     <Form ref={this.formRef} onFinish={this.handleSubmit}>
                                         <div className="surchargeGrouplayout">
                                             <div className="surchargeGroupWrapper">
@@ -126,5 +126,15 @@ class SurchargeFrGroupDialog extends Component {
         )
     }
 }
+const mapStateToProps = (state) => {
+    return {
+        userGroup: state.login.loginInfo.userGroup,
+    };
+}
+const mapDispatchToProps = (dispatch) => {
+    return {
 
-export default (SurchargeFrGroupDialog);
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SurchargeFrGroupDialog);

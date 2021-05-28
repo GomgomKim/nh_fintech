@@ -6,6 +6,7 @@ import '../../../css/modal.css';
 import SurchargeFrGroupDialog from "./SurchargeFrGroupDialog";
 import SearchFranchiseDialog from "../../dialog/common/SearchFranchiseDialog";
 import { httpUrl, httpPost } from '../../../api/httpClient';
+import { connect } from "react-redux";
 import { customAlert, customError} from "../../../api/Modals";
 
 class SurchargeGroupDialog extends Component {
@@ -43,7 +44,7 @@ class SurchargeGroupDialog extends Component {
     // 지점에 해당된 그룹 리스트
     getList = () => {
         httpPost(httpUrl.priceExtraGroupList, [], {
-            branchIdx: 1,
+            branchIdx: this.props.userGroup,
             pageNum: this.state.pagination.current,
             pageSize: this.state.pagination.pageSize,
         })
@@ -260,12 +261,12 @@ class SurchargeGroupDialog extends Component {
                                             </div>
                                     </div>
                                     {/* 가맹점 추가 모달 */}
-                                    <SearchFranchiseDialog
+                                    {/* <SearchFranchiseDialog
                                         isOpen={this.state.addFranchiseOpen}
                                         close={this.closeAddFranchiseModal}
                                         callback={(data) => 
                                         this.setState({ selectedFr: data }).then(()=>this.registGroupFranchise())}
-                                    />
+                                    /> */}
 
 
 
@@ -279,5 +280,15 @@ class SurchargeGroupDialog extends Component {
         )
     }
 }
+const mapStateToProps = (state) => {
+    return {
+        userGroup: state.login.loginInfo.userGroup,
+    };
+}
+const mapDispatchToProps = (dispatch) => {
+    return {
 
-export default (SurchargeGroupDialog);
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SurchargeGroupDialog);
