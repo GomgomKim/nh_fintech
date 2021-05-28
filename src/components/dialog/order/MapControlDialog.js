@@ -170,8 +170,6 @@ class MapControlDialog extends Component {
 
     getRiderLocateList = () => {
       httpGet(httpUrl.riderLocateList, [], {}).then((result) => {
-        // console.log('## riderLocates result=' + JSON.stringify(result, null, 4))
-        // console.log("@@@@@@"+result.data.riderLocations)
         this.setState({
           riderLocates: result.data.riderLocations,
         });
