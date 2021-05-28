@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import '../../../css/modal.css';
-import { ExclamationCircleOutlined, MessageOutlined } from '@ant-design/icons';
+import { MessageOutlined } from '@ant-design/icons';
 
 class MsgInputModal extends Component {
     constructor(props) {

@@ -27,34 +27,6 @@ import { updateComplete, updateError } from "../../../api/Modals";
 import SearchFranchiseDialog from "../common/SearchFranchiseDialog";
 import PostCodeDialog from "../common/PostCodeDialog";
 
-// {
-//   "arriveReqDate": "2021-05-01 00:00:00",
-//   "custMessage": "문 앞에 놓아주세요.",
-//   "custPhone": "010-0000-0000",
-//   "deliveryPrice": 4000,
-//   "destAddr1": "서울특별시 강남구 선릉로 717(논현동)",
-//   "destAddr2": "3층",
-//   "destAddr3": "서울특별시 강남구 논현동 111-22",
-//   "itemPrepared": false,
-//   "itemPreparingTime": 0,
-//   "latitude": 37.51884425976253,
-//   "longitude": 127.04050585566475,
-//   "ncashPayEnabled": true,
-//   "orderPayments": [
-//     {
-//       "paymentMethod": 1,
-//       "paymentAmount": 10000,
-//       "paymentStatus": 2
-//     },
-//     {
-//       "paymentMethod": 2,
-//       "paymentAmount": 20000,
-//       "paymentStatus": 2
-//     }
-//   ],
-//   "orderPrice": 10000
-// }
-
 const Option = Select.Option;
 const FormItem = Form.Item;
 const Search = Input.Search;
@@ -77,8 +49,6 @@ const newOrder = {
   frLongitude: 0,
   frName: "",
   frPhone: "",
-  // idx 확인 해보기
-  // 이게 orederIdx 면 create에서는 없이 보내는게 맞지 않나
   idx: 0,
   itemPrepared: false,
   itemPreparingTime: 0,
@@ -120,6 +90,10 @@ class RegistCallDialog extends Component {
 
       // 조회 / 수정창 구분
       editable: true,
+      navermaps: true,
+
+      mapLat: null,
+      mapLng: null,
     };
     this.formRef = React.createRef();
   }
@@ -184,6 +158,26 @@ class RegistCallDialog extends Component {
     });
   };
 
+  getGeocode = (roadAddress) => {
+    httpGet(httpUrl.getGeocode, [roadAddress], {})
+      .then((res) => {
+        let result = JSON.parse(res.data.json);
+        if (res.result === "SUCCESS" && result.addresses.length > 0) {
+          return {
+            lat: result.address[0].y,
+            lng: result.address[0].x,
+          };
+        }
+      })
+      .catch((e) => {
+        console.log(e);
+        Modal.info({
+          title: "좌표 변화 실패",
+          content: "좌표변환에 실패했습니다.",
+        });
+      });
+  };
+
   getDeliveryPrice = () => {
     // 예시
     var self = this;
@@ -193,20 +187,27 @@ class RegistCallDialog extends Component {
         if (res.result === "SUCCESS" && result.addresses.length > 0) {
           const lat = result.addresses[0].y;
           const lng = result.addresses[0].x;
+          this.setState({
+            mapLat: lat,
+            mapLng: lng,
+            data: {
+              ...this.state.data,
+              latitude: lat,
+              longitude: lng,
+            },
+          });
           httpGet(httpUrl.getDeliveryPrice, [lat, lng], {})
             .then((res) => {
               if (res.result === "SUCCESS") {
                 self.formRef.current.setFieldsValue({
                   deliveryPrice: res.data.deliveryPriceSum,
                 });
-                this.setState(
-                  {
-                    data: {
-                      ...this.state.data,
-                      deliveryPrice: res.data.deliveryPriceSum,
-                    },
+                this.setState({
+                  data: {
+                    ...this.state.data,
+                    deliveryPrice: res.data.deliveryPriceSum,
                   },
-                );
+                });
               } else {
                 Modal.info({
                   title: "등록오류",
@@ -235,12 +236,12 @@ class RegistCallDialog extends Component {
   };
 
   handleSubmit = () => {
-    console.log(this.state.data);
     if (this.props.data) {
       httpPost(httpUrl.orderUpdate, [], this.state.data)
         .then((res) => {
           if (res.result === "SUCCESS") {
             updateComplete();
+            this.props.close();
           } else {
             updateError();
           }
@@ -253,6 +254,7 @@ class RegistCallDialog extends Component {
         .then((res) => {
           if (res.result === "SUCCESS") {
             updateComplete();
+            this.props.close();
             this.clearData();
           } else {
             updateError();
@@ -266,6 +268,9 @@ class RegistCallDialog extends Component {
   };
 
   render() {
+    const lat = 37.643623625321474;
+    const lng = 126.66509442649551;
+
     const { isOpen, close } = this.props;
     const data = this.props.data ? this.props.data : newOrder;
     const navermaps = window.naver.maps;
@@ -341,7 +346,8 @@ class RegistCallDialog extends Component {
                         <div className="mainTitle">도착지</div>
                         <FormItem name="addrMain" className="selectItem">
                           <PostCodeDialog
-                            onSelect={(value) =>
+                            onSelect={(value) => {
+                              console.log(value);
                               this.setState({ selectedDest: value }, () => {
                                 this.setState({
                                   data: {
@@ -350,8 +356,8 @@ class RegistCallDialog extends Component {
                                   },
                                 });
                                 this.getDeliveryPrice();
-                              })
-                            }
+                              });
+                            }}
                             isOpen={this.state.isPostCodeOpen}
                             close={this.closePostCode}
                           />
@@ -396,20 +402,6 @@ class RegistCallDialog extends Component {
                           ></Input>
                         </FormItem>
                       </div>
-                      {/* <div className="contentBlock">
-                        <div className="mainTitle">배달요금</div>
-                        <FormItem name="deliveryPrice" className="selectItem">
-                          <Input
-                            placeholder="배달요금 입력"
-                            className="override-input"
-                            value={deliveryPrice}
-                            required
-                          ></Input>
-                          <div style={{ display: "none" }}>
-                            {deliveryPrice}
-                          </div>
-                        </FormItem>
-                      </div> */}
                       <div className="contentBlock">
                         <div className="mainTitle">배달요금</div>
                         <FormItem name="deliveryPrice" className="selectItem">
@@ -580,33 +572,51 @@ class RegistCallDialog extends Component {
                     </div>
 
                     <div className="mapLayout regist-call-map" id="myMap">
-                      {/* <MapContainer /> */}
-                      {/* 
-                                                {navermaps &&
-                                                    <NaverMap
-                                                        className='map-navermap'
-                                                        defaultZoom={14}
-                                                        center={{ lat: lat, lng: lng }}
-                                                    >
-                                                    <Marker
-                                                        position={navermaps.LatLng(lat, lng)}
-                                                        icon={require('../../../img/login/map/marker_rider.png').default}
-                                                    />
-                                                    <Marker
-                                                        position={navermaps.LatLng(lat, lng)}
-                                                        icon={require('../../../img/login/map/marker_target.png').default}
-                                                    />
-                                                    <Polyline 
-                                                    path={[
-                                                        navermaps.LatLng(lat, lng),
-                                                        navermaps.LatLng(lat, lng),
-                                                    ]}
-                                                    // clickable // 사용자 인터랙션을 받기 위해 clickable을 true로 설정합니다.
-                                                    strokeColor={'#5347AA'}
-                                                    strokeWeight={5}        
-                                                    />
-                                                    </NaverMap>
-                                                } */}
+                      {navermaps && (
+                        <NaverMap
+                          className="mapLayout"
+                          defaultZoom={14}
+                          center={
+                            this.props.data
+                              ? {
+                                  lat: this.props.data.latitude,
+                                  lng: this.props.data.longitude,
+                                }
+                              : this.state.mapLat && this.state.mapLng
+                              ? {
+                                  lat: this.state.mapLat,
+                                  lng: this.state.mapLng,
+                                }
+                              : { lat: lat, lng: lng }
+                          }
+                          onClick={(e) => {
+                            this.setState({
+                              mapLat: e.latlng.y,
+                              mapLng: e.latlng.x,
+                            });
+                          }}
+                        >
+                          <Marker
+                            position={
+                              this.props.data
+                                ? navermaps.LatLng(
+                                    this.props.data.latitude,
+                                    this.props.data.longitude
+                                  )
+                                : this.state.mapLat && this.state.mapLng
+                                ? navermaps.LatLng(
+                                    this.state.mapLat,
+                                    this.state.mapLng
+                                  )
+                                : navermaps.LatLng(lat, lng)
+                            }
+                            icon={
+                              require("../../../img/login/map/marker_target.png")
+                                .default
+                            }
+                          />
+                        </NaverMap>
+                      )}
                     </div>
                   </div>
                 </Form>
