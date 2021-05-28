@@ -796,6 +796,7 @@ class ReceptionStatus extends Component {
               pagination={false}
               onChange={this.handleTableChange}
               expandedRowRender={expandedRowRender}
+              scroll
             />
           </div>
         </InfiniteScroll>
