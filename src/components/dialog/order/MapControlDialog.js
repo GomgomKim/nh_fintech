@@ -343,7 +343,8 @@ class MapControlDialog extends Component {
   }
 
   assignRider = () => {
-
+    alert("a");
+    this.setState({riderListOpen: true})
   }
       
     render() {
@@ -537,13 +538,14 @@ class MapControlDialog extends Component {
 
         return (
               <React.Fragment>
-                <RegistCallDialog
-                  isOpen={this.state.modifyOrder}
-                  close={this.closeModifyOrderModal}
-                  editable={this.state.editable}
-                  data={this.state.data}
-                  getList={this.getList}
-                />
+                {this.state.modifyOrder &&
+                  <RegistCallDialog
+                    close={this.closeModifyOrderModal}
+                    editable={this.state.editable}
+                    data={this.state.data}
+                    getList={this.getList}
+                  />
+                }
                   <div className="Dialog-overlay" onClick={close} />
                   <div className="map-Dialog">
 
@@ -632,7 +634,7 @@ class MapControlDialog extends Component {
 
                               {this.props.callData &&
                                 <>
-                                <Button className="assign-rider-btn" onClick={()=>this.assignRider()}>
+                                <Button className="assign-rider-btn" onClick={this.assignRider}>
                                     배차
                                 </Button>
                                 <Table

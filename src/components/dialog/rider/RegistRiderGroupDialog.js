@@ -42,13 +42,11 @@ class RegistRiderGroupDialog extends Component {
     };
 
     render() {
-        const { isOpen, close } = this.props;
+        const { close } = this.props;
 
 
         return (
-            <React.Fragment>
-                {
-                    isOpen ?
+
                         <React.Fragment>
                             <div className="addGroup-Dialog-overlay" onClick={close} />
                             <div className="addGroup-Dialog">
@@ -88,10 +86,7 @@ class RegistRiderGroupDialog extends Component {
                                 </div>
                             </div>
                         </React.Fragment>
-                        :
-                        null
-                }
-            </React.Fragment>
+
         )
     }
 }

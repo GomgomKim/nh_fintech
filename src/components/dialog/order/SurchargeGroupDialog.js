@@ -22,7 +22,7 @@ class SurchargeGroupDialog extends Component {
             },
             addFranchiseOpen: false,
             registGroupOpen: false,
-            selectedFr: null
+            selectedFr: null,
         };
         this.formRef = React.createRef();
     }
@@ -260,13 +260,14 @@ class SurchargeGroupDialog extends Component {
                                             </div>
                                     </div>
                                     {/* 가맹점 추가 모달 */}
-                                    {/* <SearchFranchiseDialog
+                                    {this.state.addFranchiseOpen &&
+                                    <SearchFranchiseDialog
                                         isOpen={this.state.addFranchiseOpen}
                                         close={this.closeAddFranchiseModal}
                                         callback={(data) => 
-                                        this.setState({ selectedFr: data }).then(()=>this.registGroupFranchise())}
-                                    /> */}
-
+                                        this.setState({ selectedFr: data })}
+                                    />
+                                    }
 
 
                                 </div>
