@@ -117,30 +117,29 @@ class SurchargeGroupDialog extends Component {
         let self = this;
         let idx = this.state.selectedFr.idx;
         Modal.confirm({
-            title: "차단 등록",
-            content: "새로운 차단을 등록하시겠습니까?",
+            title: "가맹점 추가",
+            content: "그룹에 가맹점을 추가하시겠습니까?",
             okText: "확인",
             cancelText: "취소",
-            onOk() {
-                
+            onOk() {         
+                httpPost(httpUrl.franchiseUpdate, [], {
+                    idx: idx,
+                    frSettingGroupIdx: grpIdx,
+                })
+                .then((res) => {
+                    if(res.result === "SUCCESS" && res.data === "SUCCESS"){
+                        customAlert("가맹점 추가", " 그룹에 가맹점을 추가하였습니다.")
+                        self.getList();
+                      }
+                      else {
+                        customError("추가 에러", "에러가 발생하여 가맹점을 추가할수 없습니다.")
+                    }
+                })
+                .catch((e) => {
+                    customError("추가 에러", "에러가 발생하여 가맹점을 추가할수 없습니다.")
+                });   
             }
         })
-        httpPost(httpUrl.franchiseUpdate, [], {
-            idx: idx,
-            frSettingGroupIdx: grpIdx,
-        })
-        .then((res) => {
-            if(res.result === "SUCCESS" && res.data === "SUCCESS"){
-                customAlert("가맹점 추가", " 그룹에 가맹점을 추가하였습니다.")
-                self.getList();
-              }
-              else {
-                customError("추가 에러", "에러가 발생하여 가맹점을 추가할수 없습니다.")
-            }
-        })
-        .catch((e) => {
-            customError("추가 에러", "에러가 발생하여 가맹점을 추가할수 없습니다.")
-        });   
     }
 
     // 가맹점 그룹추가 dialog

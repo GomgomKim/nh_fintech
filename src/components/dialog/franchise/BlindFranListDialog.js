@@ -312,7 +312,6 @@ class BlindFranListDialog extends Component {
                                                 </div>
                                                 {this.state.searchFranchiseOpen &&
                                                 <SearchFranchiseDialog
-
                                                     close={this.closeSearchFranchiseModal}
                                                     callback={(data) => this.setState({
                                                         selectedFr: data
@@ -335,7 +334,6 @@ class BlindFranListDialog extends Component {
                                                 </div>
                                                 {this.state.searchRiderOpen &&
                                                 <SearchRiderDialog
-
                                                     close={this.closeSearchRiderModal}
                                                     callback={(data) => this.setState({
                                                         selectedRider: data
