@@ -351,7 +351,6 @@ class ReceptionStatus extends Component {
 
   // 주문수정 dialog
   openModifyOrderModal = (order) => {
-    console.log(order);
     this.setState({ data: order, modifyOrder: true });
   };
   closeModifyOrderModal = () => {
@@ -482,7 +481,6 @@ class ReceptionStatus extends Component {
         render: (data, row) => (
           <Button
             onClick={() => {
-              console.log(row);
               this.openModifyOrderModal(row);
             }}
           >
