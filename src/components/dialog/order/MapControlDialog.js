@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import '../../../css/modal.css';
-import { Form, Input, Table, Button, Modal, Select } from 'antd';
+import { Form, Input, Table, Button, Modal, Select, Space } from 'antd';
 import { formatDate } from "../../../lib/util/dateUtil";
 import "../../../css/order.css";
 import { comma } from "../../../lib/util/numberUtil";
@@ -15,12 +15,16 @@ import {
   modifyType,
   deliveryStatusCode,
   rowColorName,
-  arriveReqTime
+  arriveReqTime,
+  orderCnt
 } from '../../../lib/util/codeUtil';
 import{
   customError,
   deleteError
 } from '../../../api/Modals'
+
+import { SearchOutlined } from '@ant-design/icons';
+import SelectBox from "../../../components/input/SelectBox";
 
 
 const Option = Select.Option;
@@ -91,6 +95,11 @@ class MapControlDialog extends Component {
             isAssignRider: false,
 
             waitingList: [],
+
+            searchText: '',
+            searchedColumn: '',
+
+            selOrderCnt: 0,
         }
     }
 
@@ -363,6 +372,69 @@ class MapControlDialog extends Component {
       isAssignRider: true,
     })
   }
+
+  handleSearch = (selectedKeys, confirm, dataIndex) => {
+    confirm();
+    this.setState({
+      searchText: selectedKeys[0],
+      searchedColumn: dataIndex,
+    });
+  };
+
+  getColumnSearchProps = dataIndex => ({
+    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
+      <div style={{ padding: 8 }}>
+        <Input
+          ref={node => {
+            this.searchInput = node;
+          }}
+          placeholder={`Search ${dataIndex}`}
+          value={selectedKeys[0]}
+          onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+          onPressEnter={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
+          style={{ marginBottom: 8, display: 'block' }}
+        />
+        <Space>
+          <Button
+            type="primary"
+            onClick={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
+            icon={<SearchOutlined />}
+            size="small"
+            style={{ width: 90 }}
+          >
+            Search
+          </Button>
+          <Button onClick={() => this.handleReset(clearFilters)} size="small" style={{ width: 90 }}>
+            Reset
+          </Button>
+          <Button
+            type="link"
+            size="small"
+            onClick={() => {
+              confirm({ closeDropdown: false });
+              this.setState({
+                searchText: selectedKeys[0],
+                searchedColumn: dataIndex,
+              });
+            }}
+          >
+            Filter
+          </Button>
+        </Space>
+      </div>
+    ),
+    filterIcon: filtered => <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />,
+    onFilter: (value, record) =>
+      record[dataIndex]
+        ? record[dataIndex].toString().toLowerCase().includes(value.toLowerCase())
+        : '',
+    onFilterDropdownVisibleChange: visible => {
+      if (visible) {
+        setTimeout(() => this.searchInput.select(), 100);
+      }
+    },
+    
+  });
       
     render() {
         const { close } = this.props;
@@ -543,6 +615,7 @@ class MapControlDialog extends Component {
           {
             title: "도착지",
             className: "table-column-center arrive",
+            ...this.getColumnSearchProps('destAddr1'),
             render: (data, row) => <div className="arriveArea">{row.destAddr1 === "" ? "-" : row.destAddr1 + " " + row.destAddr2}</div>,
           },
         ];
@@ -610,28 +683,55 @@ class MapControlDialog extends Component {
                                     
                                     {
                                       this.state.riderLocates.map(row => {
-                                        // console.log(row.latitude, row.longitude)
-                                        if(this.state.selRider.latitude !== row.latitude && this.state.selRider.longitude !== row.longitude){
-                                          if(row.riderLevel >= 3){
-                                            return (
-                                              <Marker
-                                                position={navermaps.LatLng(row.latitude, row.longitude)}
-                                                icon={require('../../../img/login/map/marker_rider_blue.png').default}
-                                                title={row.riderName}
-                                                onClick={()=>this.getRiderLocate(row.userIdx)}
-                                              />
-                                            );
-                                          } else{
-                                            return (
-                                              <Marker
-                                                position={navermaps.LatLng(row.latitude, row.longitude)}
-                                                icon={require('../../../img/login/map/marker_rider.png').default}
-                                                title={row.riderName}
-                                                onClick={()=>this.getRiderLocate(row.userIdx)}
-                                              />
-                                            );
+                                        // console.log(row.orders.length)
+                                        if(this.state.selOrderCnt === 5 && row.orders.length >= 5){
+                                          if(this.state.selRider.latitude !== row.latitude && this.state.selRider.longitude !== row.longitude){
+                                            if(row.riderLevel >= 3){
+                                              return (
+                                                <Marker
+                                                  position={navermaps.LatLng(row.latitude, row.longitude)}
+                                                  icon={require('../../../img/login/map/marker_rider_blue.png').default}
+                                                  title={row.riderName}
+                                                  onClick={()=>this.getRiderLocate(row.userIdx)}
+                                                />
+                                              );
+                                            } else{
+                                              return (
+                                                <Marker
+                                                  position={navermaps.LatLng(row.latitude, row.longitude)}
+                                                  icon={require('../../../img/login/map/marker_rider.png').default}
+                                                  title={row.riderName}
+                                                  onClick={()=>this.getRiderLocate(row.userIdx)}
+                                                />
+                                              );
+                                            }
+                                          }
+                                        } else{
+                                          if(row.orders.length === this.state.selOrderCnt){
+                                            if(this.state.selRider.latitude !== row.latitude && this.state.selRider.longitude !== row.longitude){
+                                              if(row.riderLevel >= 3){
+                                                return (
+                                                  <Marker
+                                                    position={navermaps.LatLng(row.latitude, row.longitude)}
+                                                    icon={require('../../../img/login/map/marker_rider_blue.png').default}
+                                                    title={row.riderName}
+                                                    onClick={()=>this.getRiderLocate(row.userIdx)}
+                                                  />
+                                                );
+                                              } else{
+                                                return (
+                                                  <Marker
+                                                    position={navermaps.LatLng(row.latitude, row.longitude)}
+                                                    icon={require('../../../img/login/map/marker_rider.png').default}
+                                                    title={row.riderName}
+                                                    onClick={()=>this.getRiderLocate(row.userIdx)}
+                                                  />
+                                                );
+                                              }
+                                            }
                                           }
                                         }
+                                        
                                       })
                                     }
 
@@ -651,9 +751,6 @@ class MapControlDialog extends Component {
 
                               {this.props.callData &&
                                 <>
-                                <Button className="assign-rider-btn" onClick={this.assignRider}>
-                                    배차
-                                </Button>
                                 <Table
                                     rowKey={(record) => record.idx}
                                     dataSource={this.state.waitingList}
@@ -702,6 +799,20 @@ class MapControlDialog extends Component {
                                   </div>
                               )}
                           </div>
+
+                          <SelectBox
+                            value={orderCnt[this.state.selOrderCnt]}
+                            code={Object.keys(orderCnt)}
+                            codeString={orderCnt}
+                            onChange={(value) => {
+                              if (parseInt(value) !== this.state.selOrderCnt) {
+                                this.setState(
+                                  { selOrderCnt: parseInt(value) },
+                                  () => this.getRiderList()
+                                );
+                              }
+                            }}
+                          />
 
 
                       </div>

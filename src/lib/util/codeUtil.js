@@ -69,6 +69,15 @@ const feeManner = {
   2: "정률",
 };
 
+const orderCnt = {
+  0: "전체",
+  1: "1개",
+  2: "2개",
+  3: "3개",
+  4: "4개",
+  5: "5개 이상",
+}
+
 const blockString = {
   0: "차단중",
   1: "차단해제",
@@ -165,4 +174,5 @@ export {
   arriveReqTime,
   packAmount,
   addType,
+  orderCnt,
 };
