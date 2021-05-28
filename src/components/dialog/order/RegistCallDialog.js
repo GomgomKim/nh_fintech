@@ -94,6 +94,8 @@ class RegistCallDialog extends Component {
 
       mapLat: null,
       mapLng: null,
+
+      taskWorkOpen:false,
     };
     this.formRef = React.createRef();
   }
@@ -136,10 +138,10 @@ class RegistCallDialog extends Component {
   };
   // 가맹점조회 dialog
   openSearchFranchiseModal = () => {
-    this.setState({ searchFranchiseOpen: true });
+    this.setState({ taskWorkOpen: true });
   };
   closeSearchFranchiseModal = () => {
-    this.setState({ searchFranchiseOpen: false });
+    this.setState({ taskWorkOpen: false });
   };
   // 주소검색 dialog
   openPostCode = () => {
