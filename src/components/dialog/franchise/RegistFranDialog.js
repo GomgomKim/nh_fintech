@@ -200,7 +200,7 @@ class RegistFranDialog extends Component {
     return (
 
           <React.Fragment>
-            <div className="Dialog-overlay" onClick={close} />
+            <div className="Dialog-overlay" onClick={() => close()} />
             <div className="registFran-Dialog">
               <div className="registFran-container">
                 <div className="registFran-title">
@@ -208,7 +208,7 @@ class RegistFranDialog extends Component {
                 </div>
 
                 <img
-                  onClick={close}
+                  onClick={() => close()}
                   src={require("../../../img/login/close.png").default}
                   className="surcharge-close"
                   alt="exit"
