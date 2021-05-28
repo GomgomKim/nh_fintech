@@ -4,6 +4,7 @@ import { Form, Input, Table, Button, Modal, Select } from 'antd';
 import { formatDate } from "../../../lib/util/dateUtil";
 import "../../../css/order.css";
 import { comma } from "../../../lib/util/numberUtil";
+import RegistCallDialog from "../../../components/dialog/order/RegistCallDialog";
 // import MapContainer from "./MapContainer";
 import { httpGet, httpUrl, httpPost} from '../../../api/httpClient';
 import { NaverMap, Marker, Polyline } from 'react-naver-maps';
@@ -16,7 +17,8 @@ import {
   arriveReqTime
 } from '../../../lib/util/codeUtil';
 import{
-  customError
+  customError,
+  deleteError
 } from '../../../api/Modals'
 
 
@@ -40,7 +42,12 @@ class MapControlDialog extends Component {
               current: 1,
               pageSize: 10,
             },
-            paginationRiderList: {
+            paginationList: {
+                total: 0,
+                current: 1,
+                pageSize: 10,
+            },
+            paginationCallList: {
                 total: 0,
                 current: 1,
                 pageSize: 10,
@@ -72,7 +79,10 @@ class MapControlDialog extends Component {
             selRider: {},
 
             // 선택된 라이더 이동경로
-            selRiderPath: []
+            selRiderPath: [],
+
+
+            modifyOrder: false,
         }
     }
 
@@ -191,18 +201,18 @@ class MapControlDialog extends Component {
     };
 
     getRiderList = () => {
-      let pageNum = this.state.paginationRiderList.current;
+      let pageNum = this.state.paginationList.current;
       let userStatus = 1;
       let searchName = this.state.searchName;
   
       httpGet(httpUrl.riderList, [10, pageNum, searchName, userStatus], {}).then((result) => {
         // console.log('## nnbox result=' + JSON.stringify(result, null, 4))
-        const pagination = { ...this.state.paginationRiderList };
+        const pagination = { ...this.state.paginationList };
         pagination.current = result.data.currentPage;
         pagination.total = result.data.totalCount;
         this.setState({
           results: result.data.riders,
-          paginationRiderList: pagination,
+          paginationList: pagination,
         });
       })
     };
@@ -217,16 +227,72 @@ class MapControlDialog extends Component {
         }, () => this.getList());
     };
 
-    handleRiderListTableChange = (pagination) => {
+    handleListTableChange = (pagination) => {
       console.log(pagination)
-      const pager = { ...this.state.paginationRiderList };
+      const pager = { ...this.state.paginationList };
       pager.current = pagination.current;
       pager.pageSize = pagination.pageSize
       this.setState({
-        paginationRiderList: pager,
+        paginationList: pager,
       }, () => this.getRiderList());
   };
 
+
+  // 주문수정 dialog
+  openModifyOrderModal = (order) => {
+    console.log(order);
+    this.setState({ data: order, modifyOrder: true });
+  };
+  closeModifyOrderModal = () => {
+    this.setState({ modifyOrder: false });
+  };
+
+  // 주문 삭제 API
+  deleteAssign = (orderIdx) => {
+    let self = this;
+        Modal.confirm({
+            title: "배차 삭제",
+            content: <div> 배차목록을 삭제하시겠습니까?</div>,
+            okText: "확인",
+            cancelText: "취소",
+            onOk() {
+                httpPost(httpUrl.assignRiderCancel, [], {orderIdx: orderIdx})
+                    .then((res) => {
+                        if(res.result === "SUCCESS"){
+                          switch (res.data) {
+                            case "SUCCESS":
+                              self.getList();
+                              break;
+                            case "ALREADY_CANCELED":
+                              customError("배차 오류", "이미 취소된 배차입니다.");
+                              break;
+                            case "ORDER_NOT_EXISTS":
+                              customError("배차 오류", "존재하지 않은 주문입니다.");
+                              break;
+                            case "PICKUPED_ORDER":
+                              customError("배차 오류", "이미 픽업된 배차입니다.");
+                              break;
+                            case "COMPLETED_ORDER":
+                              customError("배차 오류", "이미 주문 완료된 배차입니다.");
+                              break;
+                            case "NOT_ADMIN":
+                              customError("배차 오류", "관리자만 강제배차를 해제할 수 있습니다.");
+                              break;
+                            default:
+                              customError(
+                                "배차 오류",
+                                "배차에 실패했습니다. 관리자에게 문의하세요."
+                              );
+                              break;
+                          }
+                        } else deleteError()
+                    })
+                    .catch((error) => {
+                      deleteError()
+                    });
+            },
+        });
+  }
       
     render() {
         const { close } = this.props;
@@ -245,7 +311,6 @@ class MapControlDialog extends Component {
                     var flag = true;
     
                     // 제약조건 미성립
-                    // console.log([row.pickupStatus, value]+" / "+modifyType[row.pickupStatus])
                     if (!modifyType[row.orderStatus].includes(value)) {
                       Modal.info({
                         content: <div>상태를 바꿀 수 없습니다.</div>,
@@ -262,8 +327,6 @@ class MapControlDialog extends Component {
     
                     // 제약조건 성립 시 상태 변경
                     if (flag) {
-                      // const list = this.state.list;
-                      // list.find((x) => x.idx === row.idx).orderStatus = value;
                       row.orderStatus = value;
                       httpPost(httpUrl.orderUpdate, [], row)
                         .then((res) => {
@@ -271,9 +334,6 @@ class MapControlDialog extends Component {
                         })
                         .catch((e) => {});
                       this.getList();
-                      // this.setState({
-                      //   list: list,
-                      // });
                     }
                   }}
                 >
@@ -331,6 +391,36 @@ class MapControlDialog extends Component {
             dataIndex: "distance",
             className: "table-column-center",
           },
+          {
+            title: "주문수정",
+            dataIndex: "updateOrder",
+            className: "table-column-center",
+            render: (data, row) => (
+              <Button
+                onClick={() => {
+                  console.log(row);
+                  this.openModifyOrderModal(row);
+                }}
+              >
+                수정
+              </Button>
+            ),
+          },
+          {
+            title: "주문삭제",
+            dataIndex: "updateOrder",
+            className: "table-column-center",
+            render: (data, row) => (
+              <Button
+                onClick={() => {
+                  // console.log(row);
+                  this.deleteAssign(row.idx);
+                }}
+              >
+                삭제
+              </Button>
+            ),
+          },
         ];
 
         const columns_riderList = [
@@ -368,8 +458,34 @@ class MapControlDialog extends Component {
             },
         ];
 
+        const columns_callList = [
+          {
+            title: "상태",
+            dataIndex: "orderStatus",
+            className: "table-column-center",
+            width: 70,
+            render: (data, row) => (
+              <div className="table-column-sub">
+                {deliveryStatusCode[row.orderStatus]}
+              </div>
+            ),
+          },
+          {
+            title: "도착지",
+            className: "table-column-center arrive",
+            render: (data, row) => <div>{row.destAddr1 === "" ? "-" : row.destAddr1 + " " + row.destAddr2}</div>,
+          },
+        ];
+
         return (
               <React.Fragment>
+                <RegistCallDialog
+                  isOpen={this.state.modifyOrder}
+                  close={this.closeModifyOrderModal}
+                  editable={this.state.editable}
+                  data={this.state.data}
+                  getList={this.getList}
+                />
                   <div className="Dialog-overlay" onClick={close} />
                   <div className="map-Dialog">
 
@@ -451,76 +567,23 @@ class MapControlDialog extends Component {
                                       />
                                     }
                                     
-                                    {/* {this.state.selectedRider == 55 && (
-                                    <>
-                                    <Polyline 
-                                      path={[
-                                        navermaps.LatLng(testPos[0][0], testPos[0][1]),
-                                        navermaps.LatLng(testPos[3][0], testPos[3][1]),
-                                        navermaps.LatLng(testPos[4][0], testPos[4][1]),
-                                      ]}
-                                      strokeColor={'#ff0000'}
-                                      strokeWeight={5}        
-                                    />
-                                    <Polyline 
-                                      path={[
-                                        navermaps.LatLng(testPos[0][0], testPos[0][1]),
-                                        navermaps.LatLng(testPos[5][0], testPos[5][1]),
-                                        navermaps.LatLng(testPos[6][0], testPos[6][1]),
-                                      ]}
-                                      strokeColor={'#5347AA'}
-                                      strokeWeight={5}        
-                                    />
-                                    </>
-
-                                    )}
-                                    {this.state.selectedRider == 44 && (
-                                    <>
-                                    <Marker
-                                        position={navermaps.LatLng(testPos[7][0], testPos[7][1])}
-                                        icon={require('../../../img/login/map/marker_rider.png').default}
-                                    />
-                                    <Marker
-                                        position={navermaps.LatLng(testPos[8][0], testPos[8][1])}
-                                        icon={require('../../../img/login/map/marker_rider.png').default}
-                                    />
-                                    <Polyline 
-                                      path={[
-                                        navermaps.LatLng(testPos[1][0], testPos[1][1]),
-                                        navermaps.LatLng(testPos[7][0], testPos[7][1]),
-                                        navermaps.LatLng(testPos[8][0], testPos[8][1]),
-                                      ]}
-                                      strokeColor={'#ff0000'}
-                                      strokeWeight={5}        
-                                    />
-                                    </>
-
-                                    )}
-
-                                    <Marker
-                                        position={navermaps.LatLng(lat, lng)}
-                                        icon={require('../../../img/login/map/marker_rider.png').default}
-                                    />
-                                    <Marker
-                                        position={navermaps.LatLng(lat, lng)}
-                                        icon={require('../../../img/login/map/marker_rider.png').default}
-                                    />
-
-                                    <Marker
-                                        position={navermaps.LatLng(lat, lng)}
-                                        icon={require('../../../img/login/map/marker_rider.png').default}
-                                    />
-                                    <Marker
-                                        position={navermaps.LatLng(this.props.frLat, this.props.frLng)}
-                                        icon={require('../../../img/login/map/marker_target.png').default}
-                                    /> */}
                                     </NaverMap>
-                                    
                                   }
                                   
-                                  
-                                  
                               </div>
+
+                              {this.props.callData &&
+                                <Table
+                                    rowKey={(record) => record.idx}
+                                    dataSource={this.props.callData}
+                                    columns={columns_callList}
+                                    rowClassName={(record) => rowColorName[record.orderStatus]}
+                                    pagination={this.state.paginationCallList}
+                                    onChange={this.handleListTableChange}
+                                    className="callDataTable"
+                                />
+                              }
+
                               {this.state.riderListOpen && (
                                 <>
                                 <div className="rider-list-show-btn" onClick={()=>this.setState({riderListOpen: false})}>
@@ -544,8 +607,8 @@ class MapControlDialog extends Component {
                                           rowKey={(record) => record.idx}
                                           dataSource={this.state.results}
                                           columns={columns_riderList}
-                                          pagination={this.state.paginationRiderList}
-                                          onChange={this.handleRiderListTableChange}
+                                          pagination={this.state.paginationList}
+                                          onChange={this.handleListTableChange}
                                       />
                                   </div>
                                 </>
