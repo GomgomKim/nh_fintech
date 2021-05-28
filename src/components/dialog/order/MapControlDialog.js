@@ -684,7 +684,20 @@ class MapControlDialog extends Component {
                                     {
                                       this.state.riderLocates.map(row => {
                                         // console.log(row.orders.length)
-                                        if(this.state.selOrderCnt === 5 && row.orders.length >= 5){
+                                        var flag = false
+                                        if(this.state.selOrderCnt === 0) flag = true
+                                        else{
+                                          if(this.state.selOrderCnt === 5 && row.orders.length >= 5){
+                                            flag = true
+                                          } else{
+                                            if(row.orders.length === this.state.selOrderCnt){
+                                              flag = true
+                                            }
+                                          }
+                                        }
+                                        
+                                        
+                                        if(flag){
                                           if(this.state.selRider.latitude !== row.latitude && this.state.selRider.longitude !== row.longitude){
                                             if(row.riderLevel >= 3){
                                               return (
@@ -706,32 +719,7 @@ class MapControlDialog extends Component {
                                               );
                                             }
                                           }
-                                        } else{
-                                          if(row.orders.length === this.state.selOrderCnt){
-                                            if(this.state.selRider.latitude !== row.latitude && this.state.selRider.longitude !== row.longitude){
-                                              if(row.riderLevel >= 3){
-                                                return (
-                                                  <Marker
-                                                    position={navermaps.LatLng(row.latitude, row.longitude)}
-                                                    icon={require('../../../img/login/map/marker_rider_blue.png').default}
-                                                    title={row.riderName}
-                                                    onClick={()=>this.getRiderLocate(row.userIdx)}
-                                                  />
-                                                );
-                                              } else{
-                                                return (
-                                                  <Marker
-                                                    position={navermaps.LatLng(row.latitude, row.longitude)}
-                                                    icon={require('../../../img/login/map/marker_rider.png').default}
-                                                    title={row.riderName}
-                                                    onClick={()=>this.getRiderLocate(row.userIdx)}
-                                                  />
-                                                );
-                                              }
-                                            }
-                                          }
                                         }
-                                        
                                       })
                                     }
 
