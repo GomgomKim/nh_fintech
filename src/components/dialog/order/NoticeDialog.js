@@ -345,8 +345,7 @@ class NoticeDialog extends Component {
         render: !this.state.checkedDeletedCall && (
           (data, row) => (
           <div>
-            {this.state.updateNotice &&
-            <RegistNoticeDialog data={this.state.dialogData} close={this.closeNoticeUpdateModal} />}
+
             <Button
               className="tabBtn surchargeTab"
               onClick={() => {this.setState({ updateNotice: true, dialogData: row })}}
@@ -425,6 +424,8 @@ class NoticeDialog extends Component {
           </div>
         </div>
       </div>
+      {this.state.updateNotice &&
+      <RegistNoticeDialog data={this.state.dialogData} close={this.closeNoticeUpdateModal} />}
     </React.Fragment>
     );
   }
