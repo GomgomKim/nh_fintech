@@ -81,6 +81,8 @@ class MapControlDialog extends Component {
             // 선택된 라이더 이동경로
             selRiderPath: [],
 
+            orderList: [],
+            orderListSel: [],
 
             modifyOrder: false,
         }
@@ -228,14 +230,24 @@ class MapControlDialog extends Component {
     };
 
     handleListTableChange = (pagination) => {
-      console.log(pagination)
-      const pager = { ...this.state.paginationList };
-      pager.current = pagination.current;
-      pager.pageSize = pagination.pageSize
-      this.setState({
-        paginationList: pager,
-      }, () => this.getRiderList());
-  };
+        console.log(pagination)
+        const pager = { ...this.state.paginationList };
+        pager.current = pagination.current;
+        pager.pageSize = pagination.pageSize
+        this.setState({
+          paginationList: pager,
+        }, () => this.getRiderList());
+    };
+
+    handleCallListTableChange = (pagination) => {
+        console.log(pagination)
+        const pager = { ...this.state.paginationCallList };
+        pager.current = pagination.current;
+        pager.pageSize = pagination.pageSize
+        this.setState({
+          paginationCallList: pager,
+        }, () => this.getRiderList());
+    };
 
 
   // 주문수정 dialog
@@ -579,7 +591,7 @@ class MapControlDialog extends Component {
                                     columns={columns_callList}
                                     rowClassName={(record) => rowColorName[record.orderStatus]}
                                     pagination={this.state.paginationCallList}
-                                    onChange={this.handleListTableChange}
+                                    onChange={this.handleCallListTableChange}
                                     className="callDataTable"
                                 />
                               }
