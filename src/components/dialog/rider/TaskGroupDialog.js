@@ -3,7 +3,7 @@ import {
     Form, Table, Button, Tag
 } from "antd";
 import '../../../css/modal.css';
-import AddRiderDialog from "./AddRiderDialog";
+import SearchRiderDialog from "../common/SearchRiderDialog";
 import RegistRiderGroupDialog from "./RegistRiderGroupDialog";
 
 class TaskGroupDialog extends Component {
@@ -17,8 +17,10 @@ class TaskGroupDialog extends Component {
                 current: 1,
                 pageSize: 5,
             },
-            addRiderOpen: false,
+            searchRiderOpen: false,
             registRiderGroupOpen: false,
+            
+            selectedRider: null,
         };
         this.formRef = React.createRef();
     }
@@ -103,20 +105,20 @@ class TaskGroupDialog extends Component {
     }
 
     // 기사추가 dialog
-    openAddRiderModal = () => {
-        this.setState({ addRiderOpen: true });
-    }
-    closeAddRiderModal = () => {
-        this.setState({ addRiderOpen: false });
-    }
+    openSearchRiderModal = () => {
+        this.setState({ searchRiderOpen: true });
+    };
+    closeSearchRiderModal = () => {
+        this.setState({ searchRiderOpen: false });
+    };
 
     // 기사 그룹 등록 dialog
     openRegistRiderGroupModal = () => {
         this.setState({ registRiderGroupOpen: true });
-    }
+    };
     closeRegistRiderGroupModal = () => {
         this.setState({ registRiderGroupOpen: false });
-    }
+    };
 
 
     render() {
@@ -132,10 +134,16 @@ class TaskGroupDialog extends Component {
                 className: "table-column-center",
                 render: () =>
                     <div>
-                        <AddRiderDialog isOpen={this.state.addRiderOpen} close={this.closeAddRiderModal} />
+                        <SearchRiderDialog 
+                        isOpen={this.state.searchRiderOpen} 
+                        close={this.closeSearchRiderModal} 
+                        callback={(data) => this.setState({
+                            selectedRider: data
+                        }, () => {this.getList()} 
+                        )}/>
                         <Button
                             className="tabBtn"
-                            onClick={() => { this.openAddRiderModal() }}
+                            onClick={() => { this.openSearchRiderModal() }}   
                         >추가</Button>
                     </div>
             },
@@ -171,7 +179,7 @@ class TaskGroupDialog extends Component {
         }
 
 
-        const { isOpen, close } = this.props;
+        const { isOpen, close, multi } = this.props;
 
         return (
             <React.Fragment>

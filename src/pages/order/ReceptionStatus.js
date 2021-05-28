@@ -298,6 +298,7 @@ class ReceptionStatus extends Component {
   };
   closeAddCallModal = () => {
     this.setState({ addCallOpen: false });
+    this.getList();
   };
 
   // 지도관제
@@ -355,6 +356,7 @@ class ReceptionStatus extends Component {
   };
   closeModifyOrderModal = () => {
     this.setState({ modifyOrder: false });
+    this.getList();
   };
 
   // 주문수정 dialog
@@ -363,6 +365,7 @@ class ReceptionStatus extends Component {
   };
   closePaymentModal = () => {
     this.setState({ paymentOpen: false });
+    this.getList();
   };
 
   getStatusVal = (idx) => {
@@ -701,11 +704,9 @@ class ReceptionStatus extends Component {
             상담메세지
           </Button>
 
-          {this.state.noticeOpen &&
-            <NoticeDialog
-              close={this.closeNoticeModal}
-            />
-          }
+          {this.state.noticeOpen && (
+            <NoticeDialog close={this.closeNoticeModal} />
+          )}
           <Button
             icon={<NotificationFilled />}
             className="tabBtn noticeTab"
@@ -809,7 +810,7 @@ class ReceptionStatus extends Component {
 
 const mapStateToProps = (state) => ({
   branchIdx: state.login.loginInfo.userGroup,
-  info: state
+  info: state,
 });
 
 const mapDispatchToProps = (dispatch) => {

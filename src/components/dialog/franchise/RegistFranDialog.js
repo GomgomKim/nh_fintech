@@ -42,6 +42,7 @@ class RegistFranDialog extends Component {
 
   handleSubmit = () => {
     if (this.props.data) {
+        
       httpPost(httpUrl.franchiseUpdate, [], {
         ...this.formRef.current.getFieldsValue(),
         idx: this.props.data.idx,
