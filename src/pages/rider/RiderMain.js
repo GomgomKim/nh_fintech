@@ -316,7 +316,8 @@ class RiderMain extends Component {
         className: "table-column-center",
         render: (data, row) =>
           <div>
-            <RegistRiderDialog isOpen={this.state.riderUpdateOpen} close={this.closeUpdateRiderModal} data={this.state.dialogData} />
+            {this.state.ResistFranchiseOpen &&
+            <RegistRiderDialog close={this.closeUpdateRiderModal} data={this.state.dialogData} />}
             <Button
               className="tabBtn surchargeTab"
               onClick={() => this.setState({ riderUpdateOpen: true, dialogData: row })}
@@ -415,30 +416,32 @@ class RiderMain extends Component {
 
             }} />
 
+          {this.state.searchRiderOpen &&
           <SearchRiderDialog
             callback={(data) => this.onSearchRiderDetail(data)}
-            isOpen={this.state.searchRiderOpen}
             close={this.closeSearchRiderModal}
             multi={true}
-            />
-
+            />}
           <Button className="tabBtn" onClick={this.openSearchRiderModal}>기사조회</Button>
-          <RegistRiderDialog isOpen={this.state.registRiderOpen} close={this.closeRegistRiderModal} />
+          {this.state.registRiderOpen &&
+          <RegistRiderDialog close={this.closeRegistRiderModal} />}
           <Button className="riderManageBtn"
             onClick={this.openRegistRiderModal}
           >기사 등록</Button>
 
-          <RiderGroupDialog isOpen={this.state.riderGroupOpen} close={this.closeRiderGroupModal} />
+          {this.state.riderGroupOpen &&
+          <RiderGroupDialog close={this.closeRiderGroupModal} />}
           <Button className="riderManageBtn"
             onClick={this.openRiderGroupModal}
           >기사 그룹 관리</Button>
-
-          <TaskSchedulerDialog isOpen={this.state.taskSchedulerOpen} close={this.closeTaskSchedulerModal} />
+          {this.state.taskSchedulerOpen &&
+          <TaskSchedulerDialog close={this.closeTaskSchedulerModal} />}
           <Button className="riderManageBtn"
             onClick={this.openTaskSchedulerModal}
           >일차감</Button>
 
-          <SendSnsDialog isOpen={this.state.sendSnsOpen} close={this.closeSendSnsModal} callback={this.onSearchRiderDetail} />
+          {this.state.sendSnsOpen && 
+          <SendSnsDialog close={this.closeSendSnsModal} callback={this.onSearchRiderDetail} />}
           <Button className="riderManageBtn"
             onClick={this.openSendSnsModal}
           >SNS 전송</Button>

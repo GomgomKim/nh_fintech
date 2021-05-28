@@ -171,104 +171,99 @@ class SearchFranchiseDialog extends Component {
       onChange: this.onSelectChange,
     };
 
-    const { isOpen, close, multi } = this.props;
+    const { close, multi } = this.props;
 
     return (
-      <React.Fragment>
-        {isOpen ? (
-          <React.Fragment>
-            <div className="Dialog-overlay" onClick={close} />
-            <div className="searchFranchise-Dialog">
-              <div className="searchFranchise-content">
-                <div className="searchFranchise-title">가맹점조회</div>
-                <img
-                  onClick={close}
-                  src={require("../../../img/login/close.png").default}
-                  className="surcharge-close"
-                  alt="close"
-                />
-
-                <Form ref={this.formRef} onFinish={this.onSubmit}>
-                  <div className="layout">
-                    <div className="searchFranchiseWrapper">
-                      <div className="searchFranchise-list">
-                        <div className="inputBox inputBox-searchFranchise sub">
-                          <SelectBox
-                            value={tableStatusString[this.state.franStatus]}
-                            code={Object.keys(tableStatusString)}
-                            codeString={tableStatusString}
-                            onChange={(value) => {
-                              if (parseInt(value) !== this.state.franStatus) {
-                                this.setState(
-                                  { franStatus: parseInt(value) },
-                                  () => this.getList()
-                                );
-                              }
-                            }}
-                          />
-
-                          <Search
-                            placeholder="가맹점검색"
-                            className="searchFranchiseInput"
-                            enterButton
-                            allowClear
-                            onSearch={this.onSearchFranchisee}
-                          />
-
-                          {/* 멀티 기능 */}
-                          {multi &&
-                            <Radio.Group
-                            onChange={this.onChangeMulti}
-                            value={this.state.isMulti}
-                            className="selMulti"
-                            >
-                              <Radio value={false}>single</Radio>
-                              <Radio value={true}>multi</Radio>
-                            </Radio.Group>
-                          }
-                          
-                        </div>
-                        
-                        {/* 멀티 기능 */}
-                        {multi &&
-                          <Button
-                            type="primary"
-                            htmlType="submit"
-                            className="submitBtn"
-                          >
-                            조회
-                          </Button>
+    <React.Fragment>
+      <div className="Dialog-overlay" onClick={close} />
+      <div className="searchFranchise-Dialog">
+        <div className="searchFranchise-content">
+          <div className="searchFranchise-title">가맹점조회</div>
+          <img
+          onClick={close}
+          src={require("../../../img/login/close.png").default}
+          className="surcharge-close"
+          alt="close"
+          />
+          <Form ref={this.formRef} onFinish={this.onSubmit}>
+            <div className="layout">
+              <div className="searchFranchiseWrapper">
+                <div className="searchFranchise-list">
+                  <div className="inputBox inputBox-searchFranchise sub">
+                    <SelectBox
+                    value={tableStatusString[this.state.franStatus]}
+                    code={Object.keys(tableStatusString)}
+                    codeString={tableStatusString}
+                    onChange={(value) => {
+                      if (parseInt(value) !== this.state.franStatus) {
+                        this.setState(
+                          { franStatus: parseInt(value) },
+                          () => this.getList()
+                          );
                         }
-                      </div>
-                    </div>
-
-                    <div className="dataTableLayout-01">
-                      {this.state.isMulti ? (
-                        <Table
-                          rowKey={(record) => record.idx}
-                          rowSelection={rowSelection}
-                          dataSource={this.state.list}
-                          columns={columns}
-                          pagination={this.state.pagination}
-                          onChange={this.handleTableChange}
-                        />
-                      ) : (
-                        <Table
-                          rowKey={(record) => record.idx}
-                          dataSource={this.state.list}
-                          columns={columns}
-                          pagination={this.state.pagination}
-                          onChange={this.handleTableChange}
-                        />
-                      )}
-                    </div>
+                      }}
+                    />
+                    
+                    <Search
+                    placeholder="가맹점검색"
+                    className="searchFranchiseInput"
+                    enterButton
+                    allowClear
+                    onSearch={this.onSearchFranchisee}
+                    />
+                    
+                    {/* 멀티 기능 */}
+                    {multi &&
+                    <Radio.Group
+                    onChange={this.onChangeMulti}
+                    value={this.state.isMulti}
+                    className="selMulti"
+                    >
+                      <Radio value={false}>single</Radio>
+                      <Radio value={true}>multi</Radio>
+                    </Radio.Group>
+                    }
+                          
                   </div>
-                </Form>
+                  
+                  {/* 멀티 기능 */}
+                  {multi &&
+                  <Button
+                  type="primary"
+                  htmlType="submit"
+                  className="submitBtn"
+                  >
+                    조회
+                  </Button>
+                  }
+                </div>
+              </div>
+              
+              <div className="dataTableLayout-01">
+                {this.state.isMulti ? (
+                <Table
+                rowKey={(record) => record.idx}
+                rowSelection={rowSelection}
+                dataSource={this.state.list}
+                columns={columns}
+                pagination={this.state.pagination}
+                onChange={this.handleTableChange}
+                />
+                ) : (
+                <Table
+                rowKey={(record) => record.idx}
+                dataSource={this.state.list}
+                columns={columns}
+                pagination={this.state.pagination}
+                onChange={this.handleTableChange}
+                />
+                )}
               </div>
             </div>
-          </React.Fragment>
-        ) : null}
-      </React.Fragment>
+          </Form>
+        </div>
+      </div>
+    </React.Fragment>
     );
   }
 }

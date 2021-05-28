@@ -308,13 +308,14 @@ class BlindFranListDialog extends Component {
                                                 <div className="subTitle">
                                                     가맹점명
                                                 </div>
+                                                {this.state.searchFranchiseOpen &&
                                                 <SearchFranchiseDialog
-                                                    isOpen={this.state.searchFranchiseOpen}
+
                                                     close={this.closeSearchFranchiseModal}
                                                     callback={(data) => this.setState({
                                                         selectedFr: data
                                                     })}
-                                                />
+                                                />}
                                                 <FormItem
                                                     name="frName"
                                                     className="selectItem"
@@ -330,13 +331,14 @@ class BlindFranListDialog extends Component {
                                                 <div className="subTitle">
                                                     기사명
                                                 </div>
+                                                {this.state.searchRiderOpen &&
                                                 <SearchRiderDialog
-                                                    isOpen={this.state.searchRiderOpen}
+
                                                     close={this.closeSearchRiderModal}
                                                     callback={(data) => this.setState({
                                                         selectedRider: data
                                                     })}
-                                                />
+                                                />}
                                                 <FormItem
                                                     name="riderName"
                                                     className="selectItem"

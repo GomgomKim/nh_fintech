@@ -168,12 +168,10 @@ class RegistFranDialog extends Component {
     
     render() {
 
-        const { isOpen, close, data } = this.props;
+        const { close, data } = this.props;
 
         return (
-            <React.Fragment>
-                {
-                    isOpen ?
+
                         <React.Fragment>
                             <div className="Dialog-overlay" onClick={close} />
                             <div className="registFran-Dialog">
@@ -588,10 +586,7 @@ class RegistFranDialog extends Component {
                                 </div>
                             </div>
                         </React.Fragment>
-                        :
-                        null
-                }
-            </React.Fragment>
+
         )
     }
 }

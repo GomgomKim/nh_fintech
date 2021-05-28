@@ -266,7 +266,7 @@ class RegistCallDialog extends Component {
   };
 
   render() {
-    const { isOpen, close } = this.props;
+    const { close } = this.props;
     const data = this.props.data ? this.props.data : newOrder;
     const navermaps = window.naver.maps;
     let deliveryPrice = this.state.data
@@ -277,343 +277,340 @@ class RegistCallDialog extends Component {
 
     return (
       <React.Fragment>
-        {isOpen ? (
-          <React.Fragment>
-            <div className="Dialog-overlay" onClick={close} />
-            <div className="registCall-Dialog">
-              <div className="registCall-container">
-                <div className="registCall-title">
-                  {this.props.data ? "주문수정" : "주문등록"}
-                </div>
-                <img
-                  onClick={close}
-                  src={require("../../../img/login/close.png").default}
-                  className="surcharge-close"
-                  alt="닫기"
-                />
+        <div className="Dialog-overlay" onClick={close} />
+        <div className="registCall-Dialog">
+          <div className="registCall-container">
+            <div className="registCall-title">
+              {this.props.data ? "주문수정" : "주문등록"}
+            </div>
+            <img
+              onClick={close}
+              src={require("../../../img/login/close.png").default}
+              className="surcharge-close"
+              alt="닫기"
+            />
 
-                <Form ref={this.formRef} onFinish={this.handleSubmit}>
-                  <div className="registCallLayout">
-                    <div className="registCallWrapper">
-                      <div className="contentBlock">
-                        <div className="mainTitle">가맹점명</div>
-                        <FormItem name="addrMain" className="selectItem">
-                          <SearchFranchiseDialog
-                            onSelect={(fr) => {
-                              this.setState({ selectedFr: fr }, () => {
-                                const fr = this.state.selectedFr;
-                                this.setState({
-                                  data: {
-                                    ...this.state.data,
-                                    // idx
-                                    frIdx: fr.idx,
-                                    frLatitude: fr.latitude,
-                                    frLongitude: fr.longitude,
-                                    frName: fr.frName,
-                                    frPhone: fr.frPhone,
-                                  },
-                                });
-                              });
-                            }}
-                            isOpen={this.state.searchFranchiseOpen}
-                            close={this.closeSearchFranchiseModal}
-                          />
+            <Form ref={this.formRef} onFinish={this.handleSubmit}>
+              <div className="registCallLayout">
+                <div className="registCallWrapper">
+                  <div className="contentBlock">
+                    <div className="mainTitle">가맹점명</div>
+                    <FormItem name="addrMain" className="selectItem">
+                    {this.state.searchFranchiseOpen &&
+                      <SearchFranchiseDialog
+                        onSelect={(fr) => {
+                          this.setState({ selectedFr: fr }, () => {
+                            const fr = this.state.selectedFr;
+                            this.setState({
+                              data: {
+                                ...this.state.data,
+                                // idx
+                                frIdx: fr.idx,
+                                frLatitude: fr.latitude,
+                                frLongitude: fr.longitude,
+                                frName: fr.frName,
+                                frPhone: fr.frPhone,
+                              },
+                            });
+                          });
+                        }}
+                        close={this.closeSearchFranchiseModal}
+                      />
+                    }
 
-                          <div className="orderPayment-wrapper">
-                            <Input
-                              value={
-                                this.state.selectedFr
-                                  ? this.state.selectedFr.frName
-                                  : this.props.data
-                                  ? this.props.data.frName
-                                  : ""
-                              }
-                              style={{ marginLeft: "20px" }}
-                              required
-                            />
-                            <Button onClick={this.openSearchFranchiseModal}>
-                              가맹점조회
-                            </Button>
-                          </div>
-                        </FormItem>
-                      </div>
-                      <div className="contentBlock">
-                        <div className="mainTitle">도착지</div>
-                        <FormItem name="addrMain" className="selectItem">
-                          <PostCodeDialog
-                            onSelect={(value) =>
-                              this.setState({ selectedDest: value }, () => {
-                                this.setState({
-                                  data: {
-                                    ...this.state.data,
-                                    destAddr1: this.state.selectedDest.address,
-                                  },
-                                });
-                                this.getDeliveryPrice();
-                              })
-                            }
-                            isOpen={this.state.isPostCodeOpen}
-                            close={this.closePostCode}
-                          />
-                          <div className="orderPayment-wrapper">
-                            <Input
-                              initialValue={
-                                this.state.selectedDest
-                                  ? this.state.selectedDest.address
-                                  : this.props.data
-                                  ? this.props.data.destAddr1
-                                  : ""
-                              }
-                              value={
-                                this.state.selectedDest
-                                  ? this.state.selectedDest.address
-                                  : this.props.data
-                                  ? this.props.data.destAddr1
-                                  : ""
-                              }
-                              style={{ marginLeft: "20px" }}
-                              required
-                            />
-                            <Button onClick={this.openPostCode}>
-                              우편번호 검색
-                            </Button>
-                          </div>
-                        </FormItem>
-                      </div>
-                      <div className="contentBlock">
-                        <div className="mainTitle">상세주소</div>
-                        <FormItem name="addrSub" className="selectItem">
-                          <Input
-                            placeholder="상세주소를 입력해 주세요."
-                            className="override-input"
-                            defaultValue={data.destAddr2}
-                            onChange={(e) =>
-                              this.handleChangeInput(
-                                e.target.value,
-                                "destAddr2"
-                              )
-                            }
-                          ></Input>
-                        </FormItem>
-                      </div>
-                      {/* <div className="contentBlock">
-                        <div className="mainTitle">배달요금</div>
-                        <FormItem name="deliveryPrice" className="selectItem">
-                          <Input
-                            placeholder="배달요금 입력"
-                            className="override-input"
-                            value={deliveryPrice}
-                            required
-                          ></Input>
-                          <div style={{ display: "none" }}>
-                            {deliveryPrice}
-                          </div>
-                        </FormItem>
-                      </div> */}
-                      <div className="contentBlock">
-                        <div className="mainTitle">배달요금</div>
-                        <FormItem name="deliveryPrice" className="selectItem">
-                          <Input
-                            placeholder="배달요금 입력"
-                            className="override-input"
-                            defaultValue={deliveryPrice}
-                            required
-                            disabled
-                          ></Input>
-                        </FormItem>
-                      </div>
-                      <div className="contentBlock">
-                        <div className="mainTitle">가격</div>
-                        <FormItem name="orderPrice" className="selectItem">
-                          <Input
-                            placeholder="가격 입력"
-                            className="override-input"
-                            defaultValue={data.orderPrice}
-                            onChange={(e) =>
-                              this.handleChangeInput(
-                                parseInt(e.target.value),
-                                "orderPrice"
-                              )
-                            }
-                            required
-                          ></Input>
-                        </FormItem>
-                      </div>
-                      <div className="contentBlock">
-                        <div className="mainTitle">결제방식</div>
-                        <PaymentDialog
-                          isOpen={this.state.paymentOpen}
-                          close={this.closePaymentModal}
-                          handlePaymentChange={this.handlePaymentChange}
-                          orderPayments={
-                            this.props.data ? this.props.data.orderPayments : []
-                          }
-                          editable={this.state.editable}
-                          orderPrice={
-                            this.state.data
-                              ? this.state.data.orderPrice
+                      <div className="orderPayment-wrapper">
+                        <Input
+                          value={
+                            this.state.selectedFr
+                              ? this.state.selectedFr.frName
                               : this.props.data
-                              ? this.props.data.orderPrice
+                              ? this.props.data.frName
                               : ""
                           }
+                          style={{ marginLeft: "20px" }}
+                          required
                         />
-                        <Button
-                          onClick={this.openPaymentModal}
-                          className="override-input"
-                        >
-                          결제방식 선택
+                        <Button onClick={this.openSearchFranchiseModal}>
+                          가맹점조회
                         </Button>
                       </div>
-                      <div className="contentBlock">
-                        <div className="mainTitle">음식준비완료</div>
-                        <FormItem name="itemPrepared" className="selectItem">
-                          <Checkbox
-                            defaultChecked={data.itemPrepared}
-                            onChange={(e) =>
-                              this.handleChangeInput(
-                                e.target.checked,
-                                "itemPrepared"
-                              )
-                            }
-                          />
-                        </FormItem>
-                      </div>
-                      <div className="contentBlock">
-                        <div className="mainTitle">요청시간</div>
-                        <FormItem name="arriveReqTime" className="selectItem">
-                          <Select
-                            defaultValue={
-                              this.state.data
-                                ? arriveReqTime[this.state.data.arriveReqTime]
-                                : this.props.data
-                                ? arriveReqTime[this.props.data.arriveReqTime]
-                                : arriveReqTime[5]
-                            }
-                            placeholder="시간단위"
-                            className="override-input"
-                            onChange={(value) =>
-                              this.handleChangeInput(
-                                parseInt(value),
-                                "arriveReqTime"
-                              )
-                            }
-                            required
-                          >
-                            {Object.keys(arriveReqTime).map((key) => (
-                              <Option value={key}>{arriveReqTime[key]}</Option>
-                            ))}
-                          </Select>
-                        </FormItem>
-                      </div>
-                      <div className="contentBlock">
-                        <div className="mainTitle">배달갯수</div>
-                        <FormItem name="packAmount" className="selectItem">
-                          <Select
-                            defaultValue={
-                              this.state.data
-                                ? packAmount[this.state.data.packAmount]
-                                : this.props.data
-                                ? packAmount[this.props.data.packAmount]
-                                : packAmount[1]
-                            }
-                            placeholder="배달갯수"
-                            className="override-input"
-                            onChange={(value) =>
-                              this.handleChangeInput(
-                                parseInt(value),
-                                "packAmount"
-                              )
-                            }
-                            required
-                          >
-                            {Object.keys(packAmount).map((key) => (
-                              <Option value={key}>{packAmount[key]}</Option>
-                            ))}
-                          </Select>
-                        </FormItem>
-                      </div>
-                      <div className="contentBlock">
-                        <div className="mainTitle">고객 전화번호</div>
-                        <FormItem name="custPhone" className="selectItem">
-                          <Input
-                            placeholder="고객 전화번호를 입력해 주세요."
-                            className="override-input"
-                            defaultValue={data.custPhone}
-                            onChange={(e) =>
-                              this.setState({
-                                data: {
-                                  ...this.state.data,
-                                  custPhone: e.target.value,
-                                },
-                              })
-                            }
-                            required
-                          ></Input>
-                        </FormItem>
-                      </div>
-                      <div className="contentBlock">
-                        <div className="mainTitle">메모</div>
-                        <FormItem name="callmemo" className="selectItem">
-                          <Input
-                            placeholder="메모를 입력해 주세요."
-                            className="override-input"
-                            defaultValue={data.custMessage}
-                            onChange={(e) =>
-                              this.handleChangeInput(
-                                e.target.value,
-                                "custMessage"
-                              )
-                            }
-                            required
-                          ></Input>
-                        </FormItem>
-                      </div>
-                      <div className="contentBlock">
-                        <Button
-                          type="primary"
-                          htmlType="submit"
-                          className="callTab"
-                        >
-                          등록하기
-                        </Button>
-                      </div>
-                    </div>
-
-                    <div className="mapLayout regist-call-map" id="myMap">
-                      {/* <MapContainer /> */}
-                      {/* 
-                                                {navermaps &&
-                                                    <NaverMap
-                                                        className='map-navermap'
-                                                        defaultZoom={14}
-                                                        center={{ lat: lat, lng: lng }}
-                                                    >
-                                                    <Marker
-                                                        position={navermaps.LatLng(lat, lng)}
-                                                        icon={require('../../../img/login/map/marker_rider.png').default}
-                                                    />
-                                                    <Marker
-                                                        position={navermaps.LatLng(lat, lng)}
-                                                        icon={require('../../../img/login/map/marker_target.png').default}
-                                                    />
-                                                    <Polyline 
-                                                    path={[
-                                                        navermaps.LatLng(lat, lng),
-                                                        navermaps.LatLng(lat, lng),
-                                                    ]}
-                                                    // clickable // 사용자 인터랙션을 받기 위해 clickable을 true로 설정합니다.
-                                                    strokeColor={'#5347AA'}
-                                                    strokeWeight={5}        
-                                                    />
-                                                    </NaverMap>
-                                                } */}
-                    </div>
+                    </FormItem>
                   </div>
-                </Form>
+                  <div className="contentBlock">
+                    <div className="mainTitle">도착지</div>
+                    <FormItem name="addrMain" className="selectItem">
+                      <PostCodeDialog
+                        onSelect={(value) =>
+                          this.setState({ selectedDest: value }, () => {
+                            this.setState({
+                              data: {
+                                ...this.state.data,
+                                destAddr1: this.state.selectedDest.address,
+                              },
+                            });
+                            this.getDeliveryPrice();
+                          })
+                        }
+                        isOpen={this.state.isPostCodeOpen}
+                        close={this.closePostCode}
+                      />
+                      <div className="orderPayment-wrapper">
+                        <Input
+                          initialValue={
+                            this.state.selectedDest
+                              ? this.state.selectedDest.address
+                              : this.props.data
+                              ? this.props.data.destAddr1
+                              : ""
+                          }
+                          value={
+                            this.state.selectedDest
+                              ? this.state.selectedDest.address
+                              : this.props.data
+                              ? this.props.data.destAddr1
+                              : ""
+                          }
+                          style={{ marginLeft: "20px" }}
+                          required
+                        />
+                        <Button onClick={this.openPostCode}>
+                          우편번호 검색
+                        </Button>
+                      </div>
+                    </FormItem>
+                  </div>
+                  <div className="contentBlock">
+                    <div className="mainTitle">상세주소</div>
+                    <FormItem name="addrSub" className="selectItem">
+                      <Input
+                        placeholder="상세주소를 입력해 주세요."
+                        className="override-input"
+                        defaultValue={data.destAddr2}
+                        onChange={(e) =>
+                          this.handleChangeInput(
+                            e.target.value,
+                            "destAddr2"
+                          )
+                        }
+                      ></Input>
+                    </FormItem>
+                  </div>
+                  {/* <div className="contentBlock">
+                    <div className="mainTitle">배달요금</div>
+                    <FormItem name="deliveryPrice" className="selectItem">
+                      <Input
+                        placeholder="배달요금 입력"
+                        className="override-input"
+                        value={deliveryPrice}
+                        required
+                      ></Input>
+                      <div style={{ display: "none" }}>
+                        {deliveryPrice}
+                      </div>
+                    </FormItem>
+                  </div> */}
+                  <div className="contentBlock">
+                    <div className="mainTitle">배달요금</div>
+                    <FormItem name="deliveryPrice" className="selectItem">
+                      <Input
+                        placeholder="배달요금 입력"
+                        className="override-input"
+                        defaultValue={deliveryPrice}
+                        required
+                        disabled
+                      ></Input>
+                    </FormItem>
+                  </div>
+                  <div className="contentBlock">
+                    <div className="mainTitle">가격</div>
+                    <FormItem name="orderPrice" className="selectItem">
+                      <Input
+                        placeholder="가격 입력"
+                        className="override-input"
+                        defaultValue={data.orderPrice}
+                        onChange={(e) =>
+                          this.handleChangeInput(
+                            parseInt(e.target.value),
+                            "orderPrice"
+                          )
+                        }
+                        required
+                      ></Input>
+                    </FormItem>
+                  </div>
+                  <div className="contentBlock">
+                    <div className="mainTitle">결제방식</div>
+                    <PaymentDialog
+                      isOpen={this.state.paymentOpen}
+                      close={this.closePaymentModal}
+                      handlePaymentChange={this.handlePaymentChange}
+                      orderPayments={
+                        this.props.data ? this.props.data.orderPayments : []
+                      }
+                      editable={this.state.editable}
+                      orderPrice={
+                        this.state.data
+                          ? this.state.data.orderPrice
+                          : this.props.data
+                          ? this.props.data.orderPrice
+                          : ""
+                      }
+                    />
+                    <Button
+                      onClick={this.openPaymentModal}
+                      className="override-input"
+                    >
+                      결제방식 선택
+                    </Button>
+                  </div>
+                  <div className="contentBlock">
+                    <div className="mainTitle">음식준비완료</div>
+                    <FormItem name="itemPrepared" className="selectItem">
+                      <Checkbox
+                        defaultChecked={data.itemPrepared}
+                        onChange={(e) =>
+                          this.handleChangeInput(
+                            e.target.checked,
+                            "itemPrepared"
+                          )
+                        }
+                      />
+                    </FormItem>
+                  </div>
+                  <div className="contentBlock">
+                    <div className="mainTitle">요청시간</div>
+                    <FormItem name="arriveReqTime" className="selectItem">
+                      <Select
+                        defaultValue={
+                          this.state.data
+                            ? arriveReqTime[this.state.data.arriveReqTime]
+                            : this.props.data
+                            ? arriveReqTime[this.props.data.arriveReqTime]
+                            : arriveReqTime[5]
+                        }
+                        placeholder="시간단위"
+                        className="override-input"
+                        onChange={(value) =>
+                          this.handleChangeInput(
+                            parseInt(value),
+                            "arriveReqTime"
+                          )
+                        }
+                        required
+                      >
+                        {Object.keys(arriveReqTime).map((key) => (
+                          <Option value={key}>{arriveReqTime[key]}</Option>
+                        ))}
+                      </Select>
+                    </FormItem>
+                  </div>
+                  <div className="contentBlock">
+                    <div className="mainTitle">배달갯수</div>
+                    <FormItem name="packAmount" className="selectItem">
+                      <Select
+                        defaultValue={
+                          this.state.data
+                            ? packAmount[this.state.data.packAmount]
+                            : this.props.data
+                            ? packAmount[this.props.data.packAmount]
+                            : packAmount[1]
+                        }
+                        placeholder="배달갯수"
+                        className="override-input"
+                        onChange={(value) =>
+                          this.handleChangeInput(
+                            parseInt(value),
+                            "packAmount"
+                          )
+                        }
+                        required
+                      >
+                        {Object.keys(packAmount).map((key) => (
+                          <Option value={key}>{packAmount[key]}</Option>
+                        ))}
+                      </Select>
+                    </FormItem>
+                  </div>
+                  <div className="contentBlock">
+                    <div className="mainTitle">고객 전화번호</div>
+                    <FormItem name="custPhone" className="selectItem">
+                      <Input
+                        placeholder="고객 전화번호를 입력해 주세요."
+                        className="override-input"
+                        defaultValue={data.custPhone}
+                        onChange={(e) =>
+                          this.setState({
+                            data: {
+                              ...this.state.data,
+                              custPhone: e.target.value,
+                            },
+                          })
+                        }
+                        required
+                      ></Input>
+                    </FormItem>
+                  </div>
+                  <div className="contentBlock">
+                    <div className="mainTitle">메모</div>
+                    <FormItem name="callmemo" className="selectItem">
+                      <Input
+                        placeholder="메모를 입력해 주세요."
+                        className="override-input"
+                        defaultValue={data.custMessage}
+                        onChange={(e) =>
+                          this.handleChangeInput(
+                            e.target.value,
+                            "custMessage"
+                          )
+                        }
+                        required
+                      ></Input>
+                    </FormItem>
+                  </div>
+                  <div className="contentBlock">
+                    <Button
+                      type="primary"
+                      htmlType="submit"
+                      className="callTab"
+                    >
+                      등록하기
+                    </Button>
+                  </div>
+                </div>
+
+                <div className="mapLayout regist-call-map" id="myMap">
+                  {/* <MapContainer /> */}
+                  {/* 
+                                            {navermaps &&
+                                                <NaverMap
+                                                    className='map-navermap'
+                                                    defaultZoom={14}
+                                                    center={{ lat: lat, lng: lng }}
+                                                >
+                                                <Marker
+                                                    position={navermaps.LatLng(lat, lng)}
+                                                    icon={require('../../../img/login/map/marker_rider.png').default}
+                                                />
+                                                <Marker
+                                                    position={navermaps.LatLng(lat, lng)}
+                                                    icon={require('../../../img/login/map/marker_target.png').default}
+                                                />
+                                                <Polyline 
+                                                path={[
+                                                    navermaps.LatLng(lat, lng),
+                                                    navermaps.LatLng(lat, lng),
+                                                ]}
+                                                // clickable // 사용자 인터랙션을 받기 위해 clickable을 true로 설정합니다.
+                                                strokeColor={'#5347AA'}
+                                                strokeWeight={5}        
+                                                />
+                                                </NaverMap>
+                                            } */}
+                </div>
               </div>
-            </div>
-          </React.Fragment>
-        ) : null}
+            </Form>
+          </div>
+        </div>
       </React.Fragment>
     );
   }
