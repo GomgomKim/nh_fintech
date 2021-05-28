@@ -10,8 +10,10 @@ import { NotFound, Login } from './pages';
 import con from './const';
 
 class App extends Component {
-  componentDidMount() {
+  componentWillMount() {
     this.initializeUserInfo();
+  }
+  componentDidMount() {
     // const userInfo = reactLocalStorage.getObject(`${con.appName}#adminUser`);
     // const pathname = this.props.location.pathname.split('/');
 
