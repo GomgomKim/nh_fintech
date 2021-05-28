@@ -208,7 +208,15 @@ class SurchargeDialog extends Component {
                 title: "추가요금",
                 dataIndex: "extraPrice",
                 className: "table-column-center",
-                render: (data) => <div>{comma(data)}</div>
+                render: (data, row) => 
+                <div>{comma(data)}</div>
+            },
+            {
+                title: "할증 그룹",
+                dataIndex: "frSettingGroupIdx",
+                className: "table-column-center",
+                render: (data, row) => 
+                <div>{data === null ? "전체" : "그룹1"}</div>
             },
             {
                 className: "table-column-center",
@@ -225,88 +233,101 @@ class SurchargeDialog extends Component {
         const { close } = this.props;
 
         return (
-            <React.Fragment>
-                <div className="Dialog-overlay" onClick={close} />
-                <div className="surcharge-Dialog">
-                    <div className="surcharge-container">
-                        <div className="surcharge-title">
-                            할증
-                        </div>
-                        <img onClick={close} src={require('../../../img/login/close.png').default} className="surcharge-close" alt="img" />
-                        <div className="surchargeLayout">
-                            <Button onClick={this.openSurchargeGroupModal}>
-                                할증 그룹관리
-                            </Button>
-                            <div className="listBlock">
-                                <Table
-                                // rowKey={(record) => record.idx}
-                                dataSource={this.state.list}
-                                columns={columns}
-                                pagination={this.state.pagination}
-                                onChange={this.handleTableChange}
-                                />
-                            </div>
-                            <Form ref={this.formRef} onFinish={this.handleSubmit}>
-                                <div className="insertBlock">
-                                    <div className="mainTitle">
-                                        할증 요금 정보
+
+                        <React.Fragment>
+                            <div className="Dialog-overlay" onClick={close} />
+                            <div className="surcharge-Dialog">
+                                <div className="surcharge-container">
+                                    <div className="surcharge-title">
+                                        할증
                                     </div>
-                                    <div className="m-t-20">
-                                        <div className="subTitle">
-                                            할증명
+
+                                    <img onClick={close} src={require('../../../img/login/close.png').default} className="surcharge-close" />
+
+
+                                    <div className="surchargeLayout">
+                                    <SurchargeGroupDialog
+                                        isOpen={this.state.surchargeGroupOpen}
+                                        close={this.closeSurchargeGroupModal}
+                                    />
+                                    <Button onClick={this.openSurchargeGroupModal}>
+                                        할증 그룹관리
+                                    </Button>
+                                        <div className="listBlock">
+                                            <Table
+                                                // rowKey={(record) => record.idx}
+                                                dataSource={this.state.list}
+                                                columns={columns}
+                                                pagination={this.state.pagination}
+                                                onChange={this.handleTableChange}
+                                            />
                                         </div>
-                                        <div className="inputBox">
-                                            <FormItem
-                                            name="name"
-                                            rules={[{ required: true, message: "할증명을 입력해주세요." }]}
-                                            >
-                                                <Input style={{ width: 130 }} />
-                                            </FormItem>
-                                        </div>
-                                        <div className="subDatePrice">
-                                            등록기간
-                                        </div>
-                                        <div className="selectBox">
-                                            <FormItem
-                                            name="surchargeDate"
-                                            rules={[{ required: true, message: "등록기간 날짜를 선택해주세요" }]}
-                                            >
-                                                <RangePicker
-                                                placeholder={['시작일', '종료일']}
-                                                showTime={{ format: 'HH:mm' }}
-                                                onChange={this.onChangeDate}
-                                                />
-                                            </FormItem>
-                                        </div>
-                                        <div className="subDatePrice">
-                                            추가요금
-                                        </div>
-                                        <div className="inputBox">
-                                            <FormItem
-                                            name="extraPrice"
-                                            rules={[{ required: true, message: "추가금액을 입력해주세요." }]}
-                                            >
-                                                <Input style={{ width: 150 }} />
-                                            </FormItem>
-                                            <div className="priceText">
-                                                원
+                                        <Form ref={this.formRef} onFinish={this.handleSubmit}>
+                                            <div className="insertBlock">
+                                                <div className="mainTitle">
+                                                    할증 요금 정보
+                                                </div>
+                                                <div className="m-t-20">
+                                                    <div className="subTitle">
+                                                        할증명
+                                                    </div>
+                                                    <div className="inputBox">
+                                                        <FormItem
+                                                            name="name"
+                                                            rules={[{ required: true, message: "할증명을 입력해주세요." }]}
+                                                        >
+                                                            <Input style={{ width: 130 }} />
+                                                        </FormItem>
+                                                    </div>
+                                                    <div className="subDatePrice">
+                                                        등록기간
+                                                    </div>
+                                                    <div className="selectBox">
+                                                        <FormItem
+                                                            name="surchargeDate"
+                                                            rules={[{ required: true, message: "등록기간 날짜를 선택해주세요" }]}
+                                                        >
+                                                            <RangePicker
+                                                                placeholder={['시작일', '종료일']}
+                                                                showTime={{ format: 'HH:mm' }}
+                                                                onChange={this.onChangeDate}
+                                                            />
+                                                        </FormItem>
+                                                    </div>
+                                                    <div className="subDatePrice">
+                                                        추가요금
+                                                    </div>
+                                                    <div className="inputBox">
+                                                        <FormItem
+                                                            name="extraPrice"
+                                                            rules={[{ required: true, message: "추가금액을 입력해주세요." }]}
+                                                        >
+                                                            <Input style={{ width: 150 }} />
+                                                        </FormItem>
+                                                        <div className="priceText">
+                                                            원
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div className="btnInsert">
+                                                    <Button type="primary" htmlType="submit" className="tabBtn insertTab">
+                                                        등록하기
+                                                    </Button>
+                                                </div>
                                             </div>
-                                        </div>
+                                        </Form>
                                     </div>
-                                    <div className="btnInsert">
-                                        <Button type="primary" htmlType="submit" className="tabBtn insertTab">
-                                            등록하기
-                                        </Button>
-                                    </div>
+
+
+
+
                                 </div>
-                            </Form>
-                        </div>
-                    </div>
-                </div>
-            </React.Fragment>
-            )
-        }
+                            </div>
+                        </React.Fragment>
+
+        )
     }
+}
 const mapStateToProps = (state) => {
     return {
         userGroup: state.login.loginInfo.userGroup,

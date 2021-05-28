@@ -188,6 +188,7 @@ class BlindFranListDialog extends Component {
                 title: "가맹점명",
                 dataIndex: "frName",
                 className: "table-column-center",
+                render: (data) => <div className="elipsis-table-row">{data}</div>
             },
             {
                 title: "기사명",
@@ -198,6 +199,7 @@ class BlindFranListDialog extends Component {
                 title: "차단메모",
                 dataIndex: "memo",
                 className: "table-column-center",
+                render: (data) => <div className="elipsis-table-row">{data}</div>
             },
             {
                 title: "설정일",
