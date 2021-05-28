@@ -230,12 +230,10 @@ class SurchargeDialog extends Component {
             },
         ];
 
-        const { isOpen, close } = this.props;
+        const { close } = this.props;
 
         return (
-            <React.Fragment>
-                {
-                    isOpen ?
+
                         <React.Fragment>
                             <div className="Dialog-overlay" onClick={close} />
                             <div className="surcharge-Dialog">
@@ -326,10 +324,7 @@ class SurchargeDialog extends Component {
                                 </div>
                             </div>
                         </React.Fragment>
-                        :
-                        null
-                }
-            </React.Fragment>
+
         )
     }
 }

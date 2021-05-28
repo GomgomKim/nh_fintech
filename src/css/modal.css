@@ -1015,8 +1015,7 @@
 }
 .registCallLayout .mapLayout {
   margin-top: 20px;
-  /* width: 1200px; */
-  height: 300px;
+  height: 400px;
 }
 /* .registCallLayout #myMap {
   width: 895px;
@@ -2538,6 +2537,10 @@
 
 .registRiderWrapper .ant-form-item-control-input-content {
   width: 260px;
+}
+
+.registRiderWrapper .ant-form-item-control-input-content .ant-checkbox + span {
+  padding-right: 0;
 }
 
 .registRiderWrapper .mainTitle {
