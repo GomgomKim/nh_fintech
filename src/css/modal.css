@@ -2540,6 +2540,10 @@
   width: 260px;
 }
 
+.registRiderWrapper .ant-form-item-control-input-content .ant-checkbox + span {
+  padding-right: 0;
+}
+
 .registRiderWrapper .mainTitle {
   width: 120px;
 }
