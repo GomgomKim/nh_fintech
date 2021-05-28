@@ -21,7 +21,7 @@ const loginInitialState = {
 const login = (state = loginInitialState, action) => {
   switch (action.type) {
     case LOGIN:
-      reactLocalStorage.setObject(con + '#adminUser', action.loginInfo);
+      reactLocalStorage.setObject(con.appName + '#adminUser', action.loginInfo);
       console.log(Object.assign({}, state, {
         isLogin: true,
         loginInfo: action.loginInfo,
@@ -33,7 +33,7 @@ const login = (state = loginInitialState, action) => {
         loginInfo: action.loginInfo,
       });
     case LOGOUT:
-      reactLocalStorage.remove(con + "#adminUser");
+      reactLocalStorage.remove(con.appName + "#adminUser");
       return Object.assign({}, state, {
         isLogin: false,
         loginInfo: {

@@ -169,11 +169,10 @@ class SearchFranchiseDialog extends Component {
       onChange: this.onSelectChange,
     };
 
-    const { isOpen, close, multi } = this.props;
+    const { close, multi } = this.props;
 
     return (
-      <React.Fragment>
-        {isOpen ? (
+
           <React.Fragment>
             <div className="Dialog-overlay" onClick={close} />
             <div className="searchFranchise-Dialog">
@@ -183,7 +182,7 @@ class SearchFranchiseDialog extends Component {
                   onClick={close}
                   src={require("../../../img/login/close.png").default}
                   className="surcharge-close"
-                  alt="close"
+                  alt="닫기"
                 />
 
                 <Form ref={this.formRef} onFinish={this.onSubmit}>
@@ -264,8 +263,7 @@ class SearchFranchiseDialog extends Component {
               </div>
             </div>
           </React.Fragment>
-        ) : null}
-      </React.Fragment>
+
     );
   }
 }

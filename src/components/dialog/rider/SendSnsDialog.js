@@ -95,54 +95,49 @@ class SendSnsDialog extends Component {
 
     render() {
 
-        const { isOpen, close } = this.props;
+        const { close } = this.props;
 
         return (
-            <React.Fragment>
-                {isOpen ? (
-                    <React.Fragment>
-                        <div className="Dialog-overlay" onClick={close} />
-                        <div className="snsDialog">
-                            <div className="container">
-                                <div className="sns-title">메세지 전송</div>
-                                <img
-                                    onClick={close}
-                                    src={require("../../../img/login/close.png").default} alt=""  
-                                    className="surcharge-close" 
-                                />
-                                <div className="snsLayout">
-                                    <Form ref={this.formRef} onFinish={this.handleSubmit}>
-                                        <div className="snsDetailBlock">
-                                            <div className="inputBox">
-                                                <FormItem
-                                                    className="selectItem"
-                                                    name="content"
-                                                    rules={[{ required: true, message: "메세지를 입력해주세요" }]}
-                                                >
-                                                    <Input
-                                                        className="snsInputBox"
-                                                        placeholder="메세지 내용"
-                                                    />
-                                                </FormItem>
-                                            </div>
-                                            <div className="btnInsert">
-                                                <Button
-                                                    type="primary"
-                                                    htmlType="submit"
-                                                    className="tabBtn insertTab snsBtn"
-                                                >
-                                                    전송
-                                                </Button>
-                                            </div>
-                                        </div>
-                                    </Form>
+        <React.Fragment>
+            <div className="Dialog-overlay" onClick={close} />
+            <div className="snsDialog">
+                <div className="container">
+                    <div className="sns-title">메세지 전송</div>
+                    <img
+                    onClick={close}
+                    src={require("../../../img/login/close.png").default} alt=""  
+                    className="surcharge-close" 
+                    />
+                    <div className="snsLayout">
+                        <Form ref={this.formRef} onFinish={this.handleSubmit}>
+                            <div className="snsDetailBlock">
+                                <div className="inputBox">
+                                    <FormItem
+                                    className="selectItem"
+                                    name="content"
+                                    rules={[{ required: true, message: "메세지를 입력해주세요" }]}
+                                    >
+                                        <Input
+                                        className="snsInputBox"
+                                        placeholder="메세지 내용"
+                                        />
+                                    </FormItem>
+                                </div>
+                                <div className="btnInsert">
+                                    <Button
+                                    type="primary"
+                                    htmlType="submit"
+                                    className="tabBtn insertTab snsBtn"
+                                    >
+                                        전송
+                                    </Button>
                                 </div>
                             </div>
-                        </div>
-                    </React.Fragment>
-                ) : null
-                }
-            </React.Fragment>
+                        </Form>
+                    </div>
+                </div>
+            </div>
+        </React.Fragment>
         );
     }
 }

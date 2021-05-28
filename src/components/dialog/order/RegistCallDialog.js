@@ -304,7 +304,7 @@ class RegistCallDialog extends Component {
     const lat = 37.643623625321474;
     const lng = 126.66509442649551;
 
-    const { isOpen, close } = this.props;
+    const { close } = this.props;
     const data = this.props.data ? this.props.data : newOrder;
     const navermaps = window.naver.maps;
     let deliveryPrice = this.state.data
@@ -316,8 +316,7 @@ class RegistCallDialog extends Component {
     const reverseGeocode = navermaps.Service.reverseGeocode;
 
     return (
-      <React.Fragment>
-        {isOpen ? (
+
           <React.Fragment>
             <div className="Dialog-overlay" onClick={close} />
             <div className="registCall-Dialog">
@@ -693,10 +692,10 @@ class RegistCallDialog extends Component {
               </div>
             </div>
           </React.Fragment>
-        ) : null}
-      </React.Fragment>
+
     );
   }
 }
 
 export default RegistCallDialog;
+

@@ -592,11 +592,12 @@ class ReceptionStatus extends Component {
           render: (data, row) => (
             <span>
               {/* <ForceAllocateDialog */}
+              {this.state.forceOpen &&
               <SearchRiderDialog
-                isOpen={this.state.forceOpen}
+
                 close={this.closeForceingModal}
                 callback={(data) => this.assignRider(data, row.idx)}
-              />
+              />}
               <Button className="tabBtn" onClick={this.openForceModal}>
                 강제배차
               </Button>
@@ -635,13 +636,21 @@ class ReceptionStatus extends Component {
         {this.state.MessageOpen && (
           <ChattingDialog close={this.closeMessageModal} />
         )}
-        <RegistCallDialog
-          isOpen={this.state.modifyOrder}
-          close={this.closeModifyOrderModal}
-          editable={this.state.editable}
-          data={this.state.data}
-          getList={this.getList}
-        />
+
+        {this.state.addCallOpen &&
+            <RegistCallDialog
+              close={this.closeAddCallModal}
+            />
+        } 
+        
+        {this.state.modifyOrder &&
+          <RegistCallDialog
+            close={this.closeModifyOrderModal}
+            editable={this.state.editable}
+            data={this.state.data}
+            getList={this.getList}
+          />
+        }
 
         <div className="btnLayout">
           <TimeDelayDialog
@@ -668,10 +677,11 @@ class ReceptionStatus extends Component {
             지도관제
           </Button>
 
+          {this.state.surchargeOpen &&
           <SurchargeDialog
-            isOpen={this.state.surchargeOpen}
             close={this.closeSurchargeModal}
           />
+          }
           <Button
             icon={<DollarCircleOutlined />}
             className="tabBtn surchargeTab"
@@ -680,10 +690,7 @@ class ReceptionStatus extends Component {
             할증
           </Button>
 
-          <RegistCallDialog
-            isOpen={this.state.addCallOpen}
-            close={this.closeAddCallModal}
-          />
+          
           <Button
             icon={<PhoneOutlined />}
             className="tabBtn registTab"
