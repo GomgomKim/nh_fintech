@@ -667,11 +667,7 @@ class FranchiseMain extends Component {
             expandedRowRender={expandedRowRender}
           />
         </div>
-        <RegistFranDialog
-          isOpen={this.state.modifyFranOpen}
-          close={this.closeModifyFranModal}
-          data={this.state.dialogData}
-        />
+
       </div>
     );
   }
