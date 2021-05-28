@@ -469,12 +469,12 @@ class FranchiseMain extends Component {
         className: "table-column-center",
         render: (data, row) => (
           <div>
-            {this.state.modifyFranOpen &&
-            <RegistFranDialog
-
-              close={this.closeModifyFranModal}
-              data={this.state.dialogData}
-            />}
+            {/* {this.state.modifyFranOpen && (
+              <RegistFranDialog
+                close={this.closeModifyFranModal}
+                data={this.state.dialogData}
+              />
+            )} */}
             <Button
               className="tabBtn surchargeTab"
               onClick={() =>
@@ -582,21 +582,19 @@ class FranchiseMain extends Component {
             onSearch={this.onSearchFranchisee}
             style={{}}
           />
-          {this.state.searchFranchiseOpen &&
-          <SearchFranchiseDialog
-            callback={(data) => this.onSearchFranchiseDetail(data)}
-            close={this.closeSearchFranchiseModal}
-            multi={true}
-          />
-          }
+          {this.state.searchFranchiseOpen && (
+            <SearchFranchiseDialog
+              callback={(data) => this.onSearchFranchiseDetail(data)}
+              close={this.closeSearchFranchiseModal}
+              multi={true}
+            />
+          )}
           <Button className="tabBtn" onClick={this.openSearchFranchiseModal}>
             가맹점조회
           </Button>
-          {this.state.ResistFranchiseOpen &&
-          <RegistFranDialog
-
-            close={this.closeRegistFranchiseModal}
-          />}
+          {this.state.ResistFranchiseOpen && (
+            <RegistFranDialog close={this.closeRegistFranchiseModal} />
+          )}
           <Button
             icon={<BankOutlined />}
             className="tabBtn addFranTab"
@@ -604,12 +602,12 @@ class FranchiseMain extends Component {
           >
             가맹점등록
           </Button>
-          {this.state.SearchAddressOpen &&
-          <SearchAddressDialog
-            isOpen={this.state.SearchAddressOpen}
-            close={this.closeSearchAddressModal}
-          />
-          }
+          {this.state.SearchAddressOpen && (
+            <SearchAddressDialog
+              isOpen={this.state.SearchAddressOpen}
+              close={this.closeSearchAddressModal}
+            />
+          )}
           <Button
             className="tabBtn sectionTab"
             onClick={this.openSearchAddressModal}
@@ -667,7 +665,13 @@ class FranchiseMain extends Component {
             expandedRowRender={expandedRowRender}
           />
         </div>
-
+        {this.state.modifyFranOpen && (
+          <RegistFranDialog
+            isOpen={this.state.modifyFranOpen}
+            close={this.closeModifyFranModal}
+            data={this.state.dialogData}
+          />
+        )}
       </div>
     );
   }

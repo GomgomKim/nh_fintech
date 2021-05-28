@@ -335,12 +335,12 @@ class RiderMain extends Component {
         className: "table-column-center",
         render: (data, row) => (
           <div>
-            {this.state.riderUpdateOpen &&
-            <RegistRiderDialog close={this.closeUpdateRiderModal} data={this.state.dialogData} />}
+            {/* {this.state.riderUpdateOpen &&
+            <RegistRiderDialog close={this.closeUpdateRiderModal} data={this.state.dialogData} />} */}
             <Button
               className="tabBtn surchargeTab"
               onClick={() =>
-                this.setState({ riderUpdateOpen: true, dialogData: row })
+                this.setState({ registRiderOpen: true, dialogData: row })
               }
             >
               수정
@@ -443,55 +443,60 @@ class RiderMain extends Component {
             style={{}}
           />
 
-          {this.state.searchRiderOpen &&
-          <SearchRiderDialog
-            callback={(data) => this.onSearchRiderDetail(data)}
-            close={this.closeSearchRiderModal}
-            multi={true}
-            />}
+          {this.state.searchRiderOpen && (
+            <SearchRiderDialog
+              callback={(data) => this.onSearchRiderDetail(data)}
+              close={this.closeSearchRiderModal}
+              multi={true}
+            />
+          )}
           <Button className="tabBtn" onClick={this.openSearchRiderModal}>
             기사조회
-            </Button>
-          {this.state.registRiderOpen &&
-          <RegistRiderDialog 
-          close={this.closeRegistRiderModal} 
-          />}
-          <Button className="riderManageBtn"
+          </Button>
+          {this.state.registRiderOpen && (
+            <RegistRiderDialog
+              data={this.state.dialogData}
+              close={this.closeRegistRiderModal}
+            />
+          )}
+          <Button
+            className="riderManageBtn"
             onClick={this.openRegistRiderModal}
           >
             기사 등록
           </Button>
 
-          {this.state.riderGroupOpen &&
-          <RiderGroupDialog
-          close={this.closeRiderGroupModal}
-          />}
+          {this.state.riderGroupOpen && (
+            <RiderGroupDialog close={this.closeRiderGroupModal} />
+          )}
           <Button className="riderManageBtn" onClick={this.openRiderGroupModal}>
-              기사 그룹 관리
+            기사 그룹 관리
           </Button>
-          {this.state.taskSchedulerOpen &&
-          <TaskSchedulerDialog
-          close={this.closeTaskSchedulerModal}
-          />}
-          <Button className="riderManageBtn" onClick={this.openTaskSchedulerModal}>
+          {this.state.taskSchedulerOpen && (
+            <TaskSchedulerDialog close={this.closeTaskSchedulerModal} />
+          )}
+          <Button
+            className="riderManageBtn"
+            onClick={this.openTaskSchedulerModal}
+          >
             일차감
           </Button>
 
-          {this.state.sendSnsOpen && 
-          <SendSnsDialog
-          close={this.closeSendSnsModal}
-          callback={this.onSearchRiderDetail}
-          />}
+          {this.state.sendSnsOpen && (
+            <SendSnsDialog
+              close={this.closeSendSnsModal}
+              callback={this.onSearchRiderDetail}
+            />
+          )}
           <Button className="riderManageBtn" onClick={this.openSendSnsModal}>
             SNS 전송
           </Button>
 
           <BlindRiderListDialog
-          isOpen={this.state.blindListOpen}
-          close={this.closeBlindModal}
-          data={this.state.blindRiderData}
+            isOpen={this.state.blindListOpen}
+            close={this.closeBlindModal}
+            data={this.state.blindRiderData}
           />
-
         </div>
 
         <div className="dataTableLayout">
@@ -504,7 +509,6 @@ class RiderMain extends Component {
             expandedRowRender={expandedRowRender}
           />
         </div>
-
       </div>
     );
   }

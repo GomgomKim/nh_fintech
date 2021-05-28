@@ -192,6 +192,7 @@ const httpUrl = {
 
   // 배차
   assignRiderAdmin: "/order/admin/assignRider",
+  assignRiderCancel: "/order/admin/admin/assignRiderCancel",
 
   // 가맹점 관리
   registFranchise: "/fr/create",
