@@ -230,8 +230,8 @@ class FranchiseMain extends Component {
 
   handleExcelRegist = () => {
     if (this.state.data) {
-      const failedIdx = [];
-      const failedFrName = [];
+      let failedIdx = [];
+      let failedFrName = [];
       for (let i = 0; i < this.state.data.length; i++) {
         const data = this.state.data[i];
         const formData = {

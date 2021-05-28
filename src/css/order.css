@@ -1,107 +1,107 @@
-.tabBtn{
-    margin-left: 10px;
+.tabBtn {
+  margin-left: 10px;
 }
 
-.delayTab{
-    margin-left: 0px !important;
+.arriveArea {
+  text-align: left;
 }
 
-.orderTab{
-    margin-right: 20px !important;
+.delayTab {
+  margin-left: 0px !important;
 }
 
-.selectLayout{
-    margin-top: 20px !important;
-    display: inline-block;
+.orderTab {
+  margin-right: 20px !important;
 }
 
-.filterTab{
-    margin-left: 20px !important;
+.selectLayout {
+  margin-top: 20px !important;
+  display: inline-block;
 }
 
-.dataTableLayout{
-    margin-top: 40px;
+.filterTab {
+  margin-left: 20px !important;
 }
 
-.riderTableLayout{
-    min-height: 200px;
-    position: absolute;
-    top: 20px;
-    left: 10px;
-    right: 10px;
-    z-index: 80;
+.dataTableLayout {
+  margin-top: 40px;
 }
 
-.orderTab{
-    margin-left: 0px !important;
+.riderTableLayout {
+  min-height: 200px;
+  position: absolute;
+  top: 20px;
+  left: 10px;
+  right: 10px;
+  z-index: 80;
 }
 
-.textLayout{
-    height: 30px;
+.orderTab {
+  margin-left: 0px !important;
 }
 
-.riderText{
-    font-size: 18px;
-    font-family: NotoSansBold;
+.textLayout {
+  height: 30px;
 }
 
-.mapLayout{
-    width:100%;
-    height:600px;
-    float: left;
+.riderText {
+  font-size: 18px;
+  font-family: NotoSansBold;
+}
+
+.mapLayout {
+  width: 100%;
+  height: 600px;
+  float: left;
 }
 .regist-call-map {
-    height: 200px;
-    overflow: hidden;
+  height: 200px;
+  overflow: hidden;
 }
 
 .map-navermap {
-    border-bottom-left-radius: 30px;
-    border-bottom-right-radius: 30px;
-    width: 100%;
-    height: 1000px;
+  border-bottom-left-radius: 30px;
+  border-bottom-right-radius: 30px;
+  width: 100%;
+  height: 1000px;
 }
 
-.riderName{
-    cursor: pointer;
-    color: blue;
-    text-decoration: underline;
+.riderName {
+  cursor: pointer;
+  color: blue;
+  text-decoration: underline;
 }
 
-
-.reception-box .ant-checkbox-inner{
-    width:25px;
-    height:25px;
-  }
-  .reception-box .ant-checkbox-inner::after {
-    width: 15px;
-    height: 15px;
-  }  
-
-  .reception-box .ant-checkbox-wrapper{
-    height:32px;
-    margin-left: 20px!important;
-    vertical-align: top;
-  } 
-  
-  .reception-box .span1{
-    font-size:16px;
-    margin-left:10px;
-
-  }
-
-.table-red{
-    background-color: #fed8d6;
+.reception-box .ant-checkbox-inner {
+  width: 25px;
+  height: 25px;
 }
-.table-gray{
-    background-color: gray;
-}
-.table-blue{
-    background-color: #d6edfe;
-    /* color: white; */
-}
-.table-white{
-    background-color: white;
+.reception-box .ant-checkbox-inner::after {
+  width: 15px;
+  height: 15px;
 }
 
-  
+.reception-box .ant-checkbox-wrapper {
+  height: 32px;
+  margin-left: 20px !important;
+  vertical-align: top;
+}
+
+.reception-box .span1 {
+  font-size: 16px;
+  margin-left: 10px;
+}
+
+.table-red {
+  background-color: #fed8d6;
+}
+.table-gray {
+  background-color: gray;
+}
+.table-blue {
+  background-color: #d6edfe;
+  /* color: white; */
+}
+.table-white {
+  background-color: white;
+}
