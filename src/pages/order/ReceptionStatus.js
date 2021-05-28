@@ -307,7 +307,7 @@ class ReceptionStatus extends Component {
   };
   closeMapControlModal = () => {
     this.setState({ mapControlOpen: false });
-    this.getList()
+    this.getList();
   };
 
   // 필터링 dialog
@@ -404,9 +404,10 @@ class ReceptionStatus extends Component {
                 // list.find((x) => x.idx === row.idx).orderStatus = value;
                 row.orderStatus = value;
                 httpPost(httpUrl.orderUpdate, [], row)
-                  .then((res) => {})
+                  .then((res) => {
+                    if (res.result === "SUCCESS") this.getList();
+                  })
                   .catch((e) => {});
-                this.getList();
               }}
             >
               {deliveryStatusCode.map((value, index) => {
@@ -593,12 +594,12 @@ class ReceptionStatus extends Component {
           render: (data, row) => (
             <span>
               {/* <ForceAllocateDialog */}
-              {this.state.forceOpen &&
-              <SearchRiderDialog
-
-                close={this.closeForceingModal}
-                callback={(data) => this.assignRider(data, row.idx)}
-              />}
+              {this.state.forceOpen && (
+                <SearchRiderDialog
+                  close={this.closeForceingModal}
+                  callback={(data) => this.assignRider(data, row.idx)}
+                />
+              )}
               <Button className="tabBtn" onClick={this.openForceModal}>
                 강제배차
               </Button>
@@ -638,20 +639,18 @@ class ReceptionStatus extends Component {
           <ChattingDialog close={this.closeMessageModal} />
         )}
 
-        {this.state.addCallOpen &&
-            <RegistCallDialog
-              close={this.closeAddCallModal}
-            />
-        } 
-        
-        {this.state.modifyOrder &&
+        {this.state.addCallOpen && (
+          <RegistCallDialog close={this.closeAddCallModal} />
+        )}
+
+        {this.state.modifyOrder && (
           <RegistCallDialog
             close={this.closeModifyOrderModal}
             editable={this.state.editable}
             data={this.state.data}
             getList={this.getList}
           />
-        }
+        )}
 
         <div className="btnLayout">
           <TimeDelayDialog
@@ -666,13 +665,13 @@ class ReceptionStatus extends Component {
             호출설정
           </Button>
 
-          {this.state.mapControlOpen &&
+          {this.state.mapControlOpen && (
             <MapControlDialog
-              getList ={this.getList}
+              getList={this.getList}
               callData={this.state.list}
               close={this.closeMapControlModal}
             />
-          }
+          )}
           <Button
             icon={<EnvironmentFilled />}
             className="tabBtn mapTab"
@@ -682,11 +681,9 @@ class ReceptionStatus extends Component {
             지도관제
           </Button>
 
-          {this.state.surchargeOpen &&
-          <SurchargeDialog
-            close={this.closeSurchargeModal}
-          />
-          }
+          {this.state.surchargeOpen && (
+            <SurchargeDialog close={this.closeSurchargeModal} />
+          )}
           <Button
             icon={<DollarCircleOutlined />}
             className="tabBtn surchargeTab"
@@ -695,7 +692,6 @@ class ReceptionStatus extends Component {
             할증
           </Button>
 
-          
           <Button
             icon={<PhoneOutlined />}
             className="tabBtn registTab"
