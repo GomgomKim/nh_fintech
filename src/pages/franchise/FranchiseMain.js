@@ -235,22 +235,48 @@ class FranchiseMain extends Component {
       for (let i = 0; i < this.state.data.length; i++) {
         const data = this.state.data[i];
         const formData = {
-          // EXCEL 로 받는 데이터
+          // // EXCEL 로 받는 데이터
           id: data["아이디"],
           frName: data["가맹점명"],
-          email: data["이메일"],
           businessNumber: data["사업자번호"],
-          // corporateNumber: data["법인번호"],
-          ownerName: data["대표자명"],
           frPhone: data["가맹점 전화번호"],
           phone: data["휴대전화"],
           addr1: data["주소"],
           addr3: data["지번주소"],
           addr2: data["상세주소"],
-          basicDeliveryPrice: data[" 배달요금 "],
-          // birthday: data["대표자생년월일"],
-          memo: data["메모"],
+          basicDeliveryPrice: data[" 배달요금"],
           password: String(data["비밀번호"]),
+          tidNormalRate: data["PG사용여부"] === "사용" ? 100 : 0,
+
+          // // 신규 가맹점 DEFAULT
+          ncash: 0,
+          userType: 2,
+          bank: "",
+          bankAccount: 0,
+          depositor: "",
+          userGroup: 0,
+          frStatus: 1,
+          ncashPayEnabled: false,
+          tidNormal: "",
+          tidPrepay: "",
+          duesAutoChargeEnabled: false,
+          chargeDate: 1,
+          dues: 0,
+
+          // api 찾기
+          latitude: 0,
+          longitude: 0,
+
+          // // api 연동
+          // distance: 0,
+          // withdrawPassword: "0000",
+          // userStatus: 1,
+          // recommenderIdx: 0,
+          // ownerName: data["대표자명"],
+          // email: data["이메일"],
+          // memo: data["메모"],
+          // corporateNumber: data["법인번호"],
+          // birthday: data["대표자생년월일"],\
           // prepayAccount: data["선지급 계좌번호"],
           // prepayBank: data["선지급 은행"],
           // prepayDepositor: data["선지급 계좌 소유주"],
@@ -260,32 +286,9 @@ class FranchiseMain extends Component {
           // vaccountNumber: data["가상계좌번호"],
           // withdrawEnabled: data["출금가능여부"],
           // withdrawLimit: data[" 출금한도 "] === "무제한" ? 0 : data["출금한도"],
-          tidNormalRate: data["PG사용여부"] === "사용" ? 100 : 0,
-
-          // 신규 가맹점 DEFAULT
-          ncash: 0,
-          userStatus: 1,
-          recommenderIdx: 0,
-          userType: 2,
-          withdrawPassword: "0000",
-          bank: "",
-          bankAccount: 0,
-          depositor: "",
-          userGroup: 0,
-
-          frStatus: 1,
-          ncashPayEnabled: false,
-          tidNormal: "",
-          tidPrepay: "",
-          chargeDate: 1,
-          duesAutoChargeEnabled: false,
-          dues: 0,
-
-          // api 연동
-          distance: 0,
-          latitude: 0,
-          longitude: 0,
         };
+
+        console.log(formData);
 
         if (!this.createFranchise(formData)) {
           failedIdx.push(i + 1);
@@ -340,7 +343,7 @@ class FranchiseMain extends Component {
       let workBook = XLSX.read(data, { type: "binary" });
       workBook.SheetNames.forEach(function (sheetName) {
         var rows = XLSX.utils.sheet_to_json(workBook.Sheets[sheetName]);
-        self.setState({ data: rows });
+        self.setState({ data: rows }, () => console.log(self.state.data));
       });
     };
     reader.readAsBinaryString(input.files[0]);
