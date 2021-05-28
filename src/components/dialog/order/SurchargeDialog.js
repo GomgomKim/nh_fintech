@@ -212,6 +212,13 @@ class SurchargeDialog extends Component {
                 <div>{comma(data)}</div>
             },
             {
+                title: "할증 그룹",
+                dataIndex: "frSettingGroupIdx",
+                className: "table-column-center",
+                render: (data, row) => 
+                <div>{data === null ? "전체" : "그룹1"}</div>
+            },
+            {
                 className: "table-column-center",
                 render: (data, row) =>
                     <div>

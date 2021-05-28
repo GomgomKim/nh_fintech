@@ -3595,6 +3595,129 @@
   margin-top: 15px;
 }
 
+/* 할증 그룹관리 dialog */
+.surchargeGroupList-Dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 1200px;
+  z-index: 2;
+}
+
+.surchargeGroupList-content {
+  padding: 30px;
+  background-color: white;
+}
+
+.surchargeGroupList-title {
+  font-size: 25px;
+  font-weight: bold;
+  line-height: 30px;
+  /* width:300px; */
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.surchargeGroupList-close {
+  width: 30px;
+  cursor: pointer;
+  background-color: #fddc00;
+  /* display: inline-block; */
+  float: right;
+  padding: 8px;
+}
+
+.surchargeGroupList-inner {
+  width: 100%;
+  overflow-y: scroll;
+  border: 1px solid #ccc;
+  padding: 20px;
+  text-align: left;
+  margin-top: 20px;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+.surchargeGroupList-inner .elipsis-table-row {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 130px;
+  display: inline-block;
+  vertical-align: middle;
+  /* text-align: center; */
+}
+
+.surchargeGroupList-inner::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera*/
+}
+
+.surchargeGroupList-inner .subTable .ant-table-thead {
+  /* display: none; */
+}
+.surchargeGroupList-inner .subTable .ant-table-cell {
+  padding: 13px;
+}
+.surchargeGroupList-inner .subTable .ant-table-row {
+  display: inline-block;
+}
+
+.surchargeGroupList-btn {
+  display: inline-block;
+}
+
+.surchargeGroupList-btn-01 {
+  text-align: center;
+  vertical-align: middle;
+  display: inline-block;
+}
+
+.surchargeGroupList-btn-01 .tabBtn {
+  margin: 0px !important;
+}
+.surchargeGroupList-btn-01 > button {
+  height: 40px;
+  width: 130px;
+  font-size: 18px;
+  color: #222;
+  text-align: center;
+  display: inline-block;
+  padding: 0px !important;
+}
+
+.surchargeGroupList-list {
+  border: 1px solid red;
+  width: 900px;
+  display: inline-block;
+  margin-top: 20px;
+  font-size: 15px;
+}
+.surchargeGroupList-list-01 {
+  display: inline-block;
+  width: 326.67px;
+  height: 32px;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  line-height: 32px;
+}
+.surchargeGroupList-list-02 {
+  display: inline-block;
+  width: 173.33px;
+  height: 32px;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  line-height: 32px;
+}
+.surchargeGroupList-list-03-place1 {
+  display: inline-block;
+  float: right;
+}
+.surchargeGroupList-content .listBlock {
+  /* width: 550px; */
+}
+
 /* 할증 가맹점 추가 dialog */
 .surchargeFr-Dialog-overlay {
   position: fixed;
@@ -3663,7 +3786,7 @@
   text-align: center;
 }
 
-/* 할증 그룹 관리 dialog */
+/* 할증 그룹 추가 dialog */
 .surchargeGroup-Dialog-overlay {
   position: fixed;
   top: 0;
