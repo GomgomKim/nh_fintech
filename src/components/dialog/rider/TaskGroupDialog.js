@@ -134,13 +134,14 @@ class TaskGroupDialog extends Component {
                 className: "table-column-center",
                 render: () =>
                     <div>
+                        {this.state.searchRiderOpen &&
                         <SearchRiderDialog 
-                        isOpen={this.state.searchRiderOpen} 
-                        close={this.closeSearchRiderModal} 
-                        callback={(data) => this.setState({
-                            selectedRider: data
-                        }, () => {this.getList()} 
-                        )}/>
+                            close={this.closeSearchRiderModal}
+                            multi={true}
+                            callback={(data) => this.setState({
+                                selectedRider: data
+                            }, () => {this.getList()} 
+                        )}/>}
                         <Button
                             className="tabBtn"
                             onClick={() => { this.openSearchRiderModal() }}   
@@ -179,12 +180,10 @@ class TaskGroupDialog extends Component {
         }
 
 
-        const { isOpen, close, multi } = this.props;
+        const { close, multi } = this.props;
 
         return (
-            <React.Fragment>
-                {
-                    isOpen ?
+
                         <React.Fragment>
                             <div className="Dialog-overlay" onClick={close} />
                             <div className="taskGroup-Dialog">
@@ -198,7 +197,8 @@ class TaskGroupDialog extends Component {
 
                                         <div className="taskGroup-btn">
                                             <div className="taskGroup-btn-01">
-                                                <RegistRiderGroupDialog isOpen={this.state.registRiderGroupOpen} close={this.closeRegistRiderGroupModal} />
+                                            {this.state.registRiderGroupOpen &&
+                                                <RegistRiderGroupDialog close={this.closeRegistRiderGroupModal} />}
                                                 <Button
                                                     className="tabBtn taskGroup-btn"
                                                     onClick={() => { this.openRegistRiderGroupModal() }}
@@ -226,10 +226,7 @@ class TaskGroupDialog extends Component {
                                 </div>
                             </div>
                         </React.Fragment>
-                        :
-                        null
-                }
-            </React.Fragment>
+
         )
     }
 }

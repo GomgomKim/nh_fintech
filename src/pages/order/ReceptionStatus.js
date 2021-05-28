@@ -307,6 +307,7 @@ class ReceptionStatus extends Component {
   };
   closeMapControlModal = () => {
     this.setState({ mapControlOpen: false });
+    this.getList()
   };
 
   // 필터링 dialog
@@ -665,9 +666,13 @@ class ReceptionStatus extends Component {
             호출설정
           </Button>
 
-          {this.state.mapControlOpen && (
-            <MapControlDialog close={this.closeMapControlModal} />
-          )}
+          {this.state.mapControlOpen &&
+            <MapControlDialog
+              getList ={this.getList}
+              callData={this.state.list}
+              close={this.closeMapControlModal}
+            />
+          }
           <Button
             icon={<EnvironmentFilled />}
             className="tabBtn mapTab"
