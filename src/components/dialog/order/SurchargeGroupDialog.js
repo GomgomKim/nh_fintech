@@ -3,9 +3,10 @@ import {
     Form, Table, Button, Tag, Modal
 } from "antd";
 import '../../../css/modal.css';
-import SurchargAddFrDialog from "./SurchargAddFrDialog";
-import SurchargeRiderGroupDialog from "./SurchargeRiderGroupDialog";
-import { httpGet, httpUrl, httpPost } from '../../../api/httpClient';
+import SurchargeFrGroupDialog from "./SurchargeFrGroupDialog";
+import SearchFranchiseDialog from "../../dialog/common/SearchFranchiseDialog";
+import { httpUrl, httpPost } from '../../../api/httpClient';
+import { customAlert, customError} from "../../../api/Modals";
 
 class SurchargeGroupDialog extends Component {
     constructor(props) {
@@ -18,8 +19,9 @@ class SurchargeGroupDialog extends Component {
                 current: 1,
                 pageSize: 5,
             },
-            addRiderOpen: false,
-            registRiderGroupOpen: false,
+            addFranchiseOpen: false,
+            registGroupOpen: false,
+            selectedFr: null
         };
         this.formRef = React.createRef();
     }
@@ -38,6 +40,7 @@ class SurchargeGroupDialog extends Component {
         }, () => this.getList());
     };
 
+    // 지점에 해당된 그룹 리스트
     getList = () => {
         httpPost(httpUrl.priceExtraGroupList, [], {
             branchIdx: 1,
@@ -51,31 +54,109 @@ class SurchargeGroupDialog extends Component {
                 })
             }
             else {
-                Modal.info({
-                    title: "목록 에러",
-                    content: (
-                        <div>
-                            에러가 발생하여 목록을 불러올수 없습니다.
-                        </div>
-                    ),
-                });
+                customAlert("목록 에러", "에러가 발생하여 목록을 불러올수 없습니다.")
             }
         })
+        .catch((e) => {
+            customAlert("목록 에러", "에러가 발생하여 목록을 불러올수 없습니다.")
+        }); 
     };
-    // 기사추가 dialog
-    openAddRiderModal = () => {
-        this.setState({ addRiderOpen: true });
-    }
-    closeAddRiderModal = () => {
-        this.setState({ addRiderOpen: false });
+
+    // 그룹삭제
+    deleteGroup = (row) => {
+        let self = this;
+        Modal.confirm({
+            title: "그룹 삭제",
+            content: row.settingGroupName + " 그룹을 삭제하시겠습니까?",
+            okText: "확인",
+            cancelText: "취소",
+            onOk() {
+                let idx = row.idx
+                httpPost(httpUrl.priceExtraDeleteGroup, [], {
+                    idx: idx,
+                })
+                .then((res) => {
+                    if(res.result === "SUCCESS" && res.data === "SUCCESS"){
+                        customAlert("그룹 삭제", row.settingGroupName+" 그룹을 삭제하였습니다.")
+                        self.getList();
+                      }
+                    else {
+                        customError("삭제 에러", "에러가 발생하여 그룹을 삭제할수 없습니다.")
+                    }
+                })
+                .catch((e) => {
+                    customError("삭제 에러", "에러가 발생하여 그룹을 삭제할수 없습니다.")
+                });    
+            }
+        })
     }
 
-    // 기사 그룹 등록 dialog
-    openRegistRiderGroupModal = () => {
-        this.setState({ registRiderGroupOpen: true });
+    // 그룹에서 가맹점 삭제
+    deleteFranchise = (row) => {
+        let idx = row.idx
+        httpPost(httpUrl.franchiseUpdate, [], {
+            idx: idx,
+            frSettingGroupIdx: 0,
+        })
+        .then((res) => {
+            if (res.result === "SUCCESS") {
+                customAlert("가맹점 삭제", row.frName+" 가맹점을 삭제하였습니다.")
+            }
+            else {
+                customError("삭제 에러", "에러가 발생하여 그룹을 삭제할수 없습니다.")
+            }
+        })
+        .catch((e) => {
+            customError("삭제 에러", "에러가 발생하여 그룹을 삭제할수 없습니다.")
+        });    
     }
-    closeRegistRiderGroupModal = () => {
-        this.setState({ registRiderGroupOpen: false });
+
+     // 그룹에 가맹점 추가
+     registGroupFranchise = (grpIdx) => {
+        let self = this;
+        let idx = this.state.selectedFr.idx;
+        Modal.confirm({
+            title: "차단 등록",
+            content: "새로운 차단을 등록하시겠습니까?",
+            okText: "확인",
+            cancelText: "취소",
+            onOk() {
+                
+            }
+        })
+        httpPost(httpUrl.franchiseUpdate, [], {
+            idx: idx,
+            frSettingGroupIdx: grpIdx,
+        })
+        .then((res) => {
+            if(res.result === "SUCCESS" && res.data === "SUCCESS"){
+                customAlert("가맹점 추가", " 그룹에 가맹점을 추가하였습니다.")
+                self.getList();
+              }
+              else {
+                customError("추가 에러", "에러가 발생하여 가맹점을 추가할수 없습니다.")
+            }
+        })
+        .catch((e) => {
+            customError("추가 에러", "에러가 발생하여 가맹점을 추가할수 없습니다.")
+        });   
+    }
+
+    // 가맹점 그룹추가 dialog
+    openAddFranchiseModal = () => {
+        this.setState({ addFranchiseOpen: true });
+    }
+    closeAddFranchiseModal = () => {
+        this.setState({ addFranchiseOpen: false });
+    }
+
+    // 그룹 등록 dialog
+    openRegistGroupModal = () => {
+        this.setState({ registGroupOpen: true });
+    }
+    closeRegistGroupModal = () => {
+        this.setState({ registGroupOpen: false });
+        this.getList()
     }
 
 
@@ -88,14 +169,23 @@ class SurchargeGroupDialog extends Component {
                 className: "table-column-center",
             },
             {
-                title: "가맹점 추가",
                 className: "table-column-center",
-                render: () =>
+                render: (data, row) =>
                     <div>
-                        <SurchargAddFrDialog isOpen={this.state.addRiderOpen} close={this.closeAddRiderModal} />
                         <Button
                             className="tabBtn"
-                            onClick={() => { this.openAddRiderModal() }}
+                            onClick={() => this.deleteGroup(row)}
+                        >삭제</Button>
+                    </div>
+            },
+            {
+                title: "가맹점 추가",
+                className: "table-column-center",
+                render: (data, row) =>
+                    <div>
+                        <Button
+                            className="tabBtn"
+                            onClick={() => { this.openAddFranchiseModal()}}
                         >추가</Button>
                     </div>
             },
@@ -112,7 +202,7 @@ class SurchargeGroupDialog extends Component {
                             <Tag
                                 closable
                                 style={{ fontSize: 15, padding: 5}}
-                                onClose={() => this.setState({ visible: false })}
+                                onClose={() => this.deleteFranchise(row)}
                             >
                                 <div className="elipsis-table-row">{data}</div>
                             </Tag>
@@ -150,15 +240,14 @@ class SurchargeGroupDialog extends Component {
 
                                         <div className="surchargeGroupList-btn">
                                             <div className="surchargeGroupList-btn-01">
-                                                <SurchargeRiderGroupDialog isOpen={this.state.registRiderGroupOpen} close={this.closeRegistRiderGroupModal} />
+                                                <SurchargeFrGroupDialog isOpen={this.state.registGroupOpen} close={this.closeRegistGroupModal} />
                                                 <Button
                                                     className="tabBtn surchargeGroupList-btn"
-                                                    onClick={() => { this.openRegistRiderGroupModal() }}
+                                                    onClick={() => { this.openRegistGroupModal() }}
                                                 >그룹등록</Button>
                                             </div>
 
                                         </div>
-                                        <Form ref={this.formRef} onFinish={this.handleSubmit}>
                                             <div className="listBlock">
                                                 <Table
                                                     rowKey={(record) => record}
@@ -169,10 +258,15 @@ class SurchargeGroupDialog extends Component {
                                                     expandedRowRender={expandedRowRender}
                                                 />
                                             </div>
-
-                                        </Form>
-
                                     </div>
+                                    {/* 가맹점 추가 모달 */}
+                                    <SearchFranchiseDialog
+                                        isOpen={this.state.addFranchiseOpen}
+                                        close={this.closeAddFranchiseModal}
+                                        callback={(data) => 
+                                        this.setState({ selectedFr: data }).then(()=>this.registGroupFranchise())}
+                                    />
+
 
 
                                 </div>
