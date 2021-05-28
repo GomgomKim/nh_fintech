@@ -76,6 +76,7 @@ class ReceptionStatus extends Component {
       paymentOpen: false,
       editable: false,
       orderData: null,
+      paymentData: null,
 
       // data
       list: [],
@@ -359,8 +360,8 @@ class ReceptionStatus extends Component {
   };
 
   // 주문수정 dialog
-  openPaymentModal = () => {
-    this.setState({ paymentOpen: true });
+  openPaymentModal = (data) => {
+    this.setState({ paymentData: data, paymentOpen: true });
   };
   closePaymentModal = () => {
     this.setState({ paymentOpen: false });
@@ -438,28 +439,29 @@ class ReceptionStatus extends Component {
         title: "픽업시간",
         dataIndex: "pickupDate",
         className: "table-column-center",
-        render: (data) => <div>{data ? formatDate(data) : "대기중"}</div>,
+        render: (data, row) => (
+          <div>{row.orderStatus >= 3 ? formatDate(data) : "-"}</div>
+        ),
       },
       {
         title: "완료시간",
         dataIndex: "completeDate",
         className: "table-column-center",
-        render: (data) => <div>{data ? formatDate(data) : "배달중"}</div>,
+        render: (data, row) => (
+          <div>{row.orderStatus === 4 ? formatDate(data) : "-"}</div>
+        ),
       },
       {
         title: "기사명",
         dataIndex: "riderName",
         className: "table-column-center",
-      },
-      {
-        title: "기사소속",
-        dataIndex: "riderBelong",
-        className: "table-column-center",
+        render: (data, row) => <div>{row.orderStatus >= 2 ? data : "-"}</div>,
       },
       {
         title: "기사 연락처",
         dataIndex: "riderPhone",
         className: "table-column-center",
+        render: (data, row) => <div>{row.orderStatus >= 2 ? data : "-"}</div>,
       },
       {
         title: "도착지",
@@ -475,18 +477,42 @@ class ReceptionStatus extends Component {
       // antd 찾아봐야 될 듯
       // orderPayments - paymentMethod 라서 dataIndex 설정 필요
       {
-        title: "주문수정",
-        dataIndex: "updateOrder",
+        title: "가맹점명",
+        dataIndex: "frName",
         className: "table-column-center",
-        render: (data, row) => (
-          <Button
-            onClick={() => {
-              this.openModifyOrderModal(row);
-            }}
-          >
-            수정
-          </Button>
-        ),
+      },
+      {
+        title: "가맹점 번호",
+        dataIndex: "frPhone",
+        className: "table-column-center",
+      },
+      {
+        title: "가격",
+        dataIndex: "orderPrice",
+        className: "table-column-center",
+        render: (data) => <div>{comma(data)}</div>,
+      },
+      {
+        title: "배달요금",
+        dataIndex: "deliveryPrice",
+        className: "table-column-center",
+        render: (data) => <div>{comma(data)}</div>,
+      },
+      {
+        title: "결제방식",
+        dataIndex: "orderPayments",
+        className: "table-column-center",
+        render: (data, row) =>
+          data.length > 1 ? (
+            <Button
+              onClick={() => this.openPaymentModal(data)}
+              close={this.closePaymentModal}
+            >
+              보기
+            </Button>
+          ) : (
+            <div>{paymentMethod[data[0]["paymentMethod"]]}</div>
+          ),
       },
     ];
 
@@ -544,48 +570,6 @@ class ReceptionStatus extends Component {
         // },
         // 아마도 중복컬럼?
         {
-          title: "가맹점명",
-          dataIndex: "frName",
-          className: "table-column-center",
-        },
-        {
-          title: "가맹점 번호",
-          dataIndex: "frPhone",
-          className: "table-column-center",
-        },
-        {
-          title: "가격",
-          dataIndex: "orderPrice",
-          className: "table-column-center",
-          render: (data) => <div>{comma(data)}</div>,
-        },
-        {
-          title: "배달요금",
-          dataIndex: "deliveryPrice",
-          className: "table-column-center",
-          render: (data) => <div>{comma(data)}</div>,
-        },
-        {
-          title: "결제방식",
-          dataIndex: "orderPayments",
-          className: "table-column-center",
-          render: (data, row) =>
-            data.length > 1 ? (
-              <>
-                <PaymentDialog
-                  isOpen={this.state.paymentOpen}
-                  close={this.closePaymentModal}
-                  orderPayments={data}
-                />
-                <Button onClick={this.openPaymentModal} close={this.clos}>
-                  보기
-                </Button>
-              </>
-            ) : (
-              <div>{paymentMethod[data[0]["paymentMethod"]]}</div>
-            ),
-        },
-        {
           title: "배차",
           dataIndex: "forceLocate",
           className: "table-column-center",
@@ -619,6 +603,97 @@ class ReceptionStatus extends Component {
             </span>
           ),
         },
+        {
+          title: "주문수정",
+          dataIndex: "updateOrder",
+          className: "table-column-center",
+          render: (data, row) => (
+            <Button
+              onClick={() => {
+                this.openModifyOrderModal(row);
+              }}
+            >
+              수정
+            </Button>
+          ),
+        },
+
+        // {
+        //   title: "가맹점명",
+        //   dataIndex: "frName",
+        //   className: "table-column-center",
+        // },
+        // {
+        //   title: "가맹점 번호",
+        //   dataIndex: "frPhone",
+        //   className: "table-column-center",
+        // },
+        // {
+        //   title: "가격",
+        //   dataIndex: "orderPrice",
+        //   className: "table-column-center",
+        //   render: (data) => <div>{comma(data)}</div>,
+        // },
+        // {
+        //   title: "배달요금",
+        //   dataIndex: "deliveryPrice",
+        //   className: "table-column-center",
+        //   render: (data) => <div>{comma(data)}</div>,
+        // },
+        // {
+        //   title: "결제방식",
+        //   dataIndex: "orderPayments",
+        //   className: "table-column-center",
+        //   render: (data, row) =>
+        //     data.length > 1 ? (
+        //       <>
+        //         <PaymentDialog
+        //           isOpen={this.state.paymentOpen}
+        //           close={this.closePaymentModal}
+        //           orderPayments={data}
+        //         />
+        //         <Button onClick={this.openPaymentModal} close={this.clos}>
+        //           보기
+        //         </Button>
+        //       </>
+        //     ) : (
+        //       <div>{paymentMethod[data[0]["paymentMethod"]]}</div>
+        //     ),
+        // },
+        // {
+        //   title: "배차",
+        //   dataIndex: "forceLocate",
+        //   className: "table-column-center",
+        //   render: (data, row) => (
+        //     <span>
+        //       {/* <ForceAllocateDialog */}
+        //       {this.state.forceOpen && (
+        //         <SearchRiderDialog
+        //           close={this.closeForceingModal}
+        //           callback={(data) => this.assignRider(data, row.idx)}
+        //         />
+        //       )}
+        //       <Button className="tabBtn" onClick={this.openForceModal}>
+        //         강제배차
+        //       </Button>
+        //     </span>
+        //   ),
+        // },
+        // {
+        //   title: "메세지",
+        //   dataIndex: "franchisePhoneNum",
+        //   className: "table-column-center",
+        //   render: (data) => (
+        //     <span>
+        //       <Button className="tabBtn" onClick={this.openMessageModal}>
+        //         라이더
+        //       </Button>
+        //       <Button className="tabBtn" onClick={this.openMessageModal}>
+        //         가맹점
+        //       </Button>
+        //     </span>
+        //   ),
+        // },
       ];
       return (
         <Table
@@ -633,6 +708,12 @@ class ReceptionStatus extends Component {
 
     return (
       <div className="reception-box">
+        {this.state.paymentOpen && (
+          <PaymentDialog
+            close={this.closePaymentModal}
+            orderPayments={this.state.paymentData}
+          />
+        )}
         {this.state.MessageOpen && (
           <ChattingDialog close={this.closeMessageModal} />
         )}
