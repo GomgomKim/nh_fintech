@@ -167,7 +167,8 @@ const httpUrl = {
   priceExtraUpdate: "/branch/deliveryPriceExtra/update",
   priceExtraDelete: "/branch/deliveryPriceExtra/delete/{idx}?idx=%s",
   priceExtraGroupList: "/fr/settingGroup/list",
-
+  priceExtraRegistGroup: "/fr/settingGroup/create",
+  priceExtraDeleteGroup: "/fr/settingGroup/delete",
 
 
   // 직원 관리
