@@ -7,7 +7,7 @@ import SurchargAddFrDialog from "./SurchargAddFrDialog";
 import SurchargeRiderGroupDialog from "./SurchargeRiderGroupDialog";
 import { httpGet, httpUrl, httpPost } from '../../../api/httpClient';
 
-class TaskGroupDialog extends Component {
+class SurchargeGroupDialog extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -107,14 +107,14 @@ class TaskGroupDialog extends Component {
                 {
                     dataIndex: "frName",
                     className: "table-column-center",
-                    render: (data) =>
+                    render: (data, row) =>
                         <>
                             <Tag
-                                style={{ fontSize: 14, padding: 5 }}
                                 closable
+                                style={{ fontSize: 15, padding: 5}}
                                 onClose={() => this.setState({ visible: false })}
                             >
-                                {data}
+                                <div className="elipsis-table-row">{data}</div>
                             </Tag>
                         </>
                 },
@@ -124,7 +124,7 @@ class TaskGroupDialog extends Component {
                     className="subTable"
                     rowKey={(record) => `record: ${record.idx}`}
                     columns={dropColumns}
-                    dataSource={[record]}
+                    dataSource={(record.frs)}
                     pagination={false}
                 />
             );
@@ -139,20 +139,20 @@ class TaskGroupDialog extends Component {
                     isOpen ?
                         <React.Fragment>
                             <div className="Dialog-overlay" onClick={close} />
-                            <div className="taskGroup-Dialog">
+                            <div className="surchargeGroupList-Dialog">
 
-                                <div className="taskGroup-content">
-                                    <div className="taskGroup-title">
+                                <div className="surchargeGroupList-content">
+                                    <div className="surchargeGroupList-title">
                                         할증 그룹관리
                                     </div>
                                     <img onClick={close} src={require('../../../img/login/close.png').default} className="taskGroup-close" />
-                                    <div className="taskGroup-inner">
+                                    <div className="surchargeGroupList-inner">
 
-                                        <div className="taskGroup-btn">
-                                            <div className="taskGroup-btn-01">
+                                        <div className="surchargeGroupList-btn">
+                                            <div className="surchargeGroupList-btn-01">
                                                 <SurchargeRiderGroupDialog isOpen={this.state.registRiderGroupOpen} close={this.closeRegistRiderGroupModal} />
                                                 <Button
-                                                    className="tabBtn taskGroup-btn"
+                                                    className="tabBtn surchargeGroupList-btn"
                                                     onClick={() => { this.openRegistRiderGroupModal() }}
                                                 >그룹등록</Button>
                                             </div>
@@ -186,4 +186,4 @@ class TaskGroupDialog extends Component {
     }
 }
 
-export default (TaskGroupDialog);
+export default (SurchargeGroupDialog);
