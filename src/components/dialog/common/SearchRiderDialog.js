@@ -201,7 +201,8 @@ class SearchRiderDialog extends Component {
                                         <img
                                             onClick={close}
                                             src={require('../../../img/login/close.png').default}
-                                            className="surcharge-close"/>
+                                            className="surcharge-close"
+                                            alt="닫기" />
 
                                         <Form ref={this.formRef} onFinish={this.onSubmit}>
                                             <div className="layout">

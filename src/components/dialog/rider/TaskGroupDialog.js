@@ -135,11 +135,12 @@ class TaskGroupDialog extends Component {
                 render: () =>
                     <div>
                         <SearchRiderDialog 
-                        isOpen={this.state.searchRiderOpen} 
-                        close={this.closeSearchRiderModal} 
-                        callback={(data) => this.setState({
-                            selectedRider: data
-                        }, () => {this.getList()} 
+                            isOpen={this.state.searchRiderOpen} 
+                            close={this.closeSearchRiderModal}
+                            multi={true}
+                            callback={(data) => this.setState({
+                                selectedRider: data
+                            }, () => {this.getList()} 
                         )}/>
                         <Button
                             className="tabBtn"

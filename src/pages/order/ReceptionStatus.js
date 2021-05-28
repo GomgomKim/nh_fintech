@@ -659,6 +659,7 @@ class ReceptionStatus extends Component {
 
           {this.state.mapControlOpen &&
             <MapControlDialog
+              getList ={this.getList}
               callData={this.state.list}
               close={this.closeMapControlModal}
             />

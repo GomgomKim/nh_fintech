@@ -5,6 +5,7 @@ import { formatDate } from "../../../lib/util/dateUtil";
 import "../../../css/order.css";
 import { comma } from "../../../lib/util/numberUtil";
 import RegistCallDialog from "../../../components/dialog/order/RegistCallDialog";
+import SearchRiderDialog from "../../dialog/common/SearchRiderDialog";
 // import MapContainer from "./MapContainer";
 import { httpGet, httpUrl, httpPost} from '../../../api/httpClient';
 import { NaverMap, Marker, Polyline } from 'react-naver-maps';
@@ -81,10 +82,12 @@ class MapControlDialog extends Component {
             // 선택된 라이더 이동경로
             selRiderPath: [],
 
-            orderList: [],
-            orderListSel: [],
-
             modifyOrder: false,
+
+            // 주문 테이블 다중선택
+            selectedRowKeys: [],
+            dataIdxs: [],
+
         }
     }
 
@@ -147,9 +150,10 @@ class MapControlDialog extends Component {
               addPath.push(navermaps.LatLng(result.data.latitude, result.data.longitude))
               for (let i = 0; i < list.length; i++) {
                 if(list[i].latitude === 0 && list[i].longitude === 0) continue
+                addPath.push(navermaps.LatLng(list[i].frLatitude, list[i].frLongitude))
                 addPath.push(navermaps.LatLng(list[i].latitude, list[i].longitude))
               }
-              console.log("!!!!!!!!!!!!!!!! :"+addPath)
+              // console.log("!!!!!!!!!!!!!!!! :"+addPath)
 
               this.setState({
                 selRider: result.data,
@@ -248,60 +252,98 @@ class MapControlDialog extends Component {
     };
 
 
-  // 주문수정 dialog
-  openModifyOrderModal = (order) => {
-    console.log(order);
-    this.setState({ data: order, modifyOrder: true });
-  };
-  closeModifyOrderModal = () => {
-    this.setState({ modifyOrder: false });
-  };
+    // 주문수정 dialog
+    openModifyOrderModal = (order) => {
+      console.log(order);
+      this.setState({ data: order, modifyOrder: true });
+    };
+    closeModifyOrderModal = () => {
+      this.setState({ modifyOrder: false });
+    };
 
-  // 주문 삭제 API
-  deleteAssign = (orderIdx) => {
-    let self = this;
-        Modal.confirm({
-            title: "배차 삭제",
-            content: <div> 배차목록을 삭제하시겠습니까?</div>,
-            okText: "확인",
-            cancelText: "취소",
-            onOk() {
-                httpPost(httpUrl.assignRiderCancel, [], {orderIdx: orderIdx})
-                    .then((res) => {
-                        if(res.result === "SUCCESS"){
-                          switch (res.data) {
-                            case "SUCCESS":
-                              self.getList();
-                              break;
-                            case "ALREADY_CANCELED":
-                              customError("배차 오류", "이미 취소된 배차입니다.");
-                              break;
-                            case "ORDER_NOT_EXISTS":
-                              customError("배차 오류", "존재하지 않은 주문입니다.");
-                              break;
-                            case "PICKUPED_ORDER":
-                              customError("배차 오류", "이미 픽업된 배차입니다.");
-                              break;
-                            case "COMPLETED_ORDER":
-                              customError("배차 오류", "이미 주문 완료된 배차입니다.");
-                              break;
-                            case "NOT_ADMIN":
-                              customError("배차 오류", "관리자만 강제배차를 해제할 수 있습니다.");
-                              break;
-                            default:
-                              customError(
-                                "배차 오류",
-                                "배차에 실패했습니다. 관리자에게 문의하세요."
-                              );
-                              break;
-                          }
-                        } else deleteError()
-                    })
-                    .catch((error) => {
-                      deleteError()
-                    });
-            },
-        });
+    // 주문 삭제 API
+    deleteAssign = (orderIdx) => {
+      let self = this;
+          Modal.confirm({
+              title: "배차 삭제",
+              content: <div> 배차목록을 삭제하시겠습니까?</div>,
+              okText: "확인",
+              cancelText: "취소",
+              onOk() {
+                  httpPost(httpUrl.assignRiderCancel, [], {orderIdx: orderIdx})
+                      .then((res) => {
+                          if(res.result === "SUCCESS"){
+                            switch (res.data) {
+                              case "SUCCESS":
+                                self.getList();
+                                self.props.getList();
+                                break;
+                              case "ALREADY_CANCELED":
+                                customError("배차 오류", "이미 취소된 배차입니다.");
+                                break;
+                              case "ORDER_NOT_EXISTS":
+                                customError("배차 오류", "존재하지 않은 주문입니다.");
+                                break;
+                              case "PICKUPED_ORDER":
+                                customError("배차 오류", "이미 픽업된 배차입니다.");
+                                break;
+                              case "COMPLETED_ORDER":
+                                customError("배차 오류", "이미 주문 완료된 배차입니다.");
+                                break;
+                              case "NOT_ADMIN":
+                                customError("배차 오류", "관리자만 강제배차를 해제할 수 있습니다.");
+                                break;
+                              default:
+                                customError(
+                                  "배차 오류",
+                                  "배차에 실패했습니다. 관리자에게 문의하세요."
+                                );
+                                break;
+                            }
+                          } else deleteError()
+                      })
+                      .catch(() => {
+                        deleteError()
+                      });
+              },
+          });
+    }
+
+  onSelectChange = (selectedRowKeys) => {
+    // console.log('selectedRowKeys changed: ', selectedRowKeys)
+    // console.log("selectedRowKeys.length :"+selectedRowKeys.length)
+
+    // console.log(this.props.callData)
+    var cur_list = this.props.callData
+    var overrideData = {}
+    for (let i = 0; i < cur_list.length; i++) {
+        var idx = cur_list[i].idx
+        if(selectedRowKeys.includes(idx)) overrideData[idx] = true
+        else overrideData[idx] = false
+    }
+    console.log(overrideData)
+
+
+    var curIdxs = this.state.dataIdxs
+    curIdxs = Object.assign(curIdxs, overrideData)
+
+    selectedRowKeys = []
+    for (let i = 0; i < curIdxs.length; i++) {
+        if(curIdxs[i]) {
+            console.log("push  :"+i)
+            selectedRowKeys = [...selectedRowKeys, i]
+            console.log(selectedRowKeys)
+        }
+    }
+    // console.log("#### :"+selectedRowKeys)
+    this.setState({
+        selectedRowKeys: selectedRowKeys,
+        dataIdxs: curIdxs
+    });
+  }
+
+  assignRider = () => {
+
   }
       
     render() {
@@ -487,6 +529,12 @@ class MapControlDialog extends Component {
           },
         ];
 
+        const selectedRowKeys = this.state.selectedRowKeys
+        const rowSelection = {
+            selectedRowKeys,
+            onChange: this.onSelectChange
+        };
+
         return (
               <React.Fragment>
                 <RegistCallDialog
@@ -583,15 +631,21 @@ class MapControlDialog extends Component {
                               </div>
 
                               {this.props.callData &&
+                                <>
+                                <Button className="assign-rider-btn" onClick={()=>this.assignRider()}>
+                                    배차
+                                </Button>
                                 <Table
                                     rowKey={(record) => record.idx}
                                     dataSource={this.props.callData}
+                                    rowSelection={rowSelection}
                                     columns={columns_callList}
                                     rowClassName={(record) => rowColorName[record.orderStatus]}
                                     pagination={this.state.paginationCallList}
                                     onChange={this.handleCallListTableChange}
                                     className="callDataTable"
                                 />
+                                </>
                               }
 
                               {this.state.riderListOpen && (

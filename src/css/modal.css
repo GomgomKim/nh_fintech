@@ -290,6 +290,12 @@
   display: none; /* Chrome, Safari, Opera*/
 }
 
+.assign-rider-btn {
+  position: absolute;
+  top: 10%;
+  left: 24.95%;
+}
+
 .map-content {
   background-color: white;
   height: 100%;
