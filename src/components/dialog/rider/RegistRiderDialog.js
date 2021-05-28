@@ -149,7 +149,7 @@ class RegistRiderDialog extends Component {
     //     selectedRowKeys,
     //     onChange: this.onSelectChange
     // };
-    const { isOpen, close, data } = this.props;
+    const { close, data } = this.props;
 
     return (
           <React.Fragment>

@@ -335,7 +335,7 @@ class RiderMain extends Component {
         className: "table-column-center",
         render: (data, row) => (
           <div>
-            {this.state.ResistFranchiseOpen &&
+            {this.state.riderUpdateOpen &&
             <RegistRiderDialog close={this.closeUpdateRiderModal} data={this.state.dialogData} />}
             <Button
               className="tabBtn surchargeTab"
@@ -505,11 +505,6 @@ class RiderMain extends Component {
           />
         </div>
 
-        <RegistRiderDialog
-          isOpen={this.state.riderUpdateOpen}
-          close={this.closeUpdateRiderModal}
-          data={this.state.dialogData}
-        />
       </div>
     );
   }
