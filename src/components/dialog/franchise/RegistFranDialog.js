@@ -157,7 +157,7 @@ class RegistFranDialog extends Component {
         });
 
         // 예상 배송 요금
-        httpGet(httpUrl.expectDeliveryPrice, [lat, lng], {}).then((res) => {
+        httpGet(httpUrl.expectDeliveryPrice , [lat, lng], {}).then((res) => {
           // console.log("expectDeliveryPrice data :"+res.data)
           // console.log("expectDeliveryPrice data :"+res.data.distance)
           // console.log("expectDeliveryPrice data :"+res.data.deliveryPriceBasic)
@@ -287,27 +287,6 @@ class RegistFranDialog extends Component {
                       />
                     </FormItem>
                   </div>
-
-                  {/*  <div className="contentBlock">
-                                                    <div className="mainTitle">
-                                                        그룹
-                                                    </div>
-                                                    <FormItem
-                                                        name="userGroup"
-                                                        className="selectItem"
-                                                        rules={[{ required: true, message: "그룹을 선택해주세요" }]}
-                                                        initialValue={0}
-                                                    >
-                                                        <SelectBox
-                                                            className="override-select"
-                                                            style={{ width: "300px" }}
-                                                            placeholder="그룹을 선택해주세요"
-                                                            value={userGroupString}
-                                                            code={Object.keys(userGroupString)}
-                                                            codeString={userGroupString}
-                                                        />
-                                                    </FormItem>
-                                                </div> */}
 
                   <div className="contentBlock">
                     <div className="mainTitle">주소</div>

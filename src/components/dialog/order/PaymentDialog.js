@@ -13,7 +13,6 @@ import { formatDate } from "../../../lib/util/dateUtil";
 import { comma } from "../../../lib/util/numberUtil";
 
 const PaymentDialog = ({
-  isOpen,
   close,
   orderPayments,
   handlePaymentChange,
@@ -58,180 +57,177 @@ const PaymentDialog = ({
       initialIndex = Math.max(initialIndex, data[i].idx);
     }
     setMaxIdx(initialIndex + 1);
+    calcChange();
   });
 
-  useEffect(() => {
-    calcChange();
-  },[isOpen])
+  // useEffect(() => {
+  //   calcChange();
+  // }, [isOpen]);
 
   return (
     <React.Fragment>
-      {isOpen ? (
-        <React.Fragment>
-          <div className="Dialog-overlay" onClick={close} />
-          <div className="registFran-Dialog">
-            <div className="registFran-container">
-              <div className="registFran-title">결제내역</div>
-              <img
-                onClick={close}
-                src={require("../../../img/login/close.png").default}
-                className="surcharge-close"
-                alt="exit"
-              />
-              <Form>
-                <div className="layout">
-                  <div className="modifyOrderLayout">
-                    <div className="mainTitle" style={{ marginBottom: "15px" }}>
-                      내역수정
+      <React.Fragment>
+        <div className="Dialog-overlay" onClick={() => close()} />
+        <div className="registFran-Dialog">
+          <div className="registFran-container">
+            <div className="registFran-title">결제내역</div>
+            <img
+              onClick={() => close()}
+              src={require("../../../img/login/close.png").default}
+              className="surcharge-close"
+              alt="exit"
+            />
+            <Form>
+              <div className="layout">
+                <div className="modifyOrderLayout">
+                  <div className="mainTitle" style={{ marginBottom: "15px" }}>
+                    내역수정
+                  </div>
+                  {editable && (
+                    <Button
+                      type="primary"
+                      style={{
+                        float: "right",
+                      }}
+                      onClick={handlePlus}
+                    >
+                      +
+                    </Button>
+                  )}
+                  {data.length > 0 ? (
+                    <FormItem name="orderPayments">
+                      <div className="orderPayments-wrapper">
+                        {data.map((orderPayment, i) => {
+                          return (
+                            <div
+                              className="orderPayment-wrapper"
+                              key={orderPayment.idx}
+                            >
+                              {editable ? (
+                                <Select
+                                  defaultValue={orderPayment.paymentMethod}
+                                  onChange={(value) => {
+                                    const newData = data;
+                                    newData[i].paymentMethod = value;
+                                    setData(newData);
+                                  }}
+                                >
+                                  {paymentMethod.map((value, index) => {
+                                    if (index === 0) {
+                                      return;
+                                    }
+                                    return (
+                                      <Option value={index}>{value}</Option>
+                                    );
+                                  })}
+                                </Select>
+                              ) : (
+                                <Select
+                                  value={orderPayment.paymentMethod}
+                                  onChange={(value) => {
+                                    const newData = data;
+                                    newData[i].paymentMethod = value;
+                                    setData(newData);
+                                  }}
+                                >
+                                  {paymentMethod.map((value, index) => {
+                                    if (index === 0) {
+                                      return;
+                                    }
+                                    return (
+                                      <Option value={index}>{value}</Option>
+                                    );
+                                  })}
+                                </Select>
+                              )}
+                              {editable ? (
+                                <Select
+                                  defaultValue={orderPayment.paymentStatus}
+                                >
+                                  {paymentStatus.map((value, index) => {
+                                    if (index === 0) {
+                                      return;
+                                    }
+                                    return (
+                                      <Option value={index}>{value}</Option>
+                                    );
+                                  })}
+                                </Select>
+                              ) : (
+                                <Select value={orderPayment.paymentStatus}>
+                                  {paymentStatus.map((value, index) => {
+                                    if (index === 0) {
+                                      return;
+                                    }
+                                    return (
+                                      <Option value={index}>{value}</Option>
+                                    );
+                                  })}
+                                </Select>
+                              )}
+                              {editable ? (
+                                <Input
+                                  defaultValue={orderPayment.paymentAmount}
+                                  onChange={(e) => {
+                                    const newData = data;
+                                    newData[i].paymentAmount = parseInt(
+                                      e.target.value
+                                    );
+                                    setData(newData);
+                                    calcChange();
+                                  }}
+                                ></Input>
+                              ) : (
+                                <Input
+                                  value={orderPayment.paymentAmount}
+                                ></Input>
+                              )}
+                              {editable && (
+                                <Button
+                                  type="primary"
+                                  onClick={() => handleMinus(orderPayment.idx)}
+                                >
+                                  -
+                                </Button>
+                              )}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </FormItem>
+                  ) : (
+                    <div className="orderPayments-wrapper">
+                      결제 정보가 존재하지 않습니다.
                     </div>
+                  )}
+                  <div className="btnWrapper">
                     {editable && (
                       <Button
                         type="primary"
-                        style={{
-                          float: "right",
+                        onClick={() => {
+                          if (calcSum() > orderPrice) {
+                            Modal.info({
+                              title: "설정 오류",
+                              content: "결제 금액이 초과 되었습니다.",
+                            });
+                            return;
+                          }
+                          handlePaymentChange(data);
+                          close();
                         }}
-                        onClick={handlePlus}
                       >
-                        +
+                        등록하기
                       </Button>
                     )}
-                    {data.length > 0 ? (
-                      <FormItem name="orderPayments">
-                        <div className="orderPayments-wrapper">
-                          {data.map((orderPayment, i) => {
-                            return (
-                              <div
-                                className="orderPayment-wrapper"
-                                key={orderPayment.idx}
-                              >
-                                {editable ? (
-                                  <Select
-                                    defaultValue={orderPayment.paymentMethod}
-                                    onChange={(value) => {
-                                      const newData = data;
-                                      newData[i].paymentMethod = value;
-                                      setData(newData);
-                                    }}
-                                  >
-                                    {paymentMethod.map((value, index) => {
-                                      if (index === 0) {
-                                        return;
-                                      }
-                                      return (
-                                        <Option value={index}>{value}</Option>
-                                      );
-                                    })}
-                                  </Select>
-                                ) : (
-                                  <Select
-                                    value={orderPayment.paymentMethod}
-                                    onChange={(value) => {
-                                      const newData = data;
-                                      newData[i].paymentMethod = value;
-                                      setData(newData);
-                                    }}
-                                  >
-                                    {paymentMethod.map((value, index) => {
-                                      if (index === 0) {
-                                        return;
-                                      }
-                                      return (
-                                        <Option value={index}>{value}</Option>
-                                      );
-                                    })}
-                                  </Select>
-                                )}
-                                {editable ? (
-                                  <Select
-                                    defaultValue={orderPayment.paymentStatus}
-                                  >
-                                    {paymentStatus.map((value, index) => {
-                                      if (index === 0) {
-                                        return;
-                                      }
-                                      return (
-                                        <Option value={index}>{value}</Option>
-                                      );
-                                    })}
-                                  </Select>
-                                ) : (
-                                  <Select value={orderPayment.paymentStatus}>
-                                    {paymentStatus.map((value, index) => {
-                                      if (index === 0) {
-                                        return;
-                                      }
-                                      return (
-                                        <Option value={index}>{value}</Option>
-                                      );
-                                    })}
-                                  </Select>
-                                )}
-                                {editable ? (
-                                  <Input
-                                    defaultValue={orderPayment.paymentAmount}
-                                    onChange={(e) => {
-                                      const newData = data;
-                                      newData[i].paymentAmount = parseInt(
-                                        e.target.value
-                                      );
-                                      setData(newData);
-                                      calcChange();
-                                    }}
-                                  ></Input>
-                                ) : (
-                                  <Input
-                                    value={orderPayment.paymentAmount}
-                                  ></Input>
-                                )}
-                                {editable && (
-                                  <Button
-                                    type="primary"
-                                    onClick={() =>
-                                      handleMinus(orderPayment.idx)
-                                    }
-                                  >
-                                    -
-                                  </Button>
-                                )}
-                              </div>
-                            );
-                          })}
-                        </div>
-                      </FormItem>
-                    ) : (
-                      <div className="orderPayments-wrapper">
-                        결제 정보가 존재하지 않습니다.
-                      </div>
-                    )}
-                    <div className="btnWrapper">
-                      {editable && (
-                        <Button
-                          type="primary"
-                          onClick={() => {
-                            if (calcSum() > orderPrice) {
-                              Modal.info({
-                                title:"설정 오류",
-                                content:"결제 금액이 초과 되었습니다."
-                              })
-                              return;
-                            }
-                            handlePaymentChange(data);
-                            close();
-                          }}
-                        >
-                          등록하기
-                        </Button>
-                      )}
-                      <div className="mainTitle">{comma(change) + " 원"}</div>
-                      <div className="mainTitle">남은금액 :</div>
-                    </div>
+                    <div className="mainTitle">{comma(change) + " 원"}</div>
+                    <div className="mainTitle">남은금액 :</div>
                   </div>
                 </div>
-              </Form>
-            </div>
+              </div>
+            </Form>
           </div>
-        </React.Fragment>
-      ) : null}
+        </div>
+      </React.Fragment>
     </React.Fragment>
   );
 };
