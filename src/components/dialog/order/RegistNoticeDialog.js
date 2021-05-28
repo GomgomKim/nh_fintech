@@ -206,7 +206,7 @@ class RegistNoticeDialog extends Component {
                                                 </div>
                                                 <div className="contentBlock">
                                                     <div className="mainTitle">
-                                                        우선순위
+                                                        노출순위
                                                     </div>
                                                     <FormItem
                                                         name="sortOrder"
@@ -242,7 +242,7 @@ class RegistNoticeDialog extends Component {
                                                         className="selectItem"
                                                         initialValue={data ? data.content : ''}
                                                     >
-                                                        <Input
+                                                        <Input.TextArea
                                                         placeholder="내용을 입력해 주세요."
                                                         className="override-input notice-content"
                                                         />

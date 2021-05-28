@@ -467,7 +467,7 @@ class ReceptionStatus extends Component {
         title: "도착지",
         // dataIndex: "destAddr1",
         className: "table-column-center",
-        render: (data, row) => <div>{row.destAddr1 + " " + row.destAddr2}</div>,
+        render: (data, row) => <div className="arriveArea">{row.destAddr1 + " " + row.destAddr2}</div>,
       },
       {
         title: "거리(km)",

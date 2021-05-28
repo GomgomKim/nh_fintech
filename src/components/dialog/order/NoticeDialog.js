@@ -326,19 +326,28 @@ class NoticeDialog extends Component {
   render() {
     const columns = [
       {
-        title: "내용",
-        dataIndex: "content",
+        title: "제목",
+        dataIndex: "title",
         className: "table-column-center",
-        width: 550,
+        width: 300,
         render: (data) => (
-          <div className="table-column-left">{data}</div>
+          <div>{data}</div>
         ),
       },
       {
         title: "날짜",
         dataIndex: "createDate",
         className: "table-column-center",
+        width: 300,
         render: (data) => <div>{formatDate(data)}</div>,
+      },
+      {
+        title: "노출순위",
+        dataIndex: "sortOrder",
+        className: "table-column-center",
+        render: (data) => (
+          <div>{data}</div>
+        ),
       },
       {
         className: "table-column-center",
