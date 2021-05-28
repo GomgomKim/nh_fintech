@@ -238,6 +238,7 @@ class MapControlDialog extends Component {
         const pagination = { ...this.state.paginationList };
         pagination.current = result.data.currentPage;
         pagination.total = result.data.totalCount;
+        console.log(result.data.riders)
         this.setState({
           results: result.data.riders,
           paginationList: pagination,
