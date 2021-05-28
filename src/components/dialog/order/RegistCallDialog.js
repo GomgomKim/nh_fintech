@@ -94,6 +94,8 @@ class RegistCallDialog extends Component {
 
       mapLat: null,
       mapLng: null,
+
+      taskWorkOpen:false,
     };
     this.formRef = React.createRef();
   }
@@ -136,10 +138,10 @@ class RegistCallDialog extends Component {
   };
   // 가맹점조회 dialog
   openSearchFranchiseModal = () => {
-    this.setState({ searchFranchiseOpen: true });
+    this.setState({ taskWorkOpen: true });
   };
   closeSearchFranchiseModal = () => {
-    this.setState({ searchFranchiseOpen: false });
+    this.setState({ taskWorkOpen: false });
   };
   // 주소검색 dialog
   openPostCode = () => {
@@ -181,12 +183,15 @@ class RegistCallDialog extends Component {
   getDeliveryPrice = () => {
     // 예시
     var self = this;
+    console.log(this.state.selectedDest.roadAddress);
+
     httpGet(httpUrl.getGeocode, [this.state.selectedDest.roadAddress], {})
       .then((res) => {
         let result = JSON.parse(res.data.json);
         if (res.result === "SUCCESS" && result.addresses.length > 0) {
           const lat = result.addresses[0].y;
           const lng = result.addresses[0].x;
+          console.log(lat, lng);
           this.setState({
             mapLat: lat,
             mapLng: lng,
@@ -199,6 +204,7 @@ class RegistCallDialog extends Component {
           httpGet(httpUrl.getDeliveryPrice, [lat, lng], {})
             .then((res) => {
               if (res.result === "SUCCESS") {
+                console.log(res.data.deliveryPriceSum);
                 self.formRef.current.setFieldsValue({
                   deliveryPrice: res.data.deliveryPriceSum,
                 });
@@ -227,6 +233,35 @@ class RegistCallDialog extends Component {
         Modal.info({
           title: "등록오류",
           content: "좌표 계산 오류",
+        });
+      });
+  };
+
+  getDeliveryPriceByLatLng = (lat, lng) => {
+    const self = this;
+    httpGet(httpUrl.getDeliveryPrice, [lat, lng], {})
+      .then((res) => {
+        if (res.result === "SUCCESS") {
+          self.formRef.current.setFieldsValue({
+            deliveryPrice: res.data.deliveryPriceSum,
+          });
+          this.setState({
+            data: {
+              ...this.state.data,
+              deliveryPrice: res.data.deliveryPriceSum,
+            },
+          });
+        } else {
+          Modal.info({
+            title: "등록오류",
+            content: "배달요금 계산 오류1",
+          });
+        }
+      })
+      .catch((e) => {
+        Modal.info({
+          title: "등록오류",
+          content: "배달요금 계산 오류2",
         });
       });
   };
@@ -271,7 +306,7 @@ class RegistCallDialog extends Component {
     const lat = 37.643623625321474;
     const lng = 126.66509442649551;
 
-    const { isOpen, close } = this.props;
+    const { close } = this.props;
     const data = this.props.data ? this.props.data : newOrder;
     const navermaps = window.naver.maps;
     let deliveryPrice = this.state.data
@@ -280,9 +315,10 @@ class RegistCallDialog extends Component {
       ? this.props.data.deliveryPrice
       : "";
 
+    const reverseGeocode = navermaps.Service.reverseGeocode;
+
     return (
-      <React.Fragment>
-        {isOpen ? (
+
           <React.Fragment>
             <div className="Dialog-overlay" onClick={close} />
             <div className="registCall-Dialog">
@@ -303,6 +339,7 @@ class RegistCallDialog extends Component {
                       <div className="contentBlock">
                         <div className="mainTitle">가맹점명</div>
                         <FormItem name="addrMain" className="selectItem">
+                        {this.state.taskWorkOpen &&
                           <SearchFranchiseDialog
                             onSelect={(fr) => {
                               this.setState({ selectedFr: fr }, () => {
@@ -320,9 +357,8 @@ class RegistCallDialog extends Component {
                                 });
                               });
                             }}
-                            isOpen={this.state.searchFranchiseOpen}
                             close={this.closeSearchFranchiseModal}
-                          />
+                          />}
 
                           <div className="orderPayment-wrapper">
                             <Input
@@ -577,36 +613,71 @@ class RegistCallDialog extends Component {
                           className="mapLayout"
                           defaultZoom={14}
                           center={
-                            this.props.data
-                              ? {
-                                  lat: this.props.data.latitude,
-                                  lng: this.props.data.longitude,
-                                }
-                              : this.state.mapLat && this.state.mapLng
-                              ? {
-                                  lat: this.state.mapLat,
-                                  lng: this.state.mapLng,
-                                }
-                              : { lat: lat, lng: lng }
+                            this.state.mapLat && this.state.mapLng
+                              ? navermaps.LatLng(
+                                  this.state.mapLat,
+                                  this.state.mapLng
+                                )
+                              : this.props.data
+                              ? navermaps.LatLng(
+                                  this.props.data.latitude,
+                                  this.props.data.longitude
+                                )
+                              : navermaps.LatLng(lat, lng)
                           }
                           onClick={(e) => {
                             this.setState({
                               mapLat: e.latlng.y,
                               mapLng: e.latlng.x,
                             });
+                            window.naver.maps.Service.reverseGeocode(
+                              {
+                                location: window.naver.maps.LatLng(
+                                  e.latlng.y,
+                                  e.latlng.x
+                                ),
+                              },
+                              (status, response) => {
+                                if (status !== navermaps.Service.Status.OK) {
+                                  return alert("실패");
+                                } else {
+                                  this.setState(
+                                    {
+                                      data: {
+                                        ...this.state.data,
+                                        latitude: e.latlng.y,
+                                        longitude: e.latlng.x,
+                                        destAddr1:
+                                          response.result.items[0].address,
+                                      },
+                                      selectedDest: {
+                                        address:
+                                          response.result.items[0].address,
+                                      },
+                                    },
+                                    () =>
+                                      this.getDeliveryPriceByLatLng(
+                                        e.latlng.y,
+                                        e.latlng.x
+                                      )
+                                  );
+                                  console.log(response.result.items[0].address);
+                                }
+                              }
+                            );
                           }}
                         >
                           <Marker
                             position={
-                              this.props.data
-                                ? navermaps.LatLng(
-                                    this.props.data.latitude,
-                                    this.props.data.longitude
-                                  )
-                                : this.state.mapLat && this.state.mapLng
+                              this.state.mapLat && this.state.mapLng
                                 ? navermaps.LatLng(
                                     this.state.mapLat,
                                     this.state.mapLng
+                                  )
+                                : this.props.data
+                                ? navermaps.LatLng(
+                                    this.props.data.latitude,
+                                    this.props.data.longitude
                                   )
                                 : navermaps.LatLng(lat, lng)
                             }
@@ -623,10 +694,10 @@ class RegistCallDialog extends Component {
               </div>
             </div>
           </React.Fragment>
-        ) : null}
-      </React.Fragment>
+
     );
   }
 }
 
 export default RegistCallDialog;
+

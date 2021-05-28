@@ -197,12 +197,10 @@ class TaskSchedulerDialog extends Component {
         ];
 
 
-        const { isOpen, close } = this.props;
+        const { close } = this.props;
 
         return (
-            <React.Fragment>
-                {
-                    isOpen ?
+
                         <React.Fragment>
                             <div className="Dialog-overlay" onClick={close} />
                             <div className="taskScheduler-Dialog">
@@ -216,14 +214,16 @@ class TaskSchedulerDialog extends Component {
 
                                         <div className="taskScheduler-btn">
                                             <div className="taskScheduler-btn-01">
-                                                <TaskGroupDialog isOpen={this.state.taskGroupOpen} close={this.closeTaskGroupModal} />
+                                            {this.state.taskGroupOpen &&
+                                                <TaskGroupDialog close={this.closeTaskGroupModal} />}
                                                 <Button
                                                     className="tabBtn taskScheduler-btn"
                                                     onClick={this.openTaskGroupModal}
                                                 >그룹설정</Button>
                                             </div>
                                             <div className="taskScheduler-btn-02">
-                                                <TaskWorkDialog isOpen={this.state.taskWorkOpen} close={this.closeTaskWorkModal} />
+                                            {this.state.taskWorkOpen &&
+                                                <TaskWorkDialog close={this.closeTaskWorkModal} />}
                                                 <Button
                                                     className="tabBtn taskScheduler-btn"
                                                     onClick={this.openTaskWorkModal}
@@ -257,10 +257,7 @@ class TaskSchedulerDialog extends Component {
                                 </div>
                             </div>
                         </React.Fragment>
-                        :
-                        null
-                }
-            </React.Fragment>
+
         )
     }
 }

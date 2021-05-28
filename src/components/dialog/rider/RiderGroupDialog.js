@@ -140,165 +140,153 @@ class RiderGroupDialog extends Component {
         ];
 
 
-        const { isOpen, close } = this.props;
+        const { close } = this.props;
 
         return (
-            <React.Fragment>
-                {
-                    isOpen ?
-                        <React.Fragment>
-                            <div className="Dialog-overlay" onClick={close} />
-                            <div className="riderGroup-Dialog">
-
-                                <div className="riderGroup-content">
-                                    <div className="riderGroup-title">
-                                        기사 그룹관리
-                                    </div>
-                                    <img onClick={close} src={require('../../../img/login/close.png').default} className="riderGroup-close" />
-                                    <div className="riderGroup-inner">
-                                        <Form ref={this.formIdRef} onFinish={this.handleIdSubmit}>
-
-                                            <div className="listBlock">
-                                                <Table
-                                                    dataSource={this.state.list}
-                                                    columns={columns}
-                                                    // pagination={this.state.pagination}
-                                                    onChange={this.handleTableChange}
-                                                    onRow={this.onClickRow}
-                                                    rowClassName={this.setRowClassName}
-                                                />
-                                            </div>
-
-                                        </Form>
-                                        <div className="riderGroup-ftline">
-                                            <div className="riderGroup-ftline-01">
-                                                <Checkbox>&nbsp;</Checkbox><td>오더처리건수</td>
-                                            </div>
-                                            <div className="inputBox inputBox-rider sub">
-                                                <FormItem
-                                                    name="riderG"
-                                                    rules={[{ required: true, message: "0건." }]}
-                                                >
-                                                    <Input />
-                                                </FormItem>
-                                                <div className="riderGText">
-                                                    까지 배차가능
-                                                </div>
-                                            </div>
-
-
-
-                                            <div className="riderGroup-ftline-02">
-                                                <Checkbox>&nbsp;</Checkbox><td>출금설정</td>
-                                                <Checkbox></Checkbox>
-                                                <span class="riderSubtext">출금 사용</span>
-
-                                                <div className="inputBox inputBox-rider">
-                                                    <FormItem
-                                                        name="riderG"
-                                                        rules={[{ required: true, message: "0건." }]}
-                                                    >
-                                                        <Input />
-                                                    </FormItem>
-                                                    <div className="riderGText">
-                                                        원 (출금 후 잔액이 설정금액이상 있어야 출금허용)
-                                                </div>
-                                                </div>
-                                            </div>
-
-
-
-                                            <div className="riderGroup-ftline-03">
-                                                <Checkbox>&nbsp;</Checkbox><td>가맹점 코인이체</td>
-                                                <Checkbox></Checkbox>
-                                                <span class="riderSubtext">이체 사용</span>
-
-                                                <div className="inputBox inputBox-rider">
-                                                    <FormItem
-                                                        name="riderG"
-                                                        rules={[{ required: true, message: "0건." }]}
-                                                    >
-                                                        <Input />
-                                                    </FormItem>
-                                                    <div className="riderGText">
-                                                        원 까지만 이체가능
-                                                </div>
-                                                </div>
-                                            </div>
-
-
-
-                                            <div className="riderGroup-ftline-04">
-                                                <Checkbox>&nbsp;</Checkbox><td>기사수수료</td>
-                                                <FormItem
-                                                    style={{
-                                                        marginBottom: 0,
-                                                        display: 'inline-block',
-                                                        verticalAlign: 'middle',
-                                                    }}
-                                                    name="payType"
-                                                    initialValue={0}
-                                                >
-                                                    <Radio.Group>
-                                                        <Radio style={{ fontSize: 18 }} value={0}>정률</Radio>
-                                                        <Radio style={{ fontSize: 18 }} value={1}>정액&nbsp;&nbsp;&nbsp;</Radio>
-                                                    </Radio.Group>
-                                                </FormItem>
-                                            </div>
-
-                                            <div className="riderGroup-ftline-05">
-                                                <td>&nbsp;</td>
-                                                <FormItem
-                                                    style={{
-                                                        marginBottom: 0,
-                                                        display: 'inline-block',
-                                                        verticalAlign: 'middle',
-                                                    }}
-                                                    name="payType"
-                                                    initialValue={0}
-                                                >
-                                                    <Radio.Group>
-                                                        <Radio style={{ fontSize: 18 }} value={0}>고정</Radio>
-                                                        <Radio style={{ fontSize: 18 }} value={1}>할인&nbsp;&nbsp;&nbsp;을</Radio>
-                                                    </Radio.Group>
-                                                </FormItem>
-                                            </div>
-                                            <div className="inputBox inputBox-rider">
-                                                <FormItem
-                                                    name="riderG"
-                                                    rules={[{ required: true, message: "0건." }]}
-                                                >
-                                                    <Input />
-                                                </FormItem>
-                                                <div className="riderGText">
-                                                    원으로 설정
-                                                </div>
-                                            </div>
-                                            <div className="riderGroup-btn">
-                                                <div className="riderGroup-btn-01">
-                                                    <Button
-                                                        className="tabBtn riderGroup-btn"
-                                                        onClick={() => { }}
-                                                    >적용</Button>
-                                                </div>
-
-                                            </div>
-
-
-                                        </div>
-
-
-
-                                    </div>
-
-
+        <React.Fragment>
+            <div className="Dialog-overlay" onClick={close} />
+            <div className="riderGroup-Dialog">
+                <div className="riderGroup-content">
+                    <div className="riderGroup-title">
+                        기사 그룹관리
+                    </div>
+                    <img onClick={close} src={require('../../../img/login/close.png').default} className="riderGroup-close" alt="img" />
+                    <div className="riderGroup-inner">
+                        <Form ref={this.formIdRef} onFinish={this.handleIdSubmit}>
+                            <div className="listBlock">
+                                <Table
+                                dataSource={this.state.list}
+                                columns={columns}
+                                // pagination={this.state.pagination}
+                                onChange={this.handleTableChange}
+                                onRow={this.onClickRow}
+                                rowClassName={this.setRowClassName}
+                                />
+                            </div>
+                        </Form>
+                        <div className="riderGroup-ftline">
+                            <div className="riderGroup-ftline-01">
+                                <Checkbox>&nbsp;</Checkbox><td>오더처리건수</td>
+                            </div>
+                            <div className="inputBox inputBox-rider sub">
+                                <FormItem
+                                name="riderG"
+                                rules={[{ required: true, message: "0건." }]}
+                                >
+                                    <Input />
+                                </FormItem>
+                                <div className="riderGText">
+                                    까지 배차가능
                                 </div>
                             </div>
-                        </React.Fragment>
-                        :
-                        null
-                }
-            </React.Fragment>
+                            
+                            
+                            <div className="riderGroup-ftline-02">
+                                <Checkbox>&nbsp;</Checkbox><td>출금설정</td>
+                                <Checkbox></Checkbox>
+                                <span class="riderSubtext">출금 사용</span>
+                                
+                                <div className="inputBox inputBox-rider">
+                                    <FormItem
+                                    name="riderG"
+                                    rules={[{ required: true, message: "0건." }]}
+                                    >
+                                        <Input />
+                                    </FormItem>
+                                    <div className="riderGText">
+                                        원 (출금 후 잔액이 설정금액이상 있어야 출금허용)
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            
+                            <div className="riderGroup-ftline-03">
+                                <Checkbox>&nbsp;</Checkbox><td>가맹점 코인이체</td>
+                                <Checkbox></Checkbox>
+                                <span class="riderSubtext">이체 사용</span>
+                                
+                                <div className="inputBox inputBox-rider">
+                                    <FormItem
+                                    name="riderG"
+                                    rules={[{ required: true, message: "0건." }]}
+                                    >
+                                        <Input />
+                                    </FormItem>
+                                    <div className="riderGText">
+                                        원 까지만 이체가능
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            
+                            <div className="riderGroup-ftline-04">
+                                <Checkbox>&nbsp;</Checkbox><td>기사수수료</td>
+                                <FormItem
+                                style={{
+                                    marginBottom: 0,
+                                    display: 'inline-block',
+                                    verticalAlign: 'middle',
+                                }}
+                                name="payType"
+                                initialValue={0}
+                                >
+                                    <Radio.Group>
+                                        <Radio style={{ fontSize: 18 }} value={0}>정률</Radio>
+                                        <Radio style={{ fontSize: 18 }} value={1}>정액&nbsp;&nbsp;&nbsp;</Radio>
+                                    </Radio.Group>
+                                </FormItem>
+                            </div>
+                            
+                            <div className="riderGroup-ftline-05">
+                                <td>&nbsp;</td>
+                                <FormItem
+                                style={{
+                                    marginBottom: 0,
+                                    display: 'inline-block',
+                                    verticalAlign: 'middle',
+                                }}
+                                name="payType"
+                                initialValue={0}
+                                >
+                                    <Radio.Group>
+                                        <Radio style={{ fontSize: 18 }} value={0}>고정</Radio>
+                                        <Radio style={{ fontSize: 18 }} value={1}>할인&nbsp;&nbsp;&nbsp;을</Radio>
+                                    </Radio.Group>
+                                </FormItem>
+                            </div>
+                            <div className="inputBox inputBox-rider">
+                                <FormItem
+                                name="riderG"
+                                rules={[{ required: true, message: "0건." }]}
+                                >
+                                    <Input />
+                                </FormItem>
+                                <div className="riderGText">
+                                    원으로 설정
+                                </div>
+                            </div>
+                            <div className="riderGroup-btn">
+                                <div className="riderGroup-btn-01">
+                                    <Button
+                                    className="tabBtn riderGroup-btn"
+                                    onClick={() => { }}
+                                    >적용</Button>
+                                </div>
+
+                            </div>
+
+
+                        </div>
+
+
+
+                    </div>
+
+
+                </div>
+            </div>
+        </React.Fragment>
+        
         )
     }
 }

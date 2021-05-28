@@ -149,11 +149,9 @@ class RegistRiderDialog extends Component {
     //     selectedRowKeys,
     //     onChange: this.onSelectChange
     // };
-    const { isOpen, close, data } = this.props;
+    const { close, data } = this.props;
 
     return (
-      <React.Fragment>
-        {isOpen ? (
           <React.Fragment>
             <div className="Dialog-overlay" onClick={close} />
             <div className="registRider-Dialog">
@@ -414,8 +412,8 @@ class RegistRiderDialog extends Component {
               </div>
             </div>
           </React.Fragment>
-        ) : null}
-      </React.Fragment>
+
+
     );
   }
 }

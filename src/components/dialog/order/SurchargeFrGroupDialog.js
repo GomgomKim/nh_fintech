@@ -1,11 +1,13 @@
 import React, { Component } from "react";
 import {
-    Form, Input, Button,
+    Form, Input, Button, Modal
 } from "antd";
 import '../../../css/modal.css';
+import { connect } from "react-redux";
+import { httpUrl, httpPost } from '../../../api/httpClient';
 const FormItem = Form.Item;
 
-class SurchargeRiderGroupDialog extends Component {
+class SurchargeFrGroupDialog extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -23,14 +25,7 @@ class SurchargeRiderGroupDialog extends Component {
 
     componentDidMount() {
     }
-
-    onChange = e => {
-        // console.log('radio checked', e.target.value);
-        this.setState({
-            staffAuth: e.target.value,
-        });
-    };
-
+    
     handleTableChange = (pagination) => {
         console.log(pagination)
         const pager = { ...this.state.pagination };
@@ -40,6 +35,44 @@ class SurchargeRiderGroupDialog extends Component {
             pagination: pager,
         }, () => this.getList());
     };
+
+    handleClear = () => {
+        this.formRef.current.resetFields();
+    };
+
+    // 그룹추가
+    handleSubmit = () => {
+        const form = this.formRef.current;
+        httpPost(httpUrl.priceExtraRegistGroup, [], {
+            branchIdx: this.props.userGroup,
+            settingGroupName: form.getFieldValue("settingGroupName")
+        })
+        .then((res) => {
+            console.log(res)
+            if (res.result === "SUCCESS") {
+                Modal.info({
+                    title: "새로운 그룹 추가",
+                    content: (
+                        <div>
+                            그룹 추가가 완료 되었습니다.
+                        </div>
+                    ),
+                });
+                this.handleClear()
+                this.props.close()
+            }
+            else {
+                Modal.info({
+                    title: "에러",
+                    content: (
+                        <div>
+                            에러가 발생하여 삭제할수 없습니다.
+                        </div>
+                    ),
+                });
+            }
+        })
+    }
 
     render() {
         const { isOpen, close } = this.props;
@@ -58,8 +91,7 @@ class SurchargeRiderGroupDialog extends Component {
                                     </div>
                                     <img onClick={close} src={require('../../../img/login/close.png').default} className="addRider-close" />
 
-
-                                    <Form ref={this.formRef} onFinish={this.handleIdSubmit}>
+                                    <Form ref={this.formRef} onFinish={this.handleSubmit}>
                                         <div className="surchargeGrouplayout">
                                             <div className="surchargeGroupWrapper">
                                                 <div className="contentBlock">
@@ -67,7 +99,7 @@ class SurchargeRiderGroupDialog extends Component {
                                                         그룹명
                                                     </div>
                                                     <FormItem
-                                                        name="groupName"
+                                                        name="settingGroupName"
                                                         className="selectItem"
                                                     >
                                                         <Input placeholder="그룹명을 입력해 주세요." className="override-input">
@@ -80,7 +112,6 @@ class SurchargeRiderGroupDialog extends Component {
                                                         등록하기
                                                     </Button>
                                                 </div>
-
                                             </div>
 
                                         </div>
@@ -95,5 +126,15 @@ class SurchargeRiderGroupDialog extends Component {
         )
     }
 }
+const mapStateToProps = (state) => {
+    return {
+        userGroup: state.login.loginInfo.userGroup,
+    };
+}
+const mapDispatchToProps = (dispatch) => {
+    return {
 
-export default (SurchargeRiderGroupDialog);
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SurchargeFrGroupDialog);

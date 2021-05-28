@@ -345,7 +345,8 @@ class NoticeDialog extends Component {
         render: !this.state.checkedDeletedCall && (
           (data, row) => (
           <div>
-            <RegistNoticeDialog data={this.state.dialogData} isOpen={this.state.updateNotice} close={this.closeNoticeUpdateModal} />
+            {this.state.updateNotice &&
+            <RegistNoticeDialog data={this.state.dialogData} close={this.closeNoticeUpdateModal} />}
             <Button
               className="tabBtn surchargeTab"
               onClick={() => {this.setState({ updateNotice: true, dialogData: row })}}
@@ -380,53 +381,51 @@ class NoticeDialog extends Component {
     const { close } = this.props;
 
     return (
-      <React.Fragment>
- 
-          <React.Fragment>
-            <div className="Dialog-overlay" onClick={close} />
-            <div className="noticeDialog">
-              <div className="container">
-                <div className="notice-title">공지사항</div>
-                <img
-                  onClick={close}
-                  src={require("../../../img/login/close.png").default}
-                  className="surcharge-close"
-                  alt="img"
-                />
-                <div className="noticeLayout">
-                    <div className="noticelistBlock">
-                      <div className="deleteBox">
-                        <Checkbox
-                        defaultChecked={this.state.checkedDeletedCall ? "checked":""}
-                        onChange={this.handleToggleDeletedCall}></Checkbox>
-                        <span className="span1">삭제목록</span>
-                      </div>
-                      <div className="registBtn">
-                      <RegistNoticeDialog isOpen={this.state.registNotice} close={this.closeNoticeRegistrationModal} />
-                        <Button
-                          type="primary"
-                          htmlType="submit"
-                          className="tabBtn insertTab noticeBtn"
-                          onClick={() => {this.setState({ registNotice: true })}}
-                        >
-                          등록하기
-                        </Button>
-                      </div>
-                        <Table
-                          className="noticeListTable"
-                          rowKey={(record) => record.idx}
-                          rowClassName={(record) => record.important === true ? "table-blue" : "table-white"}
-                          dataSource={this.state.list}
-                          columns={columns}
-                          pagination={this.state.pagination}
-                          onChange={this.handleTableChange}
-                        />                      
-                    </div>
-                </div>
+    <React.Fragment>
+      <div className="Dialog-overlay" onClick={close} />
+      <div className="noticeDialog">
+        <div className="container">
+          <div className="notice-title">공지사항</div>
+          <img
+          onClick={close}
+          src={require("../../../img/login/close.png").default}
+          className="surcharge-close"
+          alt="닫기"
+          />
+          <div className="noticeLayout">
+            <div className="noticelistBlock">
+              <div className="deleteBox">
+                <Checkbox
+                defaultChecked={this.state.checkedDeletedCall ? "checked":""}
+                onChange={this.handleToggleDeletedCall}></Checkbox>
+                <span className="span1">삭제목록</span>
               </div>
+              <div className="registBtn">
+                {this.state.registNotice &&
+                <RegistNoticeDialog close={this.closeNoticeRegistrationModal} />}
+                <Button
+                type="primary"
+                htmlType="submit"
+                className="tabBtn insertTab noticeBtn"
+                onClick={() => {this.setState({ registNotice: true })}}
+                >
+                  등록하기
+                </Button>
+              </div>
+              <Table
+              className="noticeListTable"
+              rowKey={(record) => record.idx}
+              rowClassName={(record) => record.important === true ? "table-blue" : "table-white"}
+              dataSource={this.state.list}
+              columns={columns}
+              pagination={this.state.pagination}
+              onChange={this.handleTableChange}
+              />                      
             </div>
-          </React.Fragment>
-      </React.Fragment>
+          </div>
+        </div>
+      </div>
+    </React.Fragment>
     );
   }
 }

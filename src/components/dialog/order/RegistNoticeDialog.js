@@ -177,12 +177,10 @@ class RegistNoticeDialog extends Component {
 
 
     render() {
-        const { data, isOpen, close } = this.props;
+        const { data, close } = this.props;
 
         return (
-            <React.Fragment>
-                {
-                    isOpen ?
+
                         <React.Fragment>
                             <div className="Dialog-overlay" onClick={close} />
                             <div className="registNoticeDialog">
@@ -190,7 +188,7 @@ class RegistNoticeDialog extends Component {
                                     <div className="registStaff-title">
                                         {data ? "공지 수정" : "공지 등록" }
                                     </div>
-                                    <img onClick={close} src={require('../../../img/login/close.png').default} className="surcharge-close" alt="profile" />
+                                    <img onClick={close} src={require('../../../img/login/close.png').default} className="surcharge-close" alt="닫기" />
                                     <Form ref={this.formRef} onFinish={this.handleSubmit}>
                                         <div className="layout">
                                             <div className="registNoticeWrapper">
@@ -270,10 +268,7 @@ class RegistNoticeDialog extends Component {
                                 </div>
                             </div>
                         </React.Fragment>
-                        :
-                        null
-                }
-            </React.Fragment>
+
         )
     }
 }
