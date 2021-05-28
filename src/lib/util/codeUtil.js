@@ -143,6 +143,11 @@ const packAmount = {
   5: "5개이상",
 };
 
+const surchargeType = [
+    "지점 전체",
+    "지정 그룹"
+]
+
 const addType = [
   // "",
   "아파트",
@@ -175,4 +180,5 @@ export {
   packAmount,
   addType,
   orderCnt,
+  surchargeType
 };
