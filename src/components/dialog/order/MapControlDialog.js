@@ -90,14 +90,27 @@ class MapControlDialog extends Component {
 
             isAssignRider: false,
 
+            waitingList: [],
         }
     }
 
     componentDidMount() {
         this.getRiderList()
         this.getRiderLocateList()
+        this.getWaitingList()
     }
 
+    getWaitingList = () => {
+      var list = []
+      this.props.callData.map(row => {
+        if(row.orderStatus === 1)
+        list.push(row)
+      })
+
+      this.setState({
+        waitingList: list,
+      })
+    }
 
     setDate = (date) => {
         console.log(date)
@@ -441,7 +454,7 @@ class MapControlDialog extends Component {
             title: "도착지",
             // dataIndex: "destAddr1",
             className: "table-column-center",
-            render: (data, row) => <div>{row.destAddr1 + " " + row.destAddr2}</div>,
+            render: (data, row) => <div className="arriveArea">{row.destAddr1 + " " + row.destAddr2}</div>,
           },
           {
             title: "거리(km)",
@@ -530,7 +543,7 @@ class MapControlDialog extends Component {
           {
             title: "도착지",
             className: "table-column-center arrive",
-            render: (data, row) => <div>{row.destAddr1 === "" ? "-" : row.destAddr1 + " " + row.destAddr2}</div>,
+            render: (data, row) => <div className="arriveArea">{row.destAddr1 === "" ? "-" : row.destAddr1 + " " + row.destAddr2}</div>,
           },
         ];
 
@@ -643,7 +656,7 @@ class MapControlDialog extends Component {
                                 </Button>
                                 <Table
                                     rowKey={(record) => record.idx}
-                                    dataSource={this.props.callData}
+                                    dataSource={this.state.waitingList}
                                     rowSelection={rowSelection}
                                     columns={columns_callList}
                                     rowClassName={(record) => rowColorName[record.orderStatus]}

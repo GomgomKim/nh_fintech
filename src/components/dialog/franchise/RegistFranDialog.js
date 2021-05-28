@@ -426,7 +426,7 @@ class RegistFranDialog extends Component {
                           </FormItem>
                         </div>
                       </div>
-                      <div className="contentBlock">
+                      {/* <div className="contentBlock">
                         <div className="mainTitle">배달거리</div>
                         <FormItem
                           name="distance"
@@ -439,7 +439,7 @@ class RegistFranDialog extends Component {
                             className="override-input"
                           />
                         </FormItem>
-                      </div>
+                      </div> */}
                       <div className="contentBlock">
                         <div className="mainTitle">배달요금</div>
                         <FormItem
