@@ -88,6 +88,8 @@ class MapControlDialog extends Component {
             selectedRowKeys: [],
             dataIdxs: [],
 
+            isAssignRider: false,
+
         }
     }
 
@@ -140,7 +142,7 @@ class MapControlDialog extends Component {
         httpGet(httpUrl.riderLocate, [selectedRiderIdx], {}).then((result) => {
           console.log('### nnbox result=' + JSON.stringify(result, null, 4))
           if(result.result === "SUCCESS"){
-            if(result.data.orders.length > 0 && result.data != null){
+            if(result.data != null && result.data.orders.length > 0){
               // console.log('### nnbox result=' + JSON.stringify(result.data.orders, null, 4))
             const pagination = { ...this.state.pagination };
             if(result.data != null){
@@ -343,7 +345,10 @@ class MapControlDialog extends Component {
   }
 
   assignRider = () => {
-
+    this.setState({
+      riderListOpen: true,
+      isAssignRider: true,
+    })
   }
       
     render() {
@@ -537,13 +542,14 @@ class MapControlDialog extends Component {
 
         return (
               <React.Fragment>
-                <RegistCallDialog
-                  isOpen={this.state.modifyOrder}
-                  close={this.closeModifyOrderModal}
-                  editable={this.state.editable}
-                  data={this.state.data}
-                  getList={this.getList}
-                />
+                {this.state.modifyOrder &&
+                  <RegistCallDialog
+                    close={this.closeModifyOrderModal}
+                    editable={this.state.editable}
+                    data={this.state.data}
+                    getList={this.getList}
+                  />
+                }
                   <div className="Dialog-overlay" onClick={close} />
                   <div className="map-Dialog">
 
@@ -632,7 +638,7 @@ class MapControlDialog extends Component {
 
                               {this.props.callData &&
                                 <>
-                                <Button className="assign-rider-btn" onClick={()=>this.assignRider()}>
+                                <Button className="assign-rider-btn" onClick={this.assignRider}>
                                     배차
                                 </Button>
                                 <Table
