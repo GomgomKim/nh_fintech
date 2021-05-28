@@ -23,6 +23,8 @@ class SurchargeGroupDialog extends Component {
             addFranchiseOpen: false,
             registGroupOpen: false,
             selectedFr: null,
+            selectFrIdx: 0,
+            frSettingGroupIdx: 0,
         };
         this.formRef = React.createRef();
     }
@@ -55,11 +57,13 @@ class SurchargeGroupDialog extends Component {
                 })
             }
             else {
-                customAlert("목록 에러", "에러가 발생하여 목록을 불러올수 없습니다.")
+                customAlert("목록 에러", 
+                "에러가 발생하여 목록을 불러올수 없습니다.")
             }
         })
         .catch((e) => {
-            customAlert("목록 에러", "에러가 발생하여 목록을 불러올수 없습니다.")
+            customAlert("목록 에러", 
+            "에러가 발생하여 목록을 불러올수 없습니다.")
         }); 
     };
 
@@ -74,19 +78,22 @@ class SurchargeGroupDialog extends Component {
             onOk() {
                 let idx = row.idx
                 httpPost(httpUrl.priceExtraDeleteGroup, [], {
-                    idx: idx,
+                    idx,
                 })
                 .then((res) => {
                     if(res.result === "SUCCESS" && res.data === "SUCCESS"){
-                        customAlert("그룹 삭제", row.settingGroupName+" 그룹을 삭제하였습니다.")
+                        customAlert("그룹 삭제", 
+                        row.settingGroupName+" 그룹을 삭제하였습니다.")
                         self.getList();
                       }
                     else {
-                        customError("삭제 에러", "에러가 발생하여 그룹을 삭제할수 없습니다.")
+                        customError("삭제 에러", 
+                        "에러가 발생하여 그룹을 삭제할수 없습니다.")
                     }
                 })
                 .catch((e) => {
-                    customError("삭제 에러", "에러가 발생하여 그룹을 삭제할수 없습니다.")
+                    customError("삭제 에러", 
+                    "그룹안에 가맹점이 존재 할 경우 삭제할수 없습니다.")
                 });    
             }
         })
@@ -96,55 +103,63 @@ class SurchargeGroupDialog extends Component {
     deleteFranchise = (row) => {
         let idx = row.idx
         httpPost(httpUrl.franchiseUpdate, [], {
-            idx: idx,
+            idx,
             frSettingGroupIdx: 0,
         })
         .then((res) => {
             if (res.result === "SUCCESS") {
-                customAlert("가맹점 삭제", row.frName+" 가맹점을 삭제하였습니다.")
+                customAlert("가맹점 삭제", 
+                row.frName+" 가맹점을 삭제하였습니다.")
             }
             else {
-                customError("삭제 에러", "에러가 발생하여 그룹을 삭제할수 없습니다.")
+                customError("삭제 에러", 
+                "에러가 발생하여 그룹을 삭제할수 없습니다.")
             }
         })
         .catch((e) => {
-            customError("삭제 에러", "에러가 발생하여 그룹을 삭제할수 없습니다.")
+            customError("삭제 에러", 
+            "에러가 발생하여 그룹을 삭제할수 없습니다.")
         });    
     }
 
      // 그룹에 가맹점 추가
-     registGroupFranchise = (grpIdx) => {
-        let self = this;
-        let idx = this.state.selectedFr.idx;
-        Modal.confirm({
-            title: "가맹점 추가",
-            content: "그룹에 가맹점을 추가하시겠습니까?",
-            okText: "확인",
-            cancelText: "취소",
-            onOk() {         
-                httpPost(httpUrl.franchiseUpdate, [], {
-                    idx: idx,
-                    frSettingGroupIdx: grpIdx,
-                })
-                .then((res) => {
-                    if(res.result === "SUCCESS" && res.data === "SUCCESS"){
-                        customAlert("가맹점 추가", " 그룹에 가맹점을 추가하였습니다.")
-                        self.getList();
-                      }
-                      else {
+     registGroupFranchise = (data) => {
+        this.setState({ selectFrIdx: data.idx }
+        ,() => {
+            let self = this;
+            let idx = this.state.selectFrIdx;
+            let frSettingGroupIdx = this.state.frSettingGroupIdx;
+            Modal.confirm({
+                title: "가맹점 추가",
+                content: "그룹에 가맹점을 추가하시겠습니까?",
+                okText: "확인",
+                cancelText: "취소",
+                onOk() {         
+                    httpPost(httpUrl.franchiseUpdate, [], {
+                        idx,
+                        frSettingGroupIdx,
+                    })
+                    .then((res) => {
+                        if(res.result === "SUCCESS" && res.data === "SUCCESS"){
+                            customAlert("가맹점 추가", " 그룹에 가맹점을 추가하였습니다.")
+                            self.getList();
+                          }
+                          else {
+                            customError("추가 에러", "에러가 발생하여 가맹점을 추가할수 없습니다.")
+                        }
+                    })
+                    .catch((e) => {
                         customError("추가 에러", "에러가 발생하여 가맹점을 추가할수 없습니다.")
-                    }
-                })
-                .catch((e) => {
-                    customError("추가 에러", "에러가 발생하여 가맹점을 추가할수 없습니다.")
-                });   
-            }
+                    });   
+                }
+            })
         })
+        
     }
 
     // 가맹점 그룹추가 dialog
-    openAddFranchiseModal = () => {
-        this.setState({ addFranchiseOpen: true });
+    openAddFranchiseModal = (row) => {
+        this.setState({ addFranchiseOpen: true, frSettingGroupIdx: row.idx });
     }
     closeAddFranchiseModal = () => {
         this.setState({ addFranchiseOpen: false });
@@ -185,7 +200,7 @@ class SurchargeGroupDialog extends Component {
                     <div>
                         <Button
                             className="tabBtn"
-                            onClick={() => { this.openAddFranchiseModal()}}
+                            onClick={() => { this.openAddFranchiseModal(row)}}
                         >추가</Button>
                     </div>
             },
@@ -261,12 +276,11 @@ class SurchargeGroupDialog extends Component {
                                     </div>
                                     {/* 가맹점 추가 모달 */}
                                     {this.state.addFranchiseOpen &&
-                                    <SearchFranchiseDialog
-                                        isOpen={this.state.addFranchiseOpen}
-                                        close={this.closeAddFranchiseModal}
-                                        callback={(data) => 
-                                        this.setState({ selectedFr: data })}
-                                    />
+                                        <SearchFranchiseDialog
+                                            isOpen={this.state.addFranchiseOpen}
+                                            close={this.closeAddFranchiseModal}
+                                            callback={(data) => this.registGroupFranchise(data)}
+                                        />
                                     }
 
 

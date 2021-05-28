@@ -182,6 +182,11 @@ const addType = [
     "오피스텔"
 ]
 
+const surchargeType = [
+    "지점 전체",
+    "지정 그룹"
+]
+
 export { 
     deliveryStatusCode,
     blockString,
@@ -207,4 +212,5 @@ export {
     arriveReqTime,
     packAmount,
     addType,
+    surchargeType
 };
