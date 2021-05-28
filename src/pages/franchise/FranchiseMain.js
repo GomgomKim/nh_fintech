@@ -3,9 +3,9 @@ import React, { Component } from "react";
 import { httpUrl, httpPost, serverUrl } from "../../api/httpClient";
 import RegistFranDialog from "../../components/dialog/franchise/RegistFranDialog";
 import SearchAddressDialog from "../../components/dialog/franchise/SearchAddressDialog";
-import SearchFranchiseDialog from '../../components/dialog/common/SearchFranchiseDialog';
+import SearchFranchiseDialog from "../../components/dialog/common/SearchFranchiseDialog";
 import BlindFranListDialog from "../../components/dialog/franchise/BlindFranListDialog";
-import SelectBox from '../../components/input/SelectBox';
+import SelectBox from "../../components/input/SelectBox";
 import "../../css/franchise.css";
 import { comma } from "../../lib/util/numberUtil";
 import { BankOutlined, ConsoleSqlOutlined } from "@ant-design/icons";
@@ -87,14 +87,12 @@ class FranchiseMain extends Component {
   };
 
   getList = () => {
-    console.log(this.state.franStatus);
     httpPost(httpUrl.franchiseList, [], {
       frName: this.state.frName,
       pageNum: this.state.pagination.current,
       userGroup: this.state.franGroup,
       userStatus: this.state.franStatus === 0 ? "" : this.state.franStatus,
     }).then((result) => {
-      console.log("## result=" + JSON.stringify(result, null, 4));
       const pagination = {
         ...this.state.pagination,
       };
@@ -218,12 +216,14 @@ class FranchiseMain extends Component {
     httpPost(httpUrl.registFranchise, [], data)
       .then((result) => {
         if (result.result === "SUCCESS") {
+          console.log(result);
           return true;
         } else {
           return false;
         }
       })
       .catch((e) => {
+        console.log(e);
         return false;
       });
   };
@@ -236,30 +236,30 @@ class FranchiseMain extends Component {
         const data = this.state.data[i];
         const formData = {
           // EXCEL 로 받는 데이터
+          id: data["아이디"],
           frName: data["가맹점명"],
           email: data["이메일"],
           businessNumber: data["사업자번호"],
-          corporateNumber: data["법인번호"],
+          // corporateNumber: data["법인번호"],
           ownerName: data["대표자명"],
           frPhone: data["가맹점 전화번호"],
           phone: data["휴대전화"],
           addr1: data["주소"],
           addr3: data["지번주소"],
           addr2: data["상세주소"],
-          basicDeliveryPrice: data["배달요금"],
-          birthday: data["대표자생년월일"],
+          basicDeliveryPrice: data[" 배달요금 "],
+          // birthday: data["대표자생년월일"],
           memo: data["메모"],
-          id: data["아이디"],
-          password: data["비밀번호"],
-          prepayAccount: data["선지급 계좌번호"],
-          prepayBank: data["선지급 은행"],
-          prepayDepositor: data["선지급 계좌 소유주"],
-          securityPassword: "string",
-          vaccountBank: data["가상계좌 은행"],
-          vaccountDepositor: data["가상계좌 소유주"],
-          vaccountNumber: data["가상계좌번호"],
-          withdrawEnabled: data["출금가능여부"],
-          withdrawLimit: data["출금한도"] === "무제한" ? 0 : data["출금한도"],
+          password: String(data["비밀번호"]),
+          // prepayAccount: data["선지급 계좌번호"],
+          // prepayBank: data["선지급 은행"],
+          // prepayDepositor: data["선지급 계좌 소유주"],
+          // securityPassword: "string",
+          // vaccountBank: data["가상계좌 은행"],
+          // vaccountDepositor: data["가상계좌 소유주"],
+          // vaccountNumber: data["가상계좌번호"],
+          // withdrawEnabled: data["출금가능여부"],
+          // withdrawLimit: data[" 출금한도 "] === "무제한" ? 0 : data["출금한도"],
           tidNormalRate: data["PG사용여부"] === "사용" ? 100 : 0,
 
           // 신규 가맹점 DEFAULT
@@ -272,8 +272,7 @@ class FranchiseMain extends Component {
           bankAccount: 0,
           depositor: "",
           userGroup: 0,
-          latitude: this.state.targetLat,
-          longitude: this.state.targetLng,
+
           frStatus: 1,
           ncashPayEnabled: false,
           tidNormal: "",
@@ -281,14 +280,28 @@ class FranchiseMain extends Component {
           chargeDate: 1,
           duesAutoChargeEnabled: false,
           dues: 0,
+
+          // api 연동
+          distance: 0,
+          latitude: 0,
+          longitude: 0,
         };
+
         if (!this.createFranchise(formData)) {
           failedIdx.push(i + 1);
           failedFrName.push(formData.frName);
         }
+      }
+      if (failedIdx.length > 0) {
         Modal.info({
           title: `${failedIdx.length}개의 요청 실패`,
-          content: `${failedIdx} 번째 등록이 실패했습니다. ${failedFrName}의 등록이 실패했습니다. `,
+          content: `${failedIdx} 번째 등록이 실패했습니다. \n
+        ${failedFrName}의 등록이 실패했습니다. `,
+        });
+      } else {
+        Modal.info({
+          title: "등록 성공",
+          content: "모든 가맹점이 등록되었습니다.",
         });
       }
     } else {
@@ -327,7 +340,6 @@ class FranchiseMain extends Component {
       let workBook = XLSX.read(data, { type: "binary" });
       workBook.SheetNames.forEach(function (sheetName) {
         var rows = XLSX.utils.sheet_to_json(workBook.Sheets[sheetName]);
-        console.log(rows);
         self.setState({ data: rows });
       });
     };
@@ -371,7 +383,12 @@ class FranchiseMain extends Component {
         className: "table-column-center",
       },
       {
-        title: "전화번호",
+        title: "가맹점번호",
+        dataIndex: "frPhone",
+        className: "table-column-center",
+      },
+      {
+        title: "대표자번호",
         dataIndex: "phone",
         className: "table-column-center",
       },
@@ -452,11 +469,6 @@ class FranchiseMain extends Component {
         className: "table-column-center",
         render: (data, row) => (
           <div>
-            <RegistFranDialog
-              isOpen={this.state.modifyFranOpen}
-              close={this.closeModifyFranModal}
-              data={this.state.dialogData}
-            />
             <Button
               className="tabBtn surchargeTab"
               onClick={() =>
@@ -595,9 +607,13 @@ class FranchiseMain extends Component {
           >
             주소검색관리
           </Button>
-          
+
           {/* 블라인드 */}
-          <BlindFranListDialog isOpen={this.state.blindListOpen} close={this.closeBlindModal} data={this.state.blindFrData}/>
+          <BlindFranListDialog
+            isOpen={this.state.blindListOpen}
+            close={this.closeBlindModal}
+            data={this.state.blindFrData}
+          />
 
           {/* 엑셀업로드버튼 */}
           <a href="/franchise_regist_templete.xlsx" download>
@@ -642,6 +658,11 @@ class FranchiseMain extends Component {
             expandedRowRender={expandedRowRender}
           />
         </div>
+        <RegistFranDialog
+          isOpen={this.state.modifyFranOpen}
+          close={this.closeModifyFranModal}
+          data={this.state.dialogData}
+        />
       </div>
     );
   }

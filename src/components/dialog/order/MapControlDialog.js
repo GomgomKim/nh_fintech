@@ -50,7 +50,7 @@ class MapControlDialog extends Component {
             list: [],
             franchisee: "",
 
-            // rider list
+            // 라이더 리스트
             riderListSave: [],
             results: [],
             riderStatus: 1,
@@ -61,17 +61,22 @@ class MapControlDialog extends Component {
             riderListOpen: false,
             selectedRider: '',
 
-            // rider locate param
+            // 라이더 위치
             selectedRiderIdx: 0,
+            riderLocates: [],
+
+            // 라이더 배차된 주문
             riderOrderList: [],
 
-            // rider locate list
-            riderLocates: [],
+            // 선택된 라이더
+            selRider: {},
+
+            // 선택된 라이더 이동경로
+            selRiderPath: []
         }
     }
 
     componentDidMount() {
-        //this.getList()
         this.getRiderList()
         this.getRiderLocateList()
     }
@@ -125,11 +130,25 @@ class MapControlDialog extends Component {
             const pagination = { ...this.state.pagination };
             if(result.data != null){
               var list = result.data.orders;
-              // console.log(list)
+              
+              var addPath = []
+              addPath.push(navermaps.LatLng(result.data.latitude, result.data.longitude))
+              for (let i = 0; i < list.length; i++) {
+                if(list[i].latitude === 0 && list[i].longitude === 0) continue
+                addPath.push(navermaps.LatLng(list[i].latitude, list[i].longitude))
+              }
+              console.log("!!!!!!!!!!!!!!!! :"+addPath)
+
+              this.setState({
+                selRider: result.data,
+                selRiderPath: addPath
+              });
+
               this.setState({
                 riderOrderList: list,
                 pagination,
               });
+
             }
             else{
               this.setState({
@@ -151,7 +170,8 @@ class MapControlDialog extends Component {
 
     getRiderLocateList = () => {
       httpGet(httpUrl.riderLocateList, [], {}).then((result) => {
-        console.log('## riderLocates result=' + JSON.stringify(result, null, 4))
+        // console.log('## riderLocates result=' + JSON.stringify(result, null, 4))
+        // console.log("@@@@@@"+result.data.riderLocations)
         this.setState({
           riderLocates: result.data.riderLocations,
         });
@@ -160,7 +180,7 @@ class MapControlDialog extends Component {
 
     getRiderLocate = (riderIdx) => {
       httpGet(httpUrl.riderLocate, [riderIdx], {}).then((result) => {
-        console.log('## rider personal locate result=' + JSON.stringify(result, null, 4))
+        // console.log('## rider personal locate result=' + JSON.stringify(result, null, 4))
         this.setState({
           selectedRiderIdx: result.data.userIdx,
           riderName: result.data.riderName,
@@ -209,7 +229,7 @@ class MapControlDialog extends Component {
 
       
     render() {
-        const { isOpen, close } = this.props;
+        const { close } = this.props;
 
         const columns = [
           {
@@ -293,6 +313,7 @@ class MapControlDialog extends Component {
             title: "기사명",
             dataIndex: "riderName",
             className: "table-column-center",
+            render: (data) => <div>{this.state.riderName}</div>
           },
           {
             title: "기사 연락처",
@@ -329,7 +350,6 @@ class MapControlDialog extends Component {
             },
             {
               title: "기사명",
-
               dataIndex: "riderName",
               className: "table-column-center",
             },
@@ -349,191 +369,198 @@ class MapControlDialog extends Component {
         ];
 
         return (
-            <React.Fragment>
-                {
-                    isOpen ?
-                        <React.Fragment>
-                            <div className="Dialog-overlay" onClick={close} />
-                            <div className="map-Dialog">
+              <React.Fragment>
+                  <div className="Dialog-overlay" onClick={close} />
+                  <div className="map-Dialog">
 
-                                <div className="map-content">
-                                    <img onClick={close} src={require('../../../img/login/close.png').default} className="map-close" />
+                      <div className="map-content">
+                          <img onClick={close} src={require('../../../img/login/close.png').default} className="map-close" alt="img"/>
 
 
-                                    <div className="map-inner">
+                          <div className="map-inner">
 
-                                    {this.state.riderName && (
-                                        <div className="riderTableLayout">
-                                          <div className="textLayout">
-                                              <span className="riderText">{this.state.riderName}의 배차 목록</span>
-                                          </div>
-                                            <Table
-                                            rowKey={(record) => record.idx}
-                                            dataSource={this.state.riderOrderList}
-                                            rowClassName={(record) => rowColorName[record.orderStatus]}
-                                            columns={columns}
-                                            onChange={this.handleTableChange}
-                                            pagination={false}
-                                            />
-                                        </div>
-                                              )}
-
-                                        <div className="mapLayout">
-                                        
-                                            {/* <MapContainer/> */}
-                                            
-                                            {navermaps &&
-                                              <NaverMap
-                                              className='map-navermap'
-                                              defaultZoom={14}
-                                              center={{ lat: lat, lng: lng }}
-                                              >
-
-                                              {
-                                                this.state.riderLocates.map(row => {
-                                                  // console.log(row.latitude, row.longitude)
-                                                  return (
-                                                    <Marker
-                                                      position={navermaps.LatLng(row.latitude, row.longitude)}
-                                                      // icon={require('../../../img/login/map/marker_rider.png').default}
-                                                      icon={require('../../../img/login/map/blue.png').default}
-                                                      title={row.riderName}
-                                                      onClick={()=>this.getRiderLocate(row.userIdx)}
-                                                    />
-                                                  );
-                                                })
-                                              }
-                                              <Marker
-                                                  position={navermaps.LatLng(37.6363194, 126.6713331)}
-                                                  icon={require('../../../img/login/map/marker_rider.png').default}
-                                              />
-                                              {/* {this.state.selectedRider == 55 && (
-                                              <>
-                                              
-                                              <Marker
-                                                  position={navermaps.LatLng(testPos[4][0], testPos[4][1])}
-                                                  icon={require('../../../img/login/map/marker_rider.png').default}
-                                              />
-                                              <Marker
-                                                  position={navermaps.LatLng(testPos[5][0], testPos[5][1])}
-                                                  icon={require('../../../img/login/map/marker_rider.png').default}
-                                              />
-                                              <Marker
-                                                  position={navermaps.LatLng(testPos[6][0], testPos[6][1])}
-                                                  icon={require('../../../img/login/map/marker_rider.png').default}
-                                              />
-                                              <Polyline 
-                                                path={[
-                                                  navermaps.LatLng(testPos[0][0], testPos[0][1]),
-                                                  navermaps.LatLng(testPos[3][0], testPos[3][1]),
-                                                  navermaps.LatLng(testPos[4][0], testPos[4][1]),
-                                                ]}
-                                                strokeColor={'#ff0000'}
-                                                strokeWeight={5}        
-                                              />
-                                              <Polyline 
-                                                path={[
-                                                  navermaps.LatLng(testPos[0][0], testPos[0][1]),
-                                                  navermaps.LatLng(testPos[5][0], testPos[5][1]),
-                                                  navermaps.LatLng(testPos[6][0], testPos[6][1]),
-                                                ]}
-                                                strokeColor={'#5347AA'}
-                                                strokeWeight={5}        
-                                              />
-                                              </>
-
-                                              )}
-                                              {this.state.selectedRider == 44 && (
-                                              <>
-                                              <Marker
-                                                  position={navermaps.LatLng(testPos[7][0], testPos[7][1])}
-                                                  icon={require('../../../img/login/map/marker_rider.png').default}
-                                              />
-                                              <Marker
-                                                  position={navermaps.LatLng(testPos[8][0], testPos[8][1])}
-                                                  icon={require('../../../img/login/map/marker_rider.png').default}
-                                              />
-                                              <Polyline 
-                                                path={[
-                                                  navermaps.LatLng(testPos[1][0], testPos[1][1]),
-                                                  navermaps.LatLng(testPos[7][0], testPos[7][1]),
-                                                  navermaps.LatLng(testPos[8][0], testPos[8][1]),
-                                                ]}
-                                                strokeColor={'#ff0000'}
-                                                strokeWeight={5}        
-                                              />
-                                              </>
-
-                                              )}
-
-                                              <Marker
-                                                  position={navermaps.LatLng(lat, lng)}
-                                                  icon={require('../../../img/login/map/marker_rider.png').default}
-                                              />
-                                              <Marker
-                                                  position={navermaps.LatLng(lat, lng)}
-                                                  icon={require('../../../img/login/map/marker_rider.png').default}
-                                              />
-
-                                              <Marker
-                                                  position={navermaps.LatLng(lat, lng)}
-                                                  icon={require('../../../img/login/map/marker_rider.png').default}
-                                              />
-                                              <Marker
-                                                  position={navermaps.LatLng(this.props.frLat, this.props.frLng)}
-                                                  icon={require('../../../img/login/map/marker_target.png').default}
-                                              /> */}
-                                              </NaverMap>
-                                              
-                                            }
-                                           
-                                            
-                                            
-                                        </div>
-                                        {this.state.riderListOpen && (
-                                          <>
-                                          <div className="rider-list-show-btn" onClick={()=>this.setState({riderListOpen: false})}>
-                                              닫기
-                                            </div>
-                                            <div className="riderListInMapControl">
-                                              <div className="selectLayout">
-    
-                                                  <Search
-                                                  placeholder="기사명검색"
-                                                  enterButton
-                                                  allowClear
-                                                  onSearch={this.onSearchWorker}
-                                                  style={{
-                                                      width: 200,
-                                                  }}
-                                                  />
-    
-                                              </div>
-                                                <Table
-                                                    rowKey={(record) => record.idx}
-                                                    dataSource={this.state.results}
-                                                    columns={columns_riderList}
-                                                    pagination={this.state.paginationRiderList}
-                                                    onChange={this.handleRiderListTableChange}
-                                                />
-                                            </div>
-                                          </>
-                                        )}
-                                        {!this.state.riderListOpen && (
-                                            <div className="rider-list-show-btn" onClick={()=>this.setState({riderListOpen: true})}>
-                                              열기
-                                            </div>
-                                        )}
-                                    </div>
-
-
+                          {this.state.riderName && (
+                              <div className="riderTableLayout">
+                                <div className="textLayout">
+                                    <span className="riderText">{this.state.riderName}의 배차 목록</span>
                                 </div>
-                            </div>
-                        </React.Fragment>
-                        :
-                        null
-                }
-            </React.Fragment>
+                                  <Table
+                                  rowKey={(record) => record.idx}
+                                  dataSource={this.state.riderOrderList}
+                                  rowClassName={(record) => rowColorName[record.orderStatus]}
+                                  columns={columns}
+                                  onChange={this.handleTableChange}
+                                  pagination={false}
+                                  />
+                              </div>
+                                    )}
+
+                              <div className="mapLayout">
+                              
+                                  {/* <MapContainer/> */}
+                                  
+                                  {navermaps &&
+                                    <NaverMap
+                                    className='map-navermap'
+                                    defaultZoom={14}
+                                    center={{ lat: lat, lng: lng }}
+                                    >
+
+                                    
+                                    <Marker
+                                      position={navermaps.LatLng(this.state.selRider.latitude, this.state.selRider.longitude)}
+                                      icon={require('../../../img/login/map/marker_rider_red.png').default}
+                                      title={this.state.selRider.riderName}
+                                      onClick={()=>this.getRiderLocate(this.state.selRider.userIdx)}
+                                    />
+                                    
+                                    
+                                    {
+                                      this.state.riderLocates.map(row => {
+                                        // console.log(row.latitude, row.longitude)
+                                        if(this.state.selRider.latitude !== row.latitude && this.state.selRider.longitude !== row.longitude){
+                                          if(row.riderLevel >= 3){
+                                            return (
+                                              <Marker
+                                                position={navermaps.LatLng(row.latitude, row.longitude)}
+                                                icon={require('../../../img/login/map/marker_rider_blue.png').default}
+                                                title={row.riderName}
+                                                onClick={()=>this.getRiderLocate(row.userIdx)}
+                                              />
+                                            );
+                                          } else{
+                                            return (
+                                              <Marker
+                                                position={navermaps.LatLng(row.latitude, row.longitude)}
+                                                icon={require('../../../img/login/map/marker_rider.png').default}
+                                                title={row.riderName}
+                                                onClick={()=>this.getRiderLocate(row.userIdx)}
+                                              />
+                                            );
+                                          }
+                                        }
+                                      })
+                                    }
+
+
+                                    {this.state.selRider.latitude !== 0 && this.state.selRider.longitude !== 0 &&
+                                      <Polyline 
+                                        path={this.state.selRiderPath}
+                                        strokeColor={'#ff0000'}
+                                        strokeWeight={5}        
+                                      />
+                                    }
+                                    
+                                    {/* {this.state.selectedRider == 55 && (
+                                    <>
+                                    <Polyline 
+                                      path={[
+                                        navermaps.LatLng(testPos[0][0], testPos[0][1]),
+                                        navermaps.LatLng(testPos[3][0], testPos[3][1]),
+                                        navermaps.LatLng(testPos[4][0], testPos[4][1]),
+                                      ]}
+                                      strokeColor={'#ff0000'}
+                                      strokeWeight={5}        
+                                    />
+                                    <Polyline 
+                                      path={[
+                                        navermaps.LatLng(testPos[0][0], testPos[0][1]),
+                                        navermaps.LatLng(testPos[5][0], testPos[5][1]),
+                                        navermaps.LatLng(testPos[6][0], testPos[6][1]),
+                                      ]}
+                                      strokeColor={'#5347AA'}
+                                      strokeWeight={5}        
+                                    />
+                                    </>
+
+                                    )}
+                                    {this.state.selectedRider == 44 && (
+                                    <>
+                                    <Marker
+                                        position={navermaps.LatLng(testPos[7][0], testPos[7][1])}
+                                        icon={require('../../../img/login/map/marker_rider.png').default}
+                                    />
+                                    <Marker
+                                        position={navermaps.LatLng(testPos[8][0], testPos[8][1])}
+                                        icon={require('../../../img/login/map/marker_rider.png').default}
+                                    />
+                                    <Polyline 
+                                      path={[
+                                        navermaps.LatLng(testPos[1][0], testPos[1][1]),
+                                        navermaps.LatLng(testPos[7][0], testPos[7][1]),
+                                        navermaps.LatLng(testPos[8][0], testPos[8][1]),
+                                      ]}
+                                      strokeColor={'#ff0000'}
+                                      strokeWeight={5}        
+                                    />
+                                    </>
+
+                                    )}
+
+                                    <Marker
+                                        position={navermaps.LatLng(lat, lng)}
+                                        icon={require('../../../img/login/map/marker_rider.png').default}
+                                    />
+                                    <Marker
+                                        position={navermaps.LatLng(lat, lng)}
+                                        icon={require('../../../img/login/map/marker_rider.png').default}
+                                    />
+
+                                    <Marker
+                                        position={navermaps.LatLng(lat, lng)}
+                                        icon={require('../../../img/login/map/marker_rider.png').default}
+                                    />
+                                    <Marker
+                                        position={navermaps.LatLng(this.props.frLat, this.props.frLng)}
+                                        icon={require('../../../img/login/map/marker_target.png').default}
+                                    /> */}
+                                    </NaverMap>
+                                    
+                                  }
+                                  
+                                  
+                                  
+                              </div>
+                              {this.state.riderListOpen && (
+                                <>
+                                <div className="rider-list-show-btn" onClick={()=>this.setState({riderListOpen: false})}>
+                                    닫기
+                                  </div>
+                                  <div className="riderListInMapControl">
+                                    <div className="selectLayout">
+
+                                        <Search
+                                        placeholder="기사명검색"
+                                        enterButton
+                                        allowClear
+                                        onSearch={this.onSearchWorker}
+                                        style={{
+                                            width: 200,
+                                        }}
+                                        />
+
+                                    </div>
+                                      <Table
+                                          rowKey={(record) => record.idx}
+                                          dataSource={this.state.results}
+                                          columns={columns_riderList}
+                                          pagination={this.state.paginationRiderList}
+                                          onChange={this.handleRiderListTableChange}
+                                      />
+                                  </div>
+                                </>
+                              )}
+                              {!this.state.riderListOpen && (
+                                  <div className="rider-list-show-btn" onClick={()=>this.setState({riderListOpen: true})}>
+                                    열기
+                                  </div>
+                              )}
+                          </div>
+
+
+                      </div>
+                  </div>
+              </React.Fragment>
         )
     }
 }

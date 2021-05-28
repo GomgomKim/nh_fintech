@@ -46,7 +46,7 @@ class SearchFranchiseDialog extends Component {
   };
 
   handleTableChange = (pagination) => {
-    console.log(pagination);
+    // console.log(pagination);
     const pager = {
       ...this.state.pagination,
     };
@@ -62,8 +62,7 @@ class SearchFranchiseDialog extends Component {
 
   getList = (isInit) => {
     // console.log(isInit)
-
-    console.log(this.state.franStatus);
+    // console.log(this.state.franStatus);
     httpPost(httpUrl.franchiseList, [], {
       frName: this.state.frName,
       pageNum: this.state.pagination.current,
@@ -77,13 +76,12 @@ class SearchFranchiseDialog extends Component {
       pagination.current = result.data.currentPage;
       pagination.total = result.data.totalCount;
       this.setState({ list: result.data.franchises, pagination });
-
     });
   };
 
   onSelectChange = (selectedRowKeys) => {
-    console.log("selectedRowKeys changed: ", selectedRowKeys);
-    console.log("selectedRowKeys.length :" + selectedRowKeys.length);
+    // console.log("selectedRowKeys changed: ", selectedRowKeys);
+    // console.log("selectedRowKeys.length :" + selectedRowKeys.length);
 
     // console.log(this.state.list)
     var cur_list = this.state.list;
@@ -101,12 +99,12 @@ class SearchFranchiseDialog extends Component {
     selectedRowKeys = [];
     for (let i = 0; i < curIdxs.length; i++) {
       if (curIdxs[i]) {
-        console.log("push  :" + i);
+        // console.log("push  :" + i);
         selectedRowKeys = [...selectedRowKeys, i];
-        console.log(selectedRowKeys);
+        // console.log(selectedRowKeys);
       }
     }
-    console.log(selectedRowKeys);
+    // console.log(selectedRowKeys);
     this.setState({
       selectedRowKeys: selectedRowKeys,
       dataIdxs: curIdxs,
@@ -165,7 +163,7 @@ class SearchFranchiseDialog extends Component {
     ];
 
     const selectedRowKeys = this.state.selectedRowKeys;
-    console.log(selectedRowKeys);
+    // console.log(selectedRowKeys);
     const rowSelection = {
       selectedRowKeys,
       onChange: this.onSelectChange,
@@ -216,21 +214,20 @@ class SearchFranchiseDialog extends Component {
                           />
 
                           {/* 멀티 기능 */}
-                          {multi &&
+                          {multi && (
                             <Radio.Group
-                            onChange={this.onChangeMulti}
-                            value={this.state.isMulti}
-                            className="selMulti"
+                              onChange={this.onChangeMulti}
+                              value={this.state.isMulti}
+                              className="selMulti"
                             >
                               <Radio value={false}>single</Radio>
                               <Radio value={true}>multi</Radio>
                             </Radio.Group>
-                          }
-                          
+                          )}
                         </div>
-                        
+
                         {/* 멀티 기능 */}
-                        {multi &&
+                        {multi && (
                           <Button
                             type="primary"
                             htmlType="submit"
@@ -238,7 +235,7 @@ class SearchFranchiseDialog extends Component {
                           >
                             조회
                           </Button>
-                        }
+                        )}
                       </div>
                     </div>
 

@@ -2845,12 +2845,14 @@
   border-radius: 30px;
   z-index: 2;
 }
+
 .serchAddress-content {
   background-color: white;
   padding: 30px;
   text-align: left;
   color: #777;
 }
+
 .serchAddress-title {
   letter-spacing: -1px;
   font-weight: bold;
@@ -2860,6 +2862,7 @@
   font-size: 25px;
   line-height: 30px;
 }
+
 .serchAddress-close {
   width: 30px;
   cursor: pointer;
@@ -2878,21 +2881,14 @@
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
-.serchAddressWrapper {
-  padding-bottom: 20px;
-  border-bottom: 1px solid #b5b5b5;
-  margin-bottom: 20px;
-}
 
 .serchAddress-Dialog .layout .contentBlock {
   display: inline-block;
-  margin-bottom: 10px;
+  line-height: 20px;
 }
 
-.serchAddress-Dialog .layout .first {
-  display: inline-block;
-  margin-bottom: 10px;
-  margin-top: -20px;
+.serchAddress-Dialog .layout .contentBlock span {
+  font-size: 18px;
 }
 
 .serchAddress-Dialog .layout .contentbox,
@@ -2902,14 +2898,12 @@
 
 .searchAddress-btn {
   display: inline-block;
-  margin: 10px 0px 10px 30px;
   vertical-align: bottom;
 }
 
 .searchAddress-btn .ant-btn-primary {
   background-color: black;
   border-style: none;
-  width: 100px;
 }
 .serchAddress-searchbox {
   float: right;
@@ -2972,8 +2966,6 @@
 .serchAddress-Dialog .contentBlock .short {
   width: 210px;
 }
-
-/* 지도 Dialog */
 
 .map-address-Dialog {
   position: fixed;
@@ -3610,7 +3602,148 @@
   margin-top: 15px;
 }
 
-/* chatting */
+/* 할증 가맹점 추가 dialog */
+.surchargeFr-Dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.surchargeFr-Dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 650px;
+  border-radius: 30px;
+  z-index: 2;
+}
+
+.surchargeFr-content {
+  background-color: white;
+  padding: 30px;
+  /* text-align: left; */
+  /* color: #777; */
+}
+
+.surchargeFr-title {
+  letter-spacing: -1px;
+  font-weight: bold;
+  color: #333;
+  text-align: right;
+  display: inline-block;
+  font-size: 25px;
+  line-height: 30px;
+}
+
+.surchargeFr-close {
+  width: 30px;
+  cursor: pointer;
+  background-color: #fddc00;
+  /* display: inline-block; */
+  float: right;
+  padding: 8px;
+}
+
+.surchargeFr-Dialog .addRiderlayout {
+  height: 540px;
+}
+
+.surchargeFrWrapper .contentBlock {
+  margin-top: 30px !important;
+}
+
+.surchargeFrWrapper .contentBlock .selectItem .override-select {
+  width: 345px;
+}
+
+.surchargeFr-Dialog .dataTableBlock {
+  margin-top: 40px;
+}
+
+.surchargeFrWrapper .submitBlock {
+  margin-top: 30px;
+  text-align: center;
+}
+
+/* 할증 그룹 관리 dialog */
+.surchargeGroup-Dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.surchargeGroup-Dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 450px;
+  border-radius: 30px;
+  z-index: 2;
+}
+
+.surchargeGroup-content {
+  background-color: white;
+  padding: 30px;
+  /* text-align: left; */
+  /* color: #777; */
+}
+
+.surchargeGroup-title {
+  letter-spacing: -1px;
+  font-weight: bold;
+  color: #333;
+  text-align: right;
+  display: inline-block;
+  font-size: 25px;
+  line-height: 30px;
+}
+
+.surchargeGroupWrapper {
+  margin-top: 20px;
+}
+.surchargeGrouplayout .contentBlock {
+  width: 400px;
+}
+
+.surchargeGrouplayout .contentBlock .override-input {
+  width: 300px;
+}
+
+.surchargeGroup-close {
+  width: 30px;
+  cursor: pointer;
+  background-color: #fddc00;
+  /* display: inline-block; */
+  float: right;
+  padding: 8px;
+}
+
+.surchargeGroup-Dialog .addGrouplayout {
+  height: 100px;
+}
+
+.surchargeGroupWrapper .submitBlock {
+  margin-top: 30px;
+  text-align: center;
+}
+
+.surchargeGroupWrapper .ant-btn-primary {
+  width: 130px;
+  height: 40px;
+  font-size: 18px;
+}
+
+/* 채팅 */
 .Modal-overlay {
   position: fixed;
   top: 0;
@@ -3620,6 +3753,7 @@
   background-color: rgba(0, 0, 0, 0.56);
   z-index: 10;
 }
+
 .Modal-chat {
   z-index: 20;
   position: fixed;
