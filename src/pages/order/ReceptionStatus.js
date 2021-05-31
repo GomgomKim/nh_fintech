@@ -223,17 +223,30 @@ class ReceptionStatus extends Component {
 
   getCompleteList = () => {
     const startDate = this.state.selectedDate;
-    const endDate = startDate.setDate(startDate.getDate() + 1);
-    httpPost(httpUrl.orderList, [], {
-      frName: this.state.franchisee,
+    const endDate = new Date(
+      startDate.getFullYear(),
+      startDate.getMonth(),
+      startDate.getDate() + 1
+    );
+    const data = {
       orderStatuses: [4],
       pageNum: this.state.pagination.current,
       pageSize: this.state.pagination.pageSize,
       paymentMethods: [1, 2, 3],
-      riderName: this.state.rider,
-      startDate: formatDate(startDate).split(" ")[0],
+      startDate: formatDate(this.state.selectedDate).split(" ")[0],
       endDate: formatDate(endDate).split(" ")[0],
-    })
+    };
+
+    if (this.state.franchisee) {
+      data.frName = this.state.franchisee;
+    }
+    if (this.state.rider) {
+      data.riderName = this.state.rider;
+    }
+
+    console.log(data);
+
+    httpPost(httpUrl.orderList, [], data)
       .then((res) => {
         if (res.result === "SUCCESS") {
           console.log(res);
@@ -872,9 +885,13 @@ class ReceptionStatus extends Component {
                     date.get("date")
                   );
 
-                  this.setState({ selectedDate: newDate }, () => {
-                    this.getCompleteList();
-                  });
+                  this.setState(
+                    { selectedDate: newDate },
+                    () => {
+                      this.getCompleteList();
+                    },
+                    () => console.log(this.state.selectedDate)
+                  );
                 }
               }}
             />
