@@ -523,11 +523,25 @@ class ReceptionStatus extends Component {
         render: (data) => <div>{comma(data)}</div>,
       },
       {
-        title: "배달요금",
+        title: "총배달요금",
         dataIndex: "deliveryPrice",
         className: "table-column-center",
         render: (data) => <div>{comma(data)}</div>,
       },
+      {
+        title: "기본배달요금",
+        dataIndex: "basicDeliveryPrice",
+        className: "table-column-center",
+        render: (data) => <div>{comma(data)}</div>,
+      },
+
+      {
+        title: "할증배달요금",
+        dataIndex: "extraDeliveryPrice",
+        className: "table-column-center",
+        render: (data) => <div>{comma(data)}</div>,
+      },
+
       {
         title: "결제방식",
         dataIndex: "orderPayments",

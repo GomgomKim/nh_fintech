@@ -39,7 +39,8 @@ const newOrder = {
   custMessage: "",
   custPhone: "",
   deliveryPrice: 0,
-  deliveryPriceFee: 0,
+  basicDeliveryPrice: 0,
+  extraDeliveryPrice: 0,
   destAddr1: "",
   destAddr2: "",
   destAddr3: "",
@@ -102,36 +103,53 @@ class RegistCallDialog extends Component {
   }
 
   setDefaultState = () => {
-    this.setState(
-      {
-        data: this.props.data ? this.props.data : newOrder,
-        selectedDest: {
-          address: this.props.data ? this.props.data.destAddr1 : "",
-        },
-        selectedFr: {
-          frIdx: this.props.data ? this.props.data.frIdx : 0,
-          frLatitude: this.props.data ? this.props.data.frLatitude : 0,
-          frLongitude: this.props.data ? this.props.data.frLongitude : 0,
-          frName: this.props.data ? this.props.data.frName : "",
-          frPhone: this.props.data ? this.props.data.frPhone : "",
-        },
+    this.setState({
+      data: this.props.data ? this.props.data : newOrder,
+      selectedDest: {
+        address: this.props.data ? this.props.data.destAddr1 : "",
       },
-      () => console.log(this.state.data)
-    );
+      selectedFr: {
+        frIdx: this.props.data ? this.props.data.frIdx : 0,
+        frLatitude: this.props.data ? this.props.data.frLatitude : 0,
+        frLongitude: this.props.data ? this.props.data.frLongitude : 0,
+        frName: this.props.data ? this.props.data.frName : "",
+        frPhone: this.props.data ? this.props.data.frPhone : "",
+      },
+    });
   };
 
   componentDidMount() {
     this.setDefaultState();
   }
 
-  // componentDidUpdate(prevProps) {
-  //   if (this.props.isOpen !== prevProps.isOpen) {
-  //     this.setDefaultState();
-  //   }
-  // }
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.data) {
+      if (
+        prevState.data.basicDeliveryPrice !==
+          this.state.data.basicDeliveryPrice ||
+        prevState.data.extraDeliveryPrice !== this.state.data.extraDeliveryPrice
+      ) {
+        this.setState(
+          {
+            data: {
+              ...this.state.data,
+              deliveryPrice:
+                this.state.data.basicDeliveryPrice +
+                this.state.data.extraDeliveryPrice,
+            },
+          },
+          () => {
+            console.log("didupdate");
+            console.log(this.state.data);
+          }
+        );
+      }
+    }
+  }
 
   handleChangeInput = (value, stateKey) => {
-    const newData = this.state.data;
+    const cloneObj = (obj) => JSON.parse(JSON.stringify(obj));
+    let newData = cloneObj(this.state.data);
     newData[stateKey] = value;
     this.setState({
       data: newData,
@@ -180,7 +198,6 @@ class RegistCallDialog extends Component {
         }
       })
       .catch((e) => {
-        console.log(e);
         Modal.info({
           title: "좌표 변화 실패",
           content: "좌표변환에 실패했습니다.",
@@ -208,21 +225,22 @@ class RegistCallDialog extends Component {
           httpGet(httpUrl.getDeliveryPrice, [lat, lng], {})
             .then((res) => {
               if (res.result === "SUCCESS") {
-                console.log(res.data);
                 self.formRef.current.setFieldsValue({
-                  deliveryPrice: comma(res.data.deliveryPriceBasic),
-                  deliveryPriceFee: comma(res.data.deliveryPriceExtra),
+                  deliveryPrice: comma(
+                    res.data.deliveryPriceBasic + res.data.deliveryPriceExtra
+                  ),
+                  basicDeliveryPrice: comma(res.data.deliveryPriceBasic),
+                  extraDeliveryPrice: comma(res.data.deliveryPriceExtra),
                 });
-                this.setState(
-                  {
-                    data: {
-                      ...this.state.data,
-                      deliveryPrice: res.data.deliveryPriceBasic,
-                      deliveryPriceFee: res.data.deliveryPriceExtra,
-                    },
+                this.setState({
+                  data: {
+                    ...this.state.data,
+                    deliveryPrice:
+                      res.data.deliveryPriceBasic + res.data.deliveryPriceExtra,
+                    basicDeliveryPrice: res.data.deliveryPriceBasic,
+                    extraDeliveryPrice: res.data.deliveryPriceExtra,
                   },
-                  () => console.log(this.state.data)
-                );
+                });
               } else {
                 Modal.info({
                   title: "등록오류",
@@ -252,12 +270,18 @@ class RegistCallDialog extends Component {
       .then((res) => {
         if (res.result === "SUCCESS") {
           self.formRef.current.setFieldsValue({
-            deliveryPrice: res.data.deliveryPriceSum,
+            deliveryPrice:
+              res.data.deliveryPriceBasic + res.data.deliveryPriceExtra,
+            basicDeliveryPrice: res.data.deliveryPriceBasic,
+            extraDeliveryPrice: res.data.deliveryPriceExtra,
           });
           this.setState({
             data: {
               ...this.state.data,
-              deliveryPrice: res.data.deliveryPriceSum,
+              deliveryPrice:
+                res.data.deliveryPriceBasic + res.data.deliveryPriceExtra,
+              basicDeliveryPrice: res.data.deliveryPriceBasic,
+              extraDeliveryPrice: res.data.deliveryPriceExtra,
             },
           });
         } else {
@@ -309,7 +333,8 @@ class RegistCallDialog extends Component {
           updateError();
         });
     }
-    this.props.getList();
+
+    // this.props.getList();
   };
 
   render() {
@@ -319,19 +344,11 @@ class RegistCallDialog extends Component {
     const { close } = this.props;
     const data = this.props.data ? this.props.data : newOrder;
     const navermaps = window.naver.maps;
-    let deliveryPrice = this.state.data
-      ? this.state.data.deliveryPrice
+    let basicDeliveryPrice = this.state.data
+      ? this.state.data.basicDeliveryPrice
       : this.props.data
-      ? this.props.data.deliveryPrice
+      ? this.props.data.basicDeliveryPrice
       : "";
-
-    let deliveryPriceFee = this.state.data
-      ? this.state.data.deliveryPriceFee
-      : this.props.data
-      ? this.props.data.deliveryPriceFee
-      : "";
-
-    const reverseGeocode = navermaps.Service.reverseGeocode;
 
     return (
       <React.Fragment>
@@ -399,7 +416,6 @@ class RegistCallDialog extends Component {
                     <FormItem name="addrMain" className="selectItem">
                       <PostCodeDialog
                         onSelect={(value) => {
-                          console.log(value);
                           this.setState({ selectedDest: value }, () => {
                             this.setState({
                               data: {
@@ -452,12 +468,12 @@ class RegistCallDialog extends Component {
                     </FormItem>
                   </div>
                   <div className="contentBlock">
-                    <div className="mainTitle">배달요금</div>
-                    <FormItem name="deliveryPrice" className="selectItem">
+                    <div className="mainTitle">기본 배달요금</div>
+                    <FormItem name="basicDeliveryPrice" className="selectItem">
                       <Input
                         placeholder="배달요금 입력"
                         className="override-input"
-                        defaultValue={comma(deliveryPrice)}
+                        defaultValue={comma(basicDeliveryPrice)}
                         required
                         disabled
                       ></Input>
@@ -465,19 +481,19 @@ class RegistCallDialog extends Component {
                   </div>
                   <div className="contentBlock">
                     <div className="mainTitle">할증 배달요금</div>
-                    <FormItem name="deliveryPriceFee" className="selectItem">
+                    <FormItem name="extraDeliveryPrice" className="selectItem">
                       <Input
                         placeholder="할증 배달요금 입력"
                         className="override-input"
                         defaultValue={
                           this.props.data
-                            ? comma(this.props.data.deliveryPriceFee)
+                            ? comma(this.props.data.extraDeliveryPrice)
                             : ""
                         }
                         onChange={(e) =>
                           this.handleChangeInput(
                             parseInt(e.target.value),
-                            "deliveryPriceFee"
+                            "extraDeliveryPrice"
                           )
                         }
                         required
@@ -688,7 +704,6 @@ class RegistCallDialog extends Component {
                                     e.latlng.x
                                   )
                               );
-                              console.log(response.result.items[0].address);
                             }
                           }
                         );
