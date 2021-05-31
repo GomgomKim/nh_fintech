@@ -5,6 +5,7 @@ import {
 import '../../../css/modal.css';
 import { connect } from "react-redux";
 import { httpUrl, httpPost } from '../../../api/httpClient';
+import { customAlert, customError} from "../../../api/Modals";
 const FormItem = Form.Item;
 
 class SurchargeFrGroupDialog extends Component {
@@ -49,27 +50,15 @@ class SurchargeFrGroupDialog extends Component {
         })
         .then((res) => {
             console.log(res)
-            if (res.result === "SUCCESS") {
-                Modal.info({
-                    title: "새로운 그룹 추가",
-                    content: (
-                        <div>
-                            그룹 추가가 완료 되었습니다.
-                        </div>
-                    ),
-                });
+            if (res.result === "SUCCESS" && res.data === "SUCCESS") {
+                customAlert("새로운 그룹 추가", 
+                form.getFieldValue("settingGroupName")+"그룹을 추가 하였습니다.")
                 this.handleClear()
                 this.props.close()
             }
             else {
-                Modal.info({
-                    title: "에러",
-                    content: (
-                        <div>
-                            에러가 발생하여 삭제할수 없습니다.
-                        </div>
-                    ),
-                });
+                customAlert("목록 에러", 
+                "에러가 발생하여 삭제할수 없습니다.")
             }
         })
     }
@@ -89,7 +78,8 @@ class SurchargeFrGroupDialog extends Component {
                                     <div className="surchargeGroup-title">
                                         그룹 추가
                                     </div>
-                                    <img onClick={close} src={require('../../../img/login/close.png').default} className="addRider-close" />
+                                    <img onClick={close} src={require('../../../img/login/close.png').default}
+                                        className="addRider-close" alt='close'/>
 
                                     <Form ref={this.formRef} onFinish={this.handleSubmit}>
                                         <div className="surchargeGrouplayout">
