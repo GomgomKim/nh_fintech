@@ -16,7 +16,11 @@ import SurchargeDialog from "./../../components/dialog/order/SurchargeDialog";
 import NoticeDialog from "../../components/dialog/order/NoticeDialog";
 import ForceAllocateDialog from "../../components/dialog/order/ForceAllocateDialog";
 import MapControlDialog from "../../components/dialog/order/MapControlDialog";
-import { formatDate } from "../../lib/util/dateUtil";
+import {
+  formatDate,
+  formatDateSecond,
+  monthFormat,
+} from "../../lib/util/dateUtil";
 import "../../css/order.css";
 import "../../css/common.css";
 import { comma } from "../../lib/util/numberUtil";
@@ -85,7 +89,7 @@ class ReceptionStatus extends Component {
       franchisee: "",
       rider: "",
       selectedDate: new Date(1990, 1, 1),
-      selectedOrderStatus: [1, 2, 3, 5],
+      selectedOrderStatus: [1, 2, 3],
       selectedPaymentMethods: [1, 2, 3],
       checkedCompleteCall: false,
     };
@@ -93,8 +97,6 @@ class ReceptionStatus extends Component {
 
   componentDidMount() {
     this.getList();
-    // alert('reception');
-    // alert(JSON.stringify(this.props.info))
   }
 
   handleToggleCompleteCall = (e) => {
@@ -221,17 +223,30 @@ class ReceptionStatus extends Component {
 
   getCompleteList = () => {
     const startDate = this.state.selectedDate;
-    const endDate = startDate.setDate(startDate.getDate() + 1);
-    httpPost(httpUrl.orderList, [], {
-      frName: this.state.franchisee,
+    const endDate = new Date(
+      startDate.getFullYear(),
+      startDate.getMonth(),
+      startDate.getDate() + 1
+    );
+    const data = {
       orderStatuses: [4],
       pageNum: this.state.pagination.current,
       pageSize: this.state.pagination.pageSize,
       paymentMethods: [1, 2, 3],
-      riderName: this.state.rider,
-      startDate: formatDate(startDate).split(" ")[0],
+      startDate: formatDate(this.state.selectedDate).split(" ")[0],
       endDate: formatDate(endDate).split(" ")[0],
-    })
+    };
+
+    if (this.state.franchisee) {
+      data.frName = this.state.franchisee;
+    }
+    if (this.state.rider) {
+      data.riderName = this.state.rider;
+    }
+
+    console.log(data);
+
+    httpPost(httpUrl.orderList, [], data)
       .then((res) => {
         if (res.result === "SUCCESS") {
           console.log(res);
@@ -403,6 +418,17 @@ class ReceptionStatus extends Component {
                 // const list = this.state.list;
                 // list.find((x) => x.idx === row.idx).orderStatus = value;
                 row.orderStatus = value;
+                if (value === 3) {
+                  console.log("#############################################");
+                  console.log(row);
+                  const now = new moment();
+                  row.pickupDate = formatDateSecond(now);
+                } else if (value === 4) {
+                  console.log("#############################################");
+                  console.log(row);
+                  const now = new moment();
+                  row.completeDate = formatDateSecond(now);
+                }
                 httpPost(httpUrl.orderUpdate, [], row)
                   .then((res) => {
                     if (res.result === "SUCCESS") this.getList();
@@ -443,14 +469,14 @@ class ReceptionStatus extends Component {
           <div>{row.orderStatus >= 3 ? formatDate(data) : "-"}</div>
         ),
       },
-      {
-        title: "완료시간",
-        dataIndex: "completeDate",
-        className: "table-column-center",
-        render: (data, row) => (
-          <div>{row.orderStatus === 4 ? formatDate(data) : "-"}</div>
-        ),
-      },
+      // {
+      //   title: "완료시간",
+      //   dataIndex: "completeDate",
+      //   className: "table-column-center",
+      //   render: (data, row) => (
+      //     <div>{row.orderStatus === 4 ? formatDate(data) : "-"}</div>
+      //   ),
+      // },
       {
         title: "기사명",
         dataIndex: "riderName",
@@ -467,7 +493,11 @@ class ReceptionStatus extends Component {
         title: "도착지",
         // dataIndex: "destAddr1",
         className: "table-column-center",
-        render: (data, row) => <div className="arriveArea">{row.destAddr1 + " " + row.destAddr2}</div>,
+        render: (data, row) => (
+          <div className="arriveArea">
+            {row.destAddr1 + " " + row.destAddr2}
+          </div>
+        ),
       },
       {
         title: "거리(km)",
@@ -569,6 +599,12 @@ class ReceptionStatus extends Component {
         //   render: (data) => <div>{comma(data)}</div>,
         // },
         // 아마도 중복컬럼?
+
+        // 모양 맞추기
+        {
+          title: "",
+          render: () => <div style={{ width: "800px" }}></div>,
+        },
         {
           title: "배차",
           dataIndex: "forceLocate",
@@ -849,9 +885,13 @@ class ReceptionStatus extends Component {
                     date.get("date")
                   );
 
-                  this.setState({ selectedDate: newDate }, () => {
-                    this.getCompleteList();
-                  });
+                  this.setState(
+                    { selectedDate: newDate },
+                    () => {
+                      this.getCompleteList();
+                    },
+                    () => console.log(this.state.selectedDate)
+                  );
                 }
               }}
             />
@@ -862,31 +902,54 @@ class ReceptionStatus extends Component {
           ></Checkbox>
           <span className="span1">완료조회</span>
         </div>
-        <InfiniteScroll
+        {/* <InfiniteScroll
           dataLength={this.state.pagination.pageSize}
           next={this.handleInfiniteOnLoad}
           inverse={true}
           // hasMore={!this.chatMessageEnd}
           scrollableTarget="reception-table"
+        > */}
+        <div className="dataTableLayout">
+          <Table
+            rowKey={(record) => record.idx}
+            id="reception-table"
+            rowClassName={(record) => rowColorName[record.orderStatus]}
+            dataSource={
+              this.state.checkedCompleteCall
+                ? this.state.totalList
+                : this.state.list
+            }
+            columns={columns}
+            pagination={false}
+            onChange={this.handleTableChange}
+            expandedRowRender={expandedRowRender}
+            scroll
+          />
+        </div>
+        {/* </InfiniteScroll> */}
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            marginTop: "1rem",
+          }}
         >
-          <div className="dataTableLayout">
-            <Table
-              rowKey={(record) => record.idx}
-              id="reception-table"
-              rowClassName={(record) => rowColorName[record.orderStatus]}
-              dataSource={
-                this.state.checkedCompleteCall
-                  ? this.state.totalList
-                  : this.state.list
-              }
-              columns={columns}
-              pagination={false}
-              onChange={this.handleTableChange}
-              expandedRowRender={expandedRowRender}
-              scroll
-            />
-          </div>
-        </InfiniteScroll>
+          <Button
+            onClick={() => {
+              this.setState(
+                {
+                  pagination: {
+                    ...this.state.pagination,
+                    pageSize: this.state.pagination.pageSize + 30,
+                  },
+                },
+                () => this.getList()
+              );
+            }}
+          >
+            더 보기
+          </Button>
+        </div>
       </div>
     );
   }

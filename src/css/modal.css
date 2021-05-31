@@ -768,7 +768,7 @@
   position: fixed;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -65%);
+  transform: translate(-50%, -60%);
   width: 1000px;
   border-radius: 30px;
   z-index: 2;
@@ -811,6 +811,10 @@
 .surchargeLayout::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Opera*/
 }
+.surchargeLayout .ant-checkbox-wrapper {
+  margin-left: 5px !important;
+  vertical-align: middle;
+}
 .selectBlock .ant-form-item {
   margin-bottom: 0px;
 }
@@ -832,6 +836,38 @@
   margin-top: 20px;
   padding-top: 20px;
   border-top: 1px solid #b5b5b5;
+}
+.surchargeLayout .checkbox {
+  display: inline-block;
+  margin-top: 20px;
+  font-size: 15px;
+}
+.surchargeLayout .radio-btn {
+  display: inline-block;
+  margin-top: 20px;
+  margin-left: 30px;
+  font-size: 15px;
+}
+.surchargeLayout .searchRequirement {
+  margin-top: 0 !important;
+  margin-left: 10px;
+}
+.surchargeLayout .search-input {
+  margin-left: 10px;
+  display: inline-block;
+  font-size: 15px;
+}
+.surchargeLayout .selectItem {
+  display: inline-block;
+}
+.surchargeLayout .selectItem .ant-btn {
+  top: 13px;
+}
+.surchargeLayout .override-input.sub {
+  /* margin-left: -30px; */
+  margin-left: 10px;
+  top: 13px;
+  width: 135px;
 }
 
 .mainTitle {
@@ -911,7 +947,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 1200px;
+  width: 1300px;
   border-radius: 30px;
   z-index: 3;
 }
@@ -960,7 +996,7 @@
   flex-wrap: wrap;
   align-content: space-around;
   justify-content: space-around;
-  height: 300px;
+  height: 350px;
 }
 .registCallWrapper .mainTitle {
   display: inline-block;

@@ -214,7 +214,7 @@ const httpUrl = {
   deleteBlind: "/rider/admin/block/delete",
 
   // 채팅
-  chatList: "/chat/chatList?pageSize=%s&pageNum=%s",
+  chatList: "/chat/chatList?pageSize=%s&pageNum=%s&searchName=%s",
 };
 
 const imageType = ["image/jpeg", "image/png", "image/bmp"];
