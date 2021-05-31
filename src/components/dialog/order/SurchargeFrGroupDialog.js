@@ -44,7 +44,7 @@ class SurchargeFrGroupDialog extends Component {
     handleSubmit = () => {
         const form = this.formRef.current;
         httpPost(httpUrl.priceExtraRegistGroup, [], {
-            branchIdx: this.props.userGroup,
+            branchIdx: this.props.branchIdx,
             settingGroupName: form.getFieldValue("settingGroupName")
         })
         .then((res) => {
@@ -128,7 +128,7 @@ class SurchargeFrGroupDialog extends Component {
 }
 const mapStateToProps = (state) => {
     return {
-        userGroup: state.login.loginInfo.userGroup,
+        branchIdx: state.login.loginInfo.branchIdx,
     };
 }
 const mapDispatchToProps = (dispatch) => {

@@ -194,6 +194,7 @@ const httpUrl = {
   // 배차
   assignRiderAdmin: "/order/admin/assignRider",
   assignRiderCancel: "/order/admin/admin/assignRiderCancel",
+  getAssignedRider: "/order/assignList",
 
   // 가맹점 관리
   registFranchise: "/fr/create",
@@ -220,6 +221,9 @@ const httpUrl = {
   // 주소검색관리
   getAddrAptList:
     "/order/addrAptList?addrType=%s&pageNum=%s&pageSize=%s&searchDong=%s",
+
+  // 패스워드 변경
+  changePassword: "/user/changePassword",
 };
 
 const imageType = ["image/jpeg", "image/png", "image/bmp"];

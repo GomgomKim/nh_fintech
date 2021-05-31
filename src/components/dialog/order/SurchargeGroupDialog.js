@@ -46,7 +46,7 @@ class SurchargeGroupDialog extends Component {
     // 지점에 해당된 그룹 리스트
     getList = () => {
         httpPost(httpUrl.priceExtraGroupList, [], {
-            branchIdx: this.props.userGroup,
+            branchIdx: this.props.branchIdx,
             pageNum: this.state.pagination.current,
             pageSize: this.state.pagination.pageSize,
         })
@@ -296,7 +296,7 @@ class SurchargeGroupDialog extends Component {
 }
 const mapStateToProps = (state) => {
     return {
-        userGroup: state.login.loginInfo.userGroup,
+        branchIdx: state.login.loginInfo.branchIdx,
     };
 }
 const mapDispatchToProps = (dispatch) => {

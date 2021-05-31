@@ -3969,3 +3969,7 @@
   width: 900px;
   height: 700px;
 }
+
+.error-message {
+  color: red;
+}
