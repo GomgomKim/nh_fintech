@@ -323,15 +323,15 @@ class NoticeDialog extends Component {
     this.getList()
   }
 
-  changeShowContent = (row) =>{
-    if (this.state.showContent){
+  changeShowContent = (idx) =>{
+    if (this.state.showContent === idx){
       this.setState({
-        showContent:false
+        showContent:0
       })
     }
     else
     this.setState({
-      showContent:true
+      showContent:idx
     })
   }
 
@@ -344,16 +344,16 @@ class NoticeDialog extends Component {
         className: "table-column-center",
         width: 300,
         render: (data, row) => (
-          <div>
+          <>
           <div
           style={{ display: "inline-block", cursor: "pointer" }}
-          onClick={()=>{this.changeShowContent(row)}}>{data}</div>
-          {this.state.showContent &&
+          onClick={()=>{this.changeShowContent(row.idx)}}>{data}</div>
+          {this.state.showContent === row.idx &&
             <div className= "table-column-content">
             {row.content}
             </div>
           }
-          </div>
+          </>
         ),
       },
       {
