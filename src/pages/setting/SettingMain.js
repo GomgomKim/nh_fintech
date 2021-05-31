@@ -31,13 +31,14 @@ class SettingMain extends Component {
   componentDidMount() {}
 
   handleSubmit = () => {
+    const bcrypt = require("bcrypt-nodejs");
+
     const form = this.formRef.current.getFieldsValue();
-    console.log(form);
 
     // bcrypt 활용 encoding 후 비교해야 함
     // install 과정에서 에러 발생으로 인해 일단 놔둠
     // + 현재 loginInfo 에서 password 항상 null 로 와서 해당 이슈 해결 후 테스팅 필요
-    if (this.props.password !== form.currentPassword) {
+    if (bcrypt.compareSync(form.currentPassword, this.props.password)) {
       this.setState({ checkCurrentPasswordError: true });
       return;
     } else if (form.newPaword !== form.newPasswordCheck) {
