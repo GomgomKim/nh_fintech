@@ -9,9 +9,10 @@ import { connect } from "react-redux";
 import { comma } from "../../../lib/util/numberUtil";
 import moment from 'moment';
 import SelectBox from '../../../components/input/SelectBox';
+import { customAlert, customError} from "../../../api/Modals";
 import { enabledString, enabledCode, surchargeType } from '../../../lib/util/codeUtil';
 import SurchargeGroupDialog from './SurchargeGroupDialog';
-import SearchFranchiseDialog from "../../dialog/common/SearchFranchiseDialog";
+import SearchSurGroupDialog from "../../dialog/common/SearchSurGroupDialog";
 const FormItem = Form.Item;
 const { RangePicker } = DatePicker;
 
@@ -29,6 +30,8 @@ class SurchargeDialog extends Component {
             endDate: "",
             surchargeGroupOpen: false,
             surchargeCheck: false,
+            surchargeSearchGrp: false,
+            selectedGroup: null,
             surchargeType: 0,
         };
         this.formRef = React.createRef();
@@ -36,7 +39,6 @@ class SurchargeDialog extends Component {
 
     componentDidMount() {
         this.getList()
-        // alert(this.props.userGroup)
     }
 
     handleTableChange = (pagination) => {
@@ -66,12 +68,16 @@ class SurchargeDialog extends Component {
                 title: "시스템 에러",
                 content: "시스템 에러가 발생하였습니다. 다시 시도해 주십시오."
             });
-        });;
+        });
     }
 
     // 할증등록
     handleSubmit = () => {
         let self = this;
+        let frSettingGroupIdx
+        if(this.state.selectedGroup){
+            frSettingGroupIdx = this.state.selectedGroup.idx
+        } 
         Modal.confirm({
             title: "할증 등록",
             content: (
@@ -89,22 +95,17 @@ class SurchargeDialog extends Component {
                     branchIdx: self.props.branchIdx,
                     startDate: self.state.startDate,
                     endDate: self.state.endDate,
-                }).then((result) => {
-                    Modal.info({
-                        title: "등록 완료",
-                        content: (
-                            <div>
-                                {self.formRef.current.getFieldsValue().name}이(가) 등록되었습니다.
-                            </div>
-                        ),
-                    });
+                    frSettingGroupIdx: self.state.surchargeType === 0 ? null : frSettingGroupIdx
+                }).then((res) => {
+                    if (res.result === "SUCCESS" && res.data === "SUCCESS") {
+                    customAlert("등록 완료", 
+                        self.formRef.current.getFieldsValue().name+" 이(가) 등록되었습니다.")
+                }
                     self.handleClear();
                     self.getList();
                 }).catch((error) => {
-                    Modal.info({
-                        title: "등록 오류",
-                        content: "오류가 발생하였습니다. 다시 시도해 주십시오."
-                    });
+                    customAlert("등록 오류", 
+                        "오류가 발생하였습니다. 다시 시도해 주십시오.")
                 });
             },
         });
@@ -135,18 +136,15 @@ class SurchargeDialog extends Component {
                 let idx = row.idx;
                 let name = row.name;
                 httpGet(httpUrl.priceExtraDelete, [idx], {})
-                    .then((result) => {
-                        Modal.info({
-                            title: "할증 삭제",
-                            content: <div> {name} 할증이 삭제되었습니다.</div>,
-                        });
+                    .then((res) => {
+                        if (res.result === "SUCCESS" && res.data === "SUCCESS") {
+                        customAlert("할증 삭제", name+" 할증이 삭제되었습니다.")
                         self.getList();
+                        }
                     })
                     .catch((error) => {
-                        Modal.info({
-                            title: "삭제 오류",
-                            content: "오류가 발생하였습니다. 다시 시도해 주십시오."
-                        });
+                        customAlert("삭제 오류", 
+                            "오류가 발생하였습니다. 다시 시도해 주십시오.")
                     });
             },
         });
@@ -155,14 +153,14 @@ class SurchargeDialog extends Component {
     // 할증 사용여부수정
     onChangeStatus = (index, value) => {
         httpPost(httpUrl.priceExtraUpdate, [], { idx: index, enabled: value })
-            .then((result) => {
+            .then((res) => {
+                if (res.result === "SUCCESS" && res.data === "SUCCESS") {
                 this.getList();
+                }
             })
             .catch((error) => {
-                Modal.info({
-                    title: "수정 오류",
-                    content: "오류가 발생하였습니다. 다시 시도해 주십시오."
-                });
+                customAlert("수정 오류", 
+                    "오류가 발생하였습니다. 다시 시도해 주십시오.")
             });
     }
 
@@ -178,6 +176,14 @@ class SurchargeDialog extends Component {
     };
     closeSurchargeGroupModal = () => {
         this.setState({ surchargeGroupOpen: false });
+    };
+
+    // 할증그룹조회 dialog
+    openSurchargeSearchGrpModal = () => {
+        this.setState({ surchargeSearchGrp: true });
+    };
+    closeSurchargeSearchGrpModal = () => {
+        this.setState({ surchargeSearchGrp: false });
     };
 
 
@@ -225,7 +231,7 @@ class SurchargeDialog extends Component {
                 dataIndex: "frSettingGroupIdx",
                 className: "table-column-center",
                 render: (data, row) => 
-                <div>{data === null ? "전체" : "그룹1"}</div>
+                <div>{data === null ? "전체" : "그룹"}</div>
             },
             {
                 className: "table-column-center",
@@ -335,39 +341,42 @@ class SurchargeDialog extends Component {
                                                         className="searchRequirement"
                                                         onChange={this.onCheckType}
                                                         value={this.state.surchargeType}
+                                                        defaultValue={surchargeType[0]}
                                                         >
                                                         {Object.entries(surchargeType).map(([key, value]) => {
                                                             return (
-                                                            <Radio value={key}>
+                                                            <Radio value={parseInt(key)}>
                                                                 {value}
                                                             </Radio>
                                                             );
                                                         })}
                                                     </Radio.Group>
                                                         
-
-                                                <div className="search-input">
-                                                    그룹명
-                                                </div>
-                                                {this.state.searchFranchiseOpen &&
-                                                <SearchFranchiseDialog
-                                                    close={this.closeSearchFranchiseModal}
+                                                {this.state.surchargeType === 1 ? 
+                                                <>
+                                                    <div className="search-input">
+                                                        그룹명
+                                                    </div>
+                                                    {this.state.surchargeSearchGrp &&
+                                                    <SearchSurGroupDialog
+                                                    close={this.closeSurchargeSearchGrpModal}
                                                     callback={(data) => {
-                                                        this.setState({ selectedFr:data })
+                                                        this.setState({ selectedGroup:data })
                                                     }}
-                                                />}
-                                                <FormItem
-                                                    name="frName"
-                                                    className="selectItem"
-                                                >
-                                                    <Input placeholder="가맹점명 입력" className="override-input sub" required
-                                                        value={ this.state.selectedFr ? this.state.selectedFr.frName : ""}>
-                                                    </Input>
-                                                    <Button onClick={this.openSearchFranchiseModal}>
-                                                    조회
-                                                    </Button>
-                                                </FormItem>
-
+                                                    />}
+                                                    <FormItem
+                                                        name="frName"
+                                                        className="selectItem"
+                                                        >
+                                                        <Input placeholder="그룹명 입력" className="override-input sub" required
+                                                            value={ this.state.selectedGroup ? this.state.selectedGroup.settingGroupName : ""}>
+                                                        </Input>
+                                                        <Button onClick={this.openSurchargeSearchGrpModal}>
+                                                        조회
+                                                        </Button>
+                                                    </FormItem>
+                                                </> : <></>
+                                                }
 
 
                                                 </div>
@@ -392,7 +401,7 @@ class SurchargeDialog extends Component {
 }
 const mapStateToProps = (state) => {
     return {
-        userGroup: state.login.loginInfo.userGroup,
+        branchIdx: state.login.loginInfo.branchIdx,
     };
 }
 const mapDispatchToProps = (dispatch) => {
