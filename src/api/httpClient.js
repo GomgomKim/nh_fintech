@@ -221,6 +221,9 @@ const httpUrl = {
   // 주소검색관리
   getAddrAptList:
     "/order/addrAptList?addrType=%s&pageNum=%s&pageSize=%s&searchDong=%s",
+
+  // 패스워드 변경
+  changePassword: "/user/changePassword",
 };
 
 const imageType = ["image/jpeg", "image/png", "image/bmp"];

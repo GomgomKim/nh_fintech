@@ -47,7 +47,7 @@ class Header extends React.Component {
       { idx: 1, name: '접수현황', icon: (<CopyOutlined />), url: '/order/OrderMain' },
       { idx: 2, name: '가맹점관리', icon: (<PhoneOutlined />), url: '/franchise/FranchiseMain' },
       { idx: 3, name: '기사관리', icon: (<TeamOutlined />), url: '/rider/RiderMain' },
-      { idx: 4, name: '직원관리', icon: (<IdcardOutlined />), url: '/staff/StaffMain' },
+      // { idx: 4, name: '직원관리', icon: (<IdcardOutlined />), url: '/staff/StaffMain' },
       { idx: 5, name: '환경설정', icon: (<SettingOutlined />), url: '/setting/SettingMain' },
     ];
 

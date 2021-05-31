@@ -129,20 +129,14 @@ class RegistCallDialog extends Component {
           this.state.data.basicDeliveryPrice ||
         prevState.data.extraDeliveryPrice !== this.state.data.extraDeliveryPrice
       ) {
-        this.setState(
-          {
-            data: {
-              ...this.state.data,
-              deliveryPrice:
-                this.state.data.basicDeliveryPrice +
-                this.state.data.extraDeliveryPrice,
-            },
+        this.setState({
+          data: {
+            ...this.state.data,
+            deliveryPrice:
+              this.state.data.basicDeliveryPrice +
+              this.state.data.extraDeliveryPrice,
           },
-          () => {
-            console.log("didupdate");
-            console.log(this.state.data);
-          }
-        );
+        });
       }
     }
   }
@@ -304,7 +298,6 @@ class RegistCallDialog extends Component {
   };
 
   handleSubmit = () => {
-    console.log(this.state.data);
     if (this.props.data) {
       httpPost(httpUrl.orderUpdate, [], this.state.data)
         .then((res) => {
