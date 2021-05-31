@@ -8,7 +8,7 @@ import BlindFranListDialog from "../../components/dialog/franchise/BlindFranList
 import SelectBox from "../../components/input/SelectBox";
 import "../../css/franchise.css";
 import { comma } from "../../lib/util/numberUtil";
-import { BankOutlined, ConsoleSqlOutlined } from "@ant-design/icons";
+import { BankOutlined } from "@ant-design/icons";
 import { formatDate } from "../../lib/util/dateUtil";
 import {
   statusString,
@@ -72,7 +72,6 @@ class FranchiseMain extends Component {
   };
 
   handleTableChange = (pagination) => {
-    console.log(pagination);
     const pager = {
       ...this.state.pagination,
     };
