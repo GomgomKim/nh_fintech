@@ -56,7 +56,7 @@ class BlindRiderListDialog extends Component {
         let { data } = this.props;
         let riderIdx = data.idx;
         httpPost(httpUrl.blindList, [], {
-            riderIdx: riderIdx,
+            riderIdx,
             pageNum: this.state.pagination.current,
             pageSize: this.state.pagination.pageSize,
             deletedList: this.state.deletedCheck !== true ? [0] : [0, 1],
@@ -132,7 +132,7 @@ class BlindRiderListDialog extends Component {
                 cancelText: "취소",
                 onOk() {
                     httpPost(httpUrl.deleteBlind, [], {
-                        idx: idx,
+                        idx,
                     }).then((result) => {
                             if (result.result === "SUCCESS") {
                                 unBlindComplete();
@@ -235,7 +235,7 @@ class BlindRiderListDialog extends Component {
                             }
                         }}>해제</Button>
                         :
-                        <Button className="tabBtn surchargeTab">-</Button>
+                        <></>
                     }
                     </div>
               },
@@ -310,7 +310,6 @@ class BlindRiderListDialog extends Component {
                                                 </div>
                                                 {this.state.searchFranchiseOpen &&
                                                 <SearchFranchiseDialog
-
                                                     close={this.closeSearchFranchiseModal}
                                                     callback={(data) => {
                                                         this.setState({ selectedFr:data })
@@ -333,7 +332,6 @@ class BlindRiderListDialog extends Component {
                                                 </div>
                                                 {this.state.searchRiderOpen &&
                                                 <SearchRiderDialog
-
                                                     close={this.closeSearchRiderModal}
                                                     callback={(data) => {
                                                         this.setState({ selectedRider:data })

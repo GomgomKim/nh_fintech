@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import '../../../css/modal.css';
-import { Form, Input, Table, Button, Modal, Select } from 'antd';
+import { Form, Input, Table, Button, Modal, Select, Space } from 'antd';
 import { formatDate } from "../../../lib/util/dateUtil";
 import "../../../css/order.css";
 import { comma } from "../../../lib/util/numberUtil";
@@ -15,12 +15,16 @@ import {
   modifyType,
   deliveryStatusCode,
   rowColorName,
-  arriveReqTime
+  arriveReqTime,
+  orderCnt
 } from '../../../lib/util/codeUtil';
 import{
   customError,
   deleteError
 } from '../../../api/Modals'
+
+import { SearchOutlined } from '@ant-design/icons';
+import SelectBox from "../../../components/input/SelectBox";
 
 
 const Option = Select.Option;
@@ -90,14 +94,34 @@ class MapControlDialog extends Component {
 
             isAssignRider: false,
 
+            waitingList: [],
+
+            searchText: '',
+            searchedColumn: '',
+
+            selOrderCnt: 0,
+            allResults: [],
         }
     }
 
     componentDidMount() {
         this.getRiderList()
         this.getRiderLocateList()
+        this.getWaitingList()
+        this.getRiderAllList()
     }
 
+    getWaitingList = () => {
+      var list = []
+      this.props.callData.map(row => {
+        if(row.orderStatus === 1)
+        list.push(row)
+      })
+
+      this.setState({
+        waitingList: list,
+      })
+    }
 
     setDate = (date) => {
         console.log(date)
@@ -207,17 +231,36 @@ class MapControlDialog extends Component {
     };
 
     getRiderList = () => {
-      let pageNum = this.state.paginationList.current;
-      let userStatus = 1;
-      let searchName = this.state.searchName;
+      const pageNum = this.state.paginationList.current;
+      const userStatus = 1;
+      const searchName = this.state.searchName;
   
       httpGet(httpUrl.riderList, [10, pageNum, searchName, userStatus], {}).then((result) => {
         // console.log('## nnbox result=' + JSON.stringify(result, null, 4))
         const pagination = { ...this.state.paginationList };
         pagination.current = result.data.currentPage;
         pagination.total = result.data.totalCount;
+        // console.log(result.data.riders)
         this.setState({
           results: result.data.riders,
+          paginationList: pagination,
+        });
+      })
+    };
+
+    getRiderAllList = () => {
+      let pageNum = this.state.paginationList.current;
+      let userStatus = 1;
+      let searchName = this.state.searchName;
+  
+      httpGet(httpUrl.riderList, [1000, pageNum, searchName, userStatus], {}).then((result) => {
+        // console.log('## nnbox result=' + JSON.stringify(result, null, 4))
+        const pagination = { ...this.state.paginationList };
+        pagination.current = result.data.currentPage;
+        pagination.total = result.data.totalCount;
+        console.log(result.data.riders)
+        this.setState({
+          allResults: result.data.riders,
           paginationList: pagination,
         });
       })
@@ -350,6 +393,69 @@ class MapControlDialog extends Component {
       isAssignRider: true,
     })
   }
+
+  handleSearch = (selectedKeys, confirm, dataIndex) => {
+    confirm();
+    this.setState({
+      searchText: selectedKeys[0],
+      searchedColumn: dataIndex,
+    });
+  };
+
+  getColumnSearchProps = dataIndex => ({
+    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
+      <div style={{ padding: 8 }}>
+        <Input
+          ref={node => {
+            this.searchInput = node;
+          }}
+          placeholder={`Search ${dataIndex}`}
+          value={selectedKeys[0]}
+          onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+          onPressEnter={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
+          style={{ marginBottom: 8, display: 'block' }}
+        />
+        <Space>
+          <Button
+            type="primary"
+            onClick={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
+            icon={<SearchOutlined />}
+            size="small"
+            style={{ width: 90 }}
+          >
+            Search
+          </Button>
+          <Button onClick={() => this.handleReset(clearFilters)} size="small" style={{ width: 90 }}>
+            Reset
+          </Button>
+          <Button
+            type="link"
+            size="small"
+            onClick={() => {
+              confirm({ closeDropdown: false });
+              this.setState({
+                searchText: selectedKeys[0],
+                searchedColumn: dataIndex,
+              });
+            }}
+          >
+            Filter
+          </Button>
+        </Space>
+      </div>
+    ),
+    filterIcon: filtered => <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />,
+    onFilter: (value, record) =>
+      record[dataIndex]
+        ? record[dataIndex].toString().toLowerCase().includes(value.toLowerCase())
+        : '',
+    onFilterDropdownVisibleChange: visible => {
+      if (visible) {
+        setTimeout(() => this.searchInput.select(), 100);
+      }
+    },
+    
+  });
       
     render() {
         const { close } = this.props;
@@ -441,7 +547,7 @@ class MapControlDialog extends Component {
             title: "도착지",
             // dataIndex: "destAddr1",
             className: "table-column-center",
-            render: (data, row) => <div>{row.destAddr1 + " " + row.destAddr2}</div>,
+            render: (data, row) => <div className="arriveArea">{row.destAddr1 + " " + row.destAddr2}</div>,
           },
           {
             title: "거리(km)",
@@ -530,7 +636,8 @@ class MapControlDialog extends Component {
           {
             title: "도착지",
             className: "table-column-center arrive",
-            render: (data, row) => <div>{row.destAddr1 === "" ? "-" : row.destAddr1 + " " + row.destAddr2}</div>,
+            ...this.getColumnSearchProps('destAddr1'),
+            render: (data, row) => <div className="arriveArea">{row.destAddr1 === "" ? "-" : row.destAddr1 + " " + row.destAddr2}</div>,
           },
         ];
 
@@ -555,7 +662,20 @@ class MapControlDialog extends Component {
 
                       <div className="map-content">
                           <img onClick={close} src={require('../../../img/login/close.png').default} className="map-close" alt="img"/>
-
+                          <SelectBox
+                            className="select-rider-orderCnt"
+                            value={orderCnt[this.state.selOrderCnt]}
+                            code={Object.keys(orderCnt)}
+                            codeString={orderCnt}
+                            onChange={(value) => {
+                              if (parseInt(value) !== this.state.selOrderCnt) {
+                                this.setState(
+                                  { selOrderCnt: parseInt(value) },
+                                  () => this.getRiderList()
+                                );
+                              }
+                            }}
+                          />
 
                           <div className="map-inner">
 
@@ -591,32 +711,51 @@ class MapControlDialog extends Component {
                                       position={navermaps.LatLng(this.state.selRider.latitude, this.state.selRider.longitude)}
                                       icon={require('../../../img/login/map/marker_rider_red.png').default}
                                       title={this.state.selRider.riderName}
-                                      onClick={()=>this.getRiderLocate(this.state.selRider.userIdx)}
+                                      onClick={()=>this.getRiderLocate(this.state.selRider.idx)}
                                     />
                                     
                                     
                                     {
-                                      this.state.riderLocates.map(row => {
-                                        // console.log(row.latitude, row.longitude)
-                                        if(this.state.selRider.latitude !== row.latitude && this.state.selRider.longitude !== row.longitude){
-                                          if(row.riderLevel >= 3){
-                                            return (
-                                              <Marker
-                                                position={navermaps.LatLng(row.latitude, row.longitude)}
-                                                icon={require('../../../img/login/map/marker_rider_blue.png').default}
-                                                title={row.riderName}
-                                                onClick={()=>this.getRiderLocate(row.userIdx)}
-                                              />
-                                            );
+                                      this.state.allResults.map((row, index) => {
+                                        // console.log(row.orders.length)
+                                        var flag = true
+                                       /*  if(this.state.selOrderCnt === 0) flag = true
+                                        else{
+                                          if(this.state.selOrderCnt === 5 && row.orders.length >= 5){
+                                            flag = true
                                           } else{
-                                            return (
-                                              <Marker
-                                                position={navermaps.LatLng(row.latitude, row.longitude)}
-                                                icon={require('../../../img/login/map/marker_rider.png').default}
-                                                title={row.riderName}
-                                                onClick={()=>this.getRiderLocate(row.userIdx)}
-                                              />
-                                            );
+                                            if(row.orders.length === this.state.selOrderCnt){
+                                              flag = true
+                                            }
+                                          }
+                                        } */
+                                        
+                                        
+                                        if(flag){
+                                          console.log(this.state.selRider.idx, row.idx)
+                                          if(this.state.selRider.idx !== row.idx){
+                                            // 팀장 이상 파랑 마크
+                                            if(row.riderLevel >= 3){
+                                              return (
+                                                <Marker
+                                                  key={index}
+                                                  position={navermaps.LatLng(row.riderLocation.latitude, row.riderLocation.longitude)}
+                                                  icon={require('../../../img/login/map/marker_rider_blue.png').default}
+                                                  title={row.riderName}
+                                                  onClick={()=>this.getRiderLocate(row.idx)}
+                                                />
+                                              );
+                                            } else{
+                                              return (
+                                                <Marker
+                                                  key={index}
+                                                  position={navermaps.LatLng(row.riderLocation.latitude, row.riderLocation.longitude)}
+                                                  icon={require('../../../img/login/map/marker_rider.png').default}
+                                                  title={row.riderName}
+                                                  onClick={()=>this.getRiderLocate(row.idx)}
+                                                />
+                                              );
+                                            }
                                           }
                                         }
                                       })
@@ -638,12 +777,9 @@ class MapControlDialog extends Component {
 
                               {this.props.callData &&
                                 <>
-                                <Button className="assign-rider-btn" onClick={this.assignRider}>
-                                    배차
-                                </Button>
                                 <Table
                                     rowKey={(record) => record.idx}
-                                    dataSource={this.props.callData}
+                                    dataSource={this.state.waitingList}
                                     rowSelection={rowSelection}
                                     columns={columns_callList}
                                     rowClassName={(record) => rowColorName[record.orderStatus]}
@@ -653,12 +789,14 @@ class MapControlDialog extends Component {
                                 />
                                 </>
                               }
-
+                              
+                                
                               {this.state.riderListOpen && (
                                 <>
                                 <div className="rider-list-show-btn" onClick={()=>this.setState({riderListOpen: false})}>
                                     닫기
                                   </div>
+                                  
                                   <div className="riderListInMapControl">
                                     <div className="selectLayout">
 
@@ -689,7 +827,6 @@ class MapControlDialog extends Component {
                                   </div>
                               )}
                           </div>
-
 
                       </div>
                   </div>

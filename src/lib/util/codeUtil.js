@@ -17,8 +17,8 @@ const cardStatus = ["요청", "등록완료"];
 // key : 기존 값 / value : 변경 가능한 값
 const modifyType = {
   1: [2, 5],
-  2: [3, 5],
-  3: [4, 5],
+  2: [1, 3, 5],
+  3: [2, 4, 5],
   4: [1, 2, 3],
   5: [1],
 };
@@ -68,6 +68,15 @@ const feeManner = {
   1: "정량",
   2: "정률",
 };
+
+const orderCnt = {
+  0: "전체",
+  1: "1개",
+  2: "2개",
+  3: "3개",
+  4: "4개",
+  5: "5개 이상",
+}
 
 const blockString = {
   0: "차단중",
@@ -134,8 +143,13 @@ const packAmount = {
   5: "5개이상",
 };
 
+const surchargeType = [
+    "지점 전체",
+    "지정 그룹"
+]
+
 const addType = [
-  // "",
+  "",
   "아파트",
   "오피스텔",
 ];
@@ -165,4 +179,6 @@ export {
   arriveReqTime,
   packAmount,
   addType,
+  orderCnt,
+  surchargeType
 };

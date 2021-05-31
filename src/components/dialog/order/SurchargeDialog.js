@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import {
     Form, Input, DatePicker, Table,
-    Button, Modal
+    Button, Modal, Checkbox, Radio
 } from "antd";
 import { httpUrl, httpPost, httpGet } from '../../../api/httpClient';
 import '../../../css/modal.css';
@@ -9,8 +9,9 @@ import { connect } from "react-redux";
 import { comma } from "../../../lib/util/numberUtil";
 import moment from 'moment';
 import SelectBox from '../../../components/input/SelectBox';
-import { enabledString, enabledCode } from '../../../lib/util/codeUtil';
+import { enabledString, enabledCode, surchargeType } from '../../../lib/util/codeUtil';
 import SurchargeGroupDialog from './SurchargeGroupDialog';
+import SearchFranchiseDialog from "../../dialog/common/SearchFranchiseDialog";
 const FormItem = Form.Item;
 const { RangePicker } = DatePicker;
 
@@ -27,6 +28,8 @@ class SurchargeDialog extends Component {
             startDate: "",
             endDate: "",
             surchargeGroupOpen: false,
+            surchargeCheck: false,
+            surchargeType: 0,
         };
         this.formRef = React.createRef();
     }
@@ -163,6 +166,12 @@ class SurchargeDialog extends Component {
             });
     }
 
+    //대상 적용
+    onCheckType = (e) => {
+        this.setState({ surchargeType: e.target.value })
+    }
+
+
     // 할증그룹관리 dialog
     openSurchargeGroupModal = () => {
         this.setState({ surchargeGroupOpen: true });
@@ -246,10 +255,12 @@ class SurchargeDialog extends Component {
 
 
                                     <div className="surchargeLayout">
-                                    <SurchargeGroupDialog
+                                    {this.state.surchargeGroupOpen && 
+                                        <SurchargeGroupDialog
                                         isOpen={this.state.surchargeGroupOpen}
                                         close={this.closeSurchargeGroupModal}
                                     />
+                                    }
                                     <Button onClick={this.openSurchargeGroupModal}>
                                         할증 그룹관리
                                     </Button>
@@ -308,6 +319,56 @@ class SurchargeDialog extends Component {
                                                             원
                                                         </div>
                                                     </div>
+                                                    <div className="checkbox">
+                                                        상시할증 적용
+                                                    </div>
+                                                    <Checkbox
+                                                        style={{verticalAlign:'middle'}}
+                                                        defaultChecked={this.state.surchargeCheck ? "checked" : ""}
+                                                        onChange={this.onSurchargeCheck} />
+                                                    
+                                                    <div className="radio-btn">
+                                                        대상 지정
+                                                    </div>
+                                                    <Radio.Group
+                                                        className="searchRequirement"
+                                                        onChange={this.onCheckType}
+                                                        value={this.state.surchargeType}
+                                                        >
+                                                        {Object.entries(surchargeType).map(([key, value]) => {
+                                                            return (
+                                                            <Radio value={parseInt(key)}>
+                                                                {value}
+                                                            </Radio>
+                                                            );
+                                                        })}
+                                                    </Radio.Group>
+                                                        
+
+                                                <div className="search-input">
+                                                    그룹명
+                                                </div>
+                                                {this.state.searchFranchiseOpen &&
+                                                <SearchFranchiseDialog
+                                                    close={this.closeSearchFranchiseModal}
+                                                    callback={(data) => {
+                                                        this.setState({ selectedFr:data })
+                                                    }}
+                                                />}
+                                                <FormItem
+                                                    name="frName"
+                                                    className="selectItem"
+                                                >
+                                                    <Input placeholder="가맹점명 입력" className="override-input sub" required
+                                                        value={ this.state.selectedFr ? this.state.selectedFr.frName : ""}>
+                                                    </Input>
+                                                    <Button onClick={this.openSearchFranchiseModal}>
+                                                    조회
+                                                    </Button>
+                                                </FormItem>
+
+
+
                                                 </div>
                                                 <div className="btnInsert">
                                                     <Button type="primary" htmlType="submit" className="tabBtn insertTab">

@@ -42,7 +42,6 @@ class RegistFranDialog extends Component {
 
   handleSubmit = () => {
     if (this.props.data) {
-        
       httpPost(httpUrl.franchiseUpdate, [], {
         ...this.formRef.current.getFieldsValue(),
         idx: this.props.data.idx,
@@ -158,7 +157,7 @@ class RegistFranDialog extends Component {
         });
 
         // 예상 배송 요금
-        httpGet(httpUrl.expectDeliveryPrice, [lat, lng], {}).then((res) => {
+        httpGet(httpUrl.expectDeliveryPrice , [lat, lng], {}).then((res) => {
           // console.log("expectDeliveryPrice data :"+res.data)
           // console.log("expectDeliveryPrice data :"+res.data.distance)
           // console.log("expectDeliveryPrice data :"+res.data.deliveryPriceBasic)
@@ -198,235 +197,213 @@ class RegistFranDialog extends Component {
     const { close, data } = this.props;
 
     return (
+      <React.Fragment>
+        <div className="Dialog-overlay" onClick={() => close()} />
+        <div className="registFran-Dialog">
+          <div className="registFran-container">
+            <div className="registFran-title">
+              {data ? "가맹점 수정" : "가맹점 등록"}
+            </div>
 
-          <React.Fragment>
-            <div className="Dialog-overlay" onClick={() => close()} />
-            <div className="registFran-Dialog">
-              <div className="registFran-container">
-                <div className="registFran-title">
-                  {data ? "가맹점 수정" : "가맹점 등록"}
+            <img
+              onClick={() => close()}
+              src={require("../../../img/login/close.png").default}
+              className="surcharge-close"
+              alt="exit"
+            />
+
+            <Form ref={this.formRef} onFinish={this.handleSubmit}>
+              <div className="registFranLayout">
+                <div className="registFranWrapper">
+                  <div className="registFranTitle">기본정보</div>
+
+                  <div className="contentBlock">
+                    <div className="mainTitle">가맹점명</div>
+                    <FormItem
+                      name="frName"
+                      className="selectItem"
+                      initialValue={data && data.frName}
+                    >
+                      <Input
+                        placeholder="가맹점명을 입력해 주세요."
+                        className="override-input"
+                      />
+                    </FormItem>
+                  </div>
+                  <div className="contentBlock">
+                    <div className="mainTitle">사업자번호</div>
+                    <FormItem
+                      name="businessNumber"
+                      className="selectItem"
+                      initialValue={data && data.businessNumber}
+                    >
+                      <Input
+                        placeholder="사업자번호를 입력해 주세요."
+                        className="override-input"
+                      />
+                    </FormItem>
+                  </div>
+
+                  <div className="contentBlock">
+                    <div className="mainTitle">대표자명</div>
+                    <FormItem
+                      name="ownerName"
+                      className="selectItem"
+                      // initialValue={data && data.ownerName}
+                      initialValue={data && "대표자명"}
+                    >
+                      <Input
+                        placeholder="대표자명을 입력해 주세요."
+                        className="override-input"
+                      />
+                    </FormItem>
+                  </div>
+
+                  <div className="contentBlock">
+                    <div className="mainTitle">가맹점전화</div>
+                    <FormItem
+                      name="frPhone"
+                      className="selectItem"
+                      initialValue={data && data.frPhone}
+                    >
+                      <Input
+                        placeholder="가맹점 전화번호를 입력해 주세요."
+                        className="override-input"
+                      />
+                    </FormItem>
+                  </div>
+
+                  <div className="contentBlock">
+                    <div className="mainTitle">휴대전화</div>
+                    <FormItem
+                      name="phone"
+                      className="selectItem"
+                      // initialValue={data && data.frPhone}
+                      initialValue={data && "010-1234-5678"}
+                    >
+                      <Input
+                        placeholder="휴대전화 번호를 입력해 주세요."
+                        className="override-input"
+                      />
+                    </FormItem>
+                  </div>
+
+                  <div className="contentBlock">
+                    <div className="mainTitle">주소</div>
+                    <FormItem
+                      name="addr1"
+                      className="selectItem"
+                      initialValue={data && data.addr1}
+                    >
+                      <Input
+                        placeholder="주소를 입력해 주세요."
+                        disabled
+                        className="override-input addrText"
+                      />
+                    </FormItem>
+                    <PostCodeDialog
+                      data={(addrData) => this.getAddr(addrData)}
+                      isOpen={this.state.isPostCodeOpen}
+                      close={this.closePostCode}
+                    />
+                    <Button
+                      onClick={this.openPostCode}
+                      className="override-input addrBtn"
+                    >
+                      우편번호 검색
+                    </Button>
+                  </div>
+                  <div className="contentBlock">
+                    <div className="mainTitle">지번주소</div>
+                    <FormItem
+                      name="addr3"
+                      className="selectItem"
+                      // initialValue={data && data.addr3}
+                      initialValue={data && "test"}
+                    >
+                      <Input
+                        placeholder="상세주소를 입력해 주세요."
+                        disabled
+                        className="override-input sub"
+                      />
+                    </FormItem>
+                  </div>
+                  <div className="contentBlock">
+                    <div className="mainTitle">상세주소</div>
+                    <FormItem
+                      name="addr2"
+                      className="selectItem"
+                      initialValue={data && data.addr2}
+                    >
+                      <Input
+                        placeholder="상세주소를 입력해 주세요."
+                        className="override-input sub"
+                      />
+                    </FormItem>
+                  </div>
                 </div>
 
-                <img
-                  onClick={() => close()}
-                  src={require("../../../img/login/close.png").default}
-                  className="surcharge-close"
-                  alt="exit"
-                />
+                <div className="registFranWrapper sub">
+                  <div className="contentBlock">
+                    <div className="mainTitle">아이디</div>
+                    <FormItem
+                      name="id"
+                      className="selectItem"
+                      rules={[
+                        {
+                          required: true,
+                          message: "아이디를 입력해주세요",
+                        },
+                      ]}
+                      initialValue={data && data.id}
+                    >
+                      <Input
+                        placeholder="아이디를 입력해 주세요."
+                        className="override-input"
+                      />
+                    </FormItem>
+                  </div>
+                  <div className="contentBlock">
+                    <div className="mainTitle">이메일</div>
+                    <FormItem
+                      name="email"
+                      className="selectItem"
+                      rules={[
+                        {
+                          required: true,
+                          message: "이메일을 입력해주세요",
+                        },
+                      ]}
+                      initialValue={data && data.email}
+                    >
+                      <Input
+                        placeholder="ex) example@naver.com"
+                        className="override-input"
+                      />
+                    </FormItem>
+                  </div>
 
-                <Form ref={this.formRef} onFinish={this.handleSubmit}>
-                  <div className="registFranLayout">
-                    <div className="registFranWrapper">
-                      <div className="registFranTitle">기본정보</div>
-
-                      <div className="contentBlock">
-                        <div className="mainTitle">가맹점명</div>
-                        <FormItem
-                          name="frName"
-                          className="selectItem"
-                          initialValue={data && data.frName}
+                  <div className="contentBlock">
+                    <div className="mainTitle">PG 사용여부</div>
+                    <div className="registRiderCheck">
+                      <FormItem name="tidNormalRate" initialValue={0}>
+                        <Radio.Group
+                          className="searchRequirement"
+                          onChange={this.onChangePgRate}
+                          value={this.state.PgRate}
                         >
-                          <Input
-                            placeholder="가맹점명을 입력해 주세요."
-                            className="override-input"
-                          />
-                        </FormItem>
-                      </div>
-                      <div className="contentBlock">
-                        <div className="mainTitle">사업자번호</div>
-                        <FormItem
-                          name="businessNumber"
-                          className="selectItem"
-                          initialValue={data && data.businessNumber}
-                        >
-                          <Input
-                            placeholder="사업자번호를 입력해 주세요."
-                            className="override-input"
-                          />
-                        </FormItem>
-                      </div>
-
-                      <div className="contentBlock">
-                        <div className="mainTitle">대표자명</div>
-                        <FormItem
-                          name="ownerName"
-                          className="selectItem"
-                          // initialValue={data && data.ownerName}
-                          initialValue={data && "대표자명"}
-                        >
-                          <Input
-                            placeholder="대표자명을 입력해 주세요."
-                            className="override-input"
-                          />
-                        </FormItem>
-                      </div>
-
-                      <div className="contentBlock">
-                        <div className="mainTitle">가맹점전화</div>
-                        <FormItem
-                          name="frPhone"
-                          className="selectItem"
-                          initialValue={data && data.frPhone}
-                        >
-                          <Input
-                            placeholder="가맹점 전화번호를 입력해 주세요."
-                            className="override-input"
-                          />
-                        </FormItem>
-                      </div>
-
-                      <div className="contentBlock">
-                        <div className="mainTitle">휴대전화</div>
-                        <FormItem
-                          name="phone"
-                          className="selectItem"
-                          // initialValue={data && data.frPhone}
-                          initialValue={data && "010-1234-5678"}
-                        >
-                          <Input
-                            placeholder="휴대전화 번호를 입력해 주세요."
-                            className="override-input"
-                          />
-                        </FormItem>
-                      </div>
-
-                      {/*  <div className="contentBlock">
-                                                    <div className="mainTitle">
-                                                        그룹
-                                                    </div>
-                                                    <FormItem
-                                                        name="userGroup"
-                                                        className="selectItem"
-                                                        rules={[{ required: true, message: "그룹을 선택해주세요" }]}
-                                                        initialValue={0}
-                                                    >
-                                                        <SelectBox
-                                                            className="override-select"
-                                                            style={{ width: "300px" }}
-                                                            placeholder="그룹을 선택해주세요"
-                                                            value={userGroupString}
-                                                            code={Object.keys(userGroupString)}
-                                                            codeString={userGroupString}
-                                                        />
-                                                    </FormItem>
-                                                </div> */}
-
-                      <div className="contentBlock">
-                        <div className="mainTitle">주소</div>
-                        <FormItem
-                          name="addr1"
-                          className="selectItem"
-                          initialValue={data && data.addr1}
-                        >
-                          <Input
-                            placeholder="주소를 입력해 주세요."
-                            disabled
-                            className="override-input addrText"
-                          />
-                        </FormItem>
-                        <PostCodeDialog
-                          data={(addrData) => this.getAddr(addrData)}
-                          isOpen={this.state.isPostCodeOpen}
-                          close={this.closePostCode}
-                        />
-                        <Button
-                          onClick={this.openPostCode}
-                          className="override-input addrBtn"
-                        >
-                          우편번호 검색
-                        </Button>
-                      </div>
-                      <div className="contentBlock">
-                        <div className="mainTitle">지번주소</div>
-                        <FormItem
-                          name="addr3"
-                          className="selectItem"
-                          // initialValue={data && data.addr3}
-                          initialValue={data && "test"}
-                        >
-                          <Input
-                            placeholder="상세주소를 입력해 주세요."
-                            disabled
-                            className="override-input sub"
-                          />
-                        </FormItem>
-                      </div>
-                      <div className="contentBlock">
-                        <div className="mainTitle">상세주소</div>
-                        <FormItem
-                          name="addr2"
-                          className="selectItem"
-                          initialValue={data && data.addr2}
-                        >
-                          <Input
-                            placeholder="상세주소를 입력해 주세요."
-                            className="override-input sub"
-                          />
-                        </FormItem>
-                      </div>
+                          {Object.entries(pgUseRate).map(([key, value]) => {
+                            return (
+                              <Radio value={parseInt(key)}>
+                                {value === "100%" ? "사용" : "미사용"}
+                              </Radio>
+                            );
+                          })}
+                        </Radio.Group>
+                      </FormItem>
                     </div>
-
-                    <div className="registFranWrapper sub">
-                      <div className="contentBlock">
-                        <div className="mainTitle">아이디</div>
-                        <FormItem
-                          name="id"
-                          className="selectItem"
-                          rules={[
-                            {
-                              required: true,
-                              message: "아이디를 입력해주세요",
-                            },
-                          ]}
-                          initialValue={data && data.id}
-                        >
-                          <Input
-                            placeholder="아이디를 입력해 주세요."
-                            className="override-input"
-                          />
-                        </FormItem>
-                      </div>
-                      <div className="contentBlock">
-                        <div className="mainTitle">이메일</div>
-                        <FormItem
-                          name="email"
-                          className="selectItem"
-                          rules={[
-                            {
-                              required: true,
-                              message: "이메일을 입력해주세요",
-                            },
-                          ]}
-                          initialValue={data && data.email}
-                        >
-                          <Input
-                            placeholder="ex) example@naver.com"
-                            className="override-input"
-                          />
-                        </FormItem>
-                      </div>
-
-                      <div className="contentBlock">
-                        <div className="mainTitle">PG 사용여부</div>
-                        <div className="registRiderCheck">
-                          <FormItem name="tidNormalRate" initialValue={0}>
-                            <Radio.Group
-                              className="searchRequirement"
-                              onChange={this.onChangePgRate}
-                              value={this.state.PgRate}
-                            >
-                              {Object.entries(pgUseRate).map(([key, value]) => {
-                                return (
-                                  <Radio value={parseInt(key)}>
-                                    {value === "100%" ? "사용" : "미사용"}
-                                  </Radio>
-                                );
-                              })}
-                            </Radio.Group>
-                          </FormItem>
-                        </div>
-                      </div>
-                      <div className="contentBlock">
+                  </div>
+                  {/* <div className="contentBlock">
                         <div className="mainTitle">배달거리</div>
                         <FormItem
                           name="distance"
@@ -439,112 +416,109 @@ class RegistFranDialog extends Component {
                             className="override-input"
                           />
                         </FormItem>
-                      </div>
-                      <div className="contentBlock">
-                        <div className="mainTitle">배달요금</div>
-                        <FormItem
-                          name="basicDeliveryPrice"
-                          className="selectItem"
-                          // initialValue={data && data.basicDeliveryPrice}
-                          initialValue={data && 10000}
-                        >
-                          <Input
-                            placeholder="배달요금을 입력해 주세요."
-                            className="override-input price"
-                          />
-                        </FormItem>
-                        * 기본배달요금
-                        <br />
-                      </div>
+                      </div> */}
+                  <div className="contentBlock">
+                    <div className="mainTitle">기본배달요금</div>
+                    <FormItem
+                      name="basicDeliveryPrice"
+                      className="selectItem"
+                      // initialValue={data && data.basicDeliveryPrice}
+                      initialValue={data && 10000}
+                    >
+                      <Input
+                        placeholder="배달요금을 입력해 주세요."
+                        className="override-input"
+                      />
+                    </FormItem>
+                  </div>
 
-                      <div className="contentBlock">
-                        <div className="mainTitle">비밀번호</div>
-                        <FormItem name="password" className="selectItem">
-                          {data ? (
-                            <Input.Password
-                              placeholder="비밀번호를 입력해 주세요."
-                              className="override-input sub"
-                            />
-                          ) : (
-                            <Input.Password
-                              placeholder="비밀번호를 입력해 주세요."
-                              className="override-input sub"
-                            />
-                          )}
-                        </FormItem>
-                      </div>
-                      <div className="contentBlock">
-                        <div className="mainTitle">메모</div>
-                        <FormItem name="memo" className="selectItem">
-                          {data ? (
-                            <Input
-                              placeholder="메모를 입력해 주세요."
-                              className="override-input sub"
-                              defaultValue={data.memo}
-                            />
-                          ) : (
-                            <Input
-                              placeholder="메모를 입력해 주세요."
-                              className="override-input sub"
-                            />
-                          )}
-                        </FormItem>
-                      </div>
-                      <div className="contentBlock">
-                        <div className="mainTitle">가입일자</div>
-                        <FormItem name="frJoinDate" className="selectItem">
-                          <DatePicker
-                            style={{ marginLeft: 20, width: 300 }}
-                            defaultValue={moment(today, dateFormat)}
-                            format={dateFormat}
-                            // onChange={date => this.setState({ selectedDate: date })}
-                          />
-                        </FormItem>
-                      </div>
-                    </div>
+                  <div className="contentBlock">
+                    <div className="mainTitle">비밀번호</div>
+                    <FormItem name="password" className="selectItem">
+                      {data ? (
+                        <Input.Password
+                          placeholder="비밀번호를 입력해 주세요."
+                          className="override-input sub"
+                        />
+                      ) : (
+                        <Input.Password
+                          placeholder="비밀번호를 입력해 주세요."
+                          className="override-input sub"
+                        />
+                      )}
+                    </FormItem>
+                  </div>
+                  <div className="contentBlock">
+                    <div className="mainTitle">메모</div>
+                    <FormItem name="memo" className="selectItem">
+                      {data ? (
+                        <Input
+                          placeholder="메모를 입력해 주세요."
+                          className="override-input sub"
+                          defaultValue={data.memo}
+                        />
+                      ) : (
+                        <Input
+                          placeholder="메모를 입력해 주세요."
+                          className="override-input sub"
+                        />
+                      )}
+                    </FormItem>
+                  </div>
+                  <div className="contentBlock">
+                    <div className="mainTitle">가입일자</div>
+                    <FormItem name="frJoinDate" className="selectItem">
+                      <DatePicker
+                        style={{ marginLeft: 20, width: 300 }}
+                        defaultValue={moment(today, dateFormat)}
+                        format={dateFormat}
+                        // onChange={date => this.setState({ selectedDate: date })}
+                      />
+                    </FormItem>
+                  </div>
+                </div>
 
-                    <div className="registFranWrapper bot">
-                      <div className="registFranWrapper">
-                        <div className="registFranTitle">월관리비 설정</div>
+                <div className="registFranWrapper bot">
+                  <div className="registFranWrapper">
+                    <div className="registFranTitle">월관리비 설정</div>
 
-                        <div className="contentBlock">
-                          <div className="subTitle">월회비 최초납부일</div>
+                    <div className="contentBlock">
+                      <div className="subTitle">월회비 최초납부일</div>
 
-                          <FormItem name="payDate" className="selectItem">
-                            <DatePicker
-                              style={{ marginLeft: 10 }}
-                              defaultValue={moment(today, dateFormat)}
-                              format={dateFormat}
-                              // onChange={date => this.setState({ selectedDate: date })}
-                            />
-                          </FormItem>
+                      <FormItem name="payDate" className="selectItem">
+                        <DatePicker
+                          style={{ marginLeft: 10 }}
+                          defaultValue={moment(today, dateFormat)}
+                          format={dateFormat}
+                          // onChange={date => this.setState({ selectedDate: date })}
+                        />
+                      </FormItem>
 
-                          <div className="subTitle">관리비</div>
+                      <div className="subTitle">관리비</div>
 
-                          <FormItem name="managePrice" className="selectItem">
-                            <Input
-                              defaultValue={"100,000"}
-                              placeholder="관리비 입력"
-                              className="override-input sub"
-                            ></Input>
-                          </FormItem>
+                      <FormItem name="managePrice" className="selectItem">
+                        <Input
+                          defaultValue={"100,000"}
+                          placeholder="관리비 입력"
+                          className="override-input sub"
+                        ></Input>
+                      </FormItem>
 
-                          <Button
-                            type="primary"
-                            htmlType="submit"
-                            className="callTab"
-                          >
-                            등록하기
-                          </Button>
-                        </div>
-                      </div>
+                      <Button
+                        type="primary"
+                        htmlType="submit"
+                        className="callTab"
+                      >
+                        등록하기
+                      </Button>
                     </div>
                   </div>
-                </Form>
+                </div>
               </div>
-            </div>
-          </React.Fragment>
-
+            </Form>
+          </div>
+        </div>
+      </React.Fragment>
     );
   }
 }
