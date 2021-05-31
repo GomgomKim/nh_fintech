@@ -100,6 +100,7 @@ class MapControlDialog extends Component {
             searchedColumn: '',
 
             selOrderCnt: 0,
+            allResults: [],
         }
     }
 
@@ -107,6 +108,7 @@ class MapControlDialog extends Component {
         this.getRiderList()
         this.getRiderLocateList()
         this.getWaitingList()
+        this.getRiderAllList()
     }
 
     getWaitingList = () => {
@@ -229,18 +231,36 @@ class MapControlDialog extends Component {
     };
 
     getRiderList = () => {
-      let pageNum = this.state.paginationList.current;
-      let userStatus = 1;
-      let searchName = this.state.searchName;
+      const pageNum = this.state.paginationList.current;
+      const userStatus = 1;
+      const searchName = this.state.searchName;
   
       httpGet(httpUrl.riderList, [10, pageNum, searchName, userStatus], {}).then((result) => {
         // console.log('## nnbox result=' + JSON.stringify(result, null, 4))
         const pagination = { ...this.state.paginationList };
         pagination.current = result.data.currentPage;
         pagination.total = result.data.totalCount;
-        console.log(result.data.riders)
+        // console.log(result.data.riders)
         this.setState({
           results: result.data.riders,
+          paginationList: pagination,
+        });
+      })
+    };
+
+    getRiderAllList = () => {
+      let pageNum = this.state.paginationList.current;
+      let userStatus = 1;
+      let searchName = this.state.searchName;
+  
+      httpGet(httpUrl.riderList, [1000, pageNum, searchName, userStatus], {}).then((result) => {
+        // console.log('## nnbox result=' + JSON.stringify(result, null, 4))
+        const pagination = { ...this.state.paginationList };
+        pagination.current = result.data.currentPage;
+        pagination.total = result.data.totalCount;
+        console.log(result.data.riders)
+        this.setState({
+          allResults: result.data.riders,
           paginationList: pagination,
         });
       })
@@ -642,7 +662,20 @@ class MapControlDialog extends Component {
 
                       <div className="map-content">
                           <img onClick={close} src={require('../../../img/login/close.png').default} className="map-close" alt="img"/>
-
+                          <SelectBox
+                            className="select-rider-orderCnt"
+                            value={orderCnt[this.state.selOrderCnt]}
+                            code={Object.keys(orderCnt)}
+                            codeString={orderCnt}
+                            onChange={(value) => {
+                              if (parseInt(value) !== this.state.selOrderCnt) {
+                                this.setState(
+                                  { selOrderCnt: parseInt(value) },
+                                  () => this.getRiderList()
+                                );
+                              }
+                            }}
+                          />
 
                           <div className="map-inner">
 
@@ -678,15 +711,15 @@ class MapControlDialog extends Component {
                                       position={navermaps.LatLng(this.state.selRider.latitude, this.state.selRider.longitude)}
                                       icon={require('../../../img/login/map/marker_rider_red.png').default}
                                       title={this.state.selRider.riderName}
-                                      onClick={()=>this.getRiderLocate(this.state.selRider.userIdx)}
+                                      onClick={()=>this.getRiderLocate(this.state.selRider.idx)}
                                     />
                                     
                                     
                                     {
-                                      this.state.riderLocates.map(row => {
+                                      this.state.allResults.map((row, index) => {
                                         // console.log(row.orders.length)
-                                        var flag = false
-                                        if(this.state.selOrderCnt === 0) flag = true
+                                        var flag = true
+                                       /*  if(this.state.selOrderCnt === 0) flag = true
                                         else{
                                           if(this.state.selOrderCnt === 5 && row.orders.length >= 5){
                                             flag = true
@@ -695,27 +728,31 @@ class MapControlDialog extends Component {
                                               flag = true
                                             }
                                           }
-                                        }
+                                        } */
                                         
                                         
                                         if(flag){
-                                          if(this.state.selRider.latitude !== row.latitude && this.state.selRider.longitude !== row.longitude){
+                                          console.log(this.state.selRider.idx, row.idx)
+                                          if(this.state.selRider.idx !== row.idx){
+                                            // 팀장 이상 파랑 마크
                                             if(row.riderLevel >= 3){
                                               return (
                                                 <Marker
-                                                  position={navermaps.LatLng(row.latitude, row.longitude)}
+                                                  key={index}
+                                                  position={navermaps.LatLng(row.riderLocation.latitude, row.riderLocation.longitude)}
                                                   icon={require('../../../img/login/map/marker_rider_blue.png').default}
                                                   title={row.riderName}
-                                                  onClick={()=>this.getRiderLocate(row.userIdx)}
+                                                  onClick={()=>this.getRiderLocate(row.idx)}
                                                 />
                                               );
                                             } else{
                                               return (
                                                 <Marker
-                                                  position={navermaps.LatLng(row.latitude, row.longitude)}
+                                                  key={index}
+                                                  position={navermaps.LatLng(row.riderLocation.latitude, row.riderLocation.longitude)}
                                                   icon={require('../../../img/login/map/marker_rider.png').default}
                                                   title={row.riderName}
-                                                  onClick={()=>this.getRiderLocate(row.userIdx)}
+                                                  onClick={()=>this.getRiderLocate(row.idx)}
                                                 />
                                               );
                                             }
@@ -752,12 +789,14 @@ class MapControlDialog extends Component {
                                 />
                                 </>
                               }
-
+                              
+                                
                               {this.state.riderListOpen && (
                                 <>
                                 <div className="rider-list-show-btn" onClick={()=>this.setState({riderListOpen: false})}>
                                     닫기
                                   </div>
+                                  
                                   <div className="riderListInMapControl">
                                     <div className="selectLayout">
 
@@ -788,21 +827,6 @@ class MapControlDialog extends Component {
                                   </div>
                               )}
                           </div>
-
-                          <SelectBox
-                            value={orderCnt[this.state.selOrderCnt]}
-                            code={Object.keys(orderCnt)}
-                            codeString={orderCnt}
-                            onChange={(value) => {
-                              if (parseInt(value) !== this.state.selOrderCnt) {
-                                this.setState(
-                                  { selOrderCnt: parseInt(value) },
-                                  () => this.getRiderList()
-                                );
-                              }
-                            }}
-                          />
-
 
                       </div>
                   </div>
