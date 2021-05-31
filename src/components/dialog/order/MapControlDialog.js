@@ -176,7 +176,7 @@ class MapControlDialog extends Component {
                       failedIdx.push(orderIdx);
                     });
                 });
-                
+
                 this.getList(riderIdx);
 
                 if (failedIdx.length === 0) {
@@ -716,6 +716,13 @@ class MapControlDialog extends Component {
     ];
 
     const columns_callList = [
+      {
+        title: "주문번호",
+        dataIndex: "idx",
+        className: "table-column-center",
+        width: 70,
+        render: (data) => <div>{data}</div>,
+      },
       {
         title: "상태",
         dataIndex: "orderStatus",
