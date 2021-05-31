@@ -28,8 +28,8 @@ class RegistNoticeDialog extends Component {
             category: 0,
             sortOrder: 30,
             important: 0,
-            branchCode: 1,
-            createdate: '',
+            branchIdx: 1,
+            createDate: '',
             deleteDate: '',
             readDate: '',
             deleted: false,
@@ -84,7 +84,7 @@ class RegistNoticeDialog extends Component {
             }).then((result) => {
               console.log(result)
               if(result.result === "SUCCESS" && result.data === "SUCCESS"){
-                customAlert("완료", self.formRef.current.getFieldsValue().content+"이(가) 수정되었습니다.")
+                customAlert("완료", self.formRef.current.getFieldsValue().title+"이(가) 수정되었습니다.")
               } else if(result.data === "NOT_ADMIN") updateError()
               else updateError()
               self.props.close()
@@ -123,15 +123,15 @@ class RegistNoticeDialog extends Component {
               httpPost(httpUrl.registNotice, [], {
                 ...self.formRef.current.getFieldsValue(),
                 // idx: self.state.idx,
-                date: self.state.date,
+                createDate: self.state.createDate,
                 // content: self.state.content,
                 deleted: false,
                 category: self.state.category,
-                branchCode: self.state.branchCode,
+                branchIdx: self.state.branchIdx,
                 important: self.state.important,
               }).then((result) => {
                   if(result.result === "SUCCESS" && result.data === "SUCCESS"){
-                    customAlert("완료", self.formRef.current.getFieldsValue().content+"이(가) 등록되었습니다.")
+                    customAlert("완료", self.formRef.current.getFieldsValue().title+"이(가) 등록되었습니다.")
                   } else if(result.data === "NOT_ADMIN") updateError()
                   else updateError()
                 self.props.close()
@@ -200,6 +200,7 @@ class RegistNoticeDialog extends Component {
                                                         name="title"
                                                         className="selectItem"
                                                         initialValue={data ? data.title : ''}
+                                                        rules={[{ required: true, message: "제목을 입력해주세요." }]}
                                                     >   
                                                         <Input placeholder="제목을 입력해 주세요." className="override-input"/> 
                                                     </FormItem>
@@ -212,6 +213,7 @@ class RegistNoticeDialog extends Component {
                                                         name="sortOrder"
                                                         className="selectItem"
                                                         initialValue={data ? data.sortOrder : ''}
+                                                        rules={[{ required: true, message: "노출순위를 입력해주세요." }]}
                                                     >
                                                         <Input placeholder="숫자가 클수록 위쪽에 공지됩니다." className="override-input"/>
                                                     </FormItem>
@@ -241,6 +243,7 @@ class RegistNoticeDialog extends Component {
                                                         name="content"
                                                         className="selectItem"
                                                         initialValue={data ? data.content : ''}
+                                                        rules={[{ required: true, message: "내용을 입력해주세요." }]}
                                                     >
                                                         <Input.TextArea
                                                         placeholder="내용을 입력해 주세요."

@@ -23,6 +23,7 @@ import moment from 'moment';
 import RegistNoticeDialog from "./RegistNoticeDialog";
 import { customError, updateError } from "../../../api/Modals";
 import { rowColorName } from "../../../lib/util/codeUtil";
+import { seedValue } from "faker";
 
 const Option = Select.Option;
 const FormItem = Form.Item;
@@ -44,7 +45,7 @@ class NoticeDialog extends Component {
       category: 0,
       sortOrder: 30,
       important: 0,
-      branchCode: 1,
+      branchIdx: 1,
       createdate: '',
       deleteDate: '',
       readDate: '',
@@ -52,7 +53,7 @@ class NoticeDialog extends Component {
       checkedDeletedCall: false,
       registNotice: false,
       updateNotice: false,
-      showContent: false,
+      showContent: 0,
     //   idx: 1,
     };
     this.formRef = React.createRef();
@@ -350,7 +351,9 @@ class NoticeDialog extends Component {
           onClick={()=>{this.changeShowContent(row.idx)}}>{data}</div>
           {this.state.showContent === row.idx &&
             <div className= "table-column-content">
-            {row.content}
+            {row.content.split('\n').map(line=>{
+              return(<span>{line}<br/></span>)
+            })}
             </div>
           }
           </>

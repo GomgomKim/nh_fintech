@@ -11,6 +11,7 @@ const Option = Select.Option;
 
 const dateFormat = 'YYYY/MM/DD';
 const today = new Date();
+const {RangePicker} = DatePicker;
 
 
 class TaskWorkDialog extends Component {
@@ -18,7 +19,7 @@ class TaskWorkDialog extends Component {
         super(props)
         this.state = {
             selectedDate: today,
-
+            isTimeLimit: false,
             list: [],
             pagination: {
                 total: 0,
@@ -35,6 +36,19 @@ class TaskWorkDialog extends Component {
 
     setDate = (date) => {
         console.log(date)
+    }
+
+    timeLimitCheck = () => {
+        if(this.state.isTimeLimit){
+            this.setState({
+                isTimeLimit: false,
+            })
+        } else{
+            this.setState({
+                isTimeLimit: true,
+            })
+        }
+        
     }
 
 
@@ -66,7 +80,8 @@ class TaskWorkDialog extends Component {
 
                                             <div className="twl taskWork-list-01">
                                                 <td>사용여부</td>
-                                                <Checkbox></Checkbox><td className="taskWorkSub">사용함</td>
+                                                <Checkbox style={{marginRight:5}}></Checkbox>
+                                                {/* <span className="useText">사용함</span> */}
                                             </div>
                                             <div className="twl taskWork-list-02">
                                                 <td>작업명</td>
@@ -103,31 +118,26 @@ class TaskWorkDialog extends Component {
                                                             name="riderG"
                                                             rules={[{ required: true, message: "0건." }]}
                                                         >
-                                                            <Input />
+                                                            <Input style={{marginRight:10, float: "left"}}/>
                                                         </FormItem>원
                                                     </div>
-
-                                                </div>
-                                                <div className="twl taskWork-list-05">
-                                                    <td>&nbsp;</td>
-                                                    <Checkbox>
-                                                    </Checkbox><td className="taskWorkSub">기간제한사용</td>
-
-                                                    <DatePicker
-                                                        defaultValue={moment(today, dateFormat)}
-                                                        format={dateFormat}
-                                                        onChange={date => this.setState({ selectedDate: date })}
-                                                        className="taskWork-datepicker"
-                                                    /><td className="taskWorkSub1">부터</td>
-                                                    <DatePicker
-                                                        defaultValue={moment(today, dateFormat)}
-                                                        format={dateFormat}
-                                                        onChange={date => this.setState({ selectedDate: date })}
-                                                        className="taskWork-datepicker"
-                                                    /><td className="taskWorkSub1">까지</td>
                                                 </div>
 
                                             </div>
+                                                <div className="twl taskWork-list-05">
+                                                    <td>기간제한사용</td>
+                                                    <Checkbox className="useBtn" onClick={this.timeLimitCheck}></Checkbox>
+                                                    
+                                                    {this.state.isTimeLimit &&
+                                                        <RangePicker
+                                                            placeholder={['시작일', '종료일']}
+                                                            showTime={{ format: 'MM:dd' }}
+                                                            onChange={this.onChangeDate}
+                                                        />
+                                                    }
+
+                                                </div>
+
                                         </div>
 
                                     </div>
