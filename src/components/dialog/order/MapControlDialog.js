@@ -205,22 +205,23 @@ class MapControlDialog extends Component {
     let selectedRiderIdx;
     if (riderIdx) selectedRiderIdx = riderIdx;
     else selectedRiderIdx = this.state.selectedRiderIdx;
-    console.log(selectedRiderIdx);
-    httpGet(httpUrl.riderLocate, [selectedRiderIdx], {}).then((result) => {
+    const pagination = { ...this.state.pagination };
+    console.log("selectedRiderIdx : "+selectedRiderIdx);
+    httpPost(httpUrl.getAssignedRider, [], {
+      pageNum: pagination.current,
+      pageSize: pagination.pageSize,
+      userIdx: parseInt(selectedRiderIdx)
+    }).then((result) => {
       console.log("### nnbox result=" + JSON.stringify(result, null, 4));
       if (result.result === "SUCCESS") {
         if (result.data != null && result.data.orders.length > 0) {
-          // console.log('### nnbox result=' + JSON.stringify(result.data.orders, null, 4))
-          const pagination = { ...this.state.pagination };
+          console.log('### nnbox result=' + JSON.stringify(result.data, null, 4))
           if (result.data != null) {
             var list = result.data.orders;
-
             var addPath = [];
-            addPath.push(
-              navermaps.LatLng(result.data.latitude, result.data.longitude)
-            );
             for (let i = 0; i < list.length; i++) {
               if (list[i].latitude === 0 && list[i].longitude === 0) continue;
+              if (list[i].frLatitude === 0 && list[i].frLongitude === 0) continue;
               addPath.push(
                 navermaps.LatLng(list[i].frLatitude, list[i].frLongitude)
               );
@@ -228,7 +229,7 @@ class MapControlDialog extends Component {
                 navermaps.LatLng(list[i].latitude, list[i].longitude)
               );
             }
-            // console.log("!!!!!!!!!!!!!!!! :"+addPath)
+            console.log("!!!!!!!!!!!!!!!! :"+addPath)
 
             this.setState({
               selRider: result.data,
@@ -433,7 +434,7 @@ class MapControlDialog extends Component {
       if (selectedRowKeys.includes(idx)) overrideData[idx] = true;
       else overrideData[idx] = false;
     }
-    console.log(overrideData);
+    // console.log(overrideData);
 
     var curIdxs = this.state.dataIdxs;
     curIdxs = Object.assign(curIdxs, overrideData);
@@ -441,9 +442,9 @@ class MapControlDialog extends Component {
     selectedRowKeys = [];
     for (let i = 0; i < curIdxs.length; i++) {
       if (curIdxs[i]) {
-        console.log("push  :" + i);
+        // console.log("push  :" + i);
         selectedRowKeys = [...selectedRowKeys, i];
-        console.log(selectedRowKeys);
+        // console.log(selectedRowKeys);
       }
     }
     // console.log("#### :"+selectedRowKeys)
@@ -576,7 +577,7 @@ class MapControlDialog extends Component {
                   row.orderStatus = value;
                   httpPost(httpUrl.orderUpdate, [], row)
                     .then((res) => {
-                      console.log(res);
+                      // console.log(res);
                     })
                     .catch((e) => {});
                   this.getList();
@@ -648,7 +649,7 @@ class MapControlDialog extends Component {
         render: (data, row) => (
           <Button
             onClick={() => {
-              console.log(row);
+              // console.log(row);
               this.openModifyOrderModal(row);
             }}
           >
@@ -799,7 +800,7 @@ class MapControlDialog extends Component {
                     rowClassName={(record) => rowColorName[record.orderStatus]}
                     columns={columns}
                     onChange={this.handleTableChange}
-                    pagination={false}
+                    pagination={this.state.pagination}
                   />
                 </div>
               )}
@@ -832,8 +833,8 @@ class MapControlDialog extends Component {
                       var flag = true;
 
                       if (flag) {
-                        console.log(this.state.selRider.idx, row.idx);
-                        if (this.state.selRider.idx !== row.idx) {
+                        // console.log(this.state.selRider.idx, row.idx);
+                        if (this.state.selectedRiderIdx !== row.idx) {
                           // 팀장 이상 파랑 마크
                           if (row.riderLevel >= 3) {
                             return (
