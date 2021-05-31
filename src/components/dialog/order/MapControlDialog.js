@@ -41,7 +41,7 @@ class MapControlDialog extends Component {
       pagination: {
         total: 0,
         current: 1,
-        pageSize: 10,
+        pageSize: 3,
       },
       paginationList: {
         total: 0,
@@ -78,6 +78,8 @@ class MapControlDialog extends Component {
 
       // 선택된 라이더
       selRider: {},
+      selectedRiderLatitude: 0,
+      selectedRiderLongitude: 0,
 
       // 선택된 라이더 이동경로
       selRiderPath: [],
@@ -97,6 +99,9 @@ class MapControlDialog extends Component {
 
       selOrderCnt: 0,
       allResults: [],
+
+      // 가맹점 위치 리스트
+      frLocates: [],
     };
   }
 
@@ -122,6 +127,8 @@ class MapControlDialog extends Component {
     console.log(date);
   };
 
+
+
   onSearchFranchisee = (value) => {
     this.setState(
       {
@@ -130,10 +137,10 @@ class MapControlDialog extends Component {
       () => {
         this.getList();
       }
-    );
-  };
-
-  onSearchWorker = (value) => {
+      );
+    };
+    
+    onSearchWorker = (value) => {
     this.setState(
       {
         searchName: value,
@@ -146,6 +153,7 @@ class MapControlDialog extends Component {
 
   onSearchWorkerSelected = (value) => {
     console.log(value);
+    var self = this
     if (this.state.results.find((x) => x.id === value)) {
       var riderIdx = this.state.results.find((x) => x.id === value).idx;
       var name = this.state.results.find((x) => x.id === value).riderName;
@@ -156,17 +164,20 @@ class MapControlDialog extends Component {
         },
         () => {
           let failedIdx = [];
-          if (this.state.selectedRowKeys.length > 0) {
+          if (self.state.selectedRowKeys.length > 0) {
             Modal.confirm({
               title: "배차 설정",
-              content: `${this.state.selectedRowKeys} 번의 주문을 ${this.state.selectedRiderIdx} : ${this.state.riderName} 기사에게 배정하시겠습니다?`,
+              content: `${self.state.selectedRowKeys} 번의 주문을 ${this.state.selectedRiderIdx} : ${this.state.riderName} 기사에게 배정하시겠습니다?`,
               onOk: () => {
-                this.state.selectedRowKeys.map((orderIdx) => {
+                self.state.selectedRowKeys.map((orderIdx) => {
                   httpPost(httpUrl.assignRiderAdmin, [], {
                     orderIdx: orderIdx,
-                    userIdx: this.state.selectedRiderIdx,
+                    userIdx: self.state.selectedRiderIdx,
                   })
                     .then((res) => {
+                      // console.log("!@@#@#@!#@@!#@!# "+riderIdx)
+                      self.getList(riderIdx);
+                      self.getWaitingList()
                       if (res.result !== "SUCCESS") {
                         failedIdx.push(orderIdx);
                       }
@@ -177,19 +188,22 @@ class MapControlDialog extends Component {
                     });
                 });
 
-                this.getList(riderIdx);
 
                 if (failedIdx.length === 0) {
                   Modal.info({
                     title: "배차 성공",
                     content: "배차에 성공했습니다.",
                   });
+                  // console.log("!@@#@#@!#@@!#@!# ")
+                  
                 } else {
                   Modal.info({
                     title: "배차 실패",
                     content: `${failedIdx} 번의 주문 배차에 실패했습니다.`,
                   });
                 }
+
+
               },
               onCancel: () => {},
             });
@@ -205,11 +219,11 @@ class MapControlDialog extends Component {
     let selectedRiderIdx;
     if (riderIdx) selectedRiderIdx = riderIdx;
     else selectedRiderIdx = this.state.selectedRiderIdx;
-    const pagination = { ...this.state.pagination };
+    var p = { ...this.state.pagination };
     console.log("selectedRiderIdx : "+selectedRiderIdx);
     httpPost(httpUrl.getAssignedRider, [], {
-      pageNum: pagination.current,
-      pageSize: pagination.pageSize,
+      pageNum: p.current,
+      pageSize: p.pageSize,
       userIdx: parseInt(selectedRiderIdx)
     }).then((result) => {
       console.log("### nnbox result=" + JSON.stringify(result, null, 4));
@@ -219,6 +233,7 @@ class MapControlDialog extends Component {
           if (result.data != null) {
             var list = result.data.orders;
             var addPath = [];
+            var addFrLocates = [[]];
             for (let i = 0; i < list.length; i++) {
               if (list[i].latitude === 0 && list[i].longitude === 0) continue;
               if (list[i].frLatitude === 0 && list[i].frLongitude === 0) continue;
@@ -228,15 +243,22 @@ class MapControlDialog extends Component {
               addPath.push(
                 navermaps.LatLng(list[i].latitude, list[i].longitude)
               );
+              // 37.6510661,
+              // 126.6532953
+              // addFrLocates.push([37.6510661, 126.6532953])
+              addFrLocates = Object.assign(addFrLocates, [list[i].frLatitude, list[i].frLongitude])
+              // addFrLocates.push([list[i].frLatitude, list[i].frLongitude])
             }
-            console.log("!!!!!!!!!!!!!!!! :"+addPath)
+            console.log("!!!!!!!!!!!!!!!! :"+ JSON.stringify(result.data, null, 4))
+
+            const pagination = { ...this.state.pagination };
+            pagination.current = result.data.currentPage;
+            pagination.total = result.data.totalCount;
 
             this.setState({
               selRider: result.data,
               selRiderPath: addPath,
-            });
-
-            this.setState({
+              frLocates: addFrLocates,
               riderOrderList: list,
               pagination,
             });
@@ -244,6 +266,10 @@ class MapControlDialog extends Component {
             this.setState({
               riderOrderList: [],
             });
+            customError(
+              "배차 목록 오류",
+              "해당 라이더의 배차가 존재하지 않습니다."
+            );
           }
         } else {
           this.setState({
@@ -272,9 +298,11 @@ class MapControlDialog extends Component {
 
   getRiderLocate = (riderIdx) => {
     httpGet(httpUrl.riderLocate, [riderIdx], {}).then((result) => {
-      // console.log('## rider personal locate result=' + JSON.stringify(result, null, 4))
+      console.log('################# rider personal locate result=' + JSON.stringify(result, null, 4))
       this.setState(
         {
+          selectedRiderLatitude: result.data.latitude,
+          selectedRiderLongitude: result.data.longitude,
           selectedRiderIdx: result.data.userIdx,
           riderName: result.data.riderName,
         },
@@ -815,19 +843,20 @@ class MapControlDialog extends Component {
                     center={{ lat: lat, lng: lng }}
                   >
                     <Marker
-                      position={navermaps.LatLng(
-                        this.state.selRider.latitude,
-                        this.state.selRider.longitude
-                      )}
-                      icon={
-                        require("../../../img/login/map/marker_rider_red.png")
-                          .default
-                      }
-                      title={this.state.selRider.riderName}
-                      onClick={() =>
-                        this.getRiderLocate(this.state.selRider.idx)
+                    position={navermaps.LatLng(
+                      this.state.selectedRiderLatitude,
+                      this.state.selectedRiderLongitude
+                    )}
+                    icon={
+                      require("../../../img/login/map/marker_rider_red.png")
+                        .default
+                    }
+                    title={this.state.selRider.riderName}
+                    onClick={() =>
+                      this.getRiderLocate(this.state.selRider.idx)
                       }
                     />
+                    
 
                     {this.state.allResults.map((row, index) => {
                       var flag = true;
@@ -873,6 +902,39 @@ class MapControlDialog extends Component {
                       }
                     })}
 
+                        <Marker
+                          position={navermaps.LatLng(
+                            // 37.6510661,
+                            // 126.6532953
+                            this.state.frLocates[0],
+                            this.state.frLocates[1]
+                          )}
+                          icon={
+                            require("../../../img/login/map/marker_target.png")
+                              .default
+                          }
+                          // title={row.riderName}
+                          // onClick={() => this.getRiderLocate(row.idx)}
+                        />
+
+                      {this.state.frLocates.map((row, index) => {
+                        <>
+                        <Marker
+                          key={index}
+                          position={navermaps.LatLng(
+                            row[0],
+                            row[1]
+                          )}
+                          icon={
+                            require("../../../img/login/map/marker_rider.png")
+                              .default
+                          }
+                          // title={row.riderName}
+                          // onClick={() => this.getRiderLocate(row.idx)}
+                        />
+                        </>
+                      })
+                      }
                     {this.state.selRider.latitude !== 0 &&
                       this.state.selRider.longitude !== 0 && (
                         <Polyline
