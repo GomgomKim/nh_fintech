@@ -86,7 +86,7 @@ class SurchargeDialog extends Component {
                 httpPost(httpUrl.priceExtraRegist, [], {
                     ...self.formRef.current.getFieldsValue(),
                     enabled,
-                    branchIdx: self.props.userGroup,
+                    branchIdx: self.props.branchIdx,
                     startDate: self.state.startDate,
                     endDate: self.state.endDate,
                 }).then((result) => {
@@ -251,7 +251,8 @@ class SurchargeDialog extends Component {
                                         할증
                                     </div>
 
-                                    <img onClick={close} src={require('../../../img/login/close.png').default} className="surcharge-close" />
+                                    <img onClick={close} src={require('../../../img/login/close.png').default}
+                                        className="surcharge-close" alt='close'/>
 
 
                                     <div className="surchargeLayout">
@@ -337,7 +338,7 @@ class SurchargeDialog extends Component {
                                                         >
                                                         {Object.entries(surchargeType).map(([key, value]) => {
                                                             return (
-                                                            <Radio value={parseInt(key)}>
+                                                            <Radio value={key}>
                                                                 {value}
                                                             </Radio>
                                                             );

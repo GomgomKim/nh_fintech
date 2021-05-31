@@ -52,6 +52,7 @@ class NoticeDialog extends Component {
       checkedDeletedCall: false,
       registNotice: false,
       updateNotice: false,
+      showContent: false,
     //   idx: 1,
     };
     this.formRef = React.createRef();
@@ -322,6 +323,18 @@ class NoticeDialog extends Component {
     this.getList()
   }
 
+  changeShowContent = (idx) =>{
+    if (this.state.showContent === idx){
+      this.setState({
+        showContent:0
+      })
+    }
+    else
+    this.setState({
+      showContent:idx
+    })
+  }
+
 
   render() {
     const columns = [
@@ -330,8 +343,17 @@ class NoticeDialog extends Component {
         dataIndex: "title",
         className: "table-column-center",
         width: 300,
-        render: (data) => (
-          <div>{data}</div>
+        render: (data, row) => (
+          <>
+          <div
+          style={{ display: "inline-block", cursor: "pointer" }}
+          onClick={()=>{this.changeShowContent(row.idx)}}>{data}</div>
+          {this.state.showContent === row.idx &&
+            <div className= "table-column-content">
+            {row.content}
+            </div>
+          }
+          </>
         ),
       },
       {
@@ -423,7 +445,7 @@ class NoticeDialog extends Component {
               <Table
               className="noticeListTable"
               rowKey={(record) => record.idx}
-              rowClassName={(record) => record.important === true ? "table-blue" : "table-white"}
+              rowClassName={(record) => record.important ? "table-blue" : "table-white"}
               dataSource={this.state.list}
               columns={columns}
               pagination={this.state.pagination}
