@@ -149,7 +149,7 @@ const surchargeType = [
 ]
 
 const addType = [
-  // "",
+  "",
   "아파트",
   "오피스텔",
 ];
