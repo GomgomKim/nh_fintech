@@ -631,6 +631,12 @@
   width: 100%;
 }
 
+.noticeTag {
+  cursor: pointer;
+  color: blue;
+  text-decoration: underline;
+}
+
 /* 공지사항 등록 dialog */
 .registNoticeDialog {
   position: fixed;

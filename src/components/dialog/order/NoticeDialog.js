@@ -343,11 +343,12 @@ class NoticeDialog extends Component {
         title: "제목",
         dataIndex: "title",
         className: "table-column-center",
-        width: 300,
+        width: 450,
         render: (data, row) => (
           <>
           <div
-          style={{ display: "inline-block", cursor: "pointer" }}
+          className="noticeTag"
+          style={{ paddingTop:8, paddingBottom: 8,display: "inline-block", cursor: "pointer" }}
           onClick={()=>{this.changeShowContent(row.idx)}}>{data}</div>
           {this.state.showContent === row.idx &&
             <div className= "table-column-content">
@@ -363,7 +364,7 @@ class NoticeDialog extends Component {
         title: "날짜",
         dataIndex: "createDate",
         className: "table-column-center",
-        width: 300,
+        width: 150,
         render: (data) => <div>{formatDate(data)}</div>,
       },
       {
