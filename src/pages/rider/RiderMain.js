@@ -340,7 +340,7 @@ class RiderMain extends Component {
             <Button
               className="tabBtn surchargeTab"
               onClick={() =>
-                this.setState({ registRiderOpen: true, dialogData: row })
+                this.setState({ riderUpdateOpen: true, dialogData: row })
               }
             >
               수정
@@ -455,7 +455,6 @@ class RiderMain extends Component {
           </Button>
           {this.state.registRiderOpen && (
             <RegistRiderDialog
-              data={this.state.dialogData}
               close={this.closeRegistRiderModal}
             />
           )}
@@ -509,6 +508,12 @@ class RiderMain extends Component {
             expandedRowRender={expandedRowRender}
           />
         </div>
+        {this.state.riderUpdateOpen && (
+        <RegistRiderDialog
+            close={this.closeUpdateRiderModal}
+            data={this.state.dialogData}
+            />
+            )}
       </div>
     );
   }

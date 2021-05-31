@@ -122,6 +122,17 @@ body {
   text-align: left;
 }
 
+.table-column-content {
+  text-align: left;
+  display: block;
+  position: absolute;
+  width: 300;
+  top: 3em;
+  z-index: 3;
+  border: 1px solid white;
+  background-color: white;
+}
+
 
 .detailModal-wrapper {
   /* border: 1px solid #696968; */

@@ -8,7 +8,7 @@ global.language = "ko";
 global.lanList = ["ko", "en", "ja", "zh"];
 
 const serverUrl =
-  Const.serverProtocol + "://" + Const.serverIp + ":" + Const.serverPort; 
+  Const.serverProtocol + "://" + Const.serverIp + ":" + Const.serverPort;
 
 const makeUrl = (url, params) => {
   var result = serverUrl + url;
@@ -159,8 +159,8 @@ const httpUrl = {
   // 주문 현황
   orderList: "/order/list",
   orderUpdate: "/order/update",
-  orderCreate:"/order/create",
-  getDeliveryPrice:"/fr/expectDeliveryPrice?destLatitude=%s&destLongitude=%s",
+  orderCreate: "/order/create",
+  getDeliveryPrice: "/fr/expectDeliveryPrice?destLatitude=%s&destLongitude=%s",
 
   priceExtraList: "/branch/deliveryPriceExtra/list?pageNum=%s&pageSize=%s",
   priceExtraRegist: "/branch/deliveryPriceExtra/create",
@@ -170,20 +170,21 @@ const httpUrl = {
   priceExtraRegistGroup: "/fr/settingGroup/create",
   priceExtraDeleteGroup: "/fr/settingGroup/delete",
 
-
   // 직원 관리
   staffList: "/rider/list?pageSize=%s&pageNum=%s&riderLevels=%s&userStatus=%s",
   registStaff: "/rider/create",
   staffUpdate: "/rider/update",
 
   // 라이더 위치
-  getGeocode: '/geometry/geocode/%s',
+  getGeocode: "/geometry/geocode/%s",
 
   // 예상 배달요금
-  expectDeliveryPrice: '/fr/expectDeliveryPrice?destLatitude=%s&destLongitude=%s',
+  expectDeliveryPrice:
+    "/fr/expectDeliveryPrice?destLatitude=%s&destLongitude=%s",
 
   // rider
-  riderList: "/rider/list?pageSize=%s&pageNum=%s&searchName=%s&userStatus=%s&riderLevels=%s",
+  riderList:
+    "/rider/list?pageSize=%s&pageNum=%s&searchName=%s&userStatus=%s&riderLevels=%s",
   registRider: "/rider/create",
   updateRider: "/rider/update",
   riderListOne: "/rider/list",
@@ -215,6 +216,10 @@ const httpUrl = {
 
   // 채팅
   chatList: "/chat/chatList?pageSize=%s&pageNum=%s&searchName=%s",
+
+  // 주소검색관리
+  getAddrAptList:
+    "/order/addrAptList?addrType=%s&pageNum=%s&pageSize=%s&searchDong=%s",
 };
 
 const imageType = ["image/jpeg", "image/png", "image/bmp"];

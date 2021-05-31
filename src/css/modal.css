@@ -323,10 +323,29 @@
   padding: 8px;
 }
 
+.select-rider-orderCnt {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 90;
+  width: 30px;
+  cursor: pointer;
+  padding: 8px;
+}
+
 .map-inner {
   width: 100%;
+  height: 100%;
+  margin-top: -30px;
   /* border: 1px solid #ccc;  */
   text-align: left;
+}
+
+.select-rider-orderCnt {
+  position: absolute;
+  /* right: 10px; */
+  /* left: 1793px; */
+  /* top: 110px; */
 }
 
 .callDataTable {
