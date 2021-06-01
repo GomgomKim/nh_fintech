@@ -106,7 +106,7 @@ class ReceptionStatus extends Component {
   getBranch = () => {
     httpGet(httpUrl.getBranch, [this.props.branchIdx], {})
       .then((res) => {
-        if (res.result === "SUCCESS" && res.data === "SUCCESS") {
+        if (res.result === "SUCCESS" && res.data) {
           this.setState({ branchInfo: res.data });
         } else {
           console.log("branchInfo error");
