@@ -53,6 +53,7 @@ class RiderMain extends Component {
       dialogData: [],
       userStatus: 0,
       searchRiderOpen: false,
+      selRider: "",
     };
   }
 
@@ -210,8 +211,11 @@ class RiderMain extends Component {
   };
 
   //출금비밀번호
-  openUpdatePasswordModal = () => {
-    this.setState({ updatePasswordOpen: true });
+  openUpdatePasswordModal = (rider) => {
+    this.setState({ 
+      updatePasswordOpen: true,
+      selRider: rider,
+     });
   };
   closeUpdatePasswordModal = () => {
     this.setState({ updatePasswordOpen: false });
@@ -256,12 +260,12 @@ class RiderMain extends Component {
       {
         title: "출금비밀번호",
         className: "table-column-center",
-        render: () => (
+        render: (data, row) => (
           <div>
 
             <Button
               className="tabBtn surchargeTab"
-              onClick={this.openUpdatePasswordModal}
+              onClick={() => this.openUpdatePasswordModal(row)}
             >
               초기화
             </Button>
@@ -513,6 +517,7 @@ class RiderMain extends Component {
             )}
             {this.state.updatePasswordOpen &&
             <UpdatePasswordDialog
+              rider={this.state.selRider}
               close={this.closeUpdatePasswordModal}
             />}
       </div>
