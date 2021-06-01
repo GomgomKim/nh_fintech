@@ -179,6 +179,9 @@ class MapControlDialog extends Component {
                     .then((res) => {
                       self.getList(riderIdx);
                       self.getOrderList();
+                      this.setState({
+                        selectedRowKeys: [],
+                      });
                       if (res.result !== "SUCCESS") {
                         failedIdx.push(orderIdx);
                       }
@@ -414,13 +417,13 @@ class MapControlDialog extends Component {
   };
 
   handleCallListTableChange = (pagination) => {
-    console.log(pagination);
-    const pager = { ...this.state.paginationCallList };
-    pager.current = pagination.current;
-    pager.pageSize = pagination.pageSize;
+    // console.log(pagination);
+    // const pager = { ...this.state.paginationCallList};
+    // pager.current = pagination.current;
+    // pager.pageSize = pagination.pageSize;
     this.setState(
       {
-        paginationCallList: pager,
+        paginationCallList: pagination,
       },
       () => {this.getRiderList(); this.getOrderList();}
     );
