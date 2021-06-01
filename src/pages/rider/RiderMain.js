@@ -258,10 +258,7 @@ class RiderMain extends Component {
         className: "table-column-center",
         render: () => (
           <div>
-            <UpdatePasswordDialog
-              isOpen={this.state.updatePasswordOpen}
-              close={this.closeUpdatePasswordModal}
-            />
+
             <Button
               className="tabBtn surchargeTab"
               onClick={this.openUpdatePasswordModal}
@@ -514,6 +511,10 @@ class RiderMain extends Component {
             data={this.state.dialogData}
             />
             )}
+            {this.state.updatePasswordOpen &&
+            <UpdatePasswordDialog
+              close={this.closeUpdatePasswordModal}
+            />}
       </div>
     );
   }
