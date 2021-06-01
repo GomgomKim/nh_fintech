@@ -676,27 +676,42 @@ class RegistCallDialog extends Component {
                             ),
                           },
                           (status, response) => {
+                            console.log(status);
+                            console.log(response);
                             if (status !== navermaps.Service.Status.OK) {
-                              return alert("실패");
+                              Modal.info({
+                                title: "조회실패",
+                                content:
+                                  "유효하지 않은 지역입니다. 다시 선택해주세요.",
+                              });
                             } else {
-                              this.setState(
-                                {
-                                  data: {
-                                    ...this.state.data,
-                                    latitude: e.latlng.y,
-                                    longitude: e.latlng.x,
-                                    destAddr1: response.result.items[0].address,
+                              if (response.result.items.length > 0) {
+                                this.setState(
+                                  {
+                                    data: {
+                                      ...this.state.data,
+                                      latitude: e.latlng.y,
+                                      longitude: e.latlng.x,
+                                      destAddr1:
+                                        response.result.items[0].address,
+                                    },
+                                    selectedDest: {
+                                      address: response.result.items[0].address,
+                                    },
                                   },
-                                  selectedDest: {
-                                    address: response.result.items[0].address,
-                                  },
-                                },
-                                () =>
-                                  this.getDeliveryPriceByLatLng(
-                                    e.latlng.y,
-                                    e.latlng.x
-                                  )
-                              );
+                                  () =>
+                                    this.getDeliveryPriceByLatLng(
+                                      e.latlng.y,
+                                      e.latlng.x
+                                    )
+                                );
+                              } else {
+                                Modal.info({
+                                  title: "조회실패",
+                                  content:
+                                    "유효하지 않은 지역입니다. 다시 선택해주세요.",
+                                });
+                              }
                             }
                           }
                         );
