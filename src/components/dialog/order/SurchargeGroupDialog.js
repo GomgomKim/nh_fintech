@@ -1,7 +1,5 @@
 import React, { Component } from "react";
-import {
-    Form, Table, Button, Tag, Modal
-} from "antd";
+import {Table, Button, Tag, Modal} from "antd";
 import '../../../css/modal.css';
 import SurchargeFrGroupDialog from "./SurchargeFrGroupDialog";
 import SearchFranchiseDialog from "../../dialog/common/SearchFranchiseDialog";
@@ -250,7 +248,8 @@ class SurchargeGroupDialog extends Component {
                                     <div className="surchargeGroupList-title">
                                         할증 그룹관리
                                     </div>
-                                    <img onClick={close} src={require('../../../img/login/close.png').default} className="taskGroup-close" />
+                                    <img onClick={close} src={require('../../../img/login/close.png').default}
+                                        className="taskGroup-close" alt='close'/>
                                     <div className="surchargeGroupList-inner">
 
                                         <div className="surchargeGroupList-btn">

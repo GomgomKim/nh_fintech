@@ -124,13 +124,11 @@ body {
 
 .table-column-content {
   text-align: left;
-  display: block;
-  position: absolute;
-  width: 300;
-  top: 3em;
-  z-index: 3;
-  border: 1px solid white;
-  background-color: white;
+  border: 1px solid #d1d1d1;
+  background-color: #f5f5f5;
+  margin-bottom: 10px;
+  padding: 10px 15px 10px 20px;
+  word-break: keep-all;
 }
 
 
