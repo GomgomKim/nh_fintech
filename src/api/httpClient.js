@@ -224,6 +224,9 @@ const httpUrl = {
 
   // 패스워드 변경
   changePassword: "/user/changePassword",
+
+  // 지점조회
+  getBranch: "/branch/%s",
 };
 
 const imageType = ["image/jpeg", "image/png", "image/bmp"];
