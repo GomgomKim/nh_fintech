@@ -635,11 +635,11 @@ class FranchiseMain extends Component {
           </Button>
 
           {/* 블라인드 */}
+          {this.state.blindListOpen &&
           <BlindFranListDialog
-            isOpen={this.state.blindListOpen}
             close={this.closeBlindModal}
             data={this.state.blindFrData}
-          />
+          />}
 
           {/* 엑셀업로드버튼 */}
           <a href="/franchise_regist_templete.xlsx" download>
