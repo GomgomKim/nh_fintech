@@ -12,6 +12,7 @@ import {
   updateError,
   customError,
 } from "../../../api/Modals";
+import { connect } from "react-redux";
 
 const FormItem = Form.Item;
 const dateFormat = "YYYY/MM/DD";
@@ -45,6 +46,7 @@ class RegistFranDialog extends Component {
       httpPost(httpUrl.franchiseUpdate, [], {
         ...this.formRef.current.getFieldsValue(),
         idx: this.props.data.idx,
+        branchIdx: this.props.branchIdx,
         userGroup: 0,
       })
         .then((result) => {
@@ -60,30 +62,9 @@ class RegistFranDialog extends Component {
           updateError();
         });
     } else {
-      console.log({
-        ...this.formRef.current.getFieldsValue(),
-        ncash: 0,
-        userStatus: 1,
-        recommenderIdx: 0,
-        userType: 2,
-        withdrawPassword: "0000",
-        bank: "",
-        bankAccount: 0,
-        depositor: "",
-        userGroup: 0,
-        latitude: this.state.targetLat,
-        longitude: this.state.targetLng,
-        frStatus: 1,
-        ncashPayEnabled: false,
-        tidNormal: "",
-        tidPrepay: "",
-        tidNormalRate: this.state.PgRate, // 100 or 0
-        chargeDate: 1,
-        duesAutoChargeEnabled: false,
-        dues: 0,
-      });
       httpPost(httpUrl.registFranchise, [], {
         ...this.formRef.current.getFieldsValue(),
+        branchIdx: this.props.branchIdx,
         ncash: 0,
         userStatus: 1,
         recommenderIdx: 0,
@@ -157,7 +138,7 @@ class RegistFranDialog extends Component {
         });
 
         // 예상 배송 요금
-        httpGet(httpUrl.expectDeliveryPrice , [lat, lng], {}).then((res) => {
+        httpGet(httpUrl.expectDeliveryPrice, [lat, lng], {}).then((res) => {
           // console.log("expectDeliveryPrice data :"+res.data)
           // console.log("expectDeliveryPrice data :"+res.data.distance)
           // console.log("expectDeliveryPrice data :"+res.data.deliveryPriceBasic)
@@ -523,4 +504,10 @@ class RegistFranDialog extends Component {
   }
 }
 
-export default RegistFranDialog;
+const mapStateToProps = (state) => ({
+  branchIdx: state.login.loginInfo.branchIdx,
+});
+
+const mapDispatchToProps = (dispatch) => ({});
+
+export default connect(mapStateToProps, mapDispatchToProps)(RegistFranDialog);
