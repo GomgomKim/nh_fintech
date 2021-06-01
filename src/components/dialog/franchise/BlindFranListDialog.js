@@ -100,7 +100,13 @@ class BlindFranListDialog extends Component {
                     if(result.result === "SUCCESS" && result.data === "SUCCESS") {
                         blindComplete();
                         self.handleClear();
-                        self.getList();
+                        // self.getList();
+                        self.setState({
+                            pagination: {
+                                current: 1,
+                                pageSize: 5,
+                            },
+                        }, () => self.getList());
                     } else {
                         blindError();
                     }
@@ -137,7 +143,12 @@ class BlindFranListDialog extends Component {
                         .then((result) => {
                             if (result.result === "SUCCESS") {
                                 unBlindComplete();
-                                self.getList();
+                                self.setState({
+                                    pagination: {
+                                        current: 1,
+                                        pageSize: 5,
+                                    },
+                                }, () => self.getList());
                             } else {
                                 unBlindError();
                             }

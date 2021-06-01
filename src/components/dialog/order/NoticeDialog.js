@@ -1,33 +1,16 @@
 import React, { Component } from "react";
 import {
-  Form,
   Modal,
-  Input,
-  DatePicker,
-  Descriptions,
   Table,
-  Upload,
   Button,
-  Select,
-  Icon,
-  Radio,
-  Carousel,
-  Text,
   Checkbox,
 } from "antd";
 import { httpUrl, httpPost, httpGet } from '../../../api/httpClient';
 import '../../../css/modal.css';
 import { connect } from "react-redux";
-import { formatDate, formatDateSecond } from '../../../lib/util/dateUtil';
-import moment from 'moment';
+import { formatDate } from '../../../lib/util/dateUtil';
 import RegistNoticeDialog from "./RegistNoticeDialog";
 import { customError, updateError } from "../../../api/Modals";
-import { rowColorName } from "../../../lib/util/codeUtil";
-import { seedValue } from "faker";
-
-const Option = Select.Option;
-const FormItem = Form.Item;
-const today = new Date();
 
 class NoticeDialog extends Component {
   constructor(props) {
@@ -315,8 +298,14 @@ class NoticeDialog extends Component {
 }
 
   closeNoticeRegistrationModal = () => {
-    this.setState({ registNotice: false });
-    this.getList()
+    this.setState({ 
+      registNotice: false,
+      checkedDeletedCall: false,
+      pagination:{
+        current: 1,
+        pageSize: 5,
+      }
+    }, () => this.getList());
   }
 
   closeNoticeUpdateModal = () => {
@@ -430,7 +419,8 @@ class NoticeDialog extends Component {
             <div className="noticelistBlock">
               <div className="deleteBox">
                 <Checkbox
-                defaultChecked={this.state.checkedDeletedCall ? "checked":""}
+                checked={this.state.checkedDeletedCall ? "checked":""}
+                // defaultChecked={this.state.checkedDeletedCall ? "checked":""}
                 onChange={this.handleToggleDeletedCall}></Checkbox>
                 <span className="span1">삭제목록</span>
               </div>

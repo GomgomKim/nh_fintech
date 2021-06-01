@@ -41,7 +41,7 @@ import {
   NotificationFilled,
   FilterOutlined,
 } from "@ant-design/icons";
-import { httpPost, httpUrl } from "../../api/httpClient";
+import { httpGet, httpPost, httpUrl } from "../../api/httpClient";
 import { connect } from "react-redux";
 import InfiniteScroll from "react-infinite-scroll-component";
 import PaymentDialog from "../../components/dialog/order/PaymentDialog";
@@ -92,12 +92,51 @@ class ReceptionStatus extends Component {
       selectedOrderStatus: [1, 2, 3],
       selectedPaymentMethods: [1, 2, 3],
       checkedCompleteCall: false,
+
+      // 호출설정 branch 정보
+      branchInfo: null,
     };
   }
 
   componentDidMount() {
     this.getList();
+    this.getBranch();
   }
+
+  getBranch = () => {
+    httpGet(httpUrl.getBranch, [this.props.branchIdx], {})
+      .then((res) => {
+        if (res.result === "SUCCESS" && res.data) {
+          this.setState({ branchInfo: res.data });
+        } else {
+          console.log("branchInfo error");
+        }
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+
+    // dummy data (테스트용)
+    // this.setState({
+    //   branchInfo: {
+    //     branchCode: 0,
+    //     branchName: "복정1",
+    //     deliveryEnabled: false,
+    //     pickupAvTime10: true,
+    //     pickupAvTime10After: true,
+    //     pickupAvTime15: true,
+    //     pickupAvTime20: true,
+    //     pickupAvTime30: true,
+    //     pickupAvTime40: true,
+    //     pickupAvTime5: true,
+    //     pickupAvTime50: true,
+    //     pickupAvTime5After: true,
+    //     pickupAvTime60: true,
+    //     pickupAvTime70: true,
+    //     startDate: "2021-03-03",
+    //   },
+    // });
+  };
 
   handleToggleCompleteCall = (e) => {
     this.setState(
@@ -169,6 +208,52 @@ class ReceptionStatus extends Component {
         });
       });
   };
+  getCompleteList = () => {
+    const startDate = this.state.selectedDate;
+    const endDate = new Date(
+      startDate.getFullYear(),
+      startDate.getMonth(),
+      startDate.getDate() + 1
+    );
+    const data = {
+      orderStatuses: [4],
+      pageNum: this.state.pagination.current,
+      pageSize: this.state.pagination.pageSize,
+      paymentMethods: [1, 2, 3],
+      startDate: formatDate(this.state.selectedDate).split(" ")[0],
+      endDate: formatDate(endDate).split(" ")[0],
+    };
+
+    if (this.state.franchisee) {
+      data.frName = this.state.franchisee;
+    }
+    if (this.state.rider) {
+      data.riderName = this.state.rider;
+    }
+
+    console.log(data);
+
+    httpPost(httpUrl.orderList, [], data)
+      .then((res) => {
+        if (res.result === "SUCCESS") {
+          console.log(res);
+          this.setState({
+            totalList: res.data.orders,
+          });
+        } else {
+          Modal.info({
+            title: "적용 오류",
+            content: "처리가 실패했습니다.",
+          });
+        }
+      })
+      .catch((e) => {
+        Modal.info({
+          title: "적용 오류",
+          content: "처리가 실패했습니다.",
+        });
+      });
+  };
 
   assignRider = (data, orderIdx) => {
     var self = this;
@@ -221,53 +306,6 @@ class ReceptionStatus extends Component {
     });
   };
 
-  getCompleteList = () => {
-    const startDate = this.state.selectedDate;
-    const endDate = new Date(
-      startDate.getFullYear(),
-      startDate.getMonth(),
-      startDate.getDate() + 1
-    );
-    const data = {
-      orderStatuses: [4],
-      pageNum: this.state.pagination.current,
-      pageSize: this.state.pagination.pageSize,
-      paymentMethods: [1, 2, 3],
-      startDate: formatDate(this.state.selectedDate).split(" ")[0],
-      endDate: formatDate(endDate).split(" ")[0],
-    };
-
-    if (this.state.franchisee) {
-      data.frName = this.state.franchisee;
-    }
-    if (this.state.rider) {
-      data.riderName = this.state.rider;
-    }
-
-    console.log(data);
-
-    httpPost(httpUrl.orderList, [], data)
-      .then((res) => {
-        if (res.result === "SUCCESS") {
-          console.log(res);
-          this.setState({
-            totalList: res.data.orders,
-          });
-        } else {
-          Modal.info({
-            title: "적용 오류",
-            content: "처리가 실패했습니다.",
-          });
-        }
-      })
-      .catch((e) => {
-        Modal.info({
-          title: "적용 오류",
-          content: "처리가 실패했습니다.",
-        });
-      });
-  };
-
   handleTableChange = (pagination) => {
     const pager = { ...this.state.pagination };
     pager.current = pagination.current;
@@ -280,24 +318,24 @@ class ReceptionStatus extends Component {
     );
   };
 
-  handleInfiniteOnLoad = () => {
-    this.setState(
-      {
-        pagination: {
-          ...this.state.pagination,
-          pageSize: this.state.pagination.pageSize + 30,
-        },
-      },
-      () => this.getList()
-    );
-  };
+  // handleInfiniteOnLoad = () => {
+  //   this.setState(
+  //     {
+  //       pagination: {
+  //         ...this.state.pagination,
+  //         pageSize: this.state.pagination.pageSize + 30,
+  //       },
+  //     },
+  //     () => this.getList()
+  //   );
+  // };
 
   // 시간지연 dialog
   openTimeDelayModal = () => {
     this.setState({ timeDelayOpen: true });
   };
-  closeTimeDelayModal = () => {
-    this.setState({ timeDelayOpen: false });
+  closeTimeDelayModal = (value) => {
+    this.setState({ timeDelayOpen: false, branchInfo: value });
   };
 
   // 할증 dialog
@@ -782,10 +820,12 @@ class ReceptionStatus extends Component {
         )}
 
         <div className="btnLayout">
-          <TimeDelayDialog
-            isOpen={this.state.timeDelayOpen}
-            close={this.closeTimeDelayModal}
-          />
+          {this.state.timeDelayOpen && (
+            <TimeDelayDialog
+              branchInfo={this.state.branchInfo}
+              close={this.closeTimeDelayModal}
+            />
+          )}
           <Button
             icon={<FieldTimeOutlined />}
             className="tabBtn delayTab"
@@ -793,7 +833,6 @@ class ReceptionStatus extends Component {
           >
             호출설정
           </Button>
-
           {this.state.mapControlOpen && (
             <MapControlDialog
               getList={this.getList}
@@ -809,7 +848,6 @@ class ReceptionStatus extends Component {
           >
             지도관제
           </Button>
-
           {this.state.surchargeOpen && (
             <SurchargeDialog close={this.closeSurchargeModal} />
           )}
@@ -820,7 +858,6 @@ class ReceptionStatus extends Component {
           >
             할증
           </Button>
-
           <Button
             icon={<PhoneOutlined />}
             className="tabBtn registTab"
@@ -828,7 +865,6 @@ class ReceptionStatus extends Component {
           >
             콜등록
           </Button>
-
           <Button
             icon={<MessageOutlined />}
             className="tabBtn messageTab"
@@ -836,7 +872,6 @@ class ReceptionStatus extends Component {
           >
             상담메세지
           </Button>
-
           {this.state.noticeOpen && (
             <NoticeDialog close={this.closeNoticeModal} />
           )}
@@ -970,7 +1005,7 @@ class ReceptionStatus extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  branchIdx: state.login.loginInfo.userGroup,
+  branchIdx: state.login.loginInfo.branchIdx,
   info: state,
 });
 
