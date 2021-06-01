@@ -326,8 +326,6 @@ class RegistCallDialog extends Component {
           updateError();
         });
     }
-
-    // this.props.getList();
   };
 
   render() {
