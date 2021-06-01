@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import "../../../css/modal.css";
 import { Form, Input, Table, Button, Modal, Select, Space } from "antd";
 import { formatDate } from "../../../lib/util/dateUtil";
+import moment from "moment";
 import "../../../css/order.css";
 import { comma } from "../../../lib/util/numberUtil";
 import RegistCallDialog from "../../../components/dialog/order/RegistCallDialog";
@@ -18,7 +19,7 @@ import {
   arriveReqTime,
   orderCnt,
 } from "../../../lib/util/codeUtil";
-import { customError, deleteError } from "../../../api/Modals";
+import { customError, deleteError, customAlert } from "../../../api/Modals";
 
 import { SearchOutlined } from "@ant-design/icons";
 import SelectBox from "../../../components/input/SelectBox";
@@ -122,6 +123,7 @@ class MapControlDialog extends Component {
       waitingList: list,
     });
   };
+  
 
   setDate = (date) => {
     console.log(date);
@@ -175,9 +177,8 @@ class MapControlDialog extends Component {
                     userIdx: self.state.selectedRiderIdx,
                   })
                     .then((res) => {
-                      // console.log("!@@#@#@!#@@!#@!# "+riderIdx)
                       self.getList(riderIdx);
-                      self.getWaitingList()
+                      self.getOrderList();
                       if (res.result !== "SUCCESS") {
                         failedIdx.push(orderIdx);
                       }
@@ -190,17 +191,9 @@ class MapControlDialog extends Component {
 
 
                 if (failedIdx.length === 0) {
-                  Modal.info({
-                    title: "배차 성공",
-                    content: "배차에 성공했습니다.",
-                  });
-                  // console.log("!@@#@#@!#@@!#@!# ")
-                  
+                  customAlert("배차 성공", "배차에 성공했습니다.")
                 } else {
-                  Modal.info({
-                    title: "배차 실패",
-                    content: `${failedIdx} 번의 주문 배차에 실패했습니다.`,
-                  });
+                  customError("배차 실패", `${failedIdx} 번의 주문 배차에 실패했습니다.`)
                 }
 
 
@@ -235,8 +228,8 @@ class MapControlDialog extends Component {
             var addPath = [];
             var addFrLocates = [[]];
             for (let i = 0; i < list.length; i++) {
-              if (list[i].latitude === 0 && list[i].longitude === 0) continue;
-              if (list[i].frLatitude === 0 && list[i].frLongitude === 0) continue;
+              if (list[i].latitude === 0 || list[i].longitude === 0) continue;
+              if (list[i].frLatitude === 0 || list[i].frLongitude === 0) continue;
               addPath.push(
                 navermaps.LatLng(list[i].frLatitude, list[i].frLongitude)
               );
@@ -249,7 +242,7 @@ class MapControlDialog extends Component {
               addFrLocates = Object.assign(addFrLocates, [list[i].frLatitude, list[i].frLongitude])
               // addFrLocates.push([list[i].frLatitude, list[i].frLongitude])
             }
-            console.log("!!!!!!!!!!!!!!!! :"+ JSON.stringify(result.data, null, 4))
+            // console.log("!!!!!!!!!!!!!!!! :"+ JSON.stringify(result.data, null, 4))
 
             const pagination = { ...this.state.pagination };
             pagination.current = result.data.currentPage;
@@ -288,6 +281,45 @@ class MapControlDialog extends Component {
     });
   };
 
+  getOrderList = () => {
+    // console.log("order in")
+    const startDate = new Date(1990, 1, 1);
+    const endDate = new moment();
+    var data = {
+      orderStatuses: [1],
+      pageNum: this.state.paginationCallList.current,
+      pageSize: this.state.paginationCallList.pageSize,
+      paymentMethods: [1, 2, 3],
+      startDate: formatDate(startDate).split(" ")[0],
+      endDate: formatDate(endDate.add("1", "d")).split(" ")[0],
+    };
+    httpPost(httpUrl.orderList, [], data)
+      .then((res) => {
+          console.log('### new order result=' + JSON.stringify(res.data, null, 4))
+        if (res.result === "SUCCESS") {
+          const pagination = { ...this.state.pagination };
+          pagination.current = res.data.currentPage;
+          pagination.total = res.data.totalCount;
+          this.setState({
+            waitingList: res.data.orders,
+            pagination
+          });
+
+        } else {
+          Modal.info({
+            title: "적용 오류",
+            content: "처리가 실패했습니다.",
+          });
+        }
+      })
+      .catch((e) => {
+        Modal.info({
+          title: "적용 오류",
+          content: "처리가 실패했습니다.",
+        });
+      });
+  };
+
   getRiderLocateList = () => {
     httpGet(httpUrl.riderLocateList, [], {}).then((result) => {
       this.setState({
@@ -298,7 +330,7 @@ class MapControlDialog extends Component {
 
   getRiderLocate = (riderIdx) => {
     httpGet(httpUrl.riderLocate, [riderIdx], {}).then((result) => {
-      console.log('################# rider personal locate result=' + JSON.stringify(result, null, 4))
+      // console.log('################# rider personal locate result=' + JSON.stringify(result, null, 4))
       this.setState(
         {
           selectedRiderLatitude: result.data.latitude,
@@ -390,7 +422,7 @@ class MapControlDialog extends Component {
       {
         paginationCallList: pager,
       },
-      () => this.getRiderList()
+      () => {this.getRiderList(); this.getOrderList();}
     );
   };
 
@@ -418,7 +450,7 @@ class MapControlDialog extends Component {
               switch (res.data) {
                 case "SUCCESS":
                   self.getList();
-                  self.props.getList();
+                  self.getOrderList();
                   break;
                 case "ALREADY_CANCELED":
                   customError("배차 오류", "이미 취소된 배차입니다.");
