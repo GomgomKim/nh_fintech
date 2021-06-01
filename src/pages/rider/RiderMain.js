@@ -488,11 +488,11 @@ class RiderMain extends Component {
             SNS 전송
           </Button>
 
+          {this.state.blindListOpen &&
           <BlindRiderListDialog
-            isOpen={this.state.blindListOpen}
             close={this.closeBlindModal}
             data={this.state.blindRiderData}
-          />
+          />}
         </div>
 
         <div className="dataTableLayout">

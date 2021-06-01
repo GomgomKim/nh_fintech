@@ -100,7 +100,12 @@ class BlindRiderListDialog extends Component {
                     if(result.result === "SUCCESS" && result.data === "SUCCESS") {
                         blindComplete();
                         self.handleClear();
-                        self.getList();
+                        self.setState({
+                            pagination: {
+                            current: 1,
+                            pageSize: 5,
+                            },
+                        }, () => self.getList());
                     } else {
                         blindError();
                     }
@@ -136,7 +141,12 @@ class BlindRiderListDialog extends Component {
                     }).then((result) => {
                             if (result.result === "SUCCESS") {
                                 unBlindComplete();
-                                self.getList();
+                                self.setState({
+                                    pagination: {
+                                    current: 1,
+                                    pageSize: 5,
+                                    },
+                                }, () => self.getList());
                             } else {
                                 unBlindError();
                             }
@@ -242,11 +252,9 @@ class BlindRiderListDialog extends Component {
 
         ];
 
-        const { isOpen, close, data } = this.props;
+        const { close, data } = this.props;
         return (
-            <React.Fragment>
-                {
-                    isOpen ?
+
                         <React.Fragment>
                             <div className="Dialog-overlay" onClick={close} />
                             <div className="blind-Dialog">
@@ -255,7 +263,7 @@ class BlindRiderListDialog extends Component {
                                         {data.riderName} 라이더 님의 블라인드 목록
                                     </div>
                                     <img onClick={close} src={require('../../../img/login/close.png').default} 
-                                    className="blind-close" alt='close'/>
+                                    className="blind-close" alt='닫기'/>
 
                                     <div style={{
                                         textAlign: 'right',
@@ -370,10 +378,7 @@ class BlindRiderListDialog extends Component {
                                 </div>
                             </div>
                         </React.Fragment>
-                        :
-                        null
-                }
-            </React.Fragment>
+
         )
     }
 }
