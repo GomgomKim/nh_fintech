@@ -260,7 +260,7 @@
 }
 
 .updateStaffWrapper .contentBlock .override-input {
-  width: 240px;
+  width: 270px;
 }
 .updateStaffWrapper .ant-radio-group {
   margin-left: 20px;
@@ -2941,6 +2941,9 @@
   font-size: 25px;
   line-height: 30px;
 }
+.serchAddressWrapper {
+  margin-bottom: 20px;
+}
 
 .serchAddress-close {
   width: 30px;
@@ -2953,7 +2956,7 @@
 .serchAddress-Dialog .layout {
   margin-top: 20px;
   width: 100%;
-  overflow-y: scroll;
+  /* overflow-y: scroll; */
   border: 1px solid #ccc;
   padding: 20px 20px;
   text-align: left;
@@ -2967,7 +2970,7 @@
 }
 
 .serchAddress-Dialog .layout .contentBlock span {
-  font-size: 18px;
+  font-size: 14px;
 }
 
 .serchAddress-Dialog .layout .contentbox,
@@ -2977,7 +2980,8 @@
 
 .searchAddress-btn {
   display: inline-block;
-  vertical-align: bottom;
+  margin-top: 100px;
+  float: right;
 }
 
 .searchAddress-btn .ant-btn-primary {
@@ -2990,7 +2994,7 @@
 }
 
 .serchAddress-Dialog .layout .dataTableLayout-01 {
-  margin-top: 10px;
+  margin-top: 30px;
 }
 
 .serchAddress-Dialog .ant-table-content thead th {
@@ -3016,7 +3020,7 @@
 
 .second {
   display: inline-block;
-  width: 580px;
+  width: 570px;
   vertical-align: top;
   margin-left: 30px;
 }
@@ -3039,7 +3043,8 @@
 }
 
 .serchAddress-Dialog .contentBlock .mainTitle {
-  font-size: 16x;
+  font-size: 16px;
+  color: #222;
   width: 80px;
 }
 .serchAddress-Dialog .contentBlock .short {

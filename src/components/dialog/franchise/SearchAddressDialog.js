@@ -328,9 +328,9 @@ class SearchAddressDialog extends Component {
                       allowClear
                       onSearch={(value) => this.onSearchAddress(value)}
                       style={{
-                        width: 480,
+                        width: 470,
                         marginLeft: 20,
-                        verticalAlign: "bottom",
+                        verticalAlign: "middle",
                       }}
                     />
                   </div>
