@@ -112,6 +112,19 @@ class SendSnsDialog extends Component {
                         <Form ref={this.formRef} onFinish={this.handleSubmit}>
                             <div className="snsDetailBlock">
                                 <div className="inputBox">
+                                    휴대번호
+                                    <FormItem
+                                    className="selectItem"
+                                    name="phoneNumber"
+                                    rules={[{ required: true, message: "수신번호를 입력해주세요" }]}
+                                    >
+                                        <Input
+                                        className="numberInputBox"
+                                        placeholder="수신번호"
+                                        />
+                                    </FormItem>
+                                </div>
+                                <div className="inputBox">
                                     <FormItem
                                     className="selectItem"
                                     name="content"

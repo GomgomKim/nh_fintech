@@ -40,12 +40,10 @@ class UpdatePasswordDialog extends Component {
 
 
 
-        const { isOpen, close } = this.props;
+        const { close } = this.props;
 
         return (
-            <React.Fragment>
-                {
-                    isOpen ?
+
                         <React.Fragment>
                             <div className="Dialog-overlay" onClick={close} />
                             <div className="coinRider-Dialog">
@@ -60,20 +58,15 @@ class UpdatePasswordDialog extends Component {
                                     </div>
                                     <div className="updatePassword-inner">
 
-                                        <div className="coinRider-list">
-
-                                            <div className="twl coinRider-list">
+                                            <div className="twl coinRider-list" style={{marginRight:5}}>
                                                 <td>출금 비밀번호</td>
-                                                <div className="inputBox inputBox-coinRider sub">
                                                     <FormItem
                                                         name="coinBalance"
                                                         rules={[{ required: true, message: "0건." }]}
                                                     >
-                                                        <Input />
+                                                        <Input style={{width:100}}/>
                                                     </FormItem>
-                                                </div>
                                             </div>
-                                        </div>
 
                                     </div>
 
@@ -90,10 +83,7 @@ class UpdatePasswordDialog extends Component {
                                 </div>
                             </div>
                         </React.Fragment>
-                        :
-                        null
-                }
-            </React.Fragment>
+
         )
     }
 }

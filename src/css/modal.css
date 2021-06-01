@@ -1575,6 +1575,10 @@
   display: none; /* Chrome, Safari, Opera*/
 }
 
+.updatePassword-inner .twl .coinRider-list{
+  margin-left: 0 !important;
+}
+
 /* 라이더 코인충전 dialog */
 .coinRider-Dialog {
   position: fixed;
@@ -3635,6 +3639,8 @@
 
 .snsLayout .inputBox {
   width: 100%;
+  color: #000;
+  font-size: 17px;
 }
 
 .snsLayout .snsInputBox {
