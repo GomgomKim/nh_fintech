@@ -649,6 +649,16 @@
   z-index: 2;
 }
 
+.Regist-Notice-Dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 2;
+}
+
 .registNotice-content {
   background-color: white;
   padding: 30px;
@@ -2313,11 +2323,11 @@
   /* border:1px solid blue; */
 }
 
-.taskWork-list-01 .useText{
+.taskWork-list-01 .useText {
   margin-left: 5px;
 }
 
-.taskWork-list-01 .taskWorkSub{
+.taskWork-list-01 .taskWorkSub {
   width: 90px;
   font-size: 16px;
   /* display: inline-block; */
@@ -2325,9 +2335,7 @@
   /* border:1px solid blue; */
 }
 
-
-
-.taskWork-list-05 .useBtn{
+.taskWork-list-05 .useBtn {
   margin-left: 10px;
   margin-right: 15px;
 }

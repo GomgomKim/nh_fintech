@@ -182,7 +182,7 @@ class RegistNoticeDialog extends Component {
         return (
 
                         <React.Fragment>
-                            <div className="Dialog-overlay" onClick={close} />
+                            <div className="Regist-Notice-Dialog-overlay" onClick={close} />
                             <div className="registNoticeDialog">
                                 <div className="registNotice-content">
                                     <div className="registStaff-title">
