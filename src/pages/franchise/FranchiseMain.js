@@ -228,12 +228,15 @@ class FranchiseMain extends Component {
       });
   };
 
+  // 좌표 처리 실패시 continue 처리 해야 됨
+  // 자바스크립트 continue 처리 이상함
   handleExcelRegist = () => {
     if (this.state.data) {
       let failedIdx = [];
       let failedFrName = [];
       for (let i = 0; i < this.state.data.length; i++) {
         const data = this.state.data[i];
+        let checkGeocode = true;
 
         const formData = {
           // // EXCEL 로 받는 데이터
@@ -296,11 +299,21 @@ class FranchiseMain extends Component {
               let result = JSON.parse(res.data.json);
               formData.latitude = result.addresses[0].y;
               formData.longitude = result.addresses[0].x;
+            } else {
+              failedIdx.push(i + 1);
+              failedFrName.push(formData.frName);
+              checkGeocode = false;
             }
           })
           .catch((e) => {
-            console.log(e);
+            failedIdx.push(i + 1);
+            failedFrName.push(formData.frName);
+            checkGeocode = false;
           });
+
+        if (!checkGeocode) {
+          continue;
+        }
 
         if (!this.createFranchise(formData)) {
           failedIdx.push(i + 1);

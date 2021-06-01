@@ -52,9 +52,9 @@ class UpdatePasswordDialog extends Component {
                                     <div className="coinRider-title">
                                         출금 비밀번호 초기화
                                     </div>
-                                    <img onClick={close} src={require('../../../img/login/close.png').default} className="coinRider-close" />
+                                    <img onClick={close} src={require('../../../img/login/close.png').default} className="coinRider-close" alt="닫기"/>
                                     <div className="coinRider-title-sub">
-                                        기사명 : ***
+                                        기사명 : {this.props.rider.riderName}
                                     </div>
                                     <div className="updatePassword-inner">
 
