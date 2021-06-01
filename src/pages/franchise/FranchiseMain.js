@@ -1,6 +1,6 @@
 import { Modal, Table, Button, Input, Upload } from "antd";
 import React, { Component } from "react";
-import { httpUrl, httpPost, serverUrl } from "../../api/httpClient";
+import { httpUrl, httpPost, serverUrl, httpGet } from "../../api/httpClient";
 import RegistFranDialog from "../../components/dialog/franchise/RegistFranDialog";
 import SearchAddressDialog from "../../components/dialog/franchise/SearchAddressDialog";
 import SearchFranchiseDialog from "../../components/dialog/common/SearchFranchiseDialog";
@@ -19,6 +19,7 @@ import {
 import { updateComplete, updateError } from "../../api/Modals";
 // import { sheet_to_json } from "xlsx";
 import * as XLSX from "xlsx";
+import { connect } from "react-redux";
 
 const Search = Input.Search;
 
@@ -227,14 +228,19 @@ class FranchiseMain extends Component {
       });
   };
 
+  // 좌표 처리 실패시 continue 처리 해야 됨
+  // 자바스크립트 continue 처리 이상함
   handleExcelRegist = () => {
     if (this.state.data) {
       let failedIdx = [];
       let failedFrName = [];
       for (let i = 0; i < this.state.data.length; i++) {
         const data = this.state.data[i];
+        let checkGeocode = true;
+
         const formData = {
           // // EXCEL 로 받는 데이터
+          branchIdx: this.props.branchIdx,
           id: data["아이디"],
           frName: data["가맹점명"],
           businessNumber: data["사업자번호"],
@@ -287,7 +293,27 @@ class FranchiseMain extends Component {
           // withdrawLimit: data[" 출금한도 "] === "무제한" ? 0 : data["출금한도"],
         };
 
-        console.log(formData);
+        httpGet(httpUrl.getGeocode, [data["주소"]], {})
+          .then((res) => {
+            if (res.result === "SUCCESS") {
+              let result = JSON.parse(res.data.json);
+              formData.latitude = result.addresses[0].y;
+              formData.longitude = result.addresses[0].x;
+            } else {
+              failedIdx.push(i + 1);
+              failedFrName.push(formData.frName);
+              checkGeocode = false;
+            }
+          })
+          .catch((e) => {
+            failedIdx.push(i + 1);
+            failedFrName.push(formData.frName);
+            checkGeocode = false;
+          });
+
+        if (!checkGeocode) {
+          continue;
+        }
 
         if (!this.createFranchise(formData)) {
           failedIdx.push(i + 1);
@@ -340,10 +366,14 @@ class FranchiseMain extends Component {
     reader.onload = () => {
       let data = reader.result;
       let workBook = XLSX.read(data, { type: "binary" });
-      workBook.SheetNames.forEach(function (sheetName) {
-        var rows = XLSX.utils.sheet_to_json(workBook.Sheets[sheetName]);
-        self.setState({ data: rows }, () => console.log(self.state.data));
-      });
+      var rows = XLSX.utils.sheet_to_json(
+        workBook.Sheets[workBook.SheetNames[0]]
+      );
+      self.setState({ data: rows });
+      // workBook.SheetNames.forEach((sheetName) => {
+      //   var rows = XLSX.utils.sheet_to_json(workBook.Sheets[sheetName]);
+      //   self.setState({ data: rows }, () => console.log(self.state.data));
+      // });
     };
     reader.readAsBinaryString(input.files[0]);
   };
@@ -678,4 +708,11 @@ class FranchiseMain extends Component {
     );
   }
 }
-export default FranchiseMain;
+
+const mapStateToProps = (state) => ({
+  branchIdx: state.login.loginInfo.branchIdx,
+});
+
+const mapDispatchToProps = (dispatch) => ({});
+
+export default connect(mapStateToProps, mapDispatchToProps)(FranchiseMain);
