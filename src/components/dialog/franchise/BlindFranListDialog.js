@@ -254,11 +254,9 @@ class BlindFranListDialog extends Component {
               },
         ];
 
-        const { isOpen, close, data } = this.props;
+        const { close, data } = this.props;
         return (
-            <React.Fragment>
-                {
-                    isOpen ?
+
                         <React.Fragment>
                             <div className="Dialog-overlay" onClick={close} />
                             <div className="blind-Dialog">
@@ -383,10 +381,7 @@ class BlindFranListDialog extends Component {
                                 </div>
                             </div>
                         </React.Fragment>
-                        :
-                        null
-                }
-            </React.Fragment>
+
         )
     }
 }
