@@ -456,22 +456,24 @@ class ReceptionStatus extends Component {
                 // const list = this.state.list;
                 // list.find((x) => x.idx === row.idx).orderStatus = value;
                 row.orderStatus = value;
-                if (value === 3) {
-                  console.log("#############################################");
-                  console.log(row);
-                  const now = new moment();
-                  row.pickupDate = formatDateSecond(now);
-                } else if (value === 4) {
-                  console.log("#############################################");
-                  console.log(row);
-                  const now = new moment();
-                  row.completeDate = formatDateSecond(now);
-                }
+
+                // pickupDate 및 completeDate 관련 이슈
+                // 백엔드에서 주문상태 update 시 처리 예정
+
+                // const now = new moment().format("YYYY-MM-DD[T]HH:mm:ss.000[Z]");
+                // if (value === 3) {
+                //   row.pickupDate = now;
+                // } else if (value === 4) {
+                //   row.completeDate = now;
+                // }
+                // console.log(row);
                 httpPost(httpUrl.orderUpdate, [], row)
                   .then((res) => {
                     if (res.result === "SUCCESS") this.getList();
                   })
-                  .catch((e) => {});
+                  .catch((e) => {
+                    console.log(e);
+                  });
               }}
             >
               {deliveryStatusCode.map((value, index) => {
