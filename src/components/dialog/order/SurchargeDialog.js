@@ -155,8 +155,8 @@ class SurchargeDialog extends Component {
     // 할증 등록기간 설정
     onChangeDate = (dateString) => {
         this.setState({
-            startDate: moment(dateString[0]).format('YYYY-MM-DD HH:mm'),
-            endDate: moment(dateString[1]).format('YYYY-MM-DD HH:mm'),
+            startDate: dateString != null ? moment(dateString[0]).format('YYYY-MM-DD HH:mm') : '',
+            endDate: dateString != null ? moment(dateString[1]).format('YYYY-MM-DD HH:mm') : '',
         })
     };
 
