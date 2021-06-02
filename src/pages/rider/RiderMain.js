@@ -22,6 +22,10 @@ import {
 } from "../../lib/util/codeUtil";
 import { formatDate } from "../../lib/util/dateUtil";
 import moment from "moment";
+import{
+  customAlert,
+  updateError
+} from '../../api/Modals'
 
 const Search = Input.Search;
 const dateFormat = "YYYY/MM/DD";
@@ -54,6 +58,7 @@ class RiderMain extends Component {
       userStatus: 0,
       searchRiderOpen: false,
       selRider: "",
+      withdrawPassword: 1111,
     };
   }
 
@@ -134,6 +139,30 @@ class RiderMain extends Component {
       () => this.getList()
     );
   };
+
+  onResetPW = (row) =>{
+    let self = this;
+    Modal.confirm({
+      title: <div> {"비밀번호 초기화" } </div>,
+      content:  
+      <div> {"비밀번호를 초기화하시겠습니까?"} </div>,
+      okText: "확인",
+      cancelText: "취소",
+    onOk() {
+      httpPost(httpUrl.updateRider, [], {
+        idx: row.idx,
+        withdrawPassword: null,
+      }).then((result) => {
+        console.log(row)
+        if(result.result === "SUCCESS" && result.data === "SUCCESS"){
+          customAlert("완료", "출금비밀번호가 초기화되었습니다.")
+        } else if(result.data === "NOT_ADMIN") updateError()
+        else updateError()
+        self.getList();
+      }).catch((error) => {
+        updateError()
+      })
+  }})}
 
   onSearchRiderDetail = (data) => {
     console.log("### get fran list data : " + data);
@@ -265,7 +294,7 @@ class RiderMain extends Component {
 
             <Button
               className="tabBtn surchargeTab"
-              onClick={() => this.openUpdatePasswordModal(row)}
+              onClick={() => this.onResetPW(row)}
             >
               초기화
             </Button>
