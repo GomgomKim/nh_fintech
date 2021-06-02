@@ -42,6 +42,7 @@ class NoticeDialog extends Component {
     this.formRef = React.createRef();
   }
 
+
   componentDidMount() {
     this.getList();
   }
@@ -340,9 +341,9 @@ class NoticeDialog extends Component {
           onClick={()=>{this.changeShowContent(row.idx)}}>{data}</div>
           {this.state.showContent === row.idx &&
             <div className= "table-column-content">
-            {row.content.split('\n').map(line=>{
-              return(<span>{line}<br/></span>)
-            })}
+              {row.content.split('\n').map(line=>{
+                return(<span>{line}<br/></span>)
+              })}
             </div>
           }
           </>
