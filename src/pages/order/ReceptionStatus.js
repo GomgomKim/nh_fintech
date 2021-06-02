@@ -95,13 +95,104 @@ class ReceptionStatus extends Component {
 
       // 호출설정 branch 정보
       branchInfo: null,
+      pullingInterval: 5000,
     };
   }
 
   componentDidMount() {
     this.getList();
+    this.pullingList = setInterval(this.getList, this.state.pullingInterval);
+    // this.pollingList();
     this.getBranch();
   }
+
+  componentWillUnmount() {
+    clearInterval(this.pullingList);
+  }
+
+  // pollingList = setInterval(this.getList, 5000);
+
+  getList = () => {
+    const startDate = this.state.selectedDate;
+    const endDate = new moment();
+    var data = {
+      orderStatuses: this.state.selectedOrderStatus,
+      pageNum: this.state.pagination.current,
+      pageSize: this.state.pagination.pageSize,
+      paymentMethods: this.state.selectedPaymentMethods,
+      startDate: formatDate(startDate).split(" ")[0],
+      endDate: formatDate(endDate.add("1", "d")).split(" ")[0],
+    };
+    if (this.state.franchisee) {
+      data.frName = this.state.franchisee;
+    }
+    if (this.state.rider) {
+      data.riderName = this.state.rider;
+    }
+    httpPost(httpUrl.orderList, [], data)
+      .then((res) => {
+        if (res.result === "SUCCESS") {
+          this.setState({
+            list: res.data.orders,
+          });
+        } else {
+          Modal.info({
+            title: "적용 오류",
+            content: "처리가 실패했습니다.",
+          });
+        }
+      })
+      .catch((e) => {
+        Modal.info({
+          title: "적용 오류",
+          content: "처리가 실패했습니다.",
+        });
+      });
+  };
+  getCompleteList = () => {
+    const startDate = this.state.selectedDate;
+    const endDate = new Date(
+      startDate.getFullYear(),
+      startDate.getMonth(),
+      startDate.getDate() + 1
+    );
+    const data = {
+      orderStatuses: [4],
+      pageNum: this.state.pagination.current,
+      pageSize: this.state.pagination.pageSize,
+      paymentMethods: [1, 2, 3],
+      startDate: formatDate(this.state.selectedDate).split(" ")[0],
+      endDate: formatDate(endDate).split(" ")[0],
+    };
+
+    if (this.state.franchisee) {
+      data.frName = this.state.franchisee;
+    }
+    if (this.state.rider) {
+      data.riderName = this.state.rider;
+    }
+
+    httpPost(httpUrl.orderList, [], data)
+      .then((res) => {
+        if (res.result === "SUCCESS") {
+          console.log(res);
+          this.setState({
+            totalList: res.data.orders,
+          });
+        } else {
+          Modal.info({
+            title: "적용 오류",
+            content: "처리가 실패했습니다.",
+          });
+        }
+      })
+      .catch((e) => {
+        Modal.info({
+          title: "적용 오류",
+          content: "처리가 실패했습니다.",
+        });
+      });
+  };
 
   getBranch = () => {
     httpGet(httpUrl.getBranch, [this.props.branchIdx], {})
@@ -169,90 +260,6 @@ class ReceptionStatus extends Component {
 
   onSearch = () => {
     this.getList();
-  };
-
-  getList = () => {
-    const startDate = this.state.selectedDate;
-    const endDate = new moment();
-    var data = {
-      orderStatuses: this.state.selectedOrderStatus,
-      pageNum: this.state.pagination.current,
-      pageSize: this.state.pagination.pageSize,
-      paymentMethods: this.state.selectedPaymentMethods,
-      startDate: formatDate(startDate).split(" ")[0],
-      endDate: formatDate(endDate.add("1", "d")).split(" ")[0],
-    };
-    if (this.state.franchisee) {
-      data.frName = this.state.franchisee;
-    }
-    if (this.state.rider) {
-      data.riderName = this.state.rider;
-    }
-    httpPost(httpUrl.orderList, [], data)
-      .then((res) => {
-        if (res.result === "SUCCESS") {
-          this.setState({
-            list: res.data.orders,
-          });
-        } else {
-          Modal.info({
-            title: "적용 오류",
-            content: "처리가 실패했습니다.",
-          });
-        }
-      })
-      .catch((e) => {
-        Modal.info({
-          title: "적용 오류",
-          content: "처리가 실패했습니다.",
-        });
-      });
-  };
-  getCompleteList = () => {
-    const startDate = this.state.selectedDate;
-    const endDate = new Date(
-      startDate.getFullYear(),
-      startDate.getMonth(),
-      startDate.getDate() + 1
-    );
-    const data = {
-      orderStatuses: [4],
-      pageNum: this.state.pagination.current,
-      pageSize: this.state.pagination.pageSize,
-      paymentMethods: [1, 2, 3],
-      startDate: formatDate(this.state.selectedDate).split(" ")[0],
-      endDate: formatDate(endDate).split(" ")[0],
-    };
-
-    if (this.state.franchisee) {
-      data.frName = this.state.franchisee;
-    }
-    if (this.state.rider) {
-      data.riderName = this.state.rider;
-    }
-
-    console.log(data);
-
-    httpPost(httpUrl.orderList, [], data)
-      .then((res) => {
-        if (res.result === "SUCCESS") {
-          console.log(res);
-          this.setState({
-            totalList: res.data.orders,
-          });
-        } else {
-          Modal.info({
-            title: "적용 오류",
-            content: "처리가 실패했습니다.",
-          });
-        }
-      })
-      .catch((e) => {
-        Modal.info({
-          title: "적용 오류",
-          content: "처리가 실패했습니다.",
-        });
-      });
   };
 
   assignRider = (data, orderIdx) => {
@@ -817,7 +824,6 @@ class ReceptionStatus extends Component {
             close={this.closeModifyOrderModal}
             editable={this.state.editable}
             data={this.state.data}
-            getList={this.getList}
           />
         )}
 

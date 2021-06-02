@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import '../../css/order.css';
-import '../../css/common.css';
-import ReceptionStatus from './ReceptionStatus';
+import React, { Component } from "react";
+import "../../css/order.css";
+import "../../css/common.css";
+import ReceptionStatus from "./ReceptionStatus";
 
 class OrderMain extends Component {
   constructor(props) {

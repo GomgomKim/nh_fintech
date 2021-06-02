@@ -109,75 +109,41 @@ class MapControlDialog extends Component {
   componentDidMount() {
     this.getRiderList();
     this.getRiderLocateList();
-    this.getWaitingList();
     this.getRiderAllList();
-  }
+  } 
 
-  getWaitingList = () => {
-    var list = [];
-    this.props.callData.map((row) => {
-      if (row.orderStatus === 1) list.push(row);
-    });
-
-    this.setState({
-      waitingList: list,
-    });
-  };
-  
-
-  setDate = (date) => {
-    console.log(date);
-  };
-
-
-
-  onSearchFranchisee = (value) => {
-    this.setState(
-      {
-        franchisee: value,
-      },
-      () => {
-        this.getList();
-      }
-      );
-    };
-    
-    onSearchWorker = (value) => {
-    this.setState(
-      {
-        searchName: value,
-      },
+  // 기사명 검색
+  onSearchWorker = (value) => {
+    this.setState({searchName: value},
       () => {
         this.getRiderList();
       }
     );
   };
 
-  onSearchWorkerSelected = (value) => {
-    console.log(value);
+  // 기사 테이블에서 아이디 클릭했을 때
+  // rider : 선택된 라이더 정보
+  onSearchWorkerSelected = (rider) => {
     var self = this
-    if (this.state.results.find((x) => x.id === value)) {
-      var riderIdx = this.state.results.find((x) => x.id === value).idx;
-      var name = this.state.results.find((x) => x.id === value).riderName;
       this.setState(
         {
-          selectedRiderIdx: riderIdx,
-          riderName: name,
+          selectedRiderIdx: rider.idx,
+          riderName: rider.riderName,
         },
         () => {
           let failedIdx = [];
           if (self.state.selectedRowKeys.length > 0) {
             Modal.confirm({
               title: "배차 설정",
-              content: `${self.state.selectedRowKeys} 번의 주문을 ${this.state.selectedRiderIdx} : ${this.state.riderName} 기사에게 배정하시겠습니다?`,
+              content: `${self.state.selectedRowKeys} 번의 주문을 ${rider.riderName} 기사에게 배정하시겠습니다?`,
               onOk: () => {
-                self.state.selectedRowKeys.map((orderIdx) => {
+                self.state.selectedRowKeys.forEach(orderIdx => {
                   httpPost(httpUrl.assignRiderAdmin, [], {
                     orderIdx: orderIdx,
                     userIdx: self.state.selectedRiderIdx,
                   })
                     .then((res) => {
-                      self.getList(riderIdx);
+                      self.getList(rider.idx);
                       self.getOrderList();
                       this.setState({
                         selectedRowKeys: [],
@@ -192,7 +158,6 @@ class MapControlDialog extends Component {
                     });
                 });
 
-
                 if (failedIdx.length === 0) {
                   customAlert("배차 성공", "배차에 성공했습니다.")
                 } else {
@@ -204,11 +169,10 @@ class MapControlDialog extends Component {
               onCancel: () => {},
             });
           } else {
-            this.getList(riderIdx);
+            this.getList(rider.idx);
           }
         }
       );
-    }
   };
 
   getList = (riderIdx) => {
@@ -218,7 +182,7 @@ class MapControlDialog extends Component {
     var p = { ...this.state.pagination };
     console.log("selectedRiderIdx : "+selectedRiderIdx);
     httpPost(httpUrl.getAssignedRider, [], {
-      pageNum: p.current,
+      pageNum: p.current, 
       pageSize: p.pageSize,
       userIdx: parseInt(selectedRiderIdx)
     }).then((result) => {
@@ -239,14 +203,8 @@ class MapControlDialog extends Component {
               addPath.push(
                 navermaps.LatLng(list[i].latitude, list[i].longitude)
               );
-              // 37.6510661,
-              // 126.6532953
-              // addFrLocates.push([37.6510661, 126.6532953])
               addFrLocates = Object.assign(addFrLocates, [list[i].frLatitude, list[i].frLongitude])
-              // addFrLocates.push([list[i].frLatitude, list[i].frLongitude])
             }
-            // console.log("!!!!!!!!!!!!!!!! :"+ JSON.stringify(result.data, null, 4))
-
             const pagination = { ...this.state.pagination };
             pagination.current = result.data.currentPage;
             pagination.total = result.data.totalCount;
@@ -743,11 +701,11 @@ class MapControlDialog extends Component {
         dataIndex: "id",
         className: "table-column-center",
         width: "200px",
-        render: (data) => (
+        render: (data, row) => (
           <div
             className="riderName"
             onClick={() => {
-              this.onSearchWorkerSelected(data);
+              this.onSearchWorkerSelected(row);
             }}
           >
             {data}
@@ -982,11 +940,12 @@ class MapControlDialog extends Component {
                 )}
               </div>
 
+              {/* 콜 정보 */}
               {this.props.callData && (
                 <>
                   <Table
                     rowKey={(record) => record.idx}
-                    dataSource={this.state.waitingList}
+                    dataSource={this.props.callData.filter(x => x.orderStatus === 1)}
                     rowSelection={rowSelection}
                     columns={columns_callList}
                     rowClassName={(record) => rowColorName[record.orderStatus]}
