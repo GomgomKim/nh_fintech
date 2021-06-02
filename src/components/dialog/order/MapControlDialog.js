@@ -101,8 +101,9 @@ class MapControlDialog extends Component {
       selOrderCnt: 0,
       allResults: [],
 
-      // 가맹점 위치 리스트
+      // 가맹점, 라이더 위치 리스트
       frLocates: [],
+      riderLocates: [],
     };
   }
 
@@ -179,26 +180,29 @@ class MapControlDialog extends Component {
     );
   };
 
-  getOrderData = (result) => {
+  setRiderOrderData = (result) => {
     var list = result.data.orders;
     var addPath = [];
+    var addRiderLocates = [[]];
     var addFrLocates = [[]];
     for (let i = 0; i < list.length; i++) {
-      addPath.push(navermaps.LatLng(list[i].frLatitude, list[i].frLongitude));
       addPath.push(navermaps.LatLng(list[i].latitude, list[i].longitude));
-      addFrLocates = Object.assign(addFrLocates, [
-        list[i].frLatitude,
-        list[i].frLongitude,
-      ]);
+      addPath.push(navermaps.LatLng(list[i].frLatitude, list[i].frLongitude));
+      addRiderLocates = Object.assign(addRiderLocates, [list[i].latitude, list[i].longitude])
+      addFrLocates = Object.assign(addFrLocates, [list[i].frLatitude, list[i].frLongitude])
     }
     const pagination = { ...this.state.pagination };
     pagination.current = result.data.currentPage;
     pagination.total = result.data.totalCount;
 
+    console.log(addFrLocates)
+    console.log(addRiderLocates)
+
     this.setState({
       selRider: result.data,
       selRiderPath: addPath,
       frLocates: addFrLocates,
+      riderLocates: addRiderLocates,
       riderOrderList: list,
       pagination,
     });
@@ -217,7 +221,7 @@ class MapControlDialog extends Component {
       // console.log("### nnbox result=" + JSON.stringify(result, null, 4));
       if (result.result === "SUCCESS") {
         if (result.data != null && result.data.orders.length > 0) {
-          this.getOrderData(result);
+          this.setRiderOrderData(result)
         } else {
           this.setState({
             riderOrderList: [],
@@ -882,35 +886,33 @@ class MapControlDialog extends Component {
                       }
                     })}
 
-                    <Marker
-                      position={navermaps.LatLng(
-                        // 37.6510661,
-                        // 126.6532953
-                        this.state.frLocates[0],
-                        this.state.frLocates[1]
-                      )}
-                      icon={
-                        require("../../../img/login/map/marker_target.png")
-                          .default
-                      }
-                      // title={row.riderName}
-                      // onClick={() => this.getRiderLocate(row.idx)}
-                    />
-
-                    {this.state.frLocates.map((row, index) => {
-                      <>
-                        <Marker
-                          key={index}
-                          position={navermaps.LatLng(row[0], row[1])}
+                        {/* <Marker
+                          position={navermaps.LatLng(
+                            // 37.6510661,
+                            // 126.6532953
+                            this.state.frLocates[0],
+                            this.state.frLocates[1]
+                          )}
                           icon={
-                            require("../../../img/login/map/marker_rider.png")
+                            require("../../../img/login/map/marker_target.png")
                               .default
                           }
                           // title={row.riderName}
                           // onClick={() => this.getRiderLocate(row.idx)}
-                        />
-                      </>;
-                    })}
+                        /> */}
+                      
+
+                      {this.state.frLocates.map((row, index) => {
+                        return(
+                          <Marker
+                            key={index}
+                            position={navermaps.LatLng(row[0],row[1])}
+                            icon={require("../../../img/login/map/marker_target.png").default}
+                          />
+                        );
+                        
+                      })
+                      }
                     {this.state.selRider.latitude !== 0 &&
                       this.state.selRider.longitude !== 0 && (
                         <Polyline
