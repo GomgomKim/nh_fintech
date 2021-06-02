@@ -1,12 +1,18 @@
 import React from "react";
-import { withRouter} from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import { Layout, Modal, Select } from "antd";
 import { connect } from "react-redux";
 import { reactLocalStorage } from "reactjs-localstorage";
 import { httpPost, httpUrl } from "../api/httpClient";
 import { logout, login, changeBranch } from "../actions/loginAction";
 import con from "../const";
-import { CopyOutlined, PhoneOutlined, TeamOutlined, IdcardOutlined, SettingOutlined } from '@ant-design/icons';
+import {
+  CopyOutlined,
+  PhoneOutlined,
+  TeamOutlined,
+  IdcardOutlined,
+  SettingOutlined,
+} from "@ant-design/icons";
 const Option = Select.Option;
 
 class Header extends React.Component {
@@ -14,7 +20,7 @@ class Header extends React.Component {
     super(props);
     this.state = {
       visible: false,
-      frIdx : 0,
+      frIdx: 0,
     };
   }
 
@@ -40,18 +46,40 @@ class Header extends React.Component {
   }
 
   render() {
-    console.log(this.props.history.location.pathname)
+    // console.log(this.props.history.location.pathname);
     // console.log("frIdx : "+this.state.frIdx)
 
     const menus = [
-      { idx: 1, name: '접수현황', icon: (<CopyOutlined />), url: '/order/OrderMain' },
-      { idx: 2, name: '가맹점관리', icon: (<PhoneOutlined />), url: '/franchise/FranchiseMain' },
-      { idx: 3, name: '기사관리', icon: (<TeamOutlined />), url: '/rider/RiderMain' },
+      {
+        idx: 1,
+        name: "접수현황",
+        icon: <CopyOutlined />,
+        url: "/order/OrderMain",
+      },
+      {
+        idx: 2,
+        name: "가맹점관리",
+        icon: <PhoneOutlined />,
+        url: "/franchise/FranchiseMain",
+      },
+      {
+        idx: 3,
+        name: "기사관리",
+        icon: <TeamOutlined />,
+        url: "/rider/RiderMain",
+      },
       // { idx: 4, name: '직원관리', icon: (<IdcardOutlined />), url: '/staff/StaffMain' },
-      { idx: 5, name: '환경설정', icon: (<SettingOutlined />), url: '/setting/SettingMain' },
+      {
+        idx: 5,
+        name: "환경설정",
+        icon: <SettingOutlined />,
+        url: "/setting/SettingMain",
+      },
     ];
 
-    const currentPage = menus.find(x => x.url == this.props.history.location.pathname);
+    const currentPage = menus.find(
+      (x) => x.url == this.props.history.location.pathname
+    );
     return (
       <Layout.Header style={{ background: "#fff", padding: 0 }}>
         <div
@@ -61,12 +89,20 @@ class Header extends React.Component {
             fontWeight: "bold",
             color: "#fff",
             textAlign: "left",
-            paddingRight: "20px"
-          }}>
+            paddingRight: "20px",
+          }}
+        >
           <div className="menu-wrapper">
-            {menus.map(row => {
+            {menus.map((row) => {
               return (
-                <div frIdx={this.state.frIdx} onClick={()=>this.props.history.push(row.url)} className={"top-menu " + (row.idx == currentPage.idx ? 'active' : '')}>
+                <div
+                  key={row.idx}
+                  // frIdx={this.state.frIdx}
+                  onClick={() => this.props.history.push(row.url)}
+                  className={
+                    "top-menu " + (row.idx == currentPage.idx ? "active" : "")
+                  }
+                >
                   {row.icon}&nbsp;
                   {row.name}
                 </div>
@@ -77,18 +113,17 @@ class Header extends React.Component {
           <div className="menu-right">
             <div style={{ display: "inline-block" }}>
               관리자&nbsp;&nbsp;&nbsp;|
-            {/* {this.props.loginInfo.userId}&nbsp;&nbsp;&nbsp;| */}
+              {/* {this.props.loginInfo.userId}&nbsp;&nbsp;&nbsp;| */}
             </div>
             <div
               style={{ display: "inline-block", cursor: "pointer" }}
               onClick={() => {
                 this.setState({ visible: true });
-              }}>
+              }}
+            >
               &nbsp;&nbsp;&nbsp;로그아웃
+            </div>
           </div>
-
-          </div>
-
         </div>
         <Modal
           visible={this.state.visible}
@@ -99,7 +134,8 @@ class Header extends React.Component {
           onCancel={() => {
             this.setState({ visible: false });
           }}
-          destroyOnClose={true}>
+          destroyOnClose={true}
+        >
           <div>로그아웃 하시겠습니까?</div>
         </Modal>
       </Layout.Header>

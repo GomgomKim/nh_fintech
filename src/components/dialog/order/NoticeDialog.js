@@ -11,6 +11,9 @@ import { connect } from "react-redux";
 import { formatDate } from '../../../lib/util/dateUtil';
 import RegistNoticeDialog from "./RegistNoticeDialog";
 import { customAlert, customError, updateError } from "../../../api/Modals";
+import {
+  importantNotice,
+} from "../../../lib/util/codeUtil"
 
 class NoticeDialog extends Component {
   constructor(props) {
@@ -41,6 +44,7 @@ class NoticeDialog extends Component {
     };
     this.formRef = React.createRef();
   }
+
 
   componentDidMount() {
     this.getList();
@@ -161,20 +165,7 @@ class NoticeDialog extends Component {
       cancelText:"취소",
       onOk() {
         httpPost(httpUrl.updateNotice, [], {
-          // category:row.category,
-          // important:row.important,
-          // title:row.title,
-         // sortOrder:row.sortOrder,
-         // content:row.content,
-         // // name: this.formRef.current.getFieldsValue().surchargeName,
-         // // extraPrice: this.formRef.current.getFieldsValue().feeAdd,
-         // branchCode: self.state.branchCode,
-         // createDate: formatDateSecond(row.createDate),
          deleted: false,
-         // name: this.formRef.current.getFieldsValue().surchargeName,
-         // extraPrice: this.formRef.current.getFieldsValue().feeAdd,
-         // deleteDate: formatDateSecond(today),
-         // readDate: row.readDate,
          idx: row.idx,
         })
       .then((result) => {
@@ -243,12 +234,12 @@ class NoticeDialog extends Component {
           <>
           <div
           className="noticeTag"
-          style={{ paddingTop: 8, paddingBottom: 8 }}
           onClick={()=>{this.changeShowContent(row.idx)}}>{data}</div>
           {this.state.showContent === row.idx &&
             <div className= "table-column-content">
-            {row.content.split('\n').map(line=>{
-             return(<span>{line}<br/></span>)})}
+              {row.content.split('\n').map(line=>{
+                return(<span>{line}<br/></span>)
+              })}
             </div>
           }
           </>
@@ -344,7 +335,7 @@ class NoticeDialog extends Component {
               <Table
               className="noticeListTable"
               rowKey={(record) => record.idx}
-              rowClassName={(record) => record.important ? "table-blue" : "table-white"}
+              rowClassName={(record) => importantNotice[record.important]}
               dataSource={this.state.list}
               columns={columns}
               pagination={this.state.pagination}
