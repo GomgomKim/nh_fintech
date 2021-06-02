@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import {
-    Form, Input, Button, Select, Modal, Checkbox,
+    Form, Input, Button, Modal, Checkbox,
 } from "antd";
 import '../../../css/modal.css';
 import { httpUrl, httpPost } from '../../../api/httpClient';
@@ -9,7 +9,6 @@ import{
   updateError
 } from '../../../api/Modals'
 
-const Option = Select.Option;
 const FormItem = Form.Item;
 
 class RegistNoticeDialog extends Component {
@@ -85,38 +84,12 @@ class RegistNoticeDialog extends Component {
               console.log(result)
               if(result.result === "SUCCESS" && result.data === "SUCCESS"){
                 customAlert("완료", self.formRef.current.getFieldsValue().title+"이(가) 수정되었습니다.")
-              } else if(result.data === "NOT_ADMIN") updateError()
+              }
               else updateError()
               self.props.close()
             }).catch((error) => {
               updateError()
             })
-    
-    
-              //     httpPost(httpUrl.registNotice, [], {
-              //         ...self.formRef.current.getFieldsValue(),
-              //         date: self.state.date,
-              //         title: self.state.title,
-              //         category: self.state.category,
-              //         sortOrder: self.state.sortOrder,
-              //         important: self.state.important,
-              //         branchCode: self.state.branchCode,
-              //     })
-              //         .then((result) => {
-              //             Modal.info({
-              //                 title: "공지사항",
-              //                 content: (
-              //                     <div>
-              //                        adfds
-              //                     </div>
-              //                 ),
-              //             });
-              //             // self.getList();
-              //             self.props.close()
-    
-              // //     this.setState({content});
-              // //     this.getList();
-              // // 
 
               :
 
@@ -132,39 +105,12 @@ class RegistNoticeDialog extends Component {
               }).then((result) => {
                   if(result.result === "SUCCESS" && result.data === "SUCCESS"){
                     customAlert("완료", self.formRef.current.getFieldsValue().title+"이(가) 등록되었습니다.")
-                  } else if(result.data === "NOT_ADMIN") updateError()
+                  }
                   else updateError()
                 self.props.close()
               }).catch((error) => {
                 updateError()
               })
-      
-      
-                //     httpPost(httpUrl.registNotice, [], {
-                //         ...self.formRef.current.getFieldsValue(),
-                //         date: self.state.date,
-                //         title: self.state.title,
-                //         category: self.state.category,
-                //         sortOrder: self.state.sortOrder,
-                //         important: self.state.important,
-                //         branchCode: self.state.branchCode,
-                //     })
-                //         .then((result) => {
-                //             Modal.info({
-                //                 title: "공지사항",
-                //                 content: (
-                //                     <div>
-                //                        adfds
-                //                     </div>
-                //                 ),
-                //             });
-                //             // self.getList();
-                //             self.props.close()
-      
-                // //     this.setState({content});
-                // //     this.getList();
-                // // 
-  
           }
         })
         }
@@ -228,7 +174,7 @@ class RegistNoticeDialog extends Component {
                                                     >
                                                         <div className="importantBox">
                                                         <Checkbox
-                                                        defaultChecked={data ? (data.important === true ? "checked" : "") : ""}
+                                                        defaultChecked={data ? (data.important ? "checked" : "") : ""}
                                                         onChange={this.handleToggleImportantCall}></Checkbox>
                                                         </div>
                                                     </FormItem>

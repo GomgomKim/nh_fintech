@@ -10,7 +10,7 @@ import '../../../css/modal.css';
 import { connect } from "react-redux";
 import { formatDate } from '../../../lib/util/dateUtil';
 import RegistNoticeDialog from "./RegistNoticeDialog";
-import { customError, updateError } from "../../../api/Modals";
+import { customAlert, customError, updateError } from "../../../api/Modals";
 
 class NoticeDialog extends Component {
   constructor(props) {
@@ -51,7 +51,6 @@ class NoticeDialog extends Component {
       {
         checkedDeletedCall: e.target.checked,
         pagination:{
-          total: 0,
           current: 1,
           pageSize: 5,
         },        
@@ -110,85 +109,6 @@ class NoticeDialog extends Component {
     }
   }
 
-  //공지 전송
-  handleSubmit = () => {
-    let self = this;
-
-    Modal.confirm({
-      title: "공지사항 등록",
-      content: (
-        <div>
-          {self.formRef.current.getFieldsValue().content + '을 등록하시겠습니까?'}
-        </div>
-      ),
-      okText: "확인",
-      cancelText: "취소",
-      onOk() {
-        httpPost(httpUrl.registNotice, [], {
-          ...self.formRef.current.getFieldsValue(),
-          // idx: self.state.idx,
-          date: self.state.date,
-          title: self.state.title,
-          // content: self.state.content,
-          deleted: false,
-          category: self.state.category,
-          sortOrder: self.state.sortOrder,
-          important: self.state.important,
-          branchCode: self.state.branchCode,
-          // deleted: false,
-        }).then((result) => {
-          Modal.info({
-            title: " 완료",
-            content: (
-              <div>
-                {self.formRef.current.getFieldsValue().content}이(가) 등록되었습니다.
-              </div>
-            ),
-          });
-          self.handleClear();
-          self.getList();
-        }).catch((error) => {
-          Modal.info({
-            title: "등록 오류",
-            content: "오류가 발생하였습니다. 다시 시도해 주십시오."
-          });
-        })
-
-
-          //     httpPost(httpUrl.registNotice, [], {
-          //         ...self.formRef.current.getFieldsValue(),
-          //         date: self.state.date,
-          //         title: self.state.title,
-          //         category: self.state.category,
-          //         sortOrder: self.state.sortOrder,
-          //         important: self.state.important,
-          //         branchCode: self.state.branchCode,
-          //     })
-          //         .then((result) => {
-          //             Modal.info({
-          //                 title: "공지사항",
-          //                 content: (
-          //                     <div>
-          //                        adfds
-          //                     </div>
-          //                 ),
-          //             });
-          //             // self.getList();
-          //             self.props.close()
-
-          // //     this.setState({content});
-          // //     this.getList();
-          // // 
-          .catch((error) => {
-            Modal.info({
-              title: "수정 오류",
-              content: "오류가 발생하였습니다. 다시 시도해 주십시오."
-            });
-          });
-      }
-    });
-  }
-
   handleClear = () => {
     this.formRef.current.resetFields();
   };
@@ -196,7 +116,7 @@ class NoticeDialog extends Component {
   onDelete = (row) => {
     let self = this;
     console.log(row.important)
-    if (row.important === false){
+    if (!row.important){
     if (!this.state.checkedDeletedCall) {
     Modal.confirm({
       title:"공지사항 삭제",
@@ -222,26 +142,14 @@ class NoticeDialog extends Component {
          idx: row.idx,
         })
       .then((result) => {
-        if(result.result == "SUCCESS" && result.data == "SUCCESS"){
-        // console.log('## delete result=' + JSON.stringify(result, null, 4))
-        Modal.info({
-          title:"공지사항 삭제",
-          content: (
-            <div>
-              해당공지사항을 삭제합니다.
-            </div>
-          ),
-        });}
-        else if(result.data == "NOT_ADMIN") updateError()
+        if(result.result === "SUCCESS" && result.data === "SUCCESS"){
+        customAlert("완료", "해당공지사항을 삭제합니다.")      
+      }
         else updateError()
         self.getList();
       })
       .catch((error) => {
-        console.log(error);
-        Modal.info({
-          title: "삭제 오류",
-          content: "에러가 발생하였습니다 다시 시도해주세요."
-        });
+        customError("삭제오류", "에러가 발생하였습니다. 다시 시도해주세요.") 
       });
   }});
 }
@@ -270,26 +178,14 @@ class NoticeDialog extends Component {
          idx: row.idx,
         })
       .then((result) => {
-        if(result.result == "SUCCESS" && result.data == "SUCCESS"){
-        // console.log('## delete result=' + JSON.stringify(result, null, 4))
-        Modal.info({
-          title:"공지사항 등록",
-          content: (
-            <div>
-              해당공지사항을 재공지합니다.
-            </div>
-          ),
-        });}
-        else if(result.data == "NOT_ADMIN") updateError()
+        if(result.result === "SUCCESS" && result.data === "SUCCESS"){
+        customAlert("완료", "해당공지사항을 재공지합니다.") 
+      }
         else updateError()
         self.getList();
       })
       .catch((error) => {
-        console.log(error);
-        Modal.info({
-          title: "삭제 오류",
-          content: "에러가 발생하였습니다 다시 시도해주세요."
-        });
+        updateError()
       });
   }})};
   }
@@ -306,6 +202,10 @@ class NoticeDialog extends Component {
         pageSize: 5,
       }
     }, () => this.getList());
+  }
+
+  openNoticeRegistrationModal = () => {
+    this.setState({ registNotice: true });
   }
 
   closeNoticeUpdateModal = () => {
@@ -325,6 +225,12 @@ class NoticeDialog extends Component {
     })
   }
 
+  // dataSplit = (content) => {
+  //     content.split('\n').map(line=>{
+  //     return(<span>{line}<br/></span>)
+  //   })
+  // }
+
 
   render() {
     const columns = [
@@ -337,13 +243,12 @@ class NoticeDialog extends Component {
           <>
           <div
           className="noticeTag"
-          style={{ paddingTop:8, paddingBottom: 8,display: "inline-block", cursor: "pointer" }}
+          style={{ paddingTop: 8, paddingBottom: 8 }}
           onClick={()=>{this.changeShowContent(row.idx)}}>{data}</div>
           {this.state.showContent === row.idx &&
             <div className= "table-column-content">
             {row.content.split('\n').map(line=>{
-              return(<span>{line}<br/></span>)
-            })}
+             return(<span>{line}<br/></span>)})}
             </div>
           }
           </>
@@ -431,7 +336,7 @@ class NoticeDialog extends Component {
                 type="primary"
                 htmlType="submit"
                 className="tabBtn insertTab noticeBtn"
-                onClick={() => {this.setState({ registNotice: true })}}
+                onClick={this.openNoticeRegistrationModal}
                 >
                   등록하기
                 </Button>

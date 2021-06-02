@@ -635,6 +635,9 @@
   cursor: pointer;
   color: blue;
   text-decoration: underline;
+  display: inline-block;
+  /* padding-top: 8;
+  padding-bottom: 8; */
 }
 
 /* 공지사항 등록 dialog */
