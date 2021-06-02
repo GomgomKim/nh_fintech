@@ -10,7 +10,7 @@ import { formatDate } from "../../../lib/util/dateUtil";
 import { connect } from "react-redux";
 import SearchRiderDialog from "../../dialog/common/SearchRiderDialog";
 import SearchFranchiseDialog from "../../dialog/common/SearchFranchiseDialog";
-import { blindComplete, blindError, blindNowError, unBlindComplete, unBlindError } from "../../../api/Modals";
+import { blindComplete, blindError, unBlindComplete, unBlindError } from "../../../api/Modals";
 const FormItem = Form.Item;
 
 class BlindFranListDialog extends Component {
