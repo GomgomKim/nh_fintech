@@ -143,12 +143,7 @@ class BlindFranListDialog extends Component {
                         .then((result) => {
                             if (result.result === "SUCCESS") {
                                 unBlindComplete();
-                                self.setState({
-                                    pagination: {
-                                        current: 1,
-                                        pageSize: 5,
-                                    },
-                                }, () => self.getList());
+                            self.getList();
                             } else {
                                 unBlindError();
                             }
