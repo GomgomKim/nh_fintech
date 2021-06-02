@@ -211,32 +211,48 @@ class FranchiseMain extends Component {
         updateError();
       });
   };
-
-  createFranchise = (data) => {
-    httpPost(httpUrl.registFranchise, [], data)
-      .then((result) => {
-        if (result.result === "SUCCESS") {
-          console.log(result);
-          return true;
-        } else {
-          return false;
+  getLatLng = async (address, formData) => {
+    try {
+      const res = await httpGet(httpUrl.getGeocode, [address], {});
+      if (res.result === "SUCCESS") {
+        const data = JSON.parse(res.data.json);
+        if (data.addresses.length > 0) {
+          formData.latitude = parseFloat(data.addresses[0].y);
+          formData.longitude = parseFloat(data.addresses[0].x);
         }
-      })
-      .catch((e) => {
-        console.log(e);
-        return false;
-      });
+      } else {
+      }
+    } catch (e) {
+      console.log(e);
+      throw e;
+    }
   };
 
-  // 좌표 처리 실패시 continue 처리 해야 됨
-  // 자바스크립트 continue 처리 이상함
-  handleExcelRegist = () => {
+  createFranchise = async (formData, i, failedIdx, failedFrName) => {
+    console.log(`${i} start`);
+    try {
+      const res = await httpPost(httpUrl.registFranchise, [], formData);
+      if (res.result === "SUCCESS") {
+      } else {
+        failedIdx.push(i + 1);
+        failedFrName.push(formData.frName);
+        console.log(failedIdx);
+      }
+    } catch (e) {
+      failedIdx.push(i + 1);
+      failedFrName.push(formData.frName);
+      console.log(failedIdx);
+      // throw e;
+    }
+    console.log(`${i} done`);
+  };
+
+  handleExcelRegist = async () => {
     if (this.state.data) {
       let failedIdx = [];
       let failedFrName = [];
       for (let i = 0; i < this.state.data.length; i++) {
         const data = this.state.data[i];
-        let checkGeocode = true;
 
         const formData = {
           // // EXCEL 로 받는 데이터
@@ -271,54 +287,10 @@ class FranchiseMain extends Component {
           // api 찾기
           latitude: 0,
           longitude: 0,
-
-          // // api 연동
-          // distance: 0,
-          // withdrawPassword: "0000",
-          // userStatus: 1,
-          // recommenderIdx: 0,
-          // ownerName: data["대표자명"],
-          // email: data["이메일"],
-          // memo: data["메모"],
-          // corporateNumber: data["법인번호"],
-          // birthday: data["대표자생년월일"],\
-          // prepayAccount: data["선지급 계좌번호"],
-          // prepayBank: data["선지급 은행"],
-          // prepayDepositor: data["선지급 계좌 소유주"],
-          // securityPassword: "string",
-          // vaccountBank: data["가상계좌 은행"],
-          // vaccountDepositor: data["가상계좌 소유주"],
-          // vaccountNumber: data["가상계좌번호"],
-          // withdrawEnabled: data["출금가능여부"],
-          // withdrawLimit: data[" 출금한도 "] === "무제한" ? 0 : data["출금한도"],
         };
 
-        httpGet(httpUrl.getGeocode, [data["주소"]], {})
-          .then((res) => {
-            if (res.result === "SUCCESS") {
-              let result = JSON.parse(res.data.json);
-              formData.latitude = result.addresses[0].y;
-              formData.longitude = result.addresses[0].x;
-            } else {
-              failedIdx.push(i + 1);
-              failedFrName.push(formData.frName);
-              checkGeocode = false;
-            }
-          })
-          .catch((e) => {
-            failedIdx.push(i + 1);
-            failedFrName.push(formData.frName);
-            checkGeocode = false;
-          });
-
-        if (!checkGeocode) {
-          continue;
-        }
-
-        if (!this.createFranchise(formData)) {
-          failedIdx.push(i + 1);
-          failedFrName.push(formData.frName);
-        }
+        await this.getLatLng(data["주소"], formData);
+        await this.createFranchise(formData, i, failedIdx, failedFrName);
       }
       if (failedIdx.length > 0) {
         Modal.info({
@@ -648,11 +620,12 @@ class FranchiseMain extends Component {
           </Button>
 
           {/* 블라인드 */}
-          {this.state.blindListOpen &&
-          <BlindFranListDialog
-            close={this.closeBlindModal}
-            data={this.state.blindFrData}
-          />}
+          {this.state.blindListOpen && (
+            <BlindFranListDialog
+              close={this.closeBlindModal}
+              data={this.state.blindFrData}
+            />
+          )}
 
           {/* 엑셀업로드버튼 */}
           <a href="/franchise_regist_templete.xlsx" download>

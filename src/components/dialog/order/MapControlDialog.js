@@ -111,69 +111,73 @@ class MapControlDialog extends Component {
     this.getRiderList();
     this.getRiderLocateList();
     this.getRiderAllList();
-  } 
+  }
 
   // 기사명 검색
   onSearchWorker = (value) => {
-    this.setState({searchName: value},
-      () => {
-        this.getRiderList();
-      }
-    );
+    this.setState({ searchName: value }, () => {
+      this.getRiderList();
+    });
+  };
+
+  assignRiderApi = (orderIdx, rider, failedIdx) => {
+    httpPost(httpUrl.assignRiderAdmin, [], {
+      orderIdx: orderIdx,
+      userIdx: this.state.selectedRiderIdx,
+    })
+      .then((res) => {
+        this.getList(rider.idx);
+        this.getOrderList();
+        this.setState({
+          selectedRowKeys: [],
+        });
+        if (res.result !== "SUCCESS") {
+          failedIdx.push(orderIdx);
+        }
+      })
+      .catch((e) => {
+        console.log(e);
+        failedIdx.push(orderIdx);
+      });
   };
 
   // 기사 테이블에서 아이디 클릭했을 때
   // rider : 선택된 라이더 정보
   onSearchWorkerSelected = (rider) => {
-    var self = this
-      this.setState(
-        {
-          selectedRiderIdx: rider.idx,
-          riderName: rider.riderName,
-        },
-        () => {
-          let failedIdx = [];
-          if (self.state.selectedRowKeys.length > 0) {
-            Modal.confirm({
-              title: "배차 설정",
-              content: `${self.state.selectedRowKeys} 번의 주문을 ${rider.riderName} 기사에게 배정하시겠습니다?`,
-              onOk: () => {
-                self.state.selectedRowKeys.forEach(orderIdx => {
-                  httpPost(httpUrl.assignRiderAdmin, [], {
-                    orderIdx: orderIdx,
-                    userIdx: self.state.selectedRiderIdx,
-                  })
-                    .then((res) => {
-                      self.getList(rider.idx);
-                      self.getOrderList();
-                      this.setState({
-                        selectedRowKeys: [],
-                      });
-                      if (res.result !== "SUCCESS") {
-                        failedIdx.push(orderIdx);
-                      }
-                    })
-                    .catch((e) => {
-                      console.log(e);
-                      failedIdx.push(orderIdx);
-                    });
-                });
+    var self = this;
+    this.setState(
+      {
+        selectedRiderIdx: rider.idx,
+        riderName: rider.riderName,
+      },
+      () => {
+        let failedIdx = [];
+        if (self.state.selectedRowKeys.length > 0) {
+          Modal.confirm({
+            title: "배차 설정",
+            content: `${self.state.selectedRowKeys} 번의 주문을 ${rider.riderName} 기사에게 배정하시겠습니다?`,
+            onOk: () => {
+              self.state.selectedRowKeys.forEach(
+                async (orderIdx) =>
+                  await self.assignRiderApi(orderIdx, rider, failedIdx)
+              );
 
-                if (failedIdx.length === 0) {
-                  customAlert("배차 성공", "배차에 성공했습니다.")
-                } else {
-                  customError("배차 실패", `${failedIdx} 번의 주문 배차에 실패했습니다.`)
-                }
-
-
-              },
-              onCancel: () => {},
-            });
-          } else {
-            this.getList(rider.idx);
-          }
+              if (failedIdx.length === 0) {
+                customAlert("배차 성공", "배차에 성공했습니다.");
+              } else {
+                customError(
+                  "배차 실패",
+                  `${failedIdx} 번의 주문 배차에 실패했습니다.`
+                );
+              }
+            },
+            onCancel: () => {},
+          });
+        } else {
+          this.getList(rider.idx);
         }
-      );
+      }
+    );
   };
 
   setRiderOrderData = (result) => {
@@ -202,7 +206,7 @@ class MapControlDialog extends Component {
       riderOrderList: list,
       pagination,
     });
-  }
+  };
 
   getList = (riderIdx) => {
     let selectedRiderIdx;
@@ -210,9 +214,9 @@ class MapControlDialog extends Component {
     else selectedRiderIdx = this.state.selectedRiderIdx;
     var p = { ...this.state.pagination };
     httpPost(httpUrl.getAssignedRider, [], {
-      pageNum: p.current, 
+      pageNum: p.current,
       pageSize: p.pageSize,
-      userIdx: parseInt(selectedRiderIdx)
+      userIdx: parseInt(selectedRiderIdx),
     }).then((result) => {
       // console.log("### nnbox result=" + JSON.stringify(result, null, 4));
       if (result.result === "SUCCESS") {
@@ -222,9 +226,16 @@ class MapControlDialog extends Component {
           this.setState({
             riderOrderList: [],
           });
-          customError("배차 목록 오류", "해당 라이더의 배차가 존재하지 않습니다.");
+          customError(
+            "배차 목록 오류",
+            "해당 라이더의 배차가 존재하지 않습니다."
+          );
         }
-      } else customError("배차 목록 오류", "배차목록을 불러오는 데 실패했습니다. 관리자에게 문의하세요.");
+      } else
+        customError(
+          "배차 목록 오류",
+          "배차목록을 불러오는 데 실패했습니다. 관리자에게 문의하세요."
+        );
     });
   };
 
@@ -242,16 +253,17 @@ class MapControlDialog extends Component {
     };
     httpPost(httpUrl.orderList, [], data)
       .then((res) => {
-          console.log('### new order result=' + JSON.stringify(res.data, null, 4))
+        console.log(
+          "### new order result=" + JSON.stringify(res.data, null, 4)
+        );
         if (res.result === "SUCCESS") {
           const pagination = { ...this.state.pagination };
           pagination.current = res.data.currentPage;
           pagination.total = res.data.totalCount;
           this.setState({
             waitingList: res.data.orders,
-            pagination
+            pagination,
           });
-
         } else {
           Modal.info({
             title: "적용 오류",
@@ -366,7 +378,10 @@ class MapControlDialog extends Component {
       {
         paginationCallList: pagination,
       },
-      () => {this.getRiderList(); this.getOrderList();}
+      () => {
+        this.getRiderList();
+        this.getOrderList();
+      }
     );
   };
 
@@ -409,10 +424,16 @@ class MapControlDialog extends Component {
                   customError("배차 오류", "이미 주문 완료된 배차입니다.");
                   break;
                 case "NOT_ADMIN":
-                  customError("배차 오류", "관리자만 강제배차를 해제할 수 있습니다.");
+                  customError(
+                    "배차 오류",
+                    "관리자만 강제배차를 해제할 수 있습니다."
+                  );
                   break;
                 default:
-                  customError("배차 오류", "배차에 실패했습니다. 관리자에게 문의하세요.");
+                  customError(
+                    "배차 오류",
+                    "배차에 실패했습니다. 관리자에게 문의하세요."
+                  );
                   break;
               }
             } else deleteError();
@@ -807,20 +828,19 @@ class MapControlDialog extends Component {
                     center={{ lat: lat, lng: lng }}
                   >
                     <Marker
-                    position={navermaps.LatLng(
-                      this.state.selectedRiderLatitude,
-                      this.state.selectedRiderLongitude
-                    )}
-                    icon={
-                      require("../../../img/login/map/marker_rider_red.png")
-                        .default
-                    }
-                    title={this.state.selRider.riderName}
-                    onClick={() =>
-                      this.getRiderLocate(this.state.selRider.idx)
+                      position={navermaps.LatLng(
+                        this.state.selectedRiderLatitude,
+                        this.state.selectedRiderLongitude
+                      )}
+                      icon={
+                        require("../../../img/login/map/marker_rider_red.png")
+                          .default
+                      }
+                      title={this.state.selRider.riderName}
+                      onClick={() =>
+                        this.getRiderLocate(this.state.selRider.idx)
                       }
                     />
-                    
 
                     {this.state.allResults.map((row, index) => {
                       var flag = true;
@@ -910,7 +930,9 @@ class MapControlDialog extends Component {
                 <>
                   <Table
                     rowKey={(record) => record.idx}
-                    dataSource={this.props.callData.filter(x => x.orderStatus === 1)}
+                    dataSource={this.props.callData.filter(
+                      (x) => x.orderStatus === 1
+                    )}
                     rowSelection={rowSelection}
                     columns={columns_callList}
                     rowClassName={(record) => rowColorName[record.orderStatus]}

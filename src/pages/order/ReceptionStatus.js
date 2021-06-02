@@ -95,7 +95,7 @@ class ReceptionStatus extends Component {
 
       // 호출설정 branch 정보
       branchInfo: null,
-      pullingInterval: 5000,
+      pullingInterval: 20000,
     };
   }
 
