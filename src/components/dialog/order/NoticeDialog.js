@@ -337,7 +337,6 @@ class NoticeDialog extends Component {
           <>
           <div
           className="noticeTag"
-          style={{ paddingTop:8, paddingBottom: 8,display: "inline-block", cursor: "pointer" }}
           onClick={()=>{this.changeShowContent(row.idx)}}>{data}</div>
           {this.state.showContent === row.idx &&
             <div className= "table-column-content">
