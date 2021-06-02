@@ -95,7 +95,7 @@ class SurchargeDialog extends Component {
             }
         })
         .catch((e) => {
-            customAlert("목록 에러", 
+            customError("목록 에러", 
             "에러가 발생하여 목록을 불러올수 없습니다.")
         }); 
     };
@@ -145,7 +145,7 @@ class SurchargeDialog extends Component {
                     self.handleClear();
                     self.getList();
                 }).catch((error) => {
-                    customAlert("등록 오류", 
+                    customError("등록 오류", 
                         "오류가 발생하였습니다. 다시 시도해 주십시오.")
                 });
             },
@@ -193,7 +193,7 @@ class SurchargeDialog extends Component {
                         }
                     })
                     .catch((error) => {
-                        customAlert("삭제 오류", 
+                        customError("삭제 오류", 
                             "오류가 발생하였습니다. 다시 시도해 주십시오.")
                     });
             },
@@ -209,7 +209,7 @@ class SurchargeDialog extends Component {
                 }
             })
             .catch((error) => {
-                customAlert("수정 오류", 
+                customError("수정 오류", 
                     "오류가 발생하였습니다. 다시 시도해 주십시오.")
             });
     }
