@@ -175,70 +175,53 @@ class MapControlDialog extends Component {
       );
   };
 
+  getOrderData = (result) => {
+    var list = result.data.orders;
+    var addPath = [];
+    var addFrLocates = [[]];
+    for (let i = 0; i < list.length; i++) {
+      addPath.push(
+        navermaps.LatLng(list[i].frLatitude, list[i].frLongitude)
+      );
+      addPath.push(
+        navermaps.LatLng(list[i].latitude, list[i].longitude)
+      );
+      addFrLocates = Object.assign(addFrLocates, [list[i].frLatitude, list[i].frLongitude])
+    }
+    const pagination = { ...this.state.pagination };
+    pagination.current = result.data.currentPage;
+    pagination.total = result.data.totalCount;
+
+    this.setState({
+      selRider: result.data,
+      selRiderPath: addPath,
+      frLocates: addFrLocates,
+      riderOrderList: list,
+      pagination,
+    });
+  }
+
   getList = (riderIdx) => {
     let selectedRiderIdx;
     if (riderIdx) selectedRiderIdx = riderIdx;
     else selectedRiderIdx = this.state.selectedRiderIdx;
     var p = { ...this.state.pagination };
-    console.log("selectedRiderIdx : "+selectedRiderIdx);
     httpPost(httpUrl.getAssignedRider, [], {
       pageNum: p.current, 
       pageSize: p.pageSize,
       userIdx: parseInt(selectedRiderIdx)
     }).then((result) => {
-      console.log("### nnbox result=" + JSON.stringify(result, null, 4));
+      // console.log("### nnbox result=" + JSON.stringify(result, null, 4));
       if (result.result === "SUCCESS") {
         if (result.data != null && result.data.orders.length > 0) {
-          console.log('### nnbox result=' + JSON.stringify(result.data, null, 4))
-          if (result.data != null) {
-            var list = result.data.orders;
-            var addPath = [];
-            var addFrLocates = [[]];
-            for (let i = 0; i < list.length; i++) {
-              if (list[i].latitude === 0 || list[i].longitude === 0) continue;
-              if (list[i].frLatitude === 0 || list[i].frLongitude === 0) continue;
-              addPath.push(
-                navermaps.LatLng(list[i].frLatitude, list[i].frLongitude)
-              );
-              addPath.push(
-                navermaps.LatLng(list[i].latitude, list[i].longitude)
-              );
-              addFrLocates = Object.assign(addFrLocates, [list[i].frLatitude, list[i].frLongitude])
-            }
-            const pagination = { ...this.state.pagination };
-            pagination.current = result.data.currentPage;
-            pagination.total = result.data.totalCount;
-
-            this.setState({
-              selRider: result.data,
-              selRiderPath: addPath,
-              frLocates: addFrLocates,
-              riderOrderList: list,
-              pagination,
-            });
-          } else {
-            this.setState({
-              riderOrderList: [],
-            });
-            customError(
-              "배차 목록 오류",
-              "해당 라이더의 배차가 존재하지 않습니다."
-            );
-          }
+          this.getOrderData(result)
         } else {
           this.setState({
             riderOrderList: [],
           });
-          customError(
-            "배차 목록 오류",
-            "해당 라이더의 배차가 존재하지 않습니다."
-          );
+          customError("배차 목록 오류", "해당 라이더의 배차가 존재하지 않습니다.");
         }
-      } else
-        customError(
-          "배차 목록 오류",
-          "배차목록을 불러오는 데 실패했습니다. 관리자에게 문의하세요."
-        );
+      } else customError("배차 목록 오류", "배차목록을 불러오는 데 실패했습니다. 관리자에게 문의하세요.");
     });
   };
 
@@ -326,6 +309,7 @@ class MapControlDialog extends Component {
     );
   };
 
+  // 라이더 전체 리스트 (최대 1000명)
   getRiderAllList = () => {
     let pageNum = this.state.paginationList.current;
     let userStatus = 1;
@@ -375,10 +359,6 @@ class MapControlDialog extends Component {
   };
 
   handleCallListTableChange = (pagination) => {
-    // console.log(pagination);
-    // const pager = { ...this.state.paginationCallList};
-    // pager.current = pagination.current;
-    // pager.pageSize = pagination.pageSize;
     this.setState(
       {
         paginationCallList: pagination,
@@ -426,16 +406,10 @@ class MapControlDialog extends Component {
                   customError("배차 오류", "이미 주문 완료된 배차입니다.");
                   break;
                 case "NOT_ADMIN":
-                  customError(
-                    "배차 오류",
-                    "관리자만 강제배차를 해제할 수 있습니다."
-                  );
+                  customError("배차 오류", "관리자만 강제배차를 해제할 수 있습니다.");
                   break;
                 default:
-                  customError(
-                    "배차 오류",
-                    "배차에 실패했습니다. 관리자에게 문의하세요."
-                  );
+                  customError("배차 오류", "배차에 실패했습니다. 관리자에게 문의하세요.");
                   break;
               }
             } else deleteError();
@@ -448,27 +422,21 @@ class MapControlDialog extends Component {
   };
 
   onSelectChange = (selectedRowKeys) => {
-    var cur_list = this.props.callData;
+    var curList = this.props.callData;
     var overrideData = {};
-    for (let i = 0; i < cur_list.length; i++) {
-      var idx = cur_list[i].idx;
+    for (let i = 0; i < curList.length; i++) {
+      var idx = curList[i].idx;
       if (selectedRowKeys.includes(idx)) overrideData[idx] = true;
       else overrideData[idx] = false;
     }
-    // console.log(overrideData);
 
     var curIdxs = this.state.dataIdxs;
     curIdxs = Object.assign(curIdxs, overrideData);
 
     selectedRowKeys = [];
     for (let i = 0; i < curIdxs.length; i++) {
-      if (curIdxs[i]) {
-        // console.log("push  :" + i);
-        selectedRowKeys = [...selectedRowKeys, i];
-        // console.log(selectedRowKeys);
-      }
+      if (curIdxs[i]) selectedRowKeys = [...selectedRowKeys, i];
     }
-    // console.log("#### :"+selectedRowKeys)
     this.setState({
       selectedRowKeys: selectedRowKeys,
       dataIdxs: curIdxs,
@@ -791,7 +759,7 @@ class MapControlDialog extends Component {
               onClick={close}
               src={require("../../../img/login/close.png").default}
               className="map-close"
-              alt="img"
+              alt="닫기"
             />
             <SelectBox
               className="select-rider-orderCnt"
