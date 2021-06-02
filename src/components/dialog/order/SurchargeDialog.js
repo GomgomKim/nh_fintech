@@ -100,6 +100,18 @@ class SurchargeDialog extends Component {
         }); 
     };
 
+    // 할증 그룹이름
+    getSurChargeStr = (index) => {
+        var selGrpList = this.state.grpList.filter(x => x.idx === index);
+        var groupName = "";
+        for (let i = 0; i < selGrpList.length; i++) {
+            groupName = selGrpList[i].settingGroupName
+        }
+        return selGrpList.length === 1 ?
+            groupName : "전체"
+    }
+
+
     // 할증등록
     handleSubmit = () => {
         let self = this;
@@ -146,13 +158,6 @@ class SurchargeDialog extends Component {
             startDate: moment(dateString[0]).format('YYYY-MM-DD HH:mm'),
             endDate: moment(dateString[1]).format('YYYY-MM-DD HH:mm'),
         })
-    };
-
-    // 상시할증 적용
-    onChangeEveryDay = () => {
-        this.setState({
-            surchargeCheck: true
-        }).then(this.onChangeDate)
     };
 
     // 상시할증 적용 disabled
@@ -230,19 +235,6 @@ class SurchargeDialog extends Component {
     closeSurchargeSearchGrpModal = () => {
         this.setState({ surchargeSearchGrp: false });
     };
-
-    // 할증 그룹이름
-    getSurChargeStr = (index) => {
-        var selGrpList = this.state.grpList.filter(x => x.idx === index);
-        var groupName = "";
-        for (let i = 0; i < selGrpList.length; i++) {
-            groupName = selGrpList[i].settingGroupName
-        }
-        return selGrpList.length === 1 ?
-            groupName:
-            "전체"
-    }
-
 
     render() {
 
