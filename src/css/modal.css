@@ -647,6 +647,8 @@
   cursor: pointer;
   color: blue;
   text-decoration: underline;
+  padding-top: 8px;
+  padding-bottom: 8px;
 }
 
 /* 공지사항 등록 dialog */
