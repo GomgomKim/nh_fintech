@@ -82,8 +82,14 @@ class SearchAddressDialog extends Component {
     )
       .then((res) => {
         if (res.result === "SUCCESS" && res.data) {
+          console.log(res.data)
           this.setState({
             list: res.data.addrAptBranches,
+            pasination: {
+              ...this.state.pasination,
+              total: res.data.totalPage,
+              current: res.data.currentPage,
+            }
           });
         }
       })
@@ -338,15 +344,6 @@ class SearchAddressDialog extends Component {
                       </FormItem>
                     </div>
                     <div className="contentBlock">
-                      <div className="mainTitle">상세주소</div>
-                      <FormItem name="addr2" className="selectItem">
-                        <Input
-                          placeholder="상세주소를 입력해 주세요."
-                          className="override-input sub"
-                        />
-                      </FormItem>
-                    </div>
-                    <div className="contentBlock">
                       <div className="mainTitle">건물이름</div>
                       <FormItem name="name" className="selectItem">
                         <Input
@@ -355,7 +352,16 @@ class SearchAddressDialog extends Component {
                         />
                       </FormItem>
                     </div>
-                  </div>
+                    <div className="contentBlock">
+                      <div className="mainTitle">상세주소</div>
+                      <FormItem name="addr2" className="selectItem">
+                        <Input
+                          placeholder="상세주소를 입력해 주세요."
+                          className="override-input sub"
+                        />
+                      </FormItem>
+                    </div>
+                  </div>                  
 
                   <div className="searchAddress-btn">
                     {this.state.selfAddOpen && (

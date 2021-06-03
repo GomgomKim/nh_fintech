@@ -1286,6 +1286,7 @@
   vertical-align: middle;
   font-weight: bold;
   color: #1890ff;
+  display: block;
 }
 .registFranWrapper.bot .mainTitle {
   /* font-size: 20px; */
@@ -1312,16 +1313,13 @@
   vertical-align: top;
   margin-right: 30px;
 }
-
-.registFranWrapper .contentBlock .callTab {
-  width: 185px;
-  height: 40px;
-  font-size: 18px;
-  margin-top: -5px;
-  margin-right: 5px;
-  float: right;
+.registFranWrapper.bot > .contentBlock {
+  display: inline-block;
 }
-
+.registFran-btn {
+  float: right;
+  margin-top: 15px;
+}
 /* 코인이체 dialog */
 .coinTran-Dialog {
   position: fixed;
@@ -3002,6 +3000,7 @@
 .serchAddress-Dialog .layout .contentBlock {
   display: inline-block;
   line-height: 20px;
+  margin-bottom: 5px;
 }
 
 .serchAddress-Dialog .layout .contentBlock span {
@@ -3015,7 +3014,8 @@
 
 .searchAddress-btn {
   display: inline-block;
-  margin-top: 100px;
+  margin-top: 150px;
+  margin-right: 20px;
   float: right;
 }
 
