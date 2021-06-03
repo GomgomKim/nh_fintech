@@ -1,5 +1,5 @@
 // 접수현황 - 상태
-const deliveryStatusCode = ["", "대기중", "픽업중", "배달중", "완료", "취소"];
+const deliveryStatusCode = ["", "접수", "배차", "픽업", "완료", "취소"];
 
 // 접수현황 - 준비시간
 const preparationStatus = ["준비중", "완료"];

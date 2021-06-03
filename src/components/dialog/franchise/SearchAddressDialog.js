@@ -1,6 +1,11 @@
 import React, { Component } from "react";
-import { Form, Input, Table, Button, Select, Radio } from "antd";
-import { httpUrl, httpGet } from "../../../api/httpClient";
+import { Form, Input, Table, Button, Select, Radio, Modal } from "antd";
+import {
+  httpUrl,
+  httpGet,
+  httpPost,
+  httpDelete,
+} from "../../../api/httpClient";
 import PostCodeDialog from "../common/PostCodeDialog";
 import SelfAddressDialog from "../franchise/SelfAddressDialog";
 import { addType } from "../../../lib/util/codeUtil";
@@ -23,18 +28,23 @@ class SearchAddressDialog extends Component {
         current: 1,
         pageSize: 5,
       },
-
       list: [],
-      isPostCodeOpen: false,
 
-      roadAddr: "",
-      localAddr: "",
-
+      // createAptAddr params
+      // addr1:'',
+      // addr2:'',
+      // addr3:'',
       RegistAddType: 1,
+      latitude: 0,
+      longitude: 0,
+      name: "",
+
+      // getList params
       selectAddType: 1,
       searchAddress: "",
 
       selfAddOpen: false,
+      isPostCodeOpen: false,
     };
     this.formRef = React.createRef();
   }
@@ -98,8 +108,16 @@ class SearchAddressDialog extends Component {
 
   // 우편번호 - 주소 저장
   getAddr = (addrData) => {
-    // console.log(addrData)
+    console.log(addrData);
     // console.log(addrData.address)
+    if (addrData.apartment === "Y") {
+      this.setState({
+        RegistAddType: 1,
+      });
+      this.formRef.current.setFieldsValue({
+        name: addrData.buildingName,
+      });
+    }
     this.formRef.current.setFieldsValue({
       addr1: addrData.roadAddress, // 도로명 주소
       addr3:
@@ -111,17 +129,10 @@ class SearchAddressDialog extends Component {
     // 좌표변환
     httpGet(httpUrl.getGeocode, [addrData.roadAddress], {}).then((res) => {
       let result = JSON.parse(res.data.json);
-      // console.log(result)
-      // console.log(result.addresses.length)
       if (res.result === "SUCCESS" && result.addresses.length > 0) {
-        const lat = result.addresses[0].y;
-        const lng = result.addresses[0].x;
-        // console.log(lat)
-        // console.log(lng)
-
         this.setState({
-          targetLat: lat,
-          targetLng: lng,
+          latitude: result.addresses[0].y,
+          longitude: result.addresses[0].x,
         });
       } else {
         customError(
@@ -142,6 +153,62 @@ class SearchAddressDialog extends Component {
         this.getList();
       }
     );
+  };
+
+  handleSubmit = () => {
+    const formData = this.formRef.current.getFieldsValue();
+    httpPost(
+      httpUrl.createAddrApt,
+      [],
+      Object.assign(formData, {
+        addrType: this.state.RegistAddType,
+        latitude: this.state.latitude,
+        longitude: this.state.longitude,
+      })
+    )
+      .then((res) => {
+        if (res.result === "SUCCESS") {
+          Modal.info({
+            title: "등록성공",
+            content: "주소 등록에 성공했습니다.",
+          });
+          this.formRef.current.resetFields();
+          this.getList();
+        }
+      })
+      .catch((e) => {
+        Modal.info({
+          title: "등록실패",
+          content: "등록에 실패했습니다.",
+        });
+        throw e;
+      });
+  };
+
+  onDelete = (idx) => {
+    console.log(idx);
+    httpDelete(httpUrl.deleteAddrApt, [], { idx: idx })
+      .then((res) => {
+        if (res.result === "SUCCESS" && res.data === "SUCCESS") {
+          Modal.info({
+            title: "삭제성공",
+            content: "주소삭제에 성공했습니다.",
+          });
+          this.getList();
+        } else {
+          Modal.info({
+            title: "삭제실패",
+            content: "주소삭제에 실패했습니다.",
+          });
+        }
+      })
+      .catch((e) => {
+        Modal.info({
+          title: "삭제실패",
+          content: "주소삭제에 실패했습니다.",
+        });
+        throw e;
+      });
   };
 
   // 라디오
@@ -177,23 +244,23 @@ class SearchAddressDialog extends Component {
         dataIndex: "name",
         className: "table-column-center",
         width: "30%",
-        render: (data) => <div>{data}</div>
+        render: (data) => <div>{data}</div>,
       },
       {
         title: "도로명주소",
         dataIndex: "addr1",
         className: "table-column-center",
         width: "30%",
-        render: (data) => <div>{data}</div>
+        render: (data) => <div>{data}</div>,
       },
       {
         title: "삭제",
         dataIndex: "delete",
         className: "table-column-center",
         width: "20%",
-        render: (data) => (
+        render: (data, row) => (
           <div className="pwChange-btn">
-            <Button className="tabBtn" onClick={() => {}}>
+            <Button className="tabBtn" onClick={() => this.onDelete(row.idx)}>
               삭제
             </Button>
           </div>
@@ -239,7 +306,6 @@ class SearchAddressDialog extends Component {
 
                     <div className="contentBlock">
                       <div className="mainTitle">주소</div>
-
                       <FormItem name="addr1" className="selectItem">
                         <Input
                           placeholder="주소를 입력해 주세요."
@@ -247,7 +313,6 @@ class SearchAddressDialog extends Component {
                           className="override-input sub short"
                         />
                       </FormItem>
-
                       <PostCodeDialog
                         data={(addrData) => this.getAddr(addrData)}
                         isOpen={this.state.isPostCodeOpen}
@@ -272,10 +337,8 @@ class SearchAddressDialog extends Component {
                         />
                       </FormItem>
                     </div>
-
                     <div className="contentBlock">
                       <div className="mainTitle">상세주소</div>
-
                       <FormItem name="addr2" className="selectItem">
                         <Input
                           placeholder="상세주소를 입력해 주세요."
@@ -283,17 +346,25 @@ class SearchAddressDialog extends Component {
                         />
                       </FormItem>
                     </div>
+                    <div className="contentBlock">
+                      <div className="mainTitle">건물이름</div>
+                      <FormItem name="name" className="selectItem">
+                        <Input
+                          placeholder="건물이름을 입력해 주세요."
+                          className="override-input sub"
+                        />
+                      </FormItem>
+                    </div>
                   </div>
 
                   <div className="searchAddress-btn">
-                    <SelfAddressDialog
-                      isOpen={this.state.selfAddOpen}
-                      close={this.closeSelfAdd}
-                    />
+                    {this.state.selfAddOpen && (
+                      <SelfAddressDialog close={this.closeSelfAdd} />
+                    )}
                     <Button
                       type="primary"
                       htmlType="submit"
-                      onClick={this.openSelfAdd}
+                      // onClick={() => this.handleSubmit()}
                     >
                       등록하기
                     </Button>
