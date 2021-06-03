@@ -80,7 +80,7 @@ class TaskWorkDialog extends Component {
 
                                             <div className="twl taskWork-list-01">
                                                 <td>사용여부</td>
-                                                <Checkbox style={{marginRight:5}}></Checkbox>
+                                                <Checkbox></Checkbox>
                                                 {/* <span className="useText">사용함</span> */}
                                             </div>
                                             <div className="twl taskWork-list-02">
@@ -126,7 +126,7 @@ class TaskWorkDialog extends Component {
                                             </div>
                                                 <div className="twl taskWork-list-05">
                                                     <td>기간제한사용</td>
-                                                    <Checkbox className="useBtn" onClick={this.timeLimitCheck}></Checkbox>
+                                                    <Checkbox className="useBtn" onClick={this.timeLimitCheck} style={{marginLeft:0}}></Checkbox>
                                                     
                                                     {this.state.isTimeLimit &&
                                                         <RangePicker
