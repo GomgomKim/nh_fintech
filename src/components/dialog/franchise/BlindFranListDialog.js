@@ -10,7 +10,7 @@ import { formatDate } from "../../../lib/util/dateUtil";
 import { connect } from "react-redux";
 import SearchRiderDialog from "../../dialog/common/SearchRiderDialog";
 import SearchFranchiseDialog from "../../dialog/common/SearchFranchiseDialog";
-import { blindComplete, blindError, blindNowError, unBlindComplete, unBlindError } from "../../../api/Modals";
+import { blindComplete, blindError, unBlindComplete, unBlindError } from "../../../api/Modals";
 const FormItem = Form.Item;
 
 class BlindFranListDialog extends Component {
@@ -143,12 +143,7 @@ class BlindFranListDialog extends Component {
                         .then((result) => {
                             if (result.result === "SUCCESS") {
                                 unBlindComplete();
-                                self.setState({
-                                    pagination: {
-                                        current: 1,
-                                        pageSize: 5,
-                                    },
-                                }, () => self.getList());
+                            self.getList();
                             } else {
                                 unBlindError();
                             }

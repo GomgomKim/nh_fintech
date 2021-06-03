@@ -109,6 +109,11 @@ body {
   text-align: center !important;
 }
 
+/* .table-column-surGroup{
+  text-align: center;
+  width: 50%;
+} */
+
 .table-column-left {
   display: inline-block;
   width: 550;

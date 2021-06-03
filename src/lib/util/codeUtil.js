@@ -69,6 +69,11 @@ const feeManner = {
   2: "정률",
 };
 
+const importantNotice = {
+  false: "table-white",
+  true: "table-blue",
+}
+
 const orderCnt = {
   0: "전체",
   1: "1개",
@@ -180,5 +185,6 @@ export {
   packAmount,
   addType,
   orderCnt,
-  surchargeType
+  surchargeType,
+  importantNotice
 };
