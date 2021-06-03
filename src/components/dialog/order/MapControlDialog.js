@@ -182,13 +182,14 @@ class MapControlDialog extends Component {
 
   setRiderOrderData = (result) => {
     var list = result.data.orders;
-    var addPath = [];
+    var addPaths = [];
     var addRiderLocates = [];
     var addFrLocates = [];
     for (let i = 0; i < list.length; i++) {
-      // console.log(navermaps.LatLng(list[i].latitude, list[i].longitude))
-      addPath.push(navermaps.LatLng(list[i].latitude, list[i].longitude));
-      addPath.push(navermaps.LatLng(list[i].frLatitude, list[i].frLongitude));
+      var addPath = []
+      addPath[0] = navermaps.LatLng(list[i].frLatitude, list[i].frLongitude);
+      addPath[1] = navermaps.LatLng(list[i].latitude, list[i].longitude);
+      addPaths[i] = addPath
       addRiderLocates.push(navermaps.LatLng(list[i].latitude, list[i].longitude))
       addFrLocates.push(navermaps.LatLng(list[i].frLatitude, list[i].frLongitude))
     }
@@ -196,12 +197,11 @@ class MapControlDialog extends Component {
     pagination.current = result.data.currentPage;
     // pagination.total = result.data.totalCount;
 
-    // console.log(addFrLocates)
-    // console.log(addRiderLocates)
+    console.log("addPaths :"+addPaths)
 
     this.setState({
       selRider: result.data,
-      selRiderPath: addPath,
+      selRiderPath: addPaths,
       frLocates: addFrLocates,
       riderAllLocates: addRiderLocates,
       riderOrderList: list,
@@ -563,13 +563,20 @@ class MapControlDialog extends Component {
     else if (cnt === 5) list = this.state.allResultsSave.filter(x => x.assignedOrderCnt >= cnt)
     else if (cnt === 0) list = this.state.allResultsSave
 
-    console.log("############## :"+JSON.stringify(list, null, 4))
+    var addPaths = []
+    var addPath= []
+    addPath[0] = navermaps.LatLng(0, 0);
+    addPath[1] = navermaps.LatLng(0, 0);
+    addPaths[0] = addPath
+
+    // console.log("############## :"+JSON.stringify(list, null, 4))
     this.setState({
       frLocates: [],
       riderAllLocates: [],
-      selRiderPath: [[0, 0], [0, 0]],
+      selRiderPath: addPaths,
       selOrderCnt: cnt,
       allResults: list,
+      selectedRiderIdx: 0,
     });
   }
 
@@ -894,7 +901,7 @@ class MapControlDialog extends Component {
                         <Marker
                           key={index}
                           position={row}
-                          icon={require("../../../img/login/map/marker_target.png").default}
+                          icon={require("../../../img/login/map/arrive_yellow.png").default}
                         />
                       );
                     })}
@@ -904,16 +911,26 @@ class MapControlDialog extends Component {
                         <Marker
                           key={index}
                           position={row}
-                          icon={require("../../../img/login/map/marker_target.png").default}
+                          icon={require("../../../img/login/map/franchise_yellow.png").default}
                         />
                       );
                     })}
 
-                    <Polyline
+                    {this.state.selRiderPath.map((row, index) => {
+                      return(
+                        <Polyline
+                          key={index}
+                          path={row}
+                          strokeColor={"#ff0000"}
+                          strokeWeight={5}
+                        />
+                      );
+                    })}
+                    {/* <Polyline
                       path={this.state.selRiderPath}
                       strokeColor={"#ff0000"}
                       strokeWeight={5}
-                    />
+                    /> */}
                   </NaverMap>
                 )}
               </div>
