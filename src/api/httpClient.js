@@ -110,6 +110,10 @@ const httpPut = (url, params, data) => {
   // });
 };
 
+const httpDelete = (url, params, data) => {
+  return httpExec("DELETE", makeUrl(url, params), data);
+};
+
 const httpPost = (url, params, data) => {
   return httpExec("POST", makeUrl(url, params), data);
   // return new Promise((resolve, reject) => {
@@ -221,6 +225,8 @@ const httpUrl = {
   // 주소검색관리
   getAddrAptList:
     "/order/addrAptList?addrType=%s&pageNum=%s&pageSize=%s&searchDong=%s",
+  createAddrApt: "/branch/addrApt/create",
+  deleteAddrApt: "/branch/addrApt/delete",
 
   // 패스워드 변경
   changePassword: "/user/changePassword",
@@ -239,6 +245,7 @@ export {
   httpUrl,
   httpPut,
   httpPost,
+  httpDelete,
   httpDownload,
   imageType,
 };

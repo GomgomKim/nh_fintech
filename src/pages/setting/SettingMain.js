@@ -1,4 +1,12 @@
-import { Form, DatePicker, Input, Table, Button, Descriptions } from "antd";
+import {
+  Form,
+  DatePicker,
+  Input,
+  Modal,
+  Table,
+  Button,
+  Descriptions,
+} from "antd";
 import Icon from "@ant-design/icons";
 import React, { Component } from "react";
 import {
@@ -10,7 +18,6 @@ import {
 } from "../../api/httpClient";
 import SelectBox from "../../components/input/SelectBox";
 import { connect } from "react-redux";
-import Modal from "antd/lib/modal/Modal";
 
 const FormItem = Form.Item;
 const Ditems = Descriptions.Item;
@@ -31,43 +38,50 @@ class SettingMain extends Component {
   componentDidMount() {}
 
   handleSubmit = () => {
-    const bcrypt = require("bcrypt-nodejs");
-
     const form = this.formRef.current.getFieldsValue();
-
-    // bcrypt 활용 encoding 후 비교해야 함
-    // install 과정에서 에러 발생으로 인해 일단 놔둠
-    // + 현재 loginInfo 에서 password 항상 null 로 와서 해당 이슈 해결 후 테스팅 필요
-    if (bcrypt.compareSync(form.currentPassword, this.props.password)) {
-      this.setState({ checkCurrentPasswordError: true });
-      return;
-    } else if (form.newPaword !== form.newPasswordCheck) {
-      this.setState({ checkNewPasswordError: true });
-      return;
-    } else {
-      httpPost(httpUrl.changePassword, [], {
-        password: form.newPassword,
-      })
-        .then((res) => {
-          if (res.result === "SUCCESS") {
-            Modal.info({
-              title: "변경 성공",
-              content: "비밀번호 변경에 성공했습니다.",
-            });
-          } else {
+    if (form.newPassword !== form.newPasswordCheck) {
+      this.setState({
+        checkNewPasswordError: true,
+      });
+      return Modal.info({
+        title: "비밀번호 확인 오류",
+        content: "비밀번호를 확인 해주세요",
+      });
+    }
+    Modal.confirm({
+      title: "비밀번호 변경",
+      content: "비밀번호를 변경하시겠습니까?",
+      onOk: () => {
+        httpPost(httpUrl.changePassword, [], {
+          userIdx: this.props.userIdx,
+          currentPassword: form.currentPassword,
+          newPassword: form.newPassword,
+        })
+          .then((res) => {
+            if (res.result === "SUCCESS") {
+              Modal.info({
+                title: "변경 성공",
+                content: "비밀번호 변경에 성공했습니다.",
+              });
+              this.setState({ checkNewPasswordError: false });
+              // this.formRef.clearFields();
+            } else {
+              Modal.info({
+                title: "변경 실패",
+                content: "비밀번호 변경에 실패했습니다.",
+              });
+            }
+          })
+          .catch((e) => {
             Modal.info({
               title: "변경 실패",
-              content: "비밀번호 변경에 싪패했습니다.",
+              content: "비밀번호 변경에 실패했습니다.",
             });
-          }
-        })
-        .catch((e) => {
-          Modal.info({
-            title: "변경 실패",
-            content: "비밀번호 변경에 싪패했습니다.",
+            throw e;
           });
-        });
-    }
+      },
+      onCancel: () => {},
+    });
   };
 
   render() {
@@ -137,6 +151,7 @@ class SettingMain extends Component {
 
 const mapStateToProps = (state) => ({
   password: state.login.loginInfo.password,
+  userIdx: state.login.loginInfo.idx,
 });
 
 const mapDispatchToProps = (dispatch) => {};

@@ -57,7 +57,7 @@ class SurchargeFrGroupDialog extends Component {
                 this.props.close()
             }
             else {
-                customAlert("목록 에러", 
+                customError("목록 에러", 
                 "에러가 발생하여 삭제할수 없습니다.")
             }
         })

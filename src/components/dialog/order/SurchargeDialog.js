@@ -21,6 +21,7 @@ class SurchargeDialog extends Component {
         super(props)
         this.state = {
             list: [],
+            grpList:[],
             pagination: {
                 total: 0,
                 current: 1,
@@ -29,15 +30,17 @@ class SurchargeDialog extends Component {
             startDate: "",
             endDate: "",
             surchargeGroupOpen: false,
-            surchargeCheck: false,
             surchargeSearchGrp: false,
             selectedGroup: null,
             surchargeType: 0,
+            surchargeCheck: false,
+            disabled: false,
         };
         this.formRef = React.createRef();
     }
 
     componentDidMount() {
+        this.getGroupList()
         this.getList()
     }
 
@@ -56,6 +59,7 @@ class SurchargeDialog extends Component {
         let pageNum = this.state.pagination.current;
         let pageSize = this.state.pagination.pageSize;
         httpGet(httpUrl.priceExtraList, [pageNum, pageSize], {}).then((res) => {
+            console.log(JSON.stringify(res.data.deliveryPriceExtras, null, 4))
             const pagination = { ...this.state.pagination };
             pagination.current = res.data.currentPage;
             pagination.total = res.data.totalCount;
@@ -70,6 +74,42 @@ class SurchargeDialog extends Component {
             });
         });
     }
+    // 지점에 해당된 그룹 리스트
+    getGroupList = () => {
+        httpPost(httpUrl.priceExtraGroupList, [], {
+            branchIdx: this.props.branchIdx,
+            pageNum: this.state.pagination.current,
+            pageSize: this.state.pagination.pageSize,
+        })
+        .then((res) => {
+            if (res.result === "SUCCESS") {
+                console.log("res.data :"+JSON.stringify(res.data, null , 4) )
+                this.setState({
+                    grpList: res.data.frSettingGroups,
+                }, () => console.log(this.state.grpList))
+            }
+            else {
+                customAlert("목록 에러", 
+                "에러가 발생하여 목록을 불러올수 없습니다.")
+            }
+        })
+        .catch((e) => {
+            customError("목록 에러", 
+            "에러가 발생하여 목록을 불러올수 없습니다.")
+        }); 
+    };
+
+    // 할증 그룹이름
+    getSurChargeStr = (index) => {
+        var selGrpList = this.state.grpList.filter(x => x.idx === index);
+        var groupName = "";
+        for (let i = 0; i < selGrpList.length; i++) {
+            groupName = selGrpList[i].settingGroupName
+        }
+        return selGrpList.length === 1 ?
+            groupName : "전체"
+    }
+
 
     // 할증등록
     handleSubmit = () => {
@@ -102,9 +142,14 @@ class SurchargeDialog extends Component {
                         self.formRef.current.getFieldsValue().name+" 이(가) 등록되었습니다.")
                 }
                     self.handleClear();
-                    self.getList();
+                    self.setState({
+                        pagination: {
+                        current: 1,
+                        pageSize: 5,
+                        },
+                    }, () => self.getList());
                 }).catch((error) => {
-                    customAlert("등록 오류", 
+                    customError("등록 오류", 
                         "오류가 발생하였습니다. 다시 시도해 주십시오.")
                 });
             },
@@ -114,9 +159,18 @@ class SurchargeDialog extends Component {
     // 할증 등록기간 설정
     onChangeDate = (dateString) => {
         this.setState({
-            startDate: moment(dateString[0]).format('YYYY-MM-DD HH:mm'),
-            endDate: moment(dateString[1]).format('YYYY-MM-DD HH:mm'),
+            startDate: dateString != null ? moment(dateString[0]).format('YYYY-MM-DD HH:mm') : '',
+            endDate: dateString != null ? moment(dateString[1]).format('YYYY-MM-DD HH:mm') : '',
         })
+    };
+
+    // 상시할증 적용 disabled
+    toggleDisable = () => {
+        this.setState({ disabled: !this.state.disabled }, 
+            ()=>this.setState({
+                startDate:moment().format('1999-01-01 00:00'),
+                endDate:moment().format('2999-12-31 00:00')
+            }));
     };
 
     // 할증 등록시 초기화
@@ -143,7 +197,7 @@ class SurchargeDialog extends Component {
                         }
                     })
                     .catch((error) => {
-                        customAlert("삭제 오류", 
+                        customError("삭제 오류", 
                             "오류가 발생하였습니다. 다시 시도해 주십시오.")
                     });
             },
@@ -159,7 +213,7 @@ class SurchargeDialog extends Component {
                 }
             })
             .catch((error) => {
-                customAlert("수정 오류", 
+                customError("수정 오류", 
                     "오류가 발생하였습니다. 다시 시도해 주십시오.")
             });
     }
@@ -185,7 +239,6 @@ class SurchargeDialog extends Component {
     closeSurchargeSearchGrpModal = () => {
         this.setState({ surchargeSearchGrp: false });
     };
-
 
     render() {
 
@@ -228,10 +281,9 @@ class SurchargeDialog extends Component {
             },
             {
                 title: "할증 그룹",
-                dataIndex: "frSettingGroupIdx",
                 className: "table-column-center",
                 render: (data, row) => 
-                <div>{data === null ? "전체" : "그룹"}</div>
+                <div>{this.getSurChargeStr(row.frSettingGroupIdx)}</div>
             },
             {
                 className: "table-column-center",
@@ -303,12 +355,13 @@ class SurchargeDialog extends Component {
                                                     <div className="selectBox">
                                                         <FormItem
                                                             name="surchargeDate"
-                                                            rules={[{ required: true, message: "등록기간 날짜를 선택해주세요" }]}
+                                                            // rules={[{ required: true, message: "등록기간 날짜를 선택해주세요" }]}
                                                         >
                                                             <RangePicker
                                                                 placeholder={['시작일', '종료일']}
                                                                 showTime={{ format: 'HH:mm' }}
                                                                 onChange={this.onChangeDate}
+                                                                disabled={this.state.disabled}
                                                             />
                                                         </FormItem>
                                                     </div>
@@ -331,8 +384,9 @@ class SurchargeDialog extends Component {
                                                     </div>
                                                     <Checkbox
                                                         style={{verticalAlign:'middle'}}
-                                                        defaultChecked={this.state.surchargeCheck ? "checked" : ""}
-                                                        onChange={this.onSurchargeCheck} />
+                                                        defaultChecked={this.state.toggleDisable ? "checked" : ""}
+                                                        onChange={this.toggleDisable}
+                                                        />
                                                     
                                                     <div className="radio-btn">
                                                         대상 지정

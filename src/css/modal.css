@@ -371,6 +371,18 @@
   position: absolute;
   z-index: 100;
   right: 10px;
+  top: 320px;
+  background-color: #000;
+  padding: 5px 20px;
+  color: #fff;
+  cursor: pointer;
+}
+
+.order-list-show-btn {
+  float: right;
+  position: absolute;
+  z-index: 100;
+  left: 0px;
   top: 300px;
   background-color: #000;
   padding: 5px 20px;
@@ -635,6 +647,8 @@
   cursor: pointer;
   color: blue;
   text-decoration: underline;
+  padding-top: 8px;
+  padding-bottom: 8px;
 }
 
 /* 공지사항 등록 dialog */
@@ -1585,7 +1599,7 @@
   display: none; /* Chrome, Safari, Opera*/
 }
 
-.updatePassword-inner .twl .coinRider-list{
+.updatePassword-inner .twl .coinRider-list {
   margin-left: 0 !important;
 }
 
