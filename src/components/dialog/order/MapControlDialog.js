@@ -562,12 +562,7 @@ class MapControlDialog extends Component {
     if(cnt > 0 && cnt < 5) list = this.state.allResultsSave.filter(x => x.assignedOrderCnt === cnt)
     else if (cnt === 5) list = this.state.allResultsSave.filter(x => x.assignedOrderCnt >= cnt)
     else if (cnt === 0) list = this.state.allResultsSave
-
-    var addPaths = []
-    var addPath= []
-    addPath[0] = navermaps.LatLng(0, 0);
-    addPath[1] = navermaps.LatLng(0, 0);
-    addPaths[0] = addPath
+    var addPaths = this.clearPath()
 
     // console.log("############## :"+JSON.stringify(list, null, 4))
     this.setState({
@@ -578,6 +573,15 @@ class MapControlDialog extends Component {
       allResults: list,
       selectedRiderIdx: 0,
     });
+  }
+
+  clearPath = () => {
+    var addPaths = []
+    var addPath= []
+    addPath[0] = navermaps.LatLng(0, 0);
+    addPath[1] = navermaps.LatLng(0, 0);
+    addPaths[0] = addPath
+    return addPaths
   }
 
   
