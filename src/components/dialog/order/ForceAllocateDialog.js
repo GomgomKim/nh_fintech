@@ -1,21 +1,11 @@
 import React, { Component } from "react";
 import {
-    Form, Modal, Input, DatePicker, Descriptions, Table,
-    Upload, Button, Select, Icon, Radio, Carousel, Text, Checkbox
+    Input, Table, Button, Checkbox
 } from "antd";
 import '../../../css/rider.css';
-import moment from 'moment';
-import { comma } from "../../../lib/util/numberUtil";
-import { formatDate } from "../../../lib/util/dateUtil";
 
-const FormItem = Form.Item;
-const Ditems = Descriptions.Item;
 
-const Option = Select.Option;
 const Search = Input.Search;
-const RangePicker = DatePicker.RangePicker;
-const dateFormat = 'YYYY/MM/DD';
-const today = new Date();
 
 
 class ForceAllocateDialog extends Component {

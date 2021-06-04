@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Form, Input, Table, Button, Select, Radio, Modal } from "antd";
+import { Form, Input, Table, Button, Radio, Modal } from "antd";
 import {
   httpUrl,
   httpGet,
@@ -14,10 +14,7 @@ import { customError } from "../../../api/Modals";
 import "../../../css/rider.css";
 
 const FormItem = Form.Item;
-
-const Option = Select.Option;
 const Search = Input.Search;
-const today = new Date();
 
 class SearchAddressDialog extends Component {
   constructor(props) {
