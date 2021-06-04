@@ -485,7 +485,12 @@ class ReceptionStatus extends Component {
             >
               {deliveryStatusCode.map((value, index) => {
                 if (index === 0) return <></>;
-                else return <Option value={index}>{value}</Option>;
+                else
+                  return (
+                    <Option key={index} value={index}>
+                      {value}
+                    </Option>
+                  );
               })}
             </Select>
           </div>
@@ -597,7 +602,7 @@ class ReceptionStatus extends Component {
           data.length > 1 ? (
             <Button
               onClick={() => this.openPaymentModal(data)}
-              close={this.closePaymentModal}
+              // close={this.closePaymentModal}
             >
               보기
             </Button>

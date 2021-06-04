@@ -460,7 +460,7 @@ class RegistFranDialog extends Component {
                 </div>
 
                 <div className="registFranWrapper bot">
-                  <div className="registFranWrapper">
+
                     <div className="registFranTitle">월관리비 설정</div>
 
                     <div className="contentBlock">
@@ -484,16 +484,25 @@ class RegistFranDialog extends Component {
                           className="override-input sub"
                         ></Input>
                       </FormItem>
+                    </div>
 
+                    <div className="registFran-btn">
                       <Button
                         type="primary"
                         htmlType="submit"
                         className="callTab"
+                        style={{
+                          width:180,
+                          height: 40,
+                          fontSize: 18,
+                          marginTop: -5
+                        }}
                       >
                         등록하기
                       </Button>
                     </div>
-                  </div>
+
+
                 </div>
               </div>
             </Form>

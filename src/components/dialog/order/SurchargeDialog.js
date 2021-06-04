@@ -142,7 +142,12 @@ class SurchargeDialog extends Component {
                         self.formRef.current.getFieldsValue().name+" 이(가) 등록되었습니다.")
                 }
                     self.handleClear();
-                    self.getList();
+                    self.setState({
+                        pagination: {
+                        current: 1,
+                        pageSize: 5,
+                        },
+                    }, () => self.getList());
                 }).catch((error) => {
                     customError("등록 오류", 
                         "오류가 발생하였습니다. 다시 시도해 주십시오.")

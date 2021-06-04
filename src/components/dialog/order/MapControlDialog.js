@@ -1,12 +1,10 @@
 import React, { Component } from "react";
 import "../../../css/modal.css";
-import { Form, Input, Table, Button, Modal, Select, Space } from "antd";
+import { Input, Table, Button, Modal, Select, Space } from "antd";
 import { formatDate } from "../../../lib/util/dateUtil";
 import moment from "moment";
 import "../../../css/order.css";
-import { comma } from "../../../lib/util/numberUtil";
 import RegistCallDialog from "../../../components/dialog/order/RegistCallDialog";
-import SearchRiderDialog from "../../dialog/common/SearchRiderDialog";
 // import MapContainer from "./MapContainer";
 import { httpGet, httpUrl, httpPost } from "../../../api/httpClient";
 import { NaverMap, Marker, Polyline } from "react-naver-maps";
@@ -25,12 +23,8 @@ import { SearchOutlined } from "@ant-design/icons";
 import SelectBox from "../../../components/input/SelectBox";
 
 const Option = Select.Option;
-const FormItem = Form.Item;
 const navermaps = window.naver.maps;
-// const { Option } = Radio;
 const Search = Input.Search;
-const lat = 37.643623625321474;
-const lng = 126.66509442649551;
 
 class MapControlDialog extends Component {
   constructor(props) {
@@ -42,7 +36,7 @@ class MapControlDialog extends Component {
       pagination: {
         total: 0,
         current: 1,
-        pageSize: 3,
+        pageSize: 5,
       },
       paginationList: {
         total: 0,
@@ -79,8 +73,9 @@ class MapControlDialog extends Component {
 
       // 선택된 라이더
       selRider: {},
-      selectedRiderLatitude: 0,
-      selectedRiderLongitude: 0,
+      selectedRiderLatitude: 37.643623625321474,
+      selectedRiderLongitude: 126.66509442649551,
+      selectedRiderAssignedOrderCnt: 0,
 
       // 선택된 라이더 이동경로
       selRiderPath: [],
@@ -88,6 +83,7 @@ class MapControlDialog extends Component {
       modifyOrder: false,
 
       // 주문 테이블 다중선택
+      orderListOpen: false,
       selectedRowKeys: [],
       dataIdxs: [],
 
@@ -100,10 +96,11 @@ class MapControlDialog extends Component {
 
       selOrderCnt: 0,
       allResults: [],
+      allResultsSave: [],
 
       // 가맹점, 라이더 위치 리스트
       frLocates: [],
-      riderLocates: [],
+      riderAllLocates: [],
     };
   }
 
@@ -157,18 +154,21 @@ class MapControlDialog extends Component {
             title: "배차 설정",
             content: `${self.state.selectedRowKeys} 번의 주문을 ${rider.riderName} 기사에게 배정하시겠습니다?`,
             onOk: () => {
-              self.state.selectedRowKeys.forEach(
-                async (orderIdx) =>
-                  await self.assignRiderApi(orderIdx, rider, failedIdx)
-              );
-
-              if (failedIdx.length === 0) {
-                customAlert("배차 성공", "배차에 성공했습니다.");
-              } else {
-                customError(
-                  "배차 실패",
-                  `${failedIdx} 번의 주문 배차에 실패했습니다.`
+              if(this.state.allResultsSave.find(x => x.id === rider.id).assignedOrderCnt >= 5){
+                customError("배차 오류", "배차는 5개의 주문까지 가능합니다.")
+              } else{
+                self.state.selectedRowKeys.forEach(
+                  async (orderIdx) =>
+                    await self.assignRiderApi(orderIdx, rider, failedIdx)
                 );
+                if (failedIdx.length === 0) {
+                  customAlert("배차 성공", "배차에 성공했습니다.");
+                } else {
+                  customError(
+                    "배차 실패",
+                    `${failedIdx} 번의 주문 배차에 실패했습니다.`
+                  );
+                }
               }
             },
             onCancel: () => {},
@@ -182,27 +182,28 @@ class MapControlDialog extends Component {
 
   setRiderOrderData = (result) => {
     var list = result.data.orders;
-    var addPath = [];
-    var addRiderLocates = [[]];
-    var addFrLocates = [[]];
+    var addPaths = [];
+    var addRiderLocates = [];
+    var addFrLocates = [];
     for (let i = 0; i < list.length; i++) {
-      addPath.push(navermaps.LatLng(list[i].latitude, list[i].longitude));
-      addPath.push(navermaps.LatLng(list[i].frLatitude, list[i].frLongitude));
-      addRiderLocates = Object.assign(addRiderLocates, [list[i].latitude, list[i].longitude])
-      addFrLocates = Object.assign(addFrLocates, [list[i].frLatitude, list[i].frLongitude])
+      var addPath = []
+      addPath[0] = navermaps.LatLng(list[i].frLatitude, list[i].frLongitude);
+      addPath[1] = navermaps.LatLng(list[i].latitude, list[i].longitude);
+      addPaths[i] = addPath
+      addRiderLocates.push(navermaps.LatLng(list[i].latitude, list[i].longitude))
+      addFrLocates.push(navermaps.LatLng(list[i].frLatitude, list[i].frLongitude))
     }
     const pagination = { ...this.state.pagination };
     pagination.current = result.data.currentPage;
-    pagination.total = result.data.totalCount;
+    // pagination.total = result.data.totalCount;
 
-    console.log(addFrLocates)
-    console.log(addRiderLocates)
+    console.log("addPaths :"+addPaths)
 
     this.setState({
       selRider: result.data,
-      selRiderPath: addPath,
+      selRiderPath: addPaths,
       frLocates: addFrLocates,
-      riderLocates: addRiderLocates,
+      riderAllLocates: addRiderLocates,
       riderOrderList: list,
       pagination,
     });
@@ -218,7 +219,7 @@ class MapControlDialog extends Component {
       pageSize: p.pageSize,
       userIdx: parseInt(selectedRiderIdx),
     }).then((result) => {
-      // console.log("### nnbox result=" + JSON.stringify(result, null, 4));
+      console.log("### nnbox result=" + JSON.stringify(result, null, 4));
       if (result.result === "SUCCESS") {
         if (result.data != null && result.data.orders.length > 0) {
           this.setRiderOrderData(result)
@@ -257,12 +258,12 @@ class MapControlDialog extends Component {
           "### new order result=" + JSON.stringify(res.data, null, 4)
         );
         if (res.result === "SUCCESS") {
-          const pagination = { ...this.state.pagination };
-          pagination.current = res.data.currentPage;
-          pagination.total = res.data.totalCount;
+          const paginationCallList = { ...this.state.paginationCallList };
+          paginationCallList.current = res.data.currentPage;
+          paginationCallList.total = res.data.totalCount;
           this.setState({
             waitingList: res.data.orders,
-            pagination,
+            paginationCallList,
           });
         } else {
           Modal.info({
@@ -292,6 +293,7 @@ class MapControlDialog extends Component {
       // console.log('################# rider personal locate result=' + JSON.stringify(result, null, 4))
       this.setState(
         {
+          selectedRiderAssignedOrderCnt: result.data.assignedOrderCnt,
           selectedRiderLatitude: result.data.latitude,
           selectedRiderLongitude: result.data.longitude,
           selectedRiderIdx: result.data.userIdx,
@@ -341,6 +343,7 @@ class MapControlDialog extends Component {
       pagination.total = result.data.totalCount;
       console.log(result.data.riders);
       this.setState({
+        allResultsSave: result.data.riders,
         allResults: result.data.riders,
         paginationList: pagination,
       });
@@ -553,6 +556,35 @@ class MapControlDialog extends Component {
       }
     },
   });
+
+  setAssignCnt = (cnt) => {
+    var list = []
+    if(cnt > 0 && cnt < 5) list = this.state.allResultsSave.filter(x => x.assignedOrderCnt === cnt)
+    else if (cnt === 5) list = this.state.allResultsSave.filter(x => x.assignedOrderCnt >= cnt)
+    else if (cnt === 0) list = this.state.allResultsSave
+    var addPaths = this.clearPath()
+
+    // console.log("############## :"+JSON.stringify(list, null, 4))
+    this.setState({
+      frLocates: [],
+      riderAllLocates: [],
+      selRiderPath: addPaths,
+      selOrderCnt: cnt,
+      allResults: list,
+      selectedRiderIdx: 0,
+    });
+  }
+
+  clearPath = () => {
+    var addPaths = []
+    var addPath= []
+    addPath[0] = navermaps.LatLng(0, 0);
+    addPath[1] = navermaps.LatLng(0, 0);
+    addPaths[0] = addPath
+    return addPaths
+  }
+
+  
 
   render() {
     const { close } = this.props;
@@ -792,9 +824,7 @@ class MapControlDialog extends Component {
               codeString={orderCnt}
               onChange={(value) => {
                 if (parseInt(value) !== this.state.selOrderCnt) {
-                  this.setState({ selOrderCnt: parseInt(value) }, () =>
-                    this.getRiderList()
-                  );
+                  this.setAssignCnt(parseInt(value))
                 }
               }}
             />
@@ -812,8 +842,9 @@ class MapControlDialog extends Component {
                     dataSource={this.state.riderOrderList}
                     rowClassName={(record) => rowColorName[record.orderStatus]}
                     columns={columns}
-                    onChange={this.handleTableChange}
-                    pagination={this.state.pagination}
+                    // onChange={this.handleTableChange}
+                    // pagination={this.state.pagination}
+                    pagination={false}
                   />
                 </div>
               )}
@@ -825,109 +856,100 @@ class MapControlDialog extends Component {
                   <NaverMap
                     className="map-navermap"
                     defaultZoom={14}
-                    center={{ lat: lat, lng: lng }}
+                    center={{ lat: this.state.selectedRiderLatitude, lng: this.state.selectedRiderLongitude }}
+                    // center={{ lat: lat, lng: lng }}
                   >
-                    <Marker
-                      position={navermaps.LatLng(
-                        this.state.selectedRiderLatitude,
-                        this.state.selectedRiderLongitude
-                      )}
-                      icon={
-                        require("../../../img/login/map/marker_rider_red.png")
-                          .default
-                      }
-                      title={this.state.selRider.riderName}
-                      onClick={() =>
-                        this.getRiderLocate(this.state.selRider.idx)
-                      }
-                    />
+                    
+                    {this.state.allResults.filter(x => x.idx === this.state.selectedRiderIdx).length > 0 &&
+                      <Marker
+                        position={navermaps.LatLng(
+                          this.state.selectedRiderLatitude,
+                          this.state.selectedRiderLongitude
+                        )}
+                        icon={
+                          require("../../../img/login/map/marker_rider_red.png")
+                            .default
+                        }
+                        title={this.state.selRider.riderName}
+                        onClick={() =>
+                          this.getRiderLocate(this.state.selRider.idx)
+                        }
+                      />
+                    }
 
                     {this.state.allResults.map((row, index) => {
-                      var flag = true;
-
-                      if (flag) {
-                        // console.log(this.state.selRider.idx, row.idx);
-                        if (this.state.selectedRiderIdx !== row.idx) {
-                          // 팀장 이상 파랑 마크
-                          if (row.riderLevel >= 3) {
-                            return (
-                              <Marker
-                                key={index}
-                                position={navermaps.LatLng(
-                                  row.riderLocation.latitude,
-                                  row.riderLocation.longitude
-                                )}
-                                icon={
-                                  require("../../../img/login/map/marker_rider_blue.png")
-                                    .default
-                                }
-                                title={row.riderName}
-                                onClick={() => this.getRiderLocate(row.idx)}
-                              />
-                            );
-                          } else {
-                            return (
-                              <Marker
-                                key={index}
-                                position={navermaps.LatLng(
-                                  row.riderLocation.latitude,
-                                  row.riderLocation.longitude
-                                )}
-                                icon={
-                                  require("../../../img/login/map/marker_rider.png")
-                                    .default
-                                }
-                                title={row.riderName}
-                                onClick={() => this.getRiderLocate(row.idx)}
-                              />
-                            );
+                        return (
+                          <>
+                          {this.state.selectedRiderIdx !== row.idx &&
+                            <Marker
+                              key={index}
+                              position={navermaps.LatLng(
+                                row.riderLocation.latitude,
+                                row.riderLocation.longitude
+                              )}
+                              // 팀장 이상 파랑 마크
+                              icon={row.riderLevel >= 3 ?
+                                require("../../../img/login/map/marker_rider_blue.png").default :
+                                require("../../../img/login/map/marker_rider.png").default
+                              }
+                              title={row.riderName}
+                              onClick={() => this.getRiderLocate(row.idx)}
+                            />
                           }
-                        }
-                      }
+                          </>
+                        );
+                    })}
+                      
+                    {this.state.riderAllLocates.map((row, index) => {
+                      return(
+                        <Marker
+                          key={index}
+                          position={row}
+                          icon={require("../../../img/login/map/arrive_yellow.png").default}
+                        />
+                      );
                     })}
 
-                        {/* <Marker
-                          position={navermaps.LatLng(
-                            // 37.6510661,
-                            // 126.6532953
-                            this.state.frLocates[0],
-                            this.state.frLocates[1]
-                          )}
-                          icon={
-                            require("../../../img/login/map/marker_target.png")
-                              .default
-                          }
-                          // title={row.riderName}
-                          // onClick={() => this.getRiderLocate(row.idx)}
-                        /> */}
-                      
+                    {this.state.frLocates.map((row, index) => {
+                      return(
+                        <Marker
+                          key={index}
+                          position={row}
+                          icon={require("../../../img/login/map/franchise_yellow.png").default}
+                        />
+                      );
+                    })}
 
-                      {this.state.frLocates.map((row, index) => {
-                        return(
-                          <Marker
-                            key={index}
-                            position={navermaps.LatLng(row[0],row[1])}
-                            icon={require("../../../img/login/map/marker_target.png").default}
-                          />
-                        );
-                        
-                      })
-                      }
-                    {this.state.selRider.latitude !== 0 &&
-                      this.state.selRider.longitude !== 0 && (
+                    {this.state.selRiderPath.map((row, index) => {
+                      return(
                         <Polyline
-                          path={this.state.selRiderPath}
+                          key={index}
+                          path={row}
                           strokeColor={"#ff0000"}
                           strokeWeight={5}
                         />
-                      )}
+                      );
+                    })}
+                    {/* <Polyline
+                      path={this.state.selRiderPath}
+                      strokeColor={"#ff0000"}
+                      strokeWeight={5}
+                    /> */}
                   </NaverMap>
                 )}
               </div>
 
               {/* 콜 정보 */}
-              {this.props.callData && (
+
+              {this.props.callData && this.state.orderListOpen && (
                 <>
+                  <div
+                    className="order-list-show-btn"
+                    onClick={() => this.setState({ orderListOpen: false })}
+                  >
+                    닫기
+                  </div>
+
                   <Table
                     rowKey={(record) => record.idx}
                     dataSource={this.props.callData.filter(
@@ -941,6 +963,15 @@ class MapControlDialog extends Component {
                     className="callDataTable"
                   />
                 </>
+              )}
+
+              {!this.state.orderListOpen && (
+                <div
+                  className="order-list-show-btn"
+                  onClick={() => this.setState({ orderListOpen: true })}
+                >
+                  주문 목록 열기
+                </div>
               )}
 
               {this.state.riderListOpen && (
@@ -979,7 +1010,7 @@ class MapControlDialog extends Component {
                   className="rider-list-show-btn"
                   onClick={() => this.setState({ riderListOpen: true })}
                 >
-                  열기
+                  기사 목록 열기
                 </div>
               )}
             </div>

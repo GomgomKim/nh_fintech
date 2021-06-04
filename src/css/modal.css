@@ -371,6 +371,18 @@
   position: absolute;
   z-index: 100;
   right: 10px;
+  top: 320px;
+  background-color: #000;
+  padding: 5px 20px;
+  color: #fff;
+  cursor: pointer;
+}
+
+.order-list-show-btn {
+  float: right;
+  position: absolute;
+  z-index: 100;
+  left: 0px;
   top: 300px;
   background-color: #000;
   padding: 5px 20px;
@@ -635,6 +647,8 @@
   cursor: pointer;
   color: blue;
   text-decoration: underline;
+  padding-top: 8px;
+  padding-bottom: 8px;
 }
 
 /* 공지사항 등록 dialog */
@@ -1272,6 +1286,7 @@
   vertical-align: middle;
   font-weight: bold;
   color: #1890ff;
+  display: block;
 }
 .registFranWrapper.bot .mainTitle {
   /* font-size: 20px; */
@@ -1298,16 +1313,13 @@
   vertical-align: top;
   margin-right: 30px;
 }
-
-.registFranWrapper .contentBlock .callTab {
-  width: 185px;
-  height: 40px;
-  font-size: 18px;
-  margin-top: -5px;
-  margin-right: 5px;
-  float: right;
+.registFranWrapper.bot > .contentBlock {
+  display: inline-block;
 }
-
+.registFran-btn {
+  float: right;
+  margin-top: 15px;
+}
 /* 코인이체 dialog */
 .coinTran-Dialog {
   position: fixed;
@@ -1585,7 +1597,7 @@
   display: none; /* Chrome, Safari, Opera*/
 }
 
-.updatePassword-inner .twl .coinRider-list{
+.updatePassword-inner .twl .coinRider-list {
   margin-left: 0 !important;
 }
 
@@ -2321,7 +2333,7 @@
   /* height:360px; */
 }
 .taskWork-list td {
-  width: 100px;
+  width: 120px;
   font-size: 18px;
   display: inline-block;
   /* border:1px solid blue; */
@@ -2988,6 +3000,7 @@
 .serchAddress-Dialog .layout .contentBlock {
   display: inline-block;
   line-height: 20px;
+  margin-bottom: 5px;
 }
 
 .serchAddress-Dialog .layout .contentBlock span {
@@ -3001,7 +3014,8 @@
 
 .searchAddress-btn {
   display: inline-block;
-  margin-top: 100px;
+  margin-top: 150px;
+  margin-right: 20px;
   float: right;
 }
 
@@ -3568,10 +3582,93 @@
 }
 
 /* paymentModal */
+
+.payment-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  /* width: 1000px; */
+  z-index: 2;
+  background-color: white;
+  padding: 30px;
+  text-align: left;
+  color: #777;
+}
+.payment-container div {
+  display: block;
+}
+.detail-title {
+  /* font-size: 28px; */
+  letter-spacing: -1px;
+  font-weight: bold;
+  color: #333;
+  font-size: 25px;
+  line-height: 30px;
+}
+.detail-title > div:first-child {
+  display: inline-block;
+}
+.detail-title > div:last-child {
+  width: 30px;
+  height: 30px;
+  background-color: #fddc00;
+  cursor: pointer;
+  float: right;
+}
+.detail-title > div:last-child img {
+  width: 14px;
+  margin: 4px 8px 8px 8px;
+}
+.detail-content {
+  margin-top: 20px;
+  width: 100%;
+  /* height: 510px;  */
+  border: 1px solid #ccc;
+  padding: 20px;
+  text-align: left;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+.detail-content::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera*/
+}
+.split-content-title {
+  font-weight: bold;
+  font-size: 18px;
+  color: black;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 10px;
+}
+.split-content-title > div:first-child {
+  display: inline-block;
+}
+.split-content-title > div:last-child {
+  float: right;
+  right: 0;
+}
+.split-payment-box {
+  padding: 25px 20px 15px 20px;
+  width: 410px;
+  height: auto;
+}
+.split-payment-box div {
+  display: inline-block;
+}
+.split-payment-box > div:first-child {
+  margin-bottom: 0;
+}
+.split-bottom-box {
+  border-top: 1px solid #ccc;
+  font-size: 18px;
+  font-weight: bold;
+  color: black;
+  padding-top: 20px;
+  text-align: center;
+}
 .orderPayment-wrapper {
   display: flex;
 }
-
 .orderPayments-wrapper {
   display: flex;
   flex-direction: column;
@@ -3584,6 +3681,7 @@
   text-align: center;
   width: 100px;
 }
+
 /*sns전송ㅇ*/
 .snsDialog {
   position: fixed;
@@ -3994,7 +4092,6 @@
   width: 900px;
   height: 700px;
 }
-
 .error-message {
   color: red;
 }

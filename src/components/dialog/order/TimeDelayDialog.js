@@ -281,12 +281,11 @@ class TimeDelayDialog extends Component {
 
               <div style={{ margin: 20, width: 610 }}>
                 <div className="timeDelay-btn">
-                  <div className="timeDelay-btn-01">배달불가</div>
                   <Checkbox
                     onChange={(e) => this.handleChange(e)}
-                    style={{ marginTop: 11 }}
                     checked={this.state.deliveryNotAvailable}
                   ></Checkbox>
+                  <div className="timeDelay-btn-01">배달불가</div>
                 </div>
 
                 <div className="timeDelay-btn-02">

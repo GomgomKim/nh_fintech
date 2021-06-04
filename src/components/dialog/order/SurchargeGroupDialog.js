@@ -182,24 +182,26 @@ class SurchargeGroupDialog extends Component {
                 className: "table-column-center",
             },
             {
+                title: "가맹점 추가",
                 className: "table-column-center",
+                width: 175,
+                render: (data, row) =>
+                <div>
+                        <Button
+                            className="tabBtn"
+                            onClick={() => { this.openAddFranchiseModal(row)}}
+                            >추가</Button>
+                    </div>
+            },
+            {
+                className: "table-column-center",
+                width : 175,
                 render: (data, row) =>
                     <div>
                         <Button
                             className="tabBtn"
                             onClick={() => this.deleteGroup(row)}
                         >삭제</Button>
-                    </div>
-            },
-            {
-                title: "가맹점 추가",
-                className: "table-column-center",
-                render: (data, row) =>
-                    <div>
-                        <Button
-                            className="tabBtn"
-                            onClick={() => { this.openAddFranchiseModal(row)}}
-                        >추가</Button>
                     </div>
             },
         ];
