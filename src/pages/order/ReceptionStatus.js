@@ -14,12 +14,9 @@ import FilteringDialog from "../../components/dialog/order/FilteringDialog";
 import RegistCallDialog from "../../components/dialog/order/RegistCallDialog";
 import SurchargeDialog from "./../../components/dialog/order/SurchargeDialog";
 import NoticeDialog from "../../components/dialog/order/NoticeDialog";
-import ForceAllocateDialog from "../../components/dialog/order/ForceAllocateDialog";
 import MapControlDialog from "../../components/dialog/order/MapControlDialog";
 import {
   formatDate,
-  formatDateSecond,
-  monthFormat,
 } from "../../lib/util/dateUtil";
 import "../../css/order.css";
 import "../../css/common.css";
@@ -29,7 +26,6 @@ import {
   modifyType,
   rowColorName,
   paymentMethod,
-  cardStatus,
   arriveReqTime,
 } from "../../lib/util/codeUtil";
 import {
@@ -43,7 +39,6 @@ import {
 } from "@ant-design/icons";
 import { httpGet, httpPost, httpUrl } from "../../api/httpClient";
 import { connect } from "react-redux";
-import InfiniteScroll from "react-infinite-scroll-component";
 import PaymentDialog from "../../components/dialog/order/PaymentDialog";
 import SearchRiderDialog from "../../components/dialog/common/SearchRiderDialog";
 import ChattingDialog from "../../components/dialog/common/ChattingDialog";

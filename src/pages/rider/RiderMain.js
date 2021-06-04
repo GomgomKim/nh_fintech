@@ -1,12 +1,10 @@
-import { Input, Table, Button, Modal, DatePicker } from "antd";
+import { Input, Table, Button, Modal } from "antd";
 import React, { Component } from "react";
 import { httpGet, httpUrl, httpPost } from "../../api/httpClient";
 import RiderGroupDialog from "../../components/dialog/rider/RiderGroupDialog";
 import SendSnsDialog from "../../components/dialog/rider/SendSnsDialog";
 import TaskSchedulerDialog from "../../components/dialog/rider/TaskSchedulerDialog";
 import RegistRiderDialog from "../../components/dialog/rider/RegistRiderDialog";
-import RiderCoinDialog from "../../components/dialog/rider/RiderCoinDialog";
-import RiderBankDialog from "../../components/dialog/rider/RiderBankDialog";
 import BlindRiderListDialog from "../../components/dialog/rider/BlindRiderListDialog";
 import UpdatePasswordDialog from "../../components/dialog/rider/UpdatePasswordDialog";
 import "../../css/modal.css";
@@ -21,15 +19,12 @@ import {
   feeManner,
 } from "../../lib/util/codeUtil";
 import { formatDate } from "../../lib/util/dateUtil";
-import moment from "moment";
 import{
   customAlert,
   updateError
 } from '../../api/Modals'
 
 const Search = Input.Search;
-const dateFormat = "YYYY/MM/DD";
-const today = new Date();
 
 class RiderMain extends Component {
   constructor(props) {

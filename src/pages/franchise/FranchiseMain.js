@@ -1,6 +1,6 @@
-import { Modal, Table, Button, Input, Upload } from "antd";
+import { Modal, Table, Button, Input } from "antd";
 import React, { Component } from "react";
-import { httpUrl, httpPost, serverUrl, httpGet } from "../../api/httpClient";
+import { httpUrl, httpPost, httpGet } from "../../api/httpClient";
 import RegistFranDialog from "../../components/dialog/franchise/RegistFranDialog";
 import SearchAddressDialog from "../../components/dialog/franchise/SearchAddressDialog";
 import SearchFranchiseDialog from "../../components/dialog/common/SearchFranchiseDialog";

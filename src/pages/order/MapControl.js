@@ -1,34 +1,15 @@
 import {
-  Form,
-  DatePicker,
   Input,
-  Checkbox,
-  Select,
   Table,
   Button,
-  Descriptions,
 } from 'antd';
-import Icon from '@ant-design/icons';
-import moment from 'moment';
 import React, { Component } from 'react';
-import {
-  httpGet,
-  httpUrl,
-  httpDownload,
-  httpPost,
-  httpPut,
-} from '../../api/httpClient';
 import { formatDate } from '../../lib/util/dateUtil';
 import '../../css/order.css';
 import { comma } from '../../lib/util/numberUtil';
 import MapContainer from '../../components/dialog/order/MapContainer';
-const FormItem = Form.Item;
-const Ditems = Descriptions.Item;
 
 const Search = Input.Search;
-const RangePicker = DatePicker.RangePicker;
-const dateFormat = 'YYYY/MM/DD';
-const today = new Date();
 
 class MapControl extends Component {
   constructor(props) {
