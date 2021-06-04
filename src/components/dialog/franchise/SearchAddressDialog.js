@@ -24,7 +24,7 @@ class SearchAddressDialog extends Component {
     super(props);
     this.state = {
       pagination: {
-        total: 0,
+        total: 10,
         current: 1,
         pageSize: 5,
       },
@@ -52,12 +52,8 @@ class SearchAddressDialog extends Component {
     this.getList();
   }
 
-  setDate = (date) => {
-    // console.log(date)
-  };
-
   handleTableChange = (pagination) => {
-    // console.log(pagination)
+    console.log(pagination);
     const pager = { ...this.state.pagination };
     pager.current = pagination.current;
     pager.pageSize = pagination.pageSize;
@@ -82,14 +78,13 @@ class SearchAddressDialog extends Component {
     )
       .then((res) => {
         if (res.result === "SUCCESS" && res.data) {
-          console.log(res.data)
           this.setState({
             list: res.data.addrAptBranches,
             pasination: {
               ...this.state.pasination,
               total: res.data.totalPage,
               current: res.data.currentPage,
-            }
+            },
           });
         }
       })
@@ -114,8 +109,6 @@ class SearchAddressDialog extends Component {
 
   // 우편번호 - 주소 저장
   getAddr = (addrData) => {
-    console.log(addrData);
-    // console.log(addrData.address)
     if (addrData.apartment === "Y") {
       this.setState({
         RegistAddType: 1,
@@ -179,7 +172,15 @@ class SearchAddressDialog extends Component {
             content: "주소 등록에 성공했습니다.",
           });
           this.formRef.current.resetFields();
-          this.getList();
+          this.setState(
+            {
+              pagination: {
+                ...this.state.pagination,
+                current: 1,
+              },
+            },
+            () => this.getList()
+          );
         }
       })
       .catch((e) => {
@@ -192,7 +193,6 @@ class SearchAddressDialog extends Component {
   };
 
   onDelete = (idx) => {
-    console.log(idx);
     httpDelete(httpUrl.deleteAddrApt, [], { idx: idx })
       .then((res) => {
         if (res.result === "SUCCESS" && res.data === "SUCCESS") {
@@ -228,7 +228,6 @@ class SearchAddressDialog extends Component {
 
   render() {
     const onChange = (e) => {
-      // console.log(e.target.value)
       this.setState(
         {
           addressType: e.target.value,
@@ -361,7 +360,7 @@ class SearchAddressDialog extends Component {
                         />
                       </FormItem>
                     </div>
-                  </div>                  
+                  </div>
 
                   <div className="searchAddress-btn">
                     {this.state.selfAddOpen && (
@@ -417,7 +416,9 @@ class SearchAddressDialog extends Component {
                     dataSource={this.state.list}
                     columns={columns}
                     pagination={this.state.pagination}
-                    onChange={this.state.handleTableChange}
+                    onChange={(pagination) =>
+                      this.handleTableChange(pagination)
+                    }
                   />
                 </div>
               </div>
