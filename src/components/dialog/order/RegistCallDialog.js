@@ -113,24 +113,24 @@ class RegistCallDialog extends Component {
     this.setDefaultState();
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    if (prevState.data) {
-      if (
-        prevState.data.basicDeliveryPrice !==
-          this.state.data.basicDeliveryPrice ||
-        prevState.data.extraDeliveryPrice !== this.state.data.extraDeliveryPrice
-      ) {
-        this.setState({
-          data: {
-            ...this.state.data,
-            deliveryPrice:
-              this.state.data.basicDeliveryPrice +
-              this.state.data.extraDeliveryPrice,
-          },
-        });
-      }
-    }
-  }
+  // componentDidUpdate(prevProps, prevState) {
+  //   if (prevState.data) {
+  //     if (
+  //       prevState.data.basicDeliveryPrice !==
+  //         this.state.data.basicDeliveryPrice ||
+  //       prevState.data.extraDeliveryPrice !== this.state.data.extraDeliveryPrice
+  //     ) {
+  //       this.setState({
+  //         data: {
+  //           ...this.state.data,
+  //           deliveryPrice:
+  //             this.state.data.basicDeliveryPrice +
+  //             this.state.data.extraDeliveryPrice,
+  //         },
+  //       });
+  //     }
+  //   }
+  // }
 
   handleChangeInput = (value, stateKey) => {
     const cloneObj = (obj) => JSON.parse(JSON.stringify(obj));
@@ -289,34 +289,47 @@ class RegistCallDialog extends Component {
   };
 
   handleSubmit = () => {
-    if (this.props.data) {
-      httpPost(httpUrl.orderUpdate, [], this.state.data)
-        .then((res) => {
-          if (res.result === "SUCCESS") {
-            updateComplete();
-            this.props.close();
-          } else {
-            updateError();
-          }
-        })
-        .catch((e) => {
-          updateError();
-        });
-    } else {
-      httpPost(httpUrl.orderCreate, [], this.state.data)
-        .then((res) => {
-          if (res.result === "SUCCESS") {
-            updateComplete();
-            this.props.close();
-            this.clearData();
-          } else {
-            updateError();
-          }
-        })
-        .catch((e) => {
-          updateError();
-        });
-    }
+    this.setState(
+      {
+        data: {
+          ...this.state.data,
+          deliveryPrice:
+            this.state.data.extraDeliveryPrice +
+            this.state.data.basicDeliveryPrice,
+        },
+      },
+      () => {
+        console.log(this.state.data);
+        if (this.props.data) {
+          httpPost(httpUrl.orderUpdate, [], this.state.data)
+            .then((res) => {
+              if (res.result === "SUCCESS") {
+                updateComplete();
+                this.props.close();
+              } else {
+                updateError();
+              }
+            })
+            .catch((e) => {
+              updateError();
+            });
+        } else {
+          httpPost(httpUrl.orderCreate, [], this.state.data)
+            .then((res) => {
+              if (res.result === "SUCCESS") {
+                updateComplete();
+                this.props.close();
+                this.clearData();
+              } else {
+                updateError();
+              }
+            })
+            .catch((e) => {
+              updateError();
+            });
+        }
+      }
+    );
   };
 
   render() {
@@ -488,7 +501,7 @@ class RegistCallDialog extends Component {
                       <Input
                         placeholder="가격 입력"
                         className="override-input"
-                        defaultValue={data.orderPrice}
+                        defaultValue={comma(data.orderPrice)}
                         onChange={(e) =>
                           this.handleChangeInput(
                             parseInt(e.target.value),
