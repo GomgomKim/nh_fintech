@@ -1,14 +1,11 @@
 import React, { Component } from "react";
 import {
-    Form, Modal, Input, DatePicker, Descriptions, Table,
-    Upload, Button, Select, Icon, Radio, Carousel, Text, Checkbox
+    Form, Input, Button, Select, 
 } from "antd";
 import '../../../css/modal.css';
-import { httpGet, httpUrl, httpPost } from "../../../api/httpClient";
+import {  httpUrl, httpPost } from "../../../api/httpClient";
 const Option = Select.Option;
 const FormItem = Form.Item;
-const { RangePicker } = DatePicker;
-const Search = Input.Search;
 
 class UpdateStaffDialog extends Component {
     constructor(props) {

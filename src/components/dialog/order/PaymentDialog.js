@@ -1,15 +1,10 @@
-import React, { Component, useEffect, useState } from "react";
-import { Form, Modal, Input, DatePicker, Button, Select, Table } from "antd";
+import React, { useEffect, useState } from "react";
+import { Form, Modal, Input, Button, Select } from "antd";
 import "../../../css/modal.css";
-import { httpUrl, httpPost } from "../../../api/httpClient";
 import {
-  deliveryStatusCode,
-  modifyType,
   paymentMethod,
   paymentStatus,
 } from "../../../lib/util/codeUtil";
-import Checkbox from "antd/lib/checkbox/Checkbox";
-import { formatDate } from "../../../lib/util/dateUtil";
 import { comma } from "../../../lib/util/numberUtil";
 
 const PaymentDialog = ({

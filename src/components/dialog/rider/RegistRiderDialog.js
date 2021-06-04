@@ -1,12 +1,10 @@
 import React, { Component } from "react";
-import { Form, Input, Button, Select, Radio, Modal, Checkbox } from "antd";
+import { Form, Input, Button, Select, Modal, Checkbox } from "antd";
 import "../../../css/modal.css";
 import { httpUrl, httpPost } from "../../../api/httpClient";
-import SelectBox from "../../../components/input/SelectBox";
 import {
   riderGroupString,
   riderLevelText,
-  feeManner,
 } from "../../../lib/util/codeUtil";
 import {
   updateComplete,

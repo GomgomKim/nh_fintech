@@ -1,12 +1,11 @@
 import React, { Component } from "react";
 import {
-    Form, Input, Table, Button, Select, Radio, Checkbox
+    Form, Input, Table, Button, Radio, Checkbox
 } from "antd";
 import '../../../css/modal.css';
 import { comma } from "../../../lib/util/numberUtil";
 
 const FormItem = Form.Item;
-const Option = Select.Option;
 
 class RiderGroupDialog extends Component {
     constructor(props) {

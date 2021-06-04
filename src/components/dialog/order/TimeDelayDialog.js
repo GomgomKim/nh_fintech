@@ -1,12 +1,9 @@
 import React, { Component } from "react";
-import { Form, Button, Checkbox, Select, Modal } from "antd";
+import { Button, Checkbox, Modal } from "antd";
 import "../../../css/modal.css";
 import { ClockCircleOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import { httpPost, httpUrl } from "../../../api/httpClient";
-
-const FormItem = Form.Item;
-const Option = Select.Option;
 
 class TimeDelayDialog extends Component {
   constructor(props) {

@@ -166,11 +166,11 @@ class SurchargeDialog extends Component {
 
     // 상시할증 적용 disabled
     toggleDisable = () => {
-        this.setState({ disabled: !this.state.disabled }, 
-            () => this.setState({
-                startDate:moment().format('1999-01-01 00:00'),
-                endDate:moment().format('2999-12-31 00:00')
-            }));
+        this.setState({ 
+            disabled: !this.state.disabled,
+            startDate:moment().format('1999-01-01 00:00'),
+            endDate:moment().format('2999-12-31 00:00')
+        })
     };
 
     // 할증 등록시 초기화

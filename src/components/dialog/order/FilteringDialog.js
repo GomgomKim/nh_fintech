@@ -1,9 +1,7 @@
 import React, { Component } from "react";
-import { Form, Checkbox, Radio } from "antd";
+import { Checkbox } from "antd";
 import "../../../css/modal.css";
 
-const FormItem = Form.Item;
-const { Option } = Radio;
 
 class FilteringDialog extends Component {
   constructor(props) { 
