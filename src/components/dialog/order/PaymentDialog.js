@@ -133,7 +133,7 @@ const PaymentDialog = ({
                                 </Select>
                               ) : (
                                 <Select
-                                  style={{width: 95, fontSize: 16, marginRight: 5, marginBottom: 10}}
+                                  style={{width: 90, fontSize: 16, marginRight: 5, marginBottom: 10}}
                                   value={orderPayment.paymentMethod}
                                   onChange={(value) => {
                                     const newData = data;
@@ -156,7 +156,7 @@ const PaymentDialog = ({
                               <div>
                               {!editable && (
                                 <Select 
-                                style={{width: 95, fontSize: 16, marginRight: 5, marginBottom: 10}}
+                                style={{width: 90, fontSize: 16, marginRight: 5, marginBottom: 10}}
                                 value={orderPayment.paymentStatus}>
                                   {paymentStatus.map((value, index) => {
                                     if (index === 0) {
@@ -185,6 +185,7 @@ const PaymentDialog = ({
                               ) : (
                                 <Input
                                   value={orderPayment.paymentAmount}
+                                  style={{width:180, textAlign: 'center', fontSize: 16, padding:3, marginBottom: 10}}
                                 ></Input>
                               )}
                               </div>
