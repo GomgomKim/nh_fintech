@@ -420,8 +420,12 @@ class ReceptionStatus extends Component {
   };
 
   // 주문수정 dialog
-  openPaymentModal = (data) => {
-    this.setState({ paymentData: data, paymentOpen: true });
+  openPaymentModal = (data, row) => {
+    this.setState({
+      paymentData: data,
+      orderPrice: row.orderPrice,
+      paymentOpen: true,
+    });
   };
   closePaymentModal = () => {
     this.setState({ paymentOpen: false });
@@ -601,7 +605,7 @@ class ReceptionStatus extends Component {
         render: (data, row) =>
           data.length > 1 ? (
             <Button
-              onClick={() => this.openPaymentModal(data)}
+              onClick={() => this.openPaymentModal(data, row)}
               // close={this.closePaymentModal}
             >
               보기
@@ -814,6 +818,7 @@ class ReceptionStatus extends Component {
           <PaymentDialog
             close={this.closePaymentModal}
             orderPayments={this.state.paymentData}
+            orderPrice={this.state.orderPrice}
           />
         )}
         {this.state.MessageOpen && (
