@@ -106,7 +106,7 @@ class SurchargeDialog extends Component {
         for (let i = 0; i < selGrpList.length; i++) {
             groupName = selGrpList[i].settingGroupName
         }
-        return selGrpList.length === 1 ?
+        return selGrpList.length !== 0 ?
             groupName : "전체"
     }
 
@@ -263,8 +263,7 @@ class SurchargeDialog extends Component {
             {
                 title: "할증명",
                 dataIndex: "name",
-                className: "table-column-center",
-                render: (data) => <div>{data}</div>
+                className: "table-column-center"
             },
             {
                 title: "적용시간",
@@ -276,7 +275,7 @@ class SurchargeDialog extends Component {
                 title: "추가요금",
                 dataIndex: "extraPrice",
                 className: "table-column-center",
-                render: (data, row) => 
+                render: (data) => 
                 <div>{comma(data)}</div>
             },
             {
@@ -325,7 +324,6 @@ class SurchargeDialog extends Component {
                                     </Button>
                                         <div className="listBlock">
                                             <Table
-                                                // rowKey={(record) => record.idx}
                                                 dataSource={this.state.list}
                                                 columns={columns}
                                                 pagination={this.state.pagination}
@@ -355,7 +353,6 @@ class SurchargeDialog extends Component {
                                                     <div className="selectBox">
                                                         <FormItem
                                                             name="surchargeDate"
-                                                            // rules={[{ required: true, message: "등록기간 날짜를 선택해주세요" }]}
                                                         >
                                                             <RangePicker
                                                                 placeholder={['시작일', '종료일']}
