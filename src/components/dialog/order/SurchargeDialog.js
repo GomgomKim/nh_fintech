@@ -15,7 +15,6 @@ import SurchargeGroupDialog from './SurchargeGroupDialog';
 import SearchSurGroupDialog from "../../dialog/common/SearchSurGroupDialog";
 const FormItem = Form.Item;
 const { RangePicker } = DatePicker;
-const dateFormat = 'YYYY/MM/DD HH:mm';
 
 class SurchargeDialog extends Component {
     constructor(props) {
@@ -163,7 +162,7 @@ class SurchargeDialog extends Component {
     // 상시할증 적용 disabled
     toggleDisable = () => {
         this.setState({ disabled: !this.state.disabled }, 
-            ()=>this.setState({
+            () => this.setState({
                 startDate:moment().format('1999-01-01 00:00'),
                 endDate:moment().format('2999-12-31 00:00')
             }));
