@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import {
-    Form, Input, Button, Modal
+    Form, Input, Button
 } from "antd";
 import '../../../css/modal.css';
 import { connect } from "react-redux";

@@ -5,7 +5,6 @@ import { formatDate } from "../../../lib/util/dateUtil";
 import moment from "moment";
 import "../../../css/order.css";
 import RegistCallDialog from "../../../components/dialog/order/RegistCallDialog";
-// import MapContainer from "./MapContainer";
 import { httpGet, httpUrl, httpPost } from "../../../api/httpClient";
 import { NaverMap, Marker, Polyline } from "react-naver-maps";
 import {

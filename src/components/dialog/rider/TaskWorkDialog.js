@@ -3,13 +3,11 @@ import {
     Form, Input, DatePicker, Button, Select, Checkbox
 } from "antd";
 import '../../../css/modal.css';
-import moment from 'moment';
 
 const FormItem = Form.Item;
 
 const Option = Select.Option;
 
-const dateFormat = 'YYYY/MM/DD';
 const today = new Date();
 const {RangePicker} = DatePicker;
 

@@ -4,20 +4,11 @@ import {
     Modal,
     Input,
     Button,
-    Select,
-    Radio,
-    Table
 } from "antd";
-import { httpUrl, httpPost, httpGet } from '../../../api/httpClient';
+import { httpUrl, httpPost } from '../../../api/httpClient';
 import '../../../css/modal.css';
-import { formatDate } from '../../../lib/util/dateUtil';
-import SelectBox from '../../../components/input/SelectBox';
-import { riderLevelText, multiChange } from '../../../lib/util/codeUtil';
 
-
-const Option = Select.Option;
 const FormItem = Form.Item;
-const Search = Input.Search;
 
 class SendSnsDialog extends Component {
     constructor(props) {

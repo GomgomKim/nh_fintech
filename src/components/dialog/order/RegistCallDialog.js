@@ -2,25 +2,17 @@ import React, { Component } from "react";
 import {
   Form,
   Input,
-  DatePicker,
   Button,
   Select,
-  Radio,
   Checkbox,
   Modal,
 } from "antd";
 import "../../../css/modal.css";
-// import MapContainer from "./MapContainer";
-import { NaverMap, Marker, Polyline } from "react-naver-maps";
+import { NaverMap, Marker } from "react-naver-maps";
 import {
-  modifyType,
-  paymentMethod,
-  paymentStatus,
-  deliveryStatusCode,
   arriveReqTime,
   packAmount,
 } from "../../../lib/util/codeUtil";
-import { formatDate, formatDateSecond } from "../../../lib/util/dateUtil";
 import PaymentDialog from "./PaymentDialog";
 import { httpUrl, httpPost, httpGet } from "../../../api/httpClient";
 import { updateComplete, updateError } from "../../../api/Modals";
@@ -30,7 +22,6 @@ import { comma } from "../../../lib/util/numberUtil";
 
 const Option = Select.Option;
 const FormItem = Form.Item;
-const Search = Input.Search;
 const newOrder = {
   arriveReqTime: 5,
   assignDate: "",

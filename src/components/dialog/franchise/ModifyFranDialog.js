@@ -1,34 +1,15 @@
 import React, { Component } from "react";
 import {
   Form,
-  Modal,
   Input,
-  DatePicker,
-  Descriptions,
-  Table,
-  Upload,
   Button,
-  Select,
-  Icon,
-  Radio,
-  Carousel,
-  Text,
-  Checkbox,
 } from "antd";
 import "../../../css/modal.css";
-import { comma } from "../../../lib/util/numberUtil";
 import {
-  httpGet,
   httpUrl,
-  httpDownload,
   httpPost,
-  httpPut,
 } from "../../../api/httpClient";
-// import { formatDate } from "../../../lib/util/dateUtil";
-const Option = Select.Option;
 const FormItem = Form.Item;
-const { RangePicker } = DatePicker;
-const Search = Input.Search;
 
 class ModifyFranDialog extends Component {
   constructor(props) {

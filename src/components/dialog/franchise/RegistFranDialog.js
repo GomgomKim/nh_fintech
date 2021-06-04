@@ -1,10 +1,10 @@
 import React, { Component } from "react";
-import { Form, Input, DatePicker, Button, Checkbox, Modal, Radio } from "antd";
+import { Form, Input, DatePicker, Button, Radio } from "antd";
 import "../../../css/modal.css";
-import { httpUrl, httpPost, serverUrl, httpGet } from "../../../api/httpClient";
+import { httpUrl, httpPost, httpGet } from "../../../api/httpClient";
 import moment from "moment";
 import PostCodeDialog from "../common/PostCodeDialog";
-import { pgUseRate, feeManner } from "../../../lib/util/codeUtil";
+import { pgUseRate } from "../../../lib/util/codeUtil";
 import {
   registComplete,
   registError,
