@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Form, Input, DatePicker, Button, Radio } from "antd";
+import { Form, Input, DatePicker, Button, Radio, Checkbox } from "antd";
 import "../../../css/modal.css";
 import { httpUrl, httpPost, httpGet } from "../../../api/httpClient";
 import moment from "moment";
@@ -13,6 +13,7 @@ import {
   customError,
 } from "../../../api/Modals";
 import { connect } from "react-redux";
+import CheckableTag from "antd/lib/tag/CheckableTag";
 
 const FormItem = Form.Item;
 const dateFormat = "YYYY/MM/DD";
@@ -31,6 +32,8 @@ class RegistFranDialog extends Component {
       // 좌표
       targetLat: 0,
       targetLng: 0,
+
+      agreeSms: false,
     };
     this.formRef = React.createRef();
   }
@@ -62,6 +65,29 @@ class RegistFranDialog extends Component {
           updateError();
         });
     } else {
+      console.log({
+        ...this.formRef.current.getFieldsValue(),
+        branchIdx: this.props.branchIdx,
+        ncash: 0,
+        userStatus: 1,
+        recommenderIdx: 0,
+        userType: 2,
+        withdrawPassword: "0000",
+        bank: "",
+        bankAccount: 0,
+        depositor: "",
+        userGroup: 0,
+        latitude: this.state.targetLat,
+        longitude: this.state.targetLng,
+        frStatus: 1,
+        ncashPayEnabled: false,
+        tidNormal: "",
+        tidPrepay: "",
+        tidNormalRate: this.state.PgRate, // 100 or 0
+        chargeDate: 1,
+        duesAutoChargeEnabled: false,
+        dues: 0,
+      });
       httpPost(httpUrl.registFranchise, [], {
         ...this.formRef.current.getFieldsValue(),
         branchIdx: this.props.branchIdx,
@@ -84,6 +110,7 @@ class RegistFranDialog extends Component {
         chargeDate: 1,
         duesAutoChargeEnabled: false,
         dues: 0,
+        agreeSms: this.state.agreeSms,
       })
         .then((result) => {
           console.log("## result: " + JSON.stringify(result, null, 4));
@@ -457,52 +484,68 @@ class RegistFranDialog extends Component {
                       />
                     </FormItem>
                   </div>
+                  <div className="contentBlock">
+                    <div style={{ fontSize: "1rem" }} className="mainTitle">
+                      SMS수신동의
+                    </div>
+                    <FormItem name="agreeSms" className="selectItem">
+                      <Checkbox
+                        className="override-input"
+                        defaultChecked={
+                          this.props.data ? this.props.data.agreeSms : true
+                        }
+                        value={this.state.agreeSms}
+                        onChange={(e) =>
+                          this.setState({ agreeSms: e.target.checked })
+                        }
+                      >
+                        수신동의
+                      </Checkbox>
+                    </FormItem>
+                  </div>
                 </div>
 
                 <div className="registFranWrapper bot">
+                  <div className="registFranTitle">월관리비 설정</div>
 
-                    <div className="registFranTitle">월관리비 설정</div>
+                  <div className="contentBlock">
+                    <div className="subTitle">월회비 최초납부일</div>
 
-                    <div className="contentBlock">
-                      <div className="subTitle">월회비 최초납부일</div>
+                    <FormItem name="payDate" className="selectItem">
+                      <DatePicker
+                        style={{ marginLeft: 10 }}
+                        defaultValue={moment(today, dateFormat)}
+                        format={dateFormat}
+                        // onChange={date => this.setState({ selectedDate: date })}
+                      />
+                    </FormItem>
 
-                      <FormItem name="payDate" className="selectItem">
-                        <DatePicker
-                          style={{ marginLeft: 10 }}
-                          defaultValue={moment(today, dateFormat)}
-                          format={dateFormat}
-                          // onChange={date => this.setState({ selectedDate: date })}
-                        />
-                      </FormItem>
+                    <div className="subTitle">관리비</div>
 
-                      <div className="subTitle">관리비</div>
+                    <FormItem name="managePrice" className="selectItem">
+                      <Input
+                        defaultValue={"100,000"}
+                        placeholder="관리비 입력"
+                        className="override-input sub"
+                      ></Input>
+                    </FormItem>
+                  </div>
 
-                      <FormItem name="managePrice" className="selectItem">
-                        <Input
-                          defaultValue={"100,000"}
-                          placeholder="관리비 입력"
-                          className="override-input sub"
-                        ></Input>
-                      </FormItem>
-                    </div>
-
-                    <div className="registFran-btn">
-                      <Button
-                        type="primary"
-                        htmlType="submit"
-                        className="callTab"
-                        style={{
-                          width:180,
-                          height: 40,
-                          fontSize: 18,
-                          marginTop: -5
-                        }}
-                      >
-                        등록하기
-                      </Button>
-                    </div>
-
-
+                  <div className="registFran-btn">
+                    <Button
+                      type="primary"
+                      htmlType="submit"
+                      className="callTab"
+                      style={{
+                        width: 180,
+                        height: 40,
+                        fontSize: 18,
+                        marginTop: -5,
+                      }}
+                    >
+                      등록하기
+                    </Button>
+                  </div>
                 </div>
               </div>
             </Form>
