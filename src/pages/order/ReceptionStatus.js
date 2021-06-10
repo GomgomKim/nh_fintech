@@ -1,48 +1,46 @@
 import {
-  DatePicker,
-  Input,
-  Select,
+  DollarCircleOutlined,
+  EnvironmentFilled,
+  FieldTimeOutlined,
+  FilterOutlined,
+  MessageOutlined,
+  NotificationFilled,
+  PhoneOutlined
+} from "@ant-design/icons";
+import {
   Button,
   Checkbox,
+  DatePicker,
+  Input,
   Modal,
-  Table,
+  Select,
+  Table
 } from "antd";
 import moment from "moment";
 import React, { Component } from "react";
-import TimeDelayDialog from "../../components/dialog/order/TimeDelayDialog";
+import { connect } from "react-redux";
+import { httpGet, httpPost, httpUrl } from "../../api/httpClient";
+import { customError } from "../../api/Modals";
+import ChattingDialog from "../../components/dialog/common/ChattingDialog";
+import SearchRiderDialog from "../../components/dialog/common/SearchRiderDialog";
 import FilteringDialog from "../../components/dialog/order/FilteringDialog";
-import RegistCallDialog from "../../components/dialog/order/RegistCallDialog";
-import SurchargeDialog from "./../../components/dialog/order/SurchargeDialog";
-import NoticeDialog from "../../components/dialog/order/NoticeDialog";
 import MapControlDialog from "../../components/dialog/order/MapControlDialog";
-import {
-  formatDate,
-} from "../../lib/util/dateUtil";
-import "../../css/order.css";
+import NoticeDialog from "../../components/dialog/order/NoticeDialog";
+import PaymentDialog from "../../components/dialog/order/PaymentDialog";
+import RegistCallDialog from "../../components/dialog/order/RegistCallDialog";
+import TimeDelayDialog from "../../components/dialog/order/TimeDelayDialog";
 import "../../css/common.css";
-import { comma } from "../../lib/util/numberUtil";
+import "../../css/order.css";
 import {
+  arriveReqTime,
   deliveryStatusCode,
   modifyType,
-  rowColorName,
   paymentMethod,
-  arriveReqTime,
+  rowColorName
 } from "../../lib/util/codeUtil";
-import {
-  FieldTimeOutlined,
-  DollarCircleOutlined,
-  EnvironmentFilled,
-  PhoneOutlined,
-  MessageOutlined,
-  NotificationFilled,
-  FilterOutlined,
-} from "@ant-design/icons";
-import { httpGet, httpPost, httpUrl } from "../../api/httpClient";
-import { connect } from "react-redux";
-import PaymentDialog from "../../components/dialog/order/PaymentDialog";
-import SearchRiderDialog from "../../components/dialog/common/SearchRiderDialog";
-import ChattingDialog from "../../components/dialog/common/ChattingDialog";
-import { customError } from "../../api/Modals";
+import { formatDate } from "../../lib/util/dateUtil";
+import { comma } from "../../lib/util/numberUtil";
+import SurchargeDialog from "./../../components/dialog/order/SurchargeDialog";
 
 const Option = Select.Option;
 const Search = Input.Search;
@@ -131,17 +129,14 @@ class ReceptionStatus extends Component {
             list: res.data.orders,
           });
         } else {
-          Modal.info({
-            title: "적용 오류",
-            content: "처리가 실패했습니다.",
-          });
+          console.log("Pulling Error");
+          return;
         }
       })
       .catch((e) => {
-        Modal.info({
-          title: "적용 오류",
-          content: "처리가 실패했습니다.",
-        });
+        console.log("Pulling Error");
+        console.log(e);
+        throw e;
       });
   };
   getCompleteList = () => {
