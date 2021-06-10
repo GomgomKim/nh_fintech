@@ -1,19 +1,18 @@
-import React, { Component } from "react";
-import { Form, Input, DatePicker, Button, Radio, Checkbox } from "antd";
-import "../../../css/modal.css";
-import { httpUrl, httpPost, httpGet } from "../../../api/httpClient";
+import { Button, Checkbox, DatePicker, Form, Input, Radio } from "antd";
 import moment from "moment";
-import PostCodeDialog from "../common/PostCodeDialog";
-import { pgUseRate } from "../../../lib/util/codeUtil";
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { httpGet, httpPost, httpUrl } from "../../../api/httpClient";
 import {
+  customError,
   registComplete,
   registError,
   updateComplete,
-  updateError,
-  customError,
+  updateError
 } from "../../../api/Modals";
-import { connect } from "react-redux";
-import CheckableTag from "antd/lib/tag/CheckableTag";
+import "../../../css/modal.css";
+import { pgUseRate } from "../../../lib/util/codeUtil";
+import PostCodeDialog from "../common/PostCodeDialog";
 
 const FormItem = Form.Item;
 const dateFormat = "YYYY/MM/DD";
@@ -87,6 +86,7 @@ class RegistFranDialog extends Component {
         chargeDate: 1,
         duesAutoChargeEnabled: false,
         dues: 0,
+        agreeSms: this.state.agreeSms,
       });
       httpPost(httpUrl.registFranchise, [], {
         ...this.formRef.current.getFieldsValue(),
@@ -411,34 +411,47 @@ class RegistFranDialog extends Component {
                       </FormItem>
                     </div>
                   </div>
-                  {/* <div className="contentBlock">
-                        <div className="mainTitle">배달거리</div>
-                        <FormItem
-                          name="distance"
-                          className="selectItem"
-                          // initialValue={data && data.basicDeliveryPrice}
-                          initialValue={data && 10000}
-                        >
-                          <Input
-                            placeholder="배달거리를 입력해 주세요."
-                            className="override-input"
-                          />
-                        </FormItem>
-                      </div> */}
                   <div className="contentBlock">
                     <div className="mainTitle">기본배달요금</div>
                     <FormItem
                       name="basicDeliveryPrice"
                       className="selectItem"
                       // initialValue={data && data.basicDeliveryPrice}
-                      initialValue={data && 10000}
+                      initialValue={data && data.basicDeliveryPrice}
+                      rules={[
+                        {
+                          required: true,
+                          message: "기본배달요금을 입력해주세요.",
+                        },
+                      ]}
                     >
                       <Input
+                        type="number"
                         placeholder="배달요금을 입력해 주세요."
                         className="override-input"
                       />
                     </FormItem>
                   </div>
+                  {/* <div className="contentBlock">
+                    <div className="mainTitle">기본거리</div>
+                    <FormItem
+                      name="defaultDeliveryDistance"
+                      className="selectItem"
+                      initialValue={data && data.defaultDeliveryDistance}
+                      rules={[
+                        {
+                          required: true,
+                          message: "기본거리를 입력해주세요.",
+                        },
+                      ]}
+                    >
+                      <Input
+                        type="number"
+                        placeholder="기본거리를 m(미터) 단위로 입력해주세요."
+                        className="override-input"
+                      />
+                    </FormItem>
+                  </div> */}
 
                   <div className="contentBlock">
                     <div className="mainTitle">비밀번호</div>

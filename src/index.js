@@ -1,16 +1,16 @@
+import { Spin } from "antd";
+import "antd/dist/antd.css";
 import React from "react";
 import ReactDOM from "react-dom";
-import App from "./App";
-import reportWebVitals from "./reportWebVitals";
-import { Spin } from "antd";
-import { createStore } from "redux";
-import reducer from "./reducers";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
-import "antd/dist/antd.css";
+import { createStore } from "redux";
+import { composeWithDevTools } from "redux-devtools-extension";
+import App from "./App";
 import "./css/index.css";
 import "./css/notosans.css";
-import { composeWithDevTools } from "redux-devtools-extension";
+import reducer from "./reducers";
+import reportWebVitals from "./reportWebVitals";
 
 let store = createStore(reducer, composeWithDevTools());
 
@@ -26,7 +26,7 @@ ReactDOM.render(
             position: "fixed",
             width: "100%",
             height: "100%",
-            backgroundColor: "rgba(0,0,0,0.3)",
+            backgroundColor: "none",
             top: 0,
             left: 0,
             textAlign: "center",

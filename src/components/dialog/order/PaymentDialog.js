@@ -1,10 +1,7 @@
+import { Button, Form, Input, Modal, Select } from "antd";
 import React, { useEffect, useState } from "react";
-import { Form, Modal, Input, Button, Select } from "antd";
 import "../../../css/modal.css";
-import {
-  paymentMethod,
-  paymentStatus,
-} from "../../../lib/util/codeUtil";
+import { paymentMethod, paymentStatus } from "../../../lib/util/codeUtil";
 import { comma } from "../../../lib/util/numberUtil";
 
 const PaymentDialog = ({
@@ -79,7 +76,7 @@ const PaymentDialog = ({
         <div className="detail-content">
           <div className="split-content-box">
             <div className="split-content-title">
-              <div>내역수정</div>
+              <div>{editable ? "내역수정" : "내역조회"}</div>
 
               <div className="plus-btn">
                 {editable && (

@@ -1793,6 +1793,14 @@
   vertical-align: middle;
 }
 
+.timeDelay-sub-title {
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 30px;
+  vertical-align: middle;
+  text-align: center;
+}
+
 .timeDelay-close {
   width: 30px;
   cursor: pointer;
@@ -1951,7 +1959,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 345px;
+  width: 420px;
   z-index: 2;
 }
 
@@ -1993,12 +2001,21 @@
   display: none; /* Chrome, Safari, Opera*/
 }
 
+.filtering-box-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  flex: 1;
+  height: 300px;
+}
+
 .filtering-box {
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
   flex: 1;
-  height: 210px;
+  height: 300px;
+  /* justify-content: center; */
+  align-items: center;
 }
 .filtering-box .ant-checkbox {
   top: 0em !important;
