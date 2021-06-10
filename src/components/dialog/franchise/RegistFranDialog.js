@@ -432,7 +432,7 @@ class RegistFranDialog extends Component {
                       />
                     </FormItem>
                   </div>
-                  {/* <div className="contentBlock">
+                  <div className="contentBlock">
                     <div className="mainTitle">기본거리</div>
                     <FormItem
                       name="defaultDeliveryDistance"
@@ -451,7 +451,7 @@ class RegistFranDialog extends Component {
                         className="override-input"
                       />
                     </FormItem>
-                  </div> */}
+                  </div>
 
                   <div className="contentBlock">
                     <div className="mainTitle">비밀번호</div>
