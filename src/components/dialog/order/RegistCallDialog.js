@@ -4,7 +4,11 @@ import { Marker, NaverMap } from "react-naver-maps";
 import { httpGet, httpPost, httpUrl } from "../../../api/httpClient";
 import { updateComplete, updateError } from "../../../api/Modals";
 import "../../../css/modal.css";
-import { arriveReqTime, packAmount } from "../../../lib/util/codeUtil";
+import {
+  arriveReqTime,
+  packAmount,
+  paymentMethod
+} from "../../../lib/util/codeUtil";
 import { comma } from "../../../lib/util/numberUtil";
 import PostCodeDialog from "../common/PostCodeDialog";
 import SearchFranchiseDialog from "../common/SearchFranchiseDialog";
@@ -578,6 +582,31 @@ class RegistCallDialog extends Component {
                       >
                         결제방식 선택
                       </Button>
+                    </div>
+
+                    <div className="contentBlock">
+                      <div className="mainTitle" />
+
+                      <div className="selectItem" style={{marginLeft:20}}>
+                        {this.state.data &&
+                          this.state.data.orderPayments.map((el) => {
+                            return (
+                              <div
+                                style={{
+                                  display: "inline-block",
+                                  backgroundColor: "black",
+                                  color: "#fddc00",
+                                  padding: "5px 8px",
+                                  borderRadius: 5,
+                                  marginRight: 10,
+                                }}
+                              >
+                                {paymentMethod[el.paymentMethod]} :{" "}
+                                {comma(el.paymentAmount)} 원
+                              </div>
+                            );
+                          })}
+                      </div>
                     </div>
                   </div>
 
