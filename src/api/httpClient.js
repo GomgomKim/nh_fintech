@@ -222,6 +222,8 @@ const httpUrl = {
 
   // 채팅
   chatList: "/chat/chatList?pageSize=%s&pageNum=%s&searchName=%s",
+  chatMessageList: "/chat/messageList?pageSize=%s&pageNum=%s&chatRoomIdx=%s",
+  chatSend: "/chat/send",
 
   // 주소검색관리
   getAddrAptList:

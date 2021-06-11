@@ -45,6 +45,7 @@ const PaymentDialog = ({
 
   useEffect(() => {
     console.log(orderPrice, change, data);
+    console.log(orderPayments);
 
     calcChange();
     let initialIndex = 0;
@@ -167,6 +168,7 @@ const PaymentDialog = ({
                           <div>
                             {editable ? (
                               <Input
+                                type="number"
                                 style={{
                                   width: 220,
                                   textAlign: "center",
@@ -174,7 +176,11 @@ const PaymentDialog = ({
                                   padding: 3,
                                   marginBottom: 10,
                                 }}
-                                defaultValue={orderPayment.paymentAmount}
+                                defaultValue={
+                                  orderPayment.paymentAmount === ""
+                                    ? 0
+                                    : orderPayment.paymentAmount
+                                }
                                 onChange={(e) => {
                                   const newData = data;
                                   newData[i].paymentAmount = parseInt(
@@ -186,6 +192,7 @@ const PaymentDialog = ({
                               ></Input>
                             ) : (
                               <Input
+                                type="number"
                                 value={orderPayment.paymentAmount}
                                 style={{
                                   width: 180,

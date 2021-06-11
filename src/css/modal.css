@@ -2084,7 +2084,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 1200px;
+  /* width: 1200px; */
   z-index: 2;
 }
 
@@ -2314,7 +2314,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 700px;
+  /* width: 700px; */
   z-index: 2;
 }
 
@@ -2370,7 +2370,7 @@
   /* border:1px solid red; */
   /* height:360px; */
 }
-.taskWork-list td {
+.taskWork-list .twl-text {
   width: 120px;
   font-size: 18px;
   display: inline-block;
@@ -2409,10 +2409,6 @@
 .twl:nth-child(1) {
   margin-top: -10px;
 }
-
-/* .taskWork-list-03>td {
- width: 105px !important;
-} */
 
 .taskWork-place1 .searchRiderInput {
   width: 185px !important;
@@ -2600,6 +2596,10 @@
 
 .riderGroup-ftline .inputBox-rider.sub .ant-input {
   margin-left: -10px;
+}
+
+.riderGroup-ftline .select-fee-pay-type {
+  margin-left: 20px;
 }
 
 .riderGroup-inner .listBlock .ant-pagination {
@@ -4138,7 +4138,6 @@
   left: 50%;
   transform: translate(-50%, -50%);
   border-radius: 10px;
-  width: 900px;
   height: 700px;
 }
 .error-message {

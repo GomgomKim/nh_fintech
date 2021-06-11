@@ -21,15 +21,15 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { httpGet, httpPost, httpUrl } from "../../api/httpClient";
 import { customError } from "../../api/Modals";
-import ChattingDialog from "../../components/dialog/common/ChattingDialog";
+import ChattingCurrentRoom from "../../components/dialog/common/ChattingCurrentRoom";
 import SearchRiderDialog from "../../components/dialog/common/SearchRiderDialog";
 import FilteringDialog from "../../components/dialog/order/FilteringDialog";
 import MapControlDialog from "../../components/dialog/order/MapControlDialog";
-import SendSnsDialog from "../../components/dialog/rider/SendSnsDialog";
 import NoticeDialog from "../../components/dialog/order/NoticeDialog";
 import PaymentDialog from "../../components/dialog/order/PaymentDialog";
 import RegistCallDialog from "../../components/dialog/order/RegistCallDialog";
 import TimeDelayDialog from "../../components/dialog/order/TimeDelayDialog";
+import SendSnsDialog from "../../components/dialog/rider/SendSnsDialog";
 import "../../css/common.css";
 import "../../css/order.css";
 import {
@@ -76,7 +76,6 @@ class ReceptionStatus extends Component {
       editable: false,
       orderData: null,
       paymentData: null,
-
 
       // data
       list: [],
@@ -607,7 +606,7 @@ class ReceptionStatus extends Component {
           data.length > 1 ? (
             <Button
               onClick={() => this.openPaymentModal(data, row)}
-            // close={this.closePaymentModal}
+              // close={this.closePaymentModal}
             >
               보기
             </Button>
@@ -823,7 +822,10 @@ class ReceptionStatus extends Component {
           />
         )}
         {this.state.MessageOpen && (
-          <ChattingDialog close={this.closeMessageModal} />
+          <ChattingCurrentRoom
+            currentRoomIdx={2}
+            close={this.closeMessageModal}
+          />
         )}
 
         {this.state.addCallOpen && (
@@ -863,7 +865,7 @@ class ReceptionStatus extends Component {
             icon={<EnvironmentFilled />}
             className="tabBtn mapTab"
             onClick={this.openMapControlModal}
-          // onClick={() => { this.props.openMapControl() }}
+            // onClick={() => { this.props.openMapControl() }}
           >
             지도관제
           </Button>
@@ -901,7 +903,6 @@ class ReceptionStatus extends Component {
           <Button className="riderManageBtn" onClick={this.openSendSnsModal}>
             전체메세지
           </Button>
-
 
           {this.state.noticeOpen && (
             <NoticeDialog close={this.closeNoticeModal} />

@@ -2,3 +2,8 @@
 .ant-table-wrapper:only-child .ant-table{
     margin: 0px;
 }
+
+.searchRiderInput {
+    width: 200px !important;
+    margin-left: 15px;
+  }
