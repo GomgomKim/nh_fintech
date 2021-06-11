@@ -798,6 +798,13 @@
   border-radius: 30px;
   z-index: 2;
 }
+.surcharge-Dialog .mainTitle {
+  display: inline-block;
+  font-size: 20px;
+  vertical-align: middle;
+  font-weight: bold;
+  color: #1890ff;
+}
 .surcharge-container {
   background-color: white;
   padding: 30px;
@@ -864,54 +871,56 @@
 }
 .surchargeLayout .checkbox {
   display: inline-block;
-  margin-top: 20px;
-  font-size: 15px;
+  font-size: 16px;
+  font-weight: bold;
 }
 .surchargeLayout .radio-btn {
   display: inline-block;
-  margin-top: 20px;
-  margin-left: 30px;
-  font-size: 15px;
+  /* margin-left: 30px; */
+  font-size: 16px;
+  font-weight: bold;
 }
 .surchargeLayout .searchRequirement {
   margin-top: 0 !important;
   margin-left: 10px;
 }
 .surchargeLayout .search-input {
-  margin-left: 10px;
   display: inline-block;
-  font-size: 15px;
+  font-size: 16px;
+  font-weight: bold;
+  width: 80px;
 }
 .surchargeLayout .selectItem {
   display: inline-block;
 }
 .surchargeLayout .selectItem .ant-btn {
-  top: 13px;
 }
 .surchargeLayout .override-input.sub {
-  /* margin-left: -30px; */
   margin-left: 10px;
-  top: 13px;
-  width: 135px;
+  text-align: center;
 }
 
 .mainTitle {
   display: inline-block;
-  font-size: 18px;
+  font-size: 16px;
   vertical-align: middle;
   font-weight: bold;
   /* width: 75px; */
 }
 .subTitle {
   display: inline-block;
-  font-size: 18px;
+  font-size: 16px;
   vertical-align: middle;
+  font-weight: bold;
 }
 .subDatePrice {
   display: inline-block;
-  margin-left: 18px;
-  font-size: 18px;
+  /* margin-left: 18px; */
+  font-size: 16px;
+  font-weight: bold;
+
   vertical-align: middle;
+  width: 80px;
 }
 .selectBox {
   display: inline-block;
@@ -928,8 +937,24 @@
   text-align: center;
   width: 130px;
 }
+.surcharge-bottom {
+  display: inline-block;
+}
+.m-t-20 {
+  padding-left: 15px;
+}
+.m-t-20 > div:nth-child(2) {
+  margin: 20px 0;
+}
+.m-t-20 > div:nth-child(3) {
+  float: left;
+}
+.m-t-20 > div > div:first-child {
+  width: 80px;
+}
 .btnInsert {
-  margin: 20px 0px;
+  float: right;
+  margin-top: 0px;
 }
 .inputBox {
   display: inline-block;
@@ -953,14 +978,13 @@
   display: inline-block;
   vertical-align: middle;
   margin-left: 5px;
-  font-size: 20px;
+  font-size: 18px;
   color: #000;
 }
 .btnInsert .ant-btn {
   width: 130px;
   font-size: 18px;
   border-radius: 2px;
-  vertical-align: middle;
   padding: 0px;
   height: 40px;
   float: right;
@@ -2334,7 +2358,6 @@
   padding: 20px;
   text-align: left;
   margin-top: 5px;
-  height: 340px;
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
@@ -2378,8 +2401,8 @@
 .taskWork-list .twl {
   width: 100%;
   display: inline-block;
-  height: 60px;
-  line-height: 60px;
+  height: 50px;
+  line-height: 50px;
   /* border:1px solid red */
 }
 
@@ -2387,6 +2410,14 @@
   margin-top: -10px;
 }
 
+/* .taskWork-list-03>td {
+ width: 105px !important;
+} */
+
+.taskWork-place1 .searchRiderInput {
+  width: 185px !important;
+  margin-left: 0px !important;
+}
 .taskWork-btn-01 {
   margin-top: 20px;
   text-align: center;
@@ -2656,7 +2687,7 @@
 }
 
 .registRiderWrapper .contentBlock {
-  margin-top: 25px;
+  margin-top: 15px;
 }
 
 .registRiderWrapper .ant-form-item-control-input-content {
@@ -3029,7 +3060,7 @@
 
 .searchAddress-btn {
   display: inline-block;
-  margin-top: 111px;
+  margin-top: 113px;
   margin-right: 20px;
   float: right;
 }
@@ -3061,6 +3092,7 @@
   display: inline-block;
   font-size: 20px;
   font-weight: bold;
+  color: #1890ff;
 }
 
 .contentbox {

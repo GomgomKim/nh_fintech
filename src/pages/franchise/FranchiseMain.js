@@ -1,25 +1,24 @@
-import { Modal, Table, Button, Input } from "antd";
-import React, { Component } from "react";
-import { httpUrl, httpPost, httpGet } from "../../api/httpClient";
-import RegistFranDialog from "../../components/dialog/franchise/RegistFranDialog";
-import SearchAddressDialog from "../../components/dialog/franchise/SearchAddressDialog";
-import SearchFranchiseDialog from "../../components/dialog/common/SearchFranchiseDialog";
-import BlindFranListDialog from "../../components/dialog/franchise/BlindFranListDialog";
-import SelectBox from "../../components/input/SelectBox";
-import "../../css/franchise.css";
-import { comma } from "../../lib/util/numberUtil";
 import { BankOutlined } from "@ant-design/icons";
-import { formatDate } from "../../lib/util/dateUtil";
-import {
-  statusString,
-  tableStatusString,
-  withdrawString,
-  cardStatus,
-} from "../../lib/util/codeUtil";
-import { updateComplete, updateError } from "../../api/Modals";
+import { Button, Input, Modal, Table } from "antd";
+import React, { Component } from "react";
+import { connect } from "react-redux";
 // import { sheet_to_json } from "xlsx";
 import * as XLSX from "xlsx";
-import { connect } from "react-redux";
+import { httpGet, httpPost, httpUrl } from "../../api/httpClient";
+import { updateComplete, updateError } from "../../api/Modals";
+import BlindFranListDialog from "../../components/dialog/franchise/BlindFranListDialog";
+import RegistFranDialog from "../../components/dialog/franchise/RegistFranDialog";
+import SearchAddressDialog from "../../components/dialog/franchise/SearchAddressDialog";
+import SelectBox from "../../components/input/SelectBox";
+import "../../css/franchise.css";
+import {
+  cardStatus,
+  statusString,
+  tableStatusString,
+  withdrawString
+} from "../../lib/util/codeUtil";
+import { formatDate } from "../../lib/util/dateUtil";
+import { comma } from "../../lib/util/numberUtil";
 
 const Search = Input.Search;
 
@@ -42,12 +41,10 @@ class FranchiseMain extends Component {
       franSelectStatus: 0,
       ResistFranchiseOpen: false,
       modifyFranOpen: false,
-      coinTransferOpen: false,
       SearchAddressOpen: false,
       dialogData: [],
       blindFrData: [],
       blindListOpen: false,
-      searchFranchiseOpen: false,
       inputOpen: false,
 
       // excel data
@@ -115,14 +112,6 @@ class FranchiseMain extends Component {
   closeRegistFranchiseModal = () => {
     this.setState({ ResistFranchiseOpen: false });
   };
-  // 코인이체 dialog
-  openCoinTransferModal = () => {
-    this.setState({ coinTransferOpen: true });
-  };
-  closeCoinTransferodal = () => {
-    this.setState({ coinTransferOpen: false });
-  };
-
   // 가맹점수정 dialog
   openModifyFranModal = (row) => {
     this.setState({
@@ -562,7 +551,10 @@ class FranchiseMain extends Component {
             style={{}}
           />
           {this.state.ResistFranchiseOpen && (
-            <RegistFranDialog close={this.closeRegistFranchiseModal} />
+            <RegistFranDialog
+              getList={this.getList}
+              close={this.closeRegistFranchiseModal}
+            />
           )}
           <Button
             icon={<BankOutlined />}
@@ -637,6 +629,7 @@ class FranchiseMain extends Component {
         </div>
         {this.state.modifyFranOpen && (
           <RegistFranDialog
+            getList={this.getList}
             isOpen={this.state.modifyFranOpen}
             close={this.closeModifyFranModal}
             data={this.state.dialogData}

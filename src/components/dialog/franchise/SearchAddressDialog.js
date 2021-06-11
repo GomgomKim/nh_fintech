@@ -1,17 +1,16 @@
+import { Button, Form, Input, Modal, Radio, Table } from "antd";
 import React, { Component } from "react";
-import { Form, Input, Table, Button, Radio, Modal } from "antd";
 import {
-  httpUrl,
+  httpDelete,
   httpGet,
   httpPost,
-  httpDelete,
+  httpUrl
 } from "../../../api/httpClient";
+import { customError } from "../../../api/Modals";
+import "../../../css/rider.css";
+import { addType } from "../../../lib/util/codeUtil";
 import PostCodeDialog from "../common/PostCodeDialog";
 import SelfAddressDialog from "../franchise/SelfAddressDialog";
-import { addType } from "../../../lib/util/codeUtil";
-import { customError } from "../../../api/Modals";
-
-import "../../../css/rider.css";
 
 const FormItem = Form.Item;
 const Search = Input.Search;
@@ -160,6 +159,7 @@ class SearchAddressDialog extends Component {
         addrType: this.state.RegistAddType,
         latitude: this.state.latitude,
         longitude: this.state.longitude,
+        addr2: "",
       })
     )
       .then((res) => {
@@ -348,6 +348,19 @@ class SearchAddressDialog extends Component {
                         />
                       </FormItem>
                     </div>
+                    {/* <div className="contentBlock" style={{ display: "hidden" }}>
+                      <div className="mainTitle">상세주소</div>
+                      <FormItem
+                        defaultValue={""}
+                        name="addr2"
+                        className="selectItem"
+                      >
+                        <Input
+                          placeholder="상세주소를 입력해 주세요."
+                          className="override-input sub"
+                        />
+                      </FormItem>
+                    </div> */}
                   </div>
 
                   <div className="searchAddress-btn">
@@ -357,6 +370,7 @@ class SearchAddressDialog extends Component {
                     <Button
                       type="primary"
                       htmlType="submit"
+                      style={{width: 100, backgroundColor:'#1890ff'}}
                       // onClick={() => this.handleSubmit()}
                     >
                       등록하기

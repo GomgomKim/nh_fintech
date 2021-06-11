@@ -32,7 +32,7 @@ class RegistFranDialog extends Component {
       targetLat: 0,
       targetLng: 0,
 
-      agreeSms: false,
+      agreeSms: true,
     };
     this.formRef = React.createRef();
   }
@@ -54,6 +54,7 @@ class RegistFranDialog extends Component {
         .then((result) => {
           console.log("## result: " + JSON.stringify(result, null, 4));
           if (result.result === "SUCCESS") {
+            this.props.getList();
             updateComplete();
           } else {
             updateError();
@@ -115,6 +116,7 @@ class RegistFranDialog extends Component {
         .then((result) => {
           console.log("## result: " + JSON.stringify(result, null, 4));
           if (result.result === "SUCCESS") {
+            this.props.getList();
             registComplete();
           } else {
             registError();
@@ -432,12 +434,14 @@ class RegistFranDialog extends Component {
                       />
                     </FormItem>
                   </div>
-                  {/* <div className="contentBlock">
+                  <div className="contentBlock">
                     <div className="mainTitle">기본거리</div>
                     <FormItem
-                      name="defaultDeliveryDistance"
+                      name="basicDeliveryDistance"
                       className="selectItem"
-                      initialValue={data && data.defaultDeliveryDistance}
+                      initialValue={
+                        data && parseInt(data.basicDeliveryDistance)
+                      }
                       rules={[
                         {
                           required: true,
@@ -451,7 +455,7 @@ class RegistFranDialog extends Component {
                         className="override-input"
                       />
                     </FormItem>
-                  </div> */}
+                  </div>
 
                   <div className="contentBlock">
                     <div className="mainTitle">비밀번호</div>

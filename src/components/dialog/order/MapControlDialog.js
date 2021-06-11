@@ -736,11 +736,6 @@ class MapControlDialog extends Component {
         ),
       },
       {
-        title: "지사명",
-        dataIndex: "id",
-        className: "table-column-center",
-      },
-      {
         title: "기사명",
         dataIndex: "riderName",
         className: "table-column-center",

@@ -1,48 +1,47 @@
 import {
-  DatePicker,
-  Input,
-  Select,
+  DollarCircleOutlined,
+  EnvironmentFilled,
+  FieldTimeOutlined,
+  FilterOutlined,
+  MessageOutlined,
+  NotificationFilled,
+  PhoneOutlined
+} from "@ant-design/icons";
+import {
   Button,
   Checkbox,
+  DatePicker,
+  Input,
   Modal,
-  Table,
+  Select,
+  Table
 } from "antd";
 import moment from "moment";
 import React, { Component } from "react";
-import TimeDelayDialog from "../../components/dialog/order/TimeDelayDialog";
+import { connect } from "react-redux";
+import { httpGet, httpPost, httpUrl } from "../../api/httpClient";
+import { customError } from "../../api/Modals";
+import ChattingDialog from "../../components/dialog/common/ChattingDialog";
+import SearchRiderDialog from "../../components/dialog/common/SearchRiderDialog";
 import FilteringDialog from "../../components/dialog/order/FilteringDialog";
-import RegistCallDialog from "../../components/dialog/order/RegistCallDialog";
-import SurchargeDialog from "./../../components/dialog/order/SurchargeDialog";
-import NoticeDialog from "../../components/dialog/order/NoticeDialog";
 import MapControlDialog from "../../components/dialog/order/MapControlDialog";
-import {
-  formatDate,
-} from "../../lib/util/dateUtil";
-import "../../css/order.css";
+import SendSnsDialog from "../../components/dialog/rider/SendSnsDialog";
+import NoticeDialog from "../../components/dialog/order/NoticeDialog";
+import PaymentDialog from "../../components/dialog/order/PaymentDialog";
+import RegistCallDialog from "../../components/dialog/order/RegistCallDialog";
+import TimeDelayDialog from "../../components/dialog/order/TimeDelayDialog";
 import "../../css/common.css";
-import { comma } from "../../lib/util/numberUtil";
+import "../../css/order.css";
 import {
+  arriveReqTime,
   deliveryStatusCode,
   modifyType,
-  rowColorName,
   paymentMethod,
-  arriveReqTime,
+  rowColorName
 } from "../../lib/util/codeUtil";
-import {
-  FieldTimeOutlined,
-  DollarCircleOutlined,
-  EnvironmentFilled,
-  PhoneOutlined,
-  MessageOutlined,
-  NotificationFilled,
-  FilterOutlined,
-} from "@ant-design/icons";
-import { httpGet, httpPost, httpUrl } from "../../api/httpClient";
-import { connect } from "react-redux";
-import PaymentDialog from "../../components/dialog/order/PaymentDialog";
-import SearchRiderDialog from "../../components/dialog/common/SearchRiderDialog";
-import ChattingDialog from "../../components/dialog/common/ChattingDialog";
-import { customError } from "../../api/Modals";
+import { formatDate } from "../../lib/util/dateUtil";
+import { comma } from "../../lib/util/numberUtil";
+import SurchargeDialog from "./../../components/dialog/order/SurchargeDialog";
 
 const Option = Select.Option;
 const Search = Input.Search;
@@ -69,6 +68,7 @@ class ReceptionStatus extends Component {
       noticeOpen: false,
       forceOpen: false,
       MessageOpen: false,
+      sendSnsOpen: false,
       activeIndex: -1,
       mapControlOpen: false,
       modifyOrder: false,
@@ -76,6 +76,7 @@ class ReceptionStatus extends Component {
       editable: false,
       orderData: null,
       paymentData: null,
+
 
       // data
       list: [],
@@ -131,17 +132,14 @@ class ReceptionStatus extends Component {
             list: res.data.orders,
           });
         } else {
-          Modal.info({
-            title: "적용 오류",
-            content: "처리가 실패했습니다.",
-          });
+          console.log("Pulling Error");
+          return;
         }
       })
       .catch((e) => {
-        Modal.info({
-          title: "적용 오류",
-          content: "처리가 실패했습니다.",
-        });
+        console.log("Pulling Error");
+        console.log(e);
+        throw e;
       });
   };
   getCompleteList = () => {
@@ -405,6 +403,14 @@ class ReceptionStatus extends Component {
     this.setState({ MessageOpen: false });
   };
 
+  // sns dialog
+  openSendSnsModal = () => {
+    this.setState({ sendSnsOpen: true });
+  };
+  closeSendSnsModal = () => {
+    this.setState({ sendSnsOpen: false });
+  };
+
   // 주문수정 dialog
   openModifyOrderModal = (order) => {
     this.setState({ data: order, modifyOrder: true });
@@ -601,7 +607,7 @@ class ReceptionStatus extends Component {
           data.length > 1 ? (
             <Button
               onClick={() => this.openPaymentModal(data, row)}
-              // close={this.closePaymentModal}
+            // close={this.closePaymentModal}
             >
               보기
             </Button>
@@ -857,7 +863,7 @@ class ReceptionStatus extends Component {
             icon={<EnvironmentFilled />}
             className="tabBtn mapTab"
             onClick={this.openMapControlModal}
-            // onClick={() => { this.props.openMapControl() }}
+          // onClick={() => { this.props.openMapControl() }}
           >
             지도관제
           </Button>
@@ -876,7 +882,7 @@ class ReceptionStatus extends Component {
             className="tabBtn registTab"
             onClick={this.openAddCallModal}
           >
-            콜등록
+            주문등록
           </Button>
           <Button
             icon={<MessageOutlined />}
@@ -885,6 +891,18 @@ class ReceptionStatus extends Component {
           >
             상담메세지
           </Button>
+
+          {this.state.sendSnsOpen && (
+            <SendSnsDialog
+              close={this.closeSendSnsModal}
+              callback={this.onSearchRiderDetail}
+            />
+          )}
+          <Button className="riderManageBtn" onClick={this.openSendSnsModal}>
+            전체메세지
+          </Button>
+
+
           {this.state.noticeOpen && (
             <NoticeDialog close={this.closeNoticeModal} />
           )}

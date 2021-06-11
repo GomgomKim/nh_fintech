@@ -1,28 +1,19 @@
-import { Input, Table, Button, Modal } from "antd";
+import { Button, Input, Modal, Table } from "antd";
 import React, { Component } from "react";
-import { httpGet, httpUrl, httpPost } from "../../api/httpClient";
-import RiderGroupDialog from "../../components/dialog/rider/RiderGroupDialog";
-import SendSnsDialog from "../../components/dialog/rider/SendSnsDialog";
-import TaskSchedulerDialog from "../../components/dialog/rider/TaskSchedulerDialog";
-import RegistRiderDialog from "../../components/dialog/rider/RegistRiderDialog";
+import { httpGet, httpPost, httpUrl } from "../../api/httpClient";
+import { customAlert, updateError } from "../../api/Modals";
 import BlindRiderListDialog from "../../components/dialog/rider/BlindRiderListDialog";
+import RegistRiderDialog from "../../components/dialog/rider/RegistRiderDialog";
+import RiderGroupDialog from "../../components/dialog/rider/RiderGroupDialog";
+import TaskSchedulerDialog from "../../components/dialog/rider/TaskSchedulerDialog";
 import UpdatePasswordDialog from "../../components/dialog/rider/UpdatePasswordDialog";
-import "../../css/modal.css";
-import { comma } from "../../lib/util/numberUtil";
 import SelectBox from "../../components/input/SelectBox";
-import SearchRiderDialog from "../../components/dialog/common/SearchRiderDialog";
+import "../../css/modal.css";
 import {
-  tableStatusString,
-  statusString,
-  riderLevelText,
-  riderGroupString,
-  feeManner,
+  feeManner, riderGroupString, riderLevelText, statusString, tableStatusString
 } from "../../lib/util/codeUtil";
 import { formatDate } from "../../lib/util/dateUtil";
-import{
-  customAlert,
-  updateError
-} from '../../api/Modals'
+import { comma } from "../../lib/util/numberUtil";
 
 const Search = Input.Search;
 
@@ -33,7 +24,6 @@ class RiderMain extends Component {
       riderLevel: [1],
       userData: 1,
       searchName: "",
-      sendSnsOpen: false, //sns전송
       taskSchedulerOpen: false, // 일차감
       riderGroupOpen: false, // 기사 그룹 관리
       registRiderOpen: false, // 기사등록
@@ -51,7 +41,6 @@ class RiderMain extends Component {
       },
       dialogData: [],
       userStatus: 0,
-      searchRiderOpen: false,
       selRider: "",
       withdrawPassword: 1111,
     };
@@ -135,35 +124,37 @@ class RiderMain extends Component {
     );
   };
 
-  onResetPW = (row) =>{
+  onResetPW = (row) => {
     let self = this;
     Modal.confirm({
-      title: <div> {"비밀번호 초기화" } </div>,
-      content:  
-      <div> {"비밀번호를 초기화하시겠습니까?"} </div>,
+      title: <div> {"비밀번호 초기화"} </div>,
+      content: <div> {"비밀번호를 초기화하시겠습니까?"} </div>,
       okText: "확인",
       cancelText: "취소",
-    onOk() {
-      httpPost(httpUrl.updateRider, [], {
-        idx: row.idx,
-        withdrawPassword: null,
-      }).then((result) => {
-        console.log(row)
-        if(result.result === "SUCCESS" && result.data === "SUCCESS"){
-          customAlert("완료", "출금비밀번호가 초기화되었습니다.")
-        } else if(result.data === "NOT_ADMIN") updateError()
-        else updateError()
-        self.getList();
-      }).catch((error) => {
-        updateError()
-      })
-  }})}
+      onOk() {
+        httpPost(httpUrl.updateRider, [], {
+          idx: row.idx,
+          withdrawPassword: null,
+        })
+          .then((result) => {
+            console.log(row);
+            if (result.result === "SUCCESS" && result.data === "SUCCESS") {
+              customAlert("완료", "출금비밀번호가 초기화되었습니다.");
+            } else if (result.data === "NOT_ADMIN") updateError();
+            else updateError();
+            self.getList();
+          })
+          .catch((error) => {
+            updateError();
+          });
+      },
+    });
+  };
 
   onSearchRiderDetail = (data) => {
     console.log("### get fran list data : " + data);
     // this.setState({ results: data });
   };
-
 
   // sns dialog
   openSendSnsModal = () => {
@@ -229,10 +220,10 @@ class RiderMain extends Component {
 
   //출금비밀번호
   openUpdatePasswordModal = (rider) => {
-    this.setState({ 
+    this.setState({
       updatePasswordOpen: true,
       selRider: rider,
-     });
+    });
   };
   closeUpdatePasswordModal = () => {
     this.setState({ updatePasswordOpen: false });
@@ -279,7 +270,6 @@ class RiderMain extends Component {
         className: "table-column-center",
         render: (data, row) => (
           <div>
-
             <Button
               className="tabBtn surchargeTab"
               onClick={() => this.onResetPW(row)}
@@ -454,16 +444,14 @@ class RiderMain extends Component {
 
           <Search
             placeholder="기사검색"
-            className="searchFranchiseInput"
+            className="searchRiderInput"
             enterButton
             allowClear
             onSearch={this.onSearchRider}
             style={{}}
           />
           {this.state.registRiderOpen && (
-            <RegistRiderDialog
-              close={this.closeRegistRiderModal}
-            />
+            <RegistRiderDialog close={this.closeRegistRiderModal} />
           )}
           <Button
             className="riderManageBtn"
@@ -488,21 +476,14 @@ class RiderMain extends Component {
             일차감
           </Button>
 
-          {this.state.sendSnsOpen && (
-            <SendSnsDialog
-              close={this.closeSendSnsModal}
-              callback={this.onSearchRiderDetail}
+
+
+          {this.state.blindListOpen && (
+            <BlindRiderListDialog
+              close={this.closeBlindModal}
+              data={this.state.blindRiderData}
             />
           )}
-          <Button className="riderManageBtn" onClick={this.openSendSnsModal}>
-            SNS 전송
-          </Button>
-
-          {this.state.blindListOpen &&
-          <BlindRiderListDialog
-            close={this.closeBlindModal}
-            data={this.state.blindRiderData}
-          />}
         </div>
 
         <div className="dataTableLayout">
@@ -516,16 +497,17 @@ class RiderMain extends Component {
           />
         </div>
         {this.state.riderUpdateOpen && (
-        <RegistRiderDialog
+          <RegistRiderDialog
             close={this.closeUpdateRiderModal}
             data={this.state.dialogData}
-            />
-            )}
-            {this.state.updatePasswordOpen &&
-            <UpdatePasswordDialog
-              rider={this.state.selRider}
-              close={this.closeUpdatePasswordModal}
-            />}
+          />
+        )}
+        {this.state.updatePasswordOpen && (
+          <UpdatePasswordDialog
+            rider={this.state.selRider}
+            close={this.closeUpdatePasswordModal}
+          />
+        )}
       </div>
     );
   }

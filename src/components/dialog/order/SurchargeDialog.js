@@ -335,106 +335,117 @@ class SurchargeDialog extends Component {
                                                 <div className="mainTitle">
                                                     할증 요금 정보
                                                 </div>
+
                                                 <div className="m-t-20">
-                                                    <div className="subTitle">
-                                                        할증명
-                                                    </div>
-                                                    <div className="inputBox">
-                                                        <FormItem
-                                                            name="name"
-                                                            rules={[{ required: true, message: "할증명을 입력해주세요." }]}
-                                                        >
-                                                            <Input style={{ width: 130 }} />
-                                                        </FormItem>
-                                                    </div>
-                                                    <div className="subDatePrice">
-                                                        등록기간
-                                                    </div>
-                                                    <div className="selectBox">
-                                                        <FormItem
-                                                            name="surchargeDate"
-                                                        >
-                                                            <RangePicker
-                                                                placeholder={['시작일', '종료일']}
-                                                                showTime={{ format: 'HH:mm' }}
-                                                                onChange={this.onChangeDate}
-                                                                disabled={this.state.disabled}
-                                                            />
-                                                        </FormItem>
-                                                    </div>
-                                                    <div className="subDatePrice">
-                                                        추가요금
-                                                    </div>
-                                                    <div className="inputBox">
-                                                        <FormItem
-                                                            name="extraPrice"
-                                                            rules={[{ required: true, message: "추가금액을 입력해주세요." }]}
-                                                        >
-                                                            <Input style={{ width: 150 }} />
-                                                        </FormItem>
-                                                        <div className="priceText">
-                                                            원
+                                                    <div>
+                                                        <div className="subTitle">
+                                                            할증명
                                                         </div>
-                                                    </div>
-                                                    <div className="checkbox">
-                                                        상시할증 적용
-                                                    </div>
-                                                    <Checkbox
-                                                        style={{verticalAlign:'middle'}}
-                                                        defaultChecked={this.state.toggleDisable ? "checked" : ""}
-                                                        onChange={this.toggleDisable}
-                                                        />
-                                                    
-                                                    <div className="radio-btn">
-                                                        대상 지정
-                                                    </div>
-                                                    <Radio.Group
-                                                        className="searchRequirement"
-                                                        onChange={this.onCheckType}
-                                                        value={this.state.surchargeType}
-                                                        defaultValue={surchargeType[0]}
-                                                        >
-                                                        {Object.entries(surchargeType).map(([key, value]) => {
-                                                            return (
-                                                            <Radio value={parseInt(key)}>
-                                                                {value}
-                                                            </Radio>
-                                                            );
-                                                        })}
-                                                    </Radio.Group>
+                                                        <div className="inputBox">
+                                                            <FormItem
+                                                                name="name"
+                                                                rules={[{ required: true, message: "할증명을 입력해주세요." }]}
+                                                            >
+                                                                <Input style={{ width: 180, marginRight: 45 }} />
+                                                            </FormItem>
+                                                        </div>                                             
+                                                        <div className="subDatePrice">
+                                                            추가요금
+                                                        </div>
+                                                        <div className="inputBox">
+                                                            <FormItem
+                                                                name="extraPrice"
+                                                                rules={[{ required: true, message: "추가금액을 입력해주세요." }]}
+                                                            >
+                                                                <Input style={{ width: 180 }} />
+                                                            </FormItem>
+                                                            <div className="priceText">
+                                                                원
+                                                            </div>
+                                                        </div>
                                                         
-                                                {this.state.surchargeType === 1 ? 
-                                                <>
-                                                    <div className="search-input">
-                                                        그룹명
                                                     </div>
-                                                    {this.state.surchargeSearchGrp &&
-                                                    <SearchSurGroupDialog
-                                                    close={this.closeSurchargeSearchGrpModal}
-                                                    callback={(data) => {
-                                                        this.setState({ selectedGroup:data })
-                                                    }}
-                                                    />}
-                                                    <FormItem
-                                                        name="frName"
-                                                        className="selectItem"
-                                                        >
-                                                        <Input placeholder="그룹명 입력" className="override-input sub" required
-                                                            value={ this.state.selectedGroup ? this.state.selectedGroup.settingGroupName : ""}>
-                                                        </Input>
-                                                        <Button onClick={this.openSurchargeSearchGrpModal}>
-                                                        조회
+
+                                                    <div>
+                                                        <div className="checkbox">
+                                                            상시할증
+                                                        </div> 
+
+                                                        <Checkbox
+                                                            style={{ paddingLeft: 5, marginRight: 20, width: 210}}
+                                                            defaultChecked={this.state.toggleDisable ? "checked" : ""}
+                                                            onChange={this.toggleDisable}
+                                                            />                                                  
+
+                                                        <div className="subDatePrice">
+                                                            등록기간
+                                                        </div>
+                                                        <div className="selectBox">
+                                                            <FormItem
+                                                                name="surchargeDate"
+                                                            >
+                                                                <RangePicker
+                                                                    placeholder={['시작일', '종료일']}
+                                                                    showTime={{ format: 'HH:mm' }}
+                                                                    onChange={this.onChangeDate}
+                                                                    disabled={this.state.disabled}
+                                                                />
+                                                            </FormItem>
+                                                        </div> 
+                                                    </div>
+
+                                                    <div>                                                      
+                                                        <div className="radio-btn">
+                                                            대상지정
+                                                        </div>
+                                                        <Radio.Group
+                                                            className="searchRequirement"
+                                                            onChange={this.onCheckType}
+                                                            value={this.state.surchargeType}
+                                                            defaultValue={surchargeType[0]}
+                                                            style={{marginRight:35}}
+                                                            >
+                                                            {Object.entries(surchargeType).map(([key, value]) => {
+                                                                return (
+                                                                <Radio value={parseInt(key)}>
+                                                                    {value}
+                                                                </Radio>
+                                                                );
+                                                            })}
+                                                        </Radio.Group>
+                                                            
+                                                            {this.state.surchargeType === 1 ? 
+                                                            <>
+                                                                <div className="search-input">
+                                                                    그룹명
+                                                                </div>
+                                                                {this.state.surchargeSearchGrp &&
+                                                                <SearchSurGroupDialog
+                                                                close={this.closeSurchargeSearchGrpModal}
+                                                                callback={(data) => {
+                                                                    this.setState({ selectedGroup:data })
+                                                                }}
+                                                                />}
+                                                                <FormItem
+                                                                    name="frName"
+                                                                    className="selectItem"
+                                                                    >
+                                                                    <Input style={{width: 180}}placeholder="그룹명 입력" className="override-input sub" required
+                                                                        value={ this.state.selectedGroup ? this.state.selectedGroup.settingGroupName : ""}>
+                                                                    </Input>
+                                                                    <Button onClick={this.openSurchargeSearchGrpModal}>
+                                                                    조회
+                                                                    </Button>
+                                                                </FormItem>
+                                                            </> : <></>
+                                                        }
+                                                    </div>
+                                                    <div className="btnInsert">
+                                                        <Button type="primary" htmlType="submit" className="tabBtn insertTab">
+                                                            등록하기
                                                         </Button>
-                                                    </FormItem>
-                                                </> : <></>
-                                                }
-
-
-                                                </div>
-                                                <div className="btnInsert">
-                                                    <Button type="primary" htmlType="submit" className="tabBtn insertTab">
-                                                        등록하기
-                                                    </Button>
+                                                    </div>
+                                                    
                                                 </div>
                                             </div>
                                         </Form>
