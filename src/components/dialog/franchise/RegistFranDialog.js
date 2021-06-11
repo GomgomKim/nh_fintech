@@ -32,7 +32,7 @@ class RegistFranDialog extends Component {
       targetLat: 0,
       targetLng: 0,
 
-      agreeSms: false,
+      agreeSms: true,
     };
     this.formRef = React.createRef();
   }
@@ -54,6 +54,7 @@ class RegistFranDialog extends Component {
         .then((result) => {
           console.log("## result: " + JSON.stringify(result, null, 4));
           if (result.result === "SUCCESS") {
+            this.props.getList();
             updateComplete();
           } else {
             updateError();
@@ -115,6 +116,7 @@ class RegistFranDialog extends Component {
         .then((result) => {
           console.log("## result: " + JSON.stringify(result, null, 4));
           if (result.result === "SUCCESS") {
+            this.props.getList();
             registComplete();
           } else {
             registError();
@@ -437,7 +439,9 @@ class RegistFranDialog extends Component {
                     <FormItem
                       name="basicDeliveryDistance"
                       className="selectItem"
-                      initialValue={data && data.basicDeliveryDistance}
+                      initialValue={
+                        data && parseInt(data.basicDeliveryDistance)
+                      }
                       rules={[
                         {
                           required: true,

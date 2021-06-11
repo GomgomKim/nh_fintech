@@ -1,24 +1,14 @@
+import { Button, Checkbox, Form, Input, Modal, Select } from "antd";
 import React, { Component } from "react";
-import {
-  Form,
-  Input,
-  Button,
-  Select,
-  Checkbox,
-  Modal,
-} from "antd";
-import "../../../css/modal.css";
-import { NaverMap, Marker } from "react-naver-maps";
-import {
-  arriveReqTime,
-  packAmount,
-} from "../../../lib/util/codeUtil";
-import PaymentDialog from "./PaymentDialog";
-import { httpUrl, httpPost, httpGet } from "../../../api/httpClient";
+import { Marker, NaverMap } from "react-naver-maps";
+import { httpGet, httpPost, httpUrl } from "../../../api/httpClient";
 import { updateComplete, updateError } from "../../../api/Modals";
-import SearchFranchiseDialog from "../common/SearchFranchiseDialog";
-import PostCodeDialog from "../common/PostCodeDialog";
+import "../../../css/modal.css";
+import { arriveReqTime, packAmount } from "../../../lib/util/codeUtil";
 import { comma } from "../../../lib/util/numberUtil";
+import PostCodeDialog from "../common/PostCodeDialog";
+import SearchFranchiseDialog from "../common/SearchFranchiseDialog";
+import PaymentDialog from "./PaymentDialog";
 
 const Option = Select.Option;
 const FormItem = Form.Item;
@@ -198,6 +188,11 @@ class RegistCallDialog extends Component {
         if (res.result === "SUCCESS" && result.addresses.length > 0) {
           const lat = result.addresses[0].y;
           const lng = result.addresses[0].x;
+
+          console.log("배달요금 계산 파라미터!!");
+          console.log(typeof lat);
+          console.log(lat, lng);
+
           this.setState({
             mapLat: lat,
             mapLng: lng,
@@ -207,15 +202,21 @@ class RegistCallDialog extends Component {
               longitude: lng,
             },
           });
-          httpGet(httpUrl.getDeliveryPrice, [lat, lng], {})
+          httpGet(
+            httpUrl.getDeliveryPrice,
+            [this.state.selectedFr ? this.state.selectedFr.idx : 0, lat, lng],
+            {}
+          )
             .then((res) => {
               if (res.result === "SUCCESS") {
+                console.log("getdeliveryprice res");
+                console.log(res);
                 self.formRef.current.setFieldsValue({
                   deliveryPrice: comma(
                     res.data.deliveryPriceBasic + res.data.deliveryPriceExtra
                   ),
                   basicDeliveryPrice: comma(res.data.deliveryPriceBasic),
-                  extraDeliveryPrice: comma(res.data.deliveryPriceExtra),
+                  extraDeliveryPrice: res.data.deliveryPriceExtra,
                 });
                 this.setState({
                   data: {
@@ -382,6 +383,9 @@ class RegistCallDialog extends Component {
                                   frPhone: fr.frPhone,
                                 },
                               });
+                              if (this.state.selectedDest) {
+                                this.getDeliveryPrice();
+                              }
                             });
                           }}
                           close={this.closeSearchFranchiseModal}
@@ -418,7 +422,11 @@ class RegistCallDialog extends Component {
                                 destAddr1: this.state.selectedDest.address,
                               },
                             });
-                            this.getDeliveryPrice();
+                            if (this.state.selectedFr.frIdx !== 0) {
+                              console.log("기본 state 가맹점");
+                              console.log(this.state.selectedFr);
+                              this.getDeliveryPrice();
+                            }
                           });
                         }}
                         isOpen={this.state.isPostCodeOpen}
@@ -478,6 +486,7 @@ class RegistCallDialog extends Component {
                     <div className="mainTitle">할증 배달요금</div>
                     <FormItem name="extraDeliveryPrice" className="selectItem">
                       <Input
+                        type="number"
                         placeholder="할증 배달요금 입력"
                         className="override-input"
                         defaultValue={
@@ -499,6 +508,7 @@ class RegistCallDialog extends Component {
                     <div className="mainTitle">가격</div>
                     <FormItem name="orderPrice" className="selectItem">
                       <Input
+                        type="number"
                         placeholder="가격 입력"
                         className="override-input"
                         defaultValue={comma(data.orderPrice)}
@@ -519,7 +529,11 @@ class RegistCallDialog extends Component {
                         close={this.closePaymentModal}
                         handlePaymentChange={this.handlePaymentChange}
                         orderPayments={
-                          this.props.data ? this.props.data.orderPayments : []
+                          this.state.data
+                            ? this.state.data.orderPayments
+                            : this.props.data
+                            ? this.props.data.orderPayments
+                            : ""
                         }
                         editable={this.state.editable}
                         orderPrice={
@@ -580,7 +594,7 @@ class RegistCallDialog extends Component {
                     </FormItem>
                   </div>
                   <div className="contentBlock">
-                    <div className="mainTitle">배달갯수</div>
+                    <div className="mainTitle">묶음배송 봉지수</div>
                     <FormItem name="packAmount" className="selectItem">
                       <Select
                         defaultValue={

@@ -1,27 +1,19 @@
-import { Input, Table, Button, Modal } from "antd";
+import { Button, Input, Modal, Table } from "antd";
 import React, { Component } from "react";
-import { httpGet, httpUrl, httpPost } from "../../api/httpClient";
+import { httpGet, httpPost, httpUrl } from "../../api/httpClient";
+import { customAlert, updateError } from "../../api/Modals";
+import BlindRiderListDialog from "../../components/dialog/rider/BlindRiderListDialog";
+import RegistRiderDialog from "../../components/dialog/rider/RegistRiderDialog";
 import RiderGroupDialog from "../../components/dialog/rider/RiderGroupDialog";
 import TaskSchedulerDialog from "../../components/dialog/rider/TaskSchedulerDialog";
-import RegistRiderDialog from "../../components/dialog/rider/RegistRiderDialog";
-import BlindRiderListDialog from "../../components/dialog/rider/BlindRiderListDialog";
 import UpdatePasswordDialog from "../../components/dialog/rider/UpdatePasswordDialog";
-import "../../css/modal.css";
-import { comma } from "../../lib/util/numberUtil";
 import SelectBox from "../../components/input/SelectBox";
-import SearchRiderDialog from "../../components/dialog/common/SearchRiderDialog";
+import "../../css/modal.css";
 import {
-  tableStatusString,
-  statusString,
-  riderLevelText,
-  riderGroupString,
-  feeManner,
+  feeManner, riderGroupString, riderLevelText, statusString, tableStatusString
 } from "../../lib/util/codeUtil";
 import { formatDate } from "../../lib/util/dateUtil";
-import {
-  customAlert,
-  updateError
-} from '../../api/Modals'
+import { comma } from "../../lib/util/numberUtil";
 
 const Search = Input.Search;
 
@@ -49,7 +41,6 @@ class RiderMain extends Component {
       },
       dialogData: [],
       userStatus: 0,
-      searchRiderOpen: false,
       selRider: "",
       withdrawPassword: 1111,
     };
@@ -137,41 +128,41 @@ class RiderMain extends Component {
     let self = this;
     Modal.confirm({
       title: <div> {"비밀번호 초기화"} </div>,
-      content:
-        <div> {"비밀번호를 초기화하시겠습니까?"} </div>,
+      content: <div> {"비밀번호를 초기화하시겠습니까?"} </div>,
       okText: "확인",
       cancelText: "취소",
       onOk() {
         httpPost(httpUrl.updateRider, [], {
           idx: row.idx,
           withdrawPassword: null,
-        }).then((result) => {
-          console.log(row)
-          if (result.result === "SUCCESS" && result.data === "SUCCESS") {
-            customAlert("완료", "출금비밀번호가 초기화되었습니다.")
-          } else if (result.data === "NOT_ADMIN") updateError()
-          else updateError()
-          self.getList();
-        }).catch((error) => {
-          updateError()
         })
-      }
-    })
-  }
+          .then((result) => {
+            console.log(row);
+            if (result.result === "SUCCESS" && result.data === "SUCCESS") {
+              customAlert("완료", "출금비밀번호가 초기화되었습니다.");
+            } else if (result.data === "NOT_ADMIN") updateError();
+            else updateError();
+            self.getList();
+          })
+          .catch((error) => {
+            updateError();
+          });
+      },
+    });
+  };
 
   onSearchRiderDetail = (data) => {
     console.log("### get fran list data : " + data);
     // this.setState({ results: data });
   };
 
-  // 기사조회 dialog
-  openSearchRiderModal = () => {
-    this.setState({ searchRiderOpen: true });
+  // sns dialog
+  openSendSnsModal = () => {
+    this.setState({ sendSnsOpen: true });
   };
-  closeSearchRiderModal = () => {
-    this.setState({ searchRiderOpen: false });
+  closeSendSnsModal = () => {
+    this.setState({ sendSnsOpen: false });
   };
-
   //일차감
   openTaskSchedulerModal = () => {
     this.setState({ taskSchedulerOpen: true });
@@ -279,7 +270,6 @@ class RiderMain extends Component {
         className: "table-column-center",
         render: (data, row) => (
           <div>
-
             <Button
               className="tabBtn surchargeTab"
               onClick={() => this.onResetPW(row)}
@@ -460,21 +450,8 @@ class RiderMain extends Component {
             onSearch={this.onSearchRider}
             style={{}}
           />
-
-          {this.state.searchRiderOpen && (
-            <SearchRiderDialog
-              callback={(data) => this.onSearchRiderDetail(data)}
-              close={this.closeSearchRiderModal}
-              multi={true}
-            />
-          )}
-          <Button className="tabBtn" onClick={this.openSearchRiderModal}>
-            기사조회
-          </Button>
           {this.state.registRiderOpen && (
-            <RegistRiderDialog
-              close={this.closeRegistRiderModal}
-            />
+            <RegistRiderDialog close={this.closeRegistRiderModal} />
           )}
           <Button
             className="riderManageBtn"
@@ -501,11 +478,12 @@ class RiderMain extends Component {
 
 
 
-          {this.state.blindListOpen &&
+          {this.state.blindListOpen && (
             <BlindRiderListDialog
               close={this.closeBlindModal}
               data={this.state.blindRiderData}
-            />}
+            />
+          )}
         </div>
 
         <div className="dataTableLayout">
@@ -524,11 +502,12 @@ class RiderMain extends Component {
             data={this.state.dialogData}
           />
         )}
-        {this.state.updatePasswordOpen &&
+        {this.state.updatePasswordOpen && (
           <UpdatePasswordDialog
             rider={this.state.selRider}
             close={this.closeUpdatePasswordModal}
-          />}
+          />
+        )}
       </div>
     );
   }
