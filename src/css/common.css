@@ -31,7 +31,7 @@
   padding: 5px !important;
 }
 .ant-table-expanded-row .ant-table-thead > tr > th {
-  background-color: white !important;
+  background-color: #e0e0e0 !important;
   color: #000 !important;
 }
 .ant-table-expanded-row .ant-table-wrapper {

@@ -364,6 +364,9 @@ class RegistCallDialog extends Component {
             <Form ref={this.formRef} onFinish={this.handleSubmit}>
               <div className="registCallLayout">
                 <div className="registCallWrapper">
+
+                <div>
+
                   <div className="contentBlock">
                     <div className="mainTitle">가맹점명</div>
                     <FormItem name="addrMain" className="selectItem">
@@ -401,10 +404,10 @@ class RegistCallDialog extends Component {
                               ? this.props.data.frName
                               : ""
                           }
-                          style={{ marginLeft: "20px" }}
+                          style={{ marginLeft: 20,  width: 250 }}
                           required
                         />
-                        <Button onClick={this.openSearchFranchiseModal}>
+                        <Button style={{width: 150}}onClick={this.openSearchFranchiseModal}>
                           가맹점조회
                         </Button>
                       </div>
@@ -448,10 +451,10 @@ class RegistCallDialog extends Component {
                               ? this.props.data.destAddr1
                               : ""
                           }
-                          style={{ marginLeft: "20px" }}
+                          style={{ marginLeft: 20, width: 250 }}
                           required
                         />
-                        <Button onClick={this.openPostCode}>
+                        <Button style={{width: 150}} onClick={this.openPostCode}>
                           우편번호 검색
                         </Button>
                       </div>
@@ -552,7 +555,11 @@ class RegistCallDialog extends Component {
                       결제방식 선택
                     </Button>
                   </div>
-                  <div className="contentBlock">
+
+                  </div>
+
+                  <div>
+                  <div className="contentBlock" style={{marginTop: 0}}>
                     <div className="mainTitle">음식준비완료</div>
                     <FormItem name="itemPrepared" className="selectItem">
                       <Checkbox
@@ -660,7 +667,7 @@ class RegistCallDialog extends Component {
                     </Button>
                   </div>
                 </div>
-
+              </div>
                 <div className="mapLayout regist-call-map" id="myMap">
                   {navermaps && (
                     <NaverMap
