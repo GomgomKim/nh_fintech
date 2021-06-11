@@ -87,9 +87,11 @@ class RegistCallDialog extends Component {
   setDefaultState = () => {
     this.setState({
       data: this.props.data ? this.props.data : newOrder,
-      selectedDest: {
-        address: this.props.data ? this.props.data.destAddr1 : "",
-      },
+      selectedDest: this.props.data
+        ? {
+            address: this.props.data.destAddr1,
+          }
+        : null,
       selectedFr: {
         frIdx: this.props.data ? this.props.data.frIdx : 0,
         frLatitude: this.props.data ? this.props.data.frLatitude : 0,
@@ -203,6 +205,7 @@ class RegistCallDialog extends Component {
               longitude: lng,
             },
           });
+          console.log(this.state.selectedFr.idx, lat, lng);
           httpGet(
             httpUrl.getDeliveryPrice,
             [this.state.selectedFr.idx, lat, lng],
@@ -253,9 +256,11 @@ class RegistCallDialog extends Component {
 
   getDeliveryPriceByLatLng = (lat, lng) => {
     const self = this;
+    console.log(this.state.selectedFr.idx, lat, lng);
     httpGet(httpUrl.getDeliveryPrice, [this.state.selectedFr.idx, lat, lng], {})
       .then((res) => {
         if (res.result === "SUCCESS") {
+          console.log(res);
           self.formRef.current.setFieldsValue({
             deliveryPrice:
               res.data.deliveryPriceBasic + res.data.deliveryPriceExtra,
