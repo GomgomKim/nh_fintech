@@ -2573,6 +2573,10 @@
   margin-left: -10px;
 }
 
+.riderGroup-ftline .select-fee-pay-type {
+  margin-left: 20px;
+}
+
 .riderGroup-inner .listBlock .ant-pagination {
   display: none;
 }

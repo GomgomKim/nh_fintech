@@ -17,6 +17,8 @@ class RiderGroupDialog extends Component {
                 current: 1,
                 pageSize: 1,
             },
+            payType: 0,
+            rowId: 1,
         };
         this.formRef = React.createRef();
     }
@@ -38,7 +40,6 @@ class RiderGroupDialog extends Component {
     onClickRow = (index) => {
         return {
             onClick: () => {
-                // console.log(record.riderGroup)
                 this.setState({
                     rowId: index,
                 });
@@ -99,29 +100,9 @@ class RiderGroupDialog extends Component {
 
         const columns = [
             {
-                title: "그룹",
-                dataIndex: "riderGroup",
-                className: "table-column-center",
-                render: (data) => <div>{data == "A" ? "A"
-                    : data == "B" ? "B"
-                        : data == "C" ? "C"
-                            : data == "D" ? "D" : "E"}</div>
-            },
-            {
                 title: "처리건수",
                 dataIndex: "proCount",
                 className: "table-column-center",
-            },
-            {
-                title: "출금가능",
-                className: "table-column-center",
-                render: () =>
-                    <div>
-                        {<Checkbox
-                            className="tabBtn riderGroupTab"
-                            onClick={() => { this.setState({ workTabOpen: true }) }}
-                        ></Checkbox>}
-                    </div>
             },
             {
                 title: "출금제한 금액",
@@ -165,13 +146,15 @@ class RiderGroupDialog extends Component {
                         </Form>
                         <div className="riderGroup-ftline">
                             <div className="riderGroup-ftline-01">
-                                <Checkbox>&nbsp;</Checkbox><td>오더처리건수</td>
                             </div>
                             <div className="inputBox inputBox-rider sub">
                                 <FormItem
                                 name="riderG"
                                 rules={[{ required: true, message: "0건." }]}
+                                // initialValue={this.state.list && this.state.rowId && 
+                                    // this.state.list.find((x) => x.idx === this.state.rowId.id).proCount}
                                 >
+                                    {console.log(this.state.list.find((x) => x.id === this.state.rowId.id))}
                                     <Input />
                                 </FormItem>
                                 <div className="riderGText">
@@ -181,9 +164,7 @@ class RiderGroupDialog extends Component {
                             
                             
                             <div className="riderGroup-ftline-02">
-                                <Checkbox>&nbsp;</Checkbox><td>출금설정</td>
-                                <Checkbox></Checkbox>
-                                <span class="riderSubtext">출금 사용</span>
+                                <span>출금 사용</span>
                                 
                                 <div className="inputBox inputBox-rider">
                                     <FormItem
@@ -200,9 +181,7 @@ class RiderGroupDialog extends Component {
                             
                             
                             <div className="riderGroup-ftline-03">
-                                <Checkbox>&nbsp;</Checkbox><td>가맹점 코인이체</td>
-                                <Checkbox></Checkbox>
-                                <span class="riderSubtext">이체 사용</span>
+                                <span>이체 사용</span>
                                 
                                 <div className="inputBox inputBox-rider">
                                     <FormItem
@@ -217,53 +196,31 @@ class RiderGroupDialog extends Component {
                                 </div>
                             </div>
                             
-                            
                             <div className="riderGroup-ftline-04">
-                                <Checkbox>&nbsp;</Checkbox><td>기사수수료</td>
-                                <FormItem
-                                style={{
-                                    marginBottom: 0,
-                                    display: 'inline-block',
-                                    verticalAlign: 'middle',
-                                }}
-                                name="payType"
-                                initialValue={0}
-                                >
-                                    <Radio.Group>
-                                        <Radio style={{ fontSize: 18 }} value={0}>정률</Radio>
-                                        <Radio style={{ fontSize: 18 }} value={1}>정액&nbsp;&nbsp;&nbsp;</Radio>
-                                    </Radio.Group>
-                                </FormItem>
-                            </div>
-                            
-                            <div className="riderGroup-ftline-05">
-                                <td>&nbsp;</td>
-                                <FormItem
-                                style={{
-                                    marginBottom: 0,
-                                    display: 'inline-block',
-                                    verticalAlign: 'middle',
-                                }}
-                                name="payType"
-                                initialValue={0}
-                                >
-                                    <Radio.Group>
-                                        <Radio style={{ fontSize: 18 }} value={0}>고정</Radio>
-                                        <Radio style={{ fontSize: 18 }} value={1}>할인&nbsp;&nbsp;&nbsp;을</Radio>
-                                    </Radio.Group>
-                                </FormItem>
-                            </div>
-                            <div className="inputBox inputBox-rider">
-                                <FormItem
-                                name="riderG"
-                                rules={[{ required: true, message: "0건." }]}
-                                >
-                                    <Input />
-                                </FormItem>
-                                <div className="riderGText">
-                                    원으로 설정
+                                <span>기사수수료</span>
+                                <Radio.Group
+                                    className="select-fee-pay-type"
+                                    defaultValue={this.state.payType} 
+                                    onChange={(e) => this.setState({payType: e.target.value})}>
+                                    <Radio style={{ fontSize: 18 }} value={0}>정률</Radio>
+                                    <Radio style={{ fontSize: 18 }} value={1}>정액&nbsp;&nbsp;&nbsp;</Radio>
+                                </Radio.Group>
+
+                                <div className="inputBox inputBox-rider">
+                                    <FormItem
+                                    name="riderG"
+                                    rules={[{ required: true, message: "0건." }]}
+                                    >
+                                        <Input />
+                                    </FormItem>
+                                    <div className="riderGText">
+                                        {this.state.payType == 0 ? '%' : '원'}으로 설정
+                                    </div>
                                 </div>
                             </div>
+            
+                            
+                            
                             <div className="riderGroup-btn">
                                 <div className="riderGroup-btn-01">
                                     <Button
