@@ -1,7 +1,7 @@
 import Axios from "axios";
+import { reactLocalStorage } from "reactjs-localstorage";
 import util from "util";
 import Const from "../const";
-import { reactLocalStorage } from "reactjs-localstorage";
 let loadingCount = 0;
 
 global.language = "ko";
@@ -164,7 +164,8 @@ const httpUrl = {
   orderList: "/order/list",
   orderUpdate: "/order/update",
   orderCreate: "/order/create",
-  getDeliveryPrice: "/fr/expectDeliveryPrice?destLatitude=%s&destLongitude=%s",
+  getDeliveryPrice:
+    "/fr/expectDeliveryPrice?frIdx=%s&destLatitude=%s&destLongitude=%s",
 
   priceExtraList: "/branch/deliveryPriceExtra/list?pageNum=%s&pageSize=%s",
   priceExtraRegist: "/branch/deliveryPriceExtra/create",
@@ -249,3 +250,4 @@ export {
   httpDownload,
   imageType,
 };
+

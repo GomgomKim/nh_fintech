@@ -1,17 +1,16 @@
+import { Button, Form, Input, Modal, Radio, Table } from "antd";
 import React, { Component } from "react";
-import { Form, Input, Table, Button, Radio, Modal } from "antd";
 import {
-  httpUrl,
+  httpDelete,
   httpGet,
   httpPost,
-  httpDelete,
+  httpUrl
 } from "../../../api/httpClient";
+import { customError } from "../../../api/Modals";
+import "../../../css/rider.css";
+import { addType } from "../../../lib/util/codeUtil";
 import PostCodeDialog from "../common/PostCodeDialog";
 import SelfAddressDialog from "../franchise/SelfAddressDialog";
-import { addType } from "../../../lib/util/codeUtil";
-import { customError } from "../../../api/Modals";
-
-import "../../../css/rider.css";
 
 const FormItem = Form.Item;
 const Search = Input.Search;
@@ -160,6 +159,7 @@ class SearchAddressDialog extends Component {
         addrType: this.state.RegistAddType,
         latitude: this.state.latitude,
         longitude: this.state.longitude,
+        addr2: "",
       })
     )
       .then((res) => {
@@ -242,7 +242,7 @@ class SearchAddressDialog extends Component {
         render: (data) => <div>{addType[data]}</div>,
       },
       {
-        title: "등록 주소 목록",
+        title: "이름",
         dataIndex: "name",
         className: "table-column-center",
         width: "30%",
@@ -340,23 +340,27 @@ class SearchAddressDialog extends Component {
                       </FormItem>
                     </div>
                     <div className="contentBlock">
-                      <div className="mainTitle">건물이름</div>
+                      <div className="mainTitle">이름</div>
                       <FormItem name="name" className="selectItem">
                         <Input
-                          placeholder="건물이름을 입력해 주세요."
+                          placeholder="이름을 입력해 주세요."
                           className="override-input sub"
                         />
                       </FormItem>
                     </div>
-                    <div className="contentBlock">
+                    {/* <div className="contentBlock" style={{ display: "hidden" }}>
                       <div className="mainTitle">상세주소</div>
-                      <FormItem name="addr2" className="selectItem">
+                      <FormItem
+                        defaultValue={""}
+                        name="addr2"
+                        className="selectItem"
+                      >
                         <Input
                           placeholder="상세주소를 입력해 주세요."
                           className="override-input sub"
                         />
                       </FormItem>
-                    </div>
+                    </div> */}
                   </div>
 
                   <div className="searchAddress-btn">
