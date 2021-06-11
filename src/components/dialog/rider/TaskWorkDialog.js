@@ -3,6 +3,7 @@ import {
     Form, Input, DatePicker, Button, Select, Checkbox
 } from "antd";
 import '../../../css/modal.css';
+import SearchRiderDialog from "../../../components/dialog/common/SearchRiderDialog";
 
 const FormItem = Form.Item;
 const Search = Input.Search;
@@ -18,6 +19,7 @@ class TaskWorkDialog extends Component {
         this.state = {
             selectedDate: today,
             isTimeLimit: false,
+            searchRiderOpen: false,
             list: [],
             pagination: {
                 total: 0,
@@ -49,6 +51,28 @@ class TaskWorkDialog extends Component {
 
     }
 
+    onSearchRider = (value) => {
+        this.setState(
+            {
+                searchName: value,
+            },
+            () => {
+                this.getList();
+            }
+        );
+    };
+    onSearchRiderDetail = (data) => {
+        console.log("### get fran list data : " + data);
+        // this.setState({ results: data });
+    };
+
+    // 기사조회 dialog
+    openSearchRiderModal = () => {
+        this.setState({ searchRiderOpen: true });
+    };
+    closeSearchRiderModal = () => {
+        this.setState({ searchRiderOpen: false });
+    };
 
 
     render() {
@@ -77,12 +101,12 @@ class TaskWorkDialog extends Component {
                             <div className="taskWork-list">
 
                                 <div className="twl taskWork-list-01">
-                                    <td>사용여부</td>
+                                    <div className="twl-text" >사용여부</div>
                                     <Checkbox></Checkbox>
                                     {/* <span className="useText">사용함</span> */}
                                 </div>
                                 <div className="twl taskWork-list-02">
-                                    <td>차감명</td>
+                                    <div className="twl-text" >차감명</div>
                                     <div className="inputBox inputBox-taskWork sub">
                                         <FormItem
                                             name="riderG"
@@ -93,7 +117,7 @@ class TaskWorkDialog extends Component {
                                     </div>
                                 </div>
                                 <div className="twl taskWork-list-03">
-                                    <td>적용대상</td>
+                                    <div className="twl-text" >적용대상</div>
                                     <div className="taskWork-place1">
                                         <FormItem
                                             style={{ marginBottom: 0, display: 'inline-block', verticalAlign: 'middle' }}
@@ -104,21 +128,24 @@ class TaskWorkDialog extends Component {
                                                 <Option value={2}>대여금 -36300원 배지현</Option>
                                                 <Option value={3}>대여금 -36300원 배지현</Option>
                                             </Select> */}
-                                            <Search
-                                                placeholder="기사검색"
-                                                className="searchRiderInput"
-                                                enterButton
-                                                allowClear
-                                                onSearch={this.onSearchRider}
-                                                style={{}}
-                                            />
+                                            {this.state.searchRiderOpen &&
+                                                <SearchRiderDialog
+                                                    close={this.closeSearchRiderModal}
+                                                    callback={(data) => this.setState({
+                                                        selectedRider: data
+                                                    })}
+                                                />}
+                                            <Button className="tabBtn" onClick={this.openSearchRiderModal}
+                                                style={{ width: 186, marginLeft: -1 }}>
+                                                기사조회
+                                             </Button>
 
 
                                         </FormItem>
                                     </div>
                                 </div>
                                 <div className="twl taskWork-list-04">
-                                    <td>차감금액</td>
+                                    <div className="twl-text" >차감금액</div>
                                     <div className="taskWork-place1">
                                         <div className="inputBox inputBox-taskWork sub">
                                             <FormItem
@@ -126,13 +153,13 @@ class TaskWorkDialog extends Component {
                                                 rules={[{ required: true, message: "0건." }]}
                                             >
                                                 <Input style={{ marginRight: 10, float: "left" }} />
-                                            </FormItem>원
-                                                    </div>
+                                            </FormItem>
+                                        </div>
                                     </div>
 
                                 </div>
                                 <div className="twl taskWork-list-05">
-                                    <td>기간제한사용</td>
+                                    <div className="twl-text" >기간제한사용</div>
                                     <Checkbox className="useBtn" onClick={this.timeLimitCheck} style={{ marginLeft: 0 }}></Checkbox>
 
                                     {this.state.isTimeLimit &&
@@ -140,6 +167,7 @@ class TaskWorkDialog extends Component {
                                             placeholder={['시작일', '종료일']}
                                             showTime={{ format: 'MM:dd' }}
                                             onChange={this.onChangeDate}
+                                            style={{ width: 300 }}
                                         />
                                     }
 

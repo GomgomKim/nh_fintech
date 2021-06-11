@@ -73,6 +73,7 @@ class SearchAddressDialog extends Component {
       {}
     )
       .then((res) => {
+        console.log(JSON.stringify(res, null, 4))
         if (res.result === "SUCCESS" && res.data) {
           this.setState({
             list: res.data.addrAptBranches,
@@ -152,6 +153,7 @@ class SearchAddressDialog extends Component {
 
   handleSubmit = () => {
     const formData = this.formRef.current.getFieldsValue();
+    var self = this
     httpPost(
       httpUrl.createAddrApt,
       [],
@@ -168,15 +170,15 @@ class SearchAddressDialog extends Component {
             title: "등록성공",
             content: "주소 등록에 성공했습니다.",
           });
-          this.formRef.current.resetFields();
-          this.setState(
+          self.formRef.current.resetFields();
+          self.setState(
             {
               pagination: {
-                ...this.state.pagination,
+                ...self.state.pagination,
                 current: 1,
               },
             },
-            () => this.getList()
+            () => self.getList()
           );
         }
       })
