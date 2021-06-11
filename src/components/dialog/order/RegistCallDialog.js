@@ -386,8 +386,16 @@ class RegistCallDialog extends Component {
                                   },
                                 });
                                 if (this.state.selectedDest) {
-                                  this.getDeliveryPrice();
-                                }
+                                  if (
+                                    Object.keys(
+                                      this.state.selectedDest
+                                    ).includes("postcode")
+                                  ) {
+                                    this.getDeliveryPrice();
+                                  } else {
+                                    this.getDeliveryPriceByLatLng();
+                                  }
+                                } else return;
                               });
                             }}
                             close={this.closeSearchFranchiseModal}
