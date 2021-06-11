@@ -435,9 +435,9 @@ class RegistFranDialog extends Component {
                   <div className="contentBlock">
                     <div className="mainTitle">기본거리</div>
                     <FormItem
-                      name="defaultDeliveryDistance"
+                      name="basicDeliveryDistance"
                       className="selectItem"
-                      initialValue={data && data.defaultDeliveryDistance}
+                      initialValue={data && data.basicDeliveryDistance}
                       rules={[
                         {
                           required: true,
