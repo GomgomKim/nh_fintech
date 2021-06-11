@@ -2392,9 +2392,9 @@
  width: 105px !important;
 } */
 
-.taskWork-place1 .searchRiderInput{
+.taskWork-place1 .searchRiderInput {
   width: 185px !important;
-  margin-left:0px!important;
+  margin-left: 0px !important;
 }
 .taskWork-btn-01 {
   margin-top: 20px;
@@ -4113,7 +4113,6 @@
   left: 50%;
   transform: translate(-50%, -50%);
   border-radius: 10px;
-  width: 900px;
   height: 700px;
 }
 .error-message {

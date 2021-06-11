@@ -1,14 +1,13 @@
+import { Pagination } from "antd";
 import React, { Component } from "react";
+import InfiniteScroll from "react-infinite-scroll-component";
 import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
 import { reactLocalStorage } from "reactjs-localstorage";
+import { bindActionCreators } from "redux";
+import { login, logout } from "../../../actions/loginAction";
 import { httpGet, httpPost, httpUrl } from "../../../api/httpClient";
 import Const from "../../../const";
 import { formatYMD, formatYMDHMS } from "../../../lib/util/dateUtil";
-import { login, logout } from "../../../actions/loginAction";
-import { Pagination } from "antd";
-import MsgInputModal from "./MsgInputModal";
-import InfiniteScroll from "react-infinite-scroll-component";
 
 class ChattingDialog extends Component {
   constructor(props) {
@@ -196,18 +195,6 @@ class ChattingDialog extends Component {
       <>
         <div className={"Modal-overlay"} onClick={close} />
         <div className={"Modal-chat"}>
-          <MsgInputModal
-            isOpen={this.state.msgInputModalOpen}
-            close={() => this.setState({ msgInputModalOpen: false })}
-            keyin={(data) => {
-              console.log(data);
-              this.onPressSend(data);
-              this.setState({ msgInputModalOpen: false });
-            }}
-            ok={() => {
-              this.setState({ msgInputModalOpen: false });
-            }}
-          />
 
           {currentRoom && (
             <div className="chat-message-container">
@@ -273,9 +260,6 @@ class ChattingDialog extends Component {
                   placeholder="메세지를 입력해주세요."
                   onChange={(e) => this.setState({ sendMsg: e.target.value })}
                   value={this.state.sendMsg}
-                  onFocus={() => {
-                    this.setState({ msgInputModalOpen: true });
-                  }}
                 />
                 <div
                   className="chat-send-btn"
