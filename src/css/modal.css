@@ -127,13 +127,8 @@
 .searchFranchise-Dialog .layout .dataTableLayout-01 {
   margin-top: 30px;
 }
-
-.searchFranchise-Dialog .ant-table-content thead th {
-  padding: 10px;
-}
-
 .searchFranchise-Dialog .layout .ant-table-tbody > tr > td {
-  padding: 0;
+  padding: 0 !important;
 }
 
 /* 우편번호 팝업 */
@@ -1797,8 +1792,7 @@
   font-size: 20px;
   font-weight: bold;
   line-height: 30px;
-  vertical-align: middle;
-  text-align: center;
+  display: inline-block;
 }
 
 .timeDelay-close {
@@ -1959,7 +1953,6 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 420px;
   z-index: 2;
 }
 
@@ -1972,7 +1965,6 @@
   font-size: 25px;
   font-weight: bold;
   line-height: 30px;
-  /* width:300px; */
   display: inline-block;
   vertical-align: middle;
 }
@@ -1990,7 +1982,7 @@
   width: 100%;
   overflow-y: scroll;
   border: 1px solid #ccc;
-  padding: 20px;
+  padding: 20px 30px 10px;
   text-align: left;
   margin-top: 20px;
   -ms-overflow-style: none; /* IE and Edge */
@@ -2001,25 +1993,20 @@
   display: none; /* Chrome, Safari, Opera*/
 }
 
-.filtering-box-wrapper {
-  display: flex;
-  flex-wrap: wrap;
-  flex: 1;
-  height: 300px;
+.filtering-box {
+  display: inline-block;
+  margin-bottom: 10px;
 }
 
-.filtering-box {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  flex: 1;
-  height: 300px;
-  /* justify-content: center; */
-  align-items: center;
+.filtering-box-wrapper > div:last-child {
+  margin-bottom: 0;
+  display: block;
 }
+
 .filtering-box .ant-checkbox {
   top: 0em !important;
 }
+
 .filtering-box .ant-checkbox-wrapper {
   display: table;
 }
@@ -2029,25 +2016,36 @@
   text-align: center;
 }
 
-.filtering-box > div {
-  width: 120px;
-  height: 52px;
-  float: left;
+.filtering-box > div:first-child {
+  width: 90px;
+  vertical-align: top;
   /* margin:20px; */
 }
 
 .filtering-box .ant-checkbox-inner {
-  width: 45px;
-  height: 45px;
+  width: 20px;
+  height: 20px;
+}
+.filtering-box .ant-checkbox-inner:hover {
+  display: none;
 }
 .filtering-box .ant-checkbox-inner::after {
-  width: 25px;
-  height: 25px;
+  width: 10px;
+  height: 10px;
+}
+.filtering-box .ant-checkbox-checked::after {
+  width: 100%;
+  height: auto;
+}
+.filtering-btn {
+  display: inline-block;
+  padding: 5px 0;
 }
 
 .filtering-box .ant-checkbox + span {
-  font-size: 20px;
-  vertical-align: middle;
+  font-size: 18px;
+  vertical-align: top;
+  line-height: 25px;
 }
 
 .riderManageBtn {
@@ -3031,7 +3029,7 @@
 
 .searchAddress-btn {
   display: inline-block;
-  margin-top: 150px;
+  margin-top: 111px;
   margin-right: 20px;
   float: right;
 }
@@ -3056,7 +3054,9 @@
 .serchAddress-Dialog .layout .ant-table-tbody > tr > td {
   padding: 0px;
 }
-
+.serchAddress-Dialog .layout .pwChange-btn {
+  padding: 2px;
+}
 .searchAddress-name {
   display: inline-block;
   font-size: 20px;

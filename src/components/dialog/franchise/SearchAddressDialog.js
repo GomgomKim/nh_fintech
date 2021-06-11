@@ -242,7 +242,7 @@ class SearchAddressDialog extends Component {
         render: (data) => <div>{addType[data]}</div>,
       },
       {
-        title: "등록 주소 목록",
+        title: "이름",
         dataIndex: "name",
         className: "table-column-center",
         width: "30%",
@@ -340,19 +340,10 @@ class SearchAddressDialog extends Component {
                       </FormItem>
                     </div>
                     <div className="contentBlock">
-                      <div className="mainTitle">건물이름</div>
+                      <div className="mainTitle">이름</div>
                       <FormItem name="name" className="selectItem">
                         <Input
-                          placeholder="건물이름을 입력해 주세요."
-                          className="override-input sub"
-                        />
-                      </FormItem>
-                    </div>
-                    <div className="contentBlock">
-                      <div className="mainTitle">상세주소</div>
-                      <FormItem name="addr2" className="selectItem">
-                        <Input
-                          placeholder="상세주소를 입력해 주세요."
+                          placeholder="이름을 입력해 주세요."
                           className="override-input sub"
                         />
                       </FormItem>

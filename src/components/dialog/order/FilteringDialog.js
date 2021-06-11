@@ -94,9 +94,7 @@ class FilteringDialog extends Component {
                 <div className="filtering-inner">
                   <div className="filtering-box-wrapper">
                     <div
-                      className="filtering-box"
-                      style={{ borderRight: "1px solid #ccc" }}
-                    >
+                      className="filtering-box">
                       <div className="timeDelay-sub-title">주문상태</div>
 
                       {this.state.orderStatus.map((o) => {

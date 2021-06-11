@@ -107,14 +107,7 @@ class FranchiseMain extends Component {
     // this.setState({list: data});
   };
 
-  // 가맹점조회 dialog
-  openSearchFranchiseModal = () => {
-    this.setState({ searchFranchiseOpen: true });
-  };
-  closeSearchFranchiseModal = () => {
-    this.setState({ searchFranchiseOpen: false });
-  };
-
+ 
   // 가맹점등록 dialog
   openRegistFranchiseModal = () => {
     this.setState({ ResistFranchiseOpen: true });
@@ -435,24 +428,6 @@ class FranchiseMain extends Component {
         ),
       },
       {
-        title: "이체",
-        className: "table-column-center",
-        render: () => (
-          <div>
-            {/* <RegistFranDialog
-              isOpen={this.state.addFranchiseOpen}
-              close={this.closeAddFranchiseModal}
-            /> */}
-            <Button
-              className="tabBtn surchargeTab"
-              onClick={this.openCoinTransferModal}
-            >
-              코인이체
-            </Button>
-          </div>
-        ),
-      },
-      {
         title: "블라인드",
         className: "table-column-center",
         render: (data, row) => (
@@ -586,16 +561,6 @@ class FranchiseMain extends Component {
             onSearch={this.onSearchFranchisee}
             style={{}}
           />
-          {this.state.searchFranchiseOpen && (
-            <SearchFranchiseDialog
-              callback={(data) => this.onSearchFranchiseDetail(data)}
-              close={this.closeSearchFranchiseModal}
-              multi={true}
-            />
-          )}
-          <Button className="tabBtn" onClick={this.openSearchFranchiseModal}>
-            가맹점조회
-          </Button>
           {this.state.ResistFranchiseOpen && (
             <RegistFranDialog close={this.closeRegistFranchiseModal} />
           )}

@@ -164,13 +164,6 @@ class RiderMain extends Component {
     // this.setState({ results: data });
   };
 
-  // 기사조회 dialog
-  openSearchRiderModal = () => {
-    this.setState({ searchRiderOpen: true });
-  };
-  closeSearchRiderModal = () => {
-    this.setState({ searchRiderOpen: false });
-  };
 
   // sns dialog
   openSendSnsModal = () => {
@@ -467,17 +460,6 @@ class RiderMain extends Component {
             onSearch={this.onSearchRider}
             style={{}}
           />
-
-          {this.state.searchRiderOpen && (
-            <SearchRiderDialog
-              callback={(data) => this.onSearchRiderDetail(data)}
-              close={this.closeSearchRiderModal}
-              multi={true}
-            />
-          )}
-          <Button className="tabBtn" onClick={this.openSearchRiderModal}>
-            기사조회
-          </Button>
           {this.state.registRiderOpen && (
             <RegistRiderDialog
               close={this.closeRegistRiderModal}
