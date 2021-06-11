@@ -42,6 +42,7 @@ const newOrder = {
   orderIdx: 0,
   orderPayments: [
     {
+      idx: 1,
       paymentAmount: 0,
       paymentMethod: 1,
       paymentStatus: 1,
