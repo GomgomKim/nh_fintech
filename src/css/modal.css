@@ -2062,7 +2062,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 1200px;
+  /* width: 1200px; */
   z-index: 2;
 }
 
@@ -2292,7 +2292,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 700px;
+  /* width: 700px; */
   z-index: 2;
 }
 
@@ -2348,7 +2348,7 @@
   /* border:1px solid red; */
   /* height:360px; */
 }
-.taskWork-list td {
+.taskWork-list .twl-text {
   width: 120px;
   font-size: 18px;
   display: inline-block;
@@ -2388,14 +2388,8 @@
   margin-top: -10px;
 }
 
-/* .taskWork-list-03>td {
- width: 105px !important;
-} */
 
-.taskWork-place1 .searchRiderInput{
-  width: 185px !important;
-  margin-left:0px!important;
-}
+
 .taskWork-btn-01 {
   margin-top: 20px;
   text-align: center;
