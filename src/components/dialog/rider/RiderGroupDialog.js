@@ -38,6 +38,14 @@ class RiderGroupDialog extends Component {
     };
 
     onClickRow = (index) => {
+        if(this.state.list.find((x) => x.id === this.state.rowId.id)){
+            // console.log(this.state.list.find((x) => x.id === this.state.rowId.id).proCount)
+            this.formRef.current.setFieldsValue({
+                assignCnt: this.state.list.find((x) => x.id === this.state.rowId.id).proCount,
+                withdraw: this.state.list.find((x) => x.id === this.state.rowId.id).withdrawLimit,
+                transferLimit: this.state.list.find((x) => x.id === this.state.rowId.id).transferLimit
+            });
+        }
         return {
             onClick: () => {
                 this.setState({
@@ -65,21 +73,21 @@ class RiderGroupDialog extends Component {
                 id: 2,
                 riderGroup: 'B',
                 proCount: 5,
-                withdrawLimit: '100000',
-                transferLimit: '500',
+                withdrawLimit: '10000',
+                transferLimit: '1500',
             },
             {
                 id: 3,
                 riderGroup: 'C',
                 proCount: 4,
-                withdrawLimit: '100000',
-                transferLimit: '500',
+                withdrawLimit: '200000',
+                transferLimit: '1000',
             },
             {
                 id: 4,
                 riderGroup: 'D',
                 proCount: 3,
-                withdrawLimit: '100000',
+                withdrawLimit: '40000',
                 transferLimit: '500',
             },
             {
@@ -132,7 +140,7 @@ class RiderGroupDialog extends Component {
                     </div>
                     <img onClick={close} src={require('../../../img/login/close.png').default} className="riderGroup-close" alt="img" />
                     <div className="riderGroup-inner">
-                        <Form ref={this.formIdRef} onFinish={this.handleIdSubmit}>
+                        <Form ref={this.formRef} onFinish={this.handleIdSubmit}>
                             <div className="listBlock">
                                 <Table
                                 dataSource={this.state.list}
@@ -143,19 +151,15 @@ class RiderGroupDialog extends Component {
                                 rowClassName={this.setRowClassName}
                                 />
                             </div>
-                        </Form>
+
                         <div className="riderGroup-ftline">
                             <div className="riderGroup-ftline-01">
                             </div>
                             <div className="inputBox inputBox-rider sub">
                                 <FormItem
-                                name="riderG"
-                                rules={[{ required: true, message: "0건." }]}
-                                // initialValue={this.state.list && this.state.rowId && 
-                                    // this.state.list.find((x) => x.idx === this.state.rowId.id).proCount}
+                                    name="assignCnt"
                                 >
-                                    {console.log(this.state.list.find((x) => x.id === this.state.rowId.id))}
-                                    <Input />
+                                    <Input/>
                                 </FormItem>
                                 <div className="riderGText">
                                     까지 배차가능
@@ -168,7 +172,7 @@ class RiderGroupDialog extends Component {
                                 
                                 <div className="inputBox inputBox-rider">
                                     <FormItem
-                                    name="riderG"
+                                    name="withdraw"
                                     rules={[{ required: true, message: "0건." }]}
                                     >
                                         <Input />
@@ -185,7 +189,7 @@ class RiderGroupDialog extends Component {
                                 
                                 <div className="inputBox inputBox-rider">
                                     <FormItem
-                                    name="riderG"
+                                    name="transferLimit"
                                     rules={[{ required: true, message: "0건." }]}
                                     >
                                         <Input />
@@ -208,7 +212,7 @@ class RiderGroupDialog extends Component {
 
                                 <div className="inputBox inputBox-rider">
                                     <FormItem
-                                    name="riderG"
+                                    name="riderFee"
                                     rules={[{ required: true, message: "0건." }]}
                                     >
                                         <Input />
@@ -231,10 +235,10 @@ class RiderGroupDialog extends Component {
 
                             </div>
 
-
+                            
                         </div>
 
-
+                        </Form>
 
                     </div>
 
