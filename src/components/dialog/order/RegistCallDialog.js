@@ -205,7 +205,7 @@ class RegistCallDialog extends Component {
           });
           httpGet(
             httpUrl.getDeliveryPrice,
-            [this.state.selectedFr ? this.state.selectedFr.idx : 0, lat, lng],
+            [this.state.selectedFr.idx, lat, lng],
             {}
           )
             .then((res) => {
