@@ -213,11 +213,11 @@ class TaskGroupDialog extends Component {
                         <div className="taskGroup-inner">
 
                             <div className="taskGroup-btn">
-                                <div className="taskGroup-btn-01">
+                                <div className="taskScheduler-btn-01">
                                     {this.state.registRiderGroupOpen &&
                                         <RegistRiderGroupDialog close={this.closeRegistRiderGroupModal} />}
                                     <Button
-                                        className="tabBtn taskGroup-btn"
+                                        className="taskGroup-btn"
                                         onClick={() => { this.openRegistRiderGroupModal() }}
                                     >그룹등록</Button>
                                 </div>

@@ -103,6 +103,8 @@ class FranchiseMain extends Component {
     console.log("### get fran list data : " + data);
     // this.setState({list: data});
   };
+
+ 
   // 가맹점등록 dialog
   openRegistFranchiseModal = () => {
     this.setState({ ResistFranchiseOpen: true });

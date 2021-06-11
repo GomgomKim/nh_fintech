@@ -154,8 +154,9 @@ class RiderGroupDialog extends Component {
 
                         <div className="riderGroup-ftline">
                             <div className="riderGroup-ftline-01">
+                            <p>처리 건수</p>
                             </div>
-                            <div className="inputBox inputBox-rider sub">
+                            <div className="inputBox inputBox-rider">
                                 <FormItem
                                     name="assignCnt"
                                 >
@@ -168,7 +169,7 @@ class RiderGroupDialog extends Component {
                             
                             
                             <div className="riderGroup-ftline-02">
-                                <span>출금 사용</span>
+                                <p>출금 사용</p>
                                 
                                 <div className="inputBox inputBox-rider">
                                     <FormItem
@@ -185,7 +186,7 @@ class RiderGroupDialog extends Component {
                             
                             
                             <div className="riderGroup-ftline-03">
-                                <span>이체 사용</span>
+                                <p>이체 사용</p>
                                 
                                 <div className="inputBox inputBox-rider">
                                     <FormItem
@@ -201,7 +202,7 @@ class RiderGroupDialog extends Component {
                             </div>
                             
                             <div className="riderGroup-ftline-04">
-                                <span>기사수수료</span>
+                                <p>기사수수료</p>
                                 <Radio.Group
                                     className="select-fee-pay-type"
                                     defaultValue={this.state.payType} 
@@ -218,7 +219,7 @@ class RiderGroupDialog extends Component {
                                         <Input />
                                     </FormItem>
                                     <div className="riderGText">
-                                        {this.state.payType == 0 ? '%' : '원'}으로 설정
+                                        {this.state.payType == 0 ? '%' : '원'} 으로 설정
                                     </div>
                                 </div>
                             </div>

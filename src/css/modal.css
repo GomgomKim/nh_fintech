@@ -109,7 +109,10 @@
 .searchFranchise-list input {
   width: 400px;
 }
-
+.searchFranchise-Dialog .ant-table-thead > tr > th {
+  background-color: black !important;
+  color: white !important;
+}
 .searchFranchise-btn {
   display: inline-block;
   vertical-align: bottom;
@@ -127,13 +130,8 @@
 .searchFranchise-Dialog .layout .dataTableLayout-01 {
   margin-top: 30px;
 }
-
-.searchFranchise-Dialog .ant-table-content thead th {
-  padding: 10px;
-}
-
 .searchFranchise-Dialog .layout .ant-table-tbody > tr > td {
-  padding: 0;
+  padding: 0 !important;
 }
 
 /* 우편번호 팝업 */
@@ -515,6 +513,7 @@
 .addGroup-content {
   background-color: white;
   padding: 30px;
+  height: 100%;
   /* text-align: left; */
   /* color: #777; */
 }
@@ -532,12 +531,18 @@
 .addGroupWrapper {
   margin-top: 20px;
 }
-.addGrouplayout .contentBlock {
-  width: 400px;
+.addGrouplayout {
+  overflow-y: scroll;
+  border: 1px solid #ccc;
+  padding: 20px;
+  text-align: left;
+  margin-top: 20px;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 
 .addGrouplayout .contentBlock .override-input {
-  width: 300px;
+  width: 280px;
 }
 
 .addGroup-close {
@@ -547,10 +552,6 @@
   /* display: inline-block; */
   float: right;
   padding: 8px;
-}
-
-.addGroup-Dialog .addGrouplayout {
-  height: 100px;
 }
 
 /* .addGroupWrapper .contentBlock {
@@ -803,6 +804,13 @@
   border-radius: 30px;
   z-index: 2;
 }
+.surcharge-Dialog .mainTitle {
+  display: inline-block;
+  font-size: 20px;
+  vertical-align: middle;
+  font-weight: bold;
+  color: #1890ff;
+}
 .surcharge-container {
   background-color: white;
   padding: 30px;
@@ -869,54 +877,56 @@
 }
 .surchargeLayout .checkbox {
   display: inline-block;
-  margin-top: 20px;
-  font-size: 15px;
+  font-size: 16px;
+  font-weight: bold;
 }
 .surchargeLayout .radio-btn {
   display: inline-block;
-  margin-top: 20px;
-  margin-left: 30px;
-  font-size: 15px;
+  /* margin-left: 30px; */
+  font-size: 16px;
+  font-weight: bold;
 }
 .surchargeLayout .searchRequirement {
   margin-top: 0 !important;
   margin-left: 10px;
 }
 .surchargeLayout .search-input {
-  margin-left: 10px;
   display: inline-block;
-  font-size: 15px;
+  font-size: 16px;
+  font-weight: bold;
+  width: 80px;
 }
 .surchargeLayout .selectItem {
   display: inline-block;
 }
 .surchargeLayout .selectItem .ant-btn {
-  top: 13px;
 }
 .surchargeLayout .override-input.sub {
-  /* margin-left: -30px; */
   margin-left: 10px;
-  top: 13px;
-  width: 135px;
+  text-align: center;
 }
 
 .mainTitle {
   display: inline-block;
-  font-size: 18px;
+  font-size: 16px;
   vertical-align: middle;
   font-weight: bold;
   /* width: 75px; */
 }
 .subTitle {
   display: inline-block;
-  font-size: 18px;
+  font-size: 16px;
   vertical-align: middle;
+  font-weight: bold;
 }
 .subDatePrice {
   display: inline-block;
-  margin-left: 18px;
-  font-size: 18px;
+  /* margin-left: 18px; */
+  font-size: 16px;
+  font-weight: bold;
+
   vertical-align: middle;
+  width: 80px;
 }
 .selectBox {
   display: inline-block;
@@ -933,8 +943,24 @@
   text-align: center;
   width: 130px;
 }
+.surcharge-bottom {
+  display: inline-block;
+}
+.m-t-20 {
+  padding-left: 15px;
+}
+.m-t-20 > div:nth-child(2) {
+  margin: 20px 0;
+}
+.m-t-20 > div:nth-child(3) {
+  float: left;
+}
+.m-t-20 > div > div:first-child {
+  width: 80px;
+}
 .btnInsert {
-  margin: 20px 0px;
+  float: right;
+  margin-top: 0px;
 }
 .inputBox {
   display: inline-block;
@@ -958,14 +984,13 @@
   display: inline-block;
   vertical-align: middle;
   margin-left: 5px;
-  font-size: 20px;
+  font-size: 18px;
   color: #000;
 }
 .btnInsert .ant-btn {
   width: 130px;
   font-size: 18px;
   border-radius: 2px;
-  vertical-align: middle;
   padding: 0px;
   height: 40px;
   float: right;
@@ -1019,14 +1044,13 @@
 .registCallLayout::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Opera*/
 }
+.registCall-Dialog .registCallWrapper > div {
+  display: inline-block;
+  vertical-align: top;
+}
 /* 왼쪽 wrappper */
 .registCallWrapper {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  align-content: space-around;
-  justify-content: space-around;
-  height: 350px;
+  padding: 0 30px;
 }
 .registCallWrapper .mainTitle {
   display: inline-block;
@@ -1086,6 +1110,11 @@
 .callTab {
   float: right;
   width: 100px;
+}
+.registCallWrapper > div:last-child {
+  margin-top: 0;
+  vertical-align: top;
+  margin-left: 50px;
 }
 /* 오른쪽 wrappper */
 .registCallWrapper.sub {
@@ -1797,8 +1826,7 @@
   font-size: 20px;
   font-weight: bold;
   line-height: 30px;
-  vertical-align: middle;
-  text-align: center;
+  display: inline-block;
 }
 
 .timeDelay-close {
@@ -1959,7 +1987,6 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 420px;
   z-index: 2;
 }
 
@@ -1972,7 +1999,6 @@
   font-size: 25px;
   font-weight: bold;
   line-height: 30px;
-  /* width:300px; */
   display: inline-block;
   vertical-align: middle;
 }
@@ -1990,7 +2016,7 @@
   width: 100%;
   overflow-y: scroll;
   border: 1px solid #ccc;
-  padding: 20px;
+  padding: 20px 30px 10px;
   text-align: left;
   margin-top: 20px;
   -ms-overflow-style: none; /* IE and Edge */
@@ -2001,25 +2027,20 @@
   display: none; /* Chrome, Safari, Opera*/
 }
 
-.filtering-box-wrapper {
-  display: flex;
-  flex-wrap: wrap;
-  flex: 1;
-  height: 300px;
+.filtering-box {
+  display: inline-block;
+  margin-bottom: 10px;
 }
 
-.filtering-box {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  flex: 1;
-  height: 300px;
-  /* justify-content: center; */
-  align-items: center;
+.filtering-box-wrapper > div:last-child {
+  margin-bottom: 0;
+  display: block;
 }
+
 .filtering-box .ant-checkbox {
   top: 0em !important;
 }
+
 .filtering-box .ant-checkbox-wrapper {
   display: table;
 }
@@ -2029,25 +2050,36 @@
   text-align: center;
 }
 
-.filtering-box > div {
-  width: 120px;
-  height: 52px;
-  float: left;
+.filtering-box > div:first-child {
+  width: 90px;
+  vertical-align: top;
   /* margin:20px; */
 }
 
 .filtering-box .ant-checkbox-inner {
-  width: 45px;
-  height: 45px;
+  width: 20px;
+  height: 20px;
+}
+.filtering-box .ant-checkbox-inner:hover {
+  display: none;
 }
 .filtering-box .ant-checkbox-inner::after {
-  width: 25px;
-  height: 25px;
+  width: 10px;
+  height: 10px;
+}
+.filtering-box .ant-checkbox-checked::after {
+  width: 100%;
+  height: auto;
+}
+.filtering-btn {
+  display: inline-block;
+  padding: 5px 0;
 }
 
 .filtering-box .ant-checkbox + span {
-  font-size: 20px;
-  vertical-align: middle;
+  font-size: 18px;
+  vertical-align: top;
+  line-height: 25px;
 }
 
 .riderManageBtn {
@@ -2134,9 +2166,9 @@
   margin: 0px !important;
 }
 .taskScheduler-btn-01 > button {
-  height: 40px;
-  width: 130px;
-  font-size: 18px;
+  height: 32px;
+  width: 110px;
+  font-size: 14px;
   color: #222;
   text-align: center;
   display: inline-block;
@@ -2148,9 +2180,9 @@
 }
 
 .taskScheduler-btn-02 > button {
-  height: 40px;
-  width: 130px;
-  font-size: 18px;
+  height: 32px;
+  width: 110px;
+  font-size: 14px;
   color: #222;
   padding: 0px !important;
   display: inline-block;
@@ -2495,7 +2527,19 @@
   margin-top: 10px;
   /* border:1px solid #ccc; */
 }
-
+.riderGroup-ftline p {
+  display: inline-block;
+  width: 100px;
+  font-weight: bold;
+  padding: 0;
+  margin: 0;
+}
+.riderGroup-ftline > div {
+  margin-bottom: 10px;
+}
+.riderGroup-ftline > div:last-child {
+  margin-bottom: 0;
+}
 .riderGroup-ftline td {
   width: 150px;
   display: inline-block;
@@ -2506,7 +2550,9 @@
 .riderGroup-ftline-04 .riderSubtext {
   margin-left: 20px;
 }
-
+.riderGroup-ftline-04 {
+  display: inline-block;
+}
 .riderGroup-ftline .ant-radio-wrapper {
   font-size: 16px !important;
 }
@@ -2561,6 +2607,7 @@
   vertical-align: middle;
   margin-left: 10px;
   color: #000 !important;
+  font-size: 16px;
 }
 .riderGroup-ftline .ant-input {
   padding: 0px !important;
@@ -2665,7 +2712,7 @@
 }
 
 .registRiderWrapper .contentBlock {
-  margin-top: 25px;
+  margin-top: 15px;
 }
 
 .registRiderWrapper .ant-form-item-control-input-content {
@@ -3033,7 +3080,7 @@
 
 .serchAddress-Dialog .layout .contentbox,
 .contentBlock span {
-  font-size: 16px;
+  font-size: 14px;
 }
 
 .searchAddress-btn {
@@ -3063,11 +3110,14 @@
 .serchAddress-Dialog .layout .ant-table-tbody > tr > td {
   padding: 0px;
 }
-
+.serchAddress-Dialog .layout .pwChange-btn {
+  padding: 2px;
+}
 .searchAddress-name {
   display: inline-block;
   font-size: 20px;
   font-weight: bold;
+  color: #1890ff;
 }
 
 .contentbox {

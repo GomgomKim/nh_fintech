@@ -372,6 +372,7 @@ class SearchAddressDialog extends Component {
                     <Button
                       type="primary"
                       htmlType="submit"
+                      style={{width: 100, backgroundColor:'#1890ff'}}
                       // onClick={() => this.handleSubmit()}
                     >
                       등록하기

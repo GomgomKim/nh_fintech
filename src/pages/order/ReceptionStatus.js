@@ -884,7 +884,7 @@ class ReceptionStatus extends Component {
             className="tabBtn registTab"
             onClick={this.openAddCallModal}
           >
-            콜등록
+            주문등록
           </Button>
           <Button
             icon={<MessageOutlined />}

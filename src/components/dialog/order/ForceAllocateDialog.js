@@ -101,9 +101,10 @@ class ForceAllocateDialog extends Component {
                                             />
                                         </div>
 
-                                        <div className="dataTableLayout-02">
+                                        <div className="listBlock">
 
                                             <Table
+                                                className="dataTableLayout-02"
                                                 dataSource={this.state.list}
                                                 columns={columns}
                                                 pagination={this.state.pagination}

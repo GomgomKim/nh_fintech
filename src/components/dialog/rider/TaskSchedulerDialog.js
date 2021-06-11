@@ -194,7 +194,7 @@ class TaskSchedulerDialog extends Component {
                                     {this.state.taskGroupOpen &&
                                         <TaskGroupDialog close={this.closeTaskGroupModal} />}
                                     <Button
-                                        className="tabBtn taskScheduler-btn"
+                                        className="taskScheduler-btn"
                                         onClick={this.openTaskGroupModal}
                                     >그룹관리</Button>
                                 </div>
