@@ -20,15 +20,15 @@ class SendSnsDialog extends Component {
                 current: 1,
                 pageSize: 5,
             },
-            dataIdxs:[],
+            dataIdxs: [],
             selectedRowKeys: [],
 
-            riderLevel:0,
+            riderLevel: 0,
             searchName: "",
-            isMulti:false,
+            isMulti: false,
 
             background: '#fff',
-             
+
         };
         this.formRef = React.createRef();
     }
@@ -36,12 +36,12 @@ class SendSnsDialog extends Component {
     componentDidMount() {
     }
 
-    // 메세지 전송
+    // 전체메세지 전송
     handleSubmit = () => {
         let self = this;
         console.log("handle submit")
         Modal.confirm({
-            title: "메세지 전송",
+            title: "전체메세지 전송",
             content: (
                 <div>
                     {'메세지를 전송하시겠습니까?'}
@@ -89,59 +89,59 @@ class SendSnsDialog extends Component {
         const { close } = this.props;
 
         return (
-        <React.Fragment>
-            <div className="Dialog-overlay" onClick={close} />
-            <div className="snsDialog">
-                <div className="container">
-                    <div className="sns-title">메세지 전송</div>
-                    <img
-                    onClick={close}
-                    src={require("../../../img/login/close.png").default} alt=""  
-                    className="surcharge-close" 
-                    />
-                    <div className="snsLayout">
-                        <Form ref={this.formRef} onFinish={this.handleSubmit}>
-                            <div className="snsDetailBlock">
-                                <div className="inputBox">
-                                    휴대번호
+            <React.Fragment>
+                <div className="Dialog-overlay" onClick={close} />
+                <div className="snsDialog">
+                    <div className="container">
+                        <div className="sns-title">전체메세지 전송</div>
+                        <img
+                            onClick={close}
+                            src={require("../../../img/login/close.png").default} alt=""
+                            className="surcharge-close"
+                        />
+                        <div className="snsLayout">
+                            <Form ref={this.formRef} onFinish={this.handleSubmit}>
+                                <div className="snsDetailBlock">
+                                    {/* <div className="inputBox">
+                                        휴대번호
                                     <FormItem
-                                    className="selectItem"
-                                    name="phoneNumber"
-                                    rules={[{ required: true, message: "수신번호를 입력해주세요" }]}
-                                    >
-                                        <Input
-                                        className="numberInputBox"
-                                        placeholder="수신번호"
-                                        />
-                                    </FormItem>
-                                </div>
-                                <div className="inputBox">
-                                    <FormItem
-                                    className="selectItem"
-                                    name="content"
-                                    rules={[{ required: true, message: "메세지를 입력해주세요" }]}
-                                    >
-                                        <Input
-                                        className="snsInputBox"
-                                        placeholder="메세지 내용"
-                                        />
-                                    </FormItem>
-                                </div>
-                                <div className="btnInsert">
-                                    <Button
-                                    type="primary"
-                                    htmlType="submit"
-                                    className="tabBtn insertTab snsBtn"
-                                    >
-                                        전송
+                                            className="selectItem"
+                                            name="phoneNumber"
+                                            rules={[{ required: true, message: "수신번호를 입력해주세요" }]}
+                                        >
+                                            <Input
+                                                className="numberInputBox"
+                                                placeholder="수신번호"
+                                            />
+                                        </FormItem>
+                                    </div> */}
+                                    <div className="inputBox">
+                                        <FormItem
+                                            className="selectItem"
+                                            name="content"
+                                            rules={[{ required: true, message: "메세지를 입력해주세요" }]}
+                                        >
+                                            <Input
+                                                className="snsInputBox"
+                                                placeholder="메세지 내용"
+                                            />
+                                        </FormItem>
+                                    </div>
+                                    <div className="btnInsert">
+                                        <Button
+                                            type="primary"
+                                            htmlType="submit"
+                                            className="tabBtn insertTab snsBtn"
+                                        >
+                                            전송
                                     </Button>
+                                    </div>
                                 </div>
-                            </div>
-                        </Form>
+                            </Form>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </React.Fragment>
+            </React.Fragment>
         );
     }
 }

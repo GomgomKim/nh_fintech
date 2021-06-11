@@ -19,7 +19,7 @@ class TaskGroupDialog extends Component {
             },
             searchRiderOpen: false,
             registRiderGroupOpen: false,
-            
+
             selectedRider: null,
         };
         this.formRef = React.createRef();
@@ -42,61 +42,78 @@ class TaskGroupDialog extends Component {
     getList = () => {
         var list = [
             {
-                groupName: 'A',
+                groupName: '리스비',
                 data: [
                     {
-                        branchName: '플러스김포',
-                        riderName: '김기연',
+                        riderName: '김민준',
                     },
                     {
-                        branchName: '플러스김포',
-                        riderName: '김종국',
+                        riderName: '최예준',
                     },
                     {
-                        branchName: '플러스김포',
-                        riderName: '성시경',
+                        riderName: '박준서',
                     },
                     {
-                        branchName: '플러스김포',
-                        riderName: '김기연',
+                        riderName: '김현우',
                     },
                     {
-                        branchName: '플러스김포',
-                        riderName: '김종국',
+                        riderName: '이도현',
                     },
                     {
-                        branchName: '플러스김포',
-                        riderName: '성시경',
+                        riderName: '나선우',
                     }
                 ]
             },
             {
-                groupName: '기타',
+                groupName: '비품 대여',
                 data: [
                     {
-                        branchName: '플러스김포',
-                        riderName: '김기연',
+                        riderName: '이건우',
+                    },
+                    {
+                        riderName: '박준서',
+                    },
+                    {
+                        riderName: '이도현',
                     },
                 ]
             },
             {
-                groupName: 'C',
+                groupName: '패널티',
                 data: [
                     {
-                        branchName: '플러스김포',
-                        riderName: '박재범',
+                        riderName: '이지훈',
                     },
                     {
-                        branchName: '플러스김포',
-                        riderName: '정기석',
+                        riderName: '정현준',
                     },
                 ]
             },
             {
-                groupName: 'D',
+                groupName: '대출금',
+                data: [
+                    {
+                        riderName: '지유준',
+                    },
+                    {
+                        riderName: '조승우',
+                    },
+                    {
+                        riderName: '김지환',
+                    },
+                    {
+                        riderName: '유시윤',
+                    },
+                    {
+                        riderName: '성민재',
+                    },
+                    {
+                        riderName: '이지훈',
+                    }
+                ]
             },
             {
-                groupName: 'E',
+                groupName: '',
             },
         ];
         this.setState({
@@ -135,16 +152,16 @@ class TaskGroupDialog extends Component {
                 render: () =>
                     <div>
                         {this.state.searchRiderOpen &&
-                        <SearchRiderDialog 
-                            close={this.closeSearchRiderModal}
-                            multi={true}
-                            callback={(data) => this.setState({
-                                selectedRider: data
-                            }, () => {this.getList()} 
-                        )}/>}
+                            <SearchRiderDialog
+                                close={this.closeSearchRiderModal}
+                                multi={true}
+                                callback={(data) => this.setState({
+                                    selectedRider: data
+                                }, () => { this.getList() }
+                                )} />}
                         <Button
                             className="tabBtn"
-                            onClick={() => { this.openSearchRiderModal() }}   
+                            onClick={() => { this.openSearchRiderModal() }}
                         >추가</Button>
                     </div>
             },
@@ -184,48 +201,48 @@ class TaskGroupDialog extends Component {
 
         return (
 
-                        <React.Fragment>
-                            <div className="Dialog-overlay" onClick={close} />
-                            <div className="taskGroup-Dialog">
+            <React.Fragment>
+                <div className="Dialog-overlay" onClick={close} />
+                <div className="taskGroup-Dialog">
 
-                                <div className="taskGroup-content">
-                                    <div className="taskGroup-title">
-                                        일차감 그룹관리
+                    <div className="taskGroup-content">
+                        <div className="taskGroup-title">
+                            일차감 그룹관리
                                     </div>
-                                    <img onClick={close} src={require('../../../img/login/close.png').default} className="taskGroup-close" />
-                                    <div className="taskGroup-inner">
+                        <img onClick={close} src={require('../../../img/login/close.png').default} className="taskGroup-close" />
+                        <div className="taskGroup-inner">
 
-                                        <div className="taskGroup-btn">
-                                            <div className="taskGroup-btn-01">
-                                            {this.state.registRiderGroupOpen &&
-                                                <RegistRiderGroupDialog close={this.closeRegistRiderGroupModal} />}
-                                                <Button
-                                                    className="tabBtn taskGroup-btn"
-                                                    onClick={() => { this.openRegistRiderGroupModal() }}
-                                                >그룹등록</Button>
-                                            </div>
-
-                                        </div>
-                                        <Form ref={this.formIdRef} onFinish={this.handleSubmit}>
-                                            <div className="listBlock">
-                                                <Table
-                                                    rowKey={(record) => record}
-                                                    dataSource={this.state.list}
-                                                    columns={columns}
-                                                    pagination={this.state.pagination}
-                                                    onChange={this.handleTableChange}
-                                                    expandedRowRender={expandedRowRender}
-                                                />
-                                            </div>
-
-                                        </Form>
-
-                                    </div>
-
-
+                            <div className="taskGroup-btn">
+                                <div className="taskGroup-btn-01">
+                                    {this.state.registRiderGroupOpen &&
+                                        <RegistRiderGroupDialog close={this.closeRegistRiderGroupModal} />}
+                                    <Button
+                                        className="tabBtn taskGroup-btn"
+                                        onClick={() => { this.openRegistRiderGroupModal() }}
+                                    >그룹등록</Button>
                                 </div>
+
                             </div>
-                        </React.Fragment>
+                            <Form ref={this.formIdRef} onFinish={this.handleSubmit}>
+                                <div className="listBlock">
+                                    <Table
+                                        rowKey={(record) => record}
+                                        dataSource={this.state.list}
+                                        columns={columns}
+                                        pagination={this.state.pagination}
+                                        onChange={this.handleTableChange}
+                                        expandedRowRender={expandedRowRender}
+                                    />
+                                </div>
+
+                            </Form>
+
+                        </div>
+
+
+                    </div>
+                </div>
+            </React.Fragment>
 
         )
     }
