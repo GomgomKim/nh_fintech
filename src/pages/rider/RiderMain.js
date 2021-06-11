@@ -5,7 +5,6 @@ import { customAlert, updateError } from "../../api/Modals";
 import BlindRiderListDialog from "../../components/dialog/rider/BlindRiderListDialog";
 import RegistRiderDialog from "../../components/dialog/rider/RegistRiderDialog";
 import RiderGroupDialog from "../../components/dialog/rider/RiderGroupDialog";
-import SendSnsDialog from "../../components/dialog/rider/SendSnsDialog";
 import TaskSchedulerDialog from "../../components/dialog/rider/TaskSchedulerDialog";
 import UpdatePasswordDialog from "../../components/dialog/rider/UpdatePasswordDialog";
 import SelectBox from "../../components/input/SelectBox";
@@ -25,7 +24,6 @@ class RiderMain extends Component {
       riderLevel: [1],
       userData: 1,
       searchName: "",
-      sendSnsOpen: false, //sns전송
       taskSchedulerOpen: false, // 일차감
       riderGroupOpen: false, // 기사 그룹 관리
       registRiderOpen: false, // 기사등록
@@ -446,7 +444,7 @@ class RiderMain extends Component {
 
           <Search
             placeholder="기사검색"
-            className="searchFranchiseInput"
+            className="searchRiderInput"
             enterButton
             allowClear
             onSearch={this.onSearchRider}
@@ -478,15 +476,7 @@ class RiderMain extends Component {
             일차감
           </Button>
 
-          {this.state.sendSnsOpen && (
-            <SendSnsDialog
-              close={this.closeSendSnsModal}
-              callback={this.onSearchRiderDetail}
-            />
-          )}
-          <Button className="riderManageBtn" onClick={this.openSendSnsModal}>
-            SNS 전송
-          </Button>
+
 
           {this.state.blindListOpen && (
             <BlindRiderListDialog

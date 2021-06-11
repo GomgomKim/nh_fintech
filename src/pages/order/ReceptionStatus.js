@@ -25,6 +25,7 @@ import ChattingDialog from "../../components/dialog/common/ChattingDialog";
 import SearchRiderDialog from "../../components/dialog/common/SearchRiderDialog";
 import FilteringDialog from "../../components/dialog/order/FilteringDialog";
 import MapControlDialog from "../../components/dialog/order/MapControlDialog";
+import SendSnsDialog from "../../components/dialog/rider/SendSnsDialog";
 import NoticeDialog from "../../components/dialog/order/NoticeDialog";
 import PaymentDialog from "../../components/dialog/order/PaymentDialog";
 import RegistCallDialog from "../../components/dialog/order/RegistCallDialog";
@@ -67,6 +68,7 @@ class ReceptionStatus extends Component {
       noticeOpen: false,
       forceOpen: false,
       MessageOpen: false,
+      sendSnsOpen: false,
       activeIndex: -1,
       mapControlOpen: false,
       modifyOrder: false,
@@ -74,6 +76,7 @@ class ReceptionStatus extends Component {
       editable: false,
       orderData: null,
       paymentData: null,
+
 
       // data
       list: [],
@@ -400,6 +403,14 @@ class ReceptionStatus extends Component {
     this.setState({ MessageOpen: false });
   };
 
+  // sns dialog
+  openSendSnsModal = () => {
+    this.setState({ sendSnsOpen: true });
+  };
+  closeSendSnsModal = () => {
+    this.setState({ sendSnsOpen: false });
+  };
+
   // 주문수정 dialog
   openModifyOrderModal = (order) => {
     this.setState({ data: order, modifyOrder: true });
@@ -596,7 +607,7 @@ class ReceptionStatus extends Component {
           data.length > 1 ? (
             <Button
               onClick={() => this.openPaymentModal(data, row)}
-              // close={this.closePaymentModal}
+            // close={this.closePaymentModal}
             >
               보기
             </Button>
@@ -852,7 +863,7 @@ class ReceptionStatus extends Component {
             icon={<EnvironmentFilled />}
             className="tabBtn mapTab"
             onClick={this.openMapControlModal}
-            // onClick={() => { this.props.openMapControl() }}
+          // onClick={() => { this.props.openMapControl() }}
           >
             지도관제
           </Button>
@@ -880,6 +891,18 @@ class ReceptionStatus extends Component {
           >
             상담메세지
           </Button>
+
+          {this.state.sendSnsOpen && (
+            <SendSnsDialog
+              close={this.closeSendSnsModal}
+              callback={this.onSearchRiderDetail}
+            />
+          )}
+          <Button className="riderManageBtn" onClick={this.openSendSnsModal}>
+            전체메세지
+          </Button>
+
+
           {this.state.noticeOpen && (
             <NoticeDialog close={this.closeNoticeModal} />
           )}

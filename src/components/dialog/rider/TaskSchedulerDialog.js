@@ -59,70 +59,48 @@ class TaskSchedulerDialog extends Component {
     getList = () => {
         var list = [
             {
-                workName: '대여금',
-                processPrice: '-36300',
-                registerDate: '21-02-01 19:36:25',
-                registerName: '배지현',
-                applyTerm: '매일',
-                nextDate: '20120302',
-                limitTimeUse: '사용',
-                limitTimeStart: '21-02-06',
-                limitTimeFinish: '21-02-24',
-            },
-            {
-                workName: '대여금',
-                processPrice: '-36300',
-                registerDate: '21-02-01 19:36:25',
-                registerName: '배지현',
-                applyTerm: '매일',
-                nextDate: '20120302',
-                limitTimeUse: '사용',
-                limitTimeStart: '21-02-06',
-                limitTimeFinish: '21-02-24',
-            },
-            {
-                workName: '대여금',
-                processPrice: '-36300',
-                registerDate: '21-02-01 19:36:25',
-                registerName: '배지현',
-                applyTerm: '매일',
-                nextDate: '20120302',
-                limitTimeUse: '사용',
-                limitTimeStart: '21-02-06',
-                limitTimeFinish: '21-02-24',
-            },
-            {
                 workName: '리스비',
-                processPrice: '-36300',
-                registerDate: '21-02-01 19:36:25',
-                registerName: '배지현',
+                processPrice: '-26300',
+                registerDate: '21-06-01 19:36:25',
+                registerName: '관리자',
                 applyTerm: '매일',
                 nextDate: '20120302',
                 limitTimeUse: '사용',
-                limitTimeStart: '21-02-06',
-                limitTimeFinish: '21-02-24',
+                limitTimeStart: '21-06-01',
+                limitTimeFinish: '22-05-31',
             },
             {
-                workName: '리스비',
-                processPrice: '-36300',
+                workName: '비품 대여',
+                processPrice: '-2300',
                 registerDate: '21-02-01 19:36:25',
-                registerName: '배지현',
+                registerName: '관리자',
                 applyTerm: '매일',
                 nextDate: '20120302',
                 limitTimeUse: '사용',
-                limitTimeStart: '21-02-06',
-                limitTimeFinish: '21-02-24',
+                limitTimeStart: '21-06-01',
+                limitTimeFinish: '22-05-31',
             },
             {
-                workName: '리스비',
-                processPrice: '-36300',
+                workName: '패널티',
+                processPrice: '-30000',
                 registerDate: '21-02-01 19:36:25',
-                registerName: '배지현',
+                registerName: '관리자',
+                applyTerm: '매일',
+                nextDate: '20120302',
+                limitTimeUse: '미사용',
+                limitTimeStart: '',
+                limitTimeFinish: '',
+            },
+            {
+                workName: '대출금',
+                processPrice: '-50000',
+                registerDate: '21-02-01 19:36:25',
+                registerName: '관리자',
                 applyTerm: '매일',
                 nextDate: '20120302',
                 limitTimeUse: '사용',
-                limitTimeStart: '21-02-06',
-                limitTimeFinish: '21-02-24',
+                limitTimeStart: '21-07-02',
+                limitTimeFinish: '21-12-31',
             },
 
         ];
@@ -161,12 +139,12 @@ class TaskSchedulerDialog extends Component {
                     </div>
             },
             {
-                title: "작업명",
+                title: "차감명",
                 dataIndex: "workName",
                 className: "table-column-center",
             },
             {
-                title: "처리금액",
+                title: "차감금액",
                 dataIndex: "processPrice",
                 className: "table-column-center",
                 render: (data) => <div>{comma(data)}</div>
@@ -177,7 +155,6 @@ class TaskSchedulerDialog extends Component {
                 className: "table-column-center",
 
             },
-
             {
                 title: "기간제한사용",
                 dataIndex: "limitTimeUse",
@@ -201,62 +178,62 @@ class TaskSchedulerDialog extends Component {
 
         return (
 
-                        <React.Fragment>
-                            <div className="Dialog-overlay" onClick={close} />
-                            <div className="taskScheduler-Dialog">
+            <React.Fragment>
+                <div className="Dialog-overlay" onClick={close} />
+                <div className="taskScheduler-Dialog">
 
-                                <div className="taskScheduler-content">
-                                    <div className="taskScheduler-title">
-                                        일차감 목록
+                    <div className="taskScheduler-content">
+                        <div className="taskScheduler-title">
+                            일차감 목록
                                     </div>
-                                    <img onClick={close} src={require('../../../img/login/close.png').default} className="taskScheduler-close" />
-                                    <div className="taskScheduler-inner">
+                        <img onClick={close} src={require('../../../img/login/close.png').default} className="taskScheduler-close" />
+                        <div className="taskScheduler-inner">
 
-                                        <div className="taskScheduler-btn">
-                                            <div className="taskScheduler-btn-01">
-                                            {this.state.taskGroupOpen &&
-                                                <TaskGroupDialog close={this.closeTaskGroupModal} />}
-                                                <Button
-                                                    className="tabBtn taskScheduler-btn"
-                                                    onClick={this.openTaskGroupModal}
-                                                >그룹설정</Button>
-                                            </div>
-                                            <div className="taskScheduler-btn-02">
-                                            {this.state.taskWorkOpen &&
-                                                <TaskWorkDialog close={this.closeTaskWorkModal} />}
-                                                <Button
-                                                    className="tabBtn taskScheduler-btn"
-                                                    onClick={this.openTaskWorkModal}
-                                                >일차감 등록</Button>
-                                            </div>
-                                            <div className="taskScheduler-btn-03">
-                                                <Button
-                                                    className="tabBtn taskScheduler-btn"
-                                                    onClick={() => { }}
-                                                >조회</Button>
-                                            </div>
-                                        </div>
-
-
-                                        <Form ref={this.formIdRef} onFinish={this.handleIdSubmit}>
-                                            <div className="listBlock">
-                                                <Table
-                                                    // rowKey={(record) => record.idx}
-                                                    dataSource={this.state.list}
-                                                    columns={columns}
-                                                    pagination={this.state.pagination}
-                                                    onChange={this.handleTableChange}
-                                                />
-                                            </div>
-
-                                        </Form>
-
-                                    </div>
-
-
+                            <div className="taskScheduler-btn">
+                                <div className="taskScheduler-btn-01">
+                                    {this.state.taskGroupOpen &&
+                                        <TaskGroupDialog close={this.closeTaskGroupModal} />}
+                                    <Button
+                                        className="tabBtn taskScheduler-btn"
+                                        onClick={this.openTaskGroupModal}
+                                    >그룹관리</Button>
                                 </div>
+                                <div className="taskScheduler-btn-02">
+                                    {this.state.taskWorkOpen &&
+                                        <TaskWorkDialog close={this.closeTaskWorkModal} />}
+                                    <Button
+                                        className="tabBtn taskScheduler-btn"
+                                        onClick={this.openTaskWorkModal}
+                                    >일차감 등록</Button>
+                                </div>
+                                {/* <div className="taskScheduler-btn-03">
+                                    <Button
+                                        className="tabBtn taskScheduler-btn"
+                                        onClick={() => { }}
+                                    >조회</Button>
+                                </div> */}
                             </div>
-                        </React.Fragment>
+
+
+                            <Form ref={this.formIdRef} onFinish={this.handleIdSubmit}>
+                                <div className="listBlock">
+                                    <Table
+                                        // rowKey={(record) => record.idx}
+                                        dataSource={this.state.list}
+                                        columns={columns}
+                                        pagination={this.state.pagination}
+                                        onChange={this.handleTableChange}
+                                    />
+                                </div>
+
+                            </Form>
+
+                        </div>
+
+
+                    </div>
+                </div>
+            </React.Fragment>
 
         )
     }
