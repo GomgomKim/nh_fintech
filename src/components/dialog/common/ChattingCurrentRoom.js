@@ -134,7 +134,7 @@ const ChattingCurrentRoom = ({ currentRoomIdx, close }) => {
 
   const formatChatName = (item) => {
     const name =
-      item.member1 === loginIdx ? item.member2RiderName : item.member1RiderName;
+      item.member1 === loginIdx ? item.member2Name : item.member1Name;
     return name ? name : "(알수없음)";
   };
 

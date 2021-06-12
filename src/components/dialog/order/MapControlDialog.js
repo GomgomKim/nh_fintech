@@ -226,10 +226,11 @@ class MapControlDialog extends Component {
           this.setState({
             riderOrderList: [],
           });
-          customError(
-            "배차 목록 오류",
-            "해당 라이더의 배차가 존재하지 않습니다."
-          );
+          // 표시 안해도 될것 같음!!
+          // customError(
+          //   "배차 목록 오류",
+          //   "해당 라이더의 배차가 존재하지 않습니다."
+          // );
         }
       } else
         customError(

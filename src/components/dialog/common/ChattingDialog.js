@@ -8,6 +8,7 @@ import { login, logout } from "../../../actions/loginAction";
 import { httpGet, httpPost, httpUrl } from "../../../api/httpClient";
 import Const from "../../../const";
 import { formatYMD, formatYMDHMS } from "../../../lib/util/dateUtil";
+import MsgInputModal from "./MsgInputModal";
 
 class ChattingDialog extends Component {
   constructor(props) {
@@ -47,8 +48,8 @@ class ChattingDialog extends Component {
   formatChatName(item) {
     const name =
       item.member1 === this.props.loginReducer.loginInfo.idx
-        ? item.member2RiderName
-        : item.member1RiderName;
+        ? item.member2Name
+        : item.member1Name;
     return name ? name : "(알수없음)";
   }
   updateTime = (idx) => {
@@ -195,6 +196,18 @@ class ChattingDialog extends Component {
       <>
         <div className={"Modal-overlay"} onClick={close} />
         <div className={"Modal-chat"}>
+          <MsgInputModal
+            isOpen={this.state.msgInputModalOpen}
+            close={() => this.setState({ msgInputModalOpen: false })}
+            keyin={(data) => {
+              console.log(data);
+              this.onPressSend(data);
+              this.setState({ msgInputModalOpen: false });
+            }}
+            ok={() => {
+              this.setState({ msgInputModalOpen: false });
+            }}
+          />
 
           {currentRoom && (
             <div className="chat-message-container">
@@ -260,6 +273,9 @@ class ChattingDialog extends Component {
                   placeholder="메세지를 입력해주세요."
                   onChange={(e) => this.setState({ sendMsg: e.target.value })}
                   value={this.state.sendMsg}
+                  onFocus={() => {
+                    this.setState({ msgInputModalOpen: true });
+                  }}
                 />
                 <div
                   className="chat-send-btn"

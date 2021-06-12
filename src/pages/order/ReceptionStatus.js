@@ -21,6 +21,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { httpGet, httpPost, httpUrl } from "../../api/httpClient";
 import { customError } from "../../api/Modals";
+import ChattingDialog from "../../components/dialog/common/ChattingDialog";
 import ChattingCurrentRoom from "../../components/dialog/common/ChattingCurrentRoom";
 import SearchRiderDialog from "../../components/dialog/common/SearchRiderDialog";
 import FilteringDialog from "../../components/dialog/order/FilteringDialog";
@@ -68,6 +69,7 @@ class ReceptionStatus extends Component {
       noticeOpen: false,
       forceOpen: false,
       MessageOpen: false,
+      directMessageOpen: false,
       sendSnsOpen: false,
       activeIndex: -1,
       mapControlOpen: false,
@@ -402,6 +404,14 @@ class ReceptionStatus extends Component {
     this.setState({ MessageOpen: false });
   };
 
+  // 개인 메세지 dialog
+  openDirectMessageModal = () => {
+    this.setState({ directMessageOpen: true });
+  };
+  closeDirectMessageModal = () => {
+    this.setState({ directMessageOpen: false });
+  };
+
   // sns dialog
   openSendSnsModal = () => {
     this.setState({ sendSnsOpen: true });
@@ -700,10 +710,10 @@ class ReceptionStatus extends Component {
           className: "table-column-center",
           render: (data) => (
             <span>
-              <Button className="tabBtn" onClick={this.openMessageModal}>
+              <Button className="tabBtn" onClick={this.openDirectMessageModal}>
                 라이더
               </Button>
-              <Button className="tabBtn" onClick={this.openMessageModal}>
+              <Button className="tabBtn" onClick={this.openDirectMessageModal}>
                 가맹점
               </Button>
             </span>
@@ -822,12 +832,15 @@ class ReceptionStatus extends Component {
           />
         )}
         {this.state.MessageOpen && (
+          <ChattingDialog close={this.closeMessageModal} />
+        )}
+        {this.state.directMessageOpen && (
           <ChattingCurrentRoom
             currentRoomIdx={2}
-            close={this.closeMessageModal}
+            close={this.closeDirectMessageModal}
           />
         )}
-
+        
         {this.state.addCallOpen && (
           <RegistCallDialog close={this.closeAddCallModal} />
         )}
