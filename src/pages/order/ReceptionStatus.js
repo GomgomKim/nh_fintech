@@ -679,12 +679,47 @@ class ReceptionStatus extends Component {
         //   render: (data) => <div>{comma(data)}</div>,
         // },
         // 아마도 중복컬럼?
-
-        // 모양 맞추기
+        // 대표님 요청으로 임시로 원복 
+        // @todo 시연후 확인하자 by riverstyx
         {
-          title: "",
-          render: () => <div style={{ width: "800px" }}></div>,
+          title: "가맹점명",
+          dataIndex: "frName",
+          className: "table-column-center",
         },
+        {
+          title: "가맹점 번호",
+          dataIndex: "frPhone",
+          className: "table-column-center",
+        },
+        {
+          title: "가격",
+          dataIndex: "orderPrice",
+          className: "table-column-center",
+          render: (data) => <div>{comma(data)}</div>,
+        },
+        {
+          title: "배달요금",
+          dataIndex: "deliveryPrice",
+          className: "table-column-center",
+          render: (data) => <div>{comma(data)}</div>,
+        },
+        {
+          title: "결제방식",
+          dataIndex: "orderPayments",
+          className: "table-column-center",
+          render: (data, row) =>
+            data.length > 1 ? (
+              <>
+                <Button onClick={() => { this.openPaymentModal(data, row) }} close={this.clos}>
+                  보기
+                </Button>
+              </>
+            ) : (
+              <div>{paymentMethod[data[0]["paymentMethod"]]}</div>
+            ),
+        },
+
+
         {
           title: "배차",
           dataIndex: "forceLocate",
