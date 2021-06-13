@@ -75,7 +75,8 @@ const importantNotice = {
 }
 
 const orderCnt = {
-  0: "전체",
+  99: "전체",
+  0: "0개",
   1: "1개",
   2: "2개",
   3: "3개",
