@@ -72,7 +72,7 @@ const feeManner = {
 const importantNotice = {
   false: "table-white",
   true: "table-blue",
-}
+};
 
 const orderCnt = {
   99: "전체",
@@ -82,7 +82,7 @@ const orderCnt = {
   3: "3개",
   4: "4개",
   5: "5개 이상",
-}
+};
 
 const blockString = {
   0: "차단중",
@@ -124,11 +124,10 @@ const riderLevelText = [
   "센터장",
 ];
 
-const pgUseRate = [
-  // "",
-  "100%",
-  "0%",
-];
+const pgUseRate = {
+  100: "사용",
+  0: "미사용",
+};
 
 const arriveReqTime = {
   5: "5분",
@@ -149,16 +148,9 @@ const packAmount = {
   5: "5개이상",
 };
 
-const surchargeType = [
-    "지점 전체",
-    "지정 그룹"
-]
+const surchargeType = ["지점 전체", "지정 그룹"];
 
-const addType = [
-  "",
-  "아파트",
-  "오피스텔",
-];
+const addType = ["", "아파트", "오피스텔"];
 
 export {
   deliveryStatusCode,
@@ -187,5 +179,6 @@ export {
   addType,
   orderCnt,
   surchargeType,
-  importantNotice
+  importantNotice,
 };
+
