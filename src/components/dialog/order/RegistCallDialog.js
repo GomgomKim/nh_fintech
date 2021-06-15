@@ -4,7 +4,11 @@ import { Marker, NaverMap } from "react-naver-maps";
 import { httpGet, httpPost, httpUrl } from "../../../api/httpClient";
 import { updateComplete, updateError } from "../../../api/Modals";
 import "../../../css/modal.css";
-import { arriveReqTime, packAmount } from "../../../lib/util/codeUtil";
+import {
+  arriveReqTime,
+  packAmount,
+  paymentMethod
+} from "../../../lib/util/codeUtil";
 import { comma } from "../../../lib/util/numberUtil";
 import PostCodeDialog from "../common/PostCodeDialog";
 import SearchFranchiseDialog from "../common/SearchFranchiseDialog";
@@ -42,6 +46,7 @@ const newOrder = {
   orderIdx: 0,
   orderPayments: [
     {
+      idx: 1,
       paymentAmount: 0,
       paymentMethod: 1,
       paymentStatus: 1,
@@ -86,9 +91,11 @@ class RegistCallDialog extends Component {
   setDefaultState = () => {
     this.setState({
       data: this.props.data ? this.props.data : newOrder,
-      selectedDest: {
-        address: this.props.data ? this.props.data.destAddr1 : "",
-      },
+      selectedDest: this.props.data
+        ? {
+            address: this.props.data.destAddr1,
+          }
+        : null,
       selectedFr: {
         frIdx: this.props.data ? this.props.data.frIdx : 0,
         frLatitude: this.props.data ? this.props.data.frLatitude : 0,
@@ -202,9 +209,10 @@ class RegistCallDialog extends Component {
               longitude: lng,
             },
           });
+          console.log(this.state.selectedFr.idx, lat, lng);
           httpGet(
             httpUrl.getDeliveryPrice,
-            [this.state.selectedFr ? this.state.selectedFr.idx : 0, lat, lng],
+            [this.state.selectedFr.idx, lat, lng],
             {}
           )
             .then((res) => {
@@ -252,9 +260,11 @@ class RegistCallDialog extends Component {
 
   getDeliveryPriceByLatLng = (lat, lng) => {
     const self = this;
-    httpGet(httpUrl.getDeliveryPrice, [lat, lng], {})
+    console.log(this.state.selectedFr.idx, lat, lng);
+    httpGet(httpUrl.getDeliveryPrice, [this.state.selectedFr.idx, lat, lng], {})
       .then((res) => {
         if (res.result === "SUCCESS") {
+          console.log(res);
           self.formRef.current.setFieldsValue({
             deliveryPrice:
               res.data.deliveryPriceBasic + res.data.deliveryPriceExtra,
@@ -364,310 +374,358 @@ class RegistCallDialog extends Component {
             <Form ref={this.formRef} onFinish={this.handleSubmit}>
               <div className="registCallLayout">
                 <div className="registCallWrapper">
+                  <div>
+                    <div className="contentBlock">
+                      <div className="mainTitle">가맹점명</div>
+                      <FormItem name="addrMain" className="selectItem">
+                        {this.state.taskWorkOpen && (
+                          <SearchFranchiseDialog
+                            onSelect={(fr) => {
+                              this.setState({ selectedFr: fr }, () => {
+                                const fr = this.state.selectedFr;
+                                this.setState({
+                                  data: {
+                                    ...this.state.data,
+                                    // idx
+                                    frIdx: fr.idx,
+                                    frLatitude: fr.latitude,
+                                    frLongitude: fr.longitude,
+                                    frName: fr.frName,
+                                    frPhone: fr.frPhone,
+                                  },
+                                });
+                                if (this.state.selectedDest) {
+                                  if (
+                                    Object.keys(
+                                      this.state.selectedDest
+                                    ).includes("postcode")
+                                  ) {
+                                    this.getDeliveryPrice();
+                                  } else {
+                                    this.getDeliveryPriceByLatLng();
+                                  }
+                                } else return;
+                              });
+                            }}
+                            close={this.closeSearchFranchiseModal}
+                          />
+                        )}
 
-                <div>
-
-                  <div className="contentBlock">
-                    <div className="mainTitle">가맹점명</div>
-                    <FormItem name="addrMain" className="selectItem">
-                      {this.state.taskWorkOpen && (
-                        <SearchFranchiseDialog
-                          onSelect={(fr) => {
-                            this.setState({ selectedFr: fr }, () => {
-                              const fr = this.state.selectedFr;
+                        <div className="orderPayment-wrapper">
+                          <Input
+                            value={
+                              this.state.selectedFr
+                                ? this.state.selectedFr.frName
+                                : this.props.data
+                                ? this.props.data.frName
+                                : ""
+                            }
+                            style={{ marginLeft: 20, width: 250 }}
+                            required
+                          />
+                          <Button
+                            style={{ width: 150 }}
+                            onClick={this.openSearchFranchiseModal}
+                          >
+                            가맹점조회
+                          </Button>
+                        </div>
+                      </FormItem>
+                    </div>
+                    <div className="contentBlock">
+                      <div className="mainTitle">도착지</div>
+                      <FormItem name="addrMain" className="selectItem">
+                        <PostCodeDialog
+                          onSelect={(value) => {
+                            this.setState({ selectedDest: value }, () => {
                               this.setState({
                                 data: {
                                   ...this.state.data,
-                                  // idx
-                                  frIdx: fr.idx,
-                                  frLatitude: fr.latitude,
-                                  frLongitude: fr.longitude,
-                                  frName: fr.frName,
-                                  frPhone: fr.frPhone,
+                                  destAddr1: this.state.selectedDest.address,
                                 },
                               });
-                              if (this.state.selectedDest) {
+                              if (this.state.selectedFr.frIdx !== 0) {
+                                console.log("기본 state 가맹점");
+                                console.log(this.state.selectedFr);
                                 this.getDeliveryPrice();
                               }
                             });
                           }}
-                          close={this.closeSearchFranchiseModal}
+                          isOpen={this.state.isPostCodeOpen}
+                          close={this.closePostCode}
+                        />
+                        <div className="orderPayment-wrapper">
+                          <Input
+                            initialValue={
+                              this.state.selectedDest
+                                ? this.state.selectedDest.address
+                                : this.props.data
+                                ? this.props.data.destAddr1
+                                : ""
+                            }
+                            value={
+                              this.state.selectedDest
+                                ? this.state.selectedDest.address
+                                : this.props.data
+                                ? this.props.data.destAddr1
+                                : ""
+                            }
+                            style={{ marginLeft: 20, width: 250 }}
+                            required
+                          />
+                          <Button
+                            style={{ width: 150 }}
+                            onClick={this.openPostCode}
+                          >
+                            우편번호 검색
+                          </Button>
+                        </div>
+                      </FormItem>
+                    </div>
+                    <div className="contentBlock">
+                      <div className="mainTitle">상세주소</div>
+                      <FormItem name="addrSub" className="selectItem">
+                        <Input
+                          placeholder="상세주소를 입력해 주세요."
+                          className="override-input"
+                          defaultValue={data.destAddr2}
+                          onChange={(e) =>
+                            this.handleChangeInput(e.target.value, "destAddr2")
+                          }
+                        ></Input>
+                      </FormItem>
+                    </div>
+                    <div className="contentBlock">
+                      <div className="mainTitle">기본 배달요금</div>
+                      <FormItem
+                        name="basicDeliveryPrice"
+                        className="selectItem"
+                      >
+                        <Input
+                          placeholder="배달요금 입력"
+                          className="override-input"
+                          defaultValue={comma(basicDeliveryPrice)}
+                          required
+                          disabled
+                        ></Input>
+                      </FormItem>
+                    </div>
+                    <div className="contentBlock">
+                      <div className="mainTitle">할증 배달요금</div>
+                      <FormItem
+                        name="extraDeliveryPrice"
+                        className="selectItem"
+                      >
+                        <Input
+                          type="number"
+                          placeholder="할증 배달요금 입력"
+                          className="override-input"
+                          defaultValue={
+                            this.props.data
+                              ? comma(this.props.data.extraDeliveryPrice)
+                              : ""
+                          }
+                          onChange={(e) =>
+                            this.handleChangeInput(
+                              parseInt(e.target.value),
+                              "extraDeliveryPrice"
+                            )
+                          }
+                          required
+                        ></Input>
+                      </FormItem>
+                    </div>
+                    <div className="contentBlock">
+                      <div className="mainTitle">가격</div>
+                      <FormItem name="orderPrice" className="selectItem">
+                        <Input
+                          type="number"
+                          placeholder="가격 입력"
+                          className="override-input"
+                          defaultValue={comma(data.orderPrice)}
+                          onChange={(e) =>
+                            this.handleChangeInput(
+                              parseInt(e.target.value),
+                              "orderPrice"
+                            )
+                          }
+                          required
+                        ></Input>
+                      </FormItem>
+                    </div>
+                    <div className="contentBlock">
+                      <div className="mainTitle">결제방식</div>
+                      {this.state.paymentOpen && (
+                        <PaymentDialog
+                          close={this.closePaymentModal}
+                          handlePaymentChange={this.handlePaymentChange}
+                          orderPayments={
+                            this.state.data
+                              ? this.state.data.orderPayments
+                              : this.props.data
+                              ? this.props.data.orderPayments
+                              : ""
+                          }
+                          editable={this.state.editable}
+                          orderPrice={
+                            this.state.data
+                              ? this.state.data.orderPrice
+                              : this.props.data
+                              ? this.props.data.orderPrice
+                              : ""
+                          }
                         />
                       )}
+                      <Button
+                        onClick={this.openPaymentModal}
+                        className="override-input"
+                      >
+                        결제방식 선택
+                      </Button>
+                    </div>
 
-                      <div className="orderPayment-wrapper">
-                        <Input
-                          value={
-                            this.state.selectedFr
-                              ? this.state.selectedFr.frName
-                              : this.props.data
-                              ? this.props.data.frName
-                              : ""
-                          }
-                          style={{ marginLeft: 20,  width: 250 }}
-                          required
-                        />
-                        <Button style={{width: 150}}onClick={this.openSearchFranchiseModal}>
-                          가맹점조회
-                        </Button>
-                      </div>
-                    </FormItem>
-                  </div>
-                  <div className="contentBlock">
-                    <div className="mainTitle">도착지</div>
-                    <FormItem name="addrMain" className="selectItem">
-                      <PostCodeDialog
-                        onSelect={(value) => {
-                          this.setState({ selectedDest: value }, () => {
-                            this.setState({
-                              data: {
-                                ...this.state.data,
-                                destAddr1: this.state.selectedDest.address,
-                              },
-                            });
-                            if (this.state.selectedFr.frIdx !== 0) {
-                              console.log("기본 state 가맹점");
-                              console.log(this.state.selectedFr);
-                              this.getDeliveryPrice();
-                            }
-                          });
-                        }}
-                        isOpen={this.state.isPostCodeOpen}
-                        close={this.closePostCode}
-                      />
-                      <div className="orderPayment-wrapper">
-                        <Input
-                          initialValue={
-                            this.state.selectedDest
-                              ? this.state.selectedDest.address
-                              : this.props.data
-                              ? this.props.data.destAddr1
-                              : ""
-                          }
-                          value={
-                            this.state.selectedDest
-                              ? this.state.selectedDest.address
-                              : this.props.data
-                              ? this.props.data.destAddr1
-                              : ""
-                          }
-                          style={{ marginLeft: 20, width: 250 }}
-                          required
-                        />
-                        <Button style={{width: 150}} onClick={this.openPostCode}>
-                          우편번호 검색
-                        </Button>
-                      </div>
-                    </FormItem>
-                  </div>
-                  <div className="contentBlock">
-                    <div className="mainTitle">상세주소</div>
-                    <FormItem name="addrSub" className="selectItem">
-                      <Input
-                        placeholder="상세주소를 입력해 주세요."
-                        className="override-input"
-                        defaultValue={data.destAddr2}
-                        onChange={(e) =>
-                          this.handleChangeInput(e.target.value, "destAddr2")
-                        }
-                      ></Input>
-                    </FormItem>
-                  </div>
-                  <div className="contentBlock">
-                    <div className="mainTitle">기본 배달요금</div>
-                    <FormItem name="basicDeliveryPrice" className="selectItem">
-                      <Input
-                        placeholder="배달요금 입력"
-                        className="override-input"
-                        defaultValue={comma(basicDeliveryPrice)}
-                        required
-                        disabled
-                      ></Input>
-                    </FormItem>
-                  </div>
-                  <div className="contentBlock">
-                    <div className="mainTitle">할증 배달요금</div>
-                    <FormItem name="extraDeliveryPrice" className="selectItem">
-                      <Input
-                        type="number"
-                        placeholder="할증 배달요금 입력"
-                        className="override-input"
-                        defaultValue={
-                          this.props.data
-                            ? comma(this.props.data.extraDeliveryPrice)
-                            : ""
-                        }
-                        onChange={(e) =>
-                          this.handleChangeInput(
-                            parseInt(e.target.value),
-                            "extraDeliveryPrice"
-                          )
-                        }
-                        required
-                      ></Input>
-                    </FormItem>
-                  </div>
-                  <div className="contentBlock">
-                    <div className="mainTitle">가격</div>
-                    <FormItem name="orderPrice" className="selectItem">
-                      <Input
-                        type="number"
-                        placeholder="가격 입력"
-                        className="override-input"
-                        defaultValue={comma(data.orderPrice)}
-                        onChange={(e) =>
-                          this.handleChangeInput(
-                            parseInt(e.target.value),
-                            "orderPrice"
-                          )
-                        }
-                        required
-                      ></Input>
-                    </FormItem>
-                  </div>
-                  <div className="contentBlock">
-                    <div className="mainTitle">결제방식</div>
-                    {this.state.paymentOpen && (
-                      <PaymentDialog
-                        close={this.closePaymentModal}
-                        handlePaymentChange={this.handlePaymentChange}
-                        orderPayments={
-                          this.state.data
-                            ? this.state.data.orderPayments
-                            : this.props.data
-                            ? this.props.data.orderPayments
-                            : ""
-                        }
-                        editable={this.state.editable}
-                        orderPrice={
-                          this.state.data
-                            ? this.state.data.orderPrice
-                            : this.props.data
-                            ? this.props.data.orderPrice
-                            : ""
-                        }
-                      />
-                    )}
-                    <Button
-                      onClick={this.openPaymentModal}
-                      className="override-input"
-                    >
-                      결제방식 선택
-                    </Button>
-                  </div>
+                    <div className="contentBlock">
+                      <div className="mainTitle" />
 
+                      <div className="selectItem" style={{marginLeft:20}}>
+                        {this.state.data &&
+                          this.state.data.orderPayments.map((el) => {
+                            return (
+                              <div
+                                style={{
+                                  display: "inline-block",
+                                  backgroundColor: "black",
+                                  color: "#fddc00",
+                                  padding: "5px 8px",
+                                  borderRadius: 5,
+                                  marginRight: 10,
+                                }}
+                              >
+                                {paymentMethod[el.paymentMethod]} :{" "}
+                                {comma(el.paymentAmount)} 원
+                              </div>
+                            );
+                          })}
+                      </div>
+                    </div>
                   </div>
 
                   <div>
-                  <div className="contentBlock" style={{marginTop: 0}}>
-                    <div className="mainTitle">음식준비완료</div>
-                    <FormItem name="itemPrepared" className="selectItem">
-                      <Checkbox
-                        defaultChecked={data.itemPrepared}
-                        onChange={(e) =>
-                          this.handleChangeInput(
-                            e.target.checked,
-                            "itemPrepared"
-                          )
-                        }
-                      />
-                    </FormItem>
-                  </div>
-                  <div className="contentBlock">
-                    <div className="mainTitle">요청시간</div>
-                    <FormItem name="arriveReqTime" className="selectItem">
-                      <Select
-                        defaultValue={
-                          this.state.data
-                            ? arriveReqTime[this.state.data.arriveReqTime]
-                            : this.props.data
-                            ? arriveReqTime[this.props.data.arriveReqTime]
-                            : arriveReqTime[5]
-                        }
-                        placeholder="시간단위"
-                        className="override-input"
-                        onChange={(value) =>
-                          this.handleChangeInput(
-                            parseInt(value),
-                            "arriveReqTime"
-                          )
-                        }
-                        required
+                    <div className="contentBlock" style={{ marginTop: 0 }}>
+                      <div className="mainTitle">음식준비완료</div>
+                      <FormItem name="itemPrepared" className="selectItem">
+                        <Checkbox
+                          defaultChecked={data.itemPrepared}
+                          onChange={(e) =>
+                            this.handleChangeInput(
+                              e.target.checked,
+                              "itemPrepared"
+                            )
+                          }
+                        />
+                      </FormItem>
+                    </div>
+                    <div className="contentBlock">
+                      <div className="mainTitle">요청시간</div>
+                      <FormItem name="arriveReqTime" className="selectItem">
+                        <Select
+                          defaultValue={
+                            this.state.data
+                              ? arriveReqTime[this.state.data.arriveReqTime]
+                              : this.props.data
+                              ? arriveReqTime[this.props.data.arriveReqTime]
+                              : arriveReqTime[5]
+                          }
+                          placeholder="시간단위"
+                          className="override-input"
+                          onChange={(value) =>
+                            this.handleChangeInput(
+                              parseInt(value),
+                              "arriveReqTime"
+                            )
+                          }
+                          required
+                        >
+                          {Object.keys(arriveReqTime).map((key) => (
+                            <Option value={key}>{arriveReqTime[key]}</Option>
+                          ))}
+                        </Select>
+                      </FormItem>
+                    </div>
+                    <div className="contentBlock">
+                      <div className="mainTitle">묶음배송 봉지수</div>
+                      <FormItem name="packAmount" className="selectItem">
+                        <Select
+                          defaultValue={
+                            this.state.data
+                              ? packAmount[this.state.data.packAmount]
+                              : this.props.data
+                              ? packAmount[this.props.data.packAmount]
+                              : packAmount[1]
+                          }
+                          placeholder="배달갯수"
+                          className="override-input"
+                          onChange={(value) =>
+                            this.handleChangeInput(
+                              parseInt(value),
+                              "packAmount"
+                            )
+                          }
+                          required
+                        >
+                          {Object.keys(packAmount).map((key) => (
+                            <Option value={key}>{packAmount[key]}</Option>
+                          ))}
+                        </Select>
+                      </FormItem>
+                    </div>
+                    <div className="contentBlock">
+                      <div className="mainTitle">고객 전화번호</div>
+                      <FormItem name="custPhone" className="selectItem">
+                        <Input
+                          placeholder="고객 전화번호를 입력해 주세요."
+                          className="override-input"
+                          defaultValue={data.custPhone}
+                          onChange={(e) =>
+                            this.setState({
+                              data: {
+                                ...this.state.data,
+                                custPhone: e.target.value,
+                              },
+                            })
+                          }
+                          required
+                        ></Input>
+                      </FormItem>
+                    </div>
+                    <div className="contentBlock">
+                      <div className="mainTitle">메모</div>
+                      <FormItem name="callmemo" className="selectItem">
+                        <Input
+                          placeholder="메모를 입력해 주세요."
+                          className="override-input"
+                          defaultValue={data.custMessage}
+                          onChange={(e) =>
+                            this.handleChangeInput(
+                              e.target.value,
+                              "custMessage"
+                            )
+                          }
+                          required
+                        ></Input>
+                      </FormItem>
+                    </div>
+                    <div className="contentBlock">
+                      <Button
+                        type="primary"
+                        htmlType="submit"
+                        className="callTab"
                       >
-                        {Object.keys(arriveReqTime).map((key) => (
-                          <Option value={key}>{arriveReqTime[key]}</Option>
-                        ))}
-                      </Select>
-                    </FormItem>
-                  </div>
-                  <div className="contentBlock">
-                    <div className="mainTitle">묶음배송 봉지수</div>
-                    <FormItem name="packAmount" className="selectItem">
-                      <Select
-                        defaultValue={
-                          this.state.data
-                            ? packAmount[this.state.data.packAmount]
-                            : this.props.data
-                            ? packAmount[this.props.data.packAmount]
-                            : packAmount[1]
-                        }
-                        placeholder="배달갯수"
-                        className="override-input"
-                        onChange={(value) =>
-                          this.handleChangeInput(parseInt(value), "packAmount")
-                        }
-                        required
-                      >
-                        {Object.keys(packAmount).map((key) => (
-                          <Option value={key}>{packAmount[key]}</Option>
-                        ))}
-                      </Select>
-                    </FormItem>
-                  </div>
-                  <div className="contentBlock">
-                    <div className="mainTitle">고객 전화번호</div>
-                    <FormItem name="custPhone" className="selectItem">
-                      <Input
-                        placeholder="고객 전화번호를 입력해 주세요."
-                        className="override-input"
-                        defaultValue={data.custPhone}
-                        onChange={(e) =>
-                          this.setState({
-                            data: {
-                              ...this.state.data,
-                              custPhone: e.target.value,
-                            },
-                          })
-                        }
-                        required
-                      ></Input>
-                    </FormItem>
-                  </div>
-                  <div className="contentBlock">
-                    <div className="mainTitle">메모</div>
-                    <FormItem name="callmemo" className="selectItem">
-                      <Input
-                        placeholder="메모를 입력해 주세요."
-                        className="override-input"
-                        defaultValue={data.custMessage}
-                        onChange={(e) =>
-                          this.handleChangeInput(e.target.value, "custMessage")
-                        }
-                        required
-                      ></Input>
-                    </FormItem>
-                  </div>
-                  <div className="contentBlock">
-                    <Button
-                      type="primary"
-                      htmlType="submit"
-                      className="callTab"
-                    >
-                      등록하기
-                    </Button>
+                        등록하기
+                      </Button>
+                    </div>
                   </div>
                 </div>
-              </div>
                 <div className="mapLayout regist-call-map" id="myMap">
                   {navermaps && (
                     <NaverMap
@@ -722,11 +780,14 @@ class RegistCallDialog extends Component {
                                       address: response.result.items[0].address,
                                     },
                                   },
-                                  () =>
-                                    this.getDeliveryPriceByLatLng(
-                                      e.latlng.y,
-                                      e.latlng.x
-                                    )
+                                  () => {
+                                    if (this.state.selectedFr.frIdx !== 0) {
+                                      this.getDeliveryPriceByLatLng(
+                                        e.latlng.y,
+                                        e.latlng.x
+                                      );
+                                    }
+                                  }
                                 );
                               } else {
                                 Modal.info({

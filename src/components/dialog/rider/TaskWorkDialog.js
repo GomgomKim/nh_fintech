@@ -123,12 +123,15 @@ class TaskWorkDialog extends Component {
                                             style={{ marginBottom: 0, display: 'inline-block', verticalAlign: 'middle' }}
                                             name="taskWork-place"
                                         >
-                                            {/* <Select placeholder="적용대상을 선택해주세요" className="taskWork-select">
-                                                <Option value={1}>대여금 -36300원 배지현</Option>
+                                            <Select placeholder="적용대상을 선택해주세요" className="taskWork-select">
+                                                {/* <Option value={1}>대여금 -36300원 배지현</Option>
                                                 <Option value={2}>대여금 -36300원 배지현</Option>
-                                                <Option value={3}>대여금 -36300원 배지현</Option>
-                                            </Select> */}
-                                            {this.state.searchRiderOpen &&
+                                                <Option value={3}>대여금 -36300원 배지현</Option> */}
+                                                <Option value={1}>리스 21,000원 그룹</Option>
+                                                <Option value={2}>리스 23,000원 그룹</Option>
+                                                <Option value={3}>대출상환 31,000원 그룹</Option>
+                                            </Select>
+                                            {/* {this.state.searchRiderOpen &&
                                                 <SearchRiderDialog
                                                     close={this.closeSearchRiderModal}
                                                     callback={(data) => this.setState({
@@ -138,7 +141,7 @@ class TaskWorkDialog extends Component {
                                             <Button className="tabBtn" onClick={this.openSearchRiderModal}
                                                 style={{ width: 186, marginLeft: -1 }}>
                                                 기사조회
-                                             </Button>
+                                             </Button> */}
 
 
                                         </FormItem>
@@ -165,7 +168,7 @@ class TaskWorkDialog extends Component {
                                     {this.state.isTimeLimit &&
                                         <RangePicker
                                             placeholder={['시작일', '종료일']}
-                                            showTime={{ format: 'MM:dd' }}
+                                            format={'YYYY-MM-DD'}
                                             onChange={this.onChangeDate}
                                             style={{ width: 300 }}
                                         />

@@ -26,7 +26,6 @@ class RegistFranDialog extends Component {
       isPostCodeOpen: false,
       roadAddr: "",
       localAddr: "",
-      PgRate: 0,
       feeManner: 1,
       // 좌표
       targetLat: 0,
@@ -45,6 +44,12 @@ class RegistFranDialog extends Component {
 
   handleSubmit = () => {
     if (this.props.data) {
+      console.log({
+        ...this.formRef.current.getFieldsValue(),
+        idx: this.props.data.idx,
+        branchIdx: this.props.branchIdx,
+        userGroup: 0,
+      });
       httpPost(httpUrl.franchiseUpdate, [], {
         ...this.formRef.current.getFieldsValue(),
         idx: this.props.data.idx,
@@ -83,7 +88,6 @@ class RegistFranDialog extends Component {
         ncashPayEnabled: false,
         tidNormal: "",
         tidPrepay: "",
-        tidNormalRate: this.state.PgRate, // 100 or 0
         chargeDate: 1,
         duesAutoChargeEnabled: false,
         dues: 0,
@@ -107,7 +111,7 @@ class RegistFranDialog extends Component {
         ncashPayEnabled: false,
         tidNormal: "",
         tidPrepay: "",
-        tidNormalRate: this.state.PgRate, // 100 or 0
+        // tidNormalRate: this.state.PgRate, // 100 or 0
         chargeDate: 1,
         duesAutoChargeEnabled: false,
         dues: 0,
@@ -191,11 +195,6 @@ class RegistFranDialog extends Component {
         );
       }
     });
-  };
-
-  onChangePgRate = (e) => {
-    console.log(e.target.value);
-    this.setState({ PgRate: e.target.value }, () => {});
   };
 
   onChangFeeManner = (e) => {
@@ -289,7 +288,7 @@ class RegistFranDialog extends Component {
                       name="phone"
                       className="selectItem"
                       // initialValue={data && data.frPhone}
-                      initialValue={data && "010-1234-5678"}
+                      initialValue={data && data.phone}
                     >
                       <Input
                         placeholder="휴대전화 번호를 입력해 주세요."
@@ -396,19 +395,23 @@ class RegistFranDialog extends Component {
                   <div className="contentBlock">
                     <div className="mainTitle">PG 사용여부</div>
                     <div className="registRiderCheck">
-                      <FormItem name="tidNormalRate" initialValue={0}>
+                      <FormItem
+                        name="tidNormalRate"
+                        defaultValue={data ? data.tidNormalRate : 100}
+                      >
                         <Radio.Group
                           className="searchRequirement"
-                          onChange={this.onChangePgRate}
-                          value={this.state.PgRate}
+                          defaultValue={data ? data.tidNormalRate : 100}
                         >
-                          {Object.entries(pgUseRate).map(([key, value]) => {
-                            return (
-                              <Radio value={parseInt(key)}>
-                                {value === "100%" ? "사용" : "미사용"}
-                              </Radio>
-                            );
-                          })}
+                          {Object.keys(pgUseRate)
+                            .reverse()
+                            .map((key) => {
+                              return (
+                                <Radio value={parseInt(key)}>
+                                  {pgUseRate[key]}
+                                </Radio>
+                              );
+                            })}
                         </Radio.Group>
                       </FormItem>
                     </div>

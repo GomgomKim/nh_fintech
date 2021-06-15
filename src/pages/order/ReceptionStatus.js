@@ -21,6 +21,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { httpGet, httpPost, httpUrl } from "../../api/httpClient";
 import { customError } from "../../api/Modals";
+import ChattingDialog from "../../components/dialog/common/ChattingDialog";
 import ChattingCurrentRoom from "../../components/dialog/common/ChattingCurrentRoom";
 import SearchRiderDialog from "../../components/dialog/common/SearchRiderDialog";
 import FilteringDialog from "../../components/dialog/order/FilteringDialog";
@@ -68,6 +69,7 @@ class ReceptionStatus extends Component {
       noticeOpen: false,
       forceOpen: false,
       MessageOpen: false,
+      directMessageOpen: false,
       sendSnsOpen: false,
       activeIndex: -1,
       mapControlOpen: false,
@@ -402,6 +404,14 @@ class ReceptionStatus extends Component {
     this.setState({ MessageOpen: false });
   };
 
+  // 개인 메세지 dialog
+  openDirectMessageModal = () => {
+    this.setState({ directMessageOpen: true });
+  };
+  closeDirectMessageModal = () => {
+    this.setState({ directMessageOpen: false });
+  };
+
   // sns dialog
   openSendSnsModal = () => {
     this.setState({ sendSnsOpen: true });
@@ -669,12 +679,47 @@ class ReceptionStatus extends Component {
         //   render: (data) => <div>{comma(data)}</div>,
         // },
         // 아마도 중복컬럼?
-
-        // 모양 맞추기
+        // 대표님 요청으로 임시로 원복 
+        // @todo 시연후 확인하자 by riverstyx
         {
-          title: "",
-          render: () => <div style={{ width: "800px" }}></div>,
+          title: "가맹점명",
+          dataIndex: "frName",
+          className: "table-column-center",
         },
+        {
+          title: "가맹점 번호",
+          dataIndex: "frPhone",
+          className: "table-column-center",
+        },
+        {
+          title: "가격",
+          dataIndex: "orderPrice",
+          className: "table-column-center",
+          render: (data) => <div>{comma(data)}</div>,
+        },
+        {
+          title: "배달요금",
+          dataIndex: "deliveryPrice",
+          className: "table-column-center",
+          render: (data) => <div>{comma(data)}</div>,
+        },
+        {
+          title: "결제방식",
+          dataIndex: "orderPayments",
+          className: "table-column-center",
+          render: (data, row) =>
+            data.length > 1 ? (
+              <>
+                <Button onClick={() => { this.openPaymentModal(data, row) }} close={this.clos}>
+                  보기
+                </Button>
+              </>
+            ) : (
+              <div>{paymentMethod[data[0]["paymentMethod"]]}</div>
+            ),
+        },
+
+
         {
           title: "배차",
           dataIndex: "forceLocate",
@@ -700,10 +745,10 @@ class ReceptionStatus extends Component {
           className: "table-column-center",
           render: (data) => (
             <span>
-              <Button className="tabBtn" onClick={this.openMessageModal}>
+              <Button className="tabBtn" onClick={this.openDirectMessageModal}>
                 라이더
               </Button>
-              <Button className="tabBtn" onClick={this.openMessageModal}>
+              <Button className="tabBtn" onClick={this.openDirectMessageModal}>
                 가맹점
               </Button>
             </span>
@@ -822,12 +867,15 @@ class ReceptionStatus extends Component {
           />
         )}
         {this.state.MessageOpen && (
+          <ChattingDialog close={this.closeMessageModal} />
+        )}
+        {this.state.directMessageOpen && (
           <ChattingCurrentRoom
             currentRoomIdx={2}
-            close={this.closeMessageModal}
+            close={this.closeDirectMessageModal}
           />
         )}
-
+        
         {this.state.addCallOpen && (
           <RegistCallDialog close={this.closeAddCallModal} />
         )}

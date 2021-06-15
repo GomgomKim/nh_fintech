@@ -42,7 +42,76 @@ class TaskGroupDialog extends Component {
     getList = () => {
         var list = [
             {
-                groupName: '리스비',
+            //     groupName: '리스비',
+            //     data: [
+            //         {
+            //             riderName: '김민준',
+            //         },
+            //         {
+            //             riderName: '최예준',
+            //         },
+            //         {
+            //             riderName: '박준서',
+            //         },
+            //         {
+            //             riderName: '김현우',
+            //         },
+            //         {
+            //             riderName: '이도현',
+            //         },
+            //         {
+            //             riderName: '나선우',
+            //         }
+            //     ]
+            // },
+            // {
+            //     groupName: '비품 대여',
+            //     data: [
+            //         {
+            //             riderName: '이건우',
+            //         },
+            //         {
+            //             riderName: '박준서',
+            //         },
+            //         {
+            //             riderName: '이도현',
+            //         },
+            //     ]
+            // },
+            // {
+            //     groupName: '패널티',
+            //     data: [
+            //         {
+            //             riderName: '이지훈',
+            //         },
+            //         {
+            //             riderName: '정현준',
+            //         },
+            //     ]
+            // },
+            // {
+            //     groupName: '대출금',
+            //     data: [
+            //         {
+            //             riderName: '지유준',
+            //         },
+            //         {
+            //             riderName: '조승우',
+            //         },
+            //         {
+            //             riderName: '김지환',
+            //         },
+            //         {
+            //             riderName: '유시윤',
+            //         },
+            //         {
+            //             riderName: '성민재',
+            //         },
+            //         {
+            //             riderName: '이지훈',
+            //         }
+            //     ]
+                groupName: '리스 21,000원 그룹',
                 data: [
                     {
                         riderName: '김민준',
@@ -65,7 +134,7 @@ class TaskGroupDialog extends Component {
                 ]
             },
             {
-                groupName: '비품 대여',
+                groupName: '리스 23,000원 그룹',
                 data: [
                     {
                         riderName: '이건우',
@@ -79,18 +148,7 @@ class TaskGroupDialog extends Component {
                 ]
             },
             {
-                groupName: '패널티',
-                data: [
-                    {
-                        riderName: '이지훈',
-                    },
-                    {
-                        riderName: '정현준',
-                    },
-                ]
-            },
-            {
-                groupName: '대출금',
+                groupName: '대출상환 31,000원 그룹',
                 data: [
                     {
                         riderName: '지유준',
