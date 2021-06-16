@@ -1215,7 +1215,7 @@
   vertical-align: middle;
   font-weight: bold;
   color: #1890ff;
-  margin-bottom: 30px;
+  /* margin-bottom: 30px; */
 }
 .registFranWrapper .mainTitle {
   display: inline-block;
@@ -2783,7 +2783,7 @@
 
 .registRiderWrapper.sub .submitBlock {
   width: 390px;
-  margin-top: 65px;
+  margin-top: 55px;
 }
 
 /* 하단 */
