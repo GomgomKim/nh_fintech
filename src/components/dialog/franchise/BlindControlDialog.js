@@ -5,15 +5,15 @@ import {
 import '../../../css/modal.css';
 import { frRiderString, blockString } from '../../../lib/util/codeUtil';
 import { httpPost, httpUrl } from "../../../api/httpClient";
-import SelectBox from '../../../components/input/SelectBox';
+import SelectBox from '../../input/SelectBox';
 import { formatDate } from "../../../lib/util/dateUtil";
 import { connect } from "react-redux";
-import SearchRiderDialog from "../../dialog/common/SearchRiderDialog";
-import SearchFranchiseDialog from "../../dialog/common/SearchFranchiseDialog";
+import SearchRiderDialog from "../common/SearchRiderDialog";
+import SearchFranchiseDialog from "../common/SearchFranchiseDialog";
 import { blindComplete, blindError, unBlindComplete, unBlindError } from "../../../api/Modals";
 const FormItem = Form.Item;
 
-class BlindFranListDialog extends Component {
+class BlindControlDialog extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -33,53 +33,53 @@ class BlindFranListDialog extends Component {
         this.formRef = React.createRef();
     }
 
-    componentDidMount() {
-        this.getList()
-    }
+    // componentDidMount() {
+    //     this.getList()
+    // }
 
-    componentDidUpdate(prevProps) {
-        if (prevProps.isOpen !== this.props.isOpen) {
-            this.getList()
-        }
-    }
+    // componentDidUpdate(prevProps) {
+    //     if (prevProps.isOpen !== this.props.isOpen) {
+    //         this.getList()
+    //     }
+    // }
 
-    handleTableChange = (pagination) => {
-        const pager = { ...this.state.pagination };
-        pager.current = pagination.current;
-        pager.pageSize = pagination.pageSize
-        this.setState({
-            pagination: pager,
-        }, () => this.getList());
-    };
+    // handleTableChange = (pagination) => {
+    //     const pager = { ...this.state.pagination };
+    //     pager.current = pagination.current;
+    //     pager.pageSize = pagination.pageSize
+    //     this.setState({
+    //         pagination: pager,
+    //     }, () => this.getList());
+    // };
 
     
-    getList = () => {
-        let { data } = this.props;
-        let frIdx = data.idx;
-        httpPost(httpUrl.blindList, [], {
-            frIdx: frIdx,
-            pageNum: this.state.pagination.current,
-            pageSize: this.state.pagination.pageSize,
-            deletedList: this.state.deletedCheck !== true ? [0] : [0, 1],
-        })
-        .then((res) => {
-            if (res.result === "SUCCESS") {
-                this.setState({
-                    list: res.data.riderFrBlocks,
-                })
-            }
-            else {
-                Modal.info({
-                    title: "목록 에러",
-                    content: (
-                        <div>
-                            에러가 발생하여 목록을 불러올수 없습니다.
-                        </div>
-                    ),
-                });
-            }
-        })
-    };
+    // getList = () => {
+    //     let { data } = this.props;
+    //     let frIdx = data.idx;
+    //     httpPost(httpUrl.blindList, [], {
+    //         frIdx: frIdx,
+    //         pageNum: this.state.pagination.current,
+    //         pageSize: this.state.pagination.pageSize,
+    //         deletedList: this.state.deletedCheck !== true ? [0] : [0, 1],
+    //     })
+    //     .then((res) => {
+    //         if (res.result === "SUCCESS") {
+    //             this.setState({
+    //                 list: res.data.riderFrBlocks,
+    //             })
+    //         }
+    //         else {
+    //             Modal.info({
+    //                 title: "목록 에러",
+    //                 content: (
+    //                     <div>
+    //                         에러가 발생하여 목록을 불러올수 없습니다.
+    //                     </div>
+    //                 ),
+    //             });
+    //         }
+    //     })
+    // };
     
     handleSubmit = () =>{
         const form = this.formRef.current;
@@ -257,18 +257,20 @@ class BlindFranListDialog extends Component {
                             <div className="blind-Dialog">
                                 <div className="blind-container">
                                     <div className="blind-title">
-                                        {data.frName} 가맹점의 블라인드 목록
-                                    </div>                                    
-                                    <div>
+                                        블라인드 관리
+                                    </div>
+                                    <div>                                      
                                         <Checkbox
                                             style={{marginRight:5, marginLeft: 20}}
                                             defaultChecked={this.state.deletedCheck ? "checked" : ""}
                                             onChange={this.onDeleteCheck} />
-                                            해제 포함
+                                        해제 포함
                                     </div>
+                                    
                                     <img onClick={close} src={require('../../../img/login/close.png').default} 
                                     className="blind-close" alt='close'/>
 
+                                  
 
                                     <div className="blindLayout">
                                         <div className="listBlock">
@@ -387,4 +389,4 @@ const mapDispatchToProps = (dispatch) => {
     return {};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(BlindFranListDialog);
+export default connect(mapStateToProps, mapDispatchToProps)(BlindControlDialog);

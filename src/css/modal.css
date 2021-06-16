@@ -3584,6 +3584,9 @@
   text-align: left;
   color: #777;
 }
+.blind-container > div:nth-child(2) {
+  display: inline-block;
+}
 
 .blind-title {
   /* font-size: 28px; */

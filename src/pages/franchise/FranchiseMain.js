@@ -8,6 +8,7 @@ import { httpGet, httpPost, httpUrl } from "../../api/httpClient";
 import { updateComplete, updateError } from "../../api/Modals";
 import BlindFranListDialog from "../../components/dialog/franchise/BlindFranListDialog";
 import RegistFranDialog from "../../components/dialog/franchise/RegistFranDialog";
+import BlindControlDialog from "../../components/dialog/franchise/BlindControlDialog";
 import SearchAddressDialog from "../../components/dialog/franchise/SearchAddressDialog";
 import SelectBox from "../../components/input/SelectBox";
 import "../../css/franchise.css";
@@ -42,6 +43,7 @@ class FranchiseMain extends Component {
       ResistFranchiseOpen: false,
       modifyFranOpen: false,
       SearchAddressOpen: false,
+      blindControlOpen: false,
       dialogData: [],
       blindFrData: [],
       blindListOpen: false,
@@ -131,6 +133,14 @@ class FranchiseMain extends Component {
   };
   closeSearchAddressModal = () => {
     this.setState({ SearchAddressOpen: false });
+  };
+  
+  // 블라인드관리 dialog
+  openBlindControlModal = () => {
+    this.setState({ blindControlOpen: true });
+  };
+  closeBlindControlModal = () => {
+    this.setState({ blindControlOpen: false });
   };
 
   // 블라인드 dialog
@@ -574,6 +584,19 @@ class FranchiseMain extends Component {
             onClick={this.openSearchAddressModal}
           >
             주소검색관리
+          </Button>
+          
+          {this.state.blindControlOpen && (
+            <BlindControlDialog
+              isOpen={this.state.blindControlOpen}
+              close={this.closeBlindControlModal}
+            />
+          )}
+          <Button
+            className="tabBtn sectionTab"
+            onClick={this.openBlindControlModal}
+          >
+            블라인드관리
           </Button>
 
           {/* 블라인드 */}
