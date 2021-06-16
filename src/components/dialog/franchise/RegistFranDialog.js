@@ -13,6 +13,7 @@ import {
 import "../../../css/modal.css";
 import { pgUseRate } from "../../../lib/util/codeUtil";
 import PostCodeDialog from "../common/PostCodeDialog";
+import SearchRiderDialog from "../common/SearchRiderDialog";
 
 const FormItem = Form.Item;
 const dateFormat = "YYYY/MM/DD";
@@ -32,6 +33,9 @@ class RegistFranDialog extends Component {
       targetLng: 0,
 
       agreeSms: true,
+
+      searchRiderOpen: false,
+      selectedRider: null,
     };
     this.formRef = React.createRef();
   }
@@ -41,6 +45,14 @@ class RegistFranDialog extends Component {
       console.log(this.props.data);
     }
   }
+
+  openSearchRider = () => {
+    this.setState({ searchRiderOpen: true });
+  };
+
+  closeSearchRider = () => {
+    this.setState({ searchRiderOpen: false });
+  };
 
   handleSubmit = () => {
     if (this.props.data) {
@@ -202,6 +214,10 @@ class RegistFranDialog extends Component {
     this.setState({ feeManner: e.target.value }, () => {});
   };
 
+  onChangeFranCategory(e) {
+    this.setState({ franCategory: e.target.value });
+  }
+
   render() {
     const { close, data } = this.props;
 
@@ -223,9 +239,21 @@ class RegistFranDialog extends Component {
 
             <Form ref={this.formRef} onFinish={this.handleSubmit}>
               <div className="registFranLayout">
-                <div className="registFranWrapper">
-                  <div className="registFranTitle">기본정보</div>
+                <div className="registFranTitle">
+                  기본정보
+                  <Radio.Group
+                    // 가맹여부 컬럼 이름 조정 필요
+                    name="franCategory"
+                    onChange={(e) => this.onChangeFranCategory(e)}
+                    style={{ float: "right", marginRight: 20 }}
+                    defaultValue={data ? data.franCategory : true}
+                  >
+                    <Radio.Button value={true}>가맹</Radio.Button>
+                    <Radio.Button value={false}>무가맹</Radio.Button>
+                  </Radio.Group>
+                </div>
 
+                <div className="registFranWrapper">
                   <div className="contentBlock">
                     <div className="mainTitle">가맹점명</div>
                     <FormItem
@@ -348,6 +376,43 @@ class RegistFranDialog extends Component {
                         placeholder="상세주소를 입력해 주세요."
                         className="override-input sub"
                       />
+                    </FormItem>
+                  </div>
+                  <div className="contentBlock">
+                    <div className="mainTitle">영업담당자</div>
+                    <FormItem name="addrMain" className="selectItem">
+                      {this.state.searchRiderOpen && (
+                        <SearchRiderDialog
+                          callback={(rider) => {
+                            this.setState({ selectedRider: rider }, () => {
+                              console.log(this.state.selectedRider);
+                            });
+                          }}
+                          close={this.closeSearchRider}
+                        />
+                      )}
+
+                      <div className="orderPayment-wrapper">
+                        <Input
+                          style={{ marginLeft: 20, width: 220 }}
+                          placeholder="영업담당자를 선택해주세요."
+                          value={
+                            data
+                              ? // 영업 담당자 컬럼으로 바꿔야 됨
+                                data.riderName
+                              : this.state.selectedRider
+                              ? this.state.selectedRider.riderName
+                              : ""
+                          }
+                          required
+                        />
+                        <Button
+                          // style={{ width: 150 }}
+                          onClick={this.openSearchRider}
+                        >
+                          기사조회
+                        </Button>
+                      </div>
                     </FormItem>
                   </div>
                 </div>

@@ -13,6 +13,7 @@ import {
   DatePicker,
   Input,
   Modal,
+  Popover,
   Select,
   Table
 } from "antd";
@@ -738,13 +739,35 @@ class ReceptionStatus extends Component {
           title: "기사명",
           dataIndex: "riderName",
           className: "table-column-center",
-          sorter: () => {},
-          render: (data, row) => <div>{row.orderStatus >= 2 ? data : "-"}</div>,
+          render: (data, row) => {
+            const content = (
+              <div>
+                <p>{row.riderPhone}</p>
+              </div>
+            );
+            return (
+              <Popover content={content} title="기사연락처">
+                <div>{row.orderStatus >= 2 ? data : "-"} </div>
+              </Popover>
+            );
+          },
         },
         {
           title: "가맹점명",
           dataIndex: "frName",
           className: "table-column-center",
+          render: (data, row) => {
+            const content = (
+              <div>
+                <p>{row.frPhone}</p>
+              </div>
+            );
+            return (
+              <Popover content={content} title="가맹점연락처">
+                <div>{data} </div>
+              </Popover>
+            );
+          },
         },
         // {
         //   title: "가맹점 번호",
