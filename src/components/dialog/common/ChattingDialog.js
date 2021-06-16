@@ -49,7 +49,7 @@ class ChattingDialog extends Component {
       try {
         value = JSON.parse(value);
         this.setState({ lastChatTime: value });
-      } catch {}
+      } catch { }
     }
   }
 
@@ -100,7 +100,7 @@ class ChattingDialog extends Component {
         );
 
         this.setState({ lastChatTime: value });
-      } catch {}
+      } catch { }
     }
   };
 
@@ -364,56 +364,58 @@ class ChattingDialog extends Component {
           /> */}
 
           <div className="chat-container">
-            <div className="chat-title">냠냠톡</div>
-            <div className="chat-list-container">
-              <div className="search-wrapper">
-                <Button
-                  className="search-btn"
-                  onClick={() => this.setState({ searchFranOpen: true })}
-                >
-                  가맹점검색
-                </Button>
-                <Button
-                  className="search-btn"
-                  onClick={() => this.setState({ searchRiderOpen: true })}
-                >
-                  라이더검색
-                </Button>
-              </div>
-
-              {this.state.tableData.map((row, index) => {
-                return (
-                  <div
-                    className="chat-item-container"
-                    onClick={() => {
-                      this.chatDetailList(row);
-                    }}
+            <div className="chat-subbox">
+              <div className="chat-title">냠냠톡</div>
+              <div className="chat-list-container">
+                <div className="search-wrapper">
+                  <Button
+                    className="search-btn"
+                    onClick={() => this.setState({ searchFranOpen: true })}
                   >
-                    <div className="chat-item-image">
-                      <img
-                        src={
-                          require("../../../img/chatting/chat_default.png")
-                            .default
-                        }
-                        alt=""
-                      />
-                    </div>
-                    <div className="chat-item-content">
-                      <div className="chat-item-top">
-                        <div className="chat-item-top-time">
-                          {this.formatChatDate(row.lastChatDate)}
-                        </div>
-                        <div className="chat-item-top-title">
-                          {this.formatChatName(row)}
-                        </div>
+                    가맹점검색
+                  </Button>
+                  <Button
+                    className="search-btn"
+                    onClick={() => this.setState({ searchRiderOpen: true })}
+                  >
+                    라이더검색
+                  </Button>
+                </div>
+
+                {this.state.tableData.map((row, index) => {
+                  return (
+                    <div
+                      className="chat-item-container"
+                      onClick={() => {
+                        this.chatDetailList(row);
+                      }}
+                    >
+                      <div className="chat-item-image">
+                        <img
+                          src={
+                            require("../../../img/chatting/chat_default.png")
+                              .default
+                          }
+                          alt=""
+                        />
                       </div>
-                      <div className="chat-item-bottom">{row.lastMessage}</div>
+                      <div className="chat-item-content">
+                        <div className="chat-item-top">
+                          <div className="chat-item-top-time">
+                            {this.formatChatDate(row.lastChatDate)}
+                          </div>
+                          <div className="chat-item-top-title">
+                            {this.formatChatName(row)}
+                          </div>
+                        </div>
+                        <div className="chat-item-bottom">{row.lastMessage}</div>
+                      </div>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
             </div>
-            <div style={{ textAlign: "center" }}>
+            <div className="chat-page" style={{ textAlign: "center" }}>
               <Pagination
                 onChange={this.handlePagesChange}
                 defaultCurrent={1}
@@ -480,24 +482,26 @@ class ChattingDialog extends Component {
                   })}
                 </InfiniteScroll>
               </div>
-              <div className="chat-input">
-                <input
-                  className="chat-send-input"
-                  placeholder="메세지를 입력해주세요."
-                  onChange={(e) => this.setState({ sendMsg: e.target.value })}
-                  value={this.state.sendMsg}
-                  onFocus={() => {
-                    this.setState({ msgInputModalOpen: true });
-                  }}
-                />
-                <div
-                  className="chat-send-btn"
-                  onClick={() => {
-                    this.onPressSend(this.state.sendMsg);
-                    this.setState({ sendMsg: "" });
-                  }}
-                >
-                  전송
+              <div className="chat-input-box">
+                <div className="chat-input">
+                  <input
+                    className="chat-send-input"
+                    placeholder="메세지를 입력해주세요."
+                    onChange={(e) => this.setState({ sendMsg: e.target.value })}
+                    value={this.state.sendMsg}
+                    onFocus={() => {
+                      this.setState({ msgInputModalOpen: true });
+                    }}
+                  />
+                  <div
+                    className="chat-send-btn"
+                    onClick={() => {
+                      this.onPressSend(this.state.sendMsg);
+                      this.setState({ sendMsg: "" });
+                    }}
+                  >
+                    전송
+                  </div>
                 </div>
               </div>
             </div>
