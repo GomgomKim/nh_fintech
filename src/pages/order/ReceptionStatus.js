@@ -94,6 +94,8 @@ class ReceptionStatus extends Component {
       // 호출설정 branch 정보
       branchInfo: null,
       pullingInterval: 20000,
+
+      messageTarget: null,
     };
   }
 
@@ -406,11 +408,13 @@ class ReceptionStatus extends Component {
   };
 
   // 개인 메세지 dialog
-  openDirectMessageModal = () => {
-    this.setState({ directMessageOpen: true });
+  openDirectMessageModal = (idx, name) => {
+    this.setState({ messageTarget: idx, messageTargetName: name }, () =>
+      this.setState({ directMessageOpen: true })
+    );
   };
   closeDirectMessageModal = () => {
-    this.setState({ directMessageOpen: false });
+    this.setState({ directMessageOpen: false, messageTarget: null });
   };
 
   // sns dialog
@@ -835,12 +839,22 @@ class ReceptionStatus extends Component {
           title: "메세지",
           dataIndex: "franchisePhoneNum",
           className: "table-column-center",
-          render: (data) => (
+          render: (data, row) => (
             <span>
-              <Button className="tabBtn" onClick={this.openDirectMessageModal}>
+              <Button
+                className="tabBtn"
+                onClick={() => {
+                  this.openDirectMessageModal(row.userIdx, row.riderName);
+                }}
+              >
                 라이더
               </Button>
-              <Button className="tabBtn" onClick={this.openDirectMessageModal}>
+              <Button
+                className="tabBtn"
+                onClick={() =>
+                  this.openDirectMessageModal(row.frIdx, row.frName)
+                }
+              >
                 가맹점
               </Button>
             </span>
@@ -962,7 +976,8 @@ class ReceptionStatus extends Component {
         )}
         {this.state.directMessageOpen && (
           <ChattingCurrentRoom
-            currentRoomIdx={2}
+            targetIdx={this.state.messageTarget}
+            targetName={this.state.messageTargetName}
             close={this.closeDirectMessageModal}
           />
         )}

@@ -350,18 +350,6 @@ class ChattingDialog extends Component {
 
         <div className={"Modal-overlay"} onClick={close} />
         <div className={"Modal-chat"}>
-          {/* <MsgInputModal
-            isOpen={this.state.msgInputModalOpen}
-            close={() => this.setState({ msgInputModalOpen: false })}
-            keyin={(data) => {
-              console.log(data);
-              this.onPressSend(data);
-              this.setState({ msgInputModalOpen: false });
-            }}
-            ok={() => {
-              this.setState({ msgInputModalOpen: false });
-            }}
-          /> */}
 
           <div className="chat-container">
             <div className="chat-title">냠냠톡</div>
