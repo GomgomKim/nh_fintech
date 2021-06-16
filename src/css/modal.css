@@ -1210,11 +1210,12 @@
   display: inline-block;
 }
 .registFranTitle {
-  display: inline-block;
+  /* display: inline-block; */
   font-size: 20px;
   vertical-align: middle;
   font-weight: bold;
   color: #1890ff;
+  margin-bottom: 30px;
 }
 .registFranWrapper .mainTitle {
   display: inline-block;
@@ -1278,7 +1279,7 @@
   vertical-align: top;
   display: inline-block;
   /* width: 340px; */
-  margin-top: 46px;
+  /* margin-top: 46px; */
   margin-left: 40px;
 }
 .registFranWrapper.sub .mainTitle {
