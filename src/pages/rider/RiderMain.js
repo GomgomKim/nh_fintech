@@ -1,4 +1,4 @@
-import { Button, Input, Modal, Table } from "antd";
+import { Button, Image, Input, Modal, Popover, Table } from "antd";
 import React, { Component } from "react";
 import { httpGet, httpPost, httpUrl } from "../../api/httpClient";
 import { customAlert, updateError } from "../../api/Modals";
@@ -10,7 +10,11 @@ import UpdatePasswordDialog from "../../components/dialog/rider/UpdatePasswordDi
 import SelectBox from "../../components/input/SelectBox";
 import "../../css/modal.css";
 import {
-  feeManner, riderGroupString, riderLevelText, statusString, tableStatusString
+  feeManner,
+  riderGroupString,
+  riderLevelText,
+  statusString,
+  tableStatusString
 } from "../../lib/util/codeUtil";
 import { formatDate } from "../../lib/util/dateUtil";
 import { comma } from "../../lib/util/numberUtil";
@@ -266,6 +270,24 @@ class RiderMain extends Component {
         render: (data) => <div>{riderGroupString[data]}</div>,
       },
       {
+        title: "면허정보",
+        dataIndex: "driverLicenseNumber",
+        className: "table-column-center",
+        render: (data, row) => {
+          // 면허정보 컬럼 확정후 확인 필요
+          const content = (
+            <div>
+              <Image source={row.driverLicenseFileIdx} />
+            </div>
+          );
+          return (
+            <Popover content={content} title="면허증 사진">
+              <div>{data}</div>
+            </Popover>
+          );
+        },
+      },
+      {
         title: "출금비밀번호",
         className: "table-column-center",
         render: (data, row) => (
@@ -475,8 +497,6 @@ class RiderMain extends Component {
           >
             일차감
           </Button>
-
-
 
           {this.state.blindListOpen && (
             <BlindRiderListDialog
