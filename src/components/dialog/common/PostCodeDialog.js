@@ -44,7 +44,7 @@ class PostCodeDialog extends Component {
       position: "absolute",
       top: "50%",
       width: "600px",
-      height: "600px",
+      height: "500px",
       padding: "7px",
     };
 

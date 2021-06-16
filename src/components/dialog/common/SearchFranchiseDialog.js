@@ -1,4 +1,4 @@
-import { Button, Form, Input, Radio, Table } from "antd";
+import { AutoComplete, Button, Form, Input, Radio, Table } from "antd";
 import React, { Component } from "react";
 import { httpPost, httpUrl } from "../../../api/httpClient";
 import SelectBox from "../../../components/input/SelectBox";
@@ -173,96 +173,109 @@ class SearchFranchiseDialog extends Component {
 
     return (
 
-          <React.Fragment>
-            <div className="Dialog-overlay" onClick={close} />
-            <div className="searchFranchise-Dialog">
-              <div className="searchFranchise-content">
-                <div className="searchFranchise-title">가맹점조회</div>
-                <img
-                  onClick={close}
-                  src={require("../../../img/login/close.png").default}
-                  className="surcharge-close"
-                  alt="닫기"
-                />
+      <React.Fragment>
+        <div className="Dialog-overlay" onClick={close} />
+        <div className="searchFranchise-Dialog">
+          <div className="searchFranchise-content">
+            <div className="searchFranchise-title">가맹점조회</div>
+            <img
+              onClick={close}
+              src={require("../../../img/login/close.png").default}
+              className="surcharge-close"
+              alt="닫기"
+            />
 
-                <Form ref={this.formRef} onFinish={this.onSubmit}>
-                  <div className="layout">
-                    <div className="searchFranchiseWrapper">
-                      <div className="searchFranchise-list">
-                        <div className="inputBox inputBox-searchFranchise sub">
-                          <SelectBox
-                            value={tableStatusString[this.state.franStatus]}
-                            code={Object.keys(tableStatusString)}
-                            codeString={tableStatusString}
-                            onChange={(value) => {
-                              if (parseInt(value) !== this.state.franStatus) {
-                                this.setState(
-                                  { franStatus: parseInt(value) },
-                                  () => this.getList()
-                                );
-                              }
-                            }}
-                          />
+            <Form ref={this.formRef} onFinish={this.onSubmit}>
+              <div className="layout">
+                <div className="searchFranchiseWrapper">
+                  <div className="searchFranchise-list">
+                    <div className="inputBox inputBox-searchFranchise sub autocomplete">
+                      <SelectBox
+                        value={tableStatusString[this.state.franStatus]}
+                        code={Object.keys(tableStatusString)}
+                        codeString={tableStatusString}
+                        onChange={(value) => {
+                          if (parseInt(value) !== this.state.franStatus) {
+                            this.setState(
+                              { franStatus: parseInt(value) },
+                              () => this.getList()
+                            );
+                          }
+                        }}
+                      />
 
-                          <Search
-                            placeholder="가맹점검색"
-                            className="searchFranchiseInput"
-                            enterButton
-                            allowClear
-                            onSearch={this.onSearchFranchisee}
-                          />
+                      <Search
+                        id="autoInput"
+                        placeholder="가맹점검색"
+                        className="searchFranchiseInput"
+                        enterButton
+                        allowClear
+                        onSearch={this.onSearchFranchisee}
 
-                          {/* 멀티 기능 */}
-                          {multi && (
-                            <Radio.Group
-                              onChange={this.onChangeMulti}
-                              value={this.state.isMulti}
-                              className="selMulti"
-                            >
-                              <Radio value={false}>single</Radio>
-                              <Radio value={true}>multi</Radio>
-                            </Radio.Group>
-                          )}
-                        </div>
+                      />
+                      {/* <Input
+                        id="autoInput"
+                        type="text"
+                        placeholder="가맹점검색"
+                        onSearch={this.onSearchFranchisee}
+                        // autoComplete="on"
+                        className="searchFranchiseInput"
+                        enterButton
+                        allowClear
+                      /> */}
 
-                        {/* 멀티 기능 */}
-                        {multi && (
-                          <Button
-                            type="primary"
-                            htmlType="submit"
-                            className="submitBtn"
-                          >
-                            조회
-                          </Button>
-                        )}
-                      </div>
-                    </div>
 
-                    <div className="dataTableLayout-01">
-                      {this.state.isMulti ? (
-                        <Table
-                          rowKey={(record) => record.idx}
-                          rowSelection={rowSelection}
-                          dataSource={this.state.list}
-                          columns={columns}
-                          pagination={this.state.pagination}
-                          onChange={this.handleTableChange}
-                        />
-                      ) : (
-                        <Table
-                          rowKey={(record) => record.idx}
-                          dataSource={this.state.list}
-                          columns={columns}
-                          pagination={this.state.pagination}
-                          onChange={this.handleTableChange}
-                        />
+                      {/* 멀티 기능 */}
+                      {multi && (
+                        <Radio.Group
+                          onChange={this.onChangeMulti}
+                          value={this.state.isMulti}
+                          className="selMulti"
+                        >
+                          <Radio value={false}>single</Radio>
+                          <Radio value={true}>multi</Radio>
+                        </Radio.Group>
                       )}
                     </div>
+
+                    {/* 멀티 기능 */}
+                    {multi && (
+                      <Button
+                        type="primary"
+                        htmlType="submit"
+                        className="submitBtn"
+                      >
+                        조회
+                      </Button>
+                    )}
                   </div>
-                </Form>
+                </div>
+
+                <div className="dataTableLayout-01">
+                  {this.state.isMulti ? (
+                    <Table
+                      rowKey={(record) => record.idx}
+                      rowSelection={rowSelection}
+                      dataSource={this.state.list}
+                      columns={columns}
+                      pagination={this.state.pagination}
+                      onChange={this.handleTableChange}
+                    />
+                  ) : (
+                    <Table
+                      rowKey={(record) => record.idx}
+                      dataSource={this.state.list}
+                      columns={columns}
+                      pagination={this.state.pagination}
+                      onChange={this.handleTableChange}
+                    />
+                  )}
+                </div>
               </div>
-            </div>
-          </React.Fragment>
+            </Form>
+          </div>
+        </div>
+      </React.Fragment>
 
     );
   }

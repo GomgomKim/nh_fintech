@@ -542,7 +542,7 @@
 }
 
 .addGrouplayout .contentBlock .override-input {
-  width: 280px;
+  width: 260px;
 }
 
 .addGroup-close {
@@ -1217,7 +1217,7 @@
   font-weight: bold;
   color: #1890ff;
   width:875px;
-  margin-bottom: 30px;
+  margin-bottom: 10px;
 }
 .registFranTitle-sub{
   display: inline-block;
@@ -1290,7 +1290,6 @@
   /* width: 340px; 
    margin-top: 46px; */
   margin-left: 30px;
-  clear:both;
 }
 .registFranWrapper.sub .mainTitle {
   display: inline-block;
@@ -1317,7 +1316,7 @@
 /* 하단 랩퍼 */
 .registFranWrapper.bot {
   width: 100%;
-  margin-top: 40px;
+  margin-top: 30px;
   padding-top: 30px;
   border-top: 1px solid #b5b5b5;
 }
@@ -2719,7 +2718,7 @@
 
 .registRiderWrapper {
   display: inline-block;
-  vertical-align: top;
+  /* vertical-align: top; */
 }
 
 .registRiderWrapper .contentBlock {
@@ -2769,11 +2768,13 @@
 }
 
 /*오른쪽*/
+.registRiderBox{
+  display: inline-block;
+}
 .registRiderWrapper.sub {
   display: inline-block;
   margin-left: 70px;
-  margin-top: 45px;
-  width: 400px;
+  /* width: 400px; */
 }
 
 .registRider-Dialog .submitBlock .ant-btn {
@@ -3072,7 +3073,7 @@
 
 /* 주소검색관리 */
 
-.serchAddress-Dialog {
+.searchAddress-Dialog {
   position: fixed;
   top: 50%;
   left: 50%;
@@ -3082,14 +3083,14 @@
   z-index: 2;
 }
 
-.serchAddress-content {
+.searchAddress-content {
   background-color: white;
   padding: 30px;
   text-align: left;
   color: #777;
 }
 
-.serchAddress-title {
+.searchAddress-title {
   letter-spacing: -1px;
   font-weight: bold;
   color: #333;
@@ -3098,11 +3099,11 @@
   font-size: 25px;
   line-height: 30px;
 }
-.serchAddressWrapper {
+.searchAddressWrapper {
   margin-bottom: 20px;
 }
 
-.serchAddress-close {
+.searchAddress-close {
   width: 30px;
   cursor: pointer;
   background-color: #fddc00;
@@ -3110,7 +3111,7 @@
   float: right;
   padding: 8px;
 }
-.serchAddress-Dialog .layout {
+.searchAddress-Dialog .layout {
   margin-top: 20px;
   width: 100%;
   /* overflow-y: scroll; */
@@ -3121,20 +3122,20 @@
   scrollbar-width: none; /* Firefox */
 }
 
-.serchAddress-Dialog .layout .contentBlock {
+.searchAddress-Dialog .layout .contentBlock {
   display: inline-block;
   line-height: 20px;
   margin-bottom: 5px;
 }
 
-.serchAddress-Dialog .layout .contentBlock span {
+.searchAddress-Dialog .layout .contentBlock span {
   font-size: 14px;
 }
 
-.serchAddress-Dialog .layout .contentbox,
+/* .searchAddress-Dialog .layout .contentbox,
 .contentBlock span {
-  font-size: 14px;
-}
+  font-size: 18px;
+} */
 
 .searchAddress-btn {
   display: inline-block;
@@ -3147,23 +3148,23 @@
   background-color: black;
   border-style: none;
 }
-.serchAddress-searchbox {
+.searchAddress-searchbox {
   float: right;
   margin: 20px 0;
 }
 
-.serchAddress-Dialog .layout .dataTableLayout-01 {
+.searchAddress-Dialog .layout .dataTableLayout-01 {
   margin-top: 30px;
 }
 
-.serchAddress-Dialog .ant-table-content thead th {
+.searchAddress-Dialog .ant-table-content thead th {
   padding: 10px;
 }
 
-.serchAddress-Dialog .layout .ant-table-tbody > tr > td {
+.searchAddress-Dialog .layout .ant-table-tbody > tr > td {
   padding: 0px;
 }
-.serchAddress-Dialog .layout .pwChange-btn {
+.searchAddress-Dialog .layout .pwChange-btn {
   padding: 2px;
 }
 .searchAddress-name {
@@ -3187,29 +3188,29 @@
   margin-left: 30px;
 }
 
-.serchAddress-Dialog .searchRequirement {
+.searchAddress-Dialog .searchRequirement {
   margin-top: 0 !important;
   margin-left: 20px;
 }
-.serchAddress-Dialog .contentBlock .override-input {
+.searchAddress-Dialog .contentBlock .override-input {
   width: 350px;
   vertical-align: middle;
 }
-.serchAddress-Dialog .contentBlock .addrBtn {
+.searchAddress-Dialog .contentBlock .addrBtn {
   width: 120px;
   margin-left: 20px;
 }
 
-.serchAddress-Dialog .contentBlock .addrBtn span {
+.searchAddress-Dialog .contentBlock .addrBtn span {
   font-size: 14px;
 }
 
-.serchAddress-Dialog .contentBlock .mainTitle {
+.searchAddress-Dialog .contentBlock .mainTitle {
   font-size: 16px;
   color: #222;
   width: 80px;
 }
-.serchAddress-Dialog .contentBlock .short {
+.searchAddress-Dialog .contentBlock .short {
   width: 210px;
 }
 
@@ -3676,7 +3677,7 @@
   vertical-align: middle;
   font-weight: bold;
   /* width: 70px; */
-  margin-left: 15px;
+  margin-left: 28px;
 }
 .blindWrapper.bot .ant-checkbox-inner {
   width: 20px;

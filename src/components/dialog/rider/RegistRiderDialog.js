@@ -34,9 +34,9 @@ class RegistRiderDialog extends Component {
       riderGroup: 0,
       withdrawLimit: 100000,
 
-      bikeType:0,
+      bikeType: 0,
       isSearchBikeOpen: false,
-      selectedBike:null,
+      selectedBike: null,
 
       agreeSms: true,
     };
@@ -142,7 +142,7 @@ class RegistRiderDialog extends Component {
   // }
 
   onChangFeeManner = (e) => {
-    this.setState({ feeManner: e.target.value }, () => {});
+    this.setState({ feeManner: e.target.value }, () => { });
   };
 
   onSelectChange = (selectedRowKeys) => {
@@ -153,12 +153,12 @@ class RegistRiderDialog extends Component {
     this.setState({ bikeType: e.target.value });
   };
 
-  openSearchBikeModal = () =>{
-    this.setState({isSearchBikeOpen: true})
+  openSearchBikeModal = () => {
+    this.setState({ isSearchBikeOpen: true })
   };
 
-  closeSearchBikeModal = () =>{
-    this.setState({isSearchBikeOpen: false})
+  closeSearchBikeModal = () => {
+    this.setState({ isSearchBikeOpen: false })
   };
 
 
@@ -188,407 +188,412 @@ class RegistRiderDialog extends Component {
 
             <Form ref={this.formRef} onFinish={this.handleSubmit}>
               <div className="registRiderLayout">
-                <div className="registRiderWrapper">
-                <div className="registFranTitle">기본정보</div>
-                  <div className="contentBlock">
-                    <div className="mainTitle">기사그룹</div>
-                    <FormItem
-                      name="userType"
-                      className="selectItem"
-                      rules={[
-                        { required: true, message: "그룹을 선택해주세요" },
-                      ]}
-                      initialValue={data ? data.userType : 3}
-                    >
-                      <Select
-                        onChange={() =>
-                          console.log(this.formRef.current.getFieldsValue())
-                        }
-                      >
-                        {riderGroupString.map((v, index) => {
-                          if (index === 0) return;
-                          return <Option value={index}>{v}</Option>;
-                        })}
-                      </Select>
-                    </FormItem>
+                <div className="registRiderBox">
+                  <div className="registFranTitle">
+                    <div className="registFranTitle-sub">
+                      기본정보
+                    </div>
                   </div>
-                  <div className="contentBlock">
-                    <div className="mainTitle">직급</div>
-                    <FormItem
-                      name="riderLevel"
-                      className="selectItem"
-                      rules={[
-                        { required: true, message: "직급을 선택해주세요" },
-                      ]}
-                      initialValue={data ? data.riderLevel : 1}
-                    >
-                      <Select
-                        onChange={() =>
-                          console.log(this.formRef.current.getFieldsValue())
-                        }
-                      >
-                        {riderLevelText.map((v, index) => {
-                          if (index === 0) return;
-                          return <Option value={index}>{v}</Option>;
-                        })}
-                      </Select>
-                    </FormItem>
-                  </div>
-                  {this.state.riderLevelSelected && (
+                  <div className="registRiderWrapper">
                     <div className="contentBlock">
-                      <div className="mainTitle">소속팀장</div>
+                      <div className="mainTitle">기사그룹</div>
                       <FormItem
-                        name="teamManager"
+                        name="userType"
+                        className="selectItem"
+                        rules={[
+                          { required: true, message: "그룹을 선택해주세요" },
+                        ]}
+                        initialValue={data ? data.userType : 3}
+                      >
+                        <Select
+                          onChange={() =>
+                            console.log(this.formRef.current.getFieldsValue())
+                          }
+                        >
+                          {riderGroupString.map((v, index) => {
+                            if (index === 0) return;
+                            return <Option value={index}>{v}</Option>;
+                          })}
+                        </Select>
+                      </FormItem>
+                    </div>
+                    <div className="contentBlock">
+                      <div className="mainTitle">직급</div>
+                      <FormItem
+                        name="riderLevel"
+                        className="selectItem"
+                        rules={[
+                          { required: true, message: "직급을 선택해주세요" },
+                        ]}
+                        initialValue={data ? data.riderLevel : 1}
+                      >
+                        <Select
+                          onChange={() =>
+                            console.log(this.formRef.current.getFieldsValue())
+                          }
+                        >
+                          {riderLevelText.map((v, index) => {
+                            if (index === 0) return;
+                            return <Option value={index}>{v}</Option>;
+                          })}
+                        </Select>
+                      </FormItem>
+                    </div>
+                    {this.state.riderLevelSelected && (
+                      <div className="contentBlock">
+                        <div className="mainTitle">소속팀장</div>
+                        <FormItem
+                          name="teamManager"
+                          className="selectItem"
+                          rules={[
+                            {
+                              required: true,
+                              message: "팀장을 선택해주세요",
+                            },
+                          ]}
+                        >
+                          <Select
+                            placeholder="팀장을 선택해주세요."
+                            className="override-select branch"
+                          >
+                            <Option value={1}>김동일</Option>
+                            <Option value={2}>문승현</Option>
+                            <Option value={3}>송용학</Option>
+                            <Option value={4}>김시욱</Option>
+                            <Option value={5}>홍원표</Option>
+                          </Select>
+                        </FormItem>
+                      </div>
+                    )}
+
+                    <div className="contentBlock">
+                      <div className="mainTitle">기사명</div>
+                      <FormItem
+                        name="riderName"
                         className="selectItem"
                         rules={[
                           {
                             required: true,
-                            message: "팀장을 선택해주세요",
+                            message: "직원명을 입력해주세요",
                           },
                         ]}
+                        initialValue={data ? data.riderName : ""}
                       >
-                        <Select
-                          placeholder="팀장을 선택해주세요."
-                          className="override-select branch"
-                        >
-                          <Option value={1}>김동일</Option>
-                          <Option value={2}>문승현</Option>
-                          <Option value={3}>송용학</Option>
-                          <Option value={4}>김시욱</Option>
-                          <Option value={5}>홍원표</Option>
-                        </Select>
+                        <Input
+                          placeholder="직원명을 입력해주세요."
+                          className="override-input"
+                        />
                       </FormItem>
                     </div>
-                  )}
-
-                  <div className="contentBlock">
-                    <div className="mainTitle">기사명</div>
-                    <FormItem
-                      name="riderName"
-                      className="selectItem"
-                      rules={[
-                        {
-                          required: true,
-                          message: "직원명을 입력해주세요",
-                        },
-                      ]}
-                      initialValue={data ? data.riderName : ""}
-                    >
-                      <Input
-                        placeholder="직원명을 입력해주세요."
-                        className="override-input"
-                      />
-                    </FormItem>
-                  </div>
-                  <div className="contentBlock">
-                    <div className="mainTitle">아이디</div>
-                    <FormItem
-                      name="id"
-                      className="selectItem"
-                      rules={[
-                        {
-                          required: true,
-                          message: "아이디를 입력해주세요",
-                        },
-                      ]}
-                      initialValue={data ? data.id : ""}
-                    >
-                      <Input
-                        placeholder="아이디를 입력해 주세요."
-                        className="override-input"
-                      />
-                    </FormItem>
-                  </div>
-                  <div className="contentBlock">
-                    <div className="mainTitle">이메일</div>
-                    <FormItem
-                      name="email"
-                      className="selectItem"
-                      // rules={[{ required: true, message: "이메일을 입력해주세요" }]}
-                      initialValue={data ? data.email : ""}
-                    >
-                      <Input
-                        placeholder="ex) example@naver.com"
-                        className="override-input"
-                      />
-                    </FormItem>
-                  </div>
-                  <div className="contentBlock">
-                    <div className="mainTitle">패스워드</div>
-                    <FormItem name="password" className="selectItem">
-                      <Input.Password
-                        placeholder="패스워드를 입력해 주세요."
-                        className="override-input"
-                      />
-                    </FormItem>
-                  </div>
-                  <div className="contentBlock">
-                    <div className="mainTitle">전화번호</div>
-                    <FormItem
-                      name="phone"
-                      className="selectItem"
-                      rules={[
-                        {
-                          required: true,
-                          message: "전화번호를 입력해주세요",
-                        },
-                      ]}
-                      initialValue={data ? data.phone : ""}
-                    >
-                      <Input
-                        placeholder="휴대전화 번호를 입력해 주세요."
-                        className="override-input"
-                      />
-                    </FormItem>
-                  </div>
-                  {this.state.isSearchBikeOpen && (
-                <SearchBikeDialog
-                  // getList={this.getList}
-                  close={this.closeSearchBikeModal}
-                />
-              )}      
-                  <div className="contentBlock" style={{marginTop: 10}}>
-                    <div className="mainTitle">바이크</div>
-                    <Radio.Group
-                      className="searchRequirement"
-                      onChange={this.onCheckType}
-                      value={this.state.bikeType}
-                      defaultValue={bikeType[0]}
-                      style={{marginRight:19}}
+                    <div className="contentBlock">
+                      <div className="mainTitle">아이디</div>
+                      <FormItem
+                        name="id"
+                        className="selectItem"
+                        rules={[
+                          {
+                            required: true,
+                            message: "아이디를 입력해주세요",
+                          },
+                        ]}
+                        initialValue={data ? data.id : ""}
                       >
-                      {Object.entries(bikeType).map(([key, value]) => {
-                           return (
-                          <Radio value={parseInt(key)}>
-                            {value}
-                          </Radio>
-                          );
-                          })}
-                       </Radio.Group>
-                       <Button className="tabBtn sectionTab" onClick={this.openSearchBikeModal}>
-                         바이크 조회
-                       </Button>
-                  </div>
-                  <div className="contentBlock">
-                  <div className="mainTitle"/>
-                      <Input
-                            value={
-                              this.state.selectedBike
-                                ? this.state.selectedBike.searchBike
-                                : this.props.data
-                                ? this.props.data.searchBike
-                                : ""
-                            }
-                            className="override-input"
-                            placeholder="바이크를 선택해주세요."
-                            disabled
+                        <Input
+                          placeholder="아이디를 입력해 주세요."
+                          className="override-input"
                         />
-                  </div>
-                  
-                </div>
-                <div className="registRiderWrapper sub">
-                <div className="contentBlock">
-                    <div className="mainTitle">메모</div>
-                    <FormItem
-                      name="memo"
-                      className="selectItem"
-                      // rules={[{ required: true, message: "메모를 입력해주세요" }]}
-                      initialValue={data ? data.memo : ""}
-                    >
-                      <Input
-                        placeholder="메모를 입력해 주세요."
-                        className="override-input"
-                      />
-                    </FormItem>
-                  </div>
-
-                  <div className="contentBlock">
-                    <div className="mainTitle">최소보유잔액</div>
-                    <FormItem
-                      name="ncash"
-                      className="selectItem"
-                      initialValue={data ? data.ncash : 100000}
-                    >
-                      <Input
-                        placeholder="최소보유잔액을 입력해 주세요."
-                        className="override-input"
-                      />
-                    </FormItem>
-                  </div>
-                  <div className="contentBlock">
-                    <div className="mainTitle">기본 배달료</div>
-                    <FormItem
-                      name="basicDeliveryPrice"
-                      className="selectItem"
-                      initialValue={data ? data.basicDeliveryPrice : 2500}
-                    >
-                      <Input
-                        placeholder="기본배달료를 입력해 주세요."
-                        className="override-input"
-                      />
-                    </FormItem>
-                  </div>
-
-                  <div className="contentBlock">
-                    <div className="mainTitle">월기본건수</div>
-                    <FormItem
-                      name="monthBasicAmount"
-                      className="selectItem"
-                      initialValue={data ? data.monthBasicAmount : 10}
-                    >
-                      <Input
-                        placeholder="최소보유잔액을 입력해 주세요."
-                        className="override-input"
-                      />
-                    </FormItem>
-                  </div>
-
-                  <div className="contentBlock">
-                    <div className="mainTitle">비품지급</div>
-                    <FormItem name="" className="giveBox selectItem">
-                      <Checkbox>헬멧</Checkbox>
-                      <Checkbox>조끼</Checkbox>
-                      <Checkbox>배달통</Checkbox>
-                      <Checkbox>보냉</Checkbox>
-                      <Checkbox>우의</Checkbox>
-                      <Checkbox>피자가방</Checkbox>
-                      <Checkbox>여름티</Checkbox>
-                      <Checkbox>토시</Checkbox>
-                      <Checkbox>바람막이</Checkbox>
-                      <Checkbox>카드리더기</Checkbox>
-                    </FormItem>
-                  </div>                 
-                 
-                  
-                  <div className="contentBlock" style={{marginTop:10}}>
-                    <div className="mainTitle">SMS수신동의</div>
-                    <FormItem name="agreeSms" className="giveBox selectItem">
-                      <Checkbox
-                        className="override-input"
-                        defaultChecked={data ? data.agreeSms : true}
-                        onChange={(e) =>
-                          this.setState({ agreeSms: e.target.checked })
-                        }
+                      </FormItem>
+                    </div>
+                    <div className="contentBlock">
+                      <div className="mainTitle">이메일</div>
+                      <FormItem
+                        name="email"
+                        className="selectItem"
+                        // rules={[{ required: true, message: "이메일을 입력해주세요" }]}
+                        initialValue={data ? data.email : ""}
                       >
-                        수신동의
-                      </Checkbox>
-                    </FormItem>
-                  </div>
-
-                  <div className="submitBlock">
-                    <Button type="primary" htmlType="submit">
-                      등록하기
-                    </Button>
-
-                    {!data && (
-                      <Button className="clearBtn" onClick={this.handleClear}>
-                        초기화
-                      </Button>
+                        <Input
+                          placeholder="ex) example@naver.com"
+                          className="override-input"
+                        />
+                      </FormItem>
+                    </div>
+                    <div className="contentBlock">
+                      <div className="mainTitle">패스워드</div>
+                      <FormItem name="password" className="selectItem">
+                        <Input.Password
+                          placeholder="패스워드를 입력해 주세요."
+                          className="override-input"
+                        />
+                      </FormItem>
+                    </div>
+                    <div className="contentBlock">
+                      <div className="mainTitle">전화번호</div>
+                      <FormItem
+                        name="phone"
+                        className="selectItem"
+                        rules={[
+                          {
+                            required: true,
+                            message: "전화번호를 입력해주세요",
+                          },
+                        ]}
+                        initialValue={data ? data.phone : ""}
+                      >
+                        <Input
+                          placeholder="휴대전화 번호를 입력해 주세요."
+                          className="override-input"
+                        />
+                      </FormItem>
+                    </div>
+                    {this.state.isSearchBikeOpen && (
+                      <SearchBikeDialog
+                        // getList={this.getList}
+                        close={this.closeSearchBikeModal}
+                      />
                     )}
+                    <div className="contentBlock" style={{ marginTop: 10 }}>
+                      <div className="mainTitle">바이크</div>
+                      <Radio.Group
+                        className="searchRequirement"
+                        onChange={this.onCheckType}
+                        value={this.state.bikeType}
+                        defaultValue={bikeType[0]}
+                        style={{ marginRight: 19 }}
+                      >
+                        {Object.entries(bikeType).map(([key, value]) => {
+                          return (
+                            <Radio value={parseInt(key)}>
+                              {value}
+                            </Radio>
+                          );
+                        })}
+                      </Radio.Group>
+                      <Button className="tabBtn sectionTab" onClick={this.openSearchBikeModal}>
+                        바이크 조회
+                      </Button>
+                    </div>
+                    <div className="contentBlock">
+                      <div className="mainTitle" />
+                      <Input
+                        value={
+                          this.state.selectedBike
+                            ? this.state.selectedBike.searchBike
+                            : this.props.data
+                              ? this.props.data.searchBike
+                              : ""
+                        }
+                        className="override-input"
+                        placeholder="바이크를 선택해주세요."
+                        disabled
+                      />
+                    </div>
+
                   </div>
-                </div>                
+                  <div className="registRiderWrapper sub">
+                    <div className="contentBlock">
+                      <div className="mainTitle">메모</div>
+                      <FormItem
+                        name="memo"
+                        className="selectItem"
+                        // rules={[{ required: true, message: "메모를 입력해주세요" }]}
+                        initialValue={data ? data.memo : ""}
+                      >
+                        <Input
+                          placeholder="메모를 입력해 주세요."
+                          className="override-input"
+                        />
+                      </FormItem>
+                    </div>
 
-                  {this.state.bikeType === 1 ? 
-                        <div className="bike-type-box">
+                    <div className="contentBlock">
+                      <div className="mainTitle">최소보유잔액</div>
+                      <FormItem
+                        name="ncash"
+                        className="selectItem"
+                        initialValue={data ? data.ncash : 100000}
+                      >
+                        <Input
+                          placeholder="최소보유잔액을 입력해 주세요."
+                          className="override-input"
+                        />
+                      </FormItem>
+                    </div>
+                    <div className="contentBlock">
+                      <div className="mainTitle">기본 배달료</div>
+                      <FormItem
+                        name="basicDeliveryPrice"
+                        className="selectItem"
+                        initialValue={data ? data.basicDeliveryPrice : 2500}
+                      >
+                        <Input
+                          placeholder="기본배달료를 입력해 주세요."
+                          className="override-input"
+                        />
+                      </FormItem>
+                    </div>
 
-                        <div>지입바이크 등록</div> 
-                        <ul>
-                          <li> 
-                            <p>바이크번호</p>
-                            <FormItem
-                              name="bike_number"
-                              className="selectItem"                                  
-                              initialValue={data ? data.bike_number : ""}>
-                              <Input
-                                placeholder="번호를 입력해주세요."
-                                className="override-input"                                
-                              />
-                            </FormItem>
-                            </li>
+                    <div className="contentBlock">
+                      <div className="mainTitle">월기본건수</div>
+                      <FormItem
+                        name="monthBasicAmount"
+                        className="selectItem"
+                        initialValue={data ? data.monthBasicAmount : 10}
+                      >
+                        <Input
+                          placeholder="최소보유잔액을 입력해 주세요."
+                          className="override-input"
+                        />
+                      </FormItem>
+                    </div>
 
-                            <li> 
-                            <p>모델명</p>
-                            <FormItem
-                              name="model_name"
-                              className="selectItem"
-                              initialValue={data ? data.model_name : ""}>
-                              <Input
-                                placeholder="모델명을 입력해주세요."
-                                className="override-input"                                
-                              />
-                            </FormItem>
-                            </li>
-                            <li> 
-                            <p>제조사</p>
-                            <FormItem
-                              name="maker"
-                              className="selectItem"
-                              initialValue={data ? data.maker : ""}>
-                              <Input
-                                placeholder="제조사를 입력해주세요."
-                                className="override-input"                               
-                              />
-                            </FormItem>
-                            </li>
-                            <li>
-                              <Button 
-                                type="primary" 
-                                htmlType="submit" 
-                                style={{backgroundColor: '#000', borderColor: '#000' }}> 
-                                등록하기 
-                              </Button>
-                            </li>
-                        </ul>                        
+                    <div className="contentBlock">
+                      <div className="mainTitle">비품지급</div>
+                      <FormItem name="" className="giveBox selectItem">
+                        <Checkbox>헬멧</Checkbox>
+                        <Checkbox>조끼</Checkbox>
+                        <Checkbox>배달통</Checkbox>
+                        <Checkbox>보냉</Checkbox>
+                        <Checkbox>우의</Checkbox>
+                        <Checkbox>피자가방</Checkbox>
+                        <Checkbox>여름티</Checkbox>
+                        <Checkbox>토시</Checkbox>
+                        <Checkbox>바람막이</Checkbox>
+                        <Checkbox>카드리더기</Checkbox>
+                      </FormItem>
+                    </div>
+
+
+                    <div className="contentBlock" style={{ marginTop: 10 }}>
+                      <div className="mainTitle">SMS수신동의</div>
+                      <FormItem name="agreeSms" className="giveBox selectItem">
+                        <Checkbox
+                          className="override-input"
+                          defaultChecked={data ? data.agreeSms : true}
+                          onChange={(e) =>
+                            this.setState({ agreeSms: e.target.checked })
+                          }
+                        >
+                          수신동의
+                        </Checkbox>
+                      </FormItem>
+                    </div>
+
+                    <div className="submitBlock">
+                      <Button type="primary" htmlType="submit">
+                        등록하기
+                      </Button>
+
+                      {!data && (
+                        <Button className="clearBtn" onClick={this.handleClear}>
+                          초기화
+                        </Button>
+                      )}
+                    </div>
                   </div>
-                          :
-                          <div className="bike-type-box">
+                </div>
+                {this.state.bikeType === 1 ?
+                  <div className="bike-type-box">
 
-                            <div>지입바이크 등록</div> 
-                            <ul>
-                              <li> 
-                                <p>바이크번호</p>
-                                <FormItem
-                                  name="bike_number"
-                                  className="selectItem"                                  
-                                  initialValue={data ? data.bike_number : ""}>
-                                  <Input
-                                    placeholder="번호를 입력해주세요."
-                                    className="override-input"
-                                    disabled
-                                  />
-                                </FormItem>
-                                </li>
+                    <div>지입바이크 등록</div>
+                    <ul>
+                      <li>
+                        <p>바이크번호</p>
+                        <FormItem
+                          name="bike_number"
+                          className="selectItem"
+                          initialValue={data ? data.bike_number : ""}>
+                          <Input
+                            placeholder="번호를 입력해주세요."
+                            className="override-input"
+                          />
+                        </FormItem>
+                      </li>
 
-                                <li> 
-                                <p>모델명</p>
-                                <FormItem
-                                  name="model_name"
-                                  className="selectItem"
-                                  initialValue={data ? data.model_name : ""}>
-                                  <Input
-                                    placeholder="모델명을 입력해주세요."
-                                    className="override-input"
-                                    disabled
-                                  />
-                                </FormItem>
-                                </li>
-                                <li> 
-                                <p>제조사</p>
-                                <FormItem
-                                  name="maker"
-                                  className="selectItem"
-                                  initialValue={data ? data.maker : ""}>
-                                  <Input
-                                    placeholder="제조사를 입력해주세요."
-                                    className="override-input"
-                                    disabled
-                                  />
-                                </FormItem>
-                                </li>
-                                <li><Button disabled> 등록하기 </Button></li>
-                            </ul>                        
-                      </div>
-                    }
-   
+                      <li>
+                        <p>모델명</p>
+                        <FormItem
+                          name="model_name"
+                          className="selectItem"
+                          initialValue={data ? data.model_name : ""}>
+                          <Input
+                            placeholder="모델명을 입력해주세요."
+                            className="override-input"
+                          />
+                        </FormItem>
+                      </li>
+                      <li>
+                        <p>제조사</p>
+                        <FormItem
+                          name="maker"
+                          className="selectItem"
+                          initialValue={data ? data.maker : ""}>
+                          <Input
+                            placeholder="제조사를 입력해주세요."
+                            className="override-input"
+                          />
+                        </FormItem>
+                      </li>
+                      <li>
+                        <Button
+                          type="primary"
+                          htmlType="submit"
+                          style={{ backgroundColor: '#000', borderColor: '#000' }}>
+                          등록하기
+                        </Button>
+                      </li>
+                    </ul>
+                  </div>
+                  :
+                  <div className="bike-type-box">
+
+                    <div>지입바이크 등록</div>
+                    <ul>
+                      <li>
+                        <p>바이크번호</p>
+                        <FormItem
+                          name="bike_number"
+                          className="selectItem"
+                          initialValue={data ? data.bike_number : ""}>
+                          <Input
+                            placeholder="번호를 입력해주세요."
+                            className="override-input"
+                            disabled
+                          />
+                        </FormItem>
+                      </li>
+
+                      <li>
+                        <p>모델명</p>
+                        <FormItem
+                          name="model_name"
+                          className="selectItem"
+                          initialValue={data ? data.model_name : ""}>
+                          <Input
+                            placeholder="모델명을 입력해주세요."
+                            className="override-input"
+                            disabled
+                          />
+                        </FormItem>
+                      </li>
+                      <li>
+                        <p>제조사</p>
+                        <FormItem
+                          name="maker"
+                          className="selectItem"
+                          initialValue={data ? data.maker : ""}>
+                          <Input
+                            placeholder="제조사를 입력해주세요."
+                            className="override-input"
+                            disabled
+                          />
+                        </FormItem>
+                      </li>
+                      <li><Button disabled> 등록하기 </Button></li>
+                    </ul>
+                  </div>
+                }
+
               </div>
             </Form>
           </div>
@@ -602,6 +607,6 @@ const mapStateToProps = (state) => ({
   branchIdx: state.login.loginInfo.branchIdx,
 });
 
-const mapDispatchToProps = () => {};
+const mapDispatchToProps = () => { };
 
 export default connect(mapStateToProps, mapDispatchToProps)(RegistRiderDialog);
