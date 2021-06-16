@@ -257,20 +257,17 @@ class BlindRiderListDialog extends Component {
                                     <div className="blind-title">
                                         {data.riderName} 라이더 님의 블라인드 목록
                                     </div>
+                                    <div>                                        
+                                        <Checkbox
+                                            style={{marginRight:5, marginLeft: 20}}
+                                            defaultChecked={this.state.deletedCheck ? "checked" : ""}
+                                            onChange={this.onDeleteCheck} />
+                                            해제 포함
+                                    </div>
                                     <img onClick={close} src={require('../../../img/login/close.png').default} 
                                     className="blind-close" alt='닫기'/>
 
-                                    <div style={{
-                                        textAlign: 'right',
-                                        marginTop: 20,
-                                        fontSize: 15
-                                    }}>
-                                        해제 포함
-                                        <Checkbox
-                                            style={{marginLeft:5}}
-                                            defaultChecked={this.state.deletedCheck ? "checked" : ""}
-                                            onChange={this.onDeleteCheck} />
-                                    </div>
+                                  
 
                                     <div className="blindLayout">
                                         <div className="listBlock">
