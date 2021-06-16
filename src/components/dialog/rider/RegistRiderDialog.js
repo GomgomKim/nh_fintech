@@ -9,6 +9,7 @@ import {
   registComplete,
   registError,
 } from "../../../api/Modals";
+import SearchBikeDialog from "../../dialog/common/SearchBikeDialog";
 import { connect } from "react-redux";
 
 const Option = Select.Option;
@@ -34,6 +35,8 @@ class RegistRiderDialog extends Component {
       withdrawLimit: 100000,
 
       bikeType:0,
+      isSearchBikeOpen: false,
+      selectedBike:null,
 
       agreeSms: true,
     };
@@ -147,8 +150,17 @@ class RegistRiderDialog extends Component {
   };
 
   onCheckType = (e) => {
-    this.setState({ bikeType: e.target.value })
-}
+    this.setState({ bikeType: e.target.value });
+  };
+
+  openSearchBikeModal = () =>{
+    this.setState({isSearchBikeOpen: true})
+  };
+
+  closeSearchBikeModal = () =>{
+    this.setState({isSearchBikeOpen: false})
+  };
+
 
   render() {
     // const selectedRowKeys = this.state.selectedRowKeys
@@ -329,14 +341,20 @@ class RegistRiderDialog extends Component {
                       />
                     </FormItem>
                   </div>
-                  <div className="contentBlock" style={{marginTop: 5}}>
+                  {this.state.isSearchBikeOpen && (
+                <SearchBikeDialog
+                  // getList={this.getList}
+                  close={this.closeSearchBikeModal}
+                />
+              )}      
+                  <div className="contentBlock" style={{marginTop: 10}}>
                     <div className="mainTitle">바이크</div>
                     <Radio.Group
                       className="searchRequirement"
                       onChange={this.onCheckType}
                       value={this.state.bikeType}
                       defaultValue={bikeType[0]}
-                      style={{marginRight:35}}
+                      style={{marginRight:19}}
                       >
                       {Object.entries(bikeType).map(([key, value]) => {
                            return (
@@ -346,6 +364,24 @@ class RegistRiderDialog extends Component {
                           );
                           })}
                        </Radio.Group>
+                       <Button className="tabBtn sectionTab" onClick={this.openSearchBikeModal}>
+                         바이크 조회
+                       </Button>
+                  </div>
+                  <div className="contentBlock">
+                  <div className="mainTitle"/>
+                      <Input
+                            value={
+                              this.state.selectedBike
+                                ? this.state.selectedBike.searchBike
+                                : this.props.data
+                                ? this.props.data.searchBike
+                                : ""
+                            }
+                            className="override-input"
+                            placeholder="바이크를 선택해주세요."
+                            disabled
+                        />
                   </div>
                   
                 </div>
@@ -423,7 +459,7 @@ class RegistRiderDialog extends Component {
                   </div>                 
                  
                   
-                  <div className="contentBlock">
+                  <div className="contentBlock" style={{marginTop:10}}>
                     <div className="mainTitle">SMS수신동의</div>
                     <FormItem name="agreeSms" className="giveBox selectItem">
                       <Checkbox
@@ -449,7 +485,7 @@ class RegistRiderDialog extends Component {
                       </Button>
                     )}
                   </div>
-                </div>         
+                </div>                
 
                   {this.state.bikeType === 1 ? 
                         <div className="bike-type-box">
@@ -493,6 +529,7 @@ class RegistRiderDialog extends Component {
                               />
                             </FormItem>
                             </li>
+                            <li><Button type="primary" htmlType="submit"> 등록하기 </Button></li>
                         </ul>                        
                   </div>
                           :
@@ -540,6 +577,7 @@ class RegistRiderDialog extends Component {
                                   />
                                 </FormItem>
                                 </li>
+                                <li><Button type="primary" htmlType="submit" disabled> 등록하기 </Button></li>
                             </ul>                        
                       </div>
                     }
