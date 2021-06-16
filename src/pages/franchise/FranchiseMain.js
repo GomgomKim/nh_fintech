@@ -6,9 +6,9 @@ import { connect } from "react-redux";
 import * as XLSX from "xlsx";
 import { httpGet, httpPost, httpUrl } from "../../api/httpClient";
 import { updateComplete, updateError } from "../../api/Modals";
+import BlindControlDialog from "../../components/dialog/franchise/BlindControlDialog";
 import BlindFranListDialog from "../../components/dialog/franchise/BlindFranListDialog";
 import RegistFranDialog from "../../components/dialog/franchise/RegistFranDialog";
-import BlindControlDialog from "../../components/dialog/franchise/BlindControlDialog";
 import SearchAddressDialog from "../../components/dialog/franchise/SearchAddressDialog";
 import SelectBox from "../../components/input/SelectBox";
 import "../../css/franchise.css";
@@ -106,7 +106,6 @@ class FranchiseMain extends Component {
     // this.setState({list: data});
   };
 
- 
   // 가맹점등록 dialog
   openRegistFranchiseModal = () => {
     this.setState({ ResistFranchiseOpen: true });
@@ -134,7 +133,7 @@ class FranchiseMain extends Component {
   closeSearchAddressModal = () => {
     this.setState({ SearchAddressOpen: false });
   };
-  
+
   // 블라인드관리 dialog
   openBlindControlModal = () => {
     this.setState({ blindControlOpen: true });
@@ -406,6 +405,21 @@ class FranchiseMain extends Component {
         className: "table-column-center",
         render: (data) => <div>{comma(data)}</div>,
       },
+      // 가맹여부 추가 후 컬럼이름 확인 필요
+      {
+        title: "가맹여부",
+        dataIndex: "franCategory",
+        className: "table-column-center",
+        render: (data) => <div>{data ? "가맹" : "무가맹"}</div>,
+      },
+      // 가맹여부 추가 후 컬럼이름 확인 필요
+      {
+        title: "금액",
+        dataIndex: "balance",
+        className: "table-column-center",
+        render: (data) => <div>{comma(data)}</div>,
+      },
+
       {
         title: "출금설정",
         dataIndex: "withdrawEnabled",
@@ -585,7 +599,7 @@ class FranchiseMain extends Component {
           >
             주소검색관리
           </Button>
-          
+
           {this.state.blindControlOpen && (
             <BlindControlDialog
               isOpen={this.state.blindControlOpen}
