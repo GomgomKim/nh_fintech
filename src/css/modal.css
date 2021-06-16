@@ -347,7 +347,7 @@
 }
 
 .callDataTable {
-  width: 25%;
+  width: 40%;
   position: absolute;
   top: 35%;
 }
@@ -2761,6 +2761,7 @@
 .registRiderWrapper.sub {
   display: inline-block;
   margin-left: 70px;
+  margin-top: 45px;
   width: 400px;
 }
 
@@ -2781,9 +2782,48 @@
 
 .registRiderWrapper.sub .submitBlock {
   width: 390px;
+  margin-top: 40px;
 }
 
+/* 하단 */
+
+.bike-type-box {
+  border-top: 1px solid #ccc;
+  padding-top: 30px;
+  margin-top: 40px;
+}
+.bike-type-box > div {
+  display: inline-block;
+  font-size: 20px;
+  font-weight: bold;
+  color: #1890ff;
+}
+.bike-type-box ul {
+  padding: 0;
+  margin: 0;
+}
+.bike-type-box ul li {
+  list-style: none;
+  display: inline-block;
+  padding: 0;
+  margin: 15px 20px 0 0;
+}
+.bike-type-box ul li:last-child {
+  margin-right: 0;
+}
+.bike-type-box ul li p {
+  display: inline-block;
+  font-size: 16px;
+  font-weight: bold;
+}
+.bike-type-box ul li .selectItem {
+  display: inline-block;
+  width: 200px;
+  margin-left: 15px;
+  vertical-align: 0px;
+}
 /*직원 등록*/
+
 .registStaff-Dialog {
   position: fixed;
   top: 50%;

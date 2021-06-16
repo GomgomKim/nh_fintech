@@ -152,6 +152,11 @@ const surchargeType = ["지점 전체", "지정 그룹"];
 
 const addType = ["", "아파트", "오피스텔"];
 
+const bikeType =[
+  "리스",
+  "자입",
+];
+
 export {
   deliveryStatusCode,
   blockString,
@@ -180,5 +185,6 @@ export {
   orderCnt,
   surchargeType,
   importantNotice,
+  bikeType,
 };
 

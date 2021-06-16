@@ -1054,6 +1054,17 @@ class ReceptionStatus extends Component {
               marginLeft: 20,
             }}
           />
+          <Search
+            placeholder="바이크검색"
+            enterButton
+            allowClear
+            onChange={(e) => this.setState({ rider: e.target.value })}
+            onSearch={this.onSearch}
+            style={{
+              width: 200,
+              marginLeft: 20,
+            }}
+          />
           <FilteringDialog
             isOpen={this.state.filteringOpen}
             close={this.closeFilteringModal}

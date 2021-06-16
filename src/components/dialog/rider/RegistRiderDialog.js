@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import { Form, Input, Button, Select, Modal, Checkbox } from "antd";
+import { Form, Input, Button, Select, Modal, Checkbox, Radio } from "antd";
 import "../../../css/modal.css";
 import { httpUrl, httpPost } from "../../../api/httpClient";
-import { riderGroupString, riderLevelText } from "../../../lib/util/codeUtil";
+import { riderGroupString, riderLevelText, bikeType } from "../../../lib/util/codeUtil";
 import {
   updateComplete,
   updateError,
@@ -32,6 +32,8 @@ class RegistRiderDialog extends Component {
       riderLevel: 1,
       riderGroup: 0,
       withdrawLimit: 100000,
+
+      bikeType:0,
 
       agreeSms: true,
     };
@@ -144,6 +146,10 @@ class RegistRiderDialog extends Component {
     this.setState({ selectedRowKeys: selectedRowKeys });
   };
 
+  onCheckType = (e) => {
+    this.setState({ bikeType: e.target.value })
+}
+
   render() {
     // const selectedRowKeys = this.state.selectedRowKeys
     // const rowSelection = {
@@ -171,6 +177,7 @@ class RegistRiderDialog extends Component {
             <Form ref={this.formRef} onFinish={this.handleSubmit}>
               <div className="registRiderLayout">
                 <div className="registRiderWrapper">
+                <div className="registFranTitle">기본정보</div>
                   <div className="contentBlock">
                     <div className="mainTitle">기사그룹</div>
                     <FormItem
@@ -322,9 +329,28 @@ class RegistRiderDialog extends Component {
                       />
                     </FormItem>
                   </div>
+                  <div className="contentBlock" style={{marginTop: 5}}>
+                    <div className="mainTitle">바이크</div>
+                    <Radio.Group
+                      className="searchRequirement"
+                      onChange={this.onCheckType}
+                      value={this.state.bikeType}
+                      defaultValue={bikeType[0]}
+                      style={{marginRight:35}}
+                      >
+                      {Object.entries(bikeType).map(([key, value]) => {
+                           return (
+                          <Radio value={parseInt(key)}>
+                            {value}
+                          </Radio>
+                          );
+                          })}
+                       </Radio.Group>
+                  </div>
+                  
                 </div>
                 <div className="registRiderWrapper sub">
-                  <div className="contentBlock">
+                <div className="contentBlock">
                     <div className="mainTitle">메모</div>
                     <FormItem
                       name="memo"
@@ -338,6 +364,7 @@ class RegistRiderDialog extends Component {
                       />
                     </FormItem>
                   </div>
+
                   <div className="contentBlock">
                     <div className="mainTitle">최소보유잔액</div>
                     <FormItem
@@ -391,8 +418,11 @@ class RegistRiderDialog extends Component {
                       <Checkbox>여름티</Checkbox>
                       <Checkbox>토시</Checkbox>
                       <Checkbox>바람막이</Checkbox>
+                      <Checkbox>카드리더기</Checkbox>
                     </FormItem>
-                  </div>
+                  </div>                 
+                 
+                  
                   <div className="contentBlock">
                     <div className="mainTitle">SMS수신동의</div>
                     <FormItem name="agreeSms" className="giveBox selectItem">
@@ -419,7 +449,101 @@ class RegistRiderDialog extends Component {
                       </Button>
                     )}
                   </div>
-                </div>
+                </div>         
+
+                  {this.state.bikeType === 1 ? 
+                        <div className="bike-type-box">
+
+                        <div>지입바이크 등록</div> 
+                        <ul>
+                          <li> 
+                            <p>바이크번호</p>
+                            <FormItem
+                              name="bike_number"
+                              className="selectItem"                                  
+                              initialValue={data ? data.bike_number : ""}>
+                              <Input
+                                placeholder="번호를 입력해주세요."
+                                className="override-input"                                
+                              />
+                            </FormItem>
+                            </li>
+
+                            <li> 
+                            <p>모델명</p>
+                            <FormItem
+                              name="model_name"
+                              className="selectItem"
+                              initialValue={data ? data.model_name : ""}>
+                              <Input
+                                placeholder="모델명을 입력해주세요."
+                                className="override-input"                                
+                              />
+                            </FormItem>
+                            </li>
+                            <li> 
+                            <p>제조사</p>
+                            <FormItem
+                              name="maker"
+                              className="selectItem"
+                              initialValue={data ? data.maker : ""}>
+                              <Input
+                                placeholder="제조사를 입력해주세요."
+                                className="override-input"                               
+                              />
+                            </FormItem>
+                            </li>
+                        </ul>                        
+                  </div>
+                          :
+                          <div className="bike-type-box">
+
+                            <div>지입바이크 등록</div> 
+                            <ul>
+                              <li> 
+                                <p>바이크번호</p>
+                                <FormItem
+                                  name="bike_number"
+                                  className="selectItem"                                  
+                                  initialValue={data ? data.bike_number : ""}>
+                                  <Input
+                                    placeholder="번호를 입력해주세요."
+                                    className="override-input"
+                                    disabled
+                                  />
+                                </FormItem>
+                                </li>
+
+                                <li> 
+                                <p>모델명</p>
+                                <FormItem
+                                  name="model_name"
+                                  className="selectItem"
+                                  initialValue={data ? data.model_name : ""}>
+                                  <Input
+                                    placeholder="모델명을 입력해주세요."
+                                    className="override-input"
+                                    disabled
+                                  />
+                                </FormItem>
+                                </li>
+                                <li> 
+                                <p>제조사</p>
+                                <FormItem
+                                  name="maker"
+                                  className="selectItem"
+                                  initialValue={data ? data.maker : ""}>
+                                  <Input
+                                    placeholder="제조사를 입력해주세요."
+                                    className="override-input"
+                                    disabled
+                                  />
+                                </FormItem>
+                                </li>
+                            </ul>                        
+                      </div>
+                    }
+   
               </div>
             </Form>
           </div>
