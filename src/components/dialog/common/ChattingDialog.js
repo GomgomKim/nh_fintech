@@ -1,4 +1,4 @@
-import { Pagination } from "antd";
+import { Button, Pagination } from "antd";
 import React, { Component } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { connect } from "react-redux";
@@ -8,16 +8,19 @@ import { login, logout } from "../../../actions/loginAction";
 import { httpGet, httpPost, httpUrl } from "../../../api/httpClient";
 import Const from "../../../const";
 import { formatYMD, formatYMDHMS } from "../../../lib/util/dateUtil";
-import MsgInputModal from "./MsgInputModal";
+import SearchFranchiseDialog from "./SearchFranchiseDialog";
+import SearchRiderDialog from "./SearchRiderDialog";
 
 class ChattingDialog extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      totalTableData: [],
       tableData: [],
       pagination: {
         current: 1,
         total: 0,
+        pageSize: 5,
       },
       chatMessages: [],
       chatMessageCurrent: 0,
@@ -27,10 +30,19 @@ class ChattingDialog extends Component {
 
       currentRoom: null,
       keyInputModalOpen: false,
+
+      searchRiderOpen: false,
+      searchFranOpen: false,
+      selectedFr: null,
+      selectedRider: null,
+
+      fakeRoom: false,
+      inputMessage: "",
     };
   }
   componentDidMount() {
     this.getChatList();
+    this.getTotalChatList();
     let value = reactLocalStorage.getObject(Const.appName + ":chat");
 
     if (value !== null) {
@@ -40,6 +52,16 @@ class ChattingDialog extends Component {
       } catch {}
     }
   }
+
+  // testing
+  // componentDidUpdate(prevProps, prevState) {
+  //   if (this.state.currentRoom !== prevState.currentRoom) {
+  //     console.log("prev");
+  //     console.log(prevState.currentRoom);
+  //     console.log("now");
+  //     console.log(this.state.currentRoom);
+  //   }
+  // }
   formatChatDate(time) {
     return time.substr(0, 10) === formatYMD(new Date())
       ? time.substr(12, time.length)
@@ -82,32 +104,93 @@ class ChattingDialog extends Component {
     }
   };
 
-  getChatList = () => {
-    let pageNum = this.state.pagination.current;
-    httpGet(httpUrl.chatList, [10, pageNum], {})
+  getTotalChatList = (targetIdx) => {
+    httpGet(httpUrl.chatList, [10000, 1], {})
       .then((result) => {
-        const pagination = { ...this.state.pagination };
-        pagination.current = result.data.currentPage;
-        pagination.total = result.data.totalCount;
+        this.setState(
+          {
+            totalTableData: result.data.chatRooms,
+          },
+          () => {
+            if (targetIdx) {
+              const target = this.state.totalTableData.find(
+                (item) =>
+                  item.member1 === targetIdx || item.member2 === targetIdx
+              );
+              if (target) {
+                this.chatDetailList(target);
+                this.setState({ fakeRoom: false });
+                return;
+              } else {
+                this.setState({ fakeRoom: true });
+              }
+            }
+          }
+        );
+      })
+      .catch();
+  };
+
+  getChatList = () => {
+    httpGet(
+      httpUrl.chatList,
+      [this.state.pagination.pageSize, this.state.pagination.current],
+      {}
+    )
+      .then((result) => {
         this.setState({
           tableData: result.data.chatRooms,
-          pagination,
+          pagination: {
+            ...this.state.pagination,
+            total: result.data.totalCount,
+          },
         });
       })
       .catch();
   };
-  handleTableChange = (pagination) => {
-    const pager = { ...this.state.pagination };
-    pager.current = pagination.current;
+
+  getFirstItem = () => {
     this.setState(
       {
-        pagination: pager,
+        pagination: {
+          ...this.state.pagination,
+          current: 1,
+        },
+      },
+      () => {
+        httpGet(
+          httpUrl.chatList,
+          [this.state.pagination.pageSize, this.state.pagination.current],
+          {}
+        )
+          .then((result) => {
+            this.setState(
+              {
+                tableData: result.data.chatRooms,
+              },
+              () => this.chatDetailList(this.state.tableData[0])
+            );
+          })
+          .catch();
+      }
+    );
+  };
+
+  handlePagesChange = (current) => {
+    this.setState(
+      {
+        pagination: {
+          ...this.state.pagination,
+          current: current,
+        },
       },
       () => this.getChatList()
     );
   };
   // 채팅상세
   chatDetailList = (item) => {
+    console.log("chatdetaillist item");
+    console.log(item);
     this.setState(
       {
         currentRoom: item,
@@ -189,14 +272,85 @@ class ChattingDialog extends Component {
       }
     });
   };
+
+  send = (callback1, callback2) => {
+    httpPost(httpUrl.chatSend, [], {
+      chatMessage: this.state.inputMessage,
+      receiveUserIdx: this.state.selectedFr
+        ? this.state.selectedFr.idx
+        : this.state.selectedRider.idx,
+    })
+      .then((res) => {
+        if (res.result === "SUCCESS") {
+          callback1();
+          callback2();
+          console.log("메세지 전송 성공");
+        } else {
+          console.log("전송실패");
+        }
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
   render() {
-    const {  close } = this.props;
+    const { close } = this.props;
     const { currentRoom } = this.state;
     return (
       <>
+        {this.state.searchFranOpen && (
+          <SearchFranchiseDialog
+            close={() => this.setState({ searchFranOpen: false })}
+            callback={(data) =>
+              this.setState(
+                { selectedFr: data, selectedRider: null, currentRoom: null },
+                () => {
+                  const target = this.state.totalTableData.find(
+                    (item) =>
+                      item.member1 === this.state.selectedFr.idx ||
+                      item.member2 === this.state.selectedFr.idx
+                  );
+                  if (target) {
+                    console.log(target);
+                    this.chatDetailList(target);
+                    this.setState({ fakeRoom: false });
+                    return;
+                  } else {
+                    this.setState({ fakeRoom: true });
+                  }
+                }
+              )
+            }
+          />
+        )}
+        {this.state.searchRiderOpen && (
+          <SearchRiderDialog
+            close={() => this.setState({ searchRiderOpen: false })}
+            callback={(data) =>
+              this.setState(
+                { selectedRider: data, selectedfr: null, currentRoom: null },
+                () => {
+                  const target = this.state.totalTableData.find(
+                    (item) =>
+                      item.member1 === this.state.selectedRider.idx ||
+                      item.member2 === this.state.selectedRider.idx
+                  );
+                  if (target) {
+                    this.chatDetailList(target);
+                    this.setState({ fakeRoom: false });
+                    return;
+                  } else {
+                    this.setState({ fakeRoom: true });
+                  }
+                }
+              )
+            }
+          />
+        )}
+
         <div className={"Modal-overlay"} onClick={close} />
         <div className={"Modal-chat"}>
-          <MsgInputModal
+          {/* <MsgInputModal
             isOpen={this.state.msgInputModalOpen}
             close={() => this.setState({ msgInputModalOpen: false })}
             keyin={(data) => {
@@ -207,8 +361,67 @@ class ChattingDialog extends Component {
             ok={() => {
               this.setState({ msgInputModalOpen: false });
             }}
-          />
+          /> */}
 
+          <div className="chat-container">
+            <div className="chat-title">냠냠톡</div>
+            <div className="chat-list-container">
+              <div className="search-wrapper">
+                <Button
+                  className="search-btn"
+                  onClick={() => this.setState({ searchFranOpen: true })}
+                >
+                  가맹점검색
+                </Button>
+                <Button
+                  className="search-btn"
+                  onClick={() => this.setState({ searchRiderOpen: true })}
+                >
+                  라이더검색
+                </Button>
+              </div>
+
+              {this.state.tableData.map((row, index) => {
+                return (
+                  <div
+                    className="chat-item-container"
+                    onClick={() => {
+                      this.chatDetailList(row);
+                    }}
+                  >
+                    <div className="chat-item-image">
+                      <img
+                        src={
+                          require("../../../img/chatting/chat_default.png")
+                            .default
+                        }
+                        alt=""
+                      />
+                    </div>
+                    <div className="chat-item-content">
+                      <div className="chat-item-top">
+                        <div className="chat-item-top-time">
+                          {this.formatChatDate(row.lastChatDate)}
+                        </div>
+                        <div className="chat-item-top-title">
+                          {this.formatChatName(row)}
+                        </div>
+                      </div>
+                      <div className="chat-item-bottom">{row.lastMessage}</div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+            <div style={{ textAlign: "center" }}>
+              <Pagination
+                onChange={this.handlePagesChange}
+                defaultCurrent={1}
+                pageSize={this.state.pagination.pageSize}
+                total={this.state.pagination.total}
+              />
+            </div>
+          </div>
           {currentRoom && (
             <div className="chat-message-container">
               <div className="chat-title">
@@ -289,50 +502,60 @@ class ChattingDialog extends Component {
               </div>
             </div>
           )}
-          <div className="chat-container">
-            <div className="chat-title">냠냠톡</div>
-            <div className="chat-list-container">
-              {this.state.tableData.map((row, index) => {
-                return (
-                  <div
-                    className="chat-item-container"
-                    onClick={() => {
-                      this.chatDetailList(row);
-                    }}
-                  >
-                    <div className="chat-item-image">
-                      <img
-                        src={
-                          require("../../../img/chatting/chat_default.png")
-                            .default
-                        }
-                        alt=""
-                      />
-                    </div>
-                    <div className="chat-item-content">
-                      <div className="chat-item-top">
-                        <div className="chat-item-top-time">
-                          {this.formatChatDate(row.lastChatDate)}
-                        </div>
-                        <div className="chat-item-top-title">
-                          {this.formatChatName(row)}
-                        </div>
-                      </div>
-                      <div className="chat-item-bottom">{row.lastMessage}</div>
-                    </div>
-                  </div>
-                );
-              })}
+          {this.state.fakeRoom && (
+            <div className="chat-message-container">
+              <div className="chat-title">
+                {this.state.selectedFr
+                  ? this.state.selectedFr.frName
+                  : this.state.selectedRider.riderName}
+              </div>
+              <div className="chat-message" id="chat-message">
+                <InfiniteScroll
+                  dataLength={0}
+                  style={{
+                    display: "flex",
+                    flexDirection: "column-reverse",
+                  }}
+                ></InfiniteScroll>
+              </div>
+              <div className="chat-input">
+                <input
+                  className="chat-send-input"
+                  placeholder="메세지를 입력해주세요."
+                  onChange={(e) =>
+                    this.setState({ inputMessage: e.target.value })
+                  }
+                  value={this.state.inputMessage}
+                />
+                <div
+                  className="chat-send-btn"
+                  onClick={() => {
+                    this.send(
+                      () =>
+                        this.getTotalChatList(
+                          this.state.selectedFr
+                            ? this.state.selectedFr.idx
+                            : this.state.selectedRider.idx
+                        ),
+                      () => {
+                        this.setState(
+                          {
+                            pagination: {
+                              ...this.state.pagination,
+                              current: 1,
+                            },
+                          },
+                          () => this.getChatList()
+                        );
+                      }
+                    );
+                  }}
+                >
+                  전송
+                </div>
+              </div>
             </div>
-            <div style={{ textAlign: "center" }}>
-              <Pagination
-                onChange={this.handlePageChange}
-                defaultCurrent={1}
-                pageSize={10}
-                total={this.state.pagination.total}
-              />
-            </div>
-          </div>
+          )}
         </div>
       </>
     );

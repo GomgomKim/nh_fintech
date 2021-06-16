@@ -1,8 +1,8 @@
+import { Button, Form, Input, Radio, Table } from "antd";
 import React, { Component } from "react";
-import { Form, Input, Table, Button, Radio } from "antd";
-import { httpUrl, httpPost } from "../../../api/httpClient";
-import "../../../css/modal.css";
+import { httpPost, httpUrl } from "../../../api/httpClient";
 import SelectBox from "../../../components/input/SelectBox";
+import "../../../css/modal.css";
 import { tableStatusString } from "../../../lib/util/codeUtil";
 
 const Search = Input.Search;
