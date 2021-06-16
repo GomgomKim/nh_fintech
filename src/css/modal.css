@@ -4168,3 +4168,19 @@
 .error-message {
   color: red;
 }
+
+td.ant-table-column-sort {
+  background: none;
+}
+
+.ant-table-filter-trigger-container-open,
+.ant-table-filter-trigger-container:hover,
+.ant-table-thead
+  th.ant-table-column-has-sorters:hover
+  .ant-table-filter-trigger-container:hover {
+  background: none;
+}
+.ant-table-filter-trigger-container-open .ant-table-filter-trigger,
+.ant-table-filter-trigger:hover {
+  color: #bfbfbf;
+}
