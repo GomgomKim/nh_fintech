@@ -529,7 +529,14 @@ class RegistRiderDialog extends Component {
                               />
                             </FormItem>
                             </li>
-                            <li><Button type="primary" htmlType="submit"> 등록하기 </Button></li>
+                            <li>
+                              <Button 
+                                type="primary" 
+                                htmlType="submit" 
+                                style={{backgroundColor: '#000', borderColor: '#000' }}> 
+                                등록하기 
+                              </Button>
+                            </li>
                         </ul>                        
                   </div>
                           :
@@ -577,7 +584,7 @@ class RegistRiderDialog extends Component {
                                   />
                                 </FormItem>
                                 </li>
-                                <li><Button type="primary" htmlType="submit" disabled> 등록하기 </Button></li>
+                                <li><Button disabled> 등록하기 </Button></li>
                             </ul>                        
                       </div>
                     }
