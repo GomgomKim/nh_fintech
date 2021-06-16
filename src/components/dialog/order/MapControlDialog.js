@@ -748,31 +748,32 @@ class MapControlDialog extends Component {
         render: (data) => <div>{riderLevelText[data]}</div>,
       },
       {
-        title: "기사그룹",
-        dataIndex: "userGroup",
+        title: "배차갯수",
+        dataIndex: "assignedOrderCnt",
         className: "table-column-center",
-        render: (data) => <div>{riderGroupString[data]}</div>,
+        render: (data) => <div>{data+"건"}</div>,
       },
     ];
 
     const columns_callList = [
       {
-        title: "주문번호",
-        dataIndex: "idx",
+        title: "가맹점명",
+        dataIndex: "frName",
         className: "table-column-center",
-        width: 70,
-        render: (data) => <div>{data}</div>,
       },
       {
-        title: "상태",
-        dataIndex: "orderStatus",
+        title: "접수시간",
+        dataIndex: "orderDate",
         className: "table-column-center",
-        width: 70,
         render: (data, row) => (
-          <div className="table-column-sub">
-            {deliveryStatusCode[row.orderStatus]}
-          </div>
+          <div>{formatDate(data)}</div>
         ),
+      },
+      {
+        title: "경과(분)",
+        dataIndex: "arriveReqTime",
+        className: "table-column-center",
+        render: (data) => <div>{arriveReqTime[data]}</div>,
       },
       {
         title: "도착지",
