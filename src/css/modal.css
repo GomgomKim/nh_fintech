@@ -109,7 +109,10 @@
 .searchFranchise-list input {
   width: 400px;
 }
-
+.searchFranchise-Dialog .ant-table-thead > tr > th {
+  background-color: black !important;
+  color: white !important;
+}
 .searchFranchise-btn {
   display: inline-block;
   vertical-align: bottom;
@@ -510,6 +513,7 @@
 .addGroup-content {
   background-color: white;
   padding: 30px;
+  height: 100%;
   /* text-align: left; */
   /* color: #777; */
 }
@@ -527,12 +531,18 @@
 .addGroupWrapper {
   margin-top: 20px;
 }
-.addGrouplayout .contentBlock {
-  width: 400px;
+.addGrouplayout {
+  overflow-y: scroll;
+  border: 1px solid #ccc;
+  padding: 20px;
+  text-align: left;
+  margin-top: 20px;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 
 .addGrouplayout .contentBlock .override-input {
-  width: 300px;
+  width: 280px;
 }
 
 .addGroup-close {
@@ -542,10 +552,6 @@
   /* display: inline-block; */
   float: right;
   padding: 8px;
-}
-
-.addGroup-Dialog .addGrouplayout {
-  height: 100px;
 }
 
 /* .addGroupWrapper .contentBlock {
@@ -1038,14 +1044,13 @@
 .registCallLayout::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Opera*/
 }
+.registCall-Dialog .registCallWrapper > div {
+  display: inline-block;
+  vertical-align: top;
+}
 /* 왼쪽 wrappper */
 .registCallWrapper {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  align-content: space-around;
-  justify-content: space-around;
-  height: 350px;
+  padding: 0 30px;
 }
 .registCallWrapper .mainTitle {
   display: inline-block;
@@ -1105,6 +1110,11 @@
 .callTab {
   float: right;
   width: 100px;
+}
+.registCallWrapper > div:last-child {
+  margin-top: 0;
+  vertical-align: top;
+  margin-left: 50px;
 }
 /* 오른쪽 wrappper */
 .registCallWrapper.sub {
@@ -2156,9 +2166,9 @@
   margin: 0px !important;
 }
 .taskScheduler-btn-01 > button {
-  height: 40px;
-  width: 130px;
-  font-size: 18px;
+  height: 32px;
+  width: 110px;
+  font-size: 14px;
   color: #222;
   text-align: center;
   display: inline-block;
@@ -2170,9 +2180,9 @@
 }
 
 .taskScheduler-btn-02 > button {
-  height: 40px;
-  width: 130px;
-  font-size: 18px;
+  height: 32px;
+  width: 110px;
+  font-size: 14px;
   color: #222;
   padding: 0px !important;
   display: inline-block;
@@ -2517,7 +2527,19 @@
   margin-top: 10px;
   /* border:1px solid #ccc; */
 }
-
+.riderGroup-ftline p {
+  display: inline-block;
+  width: 100px;
+  font-weight: bold;
+  padding: 0;
+  margin: 0;
+}
+.riderGroup-ftline > div {
+  margin-bottom: 10px;
+}
+.riderGroup-ftline > div:last-child {
+  margin-bottom: 0;
+}
 .riderGroup-ftline td {
   width: 150px;
   display: inline-block;
@@ -2528,7 +2550,9 @@
 .riderGroup-ftline-04 .riderSubtext {
   margin-left: 20px;
 }
-
+.riderGroup-ftline-04 {
+  display: inline-block;
+}
 .riderGroup-ftline .ant-radio-wrapper {
   font-size: 16px !important;
 }
@@ -2583,6 +2607,7 @@
   vertical-align: middle;
   margin-left: 10px;
   color: #000 !important;
+  font-size: 16px;
 }
 .riderGroup-ftline .ant-input {
   padding: 0px !important;
@@ -2736,6 +2761,7 @@
 .registRiderWrapper.sub {
   display: inline-block;
   margin-left: 70px;
+  margin-top: 45px;
   width: 400px;
 }
 
@@ -2756,9 +2782,48 @@
 
 .registRiderWrapper.sub .submitBlock {
   width: 390px;
+  margin-top: 40px;
 }
 
+/* 하단 */
+
+.bike-type-box {
+  border-top: 1px solid #ccc;
+  padding-top: 30px;
+  margin-top: 40px;
+}
+.bike-type-box > div {
+  display: inline-block;
+  font-size: 20px;
+  font-weight: bold;
+  color: #1890ff;
+}
+.bike-type-box ul {
+  padding: 0;
+  margin: 0;
+}
+.bike-type-box ul li {
+  list-style: none;
+  display: inline-block;
+  padding: 0;
+  margin: 15px 20px 0 0;
+}
+.bike-type-box ul li:last-child {
+  margin-right: 0;
+}
+.bike-type-box ul li p {
+  display: inline-block;
+  font-size: 16px;
+  font-weight: bold;
+}
+.bike-type-box ul li .selectItem {
+  display: inline-block;
+  width: 200px;
+  margin-left: 15px;
+  vertical-align: 0px;
+}
 /*직원 등록*/
+
 .registStaff-Dialog {
   position: fixed;
   top: 50%;
@@ -3055,7 +3120,7 @@
 
 .serchAddress-Dialog .layout .contentbox,
 .contentBlock span {
-  font-size: 16px;
+  font-size: 14px;
 }
 
 .searchAddress-btn {

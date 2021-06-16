@@ -93,7 +93,7 @@ class MapControlDialog extends Component {
       searchText: "",
       searchedColumn: "",
 
-      selOrderCnt: 0,
+      selOrderCnt: 99,
       allResults: [],
       allResultsSave: [],
 
@@ -141,6 +141,7 @@ class MapControlDialog extends Component {
   // rider : 선택된 라이더 정보
   onSearchWorkerSelected = (rider) => {
     var self = this;
+    this.getRiderLocate(rider.idx)
     this.setState(
       {
         selectedRiderIdx: rider.idx,
@@ -186,8 +187,9 @@ class MapControlDialog extends Component {
     var addFrLocates = [];
     for (let i = 0; i < list.length; i++) {
       var addPath = []
-      addPath[0] = navermaps.LatLng(list[i].frLatitude, list[i].frLongitude);
-      addPath[1] = navermaps.LatLng(list[i].latitude, list[i].longitude);
+      addPath[0] = navermaps.LatLng(this.state.selectedRiderLatitude, this.state.selectedRiderLongitude);
+      addPath[1] = navermaps.LatLng(list[i].frLatitude, list[i].frLongitude);
+      addPath[2] = navermaps.LatLng(list[i].latitude, list[i].longitude);
       addPaths[i] = addPath
       addRiderLocates.push(navermaps.LatLng(list[i].latitude, list[i].longitude))
       addFrLocates.push(navermaps.LatLng(list[i].frLatitude, list[i].frLongitude))
@@ -226,10 +228,11 @@ class MapControlDialog extends Component {
           this.setState({
             riderOrderList: [],
           });
-          customError(
-            "배차 목록 오류",
-            "해당 라이더의 배차가 존재하지 않습니다."
-          );
+          // 표시 안해도 될것 같음!!
+          // customError(
+          //   "배차 목록 오류",
+          //   "해당 라이더의 배차가 존재하지 않습니다."
+          // );
         }
       } else
         customError(
@@ -558,9 +561,9 @@ class MapControlDialog extends Component {
 
   setAssignCnt = (cnt) => {
     var list = []
-    if(cnt > 0 && cnt < 5) list = this.state.allResultsSave.filter(x => x.assignedOrderCnt === cnt)
+    if(cnt >= 0 && cnt < 5) list = this.state.allResultsSave.filter(x => x.assignedOrderCnt === cnt)
     else if (cnt === 5) list = this.state.allResultsSave.filter(x => x.assignedOrderCnt >= cnt)
-    else if (cnt === 0) list = this.state.allResultsSave
+    else if (cnt === 99) list = this.state.allResultsSave
     var addPaths = this.clearPath()
 
     // console.log("############## :"+JSON.stringify(list, null, 4))
@@ -916,11 +919,23 @@ class MapControlDialog extends Component {
                     })}
 
                     {this.state.selRiderPath.map((row, index) => {
+                      const strokeColor = [
+                        "#ff0000",
+                        "#00ff00",
+                        "#0000ff",
+                        "#ED7D31",
+                        "#EC32E3",
+                        "#AA7474",
+                        "#8076A8",
+                        "#8AFE20",
+                        "#FAEB24",
+                        "#A923FB",
+                      ]
                       return(
                         <Polyline
                           key={index}
                           path={row}
-                          strokeColor={"#ff0000"}
+                          strokeColor={strokeColor[index]}
                           strokeWeight={5}
                         />
                       );

@@ -40,11 +40,18 @@ class RiderGroupDialog extends Component {
     onClickRow = (index) => {
         if(this.state.list.find((x) => x.id === this.state.rowId.id)){
             // console.log(this.state.list.find((x) => x.id === this.state.rowId.id).proCount)
-            this.formRef.current.setFieldsValue({
-                assignCnt: this.state.list.find((x) => x.id === this.state.rowId.id).proCount,
-                withdraw: this.state.list.find((x) => x.id === this.state.rowId.id).withdrawLimit,
-                transferLimit: this.state.list.find((x) => x.id === this.state.rowId.id).transferLimit
-            });
+            const data = this.state.list.find((x) => x.id === this.state.rowId.id);
+            if (data !== null) {
+                this.formRef.current.setFieldsValue({
+                    assignCnt: data.proCount,
+                    riderFee: data.riderFee,
+                    payType: data.payType,
+                    withdraw: data.withdrawLimit,
+                    transferLimit: data.transferLimit
+                });
+                // @todo ????
+                // this.setState({payType: data.payType});
+            }
         }
         return {
             onClick: () => {
@@ -66,6 +73,8 @@ class RiderGroupDialog extends Component {
                 id: 1,
                 riderGroup: 'A',
                 proCount: 6,
+                riderFee: '100',
+                payType: 0,
                 withdrawLimit: '100000',
                 transferLimit: '500',
             },
@@ -73,6 +82,8 @@ class RiderGroupDialog extends Component {
                 id: 2,
                 riderGroup: 'B',
                 proCount: 5,
+                riderFee: '200',
+                payType: 1,
                 withdrawLimit: '10000',
                 transferLimit: '1500',
             },
@@ -80,6 +91,8 @@ class RiderGroupDialog extends Component {
                 id: 3,
                 riderGroup: 'C',
                 proCount: 4,
+                riderFee: '300',
+                payType: 0,
                 withdrawLimit: '200000',
                 transferLimit: '1000',
             },
@@ -87,6 +100,8 @@ class RiderGroupDialog extends Component {
                 id: 4,
                 riderGroup: 'D',
                 proCount: 3,
+                riderFee: '400',
+                payType: 1,
                 withdrawLimit: '40000',
                 transferLimit: '500',
             },
@@ -94,6 +109,8 @@ class RiderGroupDialog extends Component {
                 id: 5,
                 riderGroup: 'E',
                 proCount: 2,
+                riderFee: '500',
+                payType: 0,
                 withdrawLimit: '100000',
                 transferLimit: '500',
             },
@@ -108,9 +125,26 @@ class RiderGroupDialog extends Component {
 
         const columns = [
             {
+                title: "그룹명",
+                dataIndex: "riderGroup",
+                className: "table-column-center",
+            },
+            {
                 title: "처리건수",
                 dataIndex: "proCount",
                 className: "table-column-center",
+            },
+            {
+                title: "기사수수료",
+                dataIndex: "riderFee",
+                className: "table-column-center",
+                render: (data) => <div>{comma(data)}</div>
+            },
+            {
+                title: "정률/정액",
+                dataIndex: "payType",
+                className: "table-column-center",
+                render: (data) => <div>{data === 0 ? `정률` : `정액`}</div>
             },
             {
                 title: "출금제한 금액",
@@ -154,8 +188,9 @@ class RiderGroupDialog extends Component {
 
                         <div className="riderGroup-ftline">
                             <div className="riderGroup-ftline-01">
+                            <p>처리 건수</p>
                             </div>
-                            <div className="inputBox inputBox-rider sub">
+                            <div className="inputBox inputBox-rider">
                                 <FormItem
                                     name="assignCnt"
                                 >
@@ -168,7 +203,7 @@ class RiderGroupDialog extends Component {
                             
                             
                             <div className="riderGroup-ftline-02">
-                                <span>출금 사용</span>
+                                <p>출금 사용</p>
                                 
                                 <div className="inputBox inputBox-rider">
                                     <FormItem
@@ -185,7 +220,7 @@ class RiderGroupDialog extends Component {
                             
                             
                             <div className="riderGroup-ftline-03">
-                                <span>이체 사용</span>
+                                <p>이체 사용</p>
                                 
                                 <div className="inputBox inputBox-rider">
                                     <FormItem
@@ -201,7 +236,7 @@ class RiderGroupDialog extends Component {
                             </div>
                             
                             <div className="riderGroup-ftline-04">
-                                <span>기사수수료</span>
+                                <p>기사수수료</p>
                                 <Radio.Group
                                     className="select-fee-pay-type"
                                     defaultValue={this.state.payType} 
@@ -218,7 +253,7 @@ class RiderGroupDialog extends Component {
                                         <Input />
                                     </FormItem>
                                     <div className="riderGText">
-                                        {this.state.payType == 0 ? '%' : '원'}으로 설정
+                                        {this.state.payType == 0 ? '%' : '원'} 으로 설정
                                     </div>
                                 </div>
                             </div>

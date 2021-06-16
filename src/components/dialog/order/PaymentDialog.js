@@ -13,9 +13,24 @@ const PaymentDialog = ({
 }) => {
   const Option = Select.Option;
   const FormItem = Form.Item;
-  const [data, setData] = useState(orderPayments);
+  const [data, setData] = useState(orderPayments ? orderPayments : []);
   const [change, setChange] = useState(0);
   const [maxIdx, setMaxIdx] = useState(1);
+
+  const checkPaymentMethods = (data) => {
+    if (data.length > 3) {
+      return false;
+    }
+    let methods = [];
+    for (let i = 0; i < data.length; i++) {
+      if (methods.includes(data[i].paymentMethod)) {
+        return false;
+      } else {
+        methods.push(data[i].paymentMethod);
+      }
+    }
+    return true;
+  };
 
   const handlePlus = () => {
     setData(
@@ -44,16 +59,15 @@ const PaymentDialog = ({
   };
 
   useEffect(() => {
-    console.log(orderPrice, change, data);
+    console.log("orderpayments!!!!!!!!!!!!!");
     console.log(orderPayments);
-
     calcChange();
     let initialIndex = 0;
     for (let i = 0; data.length > i; i++) {
       initialIndex = Math.max(initialIndex, data[i].idx);
     }
     setMaxIdx(initialIndex + 1);
-  });
+  }, []);
 
   return (
     <React.Fragment>
@@ -258,10 +272,20 @@ const PaymentDialog = ({
                     }}
                     type="primary"
                     onClick={() => {
-                      if (orderPrice > 0 && calcSum() > orderPrice) {
+                      console.log("이게 왜 갑자기 안돼돼");
+                      console.log(orderPrice > 0);
+                      console.log(calcSum() > orderPrice);
+                      if (orderPrice >= 0 && calcSum() > orderPrice) {
                         Modal.info({
                           title: "설정 오류",
                           content: "결제 금액이 초과 되었습니다.",
+                        });
+                        return;
+                      }
+                      if (!checkPaymentMethods(data)) {
+                        Modal.info({
+                          title: "설정 오류",
+                          content: "결제방식 당 하나의 항목만 추가 가능합니다.",
                         });
                         return;
                       }
