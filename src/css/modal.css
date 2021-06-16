@@ -1215,7 +1215,7 @@
   vertical-align: middle;
   font-weight: bold;
   color: #1890ff;
-  margin-bottom: 30px;
+  /* margin-bottom: 30px; */
 }
 .registFranWrapper .mainTitle {
   display: inline-block;
@@ -2766,10 +2766,10 @@
   width: 400px;
 }
 
-.registRider-Dialog .ant-btn {
-  width: 130px;
+.registRider-Dialog .submitBlock .ant-btn {
+  width: 125px;
   height: 40px;
-  font-size: 18px !important;
+  font-size: 16px !important;
 }
 
 .giveBox {
@@ -2783,7 +2783,7 @@
 
 .registRiderWrapper.sub .submitBlock {
   width: 390px;
-  margin-top: 40px;
+  margin-top: 55px;
 }
 
 /* 하단 */
@@ -2816,11 +2816,13 @@
   display: inline-block;
   font-size: 16px;
   font-weight: bold;
+  margin-bottom: 0 !important;
 }
 .bike-type-box ul li .selectItem {
   display: inline-block;
-  width: 200px;
-  margin-left: 15px;
+  width: 165px;
+  margin: 0 0 0 15px;
+
   vertical-align: 0px;
 }
 /*직원 등록*/
