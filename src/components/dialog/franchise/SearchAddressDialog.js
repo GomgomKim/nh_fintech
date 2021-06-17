@@ -85,7 +85,7 @@ class SearchAddressDialog extends Component {
           });
         }
       })
-      .catch((e) => {});
+      .catch((e) => { });
   };
 
   // 우편번호 검색
@@ -218,11 +218,11 @@ class SearchAddressDialog extends Component {
 
   // 라디오
   onChangeRegistAddType = (e) => {
-    this.setState({ RegistAddType: e.target.value }, () => {});
+    this.setState({ RegistAddType: e.target.value }, () => { });
   };
 
   onChangeSelectAddType = (e) => {
-    this.setState({ selectAddType: e.target.value }, () => {});
+    this.setState({ selectAddType: e.target.value }, () => { });
   };
 
   render() {
@@ -231,7 +231,7 @@ class SearchAddressDialog extends Component {
         {
           addressType: e.target.value,
         },
-        () => {}
+        () => { }
       );
     };
 
@@ -277,9 +277,9 @@ class SearchAddressDialog extends Component {
     return (
       <React.Fragment>
         <div className="Dialog-overlay" onClick={close} />
-        <div className="serchAddress-Dialog">
-          <div className="serchAddress-content">
-            <div className="serchAddress-title">주소 검색 관리</div>
+        <div className="searchAddress-Dialog">
+          <div className="searchAddress-content">
+            <div className="searchAddress-title">주소 검색 관리</div>
             <img
               onClick={close}
               src={require("../../../img/login/close.png").default}
@@ -288,7 +288,7 @@ class SearchAddressDialog extends Component {
             />
             <Form ref={this.formRef} onFinish={this.handleSubmit}>
               <div className="layout">
-                <div className="serchAddressWrapper">
+                <div className="searchAddressWrapper">
                   <div className="searchAddress-name">주소 등록</div>
                   <div className="contentbox">
                     <div className="contentBlock frist">
@@ -372,8 +372,8 @@ class SearchAddressDialog extends Component {
                     <Button
                       type="primary"
                       htmlType="submit"
-                      style={{width: 100, backgroundColor:'#1890ff'}}
-                      // onClick={() => this.handleSubmit()}
+                      style={{ width: 100, backgroundColor: '#1890ff' }}
+                    // onClick={() => this.handleSubmit()}
                     >
                       등록하기
                     </Button>

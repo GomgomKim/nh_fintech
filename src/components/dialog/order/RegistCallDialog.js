@@ -93,8 +93,8 @@ class RegistCallDialog extends Component {
       data: this.props.data ? this.props.data : newOrder,
       selectedDest: this.props.data
         ? {
-            address: this.props.data.destAddr1,
-          }
+          address: this.props.data.destAddr1,
+        }
         : null,
       selectedFr: {
         frIdx: this.props.data ? this.props.data.frIdx : 0,
@@ -353,8 +353,8 @@ class RegistCallDialog extends Component {
     let basicDeliveryPrice = this.state.data
       ? this.state.data.basicDeliveryPrice
       : this.props.data
-      ? this.props.data.basicDeliveryPrice
-      : "";
+        ? this.props.data.basicDeliveryPrice
+        : "";
 
     return (
       <React.Fragment>
@@ -417,8 +417,8 @@ class RegistCallDialog extends Component {
                               this.state.selectedFr
                                 ? this.state.selectedFr.frName
                                 : this.props.data
-                                ? this.props.data.frName
-                                : ""
+                                  ? this.props.data.frName
+                                  : ""
                             }
                             style={{ marginLeft: 20, width: 250 }}
                             required
@@ -460,15 +460,15 @@ class RegistCallDialog extends Component {
                               this.state.selectedDest
                                 ? this.state.selectedDest.address
                                 : this.props.data
-                                ? this.props.data.destAddr1
-                                : ""
+                                  ? this.props.data.destAddr1
+                                  : ""
                             }
                             value={
                               this.state.selectedDest
                                 ? this.state.selectedDest.address
                                 : this.props.data
-                                ? this.props.data.destAddr1
-                                : ""
+                                  ? this.props.data.destAddr1
+                                  : ""
                             }
                             style={{ marginLeft: 20, width: 250 }}
                             required
@@ -563,16 +563,16 @@ class RegistCallDialog extends Component {
                             this.state.data
                               ? this.state.data.orderPayments
                               : this.props.data
-                              ? this.props.data.orderPayments
-                              : ""
+                                ? this.props.data.orderPayments
+                                : ""
                           }
                           editable={this.state.editable}
                           orderPrice={
                             this.state.data
                               ? this.state.data.orderPrice
                               : this.props.data
-                              ? this.props.data.orderPrice
-                              : ""
+                                ? this.props.data.orderPrice
+                                : ""
                           }
                         />
                       )}
@@ -587,7 +587,7 @@ class RegistCallDialog extends Component {
                     <div className="contentBlock">
                       <div className="mainTitle" />
 
-                      <div className="selectItem" style={{marginLeft:20}}>
+                      <div className="selectItem" style={{ marginLeft: 20 }}>
                         {this.state.data &&
                           this.state.data.orderPayments.map((el) => {
                             return (
@@ -633,8 +633,8 @@ class RegistCallDialog extends Component {
                             this.state.data
                               ? arriveReqTime[this.state.data.arriveReqTime]
                               : this.props.data
-                              ? arriveReqTime[this.props.data.arriveReqTime]
-                              : arriveReqTime[5]
+                                ? arriveReqTime[this.props.data.arriveReqTime]
+                                : arriveReqTime[5]
                           }
                           placeholder="시간단위"
                           className="override-input"
@@ -660,8 +660,8 @@ class RegistCallDialog extends Component {
                             this.state.data
                               ? packAmount[this.state.data.packAmount]
                               : this.props.data
-                              ? packAmount[this.props.data.packAmount]
-                              : packAmount[1]
+                                ? packAmount[this.props.data.packAmount]
+                                : packAmount[1]
                           }
                           placeholder="배달갯수"
                           className="override-input"
@@ -734,15 +734,15 @@ class RegistCallDialog extends Component {
                       center={
                         this.state.mapLat && this.state.mapLng
                           ? navermaps.LatLng(
-                              this.state.mapLat,
-                              this.state.mapLng
-                            )
+                            this.state.mapLat,
+                            this.state.mapLng
+                          )
                           : this.props.data
-                          ? navermaps.LatLng(
+                            ? navermaps.LatLng(
                               this.props.data.latitude,
                               this.props.data.longitude
                             )
-                          : navermaps.LatLng(lat, lng)
+                            : navermaps.LatLng(lat, lng)
                       }
                       onClick={(e) => {
                         this.setState({
@@ -805,15 +805,15 @@ class RegistCallDialog extends Component {
                         position={
                           this.state.mapLat && this.state.mapLng
                             ? navermaps.LatLng(
-                                this.state.mapLat,
-                                this.state.mapLng
-                              )
+                              this.state.mapLat,
+                              this.state.mapLng
+                            )
                             : this.props.data
-                            ? navermaps.LatLng(
+                              ? navermaps.LatLng(
                                 this.props.data.latitude,
                                 this.props.data.longitude
                               )
-                            : navermaps.LatLng(lat, lng)
+                              : navermaps.LatLng(lat, lng)
                         }
                         icon={
                           require("../../../img/login/map/marker_target.png")

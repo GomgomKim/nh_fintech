@@ -148,66 +148,66 @@ class SearchBikeDialog extends Component {
       onChange: this.onSelectChange,
     };
 
-    const { close} = this.props;
+    const { close } = this.props;
 
     return (
 
-          <React.Fragment>
-            <div className="Dialog-overlay" onClick={close} />
-            <div className="searchFranchise-Dialog">
-              <div className="searchFranchise-content">
-                <div className="searchFranchise-title">바이크조회</div>
-                <img
-                  onClick={close}
-                  src={require("../../../img/login/close.png").default}
-                  className="surcharge-close"
-                  alt="닫기"
-                />
+      <React.Fragment>
+        <div className="Dialog-overlay" onClick={close} />
+        <div className="searchFranchise-Dialog">
+          <div className="searchFranchise-content">
+            <div className="searchFranchise-title">바이크조회</div>
+            <img
+              onClick={close}
+              src={require("../../../img/login/close.png").default}
+              className="surcharge-close"
+              alt="닫기"
+            />
 
-                <Form ref={this.formRef} onFinish={this.onSubmit}>
-                  <div className="layout">
-                    <div className="searchFranchiseWrapper">
-                      <div className="searchFranchise-list">
-                        <div className="inputBox inputBox-searchFranchise sub">
-                          <SelectBox
-                            value={searchBike[this.state.serchBike]}
-                            code={Object.keys(searchBike)}
-                            codeString={searchBike}
-                            onChange={(value) => {
-                              if (parseInt(value) !== this.state.serchBike) {
-                                this.setState(
-                                  { serchBike: parseInt(value) },
-                                  () => this.getList()
-                                );
-                              }
-                            }}
-                          />
+            <Form ref={this.formRef} onFinish={this.onSubmit}>
+              <div className="layout">
+                <div className="searchFranchiseWrapper">
+                  <div className="searchFranchise-list">
+                    <div className="inputBox inputBox-searchFranchise sub">
+                      <SelectBox
+                        value={searchBike[this.state.searchBike]}
+                        code={Object.keys(searchBike)}
+                        codeString={searchBike}
+                        onChange={(value) => {
+                          if (parseInt(value) !== this.state.searchBike) {
+                            this.setState(
+                              { searchBike: parseInt(value) },
+                              () => this.getList()
+                            );
+                          }
+                        }}
+                      />
 
-                          <Search
-                            placeholder="입력해주세요"
-                            className="searchFranchiseInput"
-                            enterButton
-                            allowClear
-                            onSearch={this.onSearchBike}
-                          />
-                        </div>                       
-                      </div>
-                    </div>
-
-                    <div className="dataTableLayout-01">
-                        <Table
-                          rowKey={(record) => record.idx}
-                          dataSource={this.state.list}
-                          columns={columns}
-                          pagination={this.state.pagination}
-                          onChange={this.handleTableChange}
-                        />
+                      <Search
+                        placeholder="입력해주세요"
+                        className="searchFranchiseInput"
+                        enterButton
+                        allowClear
+                        onSearch={this.onSearchBike}
+                      />
                     </div>
                   </div>
-                </Form>
+                </div>
+
+                <div className="dataTableLayout-01">
+                  <Table
+                    rowKey={(record) => record.idx}
+                    dataSource={this.state.list}
+                    columns={columns}
+                    pagination={this.state.pagination}
+                    onChange={this.handleTableChange}
+                  />
+                </div>
               </div>
-            </div>
-          </React.Fragment>
+            </Form>
+          </div>
+        </div>
+      </React.Fragment>
 
     );
   }
