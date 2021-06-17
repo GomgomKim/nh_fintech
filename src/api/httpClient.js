@@ -153,6 +153,10 @@ const httpDownload = (url, params, data) => {
   });
 };
 
+const imageUrl = (idx) => {
+  return serverUrl + "/file/" + idx;
+};
+
 const httpUrl = {
   login: "/login",
   logout: "/logout",
@@ -251,5 +255,6 @@ export {
   httpDelete,
   httpDownload,
   imageType,
+  imageUrl,
 };
 
