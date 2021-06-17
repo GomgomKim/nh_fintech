@@ -75,7 +75,7 @@ class RiderMain extends Component {
 
     httpGet(
       httpUrl.riderList,
-      [10, pageNum, searchName, userStatus, 1],
+      [10, pageNum, searchName, userStatus, [1,2,3,4,5,6,7]],
       {}
     ).then((result) => {
       console.log("## nnbox result=" + JSON.stringify(result, null, 4));
@@ -281,6 +281,7 @@ class RiderMain extends Component {
             <div>
               <Image
                 src={imageUrl(row.driverLicenseFileIdx)}
+                style={{ width: 400, height: 300 }}
                 alt="면허증 사진"
               />
             </div>
