@@ -96,6 +96,8 @@ class ReceptionStatus extends Component {
       pullingInterval: 20000,
 
       messageTarget: null,
+      messageTargetName: null,
+      messageTargetLevel: null,
     };
   }
 
@@ -408,13 +410,22 @@ class ReceptionStatus extends Component {
   };
 
   // 개인 메세지 dialog
-  openDirectMessageModal = (idx, name) => {
-    this.setState({ messageTarget: idx, messageTargetName: name }, () =>
-      this.setState({ directMessageOpen: true })
+  openDirectMessageModal = (idx, name, riderLevel) => {
+    this.setState(
+      {
+        messageTarget: idx,
+        messageTargetName: name,
+        messageTargetLevel: riderLevel,
+      },
+      () => this.setState({ directMessageOpen: true })
     );
   };
   closeDirectMessageModal = () => {
-    this.setState({ directMessageOpen: false, messageTarget: null });
+    this.setState({
+      directMessageOpen: false,
+      messageTarget: null,
+      messageTargetLevel: null,
+    });
   };
 
   // sns dialog
@@ -844,7 +855,12 @@ class ReceptionStatus extends Component {
               <Button
                 className="tabBtn"
                 onClick={() => {
-                  this.openDirectMessageModal(row.userIdx, row.riderName);
+                  console.log(row);
+                  this.openDirectMessageModal(
+                    row.userIdx,
+                    row.riderName,
+                    row.riderLevel,
+                  );
                 }}
               >
                 라이더
@@ -978,6 +994,7 @@ class ReceptionStatus extends Component {
           <ChattingCurrentRoom
             targetIdx={this.state.messageTarget}
             targetName={this.state.messageTargetName}
+            targetLevel={this.state.messageTargetLevel}
             close={this.closeDirectMessageModal}
           />
         )}
