@@ -1208,7 +1208,6 @@
 /* 왼쪽 wrappper */
 .registFranWrapper {
   display: inline-block;
- 
 }
 .registFranTitle {
   display: inline-block;
@@ -1216,15 +1215,15 @@
   vertical-align: middle;
   font-weight: bold;
   color: #1890ff;
-  width:875px;
+  width: 875px;
   margin-bottom: 10px;
 }
-.registFranTitle-sub{
+.registFranTitle-sub {
   display: inline-block;
 }
-.registFran-radio{
+.registFran-radio {
   display: inline-block;
-  float:right;
+  float: right;
 }
 .registFranWrapper .mainTitle {
   display: inline-block;
@@ -2768,7 +2767,7 @@
 }
 
 /*오른쪽*/
-.registRiderBox{
+.registRiderBox {
   display: inline-block;
 }
 .registRiderWrapper.sub {
@@ -3412,14 +3411,13 @@
 .chat-container {
   /* width: 440px; */
   /* height: 700px; */
-  height:100%;
+  height: 100%;
   border-radius: 10px;
   background-color: white;
   box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
 }
-.chat-page{
-  padding:10px 0px;
- 
+.chat-page {
+  padding: 10px 0px;
 }
 /* .chat-list-container{
   height:650px;
@@ -3428,7 +3426,7 @@
 .chat-title {
   width: 100%;
   background-color: #fddc00;
-  padding:20px;
+  padding: 20px;
   text-align: center;
   font-size: 22px;
   letter-spacing: -1px;
@@ -3483,12 +3481,11 @@
   /* float: right; */
   padding: 0px;
   width: 440px;
-  height:100%;
+  height: 100%;
   border-radius: 10px;
   background-color: #ededed;
   margin-left: 30px;
   box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
- 
 }
 .chat-input {
   border-radius: 12px;
@@ -3497,7 +3494,6 @@
   height: 55px;
   background-color: #fff;
 }
-
 
 .chat-send-input {
   width: 330px;
@@ -4275,4 +4271,12 @@ td.ant-table-column-sort {
 .ant-table-filter-trigger-container-open .ant-table-filter-trigger,
 .ant-table-filter-trigger:hover {
   color: #bfbfbf;
+}
+
+.regist-bike-title {
+  display: "inline-block";
+  width: 80px;
+}
+.bike-type-box .ant-picker {
+  width: 165px;
 }

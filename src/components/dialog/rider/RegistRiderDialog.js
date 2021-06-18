@@ -553,7 +553,7 @@ class RegistRiderDialog extends Component {
                     <div>지입바이크 등록</div>
                     <ul>
                       <li>
-                        <p>바이크번호</p>
+                        <p className="regist-bike-title">바이크번호</p>
                         <FormItem name="bikeNumber" className="selectItem">
                           <Input
                             placeholder="번호를 입력해주세요."
@@ -567,7 +567,7 @@ class RegistRiderDialog extends Component {
                       </li>
 
                       <li>
-                        <p>모델명</p>
+                        <p className="regist-bike-title">모델명</p>
                         <FormItem name="modelName" className="selectItem">
                           <Input
                             placeholder="모델명을 입력해주세요."
@@ -580,7 +580,7 @@ class RegistRiderDialog extends Component {
                         </FormItem>
                       </li>
                       <li>
-                        <p>제조사</p>
+                        <p className="regist-bike-title">제조사</p>
                         <FormItem name="maker" className="selectItem">
                           <Input
                             placeholder="제조사를 입력해주세요."
@@ -593,7 +593,7 @@ class RegistRiderDialog extends Component {
                         </FormItem>
                       </li>
                       <li>
-                        <p>제조일자</p>
+                        <p className="regist-bike-title">제조일자</p>
                         <FormItem name="makeDate" className="selectItem">
                           {/* <Input
                             placeholder="제조일자를 입력해주세요."
@@ -611,7 +611,7 @@ class RegistRiderDialog extends Component {
                       </li>
 
                       <li>
-                        <p>모델연식</p>
+                        <p className="regist-bike-title">모델연식</p>
                         <FormItem name="modelYear" className="selectItem">
                           <DatePicker
                             onSelect={(value) =>
@@ -623,7 +623,7 @@ class RegistRiderDialog extends Component {
                       </li>
 
                       <li>
-                        <p>주행거리</p>
+                        <p className="regist-bike-title">주행거리</p>
                         <FormItem name="mileage" className="selectItem">
                           <Input
                             type="number"
@@ -637,19 +637,21 @@ class RegistRiderDialog extends Component {
                         </FormItem>
                       </li>
 
-                      <li>
-                        <Button
-                          type="primary"
-                          style={{
-                            backgroundColor: "#000",
-                            borderColor: "#000",
-                          }}
-                          onClick={() => this.createBike()}
-                        >
-                          등록하기
-                        </Button>
-                      </li>
+                      <li></li>
                     </ul>
+                    <Button
+                      type="primary"
+                      style={{
+                        backgroundColor: "#000",
+                        borderColor: "#000",
+                        float: "right",
+                        marginTop: 20,
+                        marginRight: 35,
+                      }}
+                      onClick={() => this.createBike()}
+                    >
+                      등록하기
+                    </Button>
                   </div>
                 ) : (
                   <div className="bike-type-box">
@@ -707,6 +709,7 @@ class RegistRiderDialog extends Component {
                             className="override-input"
                           /> */}
                           <DatePicker
+                            className="regist-bike-picker"
                             onSelect={(value) =>
                               this.handleInput(
                                 formatDateSecond(value),
@@ -722,6 +725,7 @@ class RegistRiderDialog extends Component {
                         <p>모델연식</p>
                         <FormItem name="modelYear" className="selectItem">
                           <DatePicker
+                            className="regist-bike-picker"
                             onSelect={(value) =>
                               this.handleInput(formatYear(value), "modelYear")
                             }
