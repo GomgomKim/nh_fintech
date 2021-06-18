@@ -152,7 +152,7 @@ const surchargeType = ["지점 전체", "지정 그룹"];
 
 const addType = ["", "아파트", "오피스텔"];
 
-const bikeType =[ "리스", "지입"];
+const bikeType = ["리스", "지입"];
 
 // 바이크 조회 모달
 const searchBike = {
@@ -160,7 +160,9 @@ const searchBike = {
   1: "번호",
   2: "모델명",
   3: "제조사",
-}
+};
+
+const deliveryPriceFeeType = ["정률", "정액"];
 
 export {
   deliveryStatusCode,
@@ -192,5 +194,5 @@ export {
   importantNotice,
   bikeType,
   searchBike,
+  deliveryPriceFeeType,
 };
-
