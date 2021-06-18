@@ -269,6 +269,7 @@ class ChattingCurrentRoom extends Component {
         if (res.result === "SUCCESS") {
           callback1();
           callback2();
+          this.setState({ inputMessage: "" });
           console.log("메세지 전송 성공");
         } else {
           console.log("전송실패");
@@ -288,6 +289,9 @@ class ChattingCurrentRoom extends Component {
           {currentRoom && (
             <div className="chat-message-container">
               <div className="chat-title">
+                {this.props.targetLevel &&
+                  riderLevelText[this.props.targetLevel] + " "}
+
                 {this.formatChatName(currentRoom)}
               </div>
               <div className="chat-message" id="chat-message">
@@ -347,17 +351,22 @@ class ChattingCurrentRoom extends Component {
                 <input
                   className="chat-send-input"
                   placeholder="메세지를 입력해주세요."
-                  onChange={(e) => this.setState({ sendMsg: e.target.value })}
-                  value={this.state.sendMsg}
-                  onFocus={() => {
-                    this.setState({ msgInputModalOpen: true });
+                  onChange={(e) =>
+                    this.setState({ inputMessage: e.target.value })
+                  }
+                  value={this.state.inputMessage}
+                  onKeyPress={(e) => {
+                    if (e.key === "Enter") {
+                      this.onPressSend(this.state.inputMessage);
+                      this.setState({ inputMessage: "" });
+                    }
                   }}
                 />
                 <div
                   className="chat-send-btn"
                   onClick={() => {
-                    this.onPressSend(this.state.sendMsg);
-                    this.setState({ sendMsg: "" });
+                    this.onPressSend(this.state.inputMessage);
+                    this.setState({ inputMessage: "" });
                   }}
                 >
                   전송
@@ -389,6 +398,24 @@ class ChattingCurrentRoom extends Component {
                     this.setState({ inputMessage: e.target.value })
                   }
                   value={this.state.inputMessage}
+                  onKeyPress={(e) => {
+                    if (e.key === "Enter") {
+                      this.send(
+                        () => this.getTotalChatList(this.props.targetIdx),
+                        () => {
+                          this.setState(
+                            {
+                              pagination: {
+                                ...this.state.pagination,
+                                current: 1,
+                              },
+                            },
+                            () => this.getChatList()
+                          );
+                        }
+                      );
+                    }
+                  }}
                 />
                 <div
                   className="chat-send-btn"

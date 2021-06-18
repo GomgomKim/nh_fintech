@@ -7,6 +7,7 @@ import { bindActionCreators } from "redux";
 import { login, logout } from "../../../actions/loginAction";
 import { httpGet, httpPost, httpUrl } from "../../../api/httpClient";
 import Const from "../../../const";
+import { riderLevelText } from "../../../lib/util/codeUtil";
 import { formatYMD, formatYMDHMS } from "../../../lib/util/dateUtil";
 import SearchFranchiseDialog from "./SearchFranchiseDialog";
 import SearchRiderDialog from "./SearchRiderDialog";
@@ -49,7 +50,7 @@ class ChattingDialog extends Component {
       try {
         value = JSON.parse(value);
         this.setState({ lastChatTime: value });
-      } catch { }
+      } catch {}
     }
   }
 
@@ -100,7 +101,7 @@ class ChattingDialog extends Component {
         );
 
         this.setState({ lastChatTime: value });
-      } catch { }
+      } catch {}
     }
   };
 
@@ -284,6 +285,7 @@ class ChattingDialog extends Component {
         if (res.result === "SUCCESS") {
           callback1();
           callback2();
+          this.setState({ inputMessage: "" });
           console.log("메세지 전송 성공");
         } else {
           console.log("전송실패");
@@ -350,7 +352,6 @@ class ChattingDialog extends Component {
 
         <div className={"Modal-overlay"} onClick={close} />
         <div className={"Modal-chat"}>
-
           <div className="chat-container">
             <div className="chat-subbox">
               <div className="chat-title">냠냠톡</div>
@@ -396,7 +397,9 @@ class ChattingDialog extends Component {
                             {this.formatChatName(row)}
                           </div>
                         </div>
-                        <div className="chat-item-bottom">{row.lastMessage}</div>
+                        <div className="chat-item-bottom">
+                          {row.lastMessage}
+                        </div>
                       </div>
                     </div>
                   );
@@ -415,6 +418,8 @@ class ChattingDialog extends Component {
           {currentRoom && (
             <div className="chat-message-container">
               <div className="chat-title">
+                {this.state.selectedRider &&
+                  riderLevelText[this.state.selectedRider.riderLevel] + " "}
                 {this.formatChatName(currentRoom)}
               </div>
               <div className="chat-message" id="chat-message">
@@ -475,10 +480,15 @@ class ChattingDialog extends Component {
                   <input
                     className="chat-send-input"
                     placeholder="메세지를 입력해주세요."
-                    onChange={(e) => this.setState({ sendMsg: e.target.value })}
-                    value={this.state.sendMsg}
-                    onFocus={() => {
-                      this.setState({ msgInputModalOpen: true });
+                    onChange={(e) =>
+                      this.setState({ inputMessage: e.target.value })
+                    }
+                    value={this.state.inputMessage}
+                    onKeyPress={(e) => {
+                      if (e.key === "Enter") {
+                        this.onPressSend(this.state.inputMessage);
+                        this.setState({ inputMessage: "" });
+                      }
                     }}
                   />
                   <div
@@ -497,6 +507,8 @@ class ChattingDialog extends Component {
           {this.state.fakeRoom && (
             <div className="chat-message-container">
               <div className="chat-title">
+                {this.state.selectedRider &&
+                  riderLevelText[this.state.selectedRider.riderLevel] + " "}
                 {this.state.selectedFr
                   ? this.state.selectedFr.frName
                   : this.state.selectedRider.riderName}
@@ -518,6 +530,29 @@ class ChattingDialog extends Component {
                     this.setState({ inputMessage: e.target.value })
                   }
                   value={this.state.inputMessage}
+                  onKeyPress={(e) => {
+                    if (e.key === "Enter") {
+                      this.send(
+                        () =>
+                          this.getTotalChatList(
+                            this.state.selectedFr
+                              ? this.state.selectedFr.idx
+                              : this.state.selectedRider.idx
+                          ),
+                        () => {
+                          this.setState(
+                            {
+                              pagination: {
+                                ...this.state.pagination,
+                                current: 1,
+                              },
+                            },
+                            () => this.getChatList()
+                          );
+                        }
+                      );
+                    }
+                  }}
                 />
                 <div
                   className="chat-send-btn"
