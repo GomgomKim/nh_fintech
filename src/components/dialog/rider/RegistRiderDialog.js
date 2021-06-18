@@ -405,7 +405,9 @@ class RegistRiderDialog extends Component {
                     </div>
                     {this.state.isSearchBikeOpen && (
                       <SearchBikeDialog
-                        // getList={this.getList}
+                        onSelect={(selectedBike) =>
+                          this.setState({ selectedBike: selectedBike })
+                        }
                         close={this.closeSearchBikeModal}
                       />
                     )}
@@ -434,9 +436,9 @@ class RegistRiderDialog extends Component {
                       <Input
                         value={
                           this.state.selectedBike
-                            ? this.state.selectedBike.searchBike
+                            ? this.state.selectedBike.bikeNumber
                             : this.props.data
-                            ? this.props.data.searchBike
+                            ? this.props.data.bikeNumber
                             : ""
                         }
                         className="override-input"

@@ -85,6 +85,7 @@ const httpExec = (method, url, data) => {
 };
 
 const httpGet = (url, params, data) => {
+  console.log(makeUrl(url, params));
   return httpExec("GET", makeUrl(url, params), data);
   // return new Promise((resolve, reject) => {
   //   Axios.get(makeUrl(url, params), data)
@@ -244,6 +245,7 @@ const httpUrl = {
   // 바이크
   createBike: "/bike/create",
   getBikeList: "/bike/list?modelName=%s&pageNum=%s&pageSize=%s",
+  getBikeListNoModelName: "/bike/list?pageNum=%s&pageSize=%s",
 };
 
 const imageType = ["image/jpeg", "image/png", "image/bmp"];
