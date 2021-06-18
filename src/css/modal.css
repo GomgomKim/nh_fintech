@@ -993,7 +993,7 @@
   border-radius: 2px;
   padding: 0px;
   height: 40px;
-  margin-top:20px;
+  margin-top: 20px;
   float: right;
 }
 
@@ -2532,7 +2532,7 @@
 .riderGroup-ftline {
   line-height: 30px;
   font-size: 18px;
-  height: 215px;
+  /* height: 215px; */
   padding: 20px;
   margin-top: 10px;
   /* border:1px solid #ccc; */

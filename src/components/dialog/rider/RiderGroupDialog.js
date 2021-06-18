@@ -1,7 +1,5 @@
+import { Button, Form, Input, Radio, Table } from "antd";
 import React, { Component } from "react";
-import {
-    Form, Input, Table, Button, Radio, Checkbox
-} from "antd";
 import '../../../css/modal.css';
 import { comma } from "../../../lib/util/numberUtil";
 
@@ -202,7 +200,7 @@ class RiderGroupDialog extends Component {
                                     </div>
 
 
-                                    <div className="riderGroup-ftline-02">
+                                    {/* <div className="riderGroup-ftline-02">
                                         <p>출금 사용</p>
 
                                         <div className="inputBox inputBox-rider">
@@ -233,7 +231,7 @@ class RiderGroupDialog extends Component {
                                                 원 까지만 이체가능
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> */}
 
                                     <div className="riderGroup-ftline-04">
                                         <p>배달수수료</p>
