@@ -1,16 +1,30 @@
-import React, { Component } from "react";
-import { Form, Input, Button, Select, Modal, Checkbox, Radio } from "antd";
-import "../../../css/modal.css";
-import { httpUrl, httpPost } from "../../../api/httpClient";
-import { riderGroupString, riderLevelText, bikeType } from "../../../lib/util/codeUtil";
 import {
-  updateComplete,
-  updateError,
+  Button,
+  Checkbox,
+  DatePicker,
+  Form,
+  Input,
+  Modal,
+  Radio,
+  Select
+} from "antd";
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { httpPost, httpUrl } from "../../../api/httpClient";
+import {
   registComplete,
   registError,
+  updateComplete,
+  updateError
 } from "../../../api/Modals";
+import "../../../css/modal.css";
+import {
+  bikeType,
+  riderGroupString,
+  riderLevelText
+} from "../../../lib/util/codeUtil";
+import { formatDateSecond, formatYear } from "../../../lib/util/dateUtil";
 import SearchBikeDialog from "../../dialog/common/SearchBikeDialog";
-import { connect } from "react-redux";
 
 const Option = Select.Option;
 const FormItem = Form.Item;
@@ -39,6 +53,14 @@ class RegistRiderDialog extends Component {
       selectedBike: null,
 
       agreeSms: true,
+
+      // 바이크 등록 param
+      bikeNumber: "",
+      makeDate: "",
+      maker: "",
+      modelName: "",
+      modelYear: "",
+      mileage: "",
     };
     this.formRef = React.createRef();
   }
@@ -125,6 +147,44 @@ class RegistRiderDialog extends Component {
     this.formRef.current.resetFields();
   };
 
+  handleInput = (value, key) => {
+    let newState = this.state;
+    newState[key] = value;
+    this.setState(newState, () => console.log(this.state));
+  };
+
+  createBike = () => {
+    httpPost(httpUrl.createBike, [], {
+      bikeNumber: this.state.bikeNumber,
+      makeDate: this.state.makeDate,
+      maker: this.state.maker,
+      modelName: this.state.modelName,
+      modelYear: this.state.modelYear,
+      mileage: this.state.mileage,
+    })
+      .then((res) => {
+        if (res.result === "SUCCESS" && res.data === "SUCCESS") {
+          Modal.info({
+            title: "등록성공",
+            content: "바이크 등록에 성공했습니다.",
+          });
+        } else {
+          Modal.info({
+            title: "등록실패",
+            content: "바이크 등록에 실패했습니다.",
+          });
+        }
+      })
+      .catch((e) => {
+        Modal.info({
+          title: "등록실패",
+          content: "바이크 등록에 실패했습니다.",
+        });
+        console.log(e);
+        throw e;
+      });
+  };
+
   // handleChangeRiderLevel = (value) => {
   //     if (value === 1) {
   //         this.setState({ riderLevelSelected: true });
@@ -142,7 +202,7 @@ class RegistRiderDialog extends Component {
   // }
 
   onChangFeeManner = (e) => {
-    this.setState({ feeManner: e.target.value }, () => { });
+    this.setState({ feeManner: e.target.value }, () => {});
   };
 
   onSelectChange = (selectedRowKeys) => {
@@ -154,13 +214,12 @@ class RegistRiderDialog extends Component {
   };
 
   openSearchBikeModal = () => {
-    this.setState({ isSearchBikeOpen: true })
+    this.setState({ isSearchBikeOpen: true });
   };
 
   closeSearchBikeModal = () => {
-    this.setState({ isSearchBikeOpen: false })
+    this.setState({ isSearchBikeOpen: false });
   };
-
 
   render() {
     // const selectedRowKeys = this.state.selectedRowKeys
@@ -190,9 +249,7 @@ class RegistRiderDialog extends Component {
               <div className="registRiderLayout">
                 <div className="registRiderBox">
                   <div className="registFranTitle">
-                    <div className="registFranTitle-sub">
-                      기본정보
-                    </div>
+                    <div className="registFranTitle-sub">기본정보</div>
                   </div>
                   <div className="registRiderWrapper">
                     <div className="contentBlock">
@@ -348,7 +405,9 @@ class RegistRiderDialog extends Component {
                     </div>
                     {this.state.isSearchBikeOpen && (
                       <SearchBikeDialog
-                        // getList={this.getList}
+                        onSelect={(selectedBike) =>
+                          this.setState({ selectedBike: selectedBike })
+                        }
                         close={this.closeSearchBikeModal}
                       />
                     )}
@@ -362,14 +421,13 @@ class RegistRiderDialog extends Component {
                         style={{ marginRight: 19 }}
                       >
                         {Object.entries(bikeType).map(([key, value]) => {
-                          return (
-                            <Radio value={parseInt(key)}>
-                              {value}
-                            </Radio>
-                          );
+                          return <Radio value={parseInt(key)}>{value}</Radio>;
                         })}
                       </Radio.Group>
-                      <Button className="tabBtn sectionTab" onClick={this.openSearchBikeModal}>
+                      <Button
+                        className="tabBtn sectionTab"
+                        onClick={this.openSearchBikeModal}
+                      >
                         바이크 조회
                       </Button>
                     </div>
@@ -378,17 +436,16 @@ class RegistRiderDialog extends Component {
                       <Input
                         value={
                           this.state.selectedBike
-                            ? this.state.selectedBike.searchBike
+                            ? this.state.selectedBike.bikeNumber
                             : this.props.data
-                              ? this.props.data.searchBike
-                              : ""
+                            ? this.props.data.bikeNumber
+                            : ""
                         }
                         className="override-input"
                         placeholder="바이크를 선택해주세요."
                         disabled
                       />
                     </div>
-
                   </div>
                   <div className="registRiderWrapper sub">
                     <div className="contentBlock">
@@ -463,7 +520,6 @@ class RegistRiderDialog extends Component {
                       </FormItem>
                     </div>
 
-
                     <div className="contentBlock" style={{ marginTop: 10 }}>
                       <div className="mainTitle">SMS수신동의</div>
                       <FormItem name="agreeSms" className="giveBox selectItem">
@@ -492,61 +548,111 @@ class RegistRiderDialog extends Component {
                     </div>
                   </div>
                 </div>
-                {this.state.bikeType === 1 ?
+                {this.state.bikeType === 1 ? (
                   <div className="bike-type-box">
-
                     <div>지입바이크 등록</div>
                     <ul>
                       <li>
                         <p>바이크번호</p>
-                        <FormItem
-                          name="bike_number"
-                          className="selectItem"
-                          initialValue={data ? data.bike_number : ""}>
+                        <FormItem name="bikeNumber" className="selectItem">
                           <Input
                             placeholder="번호를 입력해주세요."
                             className="override-input"
+                            value={this.state.bikeNumber}
+                            onChange={(e) =>
+                              this.handleInput(e.target.value, "bikeNumber")
+                            }
                           />
                         </FormItem>
                       </li>
 
                       <li>
                         <p>모델명</p>
-                        <FormItem
-                          name="model_name"
-                          className="selectItem"
-                          initialValue={data ? data.model_name : ""}>
+                        <FormItem name="modelName" className="selectItem">
                           <Input
                             placeholder="모델명을 입력해주세요."
                             className="override-input"
+                            value={this.state.modelName}
+                            onChange={(e) =>
+                              this.handleInput(e.target.value, "modelName")
+                            }
                           />
                         </FormItem>
                       </li>
                       <li>
                         <p>제조사</p>
-                        <FormItem
-                          name="maker"
-                          className="selectItem"
-                          initialValue={data ? data.maker : ""}>
+                        <FormItem name="maker" className="selectItem">
                           <Input
                             placeholder="제조사를 입력해주세요."
                             className="override-input"
+                            value={this.state.maker}
+                            onChange={(e) =>
+                              this.handleInput(e.target.value, "maker")
+                            }
                           />
                         </FormItem>
                       </li>
                       <li>
+                        <p>제조일자</p>
+                        <FormItem name="makeDate" className="selectItem">
+                          {/* <Input
+                            placeholder="제조일자를 입력해주세요."
+                            className="override-input"
+                          /> */}
+                          <DatePicker
+                            onSelect={(value) =>
+                              this.handleInput(
+                                formatDateSecond(value),
+                                "makeDate"
+                              )
+                            }
+                          />
+                        </FormItem>
+                      </li>
+
+                      <li>
+                        <p>모델연식</p>
+                        <FormItem name="modelYear" className="selectItem">
+                          <DatePicker
+                            onSelect={(value) =>
+                              this.handleInput(formatYear(value), "modelYear")
+                            }
+                            picker="year"
+                          />
+                        </FormItem>
+                      </li>
+
+                      <li>
+                        <p>주행거리</p>
+                        <FormItem name="mileage" className="selectItem">
+                          <Input
+                            type="number"
+                            placeholder="주행거리를 입력해주세요."
+                            className="override-input"
+                            value={this.state.mileage}
+                            onChange={(e) =>
+                              this.handleInput(e.target.value, "mileage")
+                            }
+                          />
+                        </FormItem>
+                      </li>
+
+                      <li>
                         <Button
                           type="primary"
-                          htmlType="submit"
-                          style={{ backgroundColor: '#000', borderColor: '#000' }}>
+                          style={{
+                            backgroundColor: "#000",
+                            borderColor: "#000",
+                          }}
+                          onClick={() => this.createBike()}
+                        >
                           등록하기
                         </Button>
                       </li>
                     </ul>
                   </div>
-                  :
+                ) : (
                   <div className="bike-type-box">
-
                     <div>지입바이크 등록</div>
                     <ul>
                       <li>
@@ -554,7 +660,8 @@ class RegistRiderDialog extends Component {
                         <FormItem
                           name="bike_number"
                           className="selectItem"
-                          initialValue={data ? data.bike_number : ""}>
+                          initialValue={data ? data.bike_number : ""}
+                        >
                           <Input
                             placeholder="번호를 입력해주세요."
                             className="override-input"
@@ -568,7 +675,8 @@ class RegistRiderDialog extends Component {
                         <FormItem
                           name="model_name"
                           className="selectItem"
-                          initialValue={data ? data.model_name : ""}>
+                          initialValue={data ? data.model_name : ""}
+                        >
                           <Input
                             placeholder="모델명을 입력해주세요."
                             className="override-input"
@@ -581,7 +689,9 @@ class RegistRiderDialog extends Component {
                         <FormItem
                           name="maker"
                           className="selectItem"
-                          initialValue={data ? data.maker : ""}>
+                          initialValue={data ? data.maker : ""}
+                          disabled
+                        >
                           <Input
                             placeholder="제조사를 입력해주세요."
                             className="override-input"
@@ -589,11 +699,62 @@ class RegistRiderDialog extends Component {
                           />
                         </FormItem>
                       </li>
-                      <li><Button disabled> 등록하기 </Button></li>
+                      <li>
+                        <p>제조일자</p>
+                        <FormItem name="makeDate" className="selectItem">
+                          {/* <Input
+                            placeholder="제조일자를 입력해주세요."
+                            className="override-input"
+                          /> */}
+                          <DatePicker
+                            onSelect={(value) =>
+                              this.handleInput(
+                                formatDateSecond(value),
+                                "makeDate"
+                              )
+                            }
+                            disabled
+                          />
+                        </FormItem>
+                      </li>
+
+                      <li>
+                        <p>모델연식</p>
+                        <FormItem name="modelYear" className="selectItem">
+                          <DatePicker
+                            onSelect={(value) =>
+                              this.handleInput(formatYear(value), "modelYear")
+                            }
+                            picker="year"
+                            disabled
+                          />
+                        </FormItem>
+                      </li>
+
+                      <li>
+                        <p>주행거리</p>
+                        <FormItem name="mileage" className="selectItem">
+                          <Input
+                            type="number"
+                            placeholder="주행거리를 입력해주세요."
+                            className="override-input"
+                            value={this.state.mileage}
+                            onChange={(e) =>
+                              this.handleInput(e.target.value, "mileage")
+                            }
+                            disabled
+                          />
+                        </FormItem>
+                      </li>
+
+                      <li>
+                        <Button onClick={() => this.createBike()} disabled>
+                          등록하기
+                        </Button>
+                      </li>
                     </ul>
                   </div>
-                }
-
+                )}
               </div>
             </Form>
           </div>
@@ -607,6 +768,6 @@ const mapStateToProps = (state) => ({
   branchIdx: state.login.loginInfo.branchIdx,
 });
 
-const mapDispatchToProps = () => { };
+const mapDispatchToProps = () => {};
 
 export default connect(mapStateToProps, mapDispatchToProps)(RegistRiderDialog);

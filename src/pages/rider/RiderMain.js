@@ -1,6 +1,6 @@
 import { Button, Image, Input, Modal, Popover, Table } from "antd";
 import React, { Component } from "react";
-import { httpGet, httpPost, httpUrl } from "../../api/httpClient";
+import { httpGet, httpPost, httpUrl, imageUrl } from "../../api/httpClient";
 import { customAlert, updateError } from "../../api/Modals";
 import BlindRiderListDialog from "../../components/dialog/rider/BlindRiderListDialog";
 import RegistRiderDialog from "../../components/dialog/rider/RegistRiderDialog";
@@ -73,18 +73,20 @@ class RiderMain extends Component {
     let userStatus = this.state.userStatus === 0 ? "" : this.state.userStatus;
     let searchName = this.state.searchName;
 
-    httpGet(httpUrl.riderList, [10, pageNum, searchName, userStatus], {}).then(
-      (result) => {
-        console.log("## nnbox result=" + JSON.stringify(result, null, 4));
-        const pagination = { ...this.state.pagination };
-        pagination.current = result.data.currentPage;
-        pagination.total = result.data.totalCount;
-        this.setState({
-          results: result.data.riders,
-          pagination,
-        });
-      }
-    );
+    httpGet(
+      httpUrl.riderList,
+      [10, pageNum, searchName, userStatus, [1,2,3,4,5,6,7]],
+      {}
+    ).then((result) => {
+      console.log("## nnbox result=" + JSON.stringify(result, null, 4));
+      const pagination = { ...this.state.pagination };
+      pagination.current = result.data.currentPage;
+      pagination.total = result.data.totalCount;
+      this.setState({
+        results: result.data.riders,
+        pagination,
+      });
+    });
   };
 
   onChangeStatus = (index, value) => {
@@ -277,7 +279,11 @@ class RiderMain extends Component {
           // 면허정보 컬럼 확정후 확인 필요
           const content = (
             <div>
-              <Image source={row.driverLicenseFileIdx} />
+              <Image
+                src={imageUrl(row.driverLicenseFileIdx)}
+                style={{ width: 400, height: 300 }}
+                alt="면허증 사진"
+              />
             </div>
           );
           return (
@@ -370,7 +376,12 @@ class RiderMain extends Component {
             <Button
               className="tabBtn surchargeTab"
               onClick={() =>
-                this.setState({ riderUpdateOpen: true, dialogData: row })
+                this.setState(
+                  { riderUpdateOpen: true, dialogData: row },
+                  () => {
+                    console.log(row);
+                  }
+                )
               }
             >
               수정

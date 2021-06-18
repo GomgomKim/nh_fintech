@@ -6,6 +6,7 @@ import { bindActionCreators } from "redux";
 import { login, logout } from "../../../actions/loginAction";
 import { httpGet, httpPost, httpUrl } from "../../../api/httpClient";
 import Const from "../../../const";
+import { riderLevelText } from "../../../lib/util/codeUtil";
 import { formatYMD, formatYMDHMS } from "../../../lib/util/dateUtil";
 
 class ChattingCurrentRoom extends Component {
@@ -33,7 +34,12 @@ class ChattingCurrentRoom extends Component {
     };
   }
   componentDidMount() {
-    this.getTotalChatList(this.props.targetIdx);
+    console.log(this.props);
+    if (this.props.targetIdx) {
+      this.getTotalChatList(this.props.targetIdx);
+    } else {
+      this.props.close();
+    }
     let value = reactLocalStorage.getObject(Const.appName + ":chat");
 
     if (value !== null) {
@@ -361,7 +367,11 @@ class ChattingCurrentRoom extends Component {
           )}
           {this.state.fakeRoom && (
             <div className="chat-message-container">
-              <div className="chat-title">{this.props.targetName}</div>
+              <div className="chat-title">
+                {this.props.targetLevel &&
+                  riderLevelText[this.props.targetLevel] + " "}
+                {this.props.targetName}
+              </div>
               <div className="chat-message" id="chat-message">
                 <InfiniteScroll
                   dataLength={0}

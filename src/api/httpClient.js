@@ -85,6 +85,7 @@ const httpExec = (method, url, data) => {
 };
 
 const httpGet = (url, params, data) => {
+  console.log(makeUrl(url, params));
   return httpExec("GET", makeUrl(url, params), data);
   // return new Promise((resolve, reject) => {
   //   Axios.get(makeUrl(url, params), data)
@@ -151,6 +152,10 @@ const httpDownload = (url, params, data) => {
         reject(error);
       });
   });
+};
+
+const imageUrl = (idx) => {
+  return serverUrl + "/file/" + idx;
 };
 
 const httpUrl = {
@@ -236,6 +241,11 @@ const httpUrl = {
 
   // 지점조회
   getBranch: "/branch/%s",
+
+  // 바이크
+  createBike: "/bike/create",
+  getBikeList: "/bike/list?modelName=%s&pageNum=%s&pageSize=%s",
+  getBikeListNoModelName: "/bike/list?pageNum=%s&pageSize=%s",
 };
 
 const imageType = ["image/jpeg", "image/png", "image/bmp"];
@@ -251,5 +261,6 @@ export {
   httpDelete,
   httpDownload,
   imageType,
+  imageUrl,
 };
 

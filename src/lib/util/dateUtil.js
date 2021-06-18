@@ -1,10 +1,9 @@
-
-const formatDateNumber = num => {
+const formatDateNumber = (num) => {
   num += "";
   return num.length < 2 ? "0" + num : num;
 };
 
-const formatDate = date => {
+const formatDate = (date) => {
   // if (date === null) return '-';
   if (!date) return null;
   let newDate = new Date(date);
@@ -24,7 +23,18 @@ const formatDate = date => {
   // return day + " " + second;
 };
 
-const formatDateSecond = date => {
+const formatYear = (date) => {
+  // if (date === null) return '-';
+  if (!date) return null;
+  let newDate = new Date(date);
+  return newDate.getFullYear();
+
+  // let day = date.slice(0, 10);
+  // let second = date.slice(11, 16);
+  // return day + " " + second;
+};
+
+const formatDateSecond = (date) => {
   // if (date === null) return '-';
   if (!date) return null;
   let newDate = new Date(date);
@@ -47,7 +57,7 @@ const formatDateSecond = date => {
   return result;
 };
 
-const dateFormat = date => {
+const dateFormat = (date) => {
   if (!date) return null;
   let hour = parseInt(date / 60);
   let minute = date % 60;
@@ -58,7 +68,7 @@ const dateFormat = date => {
     : hour + "시간 " + minute + "분";
 };
 
-const minFormat = date => {
+const minFormat = (date) => {
   if (!date) return null;
   let newDate = new Date(date);
   let hour = newDate.getHours() * 60;
@@ -68,7 +78,7 @@ const minFormat = date => {
   return time;
 };
 
-const dayFormat = date => {
+const dayFormat = (date) => {
   if (!date) return null;
   // console.log(date);
   for (let i = 0; i < date.length; i++) {
@@ -82,7 +92,7 @@ const dayFormat = date => {
   }
 };
 
-const monthFormat = date => {
+const monthFormat = (date) => {
   if (!date) return null;
   // console.log(date);
   for (let i = 0; i < date.length; i++) {
@@ -95,7 +105,7 @@ const monthFormat = date => {
   }
 };
 
-const startDateFormat = date => {
+const startDateFormat = (date) => {
   if (!date) return null;
   let newDate = new Date(date);
   return (
@@ -108,7 +118,7 @@ const startDateFormat = date => {
   );
 };
 
-const endDateFormat = date => {
+const endDateFormat = (date) => {
   if (!date) return null;
   let newDate = new Date(date);
   return (
@@ -121,7 +131,7 @@ const endDateFormat = date => {
   );
 };
 
-const statFormat = date => {
+const statFormat = (date) => {
   if (!date) return null;
   let newDate = new Date(date);
   return (
@@ -131,24 +141,22 @@ const statFormat = date => {
   );
 };
 
-const statMonthFormat = date => {
+const statMonthFormat = (date) => {
   if (!date) return null;
   let newDate = new Date(date);
   return newDate.getFullYear() + formatDateNumber(newDate.getMonth() + 1);
 };
 
-const formatDateUnit = num => {
+const formatDateUnit = (num) => {
   num += "";
   return num.length < 2 ? "0" + num : num;
 };
 
-
-const formatYMD = date => {
+const formatYMD = (date) => {
   if (!date) return null;
   if (date instanceof Date) {
-  }
-  else {
-    date = new Date((date + '').substring(0, 19));
+  } else {
+    date = new Date((date + "").substring(0, 19));
   }
   return (
     date.getFullYear() +
@@ -157,14 +165,13 @@ const formatYMD = date => {
     "-" +
     formatDateUnit(date.getDate())
   );
-}
+};
 
-const formatYMDHMS = date => {
+const formatYMDHMS = (date) => {
   if (!date) return null;
   if (date instanceof Date) {
-  }
-  else {
-    date = new Date((date + '').substring(0, 19));
+  } else {
+    date = new Date((date + "").substring(0, 19));
   }
   return (
     date.getFullYear() +
@@ -179,12 +186,11 @@ const formatYMDHMS = date => {
     ":" +
     formatDateUnit(date.getSeconds())
   );
-}
-
-
+};
 
 export {
   formatDate,
+  formatYear,
   formatDateSecond,
   dateFormat,
   minFormat,
@@ -197,3 +203,4 @@ export {
   formatYMD,
   formatYMDHMS,
 };
+
