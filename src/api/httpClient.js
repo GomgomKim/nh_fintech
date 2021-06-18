@@ -240,6 +240,10 @@ const httpUrl = {
 
   // 지점조회
   getBranch: "/branch/%s",
+
+  // 바이크
+  createBike: "/bike/create",
+  getBikeList: "/bike/list?modelName=%s&pageNum=%s&pageSize=%s",
 };
 
 const imageType = ["image/jpeg", "image/png", "image/bmp"];

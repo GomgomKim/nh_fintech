@@ -1109,7 +1109,7 @@ class ReceptionStatus extends Component {
               marginLeft: 20,
             }}
           />
-          <Search
+          {/* <Search
             placeholder="바이크검색"
             enterButton
             allowClear
@@ -1119,7 +1119,7 @@ class ReceptionStatus extends Component {
               width: 200,
               marginLeft: 20,
             }}
-          />
+          /> */}
           <FilteringDialog
             isOpen={this.state.filteringOpen}
             close={this.closeFilteringModal}
