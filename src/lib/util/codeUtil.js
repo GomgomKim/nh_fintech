@@ -89,6 +89,11 @@ const blockString = {
   1: "차단해제",
 };
 
+const blockStatusString = {
+  2: "승인처리",
+  3: "승인거부"
+};
+
 const frRiderString = {
   1: "기사",
   2: "가맹점",
@@ -165,6 +170,7 @@ const searchBike = {
 export {
   deliveryStatusCode,
   blockString,
+  blockStatusString,
   frRiderString,
   withdrawString,
   toggleCode,
