@@ -225,6 +225,9 @@ const httpUrl = {
   registBlind: "/rider/admin/block/create",
   deleteBlind: "/rider/admin/block/delete",
 
+  statusBlind: "/rider/block/update",
+  blindAllList: "/rider/block/all/list?deletedList=%s&pageNum=%s&pageSize=%s&statusList=%s",
+
   // 채팅
   chatList: "/chat/chatList?pageSize=%s&pageNum=%s&searchName=%s",
   chatMessageList: "/chat/messageList?pageSize=%s&pageNum=%s&chatRoomIdx=%s",

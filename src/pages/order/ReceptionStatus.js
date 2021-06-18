@@ -44,6 +44,8 @@ import {
 import { formatDate } from "../../lib/util/dateUtil";
 import { comma } from "../../lib/util/numberUtil";
 import SurchargeDialog from "./../../components/dialog/order/SurchargeDialog";
+import BlindControlDialog from "../../components/dialog/franchise/BlindControlDialog";
+
 
 const Option = Select.Option;
 const Search = Input.Search;
@@ -391,6 +393,14 @@ class ReceptionStatus extends Component {
   };
   closeNoticeModal = () => {
     this.setState({ noticeOpen: false });
+  };
+
+  // 블라인드관리 dialog
+  openBlindControlModal = () => {
+    this.setState({ blindControlOpen: true });
+  };
+  closeBlindControlModal = () => {
+    this.setState({ blindControlOpen: false });
   };
 
   // 강제배차 dialog
@@ -1084,6 +1094,18 @@ class ReceptionStatus extends Component {
             onClick={this.openNoticeModal}
           >
             공지사항
+          </Button>
+          {this.state.blindControlOpen && (
+            <BlindControlDialog
+              isOpen={this.state.blindControlOpen}
+              close={this.closeBlindControlModal}
+            />
+          )}
+          <Button
+            className="tabBtn sectionTab"
+            onClick={this.openBlindControlModal}
+          >
+            블라인드관리
           </Button>
         </div>
 

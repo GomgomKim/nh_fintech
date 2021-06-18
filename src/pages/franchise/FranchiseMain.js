@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import * as XLSX from "xlsx";
 import { httpGet, httpPost, httpUrl } from "../../api/httpClient";
 import { updateComplete, updateError } from "../../api/Modals";
-import BlindControlDialog from "../../components/dialog/franchise/BlindControlDialog";
+// import BlindControlDialog from "../../components/dialog/franchise/BlindControlDialog";
 import BlindFranListDialog from "../../components/dialog/franchise/BlindFranListDialog";
 import RegistFranDialog from "../../components/dialog/franchise/RegistFranDialog";
 import SearchAddressDialog from "../../components/dialog/franchise/SearchAddressDialog";
@@ -43,7 +43,7 @@ class FranchiseMain extends Component {
       ResistFranchiseOpen: false,
       modifyFranOpen: false,
       SearchAddressOpen: false,
-      blindControlOpen: false,
+      // blindControlOpen: false,
       dialogData: [],
       blindFrData: [],
       blindListOpen: false,
@@ -134,13 +134,13 @@ class FranchiseMain extends Component {
     this.setState({ SearchAddressOpen: false });
   };
 
-  // 블라인드관리 dialog
-  openBlindControlModal = () => {
-    this.setState({ blindControlOpen: true });
-  };
-  closeBlindControlModal = () => {
-    this.setState({ blindControlOpen: false });
-  };
+  // // 블라인드관리 dialog
+  // openBlindControlModal = () => {
+  //   this.setState({ blindControlOpen: true });
+  // };
+  // closeBlindControlModal = () => {
+  //   this.setState({ blindControlOpen: false });
+  // };
 
   // 블라인드 dialog
   openBlindModal = () => {
@@ -600,7 +600,7 @@ class FranchiseMain extends Component {
             주소검색관리
           </Button>
 
-          {this.state.blindControlOpen && (
+          {/* {this.state.blindControlOpen && (
             <BlindControlDialog
               isOpen={this.state.blindControlOpen}
               close={this.closeBlindControlModal}
@@ -611,7 +611,7 @@ class FranchiseMain extends Component {
             onClick={this.openBlindControlModal}
           >
             블라인드관리
-          </Button>
+          </Button> */}
 
           {/* 블라인드 */}
           {this.state.blindListOpen && (

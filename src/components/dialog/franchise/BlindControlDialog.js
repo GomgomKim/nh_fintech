@@ -4,12 +4,13 @@ import {
 } from "antd";
 import '../../../css/modal.css';
 import { frRiderString, blockString } from '../../../lib/util/codeUtil';
-import { httpPost, httpUrl } from "../../../api/httpClient";
+import { httpPost, httpUrl, httpGet } from "../../../api/httpClient";
 import SelectBox from '../../input/SelectBox';
 import { formatDate } from "../../../lib/util/dateUtil";
 import { connect } from "react-redux";
 import SearchRiderDialog from "../common/SearchRiderDialog";
 import SearchFranchiseDialog from "../common/SearchFranchiseDialog";
+import { blockStatusString } from "../../../lib/util/codeUtil";
 import { blindComplete, blindError, unBlindComplete, unBlindError } from "../../../api/Modals";
 const FormItem = Form.Item;
 
@@ -28,39 +29,55 @@ class BlindControlDialog extends Component {
             selectedFr: null,
             searchRiderOpen: false,
             searchFranchiseOpen: false,
-            blindStatus: 0,
+            blindDirection: 0,
+            blindStatus: [0,1,2],
         };
         this.formRef = React.createRef();
     }
 
-    // componentDidMount() {
-    //     this.getList()
-    // }
+    componentDidMount() {
+        this.getList()
+    }
 
-    // componentDidUpdate(prevProps) {
-    //     if (prevProps.isOpen !== this.props.isOpen) {
-    //         this.getList()
-    //     }
-    // }
+    componentDidUpdate(prevProps) {
+        if (prevProps.isOpen !== this.props.isOpen) {
+            this.getList()
+        }
+    }
 
-    // handleTableChange = (pagination) => {
-    //     const pager = { ...this.state.pagination };
-    //     pager.current = pagination.current;
-    //     pager.pageSize = pagination.pageSize
-    //     this.setState({
-    //         pagination: pager,
-    //     }, () => this.getList());
-    // };
+    handleTableChange = (pagination) => {
+        const pager = { ...this.state.pagination };
+        pager.current = pagination.current;
+        pager.pageSize = pagination.pageSize
+        this.setState({
+            pagination: pager,
+        }, () => this.getList());
+    };
 
     
+    getList = () => {
+        let pageNum = this.state.pagination.current;
+        let pageSize = this.state.pagination.pageSize;
+        let blindStatus = this.state.blindStatus
+        let blindList = this.state.deletedCheck !== true ? [0] : [0, 1];
+        httpGet(httpUrl.blindAllList, [blindList, pageSize, pageNum, blindStatus], {}).then((res) => {
+            console.log(res)
+            const pagination = { ...this.state.pagination };
+            pagination.current = res.data.currentPage;
+            pagination.total = res.data.totalCount;
+            this.setState({
+              list: res.data.riderFrBlocks,
+            //   pagination,
+            });
+          });
+    };
+
     // getList = () => {
-    //     let { data } = this.props;
-    //     let frIdx = data.idx;
-    //     httpPost(httpUrl.blindList, [], {
-    //         frIdx: frIdx,
+    //     httpt(httpUrl.blindAllList, [], {
     //         pageNum: this.state.pagination.current,
     //         pageSize: this.state.pagination.pageSize,
     //         deletedList: this.state.deletedCheck !== true ? [0] : [0, 1],
+    //         status:1
     //     })
     //     .then((res) => {
     //         if (res.result === "SUCCESS") {
@@ -91,7 +108,7 @@ class BlindControlDialog extends Component {
             cancelText: "취소",
             onOk() {
                 httpPost(httpUrl.registBlind, [], {
-                    direction: self.state.blindStatus === 0 ? "" : self.state.blindStatus,
+                    direction: self.state.blindDirection === 0 ? "" : self.state.blindDirection,
                     deleted: false,
                     frIdx: self.state.selectedFr.idx,
                     memo: form.getFieldValue('memo'),
@@ -100,13 +117,13 @@ class BlindControlDialog extends Component {
                     if(result.result === "SUCCESS" && result.data === "SUCCESS") {
                         blindComplete();
                         self.handleClear();
-                        // self.getList();
-                        self.setState({
-                            pagination: {
-                                current: 1,
-                                pageSize: 5,
-                            },
-                        }, () => self.getList());
+                        self.getList();
+                        // self.setState({
+                        //     pagination: {
+                        //         current: 1,
+                        //         pageSize: 5,
+                        //     },
+                        // }, () => self.getList());
                     } else {
                         blindError();
                     }
@@ -159,6 +176,65 @@ class BlindControlDialog extends Component {
             unBlindError();
         }
     }
+
+
+    // 승인대기 or 승인거부로 상태변경
+    onChangeDeletedStatus = (idx, value) => {
+        let self = this;
+        if (value == 2) {
+            Modal.confirm({
+                title: "승인 완료",
+                content: "라이더의 블라인드를 완료하시겠습니까?",
+                okText: "확인",
+                cancelText: "취소",
+                onOk() {
+                    httpPost(httpUrl.statusBlind, [], {
+                        idx: idx,
+                        status: 2
+                    })
+                        .then((result) => {
+                            if (result.result === "SUCCESS") {
+                                unBlindComplete();
+                            self.getList();
+                            } else {
+                                unBlindError();
+                            }
+                            self.getList();
+                        })
+                        .catch((e) => {
+                            unBlindError();
+                        });
+                }
+            })
+        }
+        else {
+            Modal.confirm({
+                title: "승인 거부",
+                content: "라이더의 블라인드 승인을 거부하시겠습니까?",
+                okText: "확인",
+                cancelText: "취소",
+                onOk() {
+                    httpPost(httpUrl.statusBlind, [], {
+                        idx: idx,
+                        status: 3
+                    })
+                        .then((result) => {
+                            if (result.result === "SUCCESS") {
+                                unBlindComplete();
+                            self.getList();
+                            } else {
+                                unBlindError();
+                            }
+                            self.getList();
+                        })
+                        .catch((e) => {
+                            unBlindError();
+                        });
+                }
+            })
+        }
+    }
+
 
     // 가맹점조회 dialog
     openSearchFranchiseModal = () => {
@@ -226,26 +302,51 @@ class BlindControlDialog extends Component {
                 render:
                     (data, row) => (
                         <div>
-                            {data !== true ? blockString[0] : blockString[1]}
+                            { data !== true ? blockString[0] : blockString[1]}
                         </div>
                     ),
             },
             {
-                title: "해제",
+                title: "처리",
                 className: "table-column-center",
                 render: (data, row) =>
+                <>
+
+                    { row.status === 1 && 
+                      row.direction === 1 &&
                     <div>
-                    {row.deleted !== true ?
-                        <Button className="tabBtn surchargeTab" 
-                        onClick={(value) => {
-                            if (parseInt(value) !== row.deleted) {
-                                this.onDelete(row.idx, row.deleted);
-                            }
-                        }}>해제</Button>
-                        :
-                        <Button className="tabBtn surchargeTab">-</Button>
-                    }
+                        <SelectBox
+                            value={blockStatusString[data]}
+                            code={Object.keys(blockStatusString)}
+                            codeString={blockStatusString}
+                            placeholder={"승인대기"}
+                            onChange={(value) => {
+                                console.log(value, row.status);
+                                if (value !== row.status.toString()) {
+                                this.onChangeDeletedStatus(row.idx, value);
+                                }
+                            }}
+                        />
                     </div>
+                    }
+
+                    {row.status === 2 && 
+                    <div>
+                        {row.deleted !== true ?
+                            <Button
+                            onClick={(value) => {
+                                if (parseInt(value) !== row.deleted) {
+                                    this.onDelete(row.idx, row.deleted);
+                                }
+                            }}>해제</Button>
+                            :
+                            ''
+                        }
+                    </div>
+                    }
+
+              </>
+
               },
         ];
 
@@ -298,12 +399,12 @@ class BlindControlDialog extends Component {
                                                     <SelectBox
                                                         placeholder={'선택'}
                                                         style={{ marginLeft:10 }}
-                                                        value={frRiderString[this.state.blindStatus]}
+                                                        value={frRiderString[this.state.blindDirection]}
                                                         code={Object.keys(frRiderString)}
                                                         codeString={frRiderString}
                                                         onChange={(value) => {
-                                                            if (parseInt(value) !== this.state.blindStatus) {
-                                                                this.setState({ blindStatus: parseInt(value) })
+                                                            if (parseInt(value) !== this.state.blindDirection) {
+                                                                this.setState({ blindDirection: parseInt(value) })
                                                                 // alert(value)
                                                             }
                                                         }}
