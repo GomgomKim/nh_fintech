@@ -98,6 +98,9 @@ class RegistRiderDialog extends Component {
             idx: data.idx,
             branchIdx: self.props.branchIdx,
             agreeSms: self.state.agreeSms,
+            riderSettingGroup: {
+              idx: self.formRef.current.getFieldValue("riderSettingGroup"),
+            },
           })
             .then((res) => {
               if (res.result === "SUCCESS" && res.data === "SUCCESS") {
@@ -115,15 +118,20 @@ class RegistRiderDialog extends Component {
             ...self.formRef.current.getFieldsValue(),
             branchIdx: self.props.branchIdx,
             agreeSms: self.state.agreeSms,
-            // userType: 1,
+            riderSettingGroup: {
+              idx: self.formRef.current.getFieldValue("riderSettingGroup"),
+            },
+            userType: 1,
             // deliveryPriceFeeType: self.state.feeManner,
           });
           httpPost(httpUrl.registRider, [], {
             ...self.formRef.current.getFieldsValue(),
             branchIdx: self.props.branchIdx,
             agreeSms: self.state.agreeSms,
-
-            // userType: 1,
+            riderSettingGroup: {
+              idx: self.formRef.current.getFieldValue("riderSettingGroup"),
+            },
+            userType: 1,
             // deliveryPriceFeeType: self.state.feeManner,
           })
             .then((res) => {
@@ -222,11 +230,6 @@ class RegistRiderDialog extends Component {
   };
 
   render() {
-    // const selectedRowKeys = this.state.selectedRowKeys
-    // const rowSelection = {
-    //     selectedRowKeys,
-    //     onChange: this.onSelectChange
-    // };
     const { close, data } = this.props;
     console.log(data);
 
@@ -255,18 +258,14 @@ class RegistRiderDialog extends Component {
                     <div className="contentBlock">
                       <div className="mainTitle">기사그룹</div>
                       <FormItem
-                        name="userType"
+                        name="riderSettingGroup"
                         className="selectItem"
                         rules={[
                           { required: true, message: "그룹을 선택해주세요" },
                         ]}
-                        initialValue={data ? data.userType : 3}
+                        initialValue={data ? riderGroupString.findIndex(item => item === data.riderSettingGroup.settingGroupName)  : 3}
                       >
-                        <Select
-                          onChange={() =>
-                            console.log(this.formRef.current.getFieldsValue())
-                          }
-                        >
+                        <Select>
                           {riderGroupString.map((v, index) => {
                             if (index === 0) return <></>;
                             return <Option value={index}>{v}</Option>;
@@ -296,7 +295,7 @@ class RegistRiderDialog extends Component {
                         </Select>
                       </FormItem>
                     </div>
-                    {this.state.riderLevelSelected && (
+                    {/* {this.state.riderLevelSelected && (
                       <div className="contentBlock">
                         <div className="mainTitle">소속팀장</div>
                         <FormItem
@@ -321,7 +320,7 @@ class RegistRiderDialog extends Component {
                           </Select>
                         </FormItem>
                       </div>
-                    )}
+                    )} */}
 
                     <div className="contentBlock">
                       <div className="mainTitle">기사명</div>
@@ -506,7 +505,7 @@ class RegistRiderDialog extends Component {
 
                     <div className="contentBlock">
                       <div className="mainTitle">비품지급</div>
-                      <FormItem name="" className="giveBox selectItem">
+                      <FormItem name="equipments" className="giveBox selectItem">
                         <Checkbox>헬멧</Checkbox>
                         <Checkbox>조끼</Checkbox>
                         <Checkbox>배달통</Checkbox>
@@ -554,7 +553,7 @@ class RegistRiderDialog extends Component {
                     <ul>
                       <li>
                         <p className="regist-bike-title">바이크번호</p>
-                        <FormItem name="bikeNumber" className="selectItem">
+                        <div name="bikeNumber" className="selectItem">
                           <Input
                             placeholder="번호를 입력해주세요."
                             className="override-input"
@@ -563,12 +562,12 @@ class RegistRiderDialog extends Component {
                               this.handleInput(e.target.value, "bikeNumber")
                             }
                           />
-                        </FormItem>
+                        </div>
                       </li>
 
                       <li>
                         <p className="regist-bike-title">모델명</p>
-                        <FormItem name="modelName" className="selectItem">
+                        <div name="modelName" className="selectItem">
                           <Input
                             placeholder="모델명을 입력해주세요."
                             className="override-input"
@@ -577,11 +576,11 @@ class RegistRiderDialog extends Component {
                               this.handleInput(e.target.value, "modelName")
                             }
                           />
-                        </FormItem>
+                        </div>
                       </li>
                       <li>
                         <p className="regist-bike-title">제조사</p>
-                        <FormItem name="maker" className="selectItem">
+                        <div name="maker" className="selectItem">
                           <Input
                             placeholder="제조사를 입력해주세요."
                             className="override-input"
@@ -590,11 +589,11 @@ class RegistRiderDialog extends Component {
                               this.handleInput(e.target.value, "maker")
                             }
                           />
-                        </FormItem>
+                        </div>
                       </li>
                       <li>
                         <p className="regist-bike-title">제조일자</p>
-                        <FormItem name="makeDate" className="selectItem">
+                        <div name="makeDate" className="selectItem">
                           {/* <Input
                             placeholder="제조일자를 입력해주세요."
                             className="override-input"
@@ -607,24 +606,24 @@ class RegistRiderDialog extends Component {
                               )
                             }
                           />
-                        </FormItem>
+                        </div>
                       </li>
 
                       <li>
                         <p className="regist-bike-title">모델연식</p>
-                        <FormItem name="modelYear" className="selectItem">
+                        <div name="modelYear" className="selectItem">
                           <DatePicker
                             onSelect={(value) =>
                               this.handleInput(formatYear(value), "modelYear")
                             }
                             picker="year"
                           />
-                        </FormItem>
+                        </div>
                       </li>
 
                       <li>
                         <p className="regist-bike-title">주행거리</p>
-                        <FormItem name="mileage" className="selectItem">
+                        <div name="mileage" className="selectItem">
                           <Input
                             type="number"
                             placeholder="주행거리를 입력해주세요."
@@ -634,7 +633,7 @@ class RegistRiderDialog extends Component {
                               this.handleInput(e.target.value, "mileage")
                             }
                           />
-                        </FormItem>
+                        </div>
                       </li>
 
                       <li></li>
@@ -659,7 +658,7 @@ class RegistRiderDialog extends Component {
                     <ul>
                       <li>
                         <p className="regist-bike-title">바이크번호</p>
-                        <FormItem name="bikeNumber" className="selectItem">
+                        <div name="bikeNumber" className="selectItem">
                           <Input
                             placeholder="번호를 입력해주세요."
                             className="override-input"
@@ -669,12 +668,12 @@ class RegistRiderDialog extends Component {
                             }
                             disabled
                           />
-                        </FormItem>
+                        </div>
                       </li>
 
                       <li>
                         <p className="regist-bike-title">모델명</p>
-                        <FormItem name="modelName" className="selectItem">
+                        <div name="modelName" className="selectItem">
                           <Input
                             placeholder="모델명을 입력해주세요."
                             className="override-input"
@@ -684,11 +683,11 @@ class RegistRiderDialog extends Component {
                             }
                             disabled
                           />
-                        </FormItem>
+                        </div>
                       </li>
                       <li>
                         <p className="regist-bike-title">제조사</p>
-                        <FormItem name="maker" className="selectItem">
+                        <div name="maker" className="selectItem">
                           <Input
                             placeholder="제조사를 입력해주세요."
                             className="override-input"
@@ -698,11 +697,11 @@ class RegistRiderDialog extends Component {
                             }
                             disabled
                           />
-                        </FormItem>
+                        </div>
                       </li>
                       <li>
                         <p className="regist-bike-title">제조일자</p>
-                        <FormItem name="makeDate" className="selectItem">
+                        <div name="makeDate" className="selectItem">
                           {/* <Input
                             placeholder="제조일자를 입력해주세요."
                             className="override-input"
@@ -716,12 +715,12 @@ class RegistRiderDialog extends Component {
                             }
                             disabled
                           />
-                        </FormItem>
+                        </div>
                       </li>
 
                       <li>
                         <p className="regist-bike-title">모델연식</p>
-                        <FormItem name="modelYear" className="selectItem">
+                        <div name="modelYear" className="selectItem">
                           <DatePicker
                             onSelect={(value) =>
                               this.handleInput(formatYear(value), "modelYear")
@@ -729,12 +728,12 @@ class RegistRiderDialog extends Component {
                             picker="year"
                             disabled
                           />
-                        </FormItem>
+                        </div>
                       </li>
 
                       <li>
                         <p className="regist-bike-title">주행거리</p>
-                        <FormItem name="mileage" className="selectItem">
+                        <div name="mileage" className="selectItem">
                           <Input
                             type="number"
                             placeholder="주행거리를 입력해주세요."
@@ -745,10 +744,8 @@ class RegistRiderDialog extends Component {
                             }
                             disabled
                           />
-                        </FormItem>
+                        </div>
                       </li>
-
-                      <li></li>
                     </ul>
                   </div>
                 )}

@@ -113,6 +113,7 @@ class ChattingDialog extends Component {
             totalTableData: result.data.chatRooms,
           },
           () => {
+            console.log(this.state.totalTableData);
             if (targetIdx) {
               const target = this.state.totalTableData.find(
                 (item) =>
@@ -376,7 +377,10 @@ class ChattingDialog extends Component {
                     <div
                       className="chat-item-container"
                       onClick={() => {
-                        this.chatDetailList(row);
+                        this.setState(
+                          { fakeRoom: false, currentRoom: false },
+                          () => this.chatDetailList(row)
+                        );
                       }}
                     >
                       <div className="chat-item-image">

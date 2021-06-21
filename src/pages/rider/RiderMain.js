@@ -10,9 +10,7 @@ import UpdatePasswordDialog from "../../components/dialog/rider/UpdatePasswordDi
 import SelectBox from "../../components/input/SelectBox";
 import "../../css/modal.css";
 import {
-  feeManner,
-  riderGroupString,
-  riderLevelText,
+  feeManner, riderLevelText,
   statusString,
   tableStatusString
 } from "../../lib/util/codeUtil";
@@ -75,10 +73,10 @@ class RiderMain extends Component {
 
     httpGet(
       httpUrl.riderList,
-      [10, pageNum, searchName, userStatus, [1,2,3,4,5,6,7]],
+      [10, pageNum, searchName, userStatus, [1, 2, 3, 4, 5, 6, 7]],
       {}
     ).then((result) => {
-      console.log("## nnbox result=" + JSON.stringify(result, null, 4));
+      console.log(result, null, 4);
       const pagination = { ...this.state.pagination };
       pagination.current = result.data.currentPage;
       pagination.total = result.data.totalCount;
@@ -267,9 +265,9 @@ class RiderMain extends Component {
       },
       {
         title: "기사그룹",
-        dataIndex: "userGroup",
+        dataIndex: "riderSettingGroup",
         className: "table-column-center",
-        render: (data) => <div>{riderGroupString[data]}</div>,
+        render: (data) => <div>{data.settingGroupName}</div>,
       },
       {
         title: "면허정보",

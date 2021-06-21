@@ -60,12 +60,14 @@ class RegistFranDialog extends Component {
         ...this.formRef.current.getFieldsValue(),
         idx: this.props.data.idx,
         branchIdx: this.props.branchIdx,
+        frSalesUserIdx: this.state.selectedRider.idx,
         userGroup: 0,
       });
       httpPost(httpUrl.franchiseUpdate, [], {
         ...this.formRef.current.getFieldsValue(),
         idx: this.props.data.idx,
         branchIdx: this.props.branchIdx,
+        frSalesUserIdx: this.state.selectedRider.idx,
         userGroup: 0,
       })
         .then((result) => {
@@ -128,6 +130,7 @@ class RegistFranDialog extends Component {
         duesAutoChargeEnabled: false,
         dues: 0,
         agreeSms: this.state.agreeSms,
+        frSalesUserIdx: this.state.selectedRider.idx,
       })
         .then((result) => {
           console.log("## result: " + JSON.stringify(result, null, 4));
@@ -211,7 +214,7 @@ class RegistFranDialog extends Component {
 
   onChangFeeManner = (e) => {
     console.log(e.target.value);
-    this.setState({ feeManner: e.target.value }, () => { });
+    this.setState({ feeManner: e.target.value }, () => {});
   };
 
   onChangeFranCategory(e) {
@@ -240,9 +243,7 @@ class RegistFranDialog extends Component {
             <Form ref={this.formRef} onFinish={this.handleSubmit}>
               <div className="registFranLayout">
                 <div className="registFranTitle">
-                  <div className="registFranTitle-sub">
-                    기본정보
-                  </div>
+                  <div className="registFranTitle-sub">기본정보</div>
                   <div className="registFran-radio">
                     <Radio.Group
                       // 가맹여부 컬럼 이름 조정 필요
@@ -402,10 +403,10 @@ class RegistFranDialog extends Component {
                             value={
                               data
                                 ? // 영업 담당자 컬럼으로 바꿔야 됨
-                                data.riderName
+                                  data.riderName
                                 : this.state.selectedRider
-                                  ? this.state.selectedRider.riderName
-                                  : ""
+                                ? this.state.selectedRider.riderName
+                                : ""
                             }
                             required
                           />
@@ -465,11 +466,11 @@ class RegistFranDialog extends Component {
                       <div className="registRiderCheck">
                         <FormItem
                           name="tidNormalRate"
-                          defaultValue={data ? data.tidNormalRate : 100}
+                          initialValue={data ? data.tidNormalRate : 100}
                         >
                           <Radio.Group
                             className="searchRequirement"
-                            defaultValue={data ? data.tidNormalRate : 100}
+                            initialValue={data ? data.tidNormalRate : 100}
                           >
                             {Object.keys(pgUseRate)
                               .reverse()
@@ -568,7 +569,7 @@ class RegistFranDialog extends Component {
                           style={{ marginLeft: 20, width: 300 }}
                           defaultValue={moment(today, dateFormat)}
                           format={dateFormat}
-                        // onChange={date => this.setState({ selectedDate: date })}
+                          // onChange={date => this.setState({ selectedDate: date })}
                         />
                       </FormItem>
                     </div>
@@ -605,7 +606,7 @@ class RegistFranDialog extends Component {
                         style={{ marginLeft: 10 }}
                         defaultValue={moment(today, dateFormat)}
                         format={dateFormat}
-                      // onChange={date => this.setState({ selectedDate: date })}
+                        // onChange={date => this.setState({ selectedDate: date })}
                       />
                     </FormItem>
 
