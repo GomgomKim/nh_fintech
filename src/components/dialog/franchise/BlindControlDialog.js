@@ -1,3 +1,4 @@
+
 import React, { Component } from "react";
 import {
     Form, Table, Checkbox, Input, Button, Modal,
@@ -11,7 +12,9 @@ import { connect } from "react-redux";
 import SearchRiderDialog from "../common/SearchRiderDialog";
 import SearchFranchiseDialog from "../common/SearchFranchiseDialog";
 import { blockStatusString } from "../../../lib/util/codeUtil";
-import { blindComplete, blindError, unBlindComplete, unBlindError } from "../../../api/Modals";
+import { blindComplete, blindError, unBlindComplete, unBlindError,
+    unBlindAgree, unBlindDeny, unBlindAgreeError
+} from "../../../api/Modals";
 const FormItem = Form.Item;
 
 class BlindControlDialog extends Component {
@@ -184,7 +187,7 @@ class BlindControlDialog extends Component {
         if (value == 2) {
             Modal.confirm({
                 title: "승인 완료",
-                content: "라이더의 블라인드를 완료하시겠습니까?",
+                content: "해당 블라인드를 승인하시겠습니까?",
                 okText: "확인",
                 cancelText: "취소",
                 onOk() {
@@ -194,15 +197,15 @@ class BlindControlDialog extends Component {
                     })
                         .then((result) => {
                             if (result.result === "SUCCESS") {
-                                unBlindComplete();
+                                unBlindAgree();
                             self.getList();
                             } else {
-                                unBlindError();
+                                unBlindAgreeError();
                             }
                             self.getList();
                         })
                         .catch((e) => {
-                            unBlindError();
+                            unBlindAgreeError();
                         });
                 }
             })
@@ -210,7 +213,7 @@ class BlindControlDialog extends Component {
         else {
             Modal.confirm({
                 title: "승인 거부",
-                content: "라이더의 블라인드 승인을 거부하시겠습니까?",
+                content: "해당 블라인드 승인을 거부하시겠습니까?",
                 okText: "확인",
                 cancelText: "취소",
                 onOk() {
@@ -220,15 +223,15 @@ class BlindControlDialog extends Component {
                     })
                         .then((result) => {
                             if (result.result === "SUCCESS") {
-                                unBlindComplete();
+                                unBlindDeny();
                             self.getList();
                             } else {
-                                unBlindError();
+                                unBlindAgreeError();
                             }
                             self.getList();
                         })
                         .catch((e) => {
-                            unBlindError();
+                            unBlindAgreeError();
                         });
                 }
             })
@@ -302,7 +305,7 @@ class BlindControlDialog extends Component {
                 render:
                     (data, row) => (
                         <div>
-                            { data !== true ? blockString[0] : blockString[1]}
+                            { row.status !== 1 ? data !== true ? blockString[1] : blockString[2] : blockString[0]}
                         </div>
                     ),
             },
