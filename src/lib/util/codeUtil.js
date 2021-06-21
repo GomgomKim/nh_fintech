@@ -85,8 +85,9 @@ const orderCnt = {
 };
 
 const blockString = {
-  0: "차단중",
-  1: "차단해제",
+  0: '처리대기',
+  1: "차단중",
+  2: "차단해제",
 };
 
 const blockStatusString = {
