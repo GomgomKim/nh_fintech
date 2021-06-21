@@ -268,7 +268,7 @@ class RegistRiderDialog extends Component {
                           }
                         >
                           {riderGroupString.map((v, index) => {
-                            if (index === 0) return;
+                            if (index === 0) return <></>;
                             return <Option value={index}>{v}</Option>;
                           })}
                         </Select>
@@ -290,7 +290,7 @@ class RegistRiderDialog extends Component {
                           }
                         >
                           {riderLevelText.map((v, index) => {
-                            if (index === 0) return;
+                            if (index === 0) return <></>;
                             return <Option value={index}>{v}</Option>;
                           })}
                         </Select>

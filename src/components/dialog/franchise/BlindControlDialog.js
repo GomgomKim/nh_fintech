@@ -1,17 +1,14 @@
+import { Button, Checkbox, Form, Input, Modal, Table } from "antd";
 import React, { Component } from "react";
-import {
-    Form, Table, Checkbox, Input, Button, Modal,
-} from "antd";
-import '../../../css/modal.css';
-import { frRiderString, blockString } from '../../../lib/util/codeUtil';
-import { httpPost, httpUrl, httpGet } from "../../../api/httpClient";
-import SelectBox from '../../input/SelectBox';
-import { formatDate } from "../../../lib/util/dateUtil";
 import { connect } from "react-redux";
-import SearchRiderDialog from "../common/SearchRiderDialog";
-import SearchFranchiseDialog from "../common/SearchFranchiseDialog";
-import { blockStatusString } from "../../../lib/util/codeUtil";
+import { httpGet, httpPost, httpUrl } from "../../../api/httpClient";
 import { blindComplete, blindError, unBlindComplete, unBlindError } from "../../../api/Modals";
+import '../../../css/modal.css';
+import { blockStatusString, blockString, frRiderString } from '../../../lib/util/codeUtil';
+import { formatDate } from "../../../lib/util/dateUtil";
+import SelectBox from '../../input/SelectBox';
+import SearchFranchiseDialog from "../common/SearchFranchiseDialog";
+import SearchRiderDialog from "../common/SearchRiderDialog";
 const FormItem = Form.Item;
 
 class BlindControlDialog extends Component {
@@ -181,7 +178,7 @@ class BlindControlDialog extends Component {
     // 승인대기 or 승인거부로 상태변경
     onChangeDeletedStatus = (idx, value) => {
         let self = this;
-        if (value == 2) {
+        if (value === 2) {
             Modal.confirm({
                 title: "승인 완료",
                 content: "라이더의 블라인드를 완료하시겠습니까?",
@@ -350,7 +347,7 @@ class BlindControlDialog extends Component {
               },
         ];
 
-        const { close, data } = this.props;
+        const { close } = this.props;
         return (
 
                         <React.Fragment>
