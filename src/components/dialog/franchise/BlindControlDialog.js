@@ -2,16 +2,14 @@ import { Button, Checkbox, Form, Input, Modal, Table } from "antd";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { httpGet, httpPost, httpUrl } from "../../../api/httpClient";
-import { blindComplete, blindError, unBlindComplete, unBlindError } from "../../../api/Modals";
+import { blindComplete, blindError, unBlindComplete, unBlindError,
+    unBlindAgree, unBlindDeny, unBlindAgreeError
+} from "../../../api/Modals";
 import '../../../css/modal.css';
 import { blockStatusString, blockString, frRiderString } from '../../../lib/util/codeUtil';
 import { formatDate } from "../../../lib/util/dateUtil";
 import SelectBox from '../../input/SelectBox';
 import SearchFranchiseDialog from "../common/SearchFranchiseDialog";
-import { blockStatusString } from "../../../lib/util/codeUtil";
-import { blindComplete, blindError, unBlindComplete, unBlindError,
-    unBlindAgree, unBlindDeny, unBlindAgreeError
-} from "../../../api/Modals";
 import SearchRiderDialog from "../common/SearchRiderDialog";
 const FormItem = Form.Item;
 
