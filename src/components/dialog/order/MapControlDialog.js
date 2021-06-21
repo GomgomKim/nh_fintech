@@ -1,25 +1,19 @@
-import React, { Component } from "react";
-import "../../../css/modal.css";
-import { Input, Table, Button, Modal, Select, Space } from "antd";
-import { formatDate } from "../../../lib/util/dateUtil";
-import moment from "moment";
-import "../../../css/order.css";
-import RegistCallDialog from "../../../components/dialog/order/RegistCallDialog";
-import { httpGet, httpUrl, httpPost } from "../../../api/httpClient";
-import { NaverMap, Marker, Polyline } from "react-naver-maps";
-import {
-  riderLevelText,
-  riderGroupString,
-  modifyType,
-  deliveryStatusCode,
-  rowColorName,
-  arriveReqTime,
-  orderCnt,
-} from "../../../lib/util/codeUtil";
-import { customError, deleteError, customAlert } from "../../../api/Modals";
-
 import { SearchOutlined } from "@ant-design/icons";
+import { Button, Input, Modal, Select, Space, Table } from "antd";
+import moment from "moment";
+import React, { Component } from "react";
+import { Marker, NaverMap, Polyline } from "react-naver-maps";
+import { httpGet, httpPost, httpUrl } from "../../../api/httpClient";
+import { customAlert, customError, deleteError } from "../../../api/Modals";
+import RegistCallDialog from "../../../components/dialog/order/RegistCallDialog";
 import SelectBox from "../../../components/input/SelectBox";
+import "../../../css/modal.css";
+import "../../../css/order.css";
+import {
+  arriveReqTime, deliveryStatusCode, modifyType, orderCnt, riderLevelText, rowColorName
+} from "../../../lib/util/codeUtil";
+import { formatDate } from "../../../lib/util/dateUtil";
+
 
 const Option = Select.Option;
 const navermaps = window.naver.maps;

@@ -1,19 +1,13 @@
-import React from "react";
-import { withRouter } from "react-router-dom";
-import { Layout, Modal, Select } from "antd";
-import { connect } from "react-redux";
-import { reactLocalStorage } from "reactjs-localstorage";
-import { httpPost, httpUrl } from "../api/httpClient";
-import { logout, login, changeBranch } from "../actions/loginAction";
-import con from "../const";
 import {
   CopyOutlined,
-  PhoneOutlined,
-  TeamOutlined,
-  IdcardOutlined,
-  SettingOutlined,
+  PhoneOutlined, SettingOutlined, TeamOutlined
 } from "@ant-design/icons";
-const Option = Select.Option;
+import { Layout, Modal } from "antd";
+import React from "react";
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
+import { login, logout } from "../actions/loginAction";
+import { httpPost, httpUrl } from "../api/httpClient";
 
 class Header extends React.Component {
   constructor(props) {
@@ -78,7 +72,7 @@ class Header extends React.Component {
     ];
 
     const currentPage = menus.find(
-      (x) => x.url == this.props.history.location.pathname
+      (x) => x.url === this.props.history.location.pathname
     );
     return (
       <Layout.Header style={{ background: "#fff", padding: 0 }}>
@@ -100,7 +94,7 @@ class Header extends React.Component {
                   // frIdx={this.state.frIdx}
                   onClick={() => this.props.history.push(row.url)}
                   className={
-                    "top-menu " + (row.idx == currentPage.idx ? "active" : "")
+                    "top-menu " + (row.idx === currentPage.idx ? "active" : "")
                   }
                 >
                   {row.icon}&nbsp;

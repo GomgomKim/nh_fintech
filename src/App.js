@@ -1,19 +1,27 @@
-import React, { Component } from 'react';
-import { Route, Switch, withRouter } from 'react-router-dom';
-import { reactLocalStorage } from 'reactjs-localstorage';
-import { logout, login, changeBranch } from "./actions/loginAction";
+import React, { Component } from "react";
 import { connect } from "react-redux";
-
-import './App.css';
-import Layout from './components/Layout';
-import { NotFound, Login } from './pages';
-import con from './const';
+import { Route, Switch, withRouter } from "react-router-dom";
+import { reactLocalStorage } from "reactjs-localstorage";
+import { login, logout } from "./actions/loginAction";
+import "./App.css";
+import Layout from "./components/Layout";
+import con from "./const";
+import { Login, NotFound } from "./pages";
 
 class App extends Component {
-  componentWillMount() {
-    this.initializeUserInfo();
+  constructor(props) {
+    super(props);
+    this.state = {
+      userInfo: {},
+    };
   }
+
+  // componentWillMount() {
+  //   this.initializeUserInfo();
+  // }
+  
   componentDidMount() {
+    this.initializeUserInfo();
     // const userInfo = reactLocalStorage.getObject(`${con.appName}#adminUser`);
     // const pathname = this.props.location.pathname.split('/');
 
@@ -36,7 +44,7 @@ class App extends Component {
     return (
       <Switch>
         <Route exact path="/" component={Login} />
-        {location.pathname === '/404' ? (
+        {location.pathname === "/404" ? (
           <Route component={NotFound} />
         ) : (
           <Route path="/:page" component={Layout} />

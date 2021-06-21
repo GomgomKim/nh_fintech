@@ -1,13 +1,12 @@
 import {
-  Input,
-  Table,
-  Button,
+  Button, Input,
+  Table
 } from 'antd';
 import React, { Component } from 'react';
-import { formatDate } from '../../lib/util/dateUtil';
-import '../../css/order.css';
-import { comma } from '../../lib/util/numberUtil';
 import MapContainer from '../../components/dialog/order/MapContainer';
+import '../../css/order.css';
+import { formatDate } from '../../lib/util/dateUtil';
+import { comma } from '../../lib/util/numberUtil';
 
 const Search = Input.Search;
 
@@ -131,13 +130,13 @@ class MapControl extends Component {
         className: 'table-column-center',
         render: data => (
           <div>
-            {data == -1
+            {data === -1
               ? '취소'
-              : data == 0
+              : data === 0
               ? '픽업'
-              : data == 1
+              : data === 1
               ? '배차'
-              : data == 2
+              : data === 2
               ? '완료'
               : '-'}
           </div>
@@ -197,13 +196,13 @@ class MapControl extends Component {
         title: '결제방식',
         dataIndex: 'paymentMethod',
         className: 'table-column-center',
-        render: data => <div>{data == 0 ? '선결' : '카드'}</div>,
+        render: data => <div>{data === 0 ? '선결' : '카드'}</div>,
       },
       {
         title: '카드상태',
         dataIndex: 'preparationStatus',
         className: 'table-column-center',
-        render: data => <div>{data == 0 ? '요청' : '결제완료'}</div>,
+        render: data => <div>{data === 0 ? '요청' : '결제완료'}</div>,
       },
       {
         title: '작업',

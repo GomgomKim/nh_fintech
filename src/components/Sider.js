@@ -1,7 +1,6 @@
-import React from "react";
-import { Link, Redirect } from "react-router-dom";
 import { Layout, Menu } from "antd";
-import { reactLocalStorage } from "reactjs-localstorage";
+import React from "react";
+import { Link } from "react-router-dom";
 
 const SubMenu = Menu.SubMenu;
 

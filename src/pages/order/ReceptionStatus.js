@@ -25,6 +25,7 @@ import { customError } from "../../api/Modals";
 import ChattingCurrentRoom from "../../components/dialog/common/ChattingCurrentRoom";
 import ChattingDialog from "../../components/dialog/common/ChattingDialog";
 import SearchRiderDialog from "../../components/dialog/common/SearchRiderDialog";
+import BlindControlDialog from "../../components/dialog/franchise/BlindControlDialog";
 import FilteringDialog from "../../components/dialog/order/FilteringDialog";
 import MapControlDialog from "../../components/dialog/order/MapControlDialog";
 import NoticeDialog from "../../components/dialog/order/NoticeDialog";
@@ -44,8 +45,6 @@ import {
 import { formatDate } from "../../lib/util/dateUtil";
 import { comma } from "../../lib/util/numberUtil";
 import SurchargeDialog from "./../../components/dialog/order/SurchargeDialog";
-import BlindControlDialog from "../../components/dialog/franchise/BlindControlDialog";
-
 
 const Option = Select.Option;
 const Search = Input.Search;
@@ -478,6 +477,7 @@ class ReceptionStatus extends Component {
         title: "주문번호",
         dataIndex: "idx",
         className: "table-column-center",
+        key: (row) => `idx:${row.idx}`,
         sorter: (a, b) => a.idx - b.idx,
         render: (data) => <div>{data}</div>,
       },
@@ -485,6 +485,7 @@ class ReceptionStatus extends Component {
         title: "상태",
         dataIndex: "orderStatus",
         className: "table-column-center",
+        key: (row) => `orderStatus:${row.orderStatus}`,
         filters: [
           {
             text: "접수",
@@ -516,8 +517,6 @@ class ReceptionStatus extends Component {
               defaultValue={data}
               value={row.orderStatus}
               onChange={(value) => {
-                // 제약조건 미성립
-                // console.log([row.pickupStatus, value]+" / "+modifyType[row.pickupStatus])
                 if (!modifyType[row.orderStatus].includes(value)) {
                   Modal.info({
                     content: <div>상태를 바꿀 수 없습니다.</div>,
@@ -531,28 +530,29 @@ class ReceptionStatus extends Component {
                   });
                   return;
                 }
-                // 제약조건 성립 시 상태 변경
-                // const list = this.state.list;
-                // list.find((x) => x.idx === row.idx).orderStatus = value;
                 row.orderStatus = value;
 
                 // pickupDate 및 completeDate 관련 이슈
                 // 백엔드에서 주문상태 update 시 처리 예정
 
-                // const now = new moment().format("YYYY-MM-DD[T]HH:mm:ss.000[Z]");
-                // if (value === 3) {
-                //   row.pickupDate = now;
-                // } else if (value === 4) {
-                //   row.completeDate = now;
-                // }
-                // console.log(row);
-                httpPost(httpUrl.orderUpdate, [], row)
-                  .then((res) => {
-                    if (res.result === "SUCCESS") this.getList();
-                  })
-                  .catch((e) => {
-                    console.log(e);
-                  });
+                if (value === 3) {
+                  httpPost(httpUrl.orderPickup, [], row.idx)
+                    .then((res) => {
+                      if (res.result === "SUCCESS") this.getList();
+                    })
+                    .catch((e) => {
+                      console.log(e);
+                    });
+                } else if (value === 4) {
+                  httpPost(httpUrl.orderComplete, [], row.idx)
+                    .then((res) => {
+                      if (res.result === "SUCCESS") this.getList();
+                    })
+                    .catch((e) => {
+                      console.log(e);
+                    });
+                }
+                console.log(row);
               }}
             >
               {deliveryStatusCode.map((value, index) => {
@@ -572,6 +572,7 @@ class ReceptionStatus extends Component {
         title: "요청시간",
         dataIndex: "arriveReqTime",
         className: "table-column-center",
+        key: (row) => `arriveReqTime:${row.arriveReqTime}`,
         sorter: (a, b) => a.arriveReqTime - b.arriveReqTime,
         render: (data) => <div>{arriveReqTime[data]}</div>,
       },
@@ -579,6 +580,7 @@ class ReceptionStatus extends Component {
         title: "음식준비",
         dataIndex: "itemPrepared",
         className: "table-column-center",
+        key: (row) => `itemPrepared:${row.itemPrepared}`,
         filters: [
           {
             text: "준비중",
@@ -601,15 +603,15 @@ class ReceptionStatus extends Component {
         title: "접수시간",
         dataIndex: "orderDate",
         className: "table-column-center",
-        sorter: (a, b) => a.pickupDate - b.pickupDate,
-        render: (data, row) => (
-          <div>{row.orderStatus >= 3 ? formatDate(data) : "-"}</div>
-        ),
+        key: (row) => `orderDate:${row.orderDate}`,
+        sorter: (a, b) => a.orderDate - b.orderDate,
+        render: (data, row) => <div>{data}</div>,
       },
       {
         title: "픽업시간",
         dataIndex: "pickupDate",
         className: "table-column-center",
+        key: (row) => `pickupDate:${row.pickupDate}`,
         sorter: (a, b) => a.pickupDate - b.pickupDate,
         render: (data, row) => (
           <div>{row.orderStatus >= 3 ? formatDate(data) : "-"}</div>
@@ -619,9 +621,10 @@ class ReceptionStatus extends Component {
         title: "완료시간",
         dataIndex: "completeDate",
         className: "table-column-center",
-        sorter: (a, b) => a.pickupDate - b.pickupDate,
+        key: (row) => `completeDate:${row.completeDate}`,
+        sorter: (a, b) => a.completeDate - b.completeDate,
         render: (data, row) => (
-          <div>{row.orderStatus >= 3 ? formatDate(data) : "-"}</div>
+          <div>{row.orderStatus >= 4 ? formatDate(data) : "-"}</div>
         ),
       },
       // {
@@ -642,6 +645,7 @@ class ReceptionStatus extends Component {
         title: "도착지",
         // dataIndex: "destAddr1",
         className: "table-column-center",
+        key: (row) => `destAddr1:${row.destAddr1}`,
         sorter: (a, b) =>
           (a.destAddr1 + a.destAddr2).localeCompare(b.destAddr1 + b.destAddr2),
         render: (data, row) => (
@@ -661,6 +665,7 @@ class ReceptionStatus extends Component {
         title: "가격",
         dataIndex: "orderPrice",
         className: "table-column-center",
+        key: (row) => `orderPrice:${row.orderPrice}`,
         sorter: (a, b) => a.orderPrice - b.orderPrice,
         render: (data) => <div>{comma(data)}</div>,
       },
@@ -668,6 +673,7 @@ class ReceptionStatus extends Component {
         title: "총배달요금",
         dataIndex: "deliveryPrice",
         className: "table-column-center",
+        key: (row) => `deliveryPrice:${row.deliveryPrice}`,
         sorter: (a, b) => a.deliveryPrice - b.deliveryPrice,
         render: (data) => <div>{comma(data)}</div>,
       },
@@ -675,6 +681,7 @@ class ReceptionStatus extends Component {
         title: "기본배달요금",
         dataIndex: "basicDeliveryPrice",
         className: "table-column-center",
+        key: (row) => `basicDeliveryPrice:${row.basicDeliveryPrice}`,
         sorter: (a, b) => a.basicDeliveryPrice - b.basicDeliveryPrice,
         render: (data) => <div>{comma(data)}</div>,
       },
@@ -683,6 +690,7 @@ class ReceptionStatus extends Component {
         title: "할증배달요금",
         dataIndex: "extraDeliveryPrice",
         className: "table-column-center",
+        key: (row) => `extraDeliveryPrice:${row.extraDeliveryPrice}`,
         sorter: (a, b) => a.extraDeliveryPrice - b.extraDeliveryPrice,
         render: (data) => <div>{comma(data)}</div>,
       },
@@ -691,6 +699,7 @@ class ReceptionStatus extends Component {
         title: "결제방식",
         dataIndex: "orderPayments",
         className: "table-column-center",
+        key: (row) => `orderPayments:${row.orderPayments}`,
         render: (data, row) =>
           data.length > 1 ? (
             <Button
@@ -764,6 +773,7 @@ class ReceptionStatus extends Component {
           title: "기사명",
           dataIndex: "riderName",
           className: "table-column-center",
+          key: (row) => `riderName:${row.riderName}`,
           render: (data, row) => {
             const content = (
               <div>
@@ -781,6 +791,7 @@ class ReceptionStatus extends Component {
           title: "가맹점명",
           dataIndex: "frName",
           className: "table-column-center",
+          key: (row) => `frName:${row.frName}`,
           render: (data, row) => {
             const content = (
               <div>
@@ -815,11 +826,13 @@ class ReceptionStatus extends Component {
           title: "거리(km)",
           dataIndex: "distance",
           className: "table-column-center",
+          key: (row) => `distance:${row.distance}`,
         },
         {
           title: "결제방식",
           dataIndex: "orderPayments",
           className: "table-column-center",
+          key: (row) => `orderPayments:${row.idx}`,
           render: (data, row) =>
             data.length > 1 ? (
               <>
@@ -841,6 +854,7 @@ class ReceptionStatus extends Component {
           title: "배차",
           dataIndex: "forceLocate",
           className: "table-column-center",
+          key: (row) => `forceLocate:${row.idx}`,
           render: (data, row) => (
             <span>
               {/* <ForceAllocateDialog */}
@@ -860,6 +874,7 @@ class ReceptionStatus extends Component {
           title: "메세지",
           dataIndex: "franchisePhoneNum",
           className: "table-column-center",
+          key: (row) => `franchisePhoneNum:${row.franchisePhoneNum}`,
           render: (data, row) => (
             <span>
               <Button
@@ -869,7 +884,7 @@ class ReceptionStatus extends Component {
                   this.openDirectMessageModal(
                     row.userIdx,
                     row.riderName,
-                    row.riderLevel,
+                    row.riderLevel
                   );
                 }}
               >
@@ -890,6 +905,7 @@ class ReceptionStatus extends Component {
           title: "주문수정",
           dataIndex: "updateOrder",
           className: "table-column-center",
+          key: (row) => `updateOrder:${row.updateOrder}`,
           render: (data, row) => (
             <Button
               onClick={() => {

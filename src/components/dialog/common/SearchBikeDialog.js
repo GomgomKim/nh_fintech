@@ -6,7 +6,7 @@ import { searchBike } from "../../../lib/util/codeUtil";
 import SelectBox from "../../input/SelectBox";
 
 const Search = Input.Search;
-const today = new Date();
+// const today = new Date();
 
 class SearchBikeDialog extends Component {
   constructor(props) {
