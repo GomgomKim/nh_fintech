@@ -517,8 +517,6 @@ class ReceptionStatus extends Component {
               defaultValue={data}
               value={row.orderStatus}
               onChange={(value) => {
-                // 제약조건 미성립
-                // console.log([row.pickupStatus, value]+" / "+modifyType[row.pickupStatus])
                 if (!modifyType[row.orderStatus].includes(value)) {
                   Modal.info({
                     content: <div>상태를 바꿀 수 없습니다.</div>,
@@ -532,28 +530,29 @@ class ReceptionStatus extends Component {
                   });
                   return;
                 }
-                // 제약조건 성립 시 상태 변경
-                // const list = this.state.list;
-                // list.find((x) => x.idx === row.idx).orderStatus = value;
                 row.orderStatus = value;
 
                 // pickupDate 및 completeDate 관련 이슈
                 // 백엔드에서 주문상태 update 시 처리 예정
 
-                // const now = new moment().format("YYYY-MM-DD[T]HH:mm:ss.000[Z]");
-                // if (value === 3) {
-                //   row.pickupDate = now;
-                // } else if (value === 4) {
-                //   row.completeDate = now;
-                // }
-                // console.log(row);
-                httpPost(httpUrl.orderUpdate, [], row)
-                  .then((res) => {
-                    if (res.result === "SUCCESS") this.getList();
-                  })
-                  .catch((e) => {
-                    console.log(e);
-                  });
+                if (value === 3) {
+                  httpPost(httpUrl.orderPickup, [], row.idx)
+                    .then((res) => {
+                      if (res.result === "SUCCESS") this.getList();
+                    })
+                    .catch((e) => {
+                      console.log(e);
+                    });
+                } else if (value === 4) {
+                  httpPost(httpUrl.orderComplete, [], row.idx)
+                    .then((res) => {
+                      if (res.result === "SUCCESS") this.getList();
+                    })
+                    .catch((e) => {
+                      console.log(e);
+                    });
+                }
+                console.log(row);
               }}
             >
               {deliveryStatusCode.map((value, index) => {
@@ -605,10 +604,8 @@ class ReceptionStatus extends Component {
         dataIndex: "orderDate",
         className: "table-column-center",
         key: (row) => `orderDate:${row.orderDate}`,
-        sorter: (a, b) => a.pickupDate - b.pickupDate,
-        render: (data, row) => (
-          <div>{row.orderStatus >= 3 ? formatDate(data) : "-"}</div>
-        ),
+        sorter: (a, b) => a.orderDate - b.orderDate,
+        render: (data, row) => <div>{data}</div>,
       },
       {
         title: "픽업시간",
@@ -625,9 +622,9 @@ class ReceptionStatus extends Component {
         dataIndex: "completeDate",
         className: "table-column-center",
         key: (row) => `completeDate:${row.completeDate}`,
-        sorter: (a, b) => a.pickupDate - b.pickupDate,
+        sorter: (a, b) => a.completeDate - b.completeDate,
         render: (data, row) => (
-          <div>{row.orderStatus >= 3 ? formatDate(data) : "-"}</div>
+          <div>{row.orderStatus >= 4 ? formatDate(data) : "-"}</div>
         ),
       },
       // {
