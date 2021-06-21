@@ -518,7 +518,7 @@ class RegistCallDialog extends Component {
                         className="selectItem"
                       >
                         <Input
-                          type="number"
+                          // type="number"
                           placeholder="할증 배달요금 입력"
                           className="override-input"
                           defaultValue={
@@ -540,7 +540,7 @@ class RegistCallDialog extends Component {
                       <div className="mainTitle">가격</div>
                       <FormItem name="orderPrice" className="selectItem">
                         <Input
-                          type="number"
+                          // type="number"
                           placeholder="가격 입력"
                           className="override-input"
                           defaultValue={comma(data.orderPrice)}
