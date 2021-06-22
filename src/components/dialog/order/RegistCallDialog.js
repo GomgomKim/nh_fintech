@@ -189,17 +189,15 @@ class RegistCallDialog extends Component {
   };
 
   getDeliveryPrice = () => {
+    console.log("getDeliiveryPrice!!!!!!!!!!!!!!!!!");
     var self = this;
     httpGet(httpUrl.getGeocode, [this.state.selectedDest.roadAddress], {})
       .then((res) => {
+        console.log(res);
         let result = JSON.parse(res.data.json);
-        if (res.result === "SUCCESS" && result.addresses.length > 0) {
+        if (res.result === "SUCCESS") {
           const lat = result.addresses[0].y;
           const lng = result.addresses[0].x;
-
-          console.log("배달요금 계산 파라미터!!");
-          console.log(typeof lat);
-          console.log(lat, lng);
 
           this.setState({
             mapLat: lat,
@@ -395,6 +393,7 @@ class RegistCallDialog extends Component {
                                     frPhone: fr.frPhone,
                                   },
                                 });
+                                console.log(this.state.selectedDest);
                                 if (this.state.selectedDest) {
                                   if (
                                     Object.keys(
@@ -445,7 +444,8 @@ class RegistCallDialog extends Component {
                                   destAddr1: this.state.selectedDest.address,
                                 },
                               });
-                              if (this.state.selectedFr.frIdx !== 0) {
+                              console.log(this.state.selectedFr);
+                              if (this.state.selectedFr.idx !== 0) {
                                 console.log("기본 state 가맹점");
                                 console.log(this.state.selectedFr);
                                 this.getDeliveryPrice();
@@ -782,7 +782,7 @@ class RegistCallDialog extends Component {
                                     },
                                   },
                                   () => {
-                                    if (this.state.selectedFr.frIdx !== 0) {
+                                    if (this.state.selectedFr.idx !== 0) {
                                       this.getDeliveryPriceByLatLng(
                                         e.latlng.y,
                                         e.latlng.x
