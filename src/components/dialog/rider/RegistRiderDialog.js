@@ -67,6 +67,9 @@ class RegistRiderDialog extends Component {
 
   componentDidMount() {
     // this.getList()
+    if (this.props.data) {
+      this.setState({ selectedBike: this.props.data.bike });
+    }
     console.log(this.props.data);
   }
 
