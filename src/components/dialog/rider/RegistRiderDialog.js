@@ -101,6 +101,7 @@ class RegistRiderDialog extends Component {
             riderSettingGroup: {
               idx: self.formRef.current.getFieldValue("riderSettingGroup"),
             },
+            bikeIdx: self.state.selectedBike.idx,
           })
             .then((res) => {
               if (res.result === "SUCCESS" && res.data === "SUCCESS") {
@@ -132,6 +133,7 @@ class RegistRiderDialog extends Component {
               idx: self.formRef.current.getFieldValue("riderSettingGroup"),
             },
             userType: 1,
+            bikeIdx: self.state.selectedBike.idx,
             // deliveryPriceFeeType: self.state.feeManner,
           })
             .then((res) => {
@@ -263,7 +265,15 @@ class RegistRiderDialog extends Component {
                         rules={[
                           { required: true, message: "그룹을 선택해주세요" },
                         ]}
-                        initialValue={data ? riderGroupString.findIndex(item => item === data.riderSettingGroup.settingGroupName)  : 3}
+                        initialValue={
+                          data
+                            ? riderGroupString.findIndex(
+                                (item) =>
+                                  item ===
+                                  data.riderSettingGroup.settingGroupName
+                              )
+                            : 3
+                        }
                       >
                         <Select>
                           {riderGroupString.map((v, index) => {
@@ -505,7 +515,10 @@ class RegistRiderDialog extends Component {
 
                     <div className="contentBlock">
                       <div className="mainTitle">비품지급</div>
-                      <FormItem name="equipments" className="giveBox selectItem">
+                      <FormItem
+                        name="equipments"
+                        className="giveBox selectItem"
+                      >
                         <Checkbox>헬멧</Checkbox>
                         <Checkbox>조끼</Checkbox>
                         <Checkbox>배달통</Checkbox>
