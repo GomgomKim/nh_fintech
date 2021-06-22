@@ -218,6 +218,7 @@ class ChattingDialog extends Component {
       .then((result) => {
         result = result.data;
         console.log(result);
+
         if (result.chatMessages.length === 0) {
           this.setState({
             chatMessageEnd: true,
@@ -388,7 +389,16 @@ class ChattingDialog extends Component {
                             selectedRider: null,
                             selectedfr: null,
                           },
-                          () => this.chatDetailList(row)
+                          () => {
+                            this.chatDetailList(row);
+                            const receiver =
+                              this.props.loginReducer.idx === row.member1
+                                ? row.member1Data
+                                : row.member2Data;
+                            if (receiver.userType === 1) {
+                              this.setState({ selectedRider: receiver });
+                            }
+                          }
                         );
                       }}
                     >

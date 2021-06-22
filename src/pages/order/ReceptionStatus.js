@@ -532,11 +532,16 @@ class ReceptionStatus extends Component {
                 }
                 row.orderStatus = value;
 
+                let now = new Date();
+                now = formatDate(now);
+
                 // pickupDate 및 completeDate 관련 이슈
                 // 백엔드에서 주문상태 update 시 처리 예정
 
                 if (value === 3) {
-                  httpPost(httpUrl.orderPickup, [], row.idx)
+                  row.pickupDate = now;
+                  console.log(row);
+                  httpPost(httpUrl.orderUpdate, [], row)
                     .then((res) => {
                       if (res.result === "SUCCESS") this.getList();
                     })
@@ -544,7 +549,18 @@ class ReceptionStatus extends Component {
                       console.log(e);
                     });
                 } else if (value === 4) {
-                  httpPost(httpUrl.orderComplete, [], row.idx)
+                  row.completeDate = now;
+                  console.log(row);
+                  httpPost(httpUrl.orderUpdate, [], row)
+                    .then((res) => {
+                      if (res.result === "SUCCESS") this.getList();
+                    })
+                    .catch((e) => {
+                      console.log(e);
+                    });
+                } else if (value === 5) {
+                  console.log(row);
+                  httpPost(httpUrl.orderUpdate, [], row)
                     .then((res) => {
                       if (res.result === "SUCCESS") this.getList();
                     })
