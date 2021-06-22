@@ -123,6 +123,7 @@ class RegistRiderDialog extends Component {
               idx: self.formRef.current.getFieldValue("riderSettingGroup"),
             },
             userType: 1,
+            bikeIdx: self.state.selectedBike.idx,
             // deliveryPriceFeeType: self.state.feeManner,
           });
           httpPost(httpUrl.registRider, [], {

@@ -219,6 +219,19 @@ class FranchiseMain extends Component {
     }
   };
 
+  getFrSalesUserIdx = async (formData) => {
+    httpGet(
+      httpUrl.riderList,
+      [10000, 1, formData.frSalesUserIdx, 1, [1, 2, 3, 4, 5, 6, 7]],
+      {}
+    ).then((result) => {
+      if (result.data.riders.length === 0) {
+        return;
+      }
+      formData.frSalesUserIdx = result.data.riders[0].idx;
+    });
+  };
+
   createFranchise = async (formData, i, failedIdx, failedFrName) => {
     console.log(`${i} start`);
     try {
@@ -259,6 +272,12 @@ class FranchiseMain extends Component {
           basicDeliveryPrice: data[" 배달요금"],
           password: String(data["비밀번호"]),
           tidNormalRate: data["PG사용여부"] === "사용" ? 100 : 0,
+          agreeSms: data["sms 수신여부"] === "수신" ? true : false,
+          basicDeliveryDistance: data["기본거리"],
+          isMember: data["가맹여부"] === "가맹" ? true : false,
+          ownerName: data["대표자 성명"],
+          frSalesUserIdx: data["영업담당자 성명"],
+          payDate: data["월회비최초납부일"],
 
           // // 신규 가맹점 DEFAULT
           ncash: 0,
@@ -282,6 +301,7 @@ class FranchiseMain extends Component {
 
         await this.getLatLng(data["주소"], formData);
         await this.createFranchise(formData, i, failedIdx, failedFrName);
+        await this.getFrSalesUserIdx(formData);
       }
       if (failedIdx.length > 0) {
         Modal.info({

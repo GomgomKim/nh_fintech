@@ -125,10 +125,12 @@ class RegistFranDialog extends Component {
         ncashPayEnabled: false,
         tidNormal: "",
         tidPrepay: "",
+        // tidNormalRate: this.state.PgRate, // 100 or 0
         chargeDate: 1,
         duesAutoChargeEnabled: false,
         dues: 0,
         agreeSms: this.state.agreeSms,
+        frSalesUserIdx: this.state.selectedRider.idx,
         nonmemberFee: this.state.isMember ? 0 : 1000,
       });
       httpPost(httpUrl.registFranchise, [], {
@@ -197,6 +199,8 @@ class RegistFranDialog extends Component {
     // 좌표변환
     httpGet(httpUrl.getGeocode, [addrData.roadAddress], {}).then((res) => {
       let result = JSON.parse(res.data.json);
+      console.log(result);
+
       // console.log(result)
       // console.log(result.addresses.length)
       if (res.result === "SUCCESS" && result.addresses.length > 0) {
@@ -211,23 +215,23 @@ class RegistFranDialog extends Component {
         });
 
         // 예상 배송 요금
-        httpGet(httpUrl.expectDeliveryPrice, [lat, lng], {}).then((res) => {
-          // console.log("expectDeliveryPrice data :"+res.data)
-          // console.log("expectDeliveryPrice data :"+res.data.distance)
-          // console.log("expectDeliveryPrice data :"+res.data.deliveryPriceBasic)
-          // console.log("expectDeliveryPrice data :"+res.data.deliveryPriceExtra)
-          if (res.result === "SUCCESS" && res.data != null) {
-            this.formRef.current.setFieldsValue({
-              distance: res.data.distance,
-              basicDeliveryPrice: res.data.deliveryPriceBasic,
-              deliveryPriceExtra: res.data.deliveryPriceExtra,
-            });
-          } else
-            customError(
-              "배송 요금 오류",
-              "예상 배송요금을 불러오는 데 실패했습니다. 관리자에게 문의하세요."
-            );
-        });
+        // httpGet(httpUrl.expectDeliveryPrice, [lat, lng], {}).then((res) => {
+        //   // console.log("expectDeliveryPrice data :"+res.data)
+        //   // console.log("expectDeliveryPrice data :"+res.data.distance)
+        //   // console.log("expectDeliveryPrice data :"+res.data.deliveryPriceBasic)
+        //   // console.log("expectDeliveryPrice data :"+res.data.deliveryPriceExtra)
+        //   if (res.result === "SUCCESS" && res.data != null) {
+        //     this.formRef.current.setFieldsValue({
+        //       distance: res.data.distance,
+        //       basicDeliveryPrice: res.data.deliveryPriceBasic,
+        //       deliveryPriceExtra: res.data.deliveryPriceExtra,
+        //     });
+        //   } else
+        //     customError(
+        //       "배송 요금 오류",
+        //       "예상 배송요금을 불러오는 데 실패했습니다. 관리자에게 문의하세요."
+        //     );
+        // });
       } else {
         customError(
           "위치 반환 오류",
