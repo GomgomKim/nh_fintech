@@ -428,7 +428,7 @@ class FranchiseMain extends Component {
       // 가맹여부 추가 후 컬럼이름 확인 필요
       {
         title: "가맹여부",
-        dataIndex: "franCategory",
+        dataIndex: "isMember",
         className: "table-column-center",
         render: (data) => <div>{data ? "가맹" : "무가맹"}</div>,
       },
@@ -503,10 +503,10 @@ class FranchiseMain extends Component {
     const expandedRowRender = (record) => {
       const dropColumns = [
         {
-          title: "월회비 최초납부일",
+          title: "월회비 납부일",
           dataIndex: "chargeDate",
           className: "table-column-center",
-          render: (data) => <div>{formatDate(data)}</div>,
+          render: (data) => <div>매월 {data} 일</div>,
         },
         {
           title: "적용타입",
@@ -518,7 +518,7 @@ class FranchiseMain extends Component {
           title: "월회비",
           dataIndex: "dues",
           className: "table-column-center",
-          render: (data) => <div>{"100,000"}</div>,
+          render: (data) => <div>{data}</div>,
         },
         {
           title: "카드가맹상태",
@@ -551,9 +551,9 @@ class FranchiseMain extends Component {
         },
         {
           title: "가입일",
-          dataIndex: "businessDate",
+          dataIndex: "createDate",
           className: "table-column-center",
-          render: (data) => <div>{"2021-04-29"}</div>,
+          render: (data) => <div>{formatDate(data)}</div>,
         },
       ];
 

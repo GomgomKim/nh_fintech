@@ -23,6 +23,12 @@ const formatDate = (date) => {
   // return day + " " + second;
 };
 
+const getDay = (date) => {
+  if (!date) return null;
+  let newDate = new Date(date);
+  return formatDateNumber(newDate.getDate());
+};
+
 const formatYear = (date) => {
   // if (date === null) return '-';
   if (!date) return null;
@@ -222,5 +228,6 @@ export {
   formatYMD,
   formatYMDHM,
   formatYMDHMS,
+  getDay,
 };
 

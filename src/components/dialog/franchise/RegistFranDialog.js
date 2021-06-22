@@ -39,6 +39,7 @@ class RegistFranDialog extends Component {
 
       isMember: true,
       riderTotalList: [],
+      chargeDate: 1,
     };
     this.formRef = React.createRef();
   }
@@ -47,6 +48,7 @@ class RegistFranDialog extends Component {
     if (this.props.data) {
       console.log(this.props.data);
       this.getRiderList(this.props.data.frSalesUserIdx);
+      this.setState({ chargeDate: this.props.data.chargeDate });
     }
   }
   getRiderList = (frSalesUserIdx) => {
@@ -92,6 +94,7 @@ class RegistFranDialog extends Component {
         frSalesUserIdx: this.state.selectedRider.idx,
         userGroup: 0,
         nonmemberFee: this.state.isMember ? 0 : 1000,
+        chargeDate: this.state.chargeDate,
       })
         .then((result) => {
           console.log("## result: " + JSON.stringify(result, null, 4));
@@ -126,7 +129,6 @@ class RegistFranDialog extends Component {
         tidNormal: "",
         tidPrepay: "",
         // tidNormalRate: this.state.PgRate, // 100 or 0
-        chargeDate: 1,
         duesAutoChargeEnabled: false,
         dues: 0,
         agreeSms: this.state.agreeSms,
@@ -152,12 +154,12 @@ class RegistFranDialog extends Component {
         tidNormal: "",
         tidPrepay: "",
         // tidNormalRate: this.state.PgRate, // 100 or 0
-        chargeDate: 1,
         duesAutoChargeEnabled: false,
         dues: 0,
         agreeSms: this.state.agreeSms,
         frSalesUserIdx: this.state.selectedRider.idx,
         nonmemberFee: this.state.isMember ? 0 : 1000,
+        chargeDate: this.state.chargeDate,
       })
         .then((result) => {
           console.log("## result: " + JSON.stringify(result, null, 4));
@@ -629,24 +631,41 @@ class RegistFranDialog extends Component {
                   <div className="registFranTitle">월관리비 설정</div>
 
                   <div className="contentBlock">
-                    <div className="subTitle">월회비 최초납부일</div>
+                    <div className="subTitle">월회비납부일</div>
                     {this.state.isMember ? (
                       <>
-                        <FormItem name="payDate" className="selectItem">
-                          <DatePicker
+                        <FormItem
+                          name="chargeDate"
+                          className="selectItem"
+                          style={{ marginLeft: 10 }}
+                        >
+                          {/* <DatePicker
                             style={{ marginLeft: 10 }}
-                            defaultValue={moment(today, dateFormat)}
+                            initialValue={
+                              data
+                                ? moment(data.chargeDate, dateFormat)
+                                : moment(today, dateFormat)
+                            }
                             format={dateFormat}
                             // onChange={date => this.setState({ selectedDate: date })}
+                          /> */}
+                          <div className="riderGText">매월</div>
+                          <Input
+                            value={this.state.chargeDate}
+                            className="override-input sub"
+                            onChange={(e) => {
+                              this.setState({ chargeDate: e.target.value });
+                            }}
                           />
+                          <div className="riderGText">일</div>
                         </FormItem>
                         <div className="subTitle">관리비</div>
-                        <FormItem name="managePrice" className="selectItem">
+                        <FormItem name="dues" className="selectItem">
                           <Input
-                            defaultValue={"100,000"}
+                            name="dues"
                             placeholder="관리비 입력"
                             className="override-input sub"
-                          ></Input>
+                          />
                         </FormItem>
                       </>
                     ) : (
