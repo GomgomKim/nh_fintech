@@ -167,6 +167,25 @@ const formatYMD = (date) => {
   );
 };
 
+const formatYMDHM = (date) => {
+  if (!date) return null;
+  if (date instanceof Date) {
+  } else {
+    date = new Date((date + "").substring(0, 19));
+  }
+  return (
+    date.getFullYear() +
+    "-" +
+    formatDateUnit(date.getMonth() + 1) +
+    "-" +
+    formatDateUnit(date.getDate()) +
+    " " +
+    formatDateUnit(date.getHours()) +
+    ":" +
+    formatDateUnit(date.getMinutes())
+  );
+};
+
 const formatYMDHMS = (date) => {
   if (!date) return null;
   if (date instanceof Date) {
@@ -201,6 +220,7 @@ export {
   statFormat,
   statMonthFormat,
   formatYMD,
+  formatYMDHM,
   formatYMDHMS,
 };
 

@@ -198,7 +198,6 @@ class RiderGroupDialog extends Component {
                     <p>처리 건수</p>
                   </div>
                   <div className="inputBox inputBox-rider">
-                    <div className="riderGText">일반 최대</div>
                     <FormItem name="normalMaxCall">
                       <Input
                         type="number"
@@ -210,18 +209,7 @@ class RiderGroupDialog extends Component {
                         value={this.state.normalMaxCall}
                       />
                     </FormItem>
-                    <div className="riderGText">피크타임 최대</div>
-                    <FormItem name="peakMaxCall">
-                      <Input
-                        type="number"
-                        onChange={(e) =>
-                          this.setState({
-                            peakMaxCall: parseInt(e.target.value),
-                          })
-                        }
-                        value={this.state.peakMaxCall}
-                      />
-                    </FormItem>
+                    <div className="riderGText">건 까지 처리 가능</div>
                   </div>
                   <div className="riderGroup-ftline-04">
                     <p>배달수수료</p>
@@ -243,9 +231,15 @@ class RiderGroupDialog extends Component {
                     <div className="inputBox inputBox-rider">
                       <FormItem
                         name="deliveryPriceFeeAmount"
-                        rules={[{ required: true, message: "0건." }]}
+                        rules={[
+                          {
+                            required: true,
+                            message: "배달수수료를 입력해주세요.",
+                          },
+                        ]}
                       >
                         <Input
+                          type="number"
                           value={this.state.deliveryPriceFeeAmount}
                           onChange={(e) =>
                             this.setState({

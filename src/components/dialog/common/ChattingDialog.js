@@ -8,7 +8,11 @@ import { login, logout } from "../../../actions/loginAction";
 import { httpGet, httpPost, httpUrl } from "../../../api/httpClient";
 import Const from "../../../const";
 import { riderLevelText } from "../../../lib/util/codeUtil";
-import { formatYMD, formatYMDHMS } from "../../../lib/util/dateUtil";
+import {
+  formatYMD,
+  formatYMDHM,
+  formatYMDHMS
+} from "../../../lib/util/dateUtil";
 import SearchFranchiseDialog from "./SearchFranchiseDialog";
 import SearchRiderDialog from "./SearchRiderDialog";
 
@@ -65,7 +69,7 @@ class ChattingDialog extends Component {
   // }
   formatChatDate(time) {
     return time.substr(0, 10) === formatYMD(new Date())
-      ? time.substr(12, time.length)
+      ? time.substr(11, time.length)
       : time.substr(0, 10);
   }
   formatChatName(item) {
@@ -78,7 +82,7 @@ class ChattingDialog extends Component {
   updateTime = (idx) => {
     //방열릴때
     let value = reactLocalStorage.getObject(Const.appName + ":chat");
-    const currentTime = formatYMDHMS(new Date());
+    const currentTime = formatYMDHM(new Date());
     if (value !== null) {
       try {
         if (value) value = JSON.parse(value);
@@ -378,7 +382,12 @@ class ChattingDialog extends Component {
                       className="chat-item-container"
                       onClick={() => {
                         this.setState(
-                          { fakeRoom: false, currentRoom: false },
+                          {
+                            fakeRoom: false,
+                            currentRoom: false,
+                            selectedRider: null,
+                            selectedfr: null,
+                          },
                           () => this.chatDetailList(row)
                         );
                       }}
