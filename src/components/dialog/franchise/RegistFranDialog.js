@@ -660,7 +660,11 @@ class RegistFranDialog extends Component {
                           <div className="riderGText">일</div>
                         </FormItem>
                         <div className="subTitle">관리비</div>
-                        <FormItem name="dues" className="selectItem">
+                        <FormItem
+                          name="dues"
+                          className="selectItem"
+                          initialValue={data ? data.dues : "100000"}
+                        >
                           <Input
                             name="dues"
                             placeholder="관리비 입력"
