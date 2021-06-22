@@ -180,7 +180,7 @@ class BlindControlDialog extends Component {
     // 승인대기 or 승인거부로 상태변경
     onChangeDeletedStatus = (idx, value) => {
         let self = this;
-        if (value === 2) {
+        if (parseInt(value) === 2) {
             Modal.confirm({
                 title: "승인 완료",
                 content: "해당 블라인드를 승인하시겠습니까?",
