@@ -531,44 +531,40 @@ class ReceptionStatus extends Component {
                   return;
                 }
                 row.orderStatus = value;
-
-                let now = new Date();
-                now = formatDate(now);
-
-                // pickupDate 및 completeDate 관련 이슈
-                // 백엔드에서 주문상태 update 시 처리 예정
-
-                if (value === 3) {
-                  row.pickupDate = now;
-                  console.log(row);
-                  httpPost(httpUrl.orderUpdate, [], row)
-                    .then((res) => {
-                      if (res.result === "SUCCESS") this.getList();
-                    })
-                    .catch((e) => {
-                      console.log(e);
-                    });
-                } else if (value === 4) {
-                  row.completeDate = now;
-                  console.log(row);
-                  httpPost(httpUrl.orderUpdate, [], row)
-                    .then((res) => {
-                      if (res.result === "SUCCESS") this.getList();
-                    })
-                    .catch((e) => {
-                      console.log(e);
-                    });
-                } else if (value === 5) {
-                  console.log(row);
-                  httpPost(httpUrl.orderUpdate, [], row)
-                    .then((res) => {
-                      if (res.result === "SUCCESS") this.getList();
-                    })
-                    .catch((e) => {
-                      console.log(e);
-                    });
-                }
-                console.log(row);
+                httpPost(httpUrl.orderUpdate, [], row)
+                .then((res) => {
+                  if (res.result === "SUCCESS") this.getList();
+                })
+                .catch((e) => {
+                  console.log(e);
+                });
+                
+                // if (value === 3) {
+                //   httpPost(httpUrl.orderUpdate, [], row)
+                //     .then((res) => {
+                //       if (res.result === "SUCCESS") this.getList();
+                //     })
+                //     .catch((e) => {
+                //       console.log(e);
+                //     });
+                // } else if (value === 4) {
+                //   httpPost(httpUrl.orderUpdate, [], row)
+                //     .then((res) => {
+                //       if (res.result === "SUCCESS") this.getList();
+                //     })
+                //     .catch((e) => {
+                //       console.log(e);
+                //     });
+                // } else if (value === 5) {
+                //   httpPost(httpUrl.orderUpdate, [], row)
+                //     .then((res) => {
+                //       if (res.result === "SUCCESS") this.getList();
+                //     })
+                //     .catch((e) => {
+                //       console.log(e);
+                //     });
+                // }
+                // console.log(row);
               }}
             >
               {deliveryStatusCode.map((value, index) => {
