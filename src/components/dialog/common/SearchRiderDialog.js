@@ -1,13 +1,11 @@
+import { Button, Form, Input, Radio, Table } from "antd";
 import React, { Component } from "react";
-import { Form, Input, Table, Button, Radio } from "antd";
-import { httpUrl, httpGet } from '../../../api/httpClient';
+import { httpGet, httpUrl } from '../../../api/httpClient';
 import '../../../css/modal.css';
-import SelectBox from '../../input/SelectBox';
 import {
-    tableStatusString,
-    riderLevelText,
-    userGroupString
+    riderLevelText, tableStatusString, userGroupString
 } from '../../../lib/util/codeUtil';
+import SelectBox from '../../input/SelectBox';
 
 const Search = Input.Search;
 const today = new Date();
@@ -174,7 +172,7 @@ class SearchRiderDialog extends Component {
             },
             {
                 title: "기사그룹",
-                dataIndex: "userGroup",
+                dataIndex: "riderSettingGroup",
                 className: "table-column-center",
                 render: (data) => <div>{userGroupString[data]}</div>
             },

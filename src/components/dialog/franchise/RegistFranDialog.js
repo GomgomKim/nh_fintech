@@ -36,6 +36,9 @@ class RegistFranDialog extends Component {
 
       searchRiderOpen: false,
       selectedRider: null,
+
+      isMember: true,
+      riderTotalList: [],
     };
     this.formRef = React.createRef();
   }
@@ -43,8 +46,26 @@ class RegistFranDialog extends Component {
   componentDidMount() {
     if (this.props.data) {
       console.log(this.props.data);
+      this.getRiderList(this.props.data.frSalesUserIdx);
     }
   }
+  getRiderList = (frSalesUserIdx) => {
+    httpGet(httpUrl.riderTotalList, [], {}).then((res) => {
+      if (res.result === "SUCCESS")
+        this.setState(
+          {
+            riderTotalList: res.data.riders,
+          },
+          () => {
+            this.setState({
+              selectedRider: this.state.riderTotalList.find(
+                (rider) => rider.idx === frSalesUserIdx
+              ),
+            });
+          }
+        );
+    });
+  };
 
   openSearchRider = () => {
     this.setState({ searchRiderOpen: true });
@@ -62,6 +83,7 @@ class RegistFranDialog extends Component {
         branchIdx: this.props.branchIdx,
         frSalesUserIdx: this.state.selectedRider.idx,
         userGroup: 0,
+        nonmemberFee: this.state.isMember ? 0 : 1000,
       });
       httpPost(httpUrl.franchiseUpdate, [], {
         ...this.formRef.current.getFieldsValue(),
@@ -69,6 +91,7 @@ class RegistFranDialog extends Component {
         branchIdx: this.props.branchIdx,
         frSalesUserIdx: this.state.selectedRider.idx,
         userGroup: 0,
+        nonmemberFee: this.state.isMember ? 0 : 1000,
       })
         .then((result) => {
           console.log("## result: " + JSON.stringify(result, null, 4));
@@ -106,6 +129,7 @@ class RegistFranDialog extends Component {
         duesAutoChargeEnabled: false,
         dues: 0,
         agreeSms: this.state.agreeSms,
+        nonmemberFee: this.state.isMember ? 0 : 1000,
       });
       httpPost(httpUrl.registFranchise, [], {
         ...this.formRef.current.getFieldsValue(),
@@ -131,6 +155,7 @@ class RegistFranDialog extends Component {
         dues: 0,
         agreeSms: this.state.agreeSms,
         frSalesUserIdx: this.state.selectedRider.idx,
+        nonmemberFee: this.state.isMember ? 0 : 1000,
       })
         .then((result) => {
           console.log("## result: " + JSON.stringify(result, null, 4));
@@ -217,8 +242,8 @@ class RegistFranDialog extends Component {
     this.setState({ feeManner: e.target.value }, () => {});
   };
 
-  onChangeFranCategory(e) {
-    this.setState({ franCategory: e.target.value });
+  onChangeIsMember(e) {
+    this.setState({ isMember: e.target.value });
   }
 
   render() {
@@ -245,15 +270,19 @@ class RegistFranDialog extends Component {
                 <div className="registFranTitle">
                   <div className="registFranTitle-sub">기본정보</div>
                   <div className="registFran-radio">
-                    <Radio.Group
-                      // 가맹여부 컬럼 이름 조정 필요
-                      name="franCategory"
-                      onChange={(e) => this.onChangeFranCategory(e)}
-                      defaultValue={data ? data.franCategory : true}
+                    <FormItem
+                      name="isMember"
+                      initialValue={data ? data.isMember : true}
                     >
-                      <Radio.Button value={true}>가맹</Radio.Button>
-                      <Radio.Button value={false}>무가맹</Radio.Button>
-                    </Radio.Group>
+                      <Radio.Group
+                        // 가맹여부 컬럼 이름 조정 필요
+                        initialValue={data ? data.isMember : true}
+                        onChange={(e) => this.onChangeIsMember(e)}
+                      >
+                        <Radio.Button value={true}>가맹</Radio.Button>
+                        <Radio.Button value={false}>무가맹</Radio.Button>
+                      </Radio.Group>
+                    </FormItem>
                   </div>
                 </div>
                 <div className="registFranBox">
@@ -401,10 +430,7 @@ class RegistFranDialog extends Component {
                             style={{ marginLeft: 20, width: 220 }}
                             placeholder="영업담당자를 선택해주세요."
                             value={
-                              data
-                                ? // 영업 담당자 컬럼으로 바꿔야 됨
-                                  data.riderName
-                                : this.state.selectedRider
+                              this.state.selectedRider
                                 ? this.state.selectedRider.riderName
                                 : ""
                             }
@@ -600,25 +626,48 @@ class RegistFranDialog extends Component {
 
                   <div className="contentBlock">
                     <div className="subTitle">월회비 최초납부일</div>
-
-                    <FormItem name="payDate" className="selectItem">
-                      <DatePicker
-                        style={{ marginLeft: 10 }}
-                        defaultValue={moment(today, dateFormat)}
-                        format={dateFormat}
-                        // onChange={date => this.setState({ selectedDate: date })}
-                      />
-                    </FormItem>
-
-                    <div className="subTitle">관리비</div>
-
-                    <FormItem name="managePrice" className="selectItem">
-                      <Input
-                        defaultValue={"100,000"}
-                        placeholder="관리비 입력"
-                        className="override-input sub"
-                      ></Input>
-                    </FormItem>
+                    {this.state.isMember ? (
+                      <>
+                        <FormItem name="payDate" className="selectItem">
+                          <DatePicker
+                            style={{ marginLeft: 10 }}
+                            defaultValue={moment(today, dateFormat)}
+                            format={dateFormat}
+                            // onChange={date => this.setState({ selectedDate: date })}
+                          />
+                        </FormItem>
+                        <div className="subTitle">관리비</div>
+                        <FormItem name="managePrice" className="selectItem">
+                          <Input
+                            defaultValue={"100,000"}
+                            placeholder="관리비 입력"
+                            className="override-input sub"
+                          ></Input>
+                        </FormItem>
+                      </>
+                    ) : (
+                      <>
+                        <FormItem name="payDate" className="selectItem">
+                          <DatePicker
+                            style={{ marginLeft: 10 }}
+                            defaultValue={moment(today, dateFormat)}
+                            format={dateFormat}
+                            disabled
+                            // onChange={date => this.setState({ selectedDate: date })}
+                          />
+                        </FormItem>
+                        <div className="subTitle">관리비</div>
+                        <FormItem name="managePrice" className="selectItem">
+                          <Input
+                            type="number"
+                            value={0}
+                            placeholder="관리비 입력"
+                            className="override-input sub"
+                            disabled
+                          />
+                        </FormItem>
+                      </>
+                    )}
                   </div>
 
                   <div className="registFran-btn">
