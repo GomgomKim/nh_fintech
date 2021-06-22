@@ -594,9 +594,9 @@ class RegistFranDialog extends Component {
                         )}
                       </FormItem>
                     </div>
-                    <div className="contentBlock">
+                    {/* <div className="contentBlock">
                       <div className="mainTitle">가입일자</div>
-                      <FormItem name="frJoinDate" className="selectItem">
+                      <FormItem name="createDate" className="selectItem">
                         <DatePicker
                           style={{ marginLeft: 20, width: 300 }}
                           defaultValue={moment(today, dateFormat)}
@@ -604,7 +604,7 @@ class RegistFranDialog extends Component {
                           // onChange={date => this.setState({ selectedDate: date })}
                         />
                       </FormItem>
-                    </div>
+                    </div> */}
                     <div className="contentBlock">
                       <div style={{ fontSize: "1rem" }} className="mainTitle">
                         SMS수신동의
