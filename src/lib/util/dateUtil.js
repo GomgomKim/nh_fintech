@@ -23,6 +23,19 @@ const formatDate = (date) => {
   // return day + " " + second;
 };
 
+const formatDateToDay = (date) => {
+  // if (date === null) return '-';
+  if (!date) return null;
+  let newDate = new Date(date);
+  return (
+    newDate.getFullYear() +
+    "-" +
+    formatDateNumber(newDate.getMonth() + 1) +
+    "-" +
+    formatDateNumber(newDate.getDate())
+  );
+};
+
 const getDay = (date) => {
   if (!date) return null;
   let newDate = new Date(date);
@@ -215,6 +228,7 @@ const formatYMDHMS = (date) => {
 
 export {
   formatDate,
+  formatDateToDay,
   formatYear,
   formatDateSecond,
   dateFormat,

@@ -12,6 +12,7 @@ import {
 } from "../../../api/Modals";
 import "../../../css/modal.css";
 import { pgUseRate } from "../../../lib/util/codeUtil";
+import { formatDateToDay } from "../../../lib/util/dateUtil";
 import PostCodeDialog from "../common/PostCodeDialog";
 import SearchRiderDialog from "../common/SearchRiderDialog";
 
@@ -86,6 +87,12 @@ class RegistFranDialog extends Component {
         frSalesUserIdx: this.state.selectedRider.idx,
         userGroup: 0,
         nonmemberFee: this.state.isMember ? 0 : 1000,
+        registDate: formatDateToDay(
+          this.formRef.current.getFieldValue("registDate")
+        ),
+        chargeDate: formatDateToDay(
+          this.formRef.current.getFieldValue("chargeDate")
+        ),
       });
       httpPost(httpUrl.franchiseUpdate, [], {
         ...this.formRef.current.getFieldsValue(),
@@ -94,7 +101,12 @@ class RegistFranDialog extends Component {
         frSalesUserIdx: this.state.selectedRider.idx,
         userGroup: 0,
         nonmemberFee: this.state.isMember ? 0 : 1000,
-        chargeDate: this.state.chargeDate,
+        registDate: formatDateToDay(
+          this.formRef.current.getFieldValue("registDate")
+        ),
+        chargeDate: formatDateToDay(
+          this.formRef.current.getFieldValue("chargeDate")
+        ),
       })
         .then((result) => {
           console.log("## result: " + JSON.stringify(result, null, 4));
@@ -134,6 +146,12 @@ class RegistFranDialog extends Component {
         agreeSms: this.state.agreeSms,
         frSalesUserIdx: this.state.selectedRider.idx,
         nonmemberFee: this.state.isMember ? 0 : 1000,
+        registDate: formatDateToDay(
+          this.formRef.current.getFieldValue("registDate")
+        ),
+        chargeDate: formatDateToDay(
+          this.formRef.current.getFieldValue("chargeDate")
+        ),
       });
       httpPost(httpUrl.registFranchise, [], {
         ...this.formRef.current.getFieldsValue(),
@@ -159,7 +177,12 @@ class RegistFranDialog extends Component {
         agreeSms: this.state.agreeSms,
         frSalesUserIdx: this.state.selectedRider.idx,
         nonmemberFee: this.state.isMember ? 0 : 1000,
-        chargeDate: this.state.chargeDate,
+        chargeDate: formatDateToDay(
+          this.formRef.current.getFieldValue("chargeDate")
+        ),
+        registDate: formatDateToDay(
+          this.formRef.current.getFieldValue("registDate")
+        ),
       })
         .then((result) => {
           console.log("## result: " + JSON.stringify(result, null, 4));
@@ -326,7 +349,7 @@ class RegistFranDialog extends Component {
                         name="ownerName"
                         className="selectItem"
                         // initialValue={data && data.ownerName}
-                        initialValue={data && "대표자명"}
+                        initialValue={data && data.ownerName}
                       >
                         <Input
                           placeholder="대표자명을 입력해 주세요."
@@ -394,13 +417,12 @@ class RegistFranDialog extends Component {
                       <FormItem
                         name="addr3"
                         className="selectItem"
-                        // initialValue={data && data.addr3}
-                        initialValue={data && "test"}
+                        initialValue={data && data.addr3}
                       >
                         <Input
-                          placeholder="상세주소를 입력해 주세요."
-                          disabled
+                          placeholder="지번주소를 입력해 주세요."
                           className="override-input sub"
+                          disabled
                         />
                       </FormItem>
                     </div>
@@ -594,17 +616,20 @@ class RegistFranDialog extends Component {
                         )}
                       </FormItem>
                     </div>
-                    {/* <div className="contentBlock">
+                    <div className="contentBlock">
                       <div className="mainTitle">가입일자</div>
-                      <FormItem name="createDate" className="selectItem">
+                      <FormItem name="registDate" className="selectItem">
                         <DatePicker
                           style={{ marginLeft: 20, width: 300 }}
-                          defaultValue={moment(today, dateFormat)}
+                          defaultValue={
+                            data
+                              ? moment(data.registDate, "YYYY-MM-DD")
+                              : moment(today, dateFormat)
+                          }
                           format={dateFormat}
-                          // onChange={date => this.setState({ selectedDate: date })}
                         />
                       </FormItem>
-                    </div> */}
+                    </div>
                     <div className="contentBlock">
                       <div style={{ fontSize: "1rem" }} className="mainTitle">
                         SMS수신동의
@@ -631,7 +656,7 @@ class RegistFranDialog extends Component {
                   <div className="registFranTitle">월관리비 설정</div>
 
                   <div className="contentBlock">
-                    <div className="subTitle">월회비납부일</div>
+                    <div className="subTitle">월회비 최초납부일</div>
                     {this.state.isMember ? (
                       <>
                         <FormItem
@@ -639,17 +664,16 @@ class RegistFranDialog extends Component {
                           className="selectItem"
                           style={{ marginLeft: 10 }}
                         >
-                          {/* <DatePicker
+                          <DatePicker
                             style={{ marginLeft: 10 }}
                             initialValue={
                               data
-                                ? moment(data.chargeDate, dateFormat)
+                                ? moment(data.chargeDate, "YYYY-MM-DD")
                                 : moment(today, dateFormat)
                             }
                             format={dateFormat}
-                            // onChange={date => this.setState({ selectedDate: date })}
-                          /> */}
-                          <div className="riderGText">매월</div>
+                          />
+                          {/* <div className="riderGText">매월</div>
                           <Input
                             value={this.state.chargeDate}
                             className="override-input sub"
@@ -657,7 +681,7 @@ class RegistFranDialog extends Component {
                               this.setState({ chargeDate: e.target.value });
                             }}
                           />
-                          <div className="riderGText">일</div>
+                          <div className="riderGText">일</div> */}
                         </FormItem>
                         <div className="subTitle">관리비</div>
                         <FormItem
