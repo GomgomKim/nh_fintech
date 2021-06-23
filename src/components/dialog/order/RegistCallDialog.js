@@ -316,6 +316,18 @@ class RegistCallDialog extends Component {
       () => {
         console.log(this.state.data);
         if (this.props.data) {
+          let paySum = 0;
+          this.state.data.orderPayments.forEach(
+            (payment) => (paySum += payment.paymentAmount)
+          );
+          if (paySum !== this.state.data.orderPrice) {
+            Modal.info({
+              title: "등록 오류",
+              content:
+                "주문가격과 결제내역이 다릅니다. 결제내역을 확인해주세요.",
+            });
+            return;
+          }
           httpPost(httpUrl.orderUpdate, [], this.state.data)
             .then((res) => {
               console.log(res);
@@ -338,6 +350,18 @@ class RegistCallDialog extends Component {
               updateError();
             });
         } else {
+          let paySum = 0;
+          this.state.data.orderPayments.forEach(
+            (payment) => (paySum += payment.paymentAmount)
+          );
+          if (paySum !== this.state.data.orderPrice) {
+            Modal.info({
+              title: "등록 오류",
+              content:
+                "주문가격과 결제내역이 다릅니다. 결제내역을 확인해주세요.",
+            });
+            return;
+          }
           httpPost(httpUrl.orderCreate, [], this.state.data)
             .then((res) => {
               console.log(res);
