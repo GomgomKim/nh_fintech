@@ -7,5 +7,5 @@ export { default as ReceptionStatus } from "./order/ReceptionStatus";
 export { default as MapControl } from "./order/MapControl";
 export { default as FranchiseMain } from "./franchise/FranchiseMain";
 export { default as RiderMain } from "./rider/RiderMain";
-export { default as StaffMain } from "./staff/StaffMain";
+export { default as MallMain } from "./mall/MallMain";
 export { default as SettingMain } from "./setting/SettingMain";

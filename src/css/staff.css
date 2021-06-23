@@ -1,15 +1,19 @@
-.searchRequirement{
-    margin-top: 10px !important;
+.searchRequirement {
+  margin-top: 10px !important;
 }
 
-.searchRequirementText{
-    font-size: 15px;
-    font-family: NotoSansBold;
+.searchRequirementText {
+  font-size: 15px;
+  font-family: NotoSansBold;
 }
 
-.registStaff{
-    /* float: right; */
-    background-color: #fddc00;
-    font-family: NotoSansRegular;
-    border: #fddc00;
+.registStaff {
+  /* float: right; */
+  background-color: #fddc00;
+  font-family: NotoSansRegular;
+  border: #fddc00;
+}
+
+.table-column-center .buyList-select {
+  padding-left: -100px;
 }
