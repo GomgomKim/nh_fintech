@@ -235,6 +235,7 @@ const httpUrl = {
   chatMessageList: "/chat/messageList?pageSize=%s&pageNum=%s&chatRoomIdx=%s",
   chatSend: "/chat/send",
 
+
   // 주소검색관리
   getAddrAptList:
     "/order/addrAptList?addrType=%s&pageNum=%s&pageSize=%s&searchDong=%s",
@@ -251,6 +252,10 @@ const httpUrl = {
   createBike: "/bike/create",
   getBikeList: "/bike/list?modelName=%s&pageNum=%s&pageSize=%s",
   getBikeListNoModelName: "/bike/list?pageNum=%s&pageSize=%s",
+
+  // 상품관리
+  buyList: "/mall/buyList?pageNum=%s&pageSize=%s",
+  updateBuy: "/mall/buyProduct/update",
 };
 
 const imageType = ["image/jpeg", "image/png", "image/bmp"];

@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { Route, Switch } from "react-router-dom";
 import { Layout } from "antd";
-import { OrderMain, FranchiseMain, RiderMain, StaffMain, SettingMain } from "../pages";
+import { OrderMain, FranchiseMain, RiderMain, SettingMain } from "../pages";
+import MallMain from "../pages/mall/MallMain";
 import { Redirect } from "react-router-dom";
 
 export default class Content extends Component {
@@ -18,7 +19,7 @@ export default class Content extends Component {
             <Route exact path="/order/OrderMain" component={OrderMain} />
             <Route exact path="/franchise/FranchiseMain" component={FranchiseMain} />
             <Route exact path="/rider/RiderMain" component={RiderMain} />
-            <Route exact path="/staff/StaffMain" component={StaffMain} />
+            <Route exact path="/mall/MallMain" component={MallMain} />
             <Route exact path="/setting/SettingMain" component={SettingMain} />
             <Redirect to="/" />
 

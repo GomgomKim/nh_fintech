@@ -1,5 +1,5 @@
 import {
-  CopyOutlined,
+  CopyOutlined,SkinOutlined,
   PhoneOutlined, SettingOutlined, TeamOutlined
 } from "@ant-design/icons";
 import { Layout, Modal } from "antd";
@@ -62,7 +62,11 @@ class Header extends React.Component {
         icon: <TeamOutlined />,
         url: "/rider/RiderMain",
       },
-      // { idx: 4, name: '직원관리', icon: (<IdcardOutlined />), url: '/staff/StaffMain' },
+      { idx: 4, 
+        name: '상품관리', 
+        icon: <SkinOutlined />, 
+        url: "/mall/MallMain" 
+      },
       {
         idx: 5,
         name: "환경설정",

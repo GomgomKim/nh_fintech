@@ -170,6 +170,15 @@ const searchBike = {
 
 const deliveryPriceFeeType = ["정률", "정액"];
 
+// 상품관리 - 상태
+const buyStatusString = {
+  0: "",
+  1: "수령대기",
+  2: "수령완료",
+  3: "환불요청",
+  4: "환불완료",
+};
+
 export {
   deliveryStatusCode,
   blockString,
@@ -202,4 +211,5 @@ export {
   bikeType,
   searchBike,
   deliveryPriceFeeType,
+  buyStatusString
 };
