@@ -318,10 +318,18 @@ class RegistCallDialog extends Component {
         if (this.props.data) {
           httpPost(httpUrl.orderUpdate, [], this.state.data)
             .then((res) => {
-              if (res.result === "SUCCESS") {
-                updateComplete();
+              console.log(res);
 
-                this.props.close();
+              if (res.result === "SUCCESS") {
+                if (res.data === "SUCCESS") {
+                  updateComplete();
+                  this.props.close();
+                } else if (res.data === "NOT_ENOUGH_NCASH") {
+                  Modal.info({
+                    title: "등록 오류",
+                    content: "가맹점 예치금이 부족합니다.",
+                  });
+                }
               } else {
                 updateError();
               }
@@ -332,11 +340,19 @@ class RegistCallDialog extends Component {
         } else {
           httpPost(httpUrl.orderCreate, [], this.state.data)
             .then((res) => {
+              console.log(res);
               if (res.result === "SUCCESS") {
-                registComplete();
+                if (res.data === "SUCCESS") {
+                  registComplete();
 
-                this.props.close();
-                this.clearData();
+                  this.props.close();
+                  this.clearData();
+                } else if (res.data === "NOT_ENOUGH_NCASH") {
+                  Modal.info({
+                    title: "등록 오류",
+                    content: "가맹점 예치금이 부족합니다.",
+                  });
+                }
               } else {
                 registError();
               }

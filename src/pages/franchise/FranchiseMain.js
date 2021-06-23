@@ -557,7 +557,7 @@ class FranchiseMain extends Component {
         },
         {
           title: "영업담당자",
-          dataIndex: "riderName",
+          dataIndex: "frSalesRiderName",
           className: "table-column-center",
           render: (data) => <div>{data}</div>,
         },
