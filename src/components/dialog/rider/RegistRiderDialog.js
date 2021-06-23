@@ -19,6 +19,7 @@ import {
 } from "../../../api/Modals";
 import "../../../css/modal.css";
 import {
+  bankCode,
   bikeType,
   riderGroupString,
   riderLevelText
@@ -459,8 +460,6 @@ class RegistRiderDialog extends Component {
                         disabled
                       />
                     </div>
-                  </div>
-                  <div className="registRiderWrapper sub">
                     <div className="contentBlock">
                       <div className="mainTitle">메모</div>
                       <FormItem
@@ -475,7 +474,8 @@ class RegistRiderDialog extends Component {
                         />
                       </FormItem>
                     </div>
-
+                  </div>
+                  <div className="registRiderWrapper sub">
                     <div className="contentBlock">
                       <div className="mainTitle">최소보유잔액</div>
                       <FormItem
@@ -517,6 +517,59 @@ class RegistRiderDialog extends Component {
                       </FormItem>
                     </div>
 
+                    <div className="contentBlock">
+                      <div className="mainTitle">은행</div>
+                      <FormItem
+                        name="bank"
+                        className="selectItem"
+                        rules={[
+                          { required: true, message: "은행을 선택해주세요" },
+                        ]}
+                        initialValue={data ? data.bank : "KB 국민은행"}
+                      >
+                        <Select>
+                          {bankCode.map((value) => {
+                            return <Option value={value}>{value}</Option>;
+                          })}
+                        </Select>
+                      </FormItem>
+                    </div>
+                    <div className="contentBlock">
+                      <div className="mainTitle">계좌번호</div>
+                      <FormItem
+                        name="bankAccount"
+                        className="selectItem"
+                        rules={[
+                          {
+                            required: true,
+                            message: "계좌번호를 입력해주세요",
+                          },
+                        ]}
+                        initialValue={data ? data.bankAccount : ""}
+                      >
+                        <Input
+                          placeholder="계좌번호를 입력해 주세요."
+                          className="override-input"
+                        />
+                      </FormItem>
+                    </div>
+
+                    <div className="contentBlock">
+                      <div className="mainTitle">예금주</div>
+                      <FormItem
+                        name="depositor"
+                        className="selectItem"
+                        rules={[
+                          { required: true, message: "예금주를 입력해주세요" },
+                        ]}
+                        initialValue={data ? data.depositor : ""}
+                      >
+                        <Input
+                          placeholder="예금주를 입력해 주세요."
+                          className="override-input"
+                        />
+                      </FormItem>
+                    </div>
                     <div className="contentBlock">
                       <div className="mainTitle">비품지급</div>
                       <FormItem

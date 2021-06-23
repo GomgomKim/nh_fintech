@@ -566,7 +566,7 @@ class RegistFranDialog extends Component {
                         name="basicDeliveryDistance"
                         className="selectItem"
                         initialValue={
-                          data ? parseInt(data.basicDeliveryDistance) : 1000
+                          data ? parseInt(data.basicDeliveryDistance) : 1500
                         }
                         rules={[
                           {

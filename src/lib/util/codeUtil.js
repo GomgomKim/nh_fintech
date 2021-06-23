@@ -85,14 +85,14 @@ const orderCnt = {
 };
 
 const blockString = {
-  0: '처리대기',
+  0: "처리대기",
   1: "차단중",
   2: "차단해제",
 };
 
 const blockStatusString = {
   2: "승인처리",
-  3: "승인거부"
+  3: "승인거부",
 };
 
 const frRiderString = {
@@ -170,6 +170,25 @@ const searchBike = {
 
 const deliveryPriceFeeType = ["정률", "정액"];
 
+const bankCode = [
+  "KB국민은행",
+  "KEB 하나은행",
+  "신한은행",
+  "우리은행",
+  "NH농협",
+  "IBK기업은행",
+  "KDB산업은행",
+  "한국씨티은행",
+  "SC제일은행",
+  "BNK부산은행",
+  "DGB대구은행",
+  "BNK경남은행",
+  "SH수협은행",
+  "광주은행",
+  "전북은행",
+  "제주은행",
+];
+
 export {
   deliveryStatusCode,
   blockString,
@@ -202,4 +221,6 @@ export {
   bikeType,
   searchBike,
   deliveryPriceFeeType,
+  bankCode,
 };
+
