@@ -1,14 +1,13 @@
-import { Table, Button, Radio, Modal } from 'antd';
-import React, { Component } from 'react';
-import { httpGet, httpUrl, httpPost } from '../../api/httpClient';
-import "../../css/staff.css";
+import { Modal, Table } from "antd";
+import moment from "moment";
+import React, { Component } from "react";
+import { httpGet, httpPost, httpUrl } from "../../api/httpClient";
+import SelectBox from "../../components/input/SelectBox";
 import "../../css/common.css";
-import RegistStaffDialog from "../../components/dialog/staff/RegistStaffDialog";
-import SelectBox from '../../components/input/SelectBox';
-import { buyStatusString } from '../../lib/util/codeUtil';
+import "../../css/staff.css";
+import { buyStatusString } from "../../lib/util/codeUtil";
 import { formatDate } from "../../lib/util/dateUtil";
 import { comma } from "../../lib/util/numberUtil";
-import moment from 'moment';
 const today = new Date();
 
 class MallMain extends Component {
@@ -26,94 +25,95 @@ class MallMain extends Component {
   }
 
   componentDidMount() {
-    this.getList()
+    this.getList();
   }
 
-  onChange = e => {
-    this.setState({
-      buyStatus: e.target.value,
-    }, () => this.getList());
+  onChange = (e) => {
+    this.setState(
+      {
+        buyStatus: e.target.value,
+      },
+      () => this.getList()
+    );
   };
 
   handleTableChange = (pagination) => {
-    console.log(pagination)
+    console.log(pagination);
     const pager = { ...this.state.pagination };
     pager.current = pagination.current;
-    pager.pageSize = pagination.pageSize
-    this.setState({
-      pagination: pager,
-    }, () => this.getList());
+    pager.pageSize = pagination.pageSize;
+    this.setState(
+      {
+        pagination: pager,
+      },
+      () => this.getList()
+    );
   };
 
   onChangeStatus = (index, value) => {
     let self = this;
-    if(parseInt(value) === 1){
+    if (parseInt(value) === 1) {
       Modal.confirm({
         title: "상태 변경",
-        content: '상태를 수정하시겠습니까?',
+        content: "상태를 수정하시겠습니까?",
         okText: "확인",
         cancelText: "취소",
         onOk() {
           httpPost(httpUrl.updateBuy, [], {
-            idx: index, buyStatus: value, pickupDate: ''
+            idx: index,
+            buyStatus: value,
+            pickupDate: "",
           })
             .then((result) => {
               Modal.info({
                 title: "변경 완료",
-                content: (
-                  <div>
-                    상태가 변경되었습니다.
-                  </div>
-                ),
+                content: <div>상태가 변경되었습니다.</div>,
               });
               self.getList();
             })
             .catch((error) => {
               Modal.info({
                 title: "변경 오류",
-                content: "오류가 발생하였습니다. 다시 시도해 주십시오."
+                content: "오류가 발생하였습니다. 다시 시도해 주십시오.",
+              });
+            });
+        },
+      });
+    } else if (parseInt(value) === 2) {
+      Modal.confirm({
+        title: "상태 변경",
+        content: "상태를 수정하시겠습니까?",
+        okText: "확인",
+        cancelText: "취소",
+        onOk() {
+          httpPost(httpUrl.updateBuy, [], {
+            idx: index,
+            buyStatus: value,
+            pickupDate: moment(today).format("YYYY-MM-DD hh:mm:ss"),
+          })
+            .then((result) => {
+              Modal.info({
+                title: "변경 완료",
+                content: <div>상태가 변경되었습니다.</div>,
+              });
+              self.getList();
+            })
+            .catch((error) => {
+              Modal.info({
+                title: "변경 오류",
+                content: "오류가 발생하였습니다. 다시 시도해 주십시오.",
               });
             });
         },
       });
     }
-    else if(parseInt(value) === 2){
-    Modal.confirm({
-      title: "상태 변경",
-      content: '상태를 수정하시겠습니까?',
-      okText: "확인",
-      cancelText: "취소",
-      onOk() {
-        httpPost(httpUrl.updateBuy, [], {
-          idx: index, buyStatus: value, pickupDate: moment(today).format('YYYY-MM-DD hh:mm:ss')
-        })
-          .then((result) => {
-            Modal.info({
-              title: "변경 완료",
-              content: (
-                <div>
-                  상태가 변경되었습니다.
-                </div>
-              ),
-            });
-            self.getList();
-          })
-          .catch((error) => {
-            Modal.info({
-              title: "변경 오류",
-              content: "오류가 발생하였습니다. 다시 시도해 주십시오."
-            });
-          });
-      },
-    });
-  }
-  }
+  };
 
   getList = () => {
     let pageSize = this.state.pagination.pageSize;
     let pageNum = this.state.pagination.current;
     httpGet(httpUrl.buyList, [pageNum, pageSize], {}).then((result) => {
-      console.log('## nnbox result=' + JSON.stringify(result, null, 4))
+      console.log("## nnbox result=" + JSON.stringify(result, null, 4));
       const pagination = { ...this.state.pagination };
       pagination.current = result.data.currentPage;
       pagination.total = result.data.totalCount;
@@ -121,12 +121,12 @@ class MallMain extends Component {
         list: result.data.mallBuys,
         // pagination,
       });
-    })
-  }
+    });
+  };
 
   closeStaffRegistrationModal = () => {
     this.setState({ registStaff: false });
-  }
+  };
 
   render() {
     const columns = [
@@ -172,27 +172,30 @@ class MallMain extends Component {
         dataIndex: "pickupDate",
         className: "table-column-center",
         width: "200px",
-        render: (data, row) => <div>{row.buyStatus == 1 ? '' : formatDate(data)}</div>,
+        render: (data, row) => (
+          <div>{row.buyStatus === 1 ? "" : formatDate(data)}</div>
+        ),
       },
       {
         title: "상태",
         dataIndex: "buyStatus",
         className: "table-column-center",
-        render: (data, row) => 
-        <div>
-          <SelectBox
-            className="buyList-select"
-            placeholder={'상태'}
-            value={buyStatusString[data]}
-            code={Object.keys(buyStatusString)}
-            codeString={buyStatusString}
-            onChange={(value) => {
-              if (parseInt(value) !== row.buyStatus) {
-                this.onChangeStatus(row.idx, value);
-              }
-            }}
-          />
-        </div>
+        render: (data, row) => (
+          <div>
+            <SelectBox
+              className="buyList-select"
+              placeholder={"상태"}
+              value={buyStatusString[data]}
+              code={Object.keys(buyStatusString)}
+              codeString={buyStatusString}
+              onChange={(value) => {
+                if (parseInt(value) !== row.buyStatus) {
+                  this.onChangeStatus(row.idx, value);
+                }
+              }}
+            />
+          </div>
+        ),
       },
     ];
     return (
@@ -207,9 +210,7 @@ class MallMain extends Component {
           />
         </div>
       </div>
-
-
-    )
+    );
   }
 }
 

@@ -97,6 +97,16 @@ class RegistRiderDialog extends Component {
       cancelText: "취소",
       onOk() {
         if (data) {
+          console.log({
+            ...self.formRef.current.getFieldsValue(),
+            idx: data.idx,
+            branchIdx: self.props.branchIdx,
+            agreeSms: self.state.agreeSms,
+            riderSettingGroup: {
+              idx: self.formRef.current.getFieldValue("riderSettingGroup"),
+            },
+            bikeIdx: self.state.selectedBike.idx,
+          });
           httpPost(httpUrl.updateRider, [], {
             ...self.formRef.current.getFieldsValue(),
             idx: data.idx,
@@ -128,6 +138,7 @@ class RegistRiderDialog extends Component {
             },
             userType: 1,
             bikeIdx: self.state.selectedBike.idx,
+            ncash: 0,
             // deliveryPriceFeeType: self.state.feeManner,
           });
           httpPost(httpUrl.registRider, [], {
@@ -139,6 +150,10 @@ class RegistRiderDialog extends Component {
             },
             userType: 1,
             bikeIdx: self.state.selectedBike.idx,
+
+            // 기사 생성 시 예치금 정책 어떻게 될지에 따라 변경 될 수 있음
+            // ncash 컬럼이 not null 이어서 기사 등록 시 0 설정
+            ncash: 0,
             // deliveryPriceFeeType: self.state.feeManner,
           })
             .then((res) => {
