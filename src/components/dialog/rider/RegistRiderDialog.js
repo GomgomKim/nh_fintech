@@ -526,11 +526,15 @@ class RegistRiderDialog extends Component {
                         rules={[
                           { required: true, message: "은행을 선택해주세요" },
                         ]}
-                        initialValue={data ? data.bank : "003"}
+                        initialValue={data ? data.bank : "기업은행,003"}
                       >
                         <Select>
                           {Object.keys(bankCode).map((key) => {
-                            return <Option value={bankCode[key]}>{key}</Option>;
+                            return (
+                              <Option value={key + "," + bankCode[key]}>
+                                {key}
+                              </Option>
+                            );
                           })}
                         </Select>
                       </FormItem>
