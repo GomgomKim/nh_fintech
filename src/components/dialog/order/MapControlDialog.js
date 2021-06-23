@@ -10,10 +10,14 @@ import SelectBox from "../../../components/input/SelectBox";
 import "../../../css/modal.css";
 import "../../../css/order.css";
 import {
-  arriveReqTime, deliveryStatusCode, modifyType, orderCnt, riderLevelText, rowColorName
+  arriveReqTime,
+  deliveryStatusCode,
+  modifyType,
+  orderCnt,
+  riderLevelText,
+  rowColorName
 } from "../../../lib/util/codeUtil";
 import { formatDate } from "../../../lib/util/dateUtil";
-
 
 const Option = Select.Option;
 const navermaps = window.naver.maps;
@@ -135,7 +139,7 @@ class MapControlDialog extends Component {
   // rider : 선택된 라이더 정보
   onSearchWorkerSelected = (rider) => {
     var self = this;
-    this.getRiderLocate(rider.idx)
+    this.getRiderLocate(rider.idx);
     this.setState(
       {
         selectedRiderIdx: rider.idx,
@@ -148,9 +152,12 @@ class MapControlDialog extends Component {
             title: "배차 설정",
             content: `${self.state.selectedRowKeys} 번의 주문을 ${rider.riderName} 기사에게 배정하시겠습니다?`,
             onOk: () => {
-              if(this.state.allResultsSave.find(x => x.id === rider.id).assignedOrderCnt >= 5){
-                customError("배차 오류", "배차는 5개의 주문까지 가능합니다.")
-              } else{
+              if (
+                this.state.allResultsSave.find((x) => x.id === rider.id)
+                  .assignedOrderCnt >= 5
+              ) {
+                customError("배차 오류", "배차는 5개의 주문까지 가능합니다.");
+              } else {
                 self.state.selectedRowKeys.forEach(
                   async (orderIdx) =>
                     await self.assignRiderApi(orderIdx, rider, failedIdx)
@@ -180,19 +187,26 @@ class MapControlDialog extends Component {
     var addRiderLocates = [];
     var addFrLocates = [];
     for (let i = 0; i < list.length; i++) {
-      var addPath = []
-      addPath[0] = navermaps.LatLng(this.state.selectedRiderLatitude, this.state.selectedRiderLongitude);
+      var addPath = [];
+      addPath[0] = navermaps.LatLng(
+        this.state.selectedRiderLatitude,
+        this.state.selectedRiderLongitude
+      );
       addPath[1] = navermaps.LatLng(list[i].frLatitude, list[i].frLongitude);
       addPath[2] = navermaps.LatLng(list[i].latitude, list[i].longitude);
-      addPaths[i] = addPath
-      addRiderLocates.push(navermaps.LatLng(list[i].latitude, list[i].longitude))
-      addFrLocates.push(navermaps.LatLng(list[i].frLatitude, list[i].frLongitude))
+      addPaths[i] = addPath;
+      addRiderLocates.push(
+        navermaps.LatLng(list[i].latitude, list[i].longitude)
+      );
+      addFrLocates.push(
+        navermaps.LatLng(list[i].frLatitude, list[i].frLongitude)
+      );
     }
     const pagination = { ...this.state.pagination };
     pagination.current = result.data.currentPage;
     // pagination.total = result.data.totalCount;
 
-    console.log("addPaths :"+addPaths)
+    console.log("addPaths :" + addPaths);
 
     this.setState({
       selRider: result.data,
@@ -217,7 +231,7 @@ class MapControlDialog extends Component {
       console.log("### nnbox result=" + JSON.stringify(result, null, 4));
       if (result.result === "SUCCESS") {
         if (result.data != null && result.data.orders.length > 0) {
-          this.setRiderOrderData(result)
+          this.setRiderOrderData(result);
         } else {
           this.setState({
             riderOrderList: [],
@@ -554,11 +568,15 @@ class MapControlDialog extends Component {
   });
 
   setAssignCnt = (cnt) => {
-    var list = []
-    if(cnt >= 0 && cnt < 5) list = this.state.allResultsSave.filter(x => x.assignedOrderCnt === cnt)
-    else if (cnt === 5) list = this.state.allResultsSave.filter(x => x.assignedOrderCnt >= cnt)
-    else if (cnt === 99) list = this.state.allResultsSave
-    var addPaths = this.clearPath()
+    var list = [];
+    if (cnt >= 0 && cnt < 5)
+      list = this.state.allResultsSave.filter(
+        (x) => x.assignedOrderCnt === cnt
+      );
+    else if (cnt === 5)
+      list = this.state.allResultsSave.filter((x) => x.assignedOrderCnt >= cnt);
+    else if (cnt === 99) list = this.state.allResultsSave;
+    var addPaths = this.clearPath();
 
     // console.log("############## :"+JSON.stringify(list, null, 4))
     this.setState({
@@ -569,18 +587,16 @@ class MapControlDialog extends Component {
       allResults: list,
       selectedRiderIdx: 0,
     });
-  }
+  };
 
   clearPath = () => {
-    var addPaths = []
-    var addPath= []
+    var addPaths = [];
+    var addPath = [];
     addPath[0] = navermaps.LatLng(0, 0);
     addPath[1] = navermaps.LatLng(0, 0);
-    addPaths[0] = addPath
-    return addPaths
-  }
-
-  
+    addPaths[0] = addPath;
+    return addPaths;
+  };
 
   render() {
     const { close } = this.props;
@@ -748,7 +764,7 @@ class MapControlDialog extends Component {
         title: "배차갯수",
         dataIndex: "assignedOrderCnt",
         className: "table-column-center",
-        render: (data) => <div>{data+"건"}</div>,
+        render: (data) => <div>{data + "건"}</div>,
       },
     ];
 
@@ -762,15 +778,20 @@ class MapControlDialog extends Component {
         title: "접수시간",
         dataIndex: "orderDate",
         className: "table-column-center",
-        render: (data, row) => (
-          <div>{formatDate(data)}</div>
-        ),
+        render: (data, row) => <div>{formatDate(data)}</div>,
       },
       {
         title: "경과(분)",
-        dataIndex: "arriveReqTime",
+        dataIndex: "orderDate",
         className: "table-column-center",
-        render: (data) => <div>{arriveReqTime[data]}</div>,
+        render: (data) => {
+          const now = new moment();
+          const orderTime = moment(data, "YYYY-MM-DD HH:mm:ss");
+          const timeDelta = moment.duration(now.diff(orderTime)).asMinutes();
+          console.log("시간차 구하기");
+          console.log(parseInt(timeDelta));
+          return <div>{parseInt(timeDelta)} 분</div>;
+        },
       },
       {
         title: "도착지",
@@ -816,7 +837,7 @@ class MapControlDialog extends Component {
               codeString={orderCnt}
               onChange={(value) => {
                 if (parseInt(value) !== this.state.selOrderCnt) {
-                  this.setAssignCnt(parseInt(value))
+                  this.setAssignCnt(parseInt(value));
                 }
               }}
             />
@@ -848,11 +869,15 @@ class MapControlDialog extends Component {
                   <NaverMap
                     className="map-navermap"
                     defaultZoom={14}
-                    center={{ lat: this.state.selectedRiderLatitude, lng: this.state.selectedRiderLongitude }}
+                    center={{
+                      lat: this.state.selectedRiderLatitude,
+                      lng: this.state.selectedRiderLongitude,
+                    }}
                     // center={{ lat: lat, lng: lng }}
                   >
-                    
-                    {this.state.allResults.filter(x => x.idx === this.state.selectedRiderIdx).length > 0 &&
+                    {this.state.allResults.filter(
+                      (x) => x.idx === this.state.selectedRiderIdx
+                    ).length > 0 && (
                       <Marker
                         position={navermaps.LatLng(
                           this.state.selectedRiderLatitude,
@@ -867,12 +892,12 @@ class MapControlDialog extends Component {
                           this.getRiderLocate(this.state.selRider.idx)
                         }
                       />
-                    }
+                    )}
 
                     {this.state.allResults.map((row, index) => {
-                        return (
-                          <>
-                          {this.state.selectedRiderIdx !== row.idx &&
+                      return (
+                        <>
+                          {this.state.selectedRiderIdx !== row.idx && (
                             <Marker
                               key={index}
                               position={navermaps.LatLng(
@@ -880,34 +905,43 @@ class MapControlDialog extends Component {
                                 row.riderLocation.longitude
                               )}
                               // 팀장 이상 파랑 마크
-                              icon={row.riderLevel >= 3 ?
-                                require("../../../img/login/map/marker_rider_blue.png").default :
-                                require("../../../img/login/map/marker_rider.png").default
+                              icon={
+                                row.riderLevel >= 3
+                                  ? require("../../../img/login/map/marker_rider_blue.png")
+                                      .default
+                                  : require("../../../img/login/map/marker_rider.png")
+                                      .default
                               }
                               title={row.riderName}
                               onClick={() => this.getRiderLocate(row.idx)}
                             />
-                          }
-                          </>
-                        );
+                          )}
+                        </>
+                      );
                     })}
-                      
+
                     {this.state.riderAllLocates.map((row, index) => {
-                      return(
+                      return (
                         <Marker
                           key={index}
                           position={row}
-                          icon={require("../../../img/login/map/arrive_yellow.png").default}
+                          icon={
+                            require("../../../img/login/map/arrive_yellow.png")
+                              .default
+                          }
                         />
                       );
                     })}
 
                     {this.state.frLocates.map((row, index) => {
-                      return(
+                      return (
                         <Marker
                           key={index}
                           position={row}
-                          icon={require("../../../img/login/map/franchise_yellow.png").default}
+                          icon={
+                            require("../../../img/login/map/franchise_yellow.png")
+                              .default
+                          }
                         />
                       );
                     })}
@@ -924,8 +958,8 @@ class MapControlDialog extends Component {
                         "#8AFE20",
                         "#FAEB24",
                         "#A923FB",
-                      ]
-                      return(
+                      ];
+                      return (
                         <Polyline
                           key={index}
                           path={row}

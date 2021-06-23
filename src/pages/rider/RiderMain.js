@@ -15,7 +15,7 @@ import {
   statusString,
   tableStatusString
 } from "../../lib/util/codeUtil";
-import { formatDate } from "../../lib/util/dateUtil";
+import { formatDateToDay } from "../../lib/util/dateUtil";
 import { comma } from "../../lib/util/numberUtil";
 
 const Search = Input.Search;
@@ -326,7 +326,7 @@ class RiderMain extends Component {
         title: "입사일",
         dataIndex: "createDate",
         className: "table-column-center",
-        render: (data) => <div>{formatDate(data)}</div>,
+        render: (data) => <div>{formatDateToDay(data)}</div>,
         // render: (data, row) => <div>
         //   <DatePicker
         //     defaultValue={moment(today, dateFormat)}
@@ -338,7 +338,7 @@ class RiderMain extends Component {
         title: "퇴사일",
         dataIndex: "deleteDate",
         className: "table-column-center",
-        render: (data) => <div>{formatDate(data)}</div>,
+        render: (data) => <div>{formatDateToDay(data)}</div>,
         // render: (data, row) => <div>
         //   <DatePicker
         //     defaultValue={moment(today, dateFormat)}
