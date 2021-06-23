@@ -477,9 +477,10 @@ class RegistRiderDialog extends Component {
                   </div>
                   <div className="registRiderWrapper sub">
                     <div className="contentBlock">
+                      {/* 컬럼 확인 필요 */}
                       <div className="mainTitle">최소보유잔액</div>
                       <FormItem
-                        name="ncash"
+                        name=""
                         className="selectItem"
                         initialValue={data ? data.ncash : 100000}
                       >

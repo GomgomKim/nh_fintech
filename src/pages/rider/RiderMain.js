@@ -324,9 +324,9 @@ class RiderMain extends Component {
       },
       {
         title: "입사일",
-        // dataIndex: "wdawdDate",
+        dataIndex: "createDate",
         className: "table-column-center",
-        render: (data) => <div>{formatDate("2021-03-21 12:00")}</div>,
+        render: (data) => <div>{formatDate(data)}</div>,
         // render: (data, row) => <div>
         //   <DatePicker
         //     defaultValue={moment(today, dateFormat)}
@@ -336,9 +336,9 @@ class RiderMain extends Component {
       },
       {
         title: "퇴사일",
-        // dataIndex: "wdawdDate",
+        dataIndex: "deleteDate",
         className: "table-column-center",
-        render: (data) => <div>{formatDate("2021-04-29 11:00:21")}</div>,
+        render: (data) => <div>{formatDate(data)}</div>,
         // render: (data, row) => <div>
         //   <DatePicker
         //     defaultValue={moment(today, dateFormat)}
@@ -392,11 +392,12 @@ class RiderMain extends Component {
 
     const expandedRowRender = (record) => {
       const dropColumns = [
+        // 컬럼 확인 필요
         {
           title: "최소보유잔액",
-          dataIndex: "minCashAmount",
+          dataIndex: "",
           className: "table-column-center",
-          render: (data) => <div>{1000}</div>,
+          render: (data) => <div>{}</div>,
         },
         {
           title: "전화번호",
