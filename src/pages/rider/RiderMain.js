@@ -10,6 +10,7 @@ import UpdatePasswordDialog from "../../components/dialog/rider/UpdatePasswordDi
 import SelectBox from "../../components/input/SelectBox";
 import "../../css/modal.css";
 import {
+  bankCode,
   riderLevelText,
   statusString,
   tableStatusString
@@ -445,6 +446,11 @@ class RiderMain extends Component {
           title: "은행명",
           dataIndex: "bank",
           className: "table-column-center",
+          render: (data) => (
+            <div>
+              {Object.keys(bankCode).find((key) => bankCode[key] === data)}
+            </div>
+          ),
         },
         {
           title: "계좌번호",
