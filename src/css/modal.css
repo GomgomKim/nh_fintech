@@ -2718,7 +2718,7 @@
 
 .registRiderWrapper {
   display: inline-block;
-  /* vertical-align: top; */
+  vertical-align: top;
 }
 
 .registRiderWrapper .contentBlock {
@@ -2746,7 +2746,7 @@
   margin-top: 4px !important;
 }
 .registRiderWrapper .submitBlock {
-  margin-top: 40px;
+  margin-top: 20px;
   text-align: right;
 }
 
@@ -2794,7 +2794,7 @@
 
 .registRiderWrapper.sub .submitBlock {
   width: 390px;
-  margin-top: 55px;
+  /* margin-top: 55px; */
 }
 
 /* 하단 */

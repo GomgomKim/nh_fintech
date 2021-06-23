@@ -2,7 +2,12 @@ import { Button, Checkbox, Form, Input, Modal, Select } from "antd";
 import React, { Component } from "react";
 import { Marker, NaverMap } from "react-naver-maps";
 import { httpGet, httpPost, httpUrl } from "../../../api/httpClient";
-import { updateComplete, updateError } from "../../../api/Modals";
+import {
+  registComplete,
+  registError,
+  updateComplete,
+  updateError
+} from "../../../api/Modals";
 import "../../../css/modal.css";
 import {
   arriveReqTime,
@@ -36,7 +41,7 @@ const newOrder = {
   frLongitude: 0,
   frName: "",
   frPhone: "",
-  idx: 0,
+  idx: -1,
   itemPrepared: false,
   itemPreparingTime: 0,
   latitude: 0,
@@ -189,17 +194,15 @@ class RegistCallDialog extends Component {
   };
 
   getDeliveryPrice = () => {
+    console.log("getDeliiveryPrice!!!!!!!!!!!!!!!!!");
     var self = this;
     httpGet(httpUrl.getGeocode, [this.state.selectedDest.roadAddress], {})
       .then((res) => {
+        console.log(res);
         let result = JSON.parse(res.data.json);
-        if (res.result === "SUCCESS" && result.addresses.length > 0) {
+        if (res.result === "SUCCESS") {
           const lat = result.addresses[0].y;
           const lng = result.addresses[0].x;
-
-          console.log("배달요금 계산 파라미터!!");
-          console.log(typeof lat);
-          console.log(lat, lng);
 
           this.setState({
             mapLat: lat,
@@ -313,11 +316,32 @@ class RegistCallDialog extends Component {
       () => {
         console.log(this.state.data);
         if (this.props.data) {
+          let paySum = 0;
+          this.state.data.orderPayments.forEach(
+            (payment) => (paySum += payment.paymentAmount)
+          );
+          if (paySum !== this.state.data.orderPrice) {
+            Modal.info({
+              title: "등록 오류",
+              content:
+                "주문가격과 결제내역이 다릅니다. 결제내역을 확인해주세요.",
+            });
+            return;
+          }
           httpPost(httpUrl.orderUpdate, [], this.state.data)
             .then((res) => {
+              console.log(res);
+
               if (res.result === "SUCCESS") {
-                updateComplete();
-                this.props.close();
+                if (res.data === "SUCCESS") {
+                  updateComplete();
+                  this.props.close();
+                } else if (res.data === "NOT_ENOUGH_NCASH") {
+                  Modal.info({
+                    title: "등록 오류",
+                    content: "가맹점 예치금이 부족합니다.",
+                  });
+                }
               } else {
                 updateError();
               }
@@ -326,18 +350,39 @@ class RegistCallDialog extends Component {
               updateError();
             });
         } else {
+          let paySum = 0;
+          this.state.data.orderPayments.forEach(
+            (payment) => (paySum += payment.paymentAmount)
+          );
+          if (paySum !== this.state.data.orderPrice) {
+            Modal.info({
+              title: "등록 오류",
+              content:
+                "주문가격과 결제내역이 다릅니다. 결제내역을 확인해주세요.",
+            });
+            return;
+          }
           httpPost(httpUrl.orderCreate, [], this.state.data)
             .then((res) => {
+              console.log(res);
               if (res.result === "SUCCESS") {
-                updateComplete();
-                this.props.close();
-                this.clearData();
+                if (res.data === "SUCCESS") {
+                  registComplete();
+
+                  this.props.close();
+                  this.clearData();
+                } else if (res.data === "NOT_ENOUGH_NCASH") {
+                  Modal.info({
+                    title: "등록 오류",
+                    content: "가맹점 예치금이 부족합니다.",
+                  });
+                }
               } else {
-                updateError();
+                registError();
               }
             })
             .catch((e) => {
-              updateError();
+              registError();
             });
         }
       }
@@ -395,6 +440,7 @@ class RegistCallDialog extends Component {
                                     frPhone: fr.frPhone,
                                   },
                                 });
+                                console.log(this.state.selectedDest);
                                 if (this.state.selectedDest) {
                                   if (
                                     Object.keys(
@@ -445,7 +491,8 @@ class RegistCallDialog extends Component {
                                   destAddr1: this.state.selectedDest.address,
                                 },
                               });
-                              if (this.state.selectedFr.frIdx !== 0) {
+                              console.log(this.state.selectedFr);
+                              if (this.state.selectedFr.idx !== 0) {
                                 console.log("기본 state 가맹점");
                                 console.log(this.state.selectedFr);
                                 this.getDeliveryPrice();
@@ -524,7 +571,7 @@ class RegistCallDialog extends Component {
                           defaultValue={
                             this.props.data
                               ? comma(this.props.data.extraDeliveryPrice)
-                              : ""
+                              : "0"
                           }
                           onChange={(e) =>
                             this.handleChangeInput(
@@ -532,7 +579,6 @@ class RegistCallDialog extends Component {
                               "extraDeliveryPrice"
                             )
                           }
-                          required
                         ></Input>
                       </FormItem>
                     </div>
@@ -712,7 +758,6 @@ class RegistCallDialog extends Component {
                               "custMessage"
                             )
                           }
-                          required
                         ></Input>
                       </FormItem>
                     </div>
@@ -782,7 +827,7 @@ class RegistCallDialog extends Component {
                                     },
                                   },
                                   () => {
-                                    if (this.state.selectedFr.frIdx !== 0) {
+                                    if (this.state.selectedFr.idx !== 0) {
                                       this.getDeliveryPriceByLatLng(
                                         e.latlng.y,
                                         e.latlng.x

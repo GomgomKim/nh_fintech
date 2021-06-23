@@ -275,10 +275,10 @@ const PaymentDialog = ({
                       console.log("이게 왜 갑자기 안돼돼");
                       console.log(orderPrice > 0);
                       console.log(calcSum() > orderPrice);
-                      if (orderPrice >= 0 && calcSum() > orderPrice) {
+                      if (orderPrice >= 0 && calcSum() !== orderPrice) {
                         Modal.info({
                           title: "설정 오류",
-                          content: "결제 금액이 초과 되었습니다.",
+                          content: "결제 금액을 확인해주세요.",
                         });
                         return;
                       }

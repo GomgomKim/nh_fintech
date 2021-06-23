@@ -195,6 +195,7 @@ const httpUrl = {
     "/fr/expectDeliveryPrice?destLatitude=%s&destLongitude=%s",
 
   // rider
+  riderTotalList: "/rider/list",
   riderList:
     "/rider/list?pageSize=%s&pageNum=%s&searchName=%s&userStatus=%s&riderLevels=%s",
   registRider: "/rider/create",
@@ -228,7 +229,8 @@ const httpUrl = {
   deleteBlind: "/rider/admin/block/delete",
 
   statusBlind: "/rider/block/update",
-  blindAllList: "/rider/block/all/list?deletedList=%s&pageNum=%s&pageSize=%s&statusList=%s",
+  blindAllList:
+    "/rider/block/all/list?deletedList=%s&pageNum=%s&pageSize=%s&statusList=%s",
 
   // 채팅
   chatList: "/chat/chatList?pageSize=%s&pageNum=%s&searchName=%s",

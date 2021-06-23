@@ -10,8 +10,7 @@ import UpdatePasswordDialog from "../../components/dialog/rider/UpdatePasswordDi
 import SelectBox from "../../components/input/SelectBox";
 import "../../css/modal.css";
 import {
-  feeManner,
-  riderGroupString,
+  bankCode,
   riderLevelText,
   statusString,
   tableStatusString
@@ -75,10 +74,10 @@ class RiderMain extends Component {
 
     httpGet(
       httpUrl.riderList,
-      [10, pageNum, searchName, userStatus, [1,2,3,4,5,6,7]],
+      [10, pageNum, searchName, userStatus, [1, 2, 3, 4, 5, 6, 7]],
       {}
     ).then((result) => {
-      console.log("## nnbox result=" + JSON.stringify(result, null, 4));
+      console.log(result, null, 4);
       const pagination = { ...this.state.pagination };
       pagination.current = result.data.currentPage;
       pagination.total = result.data.totalCount;
@@ -265,12 +264,12 @@ class RiderMain extends Component {
         width: "200px",
         render: (data) => <div>{riderLevelText[data]}</div>,
       },
-      {
-        title: "기사그룹",
-        dataIndex: "userGroup",
-        className: "table-column-center",
-        render: (data) => <div>{riderGroupString[data]}</div>,
-      },
+      // {
+      //   title: "기사그룹",
+      //   dataIndex: "riderSettingGroup",
+      //   className: "table-column-center",
+      //   render: (data) => <div>{data.settingGroupName}</div>,
+      // },
       {
         title: "면허정보",
         dataIndex: "driverLicenseNumber",
@@ -417,31 +416,50 @@ class RiderMain extends Component {
           render: (data) => <div>{data}</div>,
         },
         {
-          title: "수수료",
-          dataIndex: "deliveryPriceFeeAmount",
+          title: "기사그룹",
+          dataIndex: "riderSettingGroup",
           className: "table-column-center",
-          render: (data) => <div>{comma(data)}</div>,
+          render: (data) => <div>{data.settingGroupName}</div>,
         },
+
         {
           title: "수수료방식",
-          dataIndex: "deliveryPriceFeeType",
+          dataIndex: "riderSettingGroup",
           className: "table-column-center",
-          // render: (data) => <div>{data === 1 ? "정량" : "정률"}</div>
-          render: (data) => <div>{feeManner[data]}</div>,
+          render: (data) => (
+            <div>{data.deliveryPriceFeeType === 1 ? "정량" : "정율"}</div>
+          ),
+        },
+        {
+          title: "수수료",
+          dataIndex: "riderSettingGroup",
+          className: "table-column-center",
+          render: (data) => (
+            <div>
+              {data.deliveryPriceFeeType === 1
+                ? data.deliveryPriceFeeAmount + "원"
+                : data.deliveryPriceFeeAmount + "%"}
+            </div>
+          ),
         },
         {
           title: "은행명",
           dataIndex: "bank",
           className: "table-column-center",
-        },
-        {
-          title: "예금주",
-          dataIndex: "riderName",
-          className: "table-column-center",
+          render: (data) => (
+            <div>
+              {Object.keys(bankCode).find((key) => bankCode[key] === data)}
+            </div>
+          ),
         },
         {
           title: "계좌번호",
           dataIndex: "bankAccount",
+          className: "table-column-center",
+        },
+        {
+          title: "예금주",
+          dataIndex: "riderName",
           className: "table-column-center",
         },
       ];

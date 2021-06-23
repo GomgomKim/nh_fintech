@@ -13,12 +13,11 @@ import SearchAddressDialog from "../../components/dialog/franchise/SearchAddress
 import SelectBox from "../../components/input/SelectBox";
 import "../../css/franchise.css";
 import {
-  cardStatus,
   statusString,
   tableStatusString,
   withdrawString
 } from "../../lib/util/codeUtil";
-import { formatDate } from "../../lib/util/dateUtil";
+import { formatDateToDay } from "../../lib/util/dateUtil";
 import { comma } from "../../lib/util/numberUtil";
 
 const Search = Input.Search;
@@ -219,6 +218,19 @@ class FranchiseMain extends Component {
     }
   };
 
+  getFrSalesUserIdx = async (formData) => {
+    httpGet(
+      httpUrl.riderList,
+      [10000, 1, formData.frSalesUserIdx, 1, [1, 2, 3, 4, 5, 6, 7]],
+      {}
+    ).then((result) => {
+      if (result.data.riders.length === 0) {
+        return;
+      }
+      formData.frSalesUserIdx = result.data.riders[0].idx;
+    });
+  };
+
   createFranchise = async (formData, i, failedIdx, failedFrName) => {
     console.log(`${i} start`);
     try {
@@ -259,6 +271,12 @@ class FranchiseMain extends Component {
           basicDeliveryPrice: data[" 배달요금"],
           password: String(data["비밀번호"]),
           tidNormalRate: data["PG사용여부"] === "사용" ? 100 : 0,
+          agreeSms: data["sms 수신여부"] === "수신" ? true : false,
+          basicDeliveryDistance: data["기본거리"],
+          isMember: data["가맹여부"] === "가맹" ? true : false,
+          ownerName: data["대표자 성명"],
+          frSalesUserIdx: data["영업담당자 성명"],
+          payDate: data["월회비최초납부일"],
 
           // // 신규 가맹점 DEFAULT
           ncash: 0,
@@ -282,6 +300,7 @@ class FranchiseMain extends Component {
 
         await this.getLatLng(data["주소"], formData);
         await this.createFranchise(formData, i, failedIdx, failedFrName);
+        await this.getFrSalesUserIdx(formData);
       }
       if (failedIdx.length > 0) {
         Modal.info({
@@ -406,19 +425,13 @@ class FranchiseMain extends Component {
         render: (data) => <div>{comma(data)}</div>,
       },
       // 가맹여부 추가 후 컬럼이름 확인 필요
-      {
-        title: "가맹여부",
-        dataIndex: "franCategory",
-        className: "table-column-center",
-        render: (data) => <div>{data ? "가맹" : "무가맹"}</div>,
-      },
       // 가맹여부 추가 후 컬럼이름 확인 필요
-      {
-        title: "금액",
-        dataIndex: "balance",
-        className: "table-column-center",
-        render: (data) => <div>{comma(data)}</div>,
-      },
+      // {
+      //   title: "금액",
+      //   dataIndex: "",
+      //   className: "table-column-center",
+      //   render: (data) => <div>{}</div>,
+      // },
 
       {
         title: "출금설정",
@@ -486,43 +499,50 @@ class FranchiseMain extends Component {
           title: "월회비 최초납부일",
           dataIndex: "chargeDate",
           className: "table-column-center",
-          render: (data) => <div>{formatDate(data)}</div>,
+          render: (data) => <div>{formatDateToDay(data)}</div>,
         },
         {
-          title: "적용타입",
-          dataIndex: "applyType",
+          title: "가맹여부",
+          dataIndex: "isMember",
           className: "table-column-center",
-          render: (data) => <div>{"적용"}</div>,
+          render: (data) => <div>{data ? "가맹" : "무가맹"}</div>,
         },
+
+        // {
+        //   title: "적용타입",
+        //   dataIndex: "applyType",
+        //   className: "table-column-center",
+        //   render: (data) => <div>{}</div>,
+        // },
         {
           title: "월회비",
           dataIndex: "dues",
           className: "table-column-center",
-          render: (data) => <div>{"100,000"}</div>,
+          render: (data) => <div>{data}</div>,
         },
-        {
-          title: "카드가맹상태",
-          dataIndex: "cardStatus",
-          className: "table-column-center",
-          render: (data) => <div>{cardStatus[data]}</div>,
-        },
+        // {
+        //   title: "카드가맹상태",
+        //   dataIndex: "cardStatus",
+        //   className: "table-column-center",
+        //   render: (data) => <div>{cardStatus[data]}</div>,
+        // },
         {
           title: "VAN",
-          dataIndex: "van",
+          dataIndex: "tidNormal",
           className: "table-column-center",
-          render: (data) => <div>{"1233451245"}</div>,
+          render: (data) => <div>{data}</div>,
         },
         {
           title: "PG",
-          dataIndex: "businessCard",
+          dataIndex: "tidPrepay",
           className: "table-column-center",
-          render: (data) => <div>{"1233451245"}</div>,
+          render: (data) => <div>{data}</div>,
         },
         {
           title: "PG 사용여부",
-          dataIndex: "businessCardName",
+          dataIndex: "tidNormalRate",
           className: "table-column-center",
-          render: (data) => <div>{"사용"}</div>,
+          render: (data) => <div>{data === 100 ? "사용" : "미사용"}</div>,
         },
         {
           title: "메모",
@@ -531,10 +551,22 @@ class FranchiseMain extends Component {
         },
         {
           title: "가입일",
-          dataIndex: "businessDate",
+          dataIndex: "registDate",
           className: "table-column-center",
-          render: (data) => <div>{"2021-04-29"}</div>,
+          render: (data) => <div>{formatDateToDay(data)}</div>,
         },
+        {
+          title: "영업담당자",
+          dataIndex: "frSalesRiderName",
+          className: "table-column-center",
+          render: (data) => <div>{data}</div>,
+        },
+        // {
+        //   title: "영업담당자",
+        //   dataIndex: "registDate",
+        //   className: "table-column-center",
+        //   render: (data) => <div>{formatDate(data)}</div>,
+        // },
       ];
 
       return (

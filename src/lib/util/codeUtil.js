@@ -85,14 +85,14 @@ const orderCnt = {
 };
 
 const blockString = {
-  0: '처리대기',
+  0: "처리대기",
   1: "차단중",
   2: "차단해제",
 };
 
 const blockStatusString = {
   2: "승인처리",
-  3: "승인거부"
+  3: "승인거부",
 };
 
 const frRiderString = {
@@ -179,6 +179,33 @@ const buyStatusString = {
   4: "환불완료",
 };
 
+const bankCode = {
+  경남은행: "039",
+  광주은행: "034",
+  국민은행: "004",
+  기업은행: "003",
+  농협: "011",
+  단위농협: "012",
+  대구은행: "031",
+  부산은행: "032",
+  산림조합: "064",
+  산업은행: "002",
+  상호저죽: "050",
+  새마을금고: "045",
+  수협: "007",
+  신한은행: "088",
+  신협: "048",
+  우리은행: "020",
+  우체국: "071",
+  전북은행: "037",
+  제주은행: "035",
+  KEB하나은행: "081",
+  한국시티은행: "027",
+  SC제일은행: "023",
+  K뱅크: "089",
+  카카오뱅크: "090",
+};
+
 export {
   deliveryStatusCode,
   blockString,
@@ -211,5 +238,7 @@ export {
   bikeType,
   searchBike,
   deliveryPriceFeeType,
-  buyStatusString
+  buyStatusString,
+  bankCode,
 };
+

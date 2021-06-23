@@ -23,6 +23,25 @@ const formatDate = (date) => {
   // return day + " " + second;
 };
 
+const formatDateToDay = (date) => {
+  // if (date === null) return '-';
+  if (!date) return null;
+  let newDate = new Date(date);
+  return (
+    newDate.getFullYear() +
+    "-" +
+    formatDateNumber(newDate.getMonth() + 1) +
+    "-" +
+    formatDateNumber(newDate.getDate())
+  );
+};
+
+const getDay = (date) => {
+  if (!date) return null;
+  let newDate = new Date(date);
+  return formatDateNumber(newDate.getDate());
+};
+
 const formatYear = (date) => {
   // if (date === null) return '-';
   if (!date) return null;
@@ -167,6 +186,25 @@ const formatYMD = (date) => {
   );
 };
 
+const formatYMDHM = (date) => {
+  if (!date) return null;
+  if (date instanceof Date) {
+  } else {
+    date = new Date((date + "").substring(0, 19));
+  }
+  return (
+    date.getFullYear() +
+    "-" +
+    formatDateUnit(date.getMonth() + 1) +
+    "-" +
+    formatDateUnit(date.getDate()) +
+    " " +
+    formatDateUnit(date.getHours()) +
+    ":" +
+    formatDateUnit(date.getMinutes())
+  );
+};
+
 const formatYMDHMS = (date) => {
   if (!date) return null;
   if (date instanceof Date) {
@@ -190,6 +228,7 @@ const formatYMDHMS = (date) => {
 
 export {
   formatDate,
+  formatDateToDay,
   formatYear,
   formatDateSecond,
   dateFormat,
@@ -201,6 +240,8 @@ export {
   statFormat,
   statMonthFormat,
   formatYMD,
+  formatYMDHM,
   formatYMDHMS,
+  getDay,
 };
 
