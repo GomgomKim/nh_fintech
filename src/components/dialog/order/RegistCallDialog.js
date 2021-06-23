@@ -2,7 +2,12 @@ import { Button, Checkbox, Form, Input, Modal, Select } from "antd";
 import React, { Component } from "react";
 import { Marker, NaverMap } from "react-naver-maps";
 import { httpGet, httpPost, httpUrl } from "../../../api/httpClient";
-import { updateComplete, updateError } from "../../../api/Modals";
+import {
+  registComplete,
+  registError,
+  updateComplete,
+  updateError
+} from "../../../api/Modals";
 import "../../../css/modal.css";
 import {
   arriveReqTime,
@@ -36,7 +41,7 @@ const newOrder = {
   frLongitude: 0,
   frName: "",
   frPhone: "",
-  idx: 0,
+  idx: -1,
   itemPrepared: false,
   itemPreparingTime: 0,
   latitude: 0,
@@ -315,6 +320,7 @@ class RegistCallDialog extends Component {
             .then((res) => {
               if (res.result === "SUCCESS") {
                 updateComplete();
+
                 this.props.close();
               } else {
                 updateError();
@@ -327,15 +333,16 @@ class RegistCallDialog extends Component {
           httpPost(httpUrl.orderCreate, [], this.state.data)
             .then((res) => {
               if (res.result === "SUCCESS") {
-                updateComplete();
+                registComplete();
+
                 this.props.close();
                 this.clearData();
               } else {
-                updateError();
+                registError();
               }
             })
             .catch((e) => {
-              updateError();
+              registError();
             });
         }
       }
@@ -524,7 +531,7 @@ class RegistCallDialog extends Component {
                           defaultValue={
                             this.props.data
                               ? comma(this.props.data.extraDeliveryPrice)
-                              : ""
+                              : "0"
                           }
                           onChange={(e) =>
                             this.handleChangeInput(
@@ -532,7 +539,6 @@ class RegistCallDialog extends Component {
                               "extraDeliveryPrice"
                             )
                           }
-                          required
                         ></Input>
                       </FormItem>
                     </div>
@@ -712,7 +718,6 @@ class RegistCallDialog extends Component {
                               "custMessage"
                             )
                           }
-                          required
                         ></Input>
                       </FormItem>
                     </div>
