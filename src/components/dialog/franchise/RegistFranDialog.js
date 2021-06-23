@@ -523,7 +523,7 @@ class RegistFranDialog extends Component {
                         name="basicDeliveryPrice"
                         className="selectItem"
                         // initialValue={data && data.basicDeliveryPrice}
-                        initialValue={data && data.basicDeliveryPrice}
+                        initialValue={data ? data.basicDeliveryPrice : 3600}
                         rules={[
                           {
                             required: true,
@@ -544,7 +544,7 @@ class RegistFranDialog extends Component {
                         name="basicDeliveryDistance"
                         className="selectItem"
                         initialValue={
-                          data && parseInt(data.basicDeliveryDistance)
+                          data ? parseInt(data.basicDeliveryDistance) : 1000
                         }
                         rules={[
                           {

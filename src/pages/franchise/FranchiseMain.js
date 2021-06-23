@@ -435,9 +435,9 @@ class FranchiseMain extends Component {
       // 가맹여부 추가 후 컬럼이름 확인 필요
       {
         title: "금액",
-        dataIndex: "balance",
+        dataIndex: "",
         className: "table-column-center",
-        render: (data) => <div>{comma(data)}</div>,
+        render: (data) => <div>{}</div>,
       },
 
       {
@@ -512,7 +512,7 @@ class FranchiseMain extends Component {
           title: "적용타입",
           dataIndex: "applyType",
           className: "table-column-center",
-          render: (data) => <div>{"적용"}</div>,
+          render: (data) => <div>{}</div>,
         },
         {
           title: "월회비",
@@ -530,19 +530,19 @@ class FranchiseMain extends Component {
           title: "VAN",
           dataIndex: "van",
           className: "table-column-center",
-          render: (data) => <div>{"1233451245"}</div>,
+          render: (data) => <div>{}</div>,
         },
         {
           title: "PG",
           dataIndex: "businessCard",
           className: "table-column-center",
-          render: (data) => <div>{"1233451245"}</div>,
+          render: (data) => <div>{}</div>,
         },
         {
           title: "PG 사용여부",
-          dataIndex: "businessCardName",
+          dataIndex: "tidNormalRate",
           className: "table-column-center",
-          render: (data) => <div>{"사용"}</div>,
+          render: (data) => <div>{data === 100 ? "사용" : "미사용"}</div>,
         },
         {
           title: "메모",
