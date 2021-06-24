@@ -427,7 +427,7 @@ class FranchiseMain extends Component {
         title: "주소",
         dataIndex: "addr1",
         className: "table-column-center",
-        render: (data, row) => <div>{row.addr1 + "" + row.addr2}</div>,
+        render: (data, row) => <div>{row.addr1 + " " + row.addr2}</div>,
       },
       {
         title: "코인잔액",
