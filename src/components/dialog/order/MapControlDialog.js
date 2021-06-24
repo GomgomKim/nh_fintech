@@ -104,7 +104,7 @@ class MapControlDialog extends Component {
   componentDidMount() {
     this.getRiderList();
     this.getRiderLocateList();
-    this.getRiderAllList();
+    // this.getRiderAllList();
   }
 
   // 기사명 검색
@@ -142,7 +142,7 @@ class MapControlDialog extends Component {
     this.getRiderLocate(rider.idx);
     this.setState(
       {
-        selectedRiderIdx: rider.idx,
+        selectedRiderIdx: rider.userIdx,
         riderName: rider.riderName,
       },
       () => {
@@ -153,8 +153,8 @@ class MapControlDialog extends Component {
             content: `${self.state.selectedRowKeys} 번의 주문을 ${rider.riderName} 기사에게 배정하시겠습니다?`,
             onOk: () => {
               if (
-                this.state.allResultsSave.find((x) => x.id === rider.id)
-                  .assignedOrderCnt >= 5
+                this.state.allResultsSave.find((x) => x.userIdx === rider.id)
+                  .orders.length >= 5
               ) {
                 customError("배차 오류", "배차는 5개의 주문까지 가능합니다.");
               } else {
@@ -292,27 +292,39 @@ class MapControlDialog extends Component {
 
   getRiderLocateList = () => {
     httpGet(httpUrl.riderLocateList, [], {}).then((result) => {
+      console.log("getRiderLocateList result");
+      console.log(result);
       this.setState({
         riderLocates: result.data.riderLocations,
+        allResults: result.data.riderLocations,
+        allResultsSave: result.data.riderLocations,
       });
     });
   };
 
   getRiderLocate = (riderIdx) => {
     httpGet(httpUrl.riderLocate, [riderIdx], {}).then((result) => {
-      // console.log('################# rider personal locate result=' + JSON.stringify(result, null, 4))
-      this.setState(
-        {
-          selectedRiderAssignedOrderCnt: result.data.assignedOrderCnt,
-          selectedRiderLatitude: result.data.latitude,
-          selectedRiderLongitude: result.data.longitude,
-          selectedRiderIdx: result.data.userIdx,
-          riderName: result.data.riderName,
-        },
-        () => {
-          this.getList();
-        }
-      );
+      console.log("getRiderLocate result");
+      console.log(result);
+      if (result.data !== null) {
+        this.setState(
+          {
+            selectedRiderAssignedOrderCnt: result.data.assignedOrderCnt,
+            selectedRiderLatitude: result.data.latitude,
+            selectedRiderLongitude: result.data.longitude,
+            selectedRiderIdx: result.data.userIdx,
+            riderName: result.data.riderName,
+          },
+          () => {
+            this.getList();
+          }
+        );
+      } else {
+        Modal.info({
+          title: "위치정보 조회 오류",
+          content: "라이더의 위치정보가 존재하지 않습니다.",
+        });
+      }
     });
   };
 
@@ -323,6 +335,8 @@ class MapControlDialog extends Component {
 
     httpGet(httpUrl.riderList, [10, pageNum, searchName, userStatus], {}).then(
       (result) => {
+        console.log("getRiderList result");
+        console.log(result);
         // console.log('## nnbox result=' + JSON.stringify(result, null, 4))
         const pagination = { ...this.state.paginationList };
         pagination.current = result.data.currentPage;
@@ -347,7 +361,9 @@ class MapControlDialog extends Component {
       [1000, pageNum, searchName, userStatus],
       {}
     ).then((result) => {
-      // console.log('## nnbox result=' + JSON.stringify(result, null, 4))
+      console.log("getRiderAllList result");
+      console.log(result);
+
       const pagination = { ...this.state.paginationList };
       pagination.current = result.data.currentPage;
       pagination.total = result.data.totalCount;
@@ -361,7 +377,6 @@ class MapControlDialog extends Component {
   };
 
   handleTableChange = (pagination) => {
-    console.log(pagination);
     const pager = { ...this.state.pagination };
     pager.current = pagination.current;
     pager.pageSize = pagination.pageSize;
@@ -374,7 +389,6 @@ class MapControlDialog extends Component {
   };
 
   handleListTableChange = (pagination) => {
-    console.log(pagination);
     const pager = { ...this.state.paginationList };
     pager.current = pagination.current;
     pager.pageSize = pagination.pageSize;
@@ -400,7 +414,6 @@ class MapControlDialog extends Component {
 
   // 주문수정 dialog
   openModifyOrderModal = (order) => {
-    console.log(order);
     this.setState({ data: order, modifyOrder: true });
   };
   closeModifyOrderModal = () => {
@@ -570,11 +583,9 @@ class MapControlDialog extends Component {
   setAssignCnt = (cnt) => {
     var list = [];
     if (cnt >= 0 && cnt < 5)
-      list = this.state.allResultsSave.filter(
-        (x) => x.assignedOrderCnt === cnt
-      );
+      list = this.state.allResultsSave.filter((x) => x.orders.length === cnt);
     else if (cnt === 5)
-      list = this.state.allResultsSave.filter((x) => x.assignedOrderCnt >= cnt);
+      list = this.state.allResultsSave.filter((x) => x.orders.length >= cnt);
     else if (cnt === 99) list = this.state.allResultsSave;
     var addPaths = this.clearPath();
 
@@ -876,7 +887,7 @@ class MapControlDialog extends Component {
                     // center={{ lat: lat, lng: lng }}
                   >
                     {this.state.allResults.filter(
-                      (x) => x.idx === this.state.selectedRiderIdx
+                      (x) => x.userIdx === this.state.selectedRiderIdx
                     ).length > 0 && (
                       <Marker
                         position={navermaps.LatLng(
@@ -897,12 +908,12 @@ class MapControlDialog extends Component {
                     {this.state.allResults.map((row, index) => {
                       return (
                         <>
-                          {this.state.selectedRiderIdx !== row.idx && (
+                          {this.state.selectedRiderIdx !== row.userIdx && (
                             <Marker
                               key={index}
                               position={navermaps.LatLng(
-                                row.riderLocation.latitude,
-                                row.riderLocation.longitude
+                                row.latitude,
+                                row.longitude
                               )}
                               // 팀장 이상 파랑 마크
                               icon={
@@ -913,7 +924,7 @@ class MapControlDialog extends Component {
                                       .default
                               }
                               title={row.riderName}
-                              onClick={() => this.getRiderLocate(row.idx)}
+                              onClick={() => this.getRiderLocate(row.userIdx)}
                             />
                           )}
                         </>
