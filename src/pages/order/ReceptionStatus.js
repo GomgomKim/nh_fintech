@@ -614,7 +614,7 @@ class ReceptionStatus extends Component {
         dataIndex: "orderDate",
         className: "table-column-center",
         key: (row) => `orderDate:${row.orderDate}`,
-        sorter: (a, b) => a.orderDate - b.orderDate,
+        sorter: (a, b) => moment(a.orderDate) - moment(b.orderDate),
         render: (data, row) => <div>{data}</div>,
       },
       {
@@ -622,7 +622,7 @@ class ReceptionStatus extends Component {
         dataIndex: "pickupDate",
         className: "table-column-center",
         key: (row) => `pickupDate:${row.pickupDate}`,
-        sorter: (a, b) => a.pickupDate - b.pickupDate,
+        sorter: (a, b) => moment(a.pickupDate) - moment(b.pickupDate),
         render: (data, row) => (
           <div>{row.orderStatus >= 3 ? formatDate(data) : "-"}</div>
         ),
@@ -632,7 +632,7 @@ class ReceptionStatus extends Component {
         dataIndex: "completeDate",
         className: "table-column-center",
         key: (row) => `completeDate:${row.completeDate}`,
-        sorter: (a, b) => a.completeDate - b.completeDate,
+        sorter: (a, b) => moment(a.completeDate) - moment(b.completeDate),
         render: (data, row) => (
           <div>{row.orderStatus >= 4 ? formatDate(data) : "-"}</div>
         ),
