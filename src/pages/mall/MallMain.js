@@ -19,7 +19,7 @@ class MallMain extends Component {
       pagination: {
         total: 0,
         current: 1,
-        pageSize: 10,
+        pageSize: 20,
       },
     };
   }

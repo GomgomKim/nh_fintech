@@ -19,6 +19,33 @@ const makeUrl = (url, params) => {
   return result;
 };
 
+const httpExecWithNoLoading = (method, url, data) => {
+  return new Promise((resolve, reject) => {
+    Axios({
+      method: method,
+      url: url,
+      data: data,
+      withCredentials: true,
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => {
+        resolve(response.data);
+      })
+      .catch((error) => {
+        if (error.message.includes("401")) {
+          alert("로그인이 만료되었습니다. 다시 로그인해주세요");
+          reactLocalStorage.remove("adminUser");
+          global.location.href = "/";
+        }
+        reject(error);
+      });
+  });
+};
+
+
 const httpExec = (method, url, data) => {
   loadingCount++;
   if (loadingCount === 1)
@@ -127,6 +154,20 @@ const httpPost = (url, params, data) => {
   //     });
   // });
 };
+
+const httpPostWithNoLoading = (url, params, data) => {
+  return httpExecWithNoLoading("POST", makeUrl(url, params), data);
+  // return new Promise((resolve, reject) => {
+  //   Axios.post(makeUrl(url, params), data)
+  //     .then(response => {
+  //       resolve(response.data);
+  //     })
+  //     .catch(error => {
+  //       reject(error);
+  //     });
+  // });
+};
+
 
 const httpDownload = (url, params, data) => {
   // return httpExec('GET', makeUrl(url, params), data);
@@ -237,7 +278,6 @@ const httpUrl = {
   chatMessageList: "/chat/messageList?pageSize=%s&pageNum=%s&chatRoomIdx=%s",
   chatSend: "/chat/send",
 
-
   // 주소검색관리
   getAddrAptList:
     "/order/addrAptList?addrType=%s&pageNum=%s&pageSize=%s&searchDong=%s",
@@ -258,6 +298,9 @@ const httpUrl = {
   // 상품관리
   buyList: "/mall/buyList?pageNum=%s&pageSize=%s",
   updateBuy: "/mall/buyProduct/update",
+
+  // 라이더 전체메세지
+  riderMessageAll: "/chat/send/allRider",
 };
 
 const imageType = ["image/jpeg", "image/png", "image/bmp"];
@@ -274,5 +317,6 @@ export {
   httpDownload,
   imageType,
   imageUrl,
+  httpPostWithNoLoading,
 };
 

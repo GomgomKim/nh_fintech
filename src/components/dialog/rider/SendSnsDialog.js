@@ -5,8 +5,9 @@ import {
     Input,
     Button,
 } from "antd";
-import { httpUrl, httpPost } from '../../../api/httpClient';
+import { httpUrl, httpPost, httpPostWithNoLoading } from '../../../api/httpClient';
 import '../../../css/modal.css';
+import { connect } from "react-redux";
 const { TextArea } = Input;
 const FormItem = Form.Item;
 
@@ -39,38 +40,28 @@ class SendSnsDialog extends Component {
     // 전체메세지 전송
     handleSubmit = () => {
         let self = this;
-        console.log("handle submit")
         Modal.confirm({
             title: "전체메세지 전송",
             content: (
-                <div>
-                    {'메세지를 전송하시겠습니까?'}
-                </div>
+                <div>메세지를 전송하시겠습니까?</div>
             ),
             okText: "확인",
             cancelText: "취소",
             onOk() {
-                httpPost(httpUrl.registNotice, [], {
+                self.props.close()
+                httpPostWithNoLoading(httpUrl.riderMessageAll, [], {
                     ...self.formRef.current.getFieldsValue(),
-                    date: self.state.date,
-                    title: self.state.title,
-                    deleted: false,
-                    category: self.state.category,
-                    sortOrder: self.state.sortOrder,
-                    important: self.state.important,
-                    branchCode: self.state.branchCode,
+                    branchIdx: self.props.branchIdx
                 }).then((res) => {
                     if(res.result === "SUCCESS" && res.data === "SUCCESS"){
                         Modal.info({
-                            title: " 완료",
+                            title: "완료",
                             content: (
                                 <div>
-                                메세지가 전송되었습니다.
+                                전체 라이더에게 메세지가 전송되었습니다.
                             </div>
                         ),
                     });
-                    self.handleClear();
-                    self.getList();
                 } else {
                     Modal.info({
                         title: " 오류",
@@ -125,7 +116,7 @@ class SendSnsDialog extends Component {
                                     <div className="inputBox">
                                         <FormItem
                                             className="selectItem"
-                                            name="content"
+                                            name="message"
                                             rules={[{ required: true, message: "메세지를 입력해주세요" }]}
                                         >
                                             <TextArea
@@ -153,4 +144,13 @@ class SendSnsDialog extends Component {
     }
 }
 
-export default (SendSnsDialog);
+const mapStateToProps = (state) => ({
+    branchIdx: state.login.loginInfo.branchIdx,
+  });
+  
+  const mapDispatchToProps = (dispatch) => {
+    return {};
+  };
+  
+  export default connect(mapStateToProps, mapDispatchToProps)(SendSnsDialog);
+  
