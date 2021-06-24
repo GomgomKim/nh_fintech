@@ -920,20 +920,40 @@ class MapControlDialog extends Component {
                     {this.state.allResults.filter(
                       (x) => x.userIdx === this.state.selectedRiderIdx
                     ).length > 0 && (
-                      <Marker
-                        position={navermaps.LatLng(
-                          this.state.selectedRiderLatitude,
-                          this.state.selectedRiderLongitude
-                        )}
-                        icon={
-                          require("../../../img/login/map/marker_rider_red.png")
-                            .default
-                        }
-                        title={this.state.selRider.riderName}
-                        onClick={() =>
-                          this.getRiderLocate(this.state.selRider.userIdx)
-                        }
-                      />
+                      <>
+                        <Marker
+                          position={navermaps.LatLng(
+                            this.state.selectedRiderLatitude,
+                            this.state.selectedRiderLongitude
+                          )}
+                          icon={
+                            require("../../../img/login/map/marker_rider_red.png")
+                              .default
+                          }
+                          title={this.state.riderName}
+                          onClick={() =>
+                            this.getRiderLocate(this.state.selectedRiderIdx)
+                          }
+                        />
+                        <Marker
+                          key={this.state.selectedRiderIdx}
+                          position={navermaps.LatLng(
+                            this.state.selectedRiderLatitude,
+                            this.state.selectedRiderLongitude
+                          )}
+                          icon={{
+                            content: [
+                              '<div class="marker-name">' +
+                                this.state.riderName +
+                                "</div>",
+                            ].join(""),
+                          }}
+                          title={this.state.riderName}
+                          onClick={() =>
+                            this.getRiderLocate(this.state.selectedRiderIdx)
+                          }
+                        />
+                      </>
                     )}
 
                     {this.state.allResults.map((row, index) => {
@@ -945,28 +965,49 @@ class MapControlDialog extends Component {
                           parseFloat(row.longitude) <= _max.x &&
                           parseFloat(row.longitude) >= _min.x
                         ) {
+                          // const homePath = window.HOME_PATH
                           return (
                             <>
                               {this.state.selectedRiderIdx !== row.userIdx && (
-                                <Marker
-                                  key={row.userIdx}
-                                  position={navermaps.LatLng(
-                                    row.latitude,
-                                    row.longitude
-                                  )}
-                                  // 팀장 이상 파랑 마크
-                                  icon={
-                                    row.riderLevel >= 3
-                                      ? require("../../../img/login/map/marker_rider_blue.png")
-                                          .default
-                                      : require("../../../img/login/map/marker_rider.png")
-                                          .default
-                                  }
-                                  title={row.riderName}
-                                  onClick={() =>
-                                    this.getRiderLocate(row.userIdx)
-                                  }
-                                />
+                                <>
+                                  <Marker
+                                    key={row.userIdx}
+                                    position={navermaps.LatLng(
+                                      row.latitude,
+                                      row.longitude
+                                    )}
+                                    // 팀장 이상 파랑 마크
+                                    icon={
+                                      row.riderLevel >= 3
+                                        ? require("../../../img/login/map/marker_rider_blue.png")
+                                            .default
+                                        : require("../../../img/login/map/marker_rider.png")
+                                            .default
+                                    }
+                                    title={row.riderName}
+                                    onClick={() =>
+                                      this.getRiderLocate(row.userIdx)
+                                    }
+                                  />
+                                  <Marker
+                                    key={row.userIdx}
+                                    position={navermaps.LatLng(
+                                      row.latitude,
+                                      row.longitude
+                                    )}
+                                    icon={{
+                                      content: [
+                                        '<div class="marker-name">' +
+                                          row.riderName +
+                                          "</div>",
+                                      ].join(""),
+                                    }}
+                                    title={row.riderName}
+                                    onClick={() =>
+                                      this.getRiderLocate(row.userIdx)
+                                    }
+                                  />
+                                </>
                               )}
                             </>
                           );

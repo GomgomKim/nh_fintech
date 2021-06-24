@@ -4281,3 +4281,7 @@ td.ant-table-column-sort {
 .bike-type-box .ant-picker {
   width: 165px;
 }
+
+.marker-name {
+  font-family: NotoSansBold;
+}
