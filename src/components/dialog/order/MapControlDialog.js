@@ -256,7 +256,7 @@ class MapControlDialog extends Component {
     }).then((result) => {
       console.log("### nnbox result=" + JSON.stringify(result, null, 4));
       if (result.result === "SUCCESS") {
-        if (result.data != null && result.data.orders.length > 0) {
+        if (result.data !== null) {
           this.setRiderOrderData(result);
         } else {
           this.setState({
@@ -931,7 +931,7 @@ class MapControlDialog extends Component {
                         }
                         title={this.state.selRider.riderName}
                         onClick={() =>
-                          this.getRiderLocate(this.state.selRider.idx)
+                          this.getRiderLocate(this.state.selRider.userIdx)
                         }
                       />
                     )}
@@ -945,7 +945,6 @@ class MapControlDialog extends Component {
                           parseFloat(row.longitude) <= _max.x &&
                           parseFloat(row.longitude) >= _min.x
                         ) {
-                          console.log("rendered");
                           return (
                             <>
                               {this.state.selectedRiderIdx !== row.userIdx && (
@@ -971,10 +970,7 @@ class MapControlDialog extends Component {
                               )}
                             </>
                           );
-                        } else {
-                          console.log("not rendered");
-                          return;
-                        }
+                        } else return;
                       } else return;
                     })}
 
