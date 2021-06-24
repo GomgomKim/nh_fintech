@@ -291,6 +291,7 @@ class FranchiseMain extends Component {
           dues: data["관리비"],
           registDate: data["가입일자"],
           memo: data["메모"],
+          email: data["이메일"],
 
           // // 신규 가맹점 DEFAULT
           ncash: 0,

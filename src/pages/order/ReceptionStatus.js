@@ -140,8 +140,13 @@ class ReceptionStatus extends Component {
     httpPostWithNoLoading(httpUrl.orderList, [], data)
       .then((res) => {
         if (res.result === "SUCCESS") {
+          console.log(res);
           this.setState({
             list: res.data.orders,
+            pagination: {
+              ...this.state.pagination,
+              total: res.data.totalCount,
+            },
           });
         } else {
           console.log("Pulling Error");
@@ -329,18 +334,6 @@ class ReceptionStatus extends Component {
       () => this.getList()
     );
   };
-
-  // handleInfiniteOnLoad = () => {
-  //   this.setState(
-  //     {
-  //       pagination: {
-  //         ...this.state.pagination,
-  //         pageSize: this.state.pagination.pageSize + 30,
-  //       },
-  //     },
-  //     () => this.getList()
-  //   );
-  // };
 
   // 시간지연 dialog
   openTimeDelayModal = () => {
@@ -1220,17 +1213,9 @@ class ReceptionStatus extends Component {
           ></Checkbox>
           <span className="span1">완료조회</span>
         </div>
-        {/* <InfiniteScroll
-          dataLength={this.state.pagination.pageSize}
-          next={this.handleInfiniteOnLoad}
-          inverse={true}
-          // hasMore={!this.chatMessageEnd}
-          scrollableTarget="reception-table"
-        > */}
-        <div className="dataTableLayout">
+        <div id="reception-table" className="dataTableLayout">
           <Table
             rowKey={(record) => record.idx}
-            id="reception-table"
             rowClassName={(record) => rowColorName[record.orderStatus]}
             dataSource={
               this.state.checkedCompleteCall
@@ -1243,7 +1228,7 @@ class ReceptionStatus extends Component {
             expandedRowRender={expandedRowRender}
           />
         </div>
-        {/* </InfiniteScroll> */}
+
         <div
           style={{
             display: "flex",
@@ -1253,6 +1238,15 @@ class ReceptionStatus extends Component {
         >
           <Button
             onClick={() => {
+              if (
+                this.state.pagination.pageSize >= this.state.pagination.total
+              ) {
+                Modal.info({
+                  title: "주문정보 오류",
+                  content: "더 이상 주문정보가 존재하지 않습니다.",
+                });
+                return;
+              }
               this.setState(
                 {
                   pagination: {
@@ -1260,7 +1254,10 @@ class ReceptionStatus extends Component {
                     pageSize: this.state.pagination.pageSize + 30,
                   },
                 },
-                () => this.getList()
+                () => {
+                  console.log(this.state.pagination);
+                  this.getList();
+                }
               );
             }}
           >

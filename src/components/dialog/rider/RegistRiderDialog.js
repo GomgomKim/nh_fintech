@@ -609,7 +609,7 @@ class RegistRiderDialog extends Component {
                       </FormItem>
                     </div>
 
-                    <div className="contentBlock" style={{ marginTop: 10 }}>
+                    {/* <div className="contentBlock" style={{ marginTop: 10 }}>
                       <div className="mainTitle">SMS수신동의</div>
                       <FormItem name="agreeSms" className="giveBox selectItem">
                         <Checkbox
@@ -622,7 +622,7 @@ class RegistRiderDialog extends Component {
                           수신동의
                         </Checkbox>
                       </FormItem>
-                    </div>
+                    </div> */}
 
                     <div className="submitBlock">
                       <Button type="primary" htmlType="submit">

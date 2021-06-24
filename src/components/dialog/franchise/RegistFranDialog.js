@@ -673,15 +673,6 @@ class RegistFranDialog extends Component {
                             }
                             format={dateFormat}
                           />
-                          {/* <div className="riderGText">매월</div>
-                          <Input
-                            value={this.state.chargeDate}
-                            className="override-input sub"
-                            onChange={(e) => {
-                              this.setState({ chargeDate: e.target.value });
-                            }}
-                          />
-                          <div className="riderGText">일</div> */}
                         </FormItem>
                         <div className="subTitle">관리비</div>
                         <FormItem
@@ -698,20 +689,21 @@ class RegistFranDialog extends Component {
                       </>
                     ) : (
                       <>
-                        <FormItem name="payDate" className="selectItem">
+                        <FormItem
+                          name="chargeDate"
+                          className="selectItem"
+                          style={{ marginLeft: 10 }}
+                        >
                           <DatePicker
                             style={{ marginLeft: 10 }}
-                            defaultValue={moment(today, dateFormat)}
                             format={dateFormat}
                             disabled
-                            // onChange={date => this.setState({ selectedDate: date })}
                           />
                         </FormItem>
                         <div className="subTitle">관리비</div>
-                        <FormItem name="managePrice" className="selectItem">
+                        <FormItem name="dues" className="selectItem">
                           <Input
-                            type="number"
-                            value={0}
+                            name="dues"
                             placeholder="관리비 입력"
                             className="override-input sub"
                             disabled
