@@ -63,12 +63,20 @@ class MallMain extends Component {
             idx: index,
             buyStatus: value
           })
-            .then((result) => {
-              Modal.info({
-                title: "변경 완료",
-                content: <div>상태가 변경되었습니다.</div>,
-              });
-              self.getList();
+            .then((res) => {
+              if(res.result === "SUCCESS" && res.data === "SUCCESS"){
+                Modal.info({
+                  title: "변경 완료",
+                  content: <div>상태가 변경되었습니다.</div>,
+                });
+                self.getList();
+              }
+              else {
+                Modal.info({
+                  title: "변경 오류",
+                  content: "오류가 발생하였습니다. 다시 시도해 주십시오.",
+                });
+              }
             })
             .catch((error) => {
               Modal.info({
@@ -90,13 +98,20 @@ class MallMain extends Component {
             buyStatus: value,
             pickupDate: moment(today).format("YYYY-MM-DD hh:mm:ss"),
           })
-            .then((result) => {
-              Modal.info({
-                title: "변경 완료",
-                content: <div>상태가 변경되었습니다.</div>,
-              });
-              self.getList();
-            })
+            .then((res) => {
+              if(res.result === "SUCCESS" && res.data === "SUCCESS"){
+                Modal.info({
+                  title: "변경 완료",
+                  content: <div>상태가 변경되었습니다.</div>,
+                });
+                self.getList();
+              } else {
+                  Modal.info({
+                    title: "변경 오류",
+                    content: "오류가 발생하였습니다. 다시 시도해 주십시오.",
+                  });
+                }
+              })
             .catch((error) => {
               Modal.info({
                 title: "변경 오류",

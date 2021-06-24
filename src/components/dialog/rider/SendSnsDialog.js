@@ -59,17 +59,24 @@ class SendSnsDialog extends Component {
                     sortOrder: self.state.sortOrder,
                     important: self.state.important,
                     branchCode: self.state.branchCode,
-                }).then((result) => {
-                    Modal.info({
-                        title: " 완료",
-                        content: (
-                            <div>
+                }).then((res) => {
+                    if(res.result === "SUCCESS" && res.data === "SUCCESS"){
+                        Modal.info({
+                            title: " 완료",
+                            content: (
+                                <div>
                                 메세지가 전송되었습니다.
                             </div>
                         ),
                     });
                     self.handleClear();
                     self.getList();
+                } else {
+                    Modal.info({
+                        title: " 오류",
+                        content: "오류가 발생하였습니다. 다시 시도해 주십시오."
+                    });
+                }
                 }).catch((error) => {
                     Modal.info({
                         title: " 오류",
