@@ -7,7 +7,7 @@ import {
 } from "antd";
 import { httpUrl, httpPost } from '../../../api/httpClient';
 import '../../../css/modal.css';
-
+const { TextArea } = Input;
 const FormItem = Form.Item;
 
 class SendSnsDialog extends Component {
@@ -121,7 +121,7 @@ class SendSnsDialog extends Component {
                                             name="content"
                                             rules={[{ required: true, message: "메세지를 입력해주세요" }]}
                                         >
-                                            <Input
+                                            <TextArea
                                                 className="snsInputBox"
                                                 placeholder="메세지 내용"
                                             />
