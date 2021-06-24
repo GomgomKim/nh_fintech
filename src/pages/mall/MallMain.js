@@ -61,8 +61,7 @@ class MallMain extends Component {
         onOk() {
           httpPost(httpUrl.updateBuy, [], {
             idx: index,
-            buyStatus: value,
-            pickupDate: "",
+            buyStatus: value
           })
             .then((result) => {
               Modal.info({
