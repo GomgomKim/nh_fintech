@@ -203,12 +203,14 @@ class FranchiseMain extends Component {
   };
   getLatLng = async (address, formData) => {
     try {
+      console.log("getLatLng start");
       const res = await httpGet(httpUrl.getGeocode, [address], {});
       if (res.result === "SUCCESS") {
         const data = JSON.parse(res.data.json);
         if (data.addresses.length > 0) {
           formData.latitude = parseFloat(data.addresses[0].y);
           formData.longitude = parseFloat(data.addresses[0].x);
+          console.log("getLatLng end");
         }
       } else {
       }
@@ -219,16 +221,24 @@ class FranchiseMain extends Component {
   };
 
   getFrSalesUserIdx = async (formData) => {
-    httpGet(
-      httpUrl.riderList,
-      [10000, 1, formData.frSalesUserIdx, 1, [1, 2, 3, 4, 5, 6, 7]],
-      {}
-    ).then((result) => {
-      if (result.data.riders.length === 0) {
+    try {
+      console.log("getFrSalesUserIdx start");
+      const res = await httpGet(
+        httpUrl.riderList,
+        [10000, 1, formData.frSalesUserIdx, 1, [1, 2, 3, 4, 5, 6, 7]],
+        {}
+      );
+      console.log(res);
+      if (res.data.riders.length > 0) {
+        formData["frSalesUserIdx"] = res.data.riders[0].idx;
+        console.log("getFrSalesUserIdx end");
+        return;
+      } else {
         return;
       }
-      formData.frSalesUserIdx = result.data.riders[0].idx;
-    });
+    } catch (e) {
+      throw e;
+    }
   };
 
   createFranchise = async (formData, i, failedIdx, failedFrName) => {
@@ -268,15 +278,19 @@ class FranchiseMain extends Component {
           addr1: data["주소"],
           addr3: data["지번주소"],
           addr2: data["상세주소"],
-          basicDeliveryPrice: data[" 배달요금"],
+          basicDeliveryPrice: data["배달요금"],
           password: String(data["비밀번호"]),
           tidNormalRate: data["PG사용여부"] === "사용" ? 100 : 0,
           agreeSms: data["sms 수신여부"] === "수신" ? true : false,
           basicDeliveryDistance: data["기본거리"],
           isMember: data["가맹여부"] === "가맹" ? true : false,
+          nonmemberFee: data["가맹여부"] === "가맹" ? 0 : 1000,
           ownerName: data["대표자 성명"],
           frSalesUserIdx: data["영업담당자 성명"],
-          payDate: data["월회비최초납부일"],
+          chargeDate: data["월회비 최초납부일"],
+          dues: data["관리비"],
+          registDate: data["가입일자"],
+          memo: data["메모"],
 
           // // 신규 가맹점 DEFAULT
           ncash: 0,
@@ -290,8 +304,7 @@ class FranchiseMain extends Component {
           tidNormal: "",
           tidPrepay: "",
           duesAutoChargeEnabled: false,
-          chargeDate: 1,
-          dues: 0,
+          // chargeDate: 1,
 
           // api 찾기
           latitude: 0,
@@ -299,8 +312,11 @@ class FranchiseMain extends Component {
         };
 
         await this.getLatLng(data["주소"], formData);
-        await this.createFranchise(formData, i, failedIdx, failedFrName);
         await this.getFrSalesUserIdx(formData);
+
+        console.log(formData);
+
+        await this.createFranchise(formData, i, failedIdx, failedFrName);
       }
       if (failedIdx.length > 0) {
         Modal.info({
@@ -351,6 +367,7 @@ class FranchiseMain extends Component {
       var rows = XLSX.utils.sheet_to_json(
         workBook.Sheets[workBook.SheetNames[0]]
       );
+      console.log(rows);
       self.setState({ data: rows });
       // workBook.SheetNames.forEach((sheetName) => {
       //   var rows = XLSX.utils.sheet_to_json(workBook.Sheets[sheetName]);
