@@ -20,7 +20,12 @@ import {
 import moment from "moment";
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { httpGet, httpPost, httpUrl } from "../../api/httpClient";
+import {
+  httpGet,
+  httpPost,
+  httpPostWithNoLoading,
+  httpUrl
+} from "../../api/httpClient";
 import { customError } from "../../api/Modals";
 import ChattingCurrentRoom from "../../components/dialog/common/ChattingCurrentRoom";
 import ChattingDialog from "../../components/dialog/common/ChattingDialog";
@@ -132,7 +137,7 @@ class ReceptionStatus extends Component {
     if (this.state.rider) {
       data.riderName = this.state.rider;
     }
-    httpPost(httpUrl.orderList, [], data)
+    httpPostWithNoLoading(httpUrl.orderList, [], data)
       .then((res) => {
         if (res.result === "SUCCESS") {
           this.setState({
@@ -532,13 +537,13 @@ class ReceptionStatus extends Component {
                 }
                 row.orderStatus = value;
                 httpPost(httpUrl.orderUpdate, [], row)
-                .then((res) => {
-                  if (res.result === "SUCCESS") this.getList();
-                })
-                .catch((e) => {
-                  console.log(e);
-                });
-                
+                  .then((res) => {
+                    if (res.result === "SUCCESS") this.getList();
+                  })
+                  .catch((e) => {
+                    console.log(e);
+                  });
+
                 // if (value === 3) {
                 //   httpPost(httpUrl.orderUpdate, [], row)
                 //     .then((res) => {
