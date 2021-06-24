@@ -98,14 +98,40 @@ class MapControlDialog extends Component {
       // 가맹점, 라이더 위치 리스트
       frLocates: [],
       riderAllLocates: [],
+
+      // 지도 좌표 경계
+      mapBounds: null,
+      mapCenter: {
+        lat: 37.643623625321474,
+        lng: 126.66509442649551,
+      },
     };
+    this.mapRef = React.createRef();
   }
 
   componentDidMount() {
     this.getRiderList();
     this.getRiderLocateList();
-    // this.getRiderAllList();
+    this.getBounds();
   }
+
+  getBounds = () => {
+    console.log("지도 경계");
+    const bounds = this.mapRef.getBounds();
+    this.setState({ mapBounds: bounds }, () => {
+      console.log(this.state.mapBounds);
+      console.log(this.state.mapBounds._max);
+      console.log(this.state.mapBounds._max.x);
+      console.log(this.state.mapBounds._max.y);
+      console.log(this.state.mapBounds._min);
+      console.log(this.state.mapBounds._min.x);
+      console.log(this.state.mapBounds._min.y);
+    });
+  };
+
+  handleBoundChange = (bounds) => {
+    this.setState({ mapBounds: bounds });
+  };
 
   // 기사명 검색
   onSearchWorker = (value) => {
@@ -153,7 +179,7 @@ class MapControlDialog extends Component {
             content: `${self.state.selectedRowKeys} 번의 주문을 ${rider.riderName} 기사에게 배정하시겠습니다?`,
             onOk: () => {
               if (
-                this.state.allResultsSave.find((x) => x.userIdx === rider.id)
+                this.state.allResultsSave.find((x) => x.userIdx === rider.idx)
                   .orders.length >= 5
               ) {
                 customError("배차 오류", "배차는 5개의 주문까지 가능합니다.");
@@ -310,6 +336,10 @@ class MapControlDialog extends Component {
         this.setState(
           {
             selectedRiderAssignedOrderCnt: result.data.assignedOrderCnt,
+            mapCenter: {
+              lat: result.data.latitude,
+              lng: result.data.longitude,
+            },
             selectedRiderLatitude: result.data.latitude,
             selectedRiderLongitude: result.data.longitude,
             selectedRiderIdx: result.data.userIdx,
@@ -880,11 +910,12 @@ class MapControlDialog extends Component {
                   <NaverMap
                     className="map-navermap"
                     defaultZoom={14}
-                    center={{
-                      lat: this.state.selectedRiderLatitude,
-                      lng: this.state.selectedRiderLongitude,
+                    center={this.state.mapCenter}
+                    naverRef={(ref) => {
+                      this.mapRef = ref;
                     }}
-                    // center={{ lat: lat, lng: lng }}
+                    bounds={this.state.bounds}
+                    onBoundsChanged={this.handleBoundChange}
                   >
                     {this.state.allResults.filter(
                       (x) => x.userIdx === this.state.selectedRiderIdx
@@ -906,35 +937,51 @@ class MapControlDialog extends Component {
                     )}
 
                     {this.state.allResults.map((row, index) => {
-                      return (
-                        <>
-                          {this.state.selectedRiderIdx !== row.userIdx && (
-                            <Marker
-                              key={index}
-                              position={navermaps.LatLng(
-                                row.latitude,
-                                row.longitude
+                      if (this.state.mapBounds) {
+                        const { _max, _min } = this.state.mapBounds;
+                        if (
+                          parseFloat(row.latitude) <= _max.y &&
+                          parseFloat(row.latitude) >= _min.y &&
+                          parseFloat(row.longitude) <= _max.x &&
+                          parseFloat(row.longitude) >= _min.x
+                        ) {
+                          console.log("rendered");
+                          return (
+                            <>
+                              {this.state.selectedRiderIdx !== row.userIdx && (
+                                <Marker
+                                  key={row.userIdx}
+                                  position={navermaps.LatLng(
+                                    row.latitude,
+                                    row.longitude
+                                  )}
+                                  // 팀장 이상 파랑 마크
+                                  icon={
+                                    row.riderLevel >= 3
+                                      ? require("../../../img/login/map/marker_rider_blue.png")
+                                          .default
+                                      : require("../../../img/login/map/marker_rider.png")
+                                          .default
+                                  }
+                                  title={row.riderName}
+                                  onClick={() =>
+                                    this.getRiderLocate(row.userIdx)
+                                  }
+                                />
                               )}
-                              // 팀장 이상 파랑 마크
-                              icon={
-                                row.riderLevel >= 3
-                                  ? require("../../../img/login/map/marker_rider_blue.png")
-                                      .default
-                                  : require("../../../img/login/map/marker_rider.png")
-                                      .default
-                              }
-                              title={row.riderName}
-                              onClick={() => this.getRiderLocate(row.userIdx)}
-                            />
-                          )}
-                        </>
-                      );
+                            </>
+                          );
+                        } else {
+                          console.log("not rendered");
+                          return;
+                        }
+                      } else return;
                     })}
 
                     {this.state.riderAllLocates.map((row, index) => {
                       return (
                         <Marker
-                          key={index}
+                          key={row.userIdx}
                           position={row}
                           icon={
                             require("../../../img/login/map/arrive_yellow.png")
@@ -947,7 +994,7 @@ class MapControlDialog extends Component {
                     {this.state.frLocates.map((row, index) => {
                       return (
                         <Marker
-                          key={index}
+                          key={row.userIdx}
                           position={row}
                           icon={
                             require("../../../img/login/map/franchise_yellow.png")
