@@ -29,44 +29,27 @@ class RegistNoticeDialog extends Component {
             content: "",
             category: 1,
             sortOrder: 30,
-            important: 0,
             branchIdx: 1,
             createDate: '',
             deleteDate: '',
             readDate: '',
             deleted: false,
             registNotice: false,
-            checkedImportantCall: false,
+            checkedMessage: false,
             
         };
         this.formRef = React.createRef();
     }
 
-    handleToggleImportantCall = (e) => {
-      this.setState(
-        {
-          checkedImportantCall: e.target.checked,      
-        },
-        () => {
-          if (!this.state.checkedImportantCall) {
-            this.setState(
-              {
-                important: false,
-              }
-            );
-          } else {
-            this.setState(
-              {
-                important: true,
-              },
-            );
-          }
-        }
-      );
-    };
-
     componentDidMount() {
     }
+
+    CheckedMessage = e => {
+      console.log('checked = ', e.target.checked);
+      this.setState({
+        checkedMessage: e.target.checked,
+      });
+    };
 
     handleSubmit = () => {
         let self = this;
@@ -83,8 +66,8 @@ class RegistNoticeDialog extends Component {
             httpPost(httpUrl.updateNotice, [], {
               ...self.formRef.current.getFieldsValue(),
               idx: data.idx,
-              important: self.state.important,
               category: self.state.category,
+              important: false,
             }).then((result) => {
               console.log(result)
               if(result.result === "SUCCESS" && result.data === "SUCCESS"){
@@ -100,16 +83,21 @@ class RegistNoticeDialog extends Component {
 
               httpPost(httpUrl.registNotice, [], {
                 ...self.formRef.current.getFieldsValue(),
-                // idx: self.state.idx,
                 createDate: self.state.createDate,
-                // content: self.state.content,
                 deleted: false,
                 category: self.state.category,
                 branchIdx: self.state.branchIdx,
-                important: self.state.important,
+                important: false,
               }).then((result) => {
                   if(result.result === "SUCCESS" && result.data === "SUCCESS"){
                     customAlert("완료", self.formRef.current.getFieldsValue().title+"이(가) 등록되었습니다.")
+                    if(this.state.checkedMessage) {
+                      // httpPost(httpUrl.smsSendFran, [], {
+                      //   ...self.formRef.current.getFieldsValue(),
+                      //   subject: "냠냠박스 공지사항",
+                      //   destPhone: 
+                      // })
+                    }
                   }
                   else updateError()
                 self.props.close()
@@ -171,40 +159,34 @@ class RegistNoticeDialog extends Component {
                                                 </div>
                                                 <div className="contentBlock">
                                                     <div className="mainTitle">
-                                                        중요
-                                                    </div>
-                                                    <FormItem
-                                                        name="important"
-                                                        className="selectItem"
-                                                    >
-                                                        <div className="importantBox">
-                                                        <Checkbox
-                                                        defaultChecked={data ? (data.important ? "checked" : "") : ""}
-                                                        onChange={this.handleToggleImportantCall}></Checkbox>
-                                                        </div>
-                                                    </FormItem>
-                                                    <div className="subTitle">
                                                         대상 지정
                                                     </div>
                                                     <FormItem
                                                         name="category"
                                                         className="selectItem"
                                                     >
-                                                      <div style={{marginLeft:-45}}>
                                                       <SelectBox
                                                         placeholder={'전체'}
                                                         value={noticeCategoryType[this.state.franStatus]}
                                                         code={Object.keys(noticeCategoryType)}
                                                         codeString={noticeCategoryType}
                                                         onChange={(value) => {
-                                                            if (value) {
-                                                                this.setState({ category: value}
-                                                              );
-                                                            }
+                                                            if (value) { this.setState({ category: value}); }
                                                           }}
                                                         />
-                                                      </div>
                                                     </FormItem>
+                                                    {this.state.category == 3 && 
+                                                    <>
+                                                      <div className="subTitle">
+                                                          SMS 전송
+                                                      </div>
+                                                      <div className="importantBox">
+                                                        <Checkbox
+                                                          defaultChecked={this.state.checkedMessage}
+                                                          onChange={(e)=>this.CheckedMessage(e)}></Checkbox>
+                                                      </div>
+                                                    </>
+                                                    }
                                                 </div>
                                             </div>
                                                 <div className= "registNoticeWrapper sub">

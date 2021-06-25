@@ -261,6 +261,7 @@ const httpUrl = {
   registNotice: "/notice/create",
   updateNotice: "/notice/update",
   specificNoticeList: "/notice/%s",
+  smsSendFran: "/sms/create",
 
   // 블라인드
   blindList: "/rider/admin/block/list",

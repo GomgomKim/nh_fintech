@@ -720,8 +720,13 @@
 }
 
 .registNoticeWrapper .subTitle {
-  width: 130px;
-  margin-left: 50px;
+  width: 100px;
+  margin-left: 20px;
+}
+
+.registNoticeWrapper .importantBox {
+  /* margin-left: -; */
+  display: inline-block;
 }
 
 .registNoticeCheck {
@@ -800,7 +805,7 @@
 }
 
 .registNoticeDialog .importantBox .ant-checkbox-wrapper {
-  margin-left: 0px !important;
+  margin-left: 15px !important;
 }
 
 /* 할증 dialog */
