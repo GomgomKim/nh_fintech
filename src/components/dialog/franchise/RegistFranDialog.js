@@ -439,6 +439,9 @@ class RegistFranDialog extends Component {
                         />
                       </FormItem>
                     </div>
+                  </div>
+
+                  <div className="registFranWrapper sub">
                     <div className="contentBlock">
                       <div className="mainTitle">영업담당자</div>
                       <FormItem name="addrMain" className="selectItem">
@@ -473,9 +476,7 @@ class RegistFranDialog extends Component {
                         </div>
                       </FormItem>
                     </div>
-                  </div>
 
-                  <div className="registFranWrapper sub">
                     <div className="contentBlock">
                       <div className="mainTitle">아이디</div>
                       <FormItem
@@ -539,7 +540,7 @@ class RegistFranDialog extends Component {
                         </FormItem>
                       </div>
                     </div>
-                    <div className="contentBlock">
+                    {/* <div className="contentBlock">
                       <div className="mainTitle">기본배달요금</div>
                       <FormItem
                         name="basicDeliveryPrice"
@@ -581,7 +582,7 @@ class RegistFranDialog extends Component {
                           className="override-input"
                         />
                       </FormItem>
-                    </div>
+                    </div> */}
 
                     <div className="contentBlock">
                       <div className="mainTitle">비밀번호</div>
