@@ -997,9 +997,9 @@ class MapControlDialog extends Component {
                                     )}
                                     icon={{
                                       content: [
-                                        '<div class="marker-name">' +
+                                        '<div class="marker-name"><div style="transform: translateX(-50%)">' +
                                           row.riderName +
-                                          "</div>",
+                                          "</div></div>",
                                       ].join(""),
                                     }}
                                     title={row.riderName}

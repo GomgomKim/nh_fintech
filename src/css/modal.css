@@ -719,6 +719,11 @@
   width: 130px;
 }
 
+.registNoticeWrapper .subTitle {
+  width: 130px;
+  margin-left: 50px;
+}
+
 .registNoticeCheck {
   display: inline-block;
   margin-left: 20px;
@@ -792,6 +797,10 @@
   width: 130px;
   height: 40px;
   font-size: 18px !important;
+}
+
+.registNoticeDialog .importantBox .ant-checkbox-wrapper {
+  margin-left: 0px !important;
 }
 
 /* 할증 dialog */
