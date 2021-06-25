@@ -277,6 +277,7 @@ const httpUrl = {
   chatList: "/chat/chatList?pageSize=%s&pageNum=%s&searchName=%s",
   chatMessageList: "/chat/messageList?pageSize=%s&pageNum=%s&chatRoomIdx=%s",
   chatSend: "/chat/send",
+  chatRoom:"/chat/chatroom?receiveUserIdx=%s",
 
   // 주소검색관리
   getAddrAptList:

@@ -20,7 +20,7 @@ class ChattingDialog extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      totalTableData: [],
+      // totalTableData: [],
       tableData: [],
       pagination: {
         current: 1,
@@ -47,7 +47,7 @@ class ChattingDialog extends Component {
   }
   componentDidMount() {
     this.getChatList();
-    this.getTotalChatList();
+    // this.getTotalChatList();
     let value = reactLocalStorage.getObject(Const.appName + ":chat");
 
     if (value !== null) {
@@ -109,32 +109,55 @@ class ChattingDialog extends Component {
     }
   };
 
-  getTotalChatList = (targetIdx) => {
-    httpGet(httpUrl.chatList, [10000, 1], {})
-      .then((result) => {
-        this.setState(
-          {
-            totalTableData: result.data.chatRooms,
-          },
-          () => {
-            console.log(this.state.totalTableData);
-            if (targetIdx) {
-              const target = this.state.totalTableData.find(
-                (item) =>
-                  item.member1 === targetIdx || item.member2 === targetIdx
-              );
-              if (target) {
-                this.chatDetailList(target);
-                this.setState({ fakeRoom: false });
-                return;
-              } else {
-                this.setState({ fakeRoom: true });
-              }
-            }
-          }
-        );
+  // getTotalChatList = (targetIdx) => {
+  //   httpGet(httpUrl.chatList, [10000, 1], {})
+  //     .then((result) => {
+  //       this.setState(
+  //         {
+  //           totalTableData: result.data.chatRooms,
+  //         },
+  //         () => {
+  //           console.log(this.state.totalTableData);
+  //           if (targetIdx) {
+  //             const target = this.state.totalTableData.find(
+  //               (item) =>
+  //                 item.member1 === targetIdx || item.member2 === targetIdx
+  //             );
+  //             if (target) {
+  //               this.chatDetailList(target);
+  //               this.setState({ fakeRoom: false });
+  //               return;
+  //             } else {
+  //               this.setState({ fakeRoom: true });
+  //             }
+  //           }
+  //         }
+  //       );
+  //     })
+  //     .catch();
+  // };
+
+  getChatRoom = (receiverUserIdx) => {
+    httpGet(httpUrl.chatRoom, [receiverUserIdx], {})
+      .then((res) => {
+        console.log("채팅정보 가져오기");
+        console.log(res);
+        console.log(res.data.chatRooms[0]);
+
+        if (res.result === "SUCCESS" && res.data.chatRooms.length > 0) {
+          console.log("채팅정보 가져오기");
+          console.log(res.data.chatRooms[0]);
+          this.chatDetailList(res.data.chatRooms[0]);
+          this.setState({ fakeRoom: false });
+          return;
+        } else {
+          this.setState({ fakeRoom: true });
+        }
       })
-      .catch();
+      .catch((e) => {
+        console.log(e);
+        throw e;
+      });
   };
 
   getChatList = () => {
@@ -309,26 +332,33 @@ class ChattingDialog extends Component {
         {this.state.searchFranOpen && (
           <SearchFranchiseDialog
             close={() => this.setState({ searchFranOpen: false })}
-            callback={(data) =>
+            callback={(data) => {
               this.setState(
                 { selectedFr: data, selectedRider: null, currentRoom: null },
                 () => {
-                  const target = this.state.totalTableData.find(
-                    (item) =>
-                      item.member1 === this.state.selectedFr.idx ||
-                      item.member2 === this.state.selectedFr.idx
-                  );
-                  if (target) {
-                    console.log(target);
-                    this.chatDetailList(target);
-                    this.setState({ fakeRoom: false });
-                    return;
-                  } else {
-                    this.setState({ fakeRoom: true });
-                  }
+                  // const target = this.state.totalTableData.find(
+                  //   (item) =>
+                  //     item.member1 === this.state.selectedFr.idx ||
+                  //     item.member2 === this.state.selectedFr.idx
+                  // );
+                  // if (target) {
+                  //   console.log(target);
+                  //   this.chatDetailList(target);
+                  //   this.setState({ fakeRoom: false });
+                  //   return;
+                  // } else {
+                  //   this.setState({ fakeRoom: true });
+                  // }
+                  this.getChatRoom(this.state.selectedFr.idx);
+                  // if (chatRoom) {
+                  //   this.chatDetailList(chatRoom);
+                  //   this.setState({ fakeRoom: false });
+                  // } else {
+                  //   this.setState({ fakeRoom: true });
+                  // }
                 }
-              )
-            }
+              );
+            }}
           />
         )}
         {this.state.searchRiderOpen && (
@@ -338,18 +368,25 @@ class ChattingDialog extends Component {
               this.setState(
                 { selectedRider: data, selectedfr: null, currentRoom: null },
                 () => {
-                  const target = this.state.totalTableData.find(
-                    (item) =>
-                      item.member1 === this.state.selectedRider.idx ||
-                      item.member2 === this.state.selectedRider.idx
-                  );
-                  if (target) {
-                    this.chatDetailList(target);
-                    this.setState({ fakeRoom: false });
-                    return;
-                  } else {
-                    this.setState({ fakeRoom: true });
-                  }
+                  // const target = this.state.totalTableData.find(
+                  //   (item) =>
+                  //     item.member1 === this.state.selectedRider.idx ||
+                  //     item.member2 === this.state.selectedRider.idx
+                  // );
+                  // if (target) {
+                  //   this.chatDetailList(target);
+                  //   this.setState({ fakeRoom: false });
+                  //   return;
+                  // } else {
+                  //   this.setState({ fakeRoom: true });
+                  // }
+                  this.getChatRoom(this.state.selectedRider.idx);
+                  // if (chatRoom) {
+                  //   this.chatDetailList(chatRoom);
+                  //   this.setState({ fakeRoom: false });
+                  // } else {
+                  //   this.setState({ fakeRoom: true });
+                  // }
                 }
               )
             }
@@ -556,12 +593,19 @@ class ChattingDialog extends Component {
                   onKeyPress={(e) => {
                     if (e.key === "Enter") {
                       this.send(
-                        () =>
-                          this.getTotalChatList(
+                        // () =>
+                        //   this.getTotalChatList(
+                        //     this.state.selectedFr
+                        //       ? this.state.selectedFr.idx
+                        //       : this.state.selectedRider.idx
+                        //   ),
+                        () => {
+                          this.getChatRoom(
                             this.state.selectedFr
                               ? this.state.selectedFr.idx
                               : this.state.selectedRider.idx
-                          ),
+                          );
+                        },
                         () => {
                           this.setState(
                             {
@@ -581,12 +625,19 @@ class ChattingDialog extends Component {
                   className="chat-send-btn"
                   onClick={() => {
                     this.send(
-                      () =>
-                        this.getTotalChatList(
+                      // () =>
+                      //   this.getTotalChatList(
+                      //     this.state.selectedFr
+                      //       ? this.state.selectedFr.idx
+                      //       : this.state.selectedRider.idx
+                      //   ),
+                      () => {
+                        this.getChatRoom(
                           this.state.selectedFr
                             ? this.state.selectedFr.idx
                             : this.state.selectedRider.idx
-                        ),
+                        );
+                      },
                       () => {
                         this.setState(
                           {
