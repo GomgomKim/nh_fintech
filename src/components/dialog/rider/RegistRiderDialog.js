@@ -21,6 +21,7 @@ import "../../../css/modal.css";
 import {
   bankCode,
   bikeType,
+  items,
   riderGroupString,
   riderLevelText
 } from "../../../lib/util/codeUtil";
@@ -106,6 +107,7 @@ class RegistRiderDialog extends Component {
               idx: self.formRef.current.getFieldValue("riderSettingGroup"),
             },
             bikeIdx: self.state.selectedBike.idx,
+            items: self.formRef.current.getFieldValue("items").join(","),
           });
           httpPost(httpUrl.updateRider, [], {
             ...self.formRef.current.getFieldsValue(),
@@ -116,6 +118,7 @@ class RegistRiderDialog extends Component {
               idx: self.formRef.current.getFieldValue("riderSettingGroup"),
             },
             bikeIdx: self.state.selectedBike.idx,
+            items: self.formRef.current.getFieldValue("items").join(","),
           })
             .then((res) => {
               if (res.result === "SUCCESS" && res.data === "SUCCESS") {
@@ -139,6 +142,8 @@ class RegistRiderDialog extends Component {
             userType: 1,
             bikeIdx: self.state.selectedBike.idx,
             ncash: 0,
+            items: self.formRef.current.getFieldValue("items").join(","),
+
             // deliveryPriceFeeType: self.state.feeManner,
           });
           httpPost(httpUrl.registRider, [], {
@@ -150,6 +155,7 @@ class RegistRiderDialog extends Component {
             },
             userType: 1,
             bikeIdx: self.state.selectedBike.idx,
+            items: self.formRef.current.getFieldValue("items").join(","),
 
             // 기사 생성 시 예치금 정책 어떻게 될지에 따라 변경 될 수 있음
             // ncash 컬럼이 not null 이어서 기사 등록 시 0 설정
@@ -214,22 +220,6 @@ class RegistRiderDialog extends Component {
         throw e;
       });
   };
-
-  // handleChangeRiderLevel = (value) => {
-  //     if (value === 1) {
-  //         this.setState({ riderLevelSelected: true });
-  //     } else {
-  //         this.setState({ riderLevelSelected: false });
-  //     }
-  // }
-
-  // handleChangeRiderGroup = (value) => {
-  //     if (value === 1) {
-  //         this.setState({ riderGroupSelected: true });
-  //     } else {
-  //         this.setState({ riderGroupSelected: false });
-  //     }
-  // }
 
   onChangFeeManner = (e) => {
     this.setState({ feeManner: e.target.value }, () => {});
@@ -592,20 +582,12 @@ class RegistRiderDialog extends Component {
                     </div>
                     <div className="contentBlock">
                       <div className="mainTitle">비품지급</div>
-                      <FormItem
-                        name="equipments"
-                        className="giveBox selectItem"
-                      >
-                        <Checkbox>헬멧</Checkbox>
-                        <Checkbox>조끼</Checkbox>
-                        <Checkbox>배달통</Checkbox>
-                        <Checkbox>보냉</Checkbox>
-                        <Checkbox>우의</Checkbox>
-                        <Checkbox>피자가방</Checkbox>
-                        <Checkbox>여름티</Checkbox>
-                        <Checkbox>토시</Checkbox>
-                        <Checkbox>바람막이</Checkbox>
-                        <Checkbox>카드리더기</Checkbox>
+                      <FormItem name="items" className="giveBox selectItem">
+                        <Checkbox.Group
+                          options={items}
+                          initialValue={data && data.items.split(",")}
+                          onChange={(value) => console.log(value)}
+                        />
                       </FormItem>
                     </div>
 

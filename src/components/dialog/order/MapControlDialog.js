@@ -943,9 +943,12 @@ class MapControlDialog extends Component {
                           )}
                           icon={{
                             content: [
-                              '<div class="marker-name">' +
+                              '<div class="marker-name"><div style="transform: translateX(-50%)">' +
                                 this.state.riderName +
-                                "</div>",
+                                " (" +
+                                this.state.riderOrderList.length +
+                                ")" +
+                                "</div></div>",
                             ].join(""),
                           }}
                           title={this.state.riderName}
@@ -999,6 +1002,9 @@ class MapControlDialog extends Component {
                                       content: [
                                         '<div class="marker-name"><div style="transform: translateX(-50%)">' +
                                           row.riderName +
+                                          " (" +
+                                          row.orders.length +
+                                          ")" +
                                           "</div></div>",
                                       ].join(""),
                                     }}

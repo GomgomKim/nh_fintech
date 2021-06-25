@@ -94,13 +94,18 @@ class RiderGroupDialog extends Component {
               content: "기사그룹 설정 변경에 성공했습니다.",
             });
             this.getList();
+          } else {
+            Modal.info({
+              title: "변경 실패",
+              content: "기사그룹 설정 변경에 실패했습니다.",
+            });
           }
         }
       );
     } else {
       Modal.info({
         title: "변경 실패",
-        content: "기사그룹 설정 변경에 실패했습니다.",
+        content: "기사그룹을 선택해주세요.",
       });
       return;
     }
