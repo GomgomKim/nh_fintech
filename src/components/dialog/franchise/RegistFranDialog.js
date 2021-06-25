@@ -497,6 +497,26 @@ class RegistFranDialog extends Component {
                       </FormItem>
                     </div>
                     <div className="contentBlock">
+                      <div className="mainTitle">과적기준</div>
+                      <FormItem
+                        name="overload"
+                        className="selectItem"
+                        rules={[
+                          {
+                            required: true,
+                            message: "과적기준을 입력해주세요",
+                          },
+                        ]}
+                        initialValue={data && data.overload}
+                      >
+                        <Input
+                          placeholder="과적기준을 입력해 주세요."
+                          className="override-input"
+                        />
+                      </FormItem>
+                    </div>
+
+                    <div className="contentBlock">
                       <div className="mainTitle">이메일</div>
                       <FormItem
                         name="email"

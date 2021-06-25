@@ -577,13 +577,10 @@ class RegistRiderDialog extends Component {
                     <div className="contentBlock">
                       <div className="mainTitle">비품지급</div>
                       <FormItem
-                        name="equipments"
+                        name="items"
                         className="giveBox selectItem"
                       >
                         <Checkbox.Group>
-                          {
-                            
-                          }
                           <Checkbox>헬멧</Checkbox>
                           <Checkbox>조끼</Checkbox>
                           <Checkbox>배달통</Checkbox>
