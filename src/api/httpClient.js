@@ -45,7 +45,6 @@ const httpExecWithNoLoading = (method, url, data) => {
   });
 };
 
-
 const httpExec = (method, url, data) => {
   loadingCount++;
   if (loadingCount === 1)
@@ -168,7 +167,6 @@ const httpPostWithNoLoading = (url, params, data) => {
   // });
 };
 
-
 const httpDownload = (url, params, data) => {
   // return httpExec('GET', makeUrl(url, params), data);
   return new Promise((resolve, reject) => {
@@ -277,7 +275,7 @@ const httpUrl = {
   chatList: "/chat/chatList?pageSize=%s&pageNum=%s&searchName=%s",
   chatMessageList: "/chat/messageList?pageSize=%s&pageNum=%s&chatRoomIdx=%s",
   chatSend: "/chat/send",
-  chatRoom:"/chat/chatroom?receiveUserIdx=%s",
+  chatRoom: "/chat/chatroom?receiveUserIdx=%s",
 
   // 주소검색관리
   getAddrAptList:
@@ -302,6 +300,10 @@ const httpUrl = {
 
   // 라이더 전체메세지
   riderMessageAll: "/chat/send/allRider",
+
+  // 기사그룹
+  getRiderGroup: "/rider/settingGroup/list",
+  updateRiderGroup: "/rider/settingGroup/update",
 };
 
 const imageType = ["image/jpeg", "image/png", "image/bmp"];

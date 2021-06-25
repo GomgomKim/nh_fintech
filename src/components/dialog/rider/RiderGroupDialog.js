@@ -1,5 +1,6 @@
-import { Button, Form, Input, Radio, Table } from "antd";
+import { Button, Form, Input, Modal, Radio, Table } from "antd";
 import React, { Component } from "react";
+import { httpPost, httpUrl } from "../../../api/httpClient";
 import "../../../css/modal.css";
 import { deliveryPriceFeeType } from "../../../lib/util/codeUtil";
 import { comma } from "../../../lib/util/numberUtil";
@@ -16,12 +17,9 @@ class RiderGroupDialog extends Component {
         current: 1,
         pageSize: 1,
       },
-      deliveryPriceFeeType: 0,
       rowId: 1,
 
-      normalMaxCall: 0,
-      peakMaxCall: 0,
-      deliveryPriceFeeAmount: 0,
+      selectedGroup: null,
     };
     this.formRef = React.createRef();
   }
@@ -43,126 +41,138 @@ class RiderGroupDialog extends Component {
     );
   };
 
-  onClickRow = (index) => {
-    if (this.state.list.find((x) => x.id === this.state.rowId.id)) {
-      // console.log(this.state.list.find((x) => x.id === this.state.rowId.id).proCount)
-      const data = this.state.list.find((x) => x.id === this.state.rowId.id);
-      if (data !== null) {
-        this.formRef.current.setFieldsValue({
-          assignCnt: data.proCount,
-          riderFee: data.riderFee,
-          deliveryPriceFeeType: data.deliveryPriceFeeType,
-          withdraw: data.withdrawLimit,
-          transferLimit: data.transferLimit,
-        });
-        // @todo ????
-        // this.setState({payType: data.payType});
-      }
+  handleSelectedGroupChange = (value, key) => {
+    if (this.state.selectedGroup) {
+      let inputRes = this.state.selectedGroup;
+      inputRes[key] = value;
+      this.setState({ selectedGroup: inputRes });
+    } else {
+      return null;
     }
+  };
+
+  onClickRow = (row) => {
     return {
       onClick: () => {
-        this.setState({
-          rowId: index,
+        const deepCopy = Object.assign({}, row);
+        this.setState({ selectedGroup: deepCopy, rowId: deepCopy.idx }, () => {
+          this.formRef.current.setFieldsValue({
+            amountPerOneTime: row.amountPerOneTime,
+            deliveryPriceFeeType: row.deliveryPriceFeeType,
+            deliveryPriceFeeAmount: row.deliveryPriceFeeAmount,
+          });
+          console.log(this.state.selectedGroup);
         });
       },
     };
   };
-  setRowClassName = (index) => {
-    return index === this.state.rowId ? "clickRowStyl" : "";
+  setRowClassName = (row, index) => {
+    if (this.state.selectedGroup) {
+      return index + 1 === this.state.selectedGroup.idx ? "clickRowStyl" : "";
+    } else {
+      return "";
+    }
   };
 
   getList = () => {
-    var list = [
-      {
-        // className={ "mypage-left-select " + (depth1.idx == row.idx ? 'active' : '') },
-        id: 1,
-        riderGroup: "A",
-        proCount: 6,
-        riderFee: "100",
-        deliveryPriceFeeType: 0,
-        deliveryPriceFeeAmount: 10,
-        withdrawLimit: "100000",
-        transferLimit: "500",
-      },
-      {
-        id: 2,
-        riderGroup: "B",
-        proCount: 5,
-        riderFee: "200",
-        deliveryPriceFeeType: 1,
-        deliveryPriceFeeAmount: 1000,
-        withdrawLimit: "10000",
-        transferLimit: "1500",
-      },
-      {
-        id: 3,
-        riderGroup: "C",
-        proCount: 4,
-        riderFee: "300",
-        deliveryPriceFeeType: 0,
-        deliveryPriceFeeAmount: 10,
-        withdrawLimit: "200000",
-        transferLimit: "1000",
-      },
-      {
-        id: 4,
-        riderGroup: "D",
-        proCount: 3,
-        riderFee: "400",
-        deliveryPriceFeeType: 1,
-        deliveryPriceFeeAmount: 2000,
-        withdrawLimit: "40000",
-        transferLimit: "500",
-      },
-      {
-        id: 5,
-        riderGroup: "E",
-        proCount: 2,
-        riderFee: "500",
-        deliveryPriceFeeType: 0,
-        deliveryPriceFeeAmount: 8,
-        withdrawLimit: "100000",
-        transferLimit: "500",
-      },
-    ];
-    this.setState({
-      list: list,
+    httpPost(httpUrl.getRiderGroup, [], {}).then((res) => {
+      if (res.result === "SUCCESS") {
+        this.setState({
+          list: res.data.riderSettingGroups,
+        });
+      }
     });
   };
 
   handleSubmit = () => {
-    console.log(this.state);
+    if (this.state.selectedGroup) {
+      httpPost(httpUrl.updateRiderGroup, [], this.state.selectedGroup).then(
+        (res) => {
+          if (res.result === "SUCCESS") {
+            Modal.info({
+              title: "변경 성공",
+              content: "기사그룹 설정 변경에 성공했습니다.",
+            });
+            this.getList();
+          }
+        }
+      );
+    } else {
+      Modal.info({
+        title: "변경 실패",
+        content: "기사그룹 설정 변경에 실패했습니다.",
+      });
+      return;
+    }
   };
 
   render() {
     const columns = [
       {
         title: "그룹명",
-        dataIndex: "riderGroup",
+        dataIndex: "settingGroupName",
         className: "table-column-center",
+        render: (data, row) => {
+          return (
+            <div
+              style={{ cursor: "pointer" }}
+              onClick={() => this.setState({ selectedGroup: row })}
+            >
+              {data}
+            </div>
+          );
+        },
       },
       {
         title: "처리건수",
-        dataIndex: "proCount",
+        dataIndex: "amountPerOneTime",
         className: "table-column-center",
+        render: (data, row) => {
+          return (
+            <div
+              style={{ cursor: "pointer" }}
+              onClick={() => this.setState({ selectedGroup: row })}
+            >
+              {data}
+            </div>
+          );
+        },
       },
       {
         title: "배달 수수료 형식",
         dataIndex: "deliveryPriceFeeType",
         className: "table-column-center",
-        render: (data) => <div>{deliveryPriceFeeType[data]}</div>,
+        render: (data, row) => {
+          return (
+            <div
+              style={{ cursor: "pointer" }}
+              onClick={() => this.setState({ selectedGroup: row })}
+            >
+              {deliveryPriceFeeType[data]}
+            </div>
+          );
+        },
       },
       {
         title: "배달수수료",
         dataIndex: "deliveryPriceFeeType",
         className: "table-column-center",
-        render: (data, row) => (
-          <div>
-            {data === 0
-              ? comma(row.deliveryPriceFeeAmount) + " %"
-              : comma(row.deliveryPriceFeeAmount) + " 원"}
-          </div>
-        ),
+        render: (data, row) => {
+          return (
+            <div
+              style={{ cursor: "pointer" }}
+              onClick={() =>
+                this.setState({ selectedGroup: row }, () =>
+                  console.log(this.state.selectedGroup)
+                )
+              }
+            >
+              {data === 0
+                ? comma(row.deliveryPriceFeeAmount) + " %"
+                : comma(row.deliveryPriceFeeAmount) + " 원"}
+            </div>
+          );
+        },
       },
     ];
 
@@ -186,10 +196,11 @@ class RiderGroupDialog extends Component {
                   <Table
                     dataSource={this.state.list}
                     columns={columns}
-                    // pagination={this.state.pagination}
                     onChange={this.handleTableChange}
                     onRow={this.onClickRow}
-                    rowClassName={this.setRowClassName}
+                    rowClassName={(row, index) =>
+                      this.setRowClassName(row, index)
+                    }
                   />
                 </div>
 
@@ -198,35 +209,45 @@ class RiderGroupDialog extends Component {
                     <p>처리 건수</p>
                   </div>
                   <div className="inputBox inputBox-rider">
-                    <FormItem name="normalMaxCall">
+                    <FormItem name="amountPerOneTime">
                       <Input
-                        type="number"
                         onChange={(e) =>
-                          this.setState({
-                            normalMaxCall: parseInt(e.target.value),
-                          })
+                          this.handleSelectedGroupChange(
+                            e.target.value,
+                            "amountPerOneTime"
+                          )
                         }
-                        value={this.state.normalMaxCall}
+                        value={
+                          this.state.selectedGroup
+                            ? this.state.selectedGroup.amountPerOneTime
+                            : 0
+                        }
                       />
                     </FormItem>
                     <div className="riderGText">건 까지 처리 가능</div>
                   </div>
                   <div className="riderGroup-ftline-04">
                     <p>배달수수료</p>
-                    <Radio.Group
-                      className="select-fee-pay-type"
-                      defaultValue={this.state.deliveryPriceFeeType}
-                      onChange={(e) =>
-                        this.setState({ deliveryPriceFeeType: e.target.value })
-                      }
-                    >
-                      <Radio style={{ fontSize: 18 }} value={0}>
-                        정률
-                      </Radio>
-                      <Radio style={{ fontSize: 18 }} value={1}>
-                        정액&nbsp;&nbsp;&nbsp;
-                      </Radio>
-                    </Radio.Group>
+                    <div className="inputBox inputBox-rider">
+                      <FormItem name="deliveryPriceFeeType">
+                        <Radio.Group
+                          className="select-fee-pay-type"
+                          onChange={(e) =>
+                            this.handleSelectedGroupChange(
+                              e.target.value,
+                              "deliveryPriceFeeType"
+                            )
+                          }
+                        >
+                          <Radio style={{ fontSize: 18 }} value={0}>
+                            정률
+                          </Radio>
+                          <Radio style={{ fontSize: 18 }} value={1}>
+                            정액
+                          </Radio>
+                        </Radio.Group>
+                      </FormItem>
+                    </div>
 
                     <div className="inputBox inputBox-rider">
                       <FormItem
@@ -242,14 +263,18 @@ class RiderGroupDialog extends Component {
                           type="number"
                           value={this.state.deliveryPriceFeeAmount}
                           onChange={(e) =>
-                            this.setState({
-                              deliveryPriceFeeAmount: parseInt(e.target.value),
-                            })
+                            this.handleSelectedGroupChange(
+                              e.target.value,
+                              "deliveryPriceFeeAmount"
+                            )
                           }
                         />
                       </FormItem>
                       <div className="riderGText">
-                        {this.state.deliveryPriceFeeType === 0 ? "%" : "원"}{" "}
+                        {this.state.selectedGroup &&
+                          (this.state.selectedGroup.deliveryPriceFeeType === 0
+                            ? "%"
+                            : "원")}
                         으로 설정
                       </div>
                     </div>
