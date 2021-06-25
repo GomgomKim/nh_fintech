@@ -206,6 +206,10 @@ const bankCode = {
   카카오뱅크: "090",
 };
 
+const equipment = [
+  ''
+]
+
 export {
   deliveryStatusCode,
   blockString,

@@ -215,22 +215,6 @@ class RegistRiderDialog extends Component {
       });
   };
 
-  // handleChangeRiderLevel = (value) => {
-  //     if (value === 1) {
-  //         this.setState({ riderLevelSelected: true });
-  //     } else {
-  //         this.setState({ riderLevelSelected: false });
-  //     }
-  // }
-
-  // handleChangeRiderGroup = (value) => {
-  //     if (value === 1) {
-  //         this.setState({ riderGroupSelected: true });
-  //     } else {
-  //         this.setState({ riderGroupSelected: false });
-  //     }
-  // }
-
   onChangFeeManner = (e) => {
     this.setState({ feeManner: e.target.value }, () => {});
   };
@@ -596,16 +580,21 @@ class RegistRiderDialog extends Component {
                         name="equipments"
                         className="giveBox selectItem"
                       >
-                        <Checkbox>헬멧</Checkbox>
-                        <Checkbox>조끼</Checkbox>
-                        <Checkbox>배달통</Checkbox>
-                        <Checkbox>보냉</Checkbox>
-                        <Checkbox>우의</Checkbox>
-                        <Checkbox>피자가방</Checkbox>
-                        <Checkbox>여름티</Checkbox>
-                        <Checkbox>토시</Checkbox>
-                        <Checkbox>바람막이</Checkbox>
-                        <Checkbox>카드리더기</Checkbox>
+                        <Checkbox.Group>
+                          {
+                            
+                          }
+                          <Checkbox>헬멧</Checkbox>
+                          <Checkbox>조끼</Checkbox>
+                          <Checkbox>배달통</Checkbox>
+                          <Checkbox>보냉</Checkbox>
+                          <Checkbox>우의</Checkbox>
+                          <Checkbox>피자가방</Checkbox>
+                          <Checkbox>여름티</Checkbox>
+                          <Checkbox>토시</Checkbox>
+                          <Checkbox>바람막이</Checkbox>
+                          <Checkbox>카드리더기</Checkbox>
+                        </Checkbox.Group>
                       </FormItem>
                     </div>
 
