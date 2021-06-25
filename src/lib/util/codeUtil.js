@@ -179,6 +179,13 @@ const buyStatusString = {
   4: "환불완료",
 };
 
+// 공지사항 카테고리
+const noticeCategoryType = {
+  1: "전체",
+  2: "라이더",
+  3: "가맹점",
+};
+
 const bankCode = {
   경남은행: "039",
   광주은행: "034",
@@ -240,5 +247,6 @@ export {
   deliveryPriceFeeType,
   buyStatusString,
   bankCode,
+  noticeCategoryType
 };
 

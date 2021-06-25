@@ -4,10 +4,13 @@ import {
 } from "antd";
 import '../../../css/modal.css';
 import { httpUrl, httpPost } from '../../../api/httpClient';
+import { noticeCategoryType } from "../../../lib/util/codeUtil";
+import SelectBox from "../../../components/input/SelectBox";
 import{
   customAlert,
   updateError
-} from '../../../api/Modals'
+} from '../../../api/Modals';
+
 
 const FormItem = Form.Item;
 
@@ -24,7 +27,7 @@ class RegistNoticeDialog extends Component {
             date: "",
             title: "",
             content: "",
-            category: 0,
+            category: 1,
             sortOrder: 30,
             important: 0,
             branchIdx: 1,
@@ -33,7 +36,8 @@ class RegistNoticeDialog extends Component {
             readDate: '',
             deleted: false,
             registNotice: false,
-            checkedImportantCall: false
+            checkedImportantCall: false,
+            
         };
         this.formRef = React.createRef();
     }
@@ -80,6 +84,7 @@ class RegistNoticeDialog extends Component {
               ...self.formRef.current.getFieldsValue(),
               idx: data.idx,
               important: self.state.important,
+              category: self.state.category,
             }).then((result) => {
               console.log(result)
               if(result.result === "SUCCESS" && result.data === "SUCCESS"){
@@ -177,6 +182,28 @@ class RegistNoticeDialog extends Component {
                                                         defaultChecked={data ? (data.important ? "checked" : "") : ""}
                                                         onChange={this.handleToggleImportantCall}></Checkbox>
                                                         </div>
+                                                    </FormItem>
+                                                    <div className="subTitle">
+                                                        대상 지정
+                                                    </div>
+                                                    <FormItem
+                                                        name="category"
+                                                        className="selectItem"
+                                                    >
+                                                      <div style={{marginLeft:-45}}>
+                                                      <SelectBox
+                                                        placeholder={'전체'}
+                                                        value={noticeCategoryType[this.state.franStatus]}
+                                                        code={Object.keys(noticeCategoryType)}
+                                                        codeString={noticeCategoryType}
+                                                        onChange={(value) => {
+                                                            if (value) {
+                                                                this.setState({ category: value}
+                                                              );
+                                                            }
+                                                          }}
+                                                        />
+                                                      </div>
                                                     </FormItem>
                                                 </div>
                                             </div>
