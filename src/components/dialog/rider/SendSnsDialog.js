@@ -1,13 +1,10 @@
-import React, { Component } from "react";
 import {
-    Form,
-    Modal,
-    Input,
-    Button,
+    Button, Form, Input, Modal
 } from "antd";
-import { httpUrl, httpPost, httpPostWithNoLoading } from '../../../api/httpClient';
-import '../../../css/modal.css';
+import React, { Component } from "react";
 import { connect } from "react-redux";
+import { httpPostWithNoLoading, httpUrl } from '../../../api/httpClient';
+import '../../../css/modal.css';
 const { TextArea } = Input;
 const FormItem = Form.Item;
 

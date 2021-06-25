@@ -2666,7 +2666,6 @@
 
 /* .riderGroup-inner .ant-table-row-level-0:hover{
   background-color: #40a9ff !important;
-  cursor: default;
 }
 
 .riderGroup-inner .clickRowStyl:hover{
@@ -4257,7 +4256,7 @@
 }
 
 .Modal-chat .search-wrapper .ant-btn:hover,
-.ant-btn:focus {
+.Modal-chat .search-wrapper .ant-btn:focus {
   color: #fddc00;
   background: black;
   border-color: none;

@@ -5,7 +5,7 @@ import {
   FilterOutlined,
   MessageOutlined,
   NotificationFilled,
-  PhoneOutlined
+  PhoneOutlined,
 } from "@ant-design/icons";
 import {
   Button,
@@ -15,7 +15,7 @@ import {
   Modal,
   Popover,
   Select,
-  Table
+  Table,
 } from "antd";
 import moment from "moment";
 import React, { Component } from "react";
@@ -24,7 +24,7 @@ import {
   httpGet,
   httpPost,
   httpPostWithNoLoading,
-  httpUrl
+  httpUrl,
 } from "../../api/httpClient";
 import { customError } from "../../api/Modals";
 import ChattingCurrentRoom from "../../components/dialog/common/ChattingCurrentRoom";
@@ -45,7 +45,7 @@ import {
   deliveryStatusCode,
   modifyType,
   paymentMethod,
-  rowColorName
+  rowColorName,
 } from "../../lib/util/codeUtil";
 import { formatDate } from "../../lib/util/dateUtil";
 import { comma } from "../../lib/util/numberUtil";
@@ -110,8 +110,6 @@ class ReceptionStatus extends Component {
   componentDidMount() {
     this.getList();
     this.pullingList = setInterval(this.getList, this.state.pullingInterval);
-    // this.pollingList();
-    this.getBranch();
   }
 
   componentWillUnmount() {
@@ -204,40 +202,6 @@ class ReceptionStatus extends Component {
       });
   };
 
-  getBranch = () => {
-    httpGet(httpUrl.getBranch, [this.props.branchIdx], {})
-      .then((res) => {
-        if (res.result === "SUCCESS" && res.data) {
-          this.setState({ branchInfo: res.data });
-        } else {
-          console.log("branchInfo error");
-        }
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-
-    // dummy data (테스트용)
-    // this.setState({
-    //   branchInfo: {
-    //     branchCode: 0,
-    //     branchName: "복정1",
-    //     deliveryEnabled: false,
-    //     pickupAvTime10: true,
-    //     pickupAvTime10After: true,
-    //     pickupAvTime15: true,
-    //     pickupAvTime20: true,
-    //     pickupAvTime30: true,
-    //     pickupAvTime40: true,
-    //     pickupAvTime5: true,
-    //     pickupAvTime50: true,
-    //     pickupAvTime5After: true,
-    //     pickupAvTime60: true,
-    //     pickupAvTime70: true,
-    //     startDate: "2021-03-03",
-    //   },
-    // });
-  };
 
   handleToggleCompleteCall = (e) => {
     this.setState(
@@ -536,33 +500,6 @@ class ReceptionStatus extends Component {
                   .catch((e) => {
                     console.log(e);
                   });
-
-                // if (value === 3) {
-                //   httpPost(httpUrl.orderUpdate, [], row)
-                //     .then((res) => {
-                //       if (res.result === "SUCCESS") this.getList();
-                //     })
-                //     .catch((e) => {
-                //       console.log(e);
-                //     });
-                // } else if (value === 4) {
-                //   httpPost(httpUrl.orderUpdate, [], row)
-                //     .then((res) => {
-                //       if (res.result === "SUCCESS") this.getList();
-                //     })
-                //     .catch((e) => {
-                //       console.log(e);
-                //     });
-                // } else if (value === 5) {
-                //   httpPost(httpUrl.orderUpdate, [], row)
-                //     .then((res) => {
-                //       if (res.result === "SUCCESS") this.getList();
-                //     })
-                //     .catch((e) => {
-                //       console.log(e);
-                //     });
-                // }
-                // console.log(row);
               }}
             >
               {deliveryStatusCode.map((value, index) => {
@@ -614,7 +551,7 @@ class ReceptionStatus extends Component {
         dataIndex: "orderDate",
         className: "table-column-center",
         key: (row) => `orderDate:${row.orderDate}`,
-        sorter: (a, b) => a.orderDate - b.orderDate,
+        sorter: (a, b) => moment(a.orderDate) - moment(b.orderDate),
         render: (data, row) => <div>{data}</div>,
       },
       {
@@ -622,7 +559,7 @@ class ReceptionStatus extends Component {
         dataIndex: "pickupDate",
         className: "table-column-center",
         key: (row) => `pickupDate:${row.pickupDate}`,
-        sorter: (a, b) => a.pickupDate - b.pickupDate,
+        sorter: (a, b) => moment(a.pickupDate) - moment(b.pickupDate),
         render: (data, row) => (
           <div>{row.orderStatus >= 3 ? formatDate(data) : "-"}</div>
         ),
@@ -632,7 +569,7 @@ class ReceptionStatus extends Component {
         dataIndex: "completeDate",
         className: "table-column-center",
         key: (row) => `completeDate:${row.completeDate}`,
-        sorter: (a, b) => a.completeDate - b.completeDate,
+        sorter: (a, b) => moment(a.completeDate) - moment(b.completeDate),
         render: (data, row) => (
           <div>{row.orderStatus >= 4 ? formatDate(data) : "-"}</div>
         ),

@@ -20,7 +20,7 @@ class ChattingDialog extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      totalTableData: [],
+      // totalTableData: [],
       tableData: [],
       pagination: {
         current: 1,
@@ -47,7 +47,7 @@ class ChattingDialog extends Component {
   }
   componentDidMount() {
     this.getChatList();
-    this.getTotalChatList();
+    // this.getTotalChatList();
     let value = reactLocalStorage.getObject(Const.appName + ":chat");
 
     if (value !== null) {
@@ -57,16 +57,6 @@ class ChattingDialog extends Component {
       } catch {}
     }
   }
-
-  // testing
-  // componentDidUpdate(prevProps, prevState) {
-  //   if (this.state.currentRoom !== prevState.currentRoom) {
-  //     console.log("prev");
-  //     console.log(prevState.currentRoom);
-  //     console.log("now");
-  //     console.log(this.state.currentRoom);
-  //   }
-  // }
   formatChatDate(time) {
     return time.substr(0, 10) === formatYMD(new Date())
       ? time.substr(11, time.length)
@@ -75,8 +65,12 @@ class ChattingDialog extends Component {
   formatChatName(item) {
     const name =
       item.member1 === this.props.loginReducer.loginInfo.idx
-        ? item.member2Name
-        : item.member1Name;
+        ? item.member2Data.userType === 1
+          ? item.member2Data.riderName
+          : item.member2Data.frName
+        : item.member1Data.userType === 1
+        ? item.member1Data.riderName
+        : item.member1Data.frName;
     return name ? name : "(알수없음)";
   }
   updateTime = (idx) => {
@@ -96,8 +90,6 @@ class ChattingDialog extends Component {
             idx: idx,
             lastChatDate: currentTime,
           });
-          console.log("#### updatetime");
-          console.log(value);
         }
         reactLocalStorage.setObject(
           Const.appName + ":chat",
@@ -109,32 +101,21 @@ class ChattingDialog extends Component {
     }
   };
 
-  getTotalChatList = (targetIdx) => {
-    httpGet(httpUrl.chatList, [10000, 1], {})
-      .then((result) => {
-        this.setState(
-          {
-            totalTableData: result.data.chatRooms,
-          },
-          () => {
-            console.log(this.state.totalTableData);
-            if (targetIdx) {
-              const target = this.state.totalTableData.find(
-                (item) =>
-                  item.member1 === targetIdx || item.member2 === targetIdx
-              );
-              if (target) {
-                this.chatDetailList(target);
-                this.setState({ fakeRoom: false });
-                return;
-              } else {
-                this.setState({ fakeRoom: true });
-              }
-            }
-          }
-        );
+  getChatRoom = (receiverUserIdx) => {
+    httpGet(httpUrl.chatRoom, [receiverUserIdx], {})
+      .then((res) => {
+        if (res.result === "SUCCESS" && res.data.chatRooms.length > 0) {
+          this.chatDetailList(res.data.chatRooms[0]);
+          this.setState({ fakeRoom: false });
+          return;
+        } else {
+          this.setState({ fakeRoom: true });
+        }
       })
-      .catch();
+      .catch((e) => {
+        console.log(e);
+        throw e;
+      });
   };
 
   getChatList = () => {
@@ -195,8 +176,6 @@ class ChattingDialog extends Component {
   };
   // 채팅상세
   chatDetailList = (item) => {
-    console.log("chatdetaillist item");
-    console.log(item);
     this.setState(
       {
         currentRoom: item,
@@ -217,7 +196,6 @@ class ChattingDialog extends Component {
     )
       .then((result) => {
         result = result.data;
-        console.log(result);
 
         if (result.chatMessages.length === 0) {
           this.setState({
@@ -255,7 +233,6 @@ class ChattingDialog extends Component {
       chatMessage: msg,
       receiveUserIdx,
     }).then((result) => {
-      console.log("SUCCESS");
       result = result.data;
       if (result === "SUCCESS") {
         this.state.chatMessages.unshift({
@@ -272,7 +249,6 @@ class ChattingDialog extends Component {
           sendUserIdx: this.props.loginReducer.loginInfo.idx,
           title: "chat room",
         });
-        console.log(this.state.chatMessages);
         this.setState({ chatMessages: this.state.chatMessages });
         this.updateTime(currentRoom.idx);
         this.updateLastChatMessage(currentRoom.idx, msg);
@@ -292,9 +268,7 @@ class ChattingDialog extends Component {
           callback1();
           callback2();
           this.setState({ inputMessage: "" });
-          console.log("메세지 전송 성공");
         } else {
-          console.log("전송실패");
         }
       })
       .catch((e) => {
@@ -309,26 +283,17 @@ class ChattingDialog extends Component {
         {this.state.searchFranOpen && (
           <SearchFranchiseDialog
             close={() => this.setState({ searchFranOpen: false })}
-            callback={(data) =>
+            callback={(data) => {
               this.setState(
                 { selectedFr: data, selectedRider: null, currentRoom: null },
                 () => {
-                  const target = this.state.totalTableData.find(
-                    (item) =>
-                      item.member1 === this.state.selectedFr.idx ||
-                      item.member2 === this.state.selectedFr.idx
-                  );
-                  if (target) {
-                    console.log(target);
-                    this.chatDetailList(target);
-                    this.setState({ fakeRoom: false });
-                    return;
-                  } else {
-                    this.setState({ fakeRoom: true });
-                  }
+                  console.log(this.state.selectedFr);
+                  console.log(this.state.selectedRider);
+
+                  this.getChatRoom(this.state.selectedFr.idx);
                 }
-              )
-            }
+              );
+            }}
           />
         )}
         {this.state.searchRiderOpen && (
@@ -336,20 +301,12 @@ class ChattingDialog extends Component {
             close={() => this.setState({ searchRiderOpen: false })}
             callback={(data) =>
               this.setState(
-                { selectedRider: data, selectedfr: null, currentRoom: null },
+                { selectedRider: data, selectedFr: null, currentRoom: null },
                 () => {
-                  const target = this.state.totalTableData.find(
-                    (item) =>
-                      item.member1 === this.state.selectedRider.idx ||
-                      item.member2 === this.state.selectedRider.idx
-                  );
-                  if (target) {
-                    this.chatDetailList(target);
-                    this.setState({ fakeRoom: false });
-                    return;
-                  } else {
-                    this.setState({ fakeRoom: true });
-                  }
+                  console.log(this.state.selectedFr);
+                  console.log(this.state.selectedRider);
+
+                  this.getChatRoom(this.state.selectedRider.idx);
                 }
               )
             }
@@ -556,12 +513,13 @@ class ChattingDialog extends Component {
                   onKeyPress={(e) => {
                     if (e.key === "Enter") {
                       this.send(
-                        () =>
-                          this.getTotalChatList(
-                            this.state.selectedFr
+                        () => {
+                          this.getChatRoom(
+                            this.state.selectedFr !== null
                               ? this.state.selectedFr.idx
                               : this.state.selectedRider.idx
-                          ),
+                          );
+                        },
                         () => {
                           this.setState(
                             {
@@ -581,12 +539,13 @@ class ChattingDialog extends Component {
                   className="chat-send-btn"
                   onClick={() => {
                     this.send(
-                      () =>
-                        this.getTotalChatList(
+                      () => {
+                        this.getChatRoom(
                           this.state.selectedFr
                             ? this.state.selectedFr.idx
                             : this.state.selectedRider.idx
-                        ),
+                        );
+                      },
                       () => {
                         this.setState(
                           {

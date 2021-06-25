@@ -1011,8 +1011,8 @@ class MapControlDialog extends Component {
                               )}
                             </>
                           );
-                        } else return;
-                      } else return;
+                        } else return <></>;
+                      } else return <></>;
                     })}
 
                     {this.state.riderAllLocates.map((row, index) => {
