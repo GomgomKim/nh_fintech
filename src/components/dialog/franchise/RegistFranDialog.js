@@ -8,7 +8,7 @@ import {
   registComplete,
   registError,
   updateComplete,
-  updateError
+  updateError,
 } from "../../../api/Modals";
 import "../../../css/modal.css";
 import { pgUseRate } from "../../../lib/util/codeUtil";

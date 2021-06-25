@@ -213,9 +213,18 @@ const bankCode = {
   카카오뱅크: "090",
 };
 
-const equipment = [
-  ''
-]
+const items = [
+  "헬멧",
+  "조끼",
+  "배달통",
+  "보냉",
+  "우의",
+  "피자가방",
+  "여름티",
+  "토시",
+  "바람막이",
+  "카드리더기",
+];
 
 export {
   deliveryStatusCode,
@@ -251,6 +260,7 @@ export {
   deliveryPriceFeeType,
   buyStatusString,
   bankCode,
-  noticeCategoryType
+  noticeCategoryType,
+  items,
 };
 
