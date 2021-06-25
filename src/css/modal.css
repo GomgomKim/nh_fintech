@@ -4247,13 +4247,13 @@
   color: #fddc00;
 }
 
-.Modal-chat .search-wrapper .ant-btn:hover,
+/* .Modal-chat .search-wrapper .ant-btn:hover,
 .ant-btn:focus {
   color: #fddc00;
   background: black;
   border-color: none;
 }
-
+ */
 .error-message {
   color: red;
 }
