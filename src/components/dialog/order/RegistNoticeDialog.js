@@ -8,7 +8,8 @@ import { noticeCategoryType } from "../../../lib/util/codeUtil";
 import SelectBox from "../../../components/input/SelectBox";
 import{
   customAlert,
-  updateError
+  updateError,
+  registError
 } from '../../../api/Modals';
 
 
@@ -48,7 +49,7 @@ class RegistNoticeDialog extends Component {
 
     getFrList = () => {
         httpPost(httpUrl.franchiseList, [], {
-            pageSize: 2000000000,
+            pageSize: 2,
         }).then((result) => {
             const pagination = {
                 ...this.state.pagination,
@@ -57,7 +58,6 @@ class RegistNoticeDialog extends Component {
             pagination.total = result.data.totalCount;
             this.setState({ frData: result.data.franchises, pagination }, 
             ()=>{
-            // console.log(JSON.stringify(this.state.frData))
             console.log(JSON.stringify(this.state.frData.map(x=> x.phone)))
             });
         });
@@ -83,7 +83,8 @@ class RegistNoticeDialog extends Component {
             okText: "확인",
             cancelText: "취소",
           onOk() {
-              data ?
+            data ?
+            // 공지사항 수정
             httpPost(httpUrl.updateNotice, [], {
               ...self.formRef.current.getFieldsValue(),
               idx: data.idx,
@@ -93,15 +94,22 @@ class RegistNoticeDialog extends Component {
               console.log(result)
               if(result.result === "SUCCESS" && result.data === "SUCCESS"){
                 customAlert("완료", self.formRef.current.getFieldsValue().title+"이(가) 수정되었습니다.")
-              }
+                // 가맹점 핸드폰 메세지 처리
+                if(self.state.checkedMessage) {
+                  httpPost(httpUrl.smsSendFran, [], {
+                    destPhones: self.state.frData.map(x=> x.phone),
+                    msgBody: self.formRef.current.getFieldsValue().content,
+                    subject: "냠냠박스 공지사항"
+                  })
+                }
+            }
               else updateError()
               self.props.close()
             }).catch((error) => {
               updateError()
             })
-
             :
-
+            // 공지사항 등록
             httpPost(httpUrl.registNotice, [], {
                 ...self.formRef.current.getFieldsValue(),
                 createDate: self.state.createDate,
@@ -113,7 +121,6 @@ class RegistNoticeDialog extends Component {
                   if(result.result === "SUCCESS" && result.data === "SUCCESS"){
                     customAlert("완료", self.formRef.current.getFieldsValue().title+"이(가) 등록되었습니다.")
                     // 가맹점 핸드폰 메세지 처리
-
                     console.log("### sms test :"+self.state.frData.map(x=> x.phone))
                     if(self.state.checkedMessage) {
                       httpPost(httpUrl.smsSendFran, [], {
@@ -123,10 +130,10 @@ class RegistNoticeDialog extends Component {
                       })
                     }
                   }
-                  else updateError()
+                  else registError()
                 self.props.close()
               }).catch((error) => {
-                updateError()
+                registError()
               })
           }
         })
