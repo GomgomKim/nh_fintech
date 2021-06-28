@@ -49,7 +49,7 @@ class RegistNoticeDialog extends Component {
 
     getFrList = () => {
         httpPost(httpUrl.franchiseList, [], {
-            pageSize: 2,
+            pageSize: 2000000000,
         }).then((result) => {
             const pagination = {
                 ...this.state.pagination,
