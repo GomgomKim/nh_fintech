@@ -727,7 +727,6 @@ class RegistFranDialog extends Component {
                     ) : (
                       <>
                         <FormItem
-                          name="chargeDate"
                           className="selectItem"
                           style={{ marginLeft: 10 }}
                         >
@@ -738,7 +737,7 @@ class RegistFranDialog extends Component {
                           />
                         </FormItem>
                         <div className="subTitle">관리비</div>
-                        <FormItem name="dues" className="selectItem">
+                        <FormItem className="selectItem">
                           <Input
                             placeholder="관리비 입력"
                             className="override-input sub"
