@@ -6,19 +6,18 @@ import { connect } from "react-redux";
 import * as XLSX from "xlsx";
 import { httpGet, httpPost, httpUrl } from "../../api/httpClient";
 import { updateComplete, updateError } from "../../api/Modals";
-import BlindControlDialog from "../../components/dialog/franchise/BlindControlDialog";
+// import BlindControlDialog from "../../components/dialog/franchise/BlindControlDialog";
 import BlindFranListDialog from "../../components/dialog/franchise/BlindFranListDialog";
 import RegistFranDialog from "../../components/dialog/franchise/RegistFranDialog";
 import SearchAddressDialog from "../../components/dialog/franchise/SearchAddressDialog";
 import SelectBox from "../../components/input/SelectBox";
 import "../../css/franchise.css";
 import {
-  cardStatus,
   statusString,
   tableStatusString,
   withdrawString
 } from "../../lib/util/codeUtil";
-import { formatDate } from "../../lib/util/dateUtil";
+import { formatDateToDay } from "../../lib/util/dateUtil";
 import { comma } from "../../lib/util/numberUtil";
 
 const Search = Input.Search;
@@ -43,7 +42,7 @@ class FranchiseMain extends Component {
       ResistFranchiseOpen: false,
       modifyFranOpen: false,
       SearchAddressOpen: false,
-      blindControlOpen: false,
+      // blindControlOpen: false,
       dialogData: [],
       blindFrData: [],
       blindListOpen: false,
@@ -134,13 +133,13 @@ class FranchiseMain extends Component {
     this.setState({ SearchAddressOpen: false });
   };
 
-  // 블라인드관리 dialog
-  openBlindControlModal = () => {
-    this.setState({ blindControlOpen: true });
-  };
-  closeBlindControlModal = () => {
-    this.setState({ blindControlOpen: false });
-  };
+  // // 블라인드관리 dialog
+  // openBlindControlModal = () => {
+  //   this.setState({ blindControlOpen: true });
+  // };
+  // closeBlindControlModal = () => {
+  //   this.setState({ blindControlOpen: false });
+  // };
 
   // 블라인드 dialog
   openBlindModal = () => {
@@ -204,17 +203,40 @@ class FranchiseMain extends Component {
   };
   getLatLng = async (address, formData) => {
     try {
+      console.log("getLatLng start");
       const res = await httpGet(httpUrl.getGeocode, [address], {});
       if (res.result === "SUCCESS") {
         const data = JSON.parse(res.data.json);
         if (data.addresses.length > 0) {
           formData.latitude = parseFloat(data.addresses[0].y);
           formData.longitude = parseFloat(data.addresses[0].x);
+          console.log("getLatLng end");
         }
       } else {
       }
     } catch (e) {
       console.log(e);
+      throw e;
+    }
+  };
+
+  getFrSalesUserIdx = async (formData) => {
+    try {
+      console.log("getFrSalesUserIdx start");
+      const res = await httpGet(
+        httpUrl.riderList,
+        [10000, 1, formData.frSalesUserIdx, 1, [1, 2, 3, 4, 5, 6, 7]],
+        {}
+      );
+      console.log(res);
+      if (res.data.riders.length > 0) {
+        formData["frSalesUserIdx"] = res.data.riders[0].idx;
+        console.log("getFrSalesUserIdx end");
+        return;
+      } else {
+        return;
+      }
+    } catch (e) {
       throw e;
     }
   };
@@ -256,9 +278,19 @@ class FranchiseMain extends Component {
           addr1: data["주소"],
           addr3: data["지번주소"],
           addr2: data["상세주소"],
-          basicDeliveryPrice: data[" 배달요금"],
           password: String(data["비밀번호"]),
           tidNormalRate: data["PG사용여부"] === "사용" ? 100 : 0,
+          agreeSms: data["sms 수신여부"] === "수신" ? true : false,
+          isMember: data["가맹여부"] === "가맹" ? true : false,
+          nonmemberFee: data["가맹여부"] === "가맹" ? 0 : 1000,
+          ownerName: data["대표자 성명"],
+          frSalesUserIdx: data["영업담당자 성명"],
+          chargeDate: data["월회비 최초납부일"],
+          dues: data["관리비"],
+          registDate: data["가입일자"],
+          memo: data["메모"],
+          email: data["이메일"],
+          overload: data["과적기준"],
 
           // // 신규 가맹점 DEFAULT
           ncash: 0,
@@ -272,15 +304,22 @@ class FranchiseMain extends Component {
           tidNormal: "",
           tidPrepay: "",
           duesAutoChargeEnabled: false,
-          chargeDate: 1,
-          dues: 0,
+          // chargeDate: 1,
 
           // api 찾기
           latitude: 0,
           longitude: 0,
+
+          // 삭제컬럼
+          basicDeliveryPrice: 0,
+          basicDeliveryDistance: 0,
         };
 
         await this.getLatLng(data["주소"], formData);
+        await this.getFrSalesUserIdx(formData);
+
+        console.log(formData);
+
         await this.createFranchise(formData, i, failedIdx, failedFrName);
       }
       if (failedIdx.length > 0) {
@@ -332,6 +371,7 @@ class FranchiseMain extends Component {
       var rows = XLSX.utils.sheet_to_json(
         workBook.Sheets[workBook.SheetNames[0]]
       );
+      console.log(rows);
       self.setState({ data: rows });
       // workBook.SheetNames.forEach((sheetName) => {
       //   var rows = XLSX.utils.sheet_to_json(workBook.Sheets[sheetName]);
@@ -391,7 +431,7 @@ class FranchiseMain extends Component {
         title: "주소",
         dataIndex: "addr1",
         className: "table-column-center",
-        render: (data, row) => <div>{row.addr1 + "" + row.addr2}</div>,
+        render: (data, row) => <div>{row.addr1 + " " + row.addr2}</div>,
       },
       {
         title: "코인잔액",
@@ -399,26 +439,20 @@ class FranchiseMain extends Component {
         className: "table-column-center",
         render: (data) => <div>{comma(data)}</div>,
       },
-      {
-        title: "기본배달요금",
-        dataIndex: "basicDeliveryPrice",
-        className: "table-column-center",
-        render: (data) => <div>{comma(data)}</div>,
-      },
+      // {
+      //   title: "기본배달요금",
+      //   dataIndex: "basicDeliveryPrice",
+      //   className: "table-column-center",
+      //   render: (data) => <div>{comma(data)}</div>,
+      // },
       // 가맹여부 추가 후 컬럼이름 확인 필요
-      {
-        title: "가맹여부",
-        dataIndex: "franCategory",
-        className: "table-column-center",
-        render: (data) => <div>{data ? "가맹" : "무가맹"}</div>,
-      },
       // 가맹여부 추가 후 컬럼이름 확인 필요
-      {
-        title: "금액",
-        dataIndex: "balance",
-        className: "table-column-center",
-        render: (data) => <div>{comma(data)}</div>,
-      },
+      // {
+      //   title: "금액",
+      //   dataIndex: "",
+      //   className: "table-column-center",
+      //   render: (data) => <div>{}</div>,
+      // },
 
       {
         title: "출금설정",
@@ -486,43 +520,50 @@ class FranchiseMain extends Component {
           title: "월회비 최초납부일",
           dataIndex: "chargeDate",
           className: "table-column-center",
-          render: (data) => <div>{formatDate(data)}</div>,
+          render: (data) => <div>{formatDateToDay(data)}</div>,
         },
         {
-          title: "적용타입",
-          dataIndex: "applyType",
+          title: "가맹여부",
+          dataIndex: "isMember",
           className: "table-column-center",
-          render: (data) => <div>{"적용"}</div>,
+          render: (data) => <div>{data ? "가맹" : "무가맹"}</div>,
         },
+
+        // {
+        //   title: "적용타입",
+        //   dataIndex: "applyType",
+        //   className: "table-column-center",
+        //   render: (data) => <div>{}</div>,
+        // },
         {
           title: "월회비",
           dataIndex: "dues",
           className: "table-column-center",
-          render: (data) => <div>{"100,000"}</div>,
+          render: (data, row) => <div>{row.isMember ? data : "-"}</div>,
         },
-        {
-          title: "카드가맹상태",
-          dataIndex: "cardStatus",
-          className: "table-column-center",
-          render: (data) => <div>{cardStatus[data]}</div>,
-        },
+        // {
+        //   title: "카드가맹상태",
+        //   dataIndex: "cardStatus",
+        //   className: "table-column-center",
+        //   render: (data) => <div>{cardStatus[data]}</div>,
+        // },
         {
           title: "VAN",
-          dataIndex: "van",
+          dataIndex: "tidNormal",
           className: "table-column-center",
-          render: (data) => <div>{"1233451245"}</div>,
+          render: (data) => <div>{data}</div>,
         },
         {
           title: "PG",
-          dataIndex: "businessCard",
+          dataIndex: "tidPrepay",
           className: "table-column-center",
-          render: (data) => <div>{"1233451245"}</div>,
+          render: (data) => <div>{data}</div>,
         },
         {
           title: "PG 사용여부",
-          dataIndex: "businessCardName",
+          dataIndex: "tidNormalRate",
           className: "table-column-center",
-          render: (data) => <div>{"사용"}</div>,
+          render: (data) => <div>{data === 100 ? "사용" : "미사용"}</div>,
         },
         {
           title: "메모",
@@ -531,10 +572,22 @@ class FranchiseMain extends Component {
         },
         {
           title: "가입일",
-          dataIndex: "businessDate",
+          dataIndex: "registDate",
           className: "table-column-center",
-          render: (data) => <div>{"2021-04-29"}</div>,
+          render: (data) => <div>{formatDateToDay(data)}</div>,
         },
+        {
+          title: "영업담당자",
+          dataIndex: "frSalesRiderName",
+          className: "table-column-center",
+          render: (data) => <div>{data}</div>,
+        },
+        // {
+        //   title: "영업담당자",
+        //   dataIndex: "registDate",
+        //   className: "table-column-center",
+        //   render: (data) => <div>{formatDate(data)}</div>,
+        // },
       ];
 
       return (
@@ -600,7 +653,7 @@ class FranchiseMain extends Component {
             주소검색관리
           </Button>
 
-          {this.state.blindControlOpen && (
+          {/* {this.state.blindControlOpen && (
             <BlindControlDialog
               isOpen={this.state.blindControlOpen}
               close={this.closeBlindControlModal}
@@ -611,7 +664,7 @@ class FranchiseMain extends Component {
             onClick={this.openBlindControlModal}
           >
             블라인드관리
-          </Button>
+          </Button> */}
 
           {/* 블라인드 */}
           {this.state.blindListOpen && (

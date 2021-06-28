@@ -1,4 +1,4 @@
-import { AutoComplete, Button, Form, Input, Radio, Table } from "antd";
+import { Button, Form, Input, Radio, Table } from "antd";
 import React, { Component } from "react";
 import { httpPost, httpUrl } from "../../../api/httpClient";
 import SelectBox from "../../../components/input/SelectBox";

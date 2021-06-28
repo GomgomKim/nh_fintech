@@ -719,6 +719,16 @@
   width: 130px;
 }
 
+.registNoticeWrapper .subTitle {
+  width: 100px;
+  margin-left: 20px;
+}
+
+.registNoticeWrapper .importantBox {
+  /* margin-left: -; */
+  display: inline-block;
+}
+
 .registNoticeCheck {
   display: inline-block;
   margin-left: 20px;
@@ -792,6 +802,10 @@
   width: 130px;
   height: 40px;
   font-size: 18px !important;
+}
+
+.registNoticeDialog .importantBox .ant-checkbox-wrapper {
+  margin-left: 15px !important;
 }
 
 /* 할증 dialog */
@@ -993,6 +1007,7 @@
   border-radius: 2px;
   padding: 0px;
   height: 40px;
+  margin-top: 20px;
   float: right;
 }
 
@@ -1208,7 +1223,6 @@
 /* 왼쪽 wrappper */
 .registFranWrapper {
   display: inline-block;
- 
 }
 .registFranTitle {
   display: inline-block;
@@ -1216,15 +1230,15 @@
   vertical-align: middle;
   font-weight: bold;
   color: #1890ff;
-  width:875px;
+  width: 875px;
   margin-bottom: 10px;
 }
-.registFranTitle-sub{
+.registFranTitle-sub {
   display: inline-block;
 }
-.registFran-radio{
+.registFran-radio {
   display: inline-block;
-  float:right;
+  float: right;
 }
 .registFranWrapper .mainTitle {
   display: inline-block;
@@ -2104,7 +2118,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  /* width: 1200px; */
+  width: 1000px;
   z-index: 2;
 }
 
@@ -2532,7 +2546,7 @@
 .riderGroup-ftline {
   line-height: 30px;
   font-size: 18px;
-  height: 215px;
+  /* height: 215px; */
   padding: 20px;
   margin-top: 10px;
   /* border:1px solid #ccc; */
@@ -2657,7 +2671,6 @@
 
 /* .riderGroup-inner .ant-table-row-level-0:hover{
   background-color: #40a9ff !important;
-  cursor: default;
 }
 
 .riderGroup-inner .clickRowStyl:hover{
@@ -2718,7 +2731,7 @@
 
 .registRiderWrapper {
   display: inline-block;
-  /* vertical-align: top; */
+  vertical-align: top;
 }
 
 .registRiderWrapper .contentBlock {
@@ -2746,7 +2759,7 @@
   margin-top: 4px !important;
 }
 .registRiderWrapper .submitBlock {
-  margin-top: 40px;
+  margin-top: 20px;
   text-align: right;
 }
 
@@ -2768,7 +2781,7 @@
 }
 
 /*오른쪽*/
-.registRiderBox{
+.registRiderBox {
   display: inline-block;
 }
 .registRiderWrapper.sub {
@@ -2794,7 +2807,7 @@
 
 .registRiderWrapper.sub .submitBlock {
   width: 390px;
-  margin-top: 55px;
+  /* margin-top: 55px; */
 }
 
 /* 하단 */
@@ -3410,16 +3423,15 @@
   color: #777;
 }
 .chat-container {
-  /* width: 440px; */
+  width: 440px;
   /* height: 700px; */
-  height:100%;
+  height: 100%;
   border-radius: 10px;
   background-color: white;
   box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
 }
-.chat-page{
-  padding:10px 0px;
- 
+.chat-page {
+  padding: 10px 0px;
 }
 /* .chat-list-container{
   height:650px;
@@ -3428,9 +3440,9 @@
 .chat-title {
   width: 100%;
   background-color: #fddc00;
-  padding:20px;
+  padding: 20px;
   text-align: center;
-  font-size: 22px;
+  font-size: 20px;
   letter-spacing: -1px;
   font-family: NotoSansMedium;
   border-top-left-radius: 10px;
@@ -3445,7 +3457,7 @@
   display: inline-block;
 }
 .chat-item-image img {
-  width: 70px;
+  width: 65px;
 }
 .chat-item-content {
   display: inline-block;
@@ -3457,7 +3469,7 @@
   width: 100%;
 }
 .chat-item-top-title {
-  font-size: 22px;
+  font-size: 20px;
   letter-spacing: -1px;
   font-family: NotoSansBold;
 }
@@ -3469,7 +3481,7 @@
   color: #b1b1b1;
 }
 .chat-item-bottom {
-  font-size: 18px;
+  font-size: 16px;
   letter-spacing: -1px;
   font-family: NotoSansMedium;
   color: #999999;
@@ -3483,12 +3495,11 @@
   /* float: right; */
   padding: 0px;
   width: 440px;
-  height:100%;
+  height: 100%;
   border-radius: 10px;
   background-color: #ededed;
   margin-left: 30px;
   box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
- 
 }
 .chat-input {
   border-radius: 12px;
@@ -3497,7 +3508,6 @@
   height: 55px;
   background-color: #fff;
 }
-
 
 .chat-send-input {
   width: 330px;
@@ -3897,15 +3907,15 @@
   font-size: 17px;
 }
 
-.snsLayout .snsInputBox {
+/* .snsLayout .snsInputBox {
   width: 100%;
   height: 380px;
-}
+} */
 .snsLayout .snsInputBox {
   width: 558px;
-  height: 200px;
   margin-top: 10px;
   margin-left: -10px;
+  padding-bottom: 100px;
 }
 
 .snsLayout .dataTableLayout-01 {
@@ -3956,7 +3966,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 1200px;
+  width: 900px;
   z-index: 2;
 }
 
@@ -4251,7 +4261,7 @@
 }
 
 .Modal-chat .search-wrapper .ant-btn:hover,
-.ant-btn:focus {
+.Modal-chat .search-wrapper .ant-btn:focus {
   color: #fddc00;
   background: black;
   border-color: none;
@@ -4275,4 +4285,16 @@ td.ant-table-column-sort {
 .ant-table-filter-trigger-container-open .ant-table-filter-trigger,
 .ant-table-filter-trigger:hover {
   color: #bfbfbf;
+}
+
+.regist-bike-title {
+  display: "inline-block";
+  width: 80px;
+}
+.bike-type-box .ant-picker {
+  width: 165px;
+}
+
+.marker-name {
+  font-family: NotoSansBold;
 }

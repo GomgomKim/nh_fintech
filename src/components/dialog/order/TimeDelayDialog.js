@@ -1,15 +1,16 @@
-import React, { Component } from "react";
-import { Button, Checkbox, Modal } from "antd";
-import "../../../css/modal.css";
 import { ClockCircleOutlined } from "@ant-design/icons";
+import { Button, Checkbox, Modal } from "antd";
+import React, { Component } from "react";
 import { connect } from "react-redux";
-import { httpPost, httpUrl } from "../../../api/httpClient";
+import { httpGet, httpPost, httpUrl } from "../../../api/httpClient";
+import "../../../css/modal.css";
 
 class TimeDelayDialog extends Component {
   constructor(props) {
     super(props);
     this.state = {
       branchIdx: null,
+      branchInfo: null,
       deliveryNotAvailable: false,
       confirmLoading: false,
       btnInfos: [
@@ -58,53 +59,70 @@ class TimeDelayDialog extends Component {
   }
 
   componentDidMount() {
-    const { branchInfo } = this.props;
-    this.setState({
-      deliveryNotAvailable: !branchInfo.deliveryEnabled,
-      btnInfos: [
-        {
-          value: 5,
-          text: "5분",
-          toggle: branchInfo.pickupAvTime5,
-        },
-        {
-          value: 10,
-          text: "10분",
-          toggle: branchInfo.pickupAvTime10,
-        },
-        {
-          value: 15,
-          text: "15분",
-          toggle: branchInfo.pickupAvTime15,
-        },
-        {
-          value: 20,
-          text: "20분",
-          toggle: branchInfo.pickupAvTime20,
-        },
-        {
-          value: 30,
-          text: "30분",
-          toggle: branchInfo.pickupAvTime30,
-        },
-        {
-          value: 40,
-          text: "40분",
-          toggle: branchInfo.pickupAvTime40,
-        },
-        {
-          value: 1005,
-          text: "후 5분",
-          toggle: branchInfo.pickupAvTime5After,
-        },
-        {
-          value: 1010,
-          text: "후 10분",
-          toggle: branchInfo.pickupAvTime10After,
-        },
-      ],
-    });
+    this.getBranch();
   }
+
+  getBranch = () => {
+    httpGet(httpUrl.getBranch, [this.props.branchIdx], {})
+      .then((res) => {
+        if (res.result === "SUCCESS" && res.data) {
+          console.log(res);
+          this.setState({ branchInfo: res.data }, () => {
+            const branchInfo = this.state.branchInfo;
+            this.setState({
+              deliveryNotAvailable: !branchInfo.deliveryEnabled,
+              btnInfos: [
+                {
+                  value: 5,
+                  text: "5분",
+                  toggle: branchInfo.pickupAvTime5,
+                },
+                {
+                  value: 10,
+                  text: "10분",
+                  toggle: branchInfo.pickupAvTime10,
+                },
+                {
+                  value: 15,
+                  text: "15분",
+                  toggle: branchInfo.pickupAvTime15,
+                },
+                {
+                  value: 20,
+                  text: "20분",
+                  toggle: branchInfo.pickupAvTime20,
+                },
+                {
+                  value: 30,
+                  text: "30분",
+                  toggle: branchInfo.pickupAvTime30,
+                },
+                {
+                  value: 40,
+                  text: "40분",
+                  toggle: branchInfo.pickupAvTime40,
+                },
+                {
+                  value: 1005,
+                  text: "후 5분",
+                  toggle: branchInfo.pickupAvTime5After,
+                },
+                {
+                  value: 1010,
+                  text: "후 10분",
+                  toggle: branchInfo.pickupAvTime10After,
+                },
+              ],
+            });
+          });
+        } else {
+          console.log("branchInfo error");
+        }
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
 
   handleChange = (e) => {
     this.setState({

@@ -1,5 +1,5 @@
 import { Button, Form, Input, Modal, Select } from "antd";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import "../../../css/modal.css";
 import { paymentMethod, paymentStatus } from "../../../lib/util/codeUtil";
 import { comma } from "../../../lib/util/numberUtil";
@@ -47,27 +47,27 @@ const PaymentDialog = ({
   const handleMinus = (index) => {
     setData(data.filter((v, idx) => v.idx !== index));
   };
-  const calcSum = () => {
+  const calcSum = useCallback(() => {
     let res = 0;
     for (let i = 0; i < data.length; i++) {
       res += data[i].paymentAmount;
     }
     return res;
-  };
-  const calcChange = () => {
+  }, [data]);
+  const calcChange = useCallback(() => {
     setChange(comma(orderPrice - calcSum()));
-  };
+  }, [orderPrice, calcSum]);
 
   useEffect(() => {
-    console.log("orderpayments!!!!!!!!!!!!!");
-    console.log(orderPayments);
+    // console.log("orderpayments!!!!!!!!!!!!!");
+    // console.log(orderPayments);
     calcChange();
     let initialIndex = 0;
     for (let i = 0; data.length > i; i++) {
       initialIndex = Math.max(initialIndex, data[i].idx);
     }
     setMaxIdx(initialIndex + 1);
-  }, []);
+  }, [calcChange, data]);
 
   return (
     <React.Fragment>
@@ -131,7 +131,7 @@ const PaymentDialog = ({
                               >
                                 {paymentMethod.map((value, index) => {
                                   if (index === 0) {
-                                    return;
+                                    return <></>;
                                   }
                                   return <Option value={index}>{value}</Option>;
                                 })}
@@ -149,7 +149,7 @@ const PaymentDialog = ({
                               >
                                 {paymentMethod.map((value, index) => {
                                   if (index === 0) {
-                                    return;
+                                    return <></>;
                                   }
                                   return <Option value={index}>{value}</Option>;
                                 })}
@@ -171,7 +171,7 @@ const PaymentDialog = ({
                               >
                                 {paymentStatus.map((value, index) => {
                                   if (index === 0) {
-                                    return;
+                                    return <></>;
                                   }
                                   return <Option value={index}>{value}</Option>;
                                 })}
@@ -275,10 +275,10 @@ const PaymentDialog = ({
                       console.log("이게 왜 갑자기 안돼돼");
                       console.log(orderPrice > 0);
                       console.log(calcSum() > orderPrice);
-                      if (orderPrice >= 0 && calcSum() > orderPrice) {
+                      if (orderPrice >= 0 && calcSum() !== orderPrice) {
                         Modal.info({
                           title: "설정 오류",
-                          content: "결제 금액이 초과 되었습니다.",
+                          content: "결제 금액을 확인해주세요.",
                         });
                         return;
                       }

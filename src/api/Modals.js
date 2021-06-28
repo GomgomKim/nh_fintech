@@ -150,6 +150,42 @@ const unBlindError = () => {
     });
 }
 
+
+
+const unBlindAgree = () => {
+    Modal.info({
+        title: "차단 승인",
+        content: (
+        <div>
+            해당 블라인드를 승인하였습니다.
+        </div>
+        ),
+        onOk() {},
+    });
+}
+
+const unBlindDeny = () => {
+    Modal.error({
+        title: "차단 거부", 
+        content: (
+        <div>
+            해당 블라인드를 거부하였습니다.
+        </div>), 
+        onOk() {},
+    });
+}
+
+const unBlindAgreeError = () => {
+    Modal.error({
+        title: "처리 실패", 
+        content: (
+        <div>
+            서버에러로 인해 처리에 실패했습니다.
+        </div>), 
+        onOk() {},
+    });
+}
+
 export {
     updateComplete,
     updateError,
@@ -164,4 +200,7 @@ export {
     unBlindError,
     customError,
     customAlert,
+    unBlindAgree,
+    unBlindDeny,
+    unBlindAgreeError,
 }

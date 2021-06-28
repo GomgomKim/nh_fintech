@@ -19,6 +19,32 @@ const makeUrl = (url, params) => {
   return result;
 };
 
+const httpExecWithNoLoading = (method, url, data) => {
+  return new Promise((resolve, reject) => {
+    Axios({
+      method: method,
+      url: url,
+      data: data,
+      withCredentials: true,
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => {
+        resolve(response.data);
+      })
+      .catch((error) => {
+        if (error.message.includes("401")) {
+          alert("로그인이 만료되었습니다. 다시 로그인해주세요");
+          reactLocalStorage.remove("adminUser");
+          global.location.href = "/";
+        }
+        reject(error);
+      });
+  });
+};
+
 const httpExec = (method, url, data) => {
   loadingCount++;
   if (loadingCount === 1)
@@ -85,6 +111,7 @@ const httpExec = (method, url, data) => {
 };
 
 const httpGet = (url, params, data) => {
+  console.log(makeUrl(url, params));
   return httpExec("GET", makeUrl(url, params), data);
   // return new Promise((resolve, reject) => {
   //   Axios.get(makeUrl(url, params), data)
@@ -127,6 +154,19 @@ const httpPost = (url, params, data) => {
   // });
 };
 
+const httpPostWithNoLoading = (url, params, data) => {
+  return httpExecWithNoLoading("POST", makeUrl(url, params), data);
+  // return new Promise((resolve, reject) => {
+  //   Axios.post(makeUrl(url, params), data)
+  //     .then(response => {
+  //       resolve(response.data);
+  //     })
+  //     .catch(error => {
+  //       reject(error);
+  //     });
+  // });
+};
+
 const httpDownload = (url, params, data) => {
   // return httpExec('GET', makeUrl(url, params), data);
   return new Promise((resolve, reject) => {
@@ -153,6 +193,10 @@ const httpDownload = (url, params, data) => {
   });
 };
 
+const imageUrl = (idx) => {
+  return serverUrl + "/file/" + idx;
+};
+
 const httpUrl = {
   login: "/login",
   logout: "/logout",
@@ -164,6 +208,8 @@ const httpUrl = {
   orderList: "/order/list",
   orderUpdate: "/order/update",
   orderCreate: "/order/create",
+  orderPickup: "/order/pickup",
+  orderComplete: "/order/complete",
   getDeliveryPrice:
     "/fr/expectDeliveryPrice?frIdx=%s&destLatitude=%s&destLongitude=%s",
 
@@ -188,6 +234,7 @@ const httpUrl = {
     "/fr/expectDeliveryPrice?destLatitude=%s&destLongitude=%s",
 
   // rider
+  riderTotalList: "/rider/list",
   riderList:
     "/rider/list?pageSize=%s&pageNum=%s&searchName=%s&userStatus=%s&riderLevels=%s",
   registRider: "/rider/create",
@@ -214,16 +261,22 @@ const httpUrl = {
   registNotice: "/notice/create",
   updateNotice: "/notice/update",
   specificNoticeList: "/notice/%s",
+  smsSendFran: "/sms/create",
 
   // 블라인드
   blindList: "/rider/admin/block/list",
   registBlind: "/rider/admin/block/create",
   deleteBlind: "/rider/admin/block/delete",
 
+  statusBlind: "/rider/block/update",
+  blindAllList:
+    "/rider/block/all/list?deletedList=%s&pageNum=%s&pageSize=%s&statusList=%s",
+
   // 채팅
   chatList: "/chat/chatList?pageSize=%s&pageNum=%s&searchName=%s",
   chatMessageList: "/chat/messageList?pageSize=%s&pageNum=%s&chatRoomIdx=%s",
   chatSend: "/chat/send",
+  chatRoom: "/chat/chatroom?receiveUserIdx=%s",
 
   // 주소검색관리
   getAddrAptList:
@@ -236,6 +289,22 @@ const httpUrl = {
 
   // 지점조회
   getBranch: "/branch/%s",
+
+  // 바이크
+  createBike: "/bike/create",
+  getBikeList: "/bike/list?modelName=%s&pageNum=%s&pageSize=%s",
+  getBikeListNoModelName: "/bike/list?pageNum=%s&pageSize=%s",
+
+  // 상품관리
+  buyList: "/mall/buyList?pageNum=%s&pageSize=%s",
+  updateBuy: "/mall/buyProduct/update",
+
+  // 라이더 전체메세지
+  riderMessageAll: "/chat/send/allRider",
+
+  // 기사그룹
+  getRiderGroup: "/rider/settingGroup/list",
+  updateRiderGroup: "/rider/settingGroup/update",
 };
 
 const imageType = ["image/jpeg", "image/png", "image/bmp"];
@@ -251,5 +320,7 @@ export {
   httpDelete,
   httpDownload,
   imageType,
+  imageUrl,
+  httpPostWithNoLoading,
 };
 

@@ -229,7 +229,7 @@ class NoticeDialog extends Component {
         title: "제목",
         dataIndex: "title",
         className: "table-column-center",
-        width: 450,
+        width: 400,
         render: (data, row) => (
           <>
           <div
@@ -244,6 +244,13 @@ class NoticeDialog extends Component {
           }
           </>
         ),
+      },
+      {
+        title: "대상",
+        dataIndex: "category",
+        className: "table-column-center",
+        width: 100,
+        render: (data) => <div>{data === 1 ? '전체' : data === 2 ? '라이더' : '가맹점' }</div>,
       },
       {
         title: "날짜",

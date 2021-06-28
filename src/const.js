@@ -1,5 +1,5 @@
-export default {
-  appName: 'nnboxPartner',
+const Const = {
+  appName: "nnboxPartner",
 
   //local
   serverProtocol: "http",
@@ -13,11 +13,11 @@ export default {
   // serverProtocol: "https",
   // serverIp: "manage.nyamnyambox.com",
 
-
   serverPort: "30001",
 
   //naver map client key
   clientId: "",
   clientSecret: "",
-
 };
+
+export default Const;

@@ -1,16 +1,37 @@
-import React, { Component } from "react";
-import { Form, Input, Button, Select, Modal, Checkbox, Radio } from "antd";
-import "../../../css/modal.css";
-import { httpUrl, httpPost } from "../../../api/httpClient";
-import { riderGroupString, riderLevelText, bikeType } from "../../../lib/util/codeUtil";
 import {
-  updateComplete,
-  updateError,
+  Button,
+  Checkbox,
+  DatePicker,
+  Form,
+  Input,
+  Modal,
+  Radio,
+  Select
+} from "antd";
+import moment from "moment";
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { httpPost, httpUrl } from "../../../api/httpClient";
+import {
   registComplete,
   registError,
+  updateComplete,
+  updateError
 } from "../../../api/Modals";
+import "../../../css/modal.css";
+import {
+  bankCode,
+  bikeType,
+  items,
+  riderGroupString,
+  riderLevelText
+} from "../../../lib/util/codeUtil";
+import {
+  formatDateSecond,
+  formatDateToDay,
+  formatYear
+} from "../../../lib/util/dateUtil";
 import SearchBikeDialog from "../../dialog/common/SearchBikeDialog";
-import { connect } from "react-redux";
 
 const Option = Select.Option;
 const FormItem = Form.Item;
@@ -26,8 +47,6 @@ class RegistRiderDialog extends Component {
         pageSize: 5,
       },
       staffAuth: 1,
-      // riderLevelSelected: false,
-      // riderGroupSelected: false,
       feeManner: 1,
       userGroup: 1,
       riderLevel: 1,
@@ -39,12 +58,23 @@ class RegistRiderDialog extends Component {
       selectedBike: null,
 
       agreeSms: true,
+
+      // 바이크 등록 param
+      bikeNumber: "",
+      makeDate: "",
+      maker: "",
+      modelName: "",
+      modelYear: "",
+      mileage: "",
     };
     this.formRef = React.createRef();
   }
 
   componentDidMount() {
     // this.getList()
+    if (this.props.data) {
+      this.setState({ selectedBike: this.props.data.bike });
+    }
     console.log(this.props.data);
   }
 
@@ -71,11 +101,39 @@ class RegistRiderDialog extends Component {
       cancelText: "취소",
       onOk() {
         if (data) {
+          console.log({
+            ...self.formRef.current.getFieldsValue(),
+            idx: data.idx,
+            branchIdx: self.props.branchIdx,
+            agreeSms: self.state.agreeSms,
+            riderSettingGroup: {
+              idx: self.formRef.current.getFieldValue("riderSettingGroup"),
+            },
+            bikeIdx: self.state.selectedBike.idx,
+            items: self.formRef.current.getFieldValue("items").join(","),
+            joinDate: formatDateToDay(
+              self.formRef.current.getFieldValue("joinDate")
+            ),
+            leaveDate: formatDateToDay(
+              self.formRef.current.getFieldValue("leaveDate")
+            ),
+          });
           httpPost(httpUrl.updateRider, [], {
             ...self.formRef.current.getFieldsValue(),
             idx: data.idx,
             branchIdx: self.props.branchIdx,
             agreeSms: self.state.agreeSms,
+            riderSettingGroup: {
+              idx: self.formRef.current.getFieldValue("riderSettingGroup"),
+            },
+            bikeIdx: self.state.selectedBike.idx,
+            items: self.formRef.current.getFieldValue("items").join(","),
+            joinDate: formatDateToDay(
+              self.formRef.current.getFieldValue("joinDate")
+            ),
+            leaveDate: formatDateToDay(
+              self.formRef.current.getFieldValue("leaveDate")
+            ),
           })
             .then((res) => {
               if (res.result === "SUCCESS" && res.data === "SUCCESS") {
@@ -93,15 +151,42 @@ class RegistRiderDialog extends Component {
             ...self.formRef.current.getFieldsValue(),
             branchIdx: self.props.branchIdx,
             agreeSms: self.state.agreeSms,
-            // userType: 1,
+            riderSettingGroup: {
+              idx: self.formRef.current.getFieldValue("riderSettingGroup"),
+            },
+            userType: 1,
+            bikeIdx: self.state.selectedBike.idx,
+            ncash: 0,
+            items: self.formRef.current.getFieldValue("items").join(","),
+            joinDate: formatDateToDay(
+              self.formRef.current.getFieldValue("joinDate")
+            ),
+            leaveDate: formatDateToDay(
+              self.formRef.current.getFieldValue("leaveDate")
+            ),
+
             // deliveryPriceFeeType: self.state.feeManner,
           });
           httpPost(httpUrl.registRider, [], {
             ...self.formRef.current.getFieldsValue(),
             branchIdx: self.props.branchIdx,
             agreeSms: self.state.agreeSms,
+            riderSettingGroup: {
+              idx: self.formRef.current.getFieldValue("riderSettingGroup"),
+            },
+            userType: 1,
+            bikeIdx: self.state.selectedBike.idx,
+            items: self.formRef.current.getFieldValue("items").join(","),
+            joinDate: formatDateToDay(
+              self.formRef.current.getFieldValue("joinDate")
+            ),
+            leaveDate: formatDateToDay(
+              self.formRef.current.getFieldValue("leaveDate")
+            ),
 
-            // userType: 1,
+            // 기사 생성 시 예치금 정책 어떻게 될지에 따라 변경 될 수 있음
+            // ncash 컬럼이 not null 이어서 기사 등록 시 0 설정
+            ncash: 0,
             // deliveryPriceFeeType: self.state.feeManner,
           })
             .then((res) => {
@@ -111,7 +196,6 @@ class RegistRiderDialog extends Component {
                 registError();
               }
               self.props.close();
-              // this.getList();
             })
             .catch((e) => {
               registError();
@@ -125,24 +209,46 @@ class RegistRiderDialog extends Component {
     this.formRef.current.resetFields();
   };
 
-  // handleChangeRiderLevel = (value) => {
-  //     if (value === 1) {
-  //         this.setState({ riderLevelSelected: true });
-  //     } else {
-  //         this.setState({ riderLevelSelected: false });
-  //     }
-  // }
+  handleInput = (value, key) => {
+    let newState = this.state;
+    newState[key] = value;
+    this.setState(newState, () => console.log(this.state));
+  };
 
-  // handleChangeRiderGroup = (value) => {
-  //     if (value === 1) {
-  //         this.setState({ riderGroupSelected: true });
-  //     } else {
-  //         this.setState({ riderGroupSelected: false });
-  //     }
-  // }
+  createBike = () => {
+    httpPost(httpUrl.createBike, [], {
+      bikeNumber: this.state.bikeNumber,
+      makeDate: this.state.makeDate,
+      maker: this.state.maker,
+      modelName: this.state.modelName,
+      modelYear: this.state.modelYear,
+      mileage: this.state.mileage,
+    })
+      .then((res) => {
+        if (res.result === "SUCCESS" && res.data === "SUCCESS") {
+          Modal.info({
+            title: "등록성공",
+            content: "바이크 등록에 성공했습니다.",
+          });
+        } else {
+          Modal.info({
+            title: "등록실패",
+            content: "바이크 등록에 실패했습니다.",
+          });
+        }
+      })
+      .catch((e) => {
+        Modal.info({
+          title: "등록실패",
+          content: "바이크 등록에 실패했습니다.",
+        });
+        console.log(e);
+        throw e;
+      });
+  };
 
   onChangFeeManner = (e) => {
-    this.setState({ feeManner: e.target.value }, () => { });
+    this.setState({ feeManner: e.target.value }, () => {});
   };
 
   onSelectChange = (selectedRowKeys) => {
@@ -154,22 +260,19 @@ class RegistRiderDialog extends Component {
   };
 
   openSearchBikeModal = () => {
-    this.setState({ isSearchBikeOpen: true })
+    this.setState({ isSearchBikeOpen: true });
   };
 
   closeSearchBikeModal = () => {
-    this.setState({ isSearchBikeOpen: false })
+    this.setState({ isSearchBikeOpen: false });
   };
 
-
   render() {
-    // const selectedRowKeys = this.state.selectedRowKeys
-    // const rowSelection = {
-    //     selectedRowKeys,
-    //     onChange: this.onSelectChange
-    // };
     const { close, data } = this.props;
     console.log(data);
+
+    const dateFormat = "YYYY/MM/DD";
+    const today = new Date();
 
     return (
       <React.Fragment>
@@ -190,28 +293,30 @@ class RegistRiderDialog extends Component {
               <div className="registRiderLayout">
                 <div className="registRiderBox">
                   <div className="registFranTitle">
-                    <div className="registFranTitle-sub">
-                      기본정보
-                    </div>
+                    <div className="registFranTitle-sub">기본정보</div>
                   </div>
                   <div className="registRiderWrapper">
                     <div className="contentBlock">
                       <div className="mainTitle">기사그룹</div>
                       <FormItem
-                        name="userType"
+                        name="riderSettingGroup"
                         className="selectItem"
                         rules={[
                           { required: true, message: "그룹을 선택해주세요" },
                         ]}
-                        initialValue={data ? data.userType : 3}
+                        initialValue={
+                          data
+                            ? riderGroupString.findIndex(
+                                (item) =>
+                                  item ===
+                                  data.riderSettingGroup.settingGroupName
+                              )
+                            : 3
+                        }
                       >
-                        <Select
-                          onChange={() =>
-                            console.log(this.formRef.current.getFieldsValue())
-                          }
-                        >
+                        <Select>
                           {riderGroupString.map((v, index) => {
-                            if (index === 0) return;
+                            if (index === 0) return <></>;
                             return <Option value={index}>{v}</Option>;
                           })}
                         </Select>
@@ -233,13 +338,13 @@ class RegistRiderDialog extends Component {
                           }
                         >
                           {riderLevelText.map((v, index) => {
-                            if (index === 0) return;
+                            if (index === 0) return <></>;
                             return <Option value={index}>{v}</Option>;
                           })}
                         </Select>
                       </FormItem>
                     </div>
-                    {this.state.riderLevelSelected && (
+                    {/* {this.state.riderLevelSelected && (
                       <div className="contentBlock">
                         <div className="mainTitle">소속팀장</div>
                         <FormItem
@@ -264,7 +369,7 @@ class RegistRiderDialog extends Component {
                           </Select>
                         </FormItem>
                       </div>
-                    )}
+                    )} */}
 
                     <div className="contentBlock">
                       <div className="mainTitle">기사명</div>
@@ -348,7 +453,9 @@ class RegistRiderDialog extends Component {
                     </div>
                     {this.state.isSearchBikeOpen && (
                       <SearchBikeDialog
-                        // getList={this.getList}
+                        onSelect={(selectedBike) =>
+                          this.setState({ selectedBike: selectedBike })
+                        }
                         close={this.closeSearchBikeModal}
                       />
                     )}
@@ -362,14 +469,13 @@ class RegistRiderDialog extends Component {
                         style={{ marginRight: 19 }}
                       >
                         {Object.entries(bikeType).map(([key, value]) => {
-                          return (
-                            <Radio value={parseInt(key)}>
-                              {value}
-                            </Radio>
-                          );
+                          return <Radio value={parseInt(key)}>{value}</Radio>;
                         })}
                       </Radio.Group>
-                      <Button className="tabBtn sectionTab" onClick={this.openSearchBikeModal}>
+                      <Button
+                        className="tabBtn sectionTab"
+                        onClick={this.openSearchBikeModal}
+                      >
                         바이크 조회
                       </Button>
                     </div>
@@ -378,19 +484,16 @@ class RegistRiderDialog extends Component {
                       <Input
                         value={
                           this.state.selectedBike
-                            ? this.state.selectedBike.searchBike
+                            ? this.state.selectedBike.bikeNumber
                             : this.props.data
-                              ? this.props.data.searchBike
-                              : ""
+                            ? this.props.data.bikeNumber
+                            : ""
                         }
                         className="override-input"
                         placeholder="바이크를 선택해주세요."
                         disabled
                       />
                     </div>
-
-                  </div>
-                  <div className="registRiderWrapper sub">
                     <div className="contentBlock">
                       <div className="mainTitle">메모</div>
                       <FormItem
@@ -405,13 +508,13 @@ class RegistRiderDialog extends Component {
                         />
                       </FormItem>
                     </div>
-
                     <div className="contentBlock">
+                      {/* 컬럼 확인 필요 */}
                       <div className="mainTitle">최소보유잔액</div>
                       <FormItem
-                        name="ncash"
+                        name="ncashMin"
                         className="selectItem"
-                        initialValue={data ? data.ncash : 100000}
+                        initialValue={data ? data.ncashMin : 100000}
                       >
                         <Input
                           placeholder="최소보유잔액을 입력해 주세요."
@@ -419,6 +522,8 @@ class RegistRiderDialog extends Component {
                         />
                       </FormItem>
                     </div>
+                  </div>
+                  <div className="registRiderWrapper sub">
                     <div className="contentBlock">
                       <div className="mainTitle">기본 배달료</div>
                       <FormItem
@@ -448,23 +553,118 @@ class RegistRiderDialog extends Component {
                     </div>
 
                     <div className="contentBlock">
-                      <div className="mainTitle">비품지급</div>
-                      <FormItem name="" className="giveBox selectItem">
-                        <Checkbox>헬멧</Checkbox>
-                        <Checkbox>조끼</Checkbox>
-                        <Checkbox>배달통</Checkbox>
-                        <Checkbox>보냉</Checkbox>
-                        <Checkbox>우의</Checkbox>
-                        <Checkbox>피자가방</Checkbox>
-                        <Checkbox>여름티</Checkbox>
-                        <Checkbox>토시</Checkbox>
-                        <Checkbox>바람막이</Checkbox>
-                        <Checkbox>카드리더기</Checkbox>
+                      <div className="mainTitle">은행</div>
+                      <FormItem
+                        name="bank"
+                        className="selectItem"
+                        rules={[
+                          { required: true, message: "은행을 선택해주세요" },
+                        ]}
+                        initialValue={data ? data.bank : "기업은행,003"}
+                      >
+                        <Select>
+                          {Object.keys(bankCode).map((key) => {
+                            return (
+                              <Option value={key + "," + bankCode[key]}>
+                                {key}
+                              </Option>
+                            );
+                          })}
+                        </Select>
+                      </FormItem>
+                    </div>
+                    <div className="contentBlock">
+                      <div className="mainTitle">계좌번호</div>
+                      <FormItem
+                        name="bankAccount"
+                        className="selectItem"
+                        rules={[
+                          {
+                            required: true,
+                            message: "계좌번호를 입력해주세요",
+                          },
+                        ]}
+                        initialValue={data ? data.bankAccount : ""}
+                      >
+                        <Input
+                          placeholder="계좌번호를 입력해 주세요."
+                          className="override-input"
+                        />
                       </FormItem>
                     </div>
 
+                    <div className="contentBlock">
+                      <div className="mainTitle">예금주</div>
+                      <FormItem
+                        name="depositor"
+                        className="selectItem"
+                        rules={[
+                          { required: true, message: "예금주를 입력해주세요" },
+                        ]}
+                        initialValue={data ? data.depositor : ""}
+                      >
+                        <Input
+                          placeholder="예금주를 입력해 주세요."
+                          className="override-input"
+                        />
+                      </FormItem>
+                    </div>
+                    <div className="contentBlock">
+                      <div className="mainTitle">입사일</div>
+                      <FormItem
+                        name="joinDate"
+                        className="selectItem"
+                        initialValue={
+                          data
+                            ? moment(data.joinDate, "YYYY-MM-DD")
+                            : moment(today, dateFormat)
+                        }
+                      >
+                        <DatePicker
+                          style={{ width: 260 }}
+                          className="selectItem"
+                          format={dateFormat}
+                        />
+                      </FormItem>
+                    </div>
+                    <div className="contentBlock">
+                      <div className="mainTitle">퇴사일</div>
+                      <FormItem name="leaveDate" className="selectItem">
+                        <DatePicker
+                          style={{ width: 260 }}
+                          className="selectItem"
+                          defaultValue={
+                            data
+                              ? data.leaveDate
+                                ? moment(data.leaveDate, "YYYY-MM-DD")
+                                : ""
+                              : ""
+                          }
+                          format={dateFormat}
+                        />
+                      </FormItem>
+                    </div>
 
-                    <div className="contentBlock" style={{ marginTop: 10 }}>
+                    <div className="contentBlock">
+                      <div className="mainTitle">비품지급</div>
+                      <FormItem
+                        name="items"
+                        className="giveBox selectItem"
+                        initialValue={
+                          data && data.items ? data.items.split(",") : []
+                        }
+                      >
+                        <Checkbox.Group
+                          options={items}
+                          // initialValue={
+                          //   data && data.items ? data.items.split(",") : []
+                          // }
+                          onChange={(value) => console.log(value)}
+                        />
+                      </FormItem>
+                    </div>
+
+                    {/* <div className="contentBlock" style={{ marginTop: 10 }}>
                       <div className="mainTitle">SMS수신동의</div>
                       <FormItem name="agreeSms" className="giveBox selectItem">
                         <Checkbox
@@ -477,7 +677,7 @@ class RegistRiderDialog extends Component {
                           수신동의
                         </Checkbox>
                       </FormItem>
-                    </div>
+                    </div> */}
 
                     <div className="submitBlock">
                       <Button type="primary" htmlType="submit">
@@ -492,108 +692,208 @@ class RegistRiderDialog extends Component {
                     </div>
                   </div>
                 </div>
-                {this.state.bikeType === 1 ?
+                {this.state.bikeType === 1 ? (
                   <div className="bike-type-box">
-
                     <div>지입바이크 등록</div>
                     <ul>
                       <li>
-                        <p>바이크번호</p>
-                        <FormItem
-                          name="bike_number"
-                          className="selectItem"
-                          initialValue={data ? data.bike_number : ""}>
+                        <p className="regist-bike-title">바이크번호</p>
+                        <div name="bikeNumber" className="selectItem">
                           <Input
                             placeholder="번호를 입력해주세요."
                             className="override-input"
+                            value={this.state.bikeNumber}
+                            onChange={(e) =>
+                              this.handleInput(e.target.value, "bikeNumber")
+                            }
                           />
-                        </FormItem>
+                        </div>
                       </li>
 
                       <li>
-                        <p>모델명</p>
-                        <FormItem
-                          name="model_name"
-                          className="selectItem"
-                          initialValue={data ? data.model_name : ""}>
+                        <p className="regist-bike-title">모델명</p>
+                        <div name="modelName" className="selectItem">
                           <Input
                             placeholder="모델명을 입력해주세요."
                             className="override-input"
+                            value={this.state.modelName}
+                            onChange={(e) =>
+                              this.handleInput(e.target.value, "modelName")
+                            }
                           />
-                        </FormItem>
+                        </div>
                       </li>
                       <li>
-                        <p>제조사</p>
-                        <FormItem
-                          name="maker"
-                          className="selectItem"
-                          initialValue={data ? data.maker : ""}>
+                        <p className="regist-bike-title">제조사</p>
+                        <div name="maker" className="selectItem">
                           <Input
                             placeholder="제조사를 입력해주세요."
                             className="override-input"
+                            value={this.state.maker}
+                            onChange={(e) =>
+                              this.handleInput(e.target.value, "maker")
+                            }
                           />
-                        </FormItem>
+                        </div>
                       </li>
                       <li>
-                        <Button
-                          type="primary"
-                          htmlType="submit"
-                          style={{ backgroundColor: '#000', borderColor: '#000' }}>
-                          등록하기
-                        </Button>
+                        <p className="regist-bike-title">제조일자</p>
+                        <div name="makeDate" className="selectItem">
+                          {/* <Input
+                            placeholder="제조일자를 입력해주세요."
+                            className="override-input"
+                          /> */}
+                          <DatePicker
+                            onSelect={(value) =>
+                              this.handleInput(
+                                formatDateSecond(value),
+                                "makeDate"
+                              )
+                            }
+                          />
+                        </div>
                       </li>
-                    </ul>
-                  </div>
-                  :
-                  <div className="bike-type-box">
 
+                      <li>
+                        <p className="regist-bike-title">모델연식</p>
+                        <div name="modelYear" className="selectItem">
+                          <DatePicker
+                            onSelect={(value) =>
+                              this.handleInput(formatYear(value), "modelYear")
+                            }
+                            picker="year"
+                          />
+                        </div>
+                      </li>
+
+                      <li>
+                        <p className="regist-bike-title">주행거리</p>
+                        <div name="mileage" className="selectItem">
+                          <Input
+                            type="number"
+                            placeholder="주행거리를 입력해주세요."
+                            className="override-input"
+                            value={this.state.mileage}
+                            onChange={(e) =>
+                              this.handleInput(e.target.value, "mileage")
+                            }
+                          />
+                        </div>
+                      </li>
+
+                      <li></li>
+                    </ul>
+                    <Button
+                      type="primary"
+                      style={{
+                        backgroundColor: "#000",
+                        borderColor: "#000",
+                        float: "right",
+                        marginTop: 20,
+                        marginRight: 35,
+                      }}
+                      onClick={() => this.createBike()}
+                    >
+                      등록하기
+                    </Button>
+                  </div>
+                ) : (
+                  <div className="bike-type-box">
                     <div>지입바이크 등록</div>
                     <ul>
                       <li>
-                        <p>바이크번호</p>
-                        <FormItem
-                          name="bike_number"
-                          className="selectItem"
-                          initialValue={data ? data.bike_number : ""}>
+                        <p className="regist-bike-title">바이크번호</p>
+                        <div name="bikeNumber" className="selectItem">
                           <Input
                             placeholder="번호를 입력해주세요."
                             className="override-input"
+                            value={this.state.bikeNumber}
+                            onChange={(e) =>
+                              this.handleInput(e.target.value, "bikeNumber")
+                            }
                             disabled
                           />
-                        </FormItem>
+                        </div>
                       </li>
 
                       <li>
-                        <p>모델명</p>
-                        <FormItem
-                          name="model_name"
-                          className="selectItem"
-                          initialValue={data ? data.model_name : ""}>
+                        <p className="regist-bike-title">모델명</p>
+                        <div name="modelName" className="selectItem">
                           <Input
                             placeholder="모델명을 입력해주세요."
                             className="override-input"
+                            value={this.state.modelName}
+                            onChange={(e) =>
+                              this.handleInput(e.target.value, "modelName")
+                            }
                             disabled
                           />
-                        </FormItem>
+                        </div>
                       </li>
                       <li>
-                        <p>제조사</p>
-                        <FormItem
-                          name="maker"
-                          className="selectItem"
-                          initialValue={data ? data.maker : ""}>
+                        <p className="regist-bike-title">제조사</p>
+                        <div name="maker" className="selectItem">
                           <Input
                             placeholder="제조사를 입력해주세요."
                             className="override-input"
+                            value={this.state.maker}
+                            onChange={(e) =>
+                              this.handleInput(e.target.value, "maker")
+                            }
                             disabled
                           />
-                        </FormItem>
+                        </div>
                       </li>
-                      <li><Button disabled> 등록하기 </Button></li>
+                      <li>
+                        <p className="regist-bike-title">제조일자</p>
+                        <div name="makeDate" className="selectItem">
+                          {/* <Input
+                            placeholder="제조일자를 입력해주세요."
+                            className="override-input"
+                          /> */}
+                          <DatePicker
+                            onSelect={(value) =>
+                              this.handleInput(
+                                formatDateSecond(value),
+                                "makeDate"
+                              )
+                            }
+                            disabled
+                          />
+                        </div>
+                      </li>
+
+                      <li>
+                        <p className="regist-bike-title">모델연식</p>
+                        <div name="modelYear" className="selectItem">
+                          <DatePicker
+                            onSelect={(value) =>
+                              this.handleInput(formatYear(value), "modelYear")
+                            }
+                            picker="year"
+                            disabled
+                          />
+                        </div>
+                      </li>
+
+                      <li>
+                        <p className="regist-bike-title">주행거리</p>
+                        <div name="mileage" className="selectItem">
+                          <Input
+                            type="number"
+                            placeholder="주행거리를 입력해주세요."
+                            className="override-input"
+                            value={this.state.mileage}
+                            onChange={(e) =>
+                              this.handleInput(e.target.value, "mileage")
+                            }
+                            disabled
+                          />
+                        </div>
+                      </li>
                     </ul>
                   </div>
-                }
-
+                )}
               </div>
             </Form>
           </div>
@@ -607,6 +907,6 @@ const mapStateToProps = (state) => ({
   branchIdx: state.login.loginInfo.branchIdx,
 });
 
-const mapDispatchToProps = () => { };
+const mapDispatchToProps = () => {};
 
 export default connect(mapStateToProps, mapDispatchToProps)(RegistRiderDialog);

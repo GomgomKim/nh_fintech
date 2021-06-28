@@ -1,12 +1,11 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { reactLocalStorage } from 'reactjs-localstorage';
-import { Form, Input, Button, Checkbox } from 'antd';
-
-import { login } from '../actions/loginAction';
-import { httpPost, httpUrl } from '../api/httpClient';
-import { withRouter } from 'react-router-dom';
-import Const from '../const';
+import { Button, Checkbox, Form, Input } from "antd";
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
+import { reactLocalStorage } from "reactjs-localstorage";
+import { login } from "../actions/loginAction";
+import { httpPost, httpUrl } from "../api/httpClient";
+import Const from "../const";
 
 const FormItem = Form.Item;
 
@@ -23,43 +22,43 @@ class Login extends Component {
     this.getStorageLoginInfo();
   }
   getStorageLoginInfo = () => {
-    let value = reactLocalStorage.getObject(Const.appName + ':auth');
+    let value = reactLocalStorage.getObject(Const.appName + ":auth");
     if (value !== null) {
       try {
         value = JSON.parse(value);
       } catch {}
-      if (value.type == 'saveLoginId') {
+      if (value.type === "saveLoginId") {
         this.formRef.current.setFieldsValue({ id: value.id });
         this.setState({ saveLoginId: true });
       }
     }
   };
-  handleSubmit = e => {
+  handleSubmit = (e) => {
     httpPost(httpUrl.login, [], {
       ...this.formRef.current.getFieldsValue(),
     })
-      .then(res => {
+      .then((res) => {
         if (res.data.result) {
           this.props.onLogin(res.data.user);
 
           let localData = {};
           if (this.state.saveLoginId) {
             localData = {
-              type: 'saveLoginId',
-              id: this.formRef.current.getFieldValue('id'),
+              type: "saveLoginId",
+              id: this.formRef.current.getFieldValue("id"),
             };
           }
           reactLocalStorage.setObject(
-            Const.appName + ':auth',
-            JSON.stringify(localData),
+            Const.appName + ":auth",
+            JSON.stringify(localData)
           );
 
-          this.props.history.push('/order/OrderMain');
+          this.props.history.push("/order/OrderMain");
         } else {
-          alert('아이디 또는 비밀번호가 잘못되었습니다.');
+          alert("아이디 또는 비밀번호가 잘못되었습니다.");
         }
       })
-      .catch(error => {});
+      .catch((error) => {});
   };
 
   render() {
@@ -67,24 +66,30 @@ class Login extends Component {
       <div className="login-container">
         <Form ref={this.formRef} onFinish={this.handleSubmit}>
           <div className="login-img">
-            <img src={require('../img/login/login_img.png').default} />
+            <img
+              src={require("../img/login/login_img.png").default}
+              alt="login_image"
+            />
           </div>
           <div className="login-form">
             <div className="login-logo">
-              <img src={require('../img/login/login_text.png').default} />
+              <img
+                src={require("../img/login/login_text.png").default}
+                alt="login_text"
+              />
               <div className="login-system-name">(관제시스템)</div>
             </div>
             <div className="login-input">
               <FormItem
                 name="id"
-                rules={[{ required: true, message: '아이디를 입력해주세요' }]}
+                rules={[{ required: true, message: "아이디를 입력해주세요" }]}
               >
                 <Input className="login-input-item" placeholder="아이디" />
               </FormItem>
               <FormItem
                 name="password"
                 rules={[
-                  { required: true, message: '비밀번호를 입력해주세요.' },
+                  { required: true, message: "비밀번호를 입력해주세요." },
                 ]}
               >
                 <Input
@@ -105,7 +110,7 @@ class Login extends Component {
             <div className="top-input-checkbox">
               <Checkbox
                 style={{ paddingRight: 5.7 }}
-                onChange={e => {
+                onChange={(e) => {
                   this.setState({ saveLoginId: e.target.checked });
                 }}
                 checked={this.state.saveLoginId}
@@ -122,16 +127,16 @@ class Login extends Component {
   }
 }
 
-let mapStateToProps = state => {
+let mapStateToProps = (state) => {
   return {
     isLogin: state.login.isLogin,
     loginInfo: state.login.loginInfo,
   };
 };
 
-let mapDispatchToProps = dispatch => {
+let mapDispatchToProps = (dispatch) => {
   return {
-    onLogin: userinfo => dispatch(login(userinfo)),
+    onLogin: (userinfo) => dispatch(login(userinfo)),
   };
 };
 

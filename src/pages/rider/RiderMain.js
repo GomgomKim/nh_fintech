@@ -1,6 +1,6 @@
 import { Button, Image, Input, Modal, Popover, Table } from "antd";
 import React, { Component } from "react";
-import { httpGet, httpPost, httpUrl } from "../../api/httpClient";
+import { httpGet, httpPost, httpUrl, imageUrl } from "../../api/httpClient";
 import { customAlert, updateError } from "../../api/Modals";
 import BlindRiderListDialog from "../../components/dialog/rider/BlindRiderListDialog";
 import RegistRiderDialog from "../../components/dialog/rider/RegistRiderDialog";
@@ -10,13 +10,11 @@ import UpdatePasswordDialog from "../../components/dialog/rider/UpdatePasswordDi
 import SelectBox from "../../components/input/SelectBox";
 import "../../css/modal.css";
 import {
-  feeManner,
-  riderGroupString,
   riderLevelText,
   statusString,
   tableStatusString
 } from "../../lib/util/codeUtil";
-import { formatDate } from "../../lib/util/dateUtil";
+import { formatDateToDay } from "../../lib/util/dateUtil";
 import { comma } from "../../lib/util/numberUtil";
 
 const Search = Input.Search;
@@ -73,18 +71,20 @@ class RiderMain extends Component {
     let userStatus = this.state.userStatus === 0 ? "" : this.state.userStatus;
     let searchName = this.state.searchName;
 
-    httpGet(httpUrl.riderList, [10, pageNum, searchName, userStatus], {}).then(
-      (result) => {
-        console.log("## nnbox result=" + JSON.stringify(result, null, 4));
-        const pagination = { ...this.state.pagination };
-        pagination.current = result.data.currentPage;
-        pagination.total = result.data.totalCount;
-        this.setState({
-          results: result.data.riders,
-          pagination,
-        });
-      }
-    );
+    httpGet(
+      httpUrl.riderList,
+      [10, pageNum, searchName, userStatus, [1, 2, 3, 4, 5, 6, 7]],
+      {}
+    ).then((result) => {
+      console.log(result, null, 4);
+      const pagination = { ...this.state.pagination };
+      pagination.current = result.data.currentPage;
+      pagination.total = result.data.totalCount;
+      this.setState({
+        results: result.data.riders,
+        pagination,
+      });
+    });
   };
 
   onChangeStatus = (index, value) => {
@@ -263,12 +263,12 @@ class RiderMain extends Component {
         width: "200px",
         render: (data) => <div>{riderLevelText[data]}</div>,
       },
-      {
-        title: "기사그룹",
-        dataIndex: "userGroup",
-        className: "table-column-center",
-        render: (data) => <div>{riderGroupString[data]}</div>,
-      },
+      // {
+      //   title: "기사그룹",
+      //   dataIndex: "riderSettingGroup",
+      //   className: "table-column-center",
+      //   render: (data) => <div>{data.settingGroupName}</div>,
+      // },
       {
         title: "면허정보",
         dataIndex: "driverLicenseNumber",
@@ -277,7 +277,11 @@ class RiderMain extends Component {
           // 면허정보 컬럼 확정후 확인 필요
           const content = (
             <div>
-              <Image source={row.driverLicenseFileIdx} />
+              <Image
+                src={imageUrl(row.driverLicenseFileIdx)}
+                style={{ width: 400, height: 300 }}
+                alt="면허증 사진"
+              />
             </div>
           );
           return (
@@ -319,9 +323,9 @@ class RiderMain extends Component {
       },
       {
         title: "입사일",
-        // dataIndex: "wdawdDate",
+        dataIndex: "createDate",
         className: "table-column-center",
-        render: (data) => <div>{formatDate("2021-03-21 12:00")}</div>,
+        render: (data) => <div>{formatDateToDay(data)}</div>,
         // render: (data, row) => <div>
         //   <DatePicker
         //     defaultValue={moment(today, dateFormat)}
@@ -331,9 +335,9 @@ class RiderMain extends Component {
       },
       {
         title: "퇴사일",
-        // dataIndex: "wdawdDate",
+        dataIndex: "deleteDate",
         className: "table-column-center",
-        render: (data) => <div>{formatDate("2021-04-29 11:00:21")}</div>,
+        render: (data) => <div>{formatDateToDay(data)}</div>,
         // render: (data, row) => <div>
         //   <DatePicker
         //     defaultValue={moment(today, dateFormat)}
@@ -370,7 +374,12 @@ class RiderMain extends Component {
             <Button
               className="tabBtn surchargeTab"
               onClick={() =>
-                this.setState({ riderUpdateOpen: true, dialogData: row })
+                this.setState(
+                  { riderUpdateOpen: true, dialogData: row },
+                  () => {
+                    console.log(row);
+                  }
+                )
               }
             >
               수정
@@ -382,11 +391,12 @@ class RiderMain extends Component {
 
     const expandedRowRender = (record) => {
       const dropColumns = [
+        // 컬럼 확인 필요
         {
           title: "최소보유잔액",
-          dataIndex: "minCashAmount",
+          dataIndex: "",
           className: "table-column-center",
-          render: (data) => <div>{1000}</div>,
+          render: (data) => <div>{}</div>,
         },
         {
           title: "전화번호",
@@ -406,31 +416,46 @@ class RiderMain extends Component {
           render: (data) => <div>{data}</div>,
         },
         {
-          title: "수수료",
-          dataIndex: "deliveryPriceFeeAmount",
+          title: "기사그룹",
+          dataIndex: "riderSettingGroup",
           className: "table-column-center",
-          render: (data) => <div>{comma(data)}</div>,
+          render: (data) => <div>{data.settingGroupName}</div>,
         },
+
         {
           title: "수수료방식",
-          dataIndex: "deliveryPriceFeeType",
+          dataIndex: "riderSettingGroup",
           className: "table-column-center",
-          // render: (data) => <div>{data === 1 ? "정량" : "정률"}</div>
-          render: (data) => <div>{feeManner[data]}</div>,
+          render: (data) => (
+            <div>{data.deliveryPriceFeeType === 1 ? "정량" : "정율"}</div>
+          ),
+        },
+        {
+          title: "수수료",
+          dataIndex: "riderSettingGroup",
+          className: "table-column-center",
+          render: (data) => (
+            <div>
+              {data.deliveryPriceFeeType === 1
+                ? data.deliveryPriceFeeAmount + "원"
+                : data.deliveryPriceFeeAmount + "%"}
+            </div>
+          ),
         },
         {
           title: "은행명",
           dataIndex: "bank",
           className: "table-column-center",
-        },
-        {
-          title: "예금주",
-          dataIndex: "riderName",
-          className: "table-column-center",
+          render: (data) => <div>{data.split(",")[0]}</div>,
         },
         {
           title: "계좌번호",
           dataIndex: "bankAccount",
+          className: "table-column-center",
+        },
+        {
+          title: "예금주",
+          dataIndex: "riderName",
           className: "table-column-center",
         },
       ];

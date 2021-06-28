@@ -226,14 +226,14 @@ class SearchAddressDialog extends Component {
   };
 
   render() {
-    const onChange = (e) => {
-      this.setState(
-        {
-          addressType: e.target.value,
-        },
-        () => { }
-      );
-    };
+    // const onChange = (e) => {
+    //   this.setState(
+    //     {
+    //       addressType: e.target.value,
+    //     },
+    //     () => { }
+    //   );
+    // };
 
     const columns = [
       {
@@ -272,7 +272,7 @@ class SearchAddressDialog extends Component {
       },
     ];
 
-    const { close, data } = this.props;
+    const { close } = this.props;
 
     return (
       <React.Fragment>
@@ -301,7 +301,7 @@ class SearchAddressDialog extends Component {
                       >
                         {addType.map((v, i) => {
                           if (i === 0) {
-                            return;
+                            return <></>;
                           }
                           return <Radio value={i}>{v}</Radio>;
                         })}
@@ -393,7 +393,7 @@ class SearchAddressDialog extends Component {
                     >
                       {addType.map((v, i) => {
                         if (i === 0) {
-                          return;
+                          return <></>;
                         }
                         return <Radio value={i}>{v}</Radio>;
                       })}

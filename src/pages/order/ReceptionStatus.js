@@ -20,11 +20,16 @@ import {
 import moment from "moment";
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { httpGet, httpPost, httpUrl } from "../../api/httpClient";
+import {
+  httpPost,
+  httpPostWithNoLoading,
+  httpUrl
+} from "../../api/httpClient";
 import { customError } from "../../api/Modals";
 import ChattingCurrentRoom from "../../components/dialog/common/ChattingCurrentRoom";
 import ChattingDialog from "../../components/dialog/common/ChattingDialog";
 import SearchRiderDialog from "../../components/dialog/common/SearchRiderDialog";
+import BlindControlDialog from "../../components/dialog/franchise/BlindControlDialog";
 import FilteringDialog from "../../components/dialog/order/FilteringDialog";
 import MapControlDialog from "../../components/dialog/order/MapControlDialog";
 import NoticeDialog from "../../components/dialog/order/NoticeDialog";
@@ -96,14 +101,14 @@ class ReceptionStatus extends Component {
       pullingInterval: 20000,
 
       messageTarget: null,
+      messageTargetName: null,
+      messageTargetLevel: null,
     };
   }
 
   componentDidMount() {
     this.getList();
     this.pullingList = setInterval(this.getList, this.state.pullingInterval);
-    // this.pollingList();
-    this.getBranch();
   }
 
   componentWillUnmount() {
@@ -129,11 +134,16 @@ class ReceptionStatus extends Component {
     if (this.state.rider) {
       data.riderName = this.state.rider;
     }
-    httpPost(httpUrl.orderList, [], data)
+    httpPostWithNoLoading(httpUrl.orderList, [], data)
       .then((res) => {
         if (res.result === "SUCCESS") {
+          console.log(res);
           this.setState({
             list: res.data.orders,
+            pagination: {
+              ...this.state.pagination,
+              total: res.data.totalCount,
+            },
           });
         } else {
           console.log("Pulling Error");
@@ -191,40 +201,6 @@ class ReceptionStatus extends Component {
       });
   };
 
-  getBranch = () => {
-    httpGet(httpUrl.getBranch, [this.props.branchIdx], {})
-      .then((res) => {
-        if (res.result === "SUCCESS" && res.data) {
-          this.setState({ branchInfo: res.data });
-        } else {
-          console.log("branchInfo error");
-        }
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-
-    // dummy data (테스트용)
-    // this.setState({
-    //   branchInfo: {
-    //     branchCode: 0,
-    //     branchName: "복정1",
-    //     deliveryEnabled: false,
-    //     pickupAvTime10: true,
-    //     pickupAvTime10After: true,
-    //     pickupAvTime15: true,
-    //     pickupAvTime20: true,
-    //     pickupAvTime30: true,
-    //     pickupAvTime40: true,
-    //     pickupAvTime5: true,
-    //     pickupAvTime50: true,
-    //     pickupAvTime5After: true,
-    //     pickupAvTime60: true,
-    //     pickupAvTime70: true,
-    //     startDate: "2021-03-03",
-    //   },
-    // });
-  };
 
   handleToggleCompleteCall = (e) => {
     this.setState(
@@ -322,18 +298,6 @@ class ReceptionStatus extends Component {
     );
   };
 
-  // handleInfiniteOnLoad = () => {
-  //   this.setState(
-  //     {
-  //       pagination: {
-  //         ...this.state.pagination,
-  //         pageSize: this.state.pagination.pageSize + 30,
-  //       },
-  //     },
-  //     () => this.getList()
-  //   );
-  // };
-
   // 시간지연 dialog
   openTimeDelayModal = () => {
     this.setState({ timeDelayOpen: true });
@@ -391,6 +355,14 @@ class ReceptionStatus extends Component {
     this.setState({ noticeOpen: false });
   };
 
+  // 블라인드관리 dialog
+  openBlindControlModal = () => {
+    this.setState({ blindControlOpen: true });
+  };
+  closeBlindControlModal = () => {
+    this.setState({ blindControlOpen: false });
+  };
+
   // 강제배차 dialog
   openForceModal = () => {
     this.setState({ forceOpen: true });
@@ -408,13 +380,22 @@ class ReceptionStatus extends Component {
   };
 
   // 개인 메세지 dialog
-  openDirectMessageModal = (idx, name) => {
-    this.setState({ messageTarget: idx, messageTargetName: name }, () =>
-      this.setState({ directMessageOpen: true })
+  openDirectMessageModal = (idx, name, riderLevel) => {
+    this.setState(
+      {
+        messageTarget: idx,
+        messageTargetName: name,
+        messageTargetLevel: riderLevel,
+      },
+      () => this.setState({ directMessageOpen: true })
     );
   };
   closeDirectMessageModal = () => {
-    this.setState({ directMessageOpen: false, messageTarget: null });
+    this.setState({
+      directMessageOpen: false,
+      messageTarget: null,
+      messageTargetLevel: null,
+    });
   };
 
   // sns dialog
@@ -457,6 +438,7 @@ class ReceptionStatus extends Component {
         title: "주문번호",
         dataIndex: "idx",
         className: "table-column-center",
+        key: (row) => `idx:${row.idx}`,
         sorter: (a, b) => a.idx - b.idx,
         render: (data) => <div>{data}</div>,
       },
@@ -464,6 +446,7 @@ class ReceptionStatus extends Component {
         title: "상태",
         dataIndex: "orderStatus",
         className: "table-column-center",
+        key: (row) => `orderStatus:${row.orderStatus}`,
         filters: [
           {
             text: "접수",
@@ -495,8 +478,6 @@ class ReceptionStatus extends Component {
               defaultValue={data}
               value={row.orderStatus}
               onChange={(value) => {
-                // 제약조건 미성립
-                // console.log([row.pickupStatus, value]+" / "+modifyType[row.pickupStatus])
                 if (!modifyType[row.orderStatus].includes(value)) {
                   Modal.info({
                     content: <div>상태를 바꿀 수 없습니다.</div>,
@@ -510,21 +491,7 @@ class ReceptionStatus extends Component {
                   });
                   return;
                 }
-                // 제약조건 성립 시 상태 변경
-                // const list = this.state.list;
-                // list.find((x) => x.idx === row.idx).orderStatus = value;
                 row.orderStatus = value;
-
-                // pickupDate 및 completeDate 관련 이슈
-                // 백엔드에서 주문상태 update 시 처리 예정
-
-                // const now = new moment().format("YYYY-MM-DD[T]HH:mm:ss.000[Z]");
-                // if (value === 3) {
-                //   row.pickupDate = now;
-                // } else if (value === 4) {
-                //   row.completeDate = now;
-                // }
-                // console.log(row);
                 httpPost(httpUrl.orderUpdate, [], row)
                   .then((res) => {
                     if (res.result === "SUCCESS") this.getList();
@@ -551,6 +518,7 @@ class ReceptionStatus extends Component {
         title: "요청시간",
         dataIndex: "arriveReqTime",
         className: "table-column-center",
+        key: (row) => `arriveReqTime:${row.arriveReqTime}`,
         sorter: (a, b) => a.arriveReqTime - b.arriveReqTime,
         render: (data) => <div>{arriveReqTime[data]}</div>,
       },
@@ -558,6 +526,7 @@ class ReceptionStatus extends Component {
         title: "음식준비",
         dataIndex: "itemPrepared",
         className: "table-column-center",
+        key: (row) => `itemPrepared:${row.itemPrepared}`,
         filters: [
           {
             text: "준비중",
@@ -580,16 +549,16 @@ class ReceptionStatus extends Component {
         title: "접수시간",
         dataIndex: "orderDate",
         className: "table-column-center",
-        sorter: (a, b) => a.pickupDate - b.pickupDate,
-        render: (data, row) => (
-          <div>{row.orderStatus >= 3 ? formatDate(data) : "-"}</div>
-        ),
+        key: (row) => `orderDate:${row.orderDate}`,
+        sorter: (a, b) => moment(a.orderDate) - moment(b.orderDate),
+        render: (data, row) => <div>{data}</div>,
       },
       {
         title: "픽업시간",
         dataIndex: "pickupDate",
         className: "table-column-center",
-        sorter: (a, b) => a.pickupDate - b.pickupDate,
+        key: (row) => `pickupDate:${row.pickupDate}`,
+        sorter: (a, b) => moment(a.pickupDate) - moment(b.pickupDate),
         render: (data, row) => (
           <div>{row.orderStatus >= 3 ? formatDate(data) : "-"}</div>
         ),
@@ -598,9 +567,10 @@ class ReceptionStatus extends Component {
         title: "완료시간",
         dataIndex: "completeDate",
         className: "table-column-center",
-        sorter: (a, b) => a.pickupDate - b.pickupDate,
+        key: (row) => `completeDate:${row.completeDate}`,
+        sorter: (a, b) => moment(a.completeDate) - moment(b.completeDate),
         render: (data, row) => (
-          <div>{row.orderStatus >= 3 ? formatDate(data) : "-"}</div>
+          <div>{row.orderStatus >= 4 ? formatDate(data) : "-"}</div>
         ),
       },
       // {
@@ -621,6 +591,7 @@ class ReceptionStatus extends Component {
         title: "도착지",
         // dataIndex: "destAddr1",
         className: "table-column-center",
+        key: (row) => `destAddr1:${row.destAddr1}`,
         sorter: (a, b) =>
           (a.destAddr1 + a.destAddr2).localeCompare(b.destAddr1 + b.destAddr2),
         render: (data, row) => (
@@ -640,6 +611,7 @@ class ReceptionStatus extends Component {
         title: "가격",
         dataIndex: "orderPrice",
         className: "table-column-center",
+        key: (row) => `orderPrice:${row.orderPrice}`,
         sorter: (a, b) => a.orderPrice - b.orderPrice,
         render: (data) => <div>{comma(data)}</div>,
       },
@@ -647,6 +619,7 @@ class ReceptionStatus extends Component {
         title: "총배달요금",
         dataIndex: "deliveryPrice",
         className: "table-column-center",
+        key: (row) => `deliveryPrice:${row.deliveryPrice}`,
         sorter: (a, b) => a.deliveryPrice - b.deliveryPrice,
         render: (data) => <div>{comma(data)}</div>,
       },
@@ -654,6 +627,7 @@ class ReceptionStatus extends Component {
         title: "기본배달요금",
         dataIndex: "basicDeliveryPrice",
         className: "table-column-center",
+        key: (row) => `basicDeliveryPrice:${row.basicDeliveryPrice}`,
         sorter: (a, b) => a.basicDeliveryPrice - b.basicDeliveryPrice,
         render: (data) => <div>{comma(data)}</div>,
       },
@@ -662,6 +636,7 @@ class ReceptionStatus extends Component {
         title: "할증배달요금",
         dataIndex: "extraDeliveryPrice",
         className: "table-column-center",
+        key: (row) => `extraDeliveryPrice:${row.extraDeliveryPrice}`,
         sorter: (a, b) => a.extraDeliveryPrice - b.extraDeliveryPrice,
         render: (data) => <div>{comma(data)}</div>,
       },
@@ -670,6 +645,7 @@ class ReceptionStatus extends Component {
         title: "결제방식",
         dataIndex: "orderPayments",
         className: "table-column-center",
+        key: (row) => `orderPayments:${row.orderPayments}`,
         render: (data, row) =>
           data.length > 1 ? (
             <Button
@@ -743,6 +719,7 @@ class ReceptionStatus extends Component {
           title: "기사명",
           dataIndex: "riderName",
           className: "table-column-center",
+          key: (row) => `riderName:${row.riderName}`,
           render: (data, row) => {
             const content = (
               <div>
@@ -760,6 +737,7 @@ class ReceptionStatus extends Component {
           title: "가맹점명",
           dataIndex: "frName",
           className: "table-column-center",
+          key: (row) => `frName:${row.frName}`,
           render: (data, row) => {
             const content = (
               <div>
@@ -794,11 +772,13 @@ class ReceptionStatus extends Component {
           title: "거리(km)",
           dataIndex: "distance",
           className: "table-column-center",
+          key: (row) => `distance:${row.distance}`,
         },
         {
           title: "결제방식",
           dataIndex: "orderPayments",
           className: "table-column-center",
+          key: (row) => `orderPayments:${row.idx}`,
           render: (data, row) =>
             data.length > 1 ? (
               <>
@@ -820,6 +800,7 @@ class ReceptionStatus extends Component {
           title: "배차",
           dataIndex: "forceLocate",
           className: "table-column-center",
+          key: (row) => `forceLocate:${row.idx}`,
           render: (data, row) => (
             <span>
               {/* <ForceAllocateDialog */}
@@ -839,12 +820,18 @@ class ReceptionStatus extends Component {
           title: "메세지",
           dataIndex: "franchisePhoneNum",
           className: "table-column-center",
+          key: (row) => `franchisePhoneNum:${row.franchisePhoneNum}`,
           render: (data, row) => (
             <span>
               <Button
                 className="tabBtn"
                 onClick={() => {
-                  this.openDirectMessageModal(row.userIdx, row.riderName);
+                  console.log(row);
+                  this.openDirectMessageModal(
+                    row.userIdx,
+                    row.riderName,
+                    row.riderLevel
+                  );
                 }}
               >
                 라이더
@@ -864,6 +851,7 @@ class ReceptionStatus extends Component {
           title: "주문수정",
           dataIndex: "updateOrder",
           className: "table-column-center",
+          key: (row) => `updateOrder:${row.updateOrder}`,
           render: (data, row) => (
             <Button
               onClick={() => {
@@ -978,6 +966,7 @@ class ReceptionStatus extends Component {
           <ChattingCurrentRoom
             targetIdx={this.state.messageTarget}
             targetName={this.state.messageTargetName}
+            targetLevel={this.state.messageTargetLevel}
             close={this.closeDirectMessageModal}
           />
         )}
@@ -1068,6 +1057,18 @@ class ReceptionStatus extends Component {
           >
             공지사항
           </Button>
+          {this.state.blindControlOpen && (
+            <BlindControlDialog
+              isOpen={this.state.blindControlOpen}
+              close={this.closeBlindControlModal}
+            />
+          )}
+          <Button
+            className="tabBtn sectionTab"
+            onClick={this.openBlindControlModal}
+          >
+            블라인드관리
+          </Button>
         </div>
 
         <div className="selectLayout">
@@ -1092,7 +1093,7 @@ class ReceptionStatus extends Component {
               marginLeft: 20,
             }}
           />
-          <Search
+          {/* <Search
             placeholder="바이크검색"
             enterButton
             allowClear
@@ -1102,7 +1103,7 @@ class ReceptionStatus extends Component {
               width: 200,
               marginLeft: 20,
             }}
-          />
+          /> */}
           <FilteringDialog
             isOpen={this.state.filteringOpen}
             close={this.closeFilteringModal}
@@ -1148,17 +1149,9 @@ class ReceptionStatus extends Component {
           ></Checkbox>
           <span className="span1">완료조회</span>
         </div>
-        {/* <InfiniteScroll
-          dataLength={this.state.pagination.pageSize}
-          next={this.handleInfiniteOnLoad}
-          inverse={true}
-          // hasMore={!this.chatMessageEnd}
-          scrollableTarget="reception-table"
-        > */}
-        <div className="dataTableLayout">
+        <div id="reception-table" className="dataTableLayout">
           <Table
             rowKey={(record) => record.idx}
-            id="reception-table"
             rowClassName={(record) => rowColorName[record.orderStatus]}
             dataSource={
               this.state.checkedCompleteCall
@@ -1171,7 +1164,7 @@ class ReceptionStatus extends Component {
             expandedRowRender={expandedRowRender}
           />
         </div>
-        {/* </InfiniteScroll> */}
+
         <div
           style={{
             display: "flex",
@@ -1181,6 +1174,15 @@ class ReceptionStatus extends Component {
         >
           <Button
             onClick={() => {
+              if (
+                this.state.pagination.pageSize >= this.state.pagination.total
+              ) {
+                Modal.info({
+                  title: "주문정보 오류",
+                  content: "더 이상 주문정보가 존재하지 않습니다.",
+                });
+                return;
+              }
               this.setState(
                 {
                   pagination: {
@@ -1188,7 +1190,10 @@ class ReceptionStatus extends Component {
                     pageSize: this.state.pagination.pageSize + 30,
                   },
                 },
-                () => this.getList()
+                () => {
+                  console.log(this.state.pagination);
+                  this.getList();
+                }
               );
             }}
           >

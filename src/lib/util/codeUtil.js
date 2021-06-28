@@ -85,8 +85,14 @@ const orderCnt = {
 };
 
 const blockString = {
-  0: "차단중",
-  1: "차단해제",
+  0: "처리대기",
+  1: "차단중",
+  2: "차단해제",
+};
+
+const blockStatusString = {
+  2: "승인처리",
+  3: "승인거부",
 };
 
 const frRiderString = {
@@ -152,7 +158,7 @@ const surchargeType = ["지점 전체", "지정 그룹"];
 
 const addType = ["", "아파트", "오피스텔"];
 
-const bikeType =[ "리스", "지입"];
+const bikeType = ["리스", "지입"];
 
 // 바이크 조회 모달
 const searchBike = {
@@ -160,11 +166,70 @@ const searchBike = {
   1: "번호",
   2: "모델명",
   3: "제조사",
-}
+};
+
+const deliveryPriceFeeType = ["정률", "정액"];
+
+// 상품관리 - 상태
+const buyStatusString = {
+  0: "",
+  1: "수령대기",
+  2: "수령완료",
+  3: "환불요청",
+  4: "환불완료",
+};
+
+// 공지사항 카테고리
+const noticeCategoryType = {
+  1: "전체",
+  2: "라이더",
+  3: "가맹점",
+};
+
+const bankCode = {
+  경남은행: "039",
+  광주은행: "034",
+  국민은행: "004",
+  기업은행: "003",
+  농협: "011",
+  단위농협: "012",
+  대구은행: "031",
+  부산은행: "032",
+  산림조합: "064",
+  산업은행: "002",
+  상호저죽: "050",
+  새마을금고: "045",
+  수협: "007",
+  신한은행: "088",
+  신협: "048",
+  우리은행: "020",
+  우체국: "071",
+  전북은행: "037",
+  제주은행: "035",
+  KEB하나은행: "081",
+  한국시티은행: "027",
+  SC제일은행: "023",
+  K뱅크: "089",
+  카카오뱅크: "090",
+};
+
+const items = [
+  "헬멧",
+  "조끼",
+  "배달통",
+  "보냉",
+  "우의",
+  "피자가방",
+  "여름티",
+  "토시",
+  "바람막이",
+  "카드리더기",
+];
 
 export {
   deliveryStatusCode,
   blockString,
+  blockStatusString,
   frRiderString,
   withdrawString,
   toggleCode,
@@ -192,5 +257,10 @@ export {
   importantNotice,
   bikeType,
   searchBike,
+  deliveryPriceFeeType,
+  buyStatusString,
+  bankCode,
+  noticeCategoryType,
+  items,
 };
 

@@ -2,7 +2,12 @@ import { Button, Checkbox, Form, Input, Modal, Select } from "antd";
 import React, { Component } from "react";
 import { Marker, NaverMap } from "react-naver-maps";
 import { httpGet, httpPost, httpUrl } from "../../../api/httpClient";
-import { updateComplete, updateError } from "../../../api/Modals";
+import {
+  registComplete,
+  registError,
+  updateComplete,
+  updateError
+} from "../../../api/Modals";
 import "../../../css/modal.css";
 import {
   arriveReqTime,
@@ -36,7 +41,7 @@ const newOrder = {
   frLongitude: 0,
   frName: "",
   frPhone: "",
-  idx: 0,
+  idx: -1,
   itemPrepared: false,
   itemPreparingTime: 0,
   latitude: 0,
@@ -89,15 +94,16 @@ class RegistCallDialog extends Component {
   }
 
   setDefaultState = () => {
+    console.log(this.props.data ? this.props.data : "등록");
     this.setState({
       data: this.props.data ? this.props.data : newOrder,
       selectedDest: this.props.data
         ? {
-          address: this.props.data.destAddr1,
-        }
+            address: this.props.data.destAddr1,
+          }
         : null,
       selectedFr: {
-        frIdx: this.props.data ? this.props.data.frIdx : 0,
+        idx: this.props.data ? this.props.data.frIdx : 0,
         frLatitude: this.props.data ? this.props.data.frLatitude : 0,
         frLongitude: this.props.data ? this.props.data.frLongitude : 0,
         frName: this.props.data ? this.props.data.frName : "",
@@ -188,17 +194,15 @@ class RegistCallDialog extends Component {
   };
 
   getDeliveryPrice = () => {
+    console.log("getDeliiveryPrice!!!!!!!!!!!!!!!!!");
     var self = this;
     httpGet(httpUrl.getGeocode, [this.state.selectedDest.roadAddress], {})
       .then((res) => {
+        console.log(res);
         let result = JSON.parse(res.data.json);
-        if (res.result === "SUCCESS" && result.addresses.length > 0) {
+        if (res.result === "SUCCESS") {
           const lat = result.addresses[0].y;
           const lng = result.addresses[0].x;
-
-          console.log("배달요금 계산 파라미터!!");
-          console.log(typeof lat);
-          console.log(lat, lng);
 
           this.setState({
             mapLat: lat,
@@ -312,11 +316,32 @@ class RegistCallDialog extends Component {
       () => {
         console.log(this.state.data);
         if (this.props.data) {
+          let paySum = 0;
+          this.state.data.orderPayments.forEach(
+            (payment) => (paySum += payment.paymentAmount)
+          );
+          if (paySum !== this.state.data.orderPrice) {
+            Modal.info({
+              title: "등록 오류",
+              content:
+                "주문가격과 결제내역이 다릅니다. 결제내역을 확인해주세요.",
+            });
+            return;
+          }
           httpPost(httpUrl.orderUpdate, [], this.state.data)
             .then((res) => {
+              console.log(res);
+
               if (res.result === "SUCCESS") {
-                updateComplete();
-                this.props.close();
+                if (res.data === "SUCCESS") {
+                  updateComplete();
+                  this.props.close();
+                } else if (res.data === "NOT_ENOUGH_NCASH") {
+                  Modal.info({
+                    title: "등록 오류",
+                    content: "가맹점 예치금이 부족합니다.",
+                  });
+                }
               } else {
                 updateError();
               }
@@ -325,18 +350,39 @@ class RegistCallDialog extends Component {
               updateError();
             });
         } else {
+          let paySum = 0;
+          this.state.data.orderPayments.forEach(
+            (payment) => (paySum += payment.paymentAmount)
+          );
+          if (paySum !== this.state.data.orderPrice) {
+            Modal.info({
+              title: "등록 오류",
+              content:
+                "주문가격과 결제내역이 다릅니다. 결제내역을 확인해주세요.",
+            });
+            return;
+          }
           httpPost(httpUrl.orderCreate, [], this.state.data)
             .then((res) => {
+              console.log(res);
               if (res.result === "SUCCESS") {
-                updateComplete();
-                this.props.close();
-                this.clearData();
+                if (res.data === "SUCCESS") {
+                  registComplete();
+
+                  this.props.close();
+                  this.clearData();
+                } else if (res.data === "NOT_ENOUGH_NCASH") {
+                  Modal.info({
+                    title: "등록 오류",
+                    content: "가맹점 예치금이 부족합니다.",
+                  });
+                }
               } else {
-                updateError();
+                registError();
               }
             })
             .catch((e) => {
-              updateError();
+              registError();
             });
         }
       }
@@ -353,8 +399,8 @@ class RegistCallDialog extends Component {
     let basicDeliveryPrice = this.state.data
       ? this.state.data.basicDeliveryPrice
       : this.props.data
-        ? this.props.data.basicDeliveryPrice
-        : "";
+      ? this.props.data.basicDeliveryPrice
+      : "";
 
     return (
       <React.Fragment>
@@ -394,6 +440,7 @@ class RegistCallDialog extends Component {
                                     frPhone: fr.frPhone,
                                   },
                                 });
+                                console.log(this.state.selectedDest);
                                 if (this.state.selectedDest) {
                                   if (
                                     Object.keys(
@@ -417,8 +464,8 @@ class RegistCallDialog extends Component {
                               this.state.selectedFr
                                 ? this.state.selectedFr.frName
                                 : this.props.data
-                                  ? this.props.data.frName
-                                  : ""
+                                ? this.props.data.frName
+                                : ""
                             }
                             style={{ marginLeft: 20, width: 250 }}
                             required
@@ -444,7 +491,8 @@ class RegistCallDialog extends Component {
                                   destAddr1: this.state.selectedDest.address,
                                 },
                               });
-                              if (this.state.selectedFr.frIdx !== 0) {
+                              console.log(this.state.selectedFr);
+                              if (this.state.selectedFr.idx !== 0) {
                                 console.log("기본 state 가맹점");
                                 console.log(this.state.selectedFr);
                                 this.getDeliveryPrice();
@@ -460,15 +508,15 @@ class RegistCallDialog extends Component {
                               this.state.selectedDest
                                 ? this.state.selectedDest.address
                                 : this.props.data
-                                  ? this.props.data.destAddr1
-                                  : ""
+                                ? this.props.data.destAddr1
+                                : ""
                             }
                             value={
                               this.state.selectedDest
                                 ? this.state.selectedDest.address
                                 : this.props.data
-                                  ? this.props.data.destAddr1
-                                  : ""
+                                ? this.props.data.destAddr1
+                                : ""
                             }
                             style={{ marginLeft: 20, width: 250 }}
                             required
@@ -517,13 +565,13 @@ class RegistCallDialog extends Component {
                         className="selectItem"
                       >
                         <Input
-                          type="number"
+                          // type="number"
                           placeholder="할증 배달요금 입력"
                           className="override-input"
                           defaultValue={
                             this.props.data
                               ? comma(this.props.data.extraDeliveryPrice)
-                              : ""
+                              : "0"
                           }
                           onChange={(e) =>
                             this.handleChangeInput(
@@ -531,7 +579,6 @@ class RegistCallDialog extends Component {
                               "extraDeliveryPrice"
                             )
                           }
-                          required
                         ></Input>
                       </FormItem>
                     </div>
@@ -539,7 +586,7 @@ class RegistCallDialog extends Component {
                       <div className="mainTitle">가격</div>
                       <FormItem name="orderPrice" className="selectItem">
                         <Input
-                          type="number"
+                          // type="number"
                           placeholder="가격 입력"
                           className="override-input"
                           defaultValue={comma(data.orderPrice)}
@@ -563,16 +610,16 @@ class RegistCallDialog extends Component {
                             this.state.data
                               ? this.state.data.orderPayments
                               : this.props.data
-                                ? this.props.data.orderPayments
-                                : ""
+                              ? this.props.data.orderPayments
+                              : ""
                           }
                           editable={this.state.editable}
                           orderPrice={
                             this.state.data
                               ? this.state.data.orderPrice
                               : this.props.data
-                                ? this.props.data.orderPrice
-                                : ""
+                              ? this.props.data.orderPrice
+                              : ""
                           }
                         />
                       )}
@@ -633,8 +680,8 @@ class RegistCallDialog extends Component {
                             this.state.data
                               ? arriveReqTime[this.state.data.arriveReqTime]
                               : this.props.data
-                                ? arriveReqTime[this.props.data.arriveReqTime]
-                                : arriveReqTime[5]
+                              ? arriveReqTime[this.props.data.arriveReqTime]
+                              : arriveReqTime[5]
                           }
                           placeholder="시간단위"
                           className="override-input"
@@ -660,8 +707,8 @@ class RegistCallDialog extends Component {
                             this.state.data
                               ? packAmount[this.state.data.packAmount]
                               : this.props.data
-                                ? packAmount[this.props.data.packAmount]
-                                : packAmount[1]
+                              ? packAmount[this.props.data.packAmount]
+                              : packAmount[1]
                           }
                           placeholder="배달갯수"
                           className="override-input"
@@ -711,7 +758,6 @@ class RegistCallDialog extends Component {
                               "custMessage"
                             )
                           }
-                          required
                         ></Input>
                       </FormItem>
                     </div>
@@ -734,15 +780,15 @@ class RegistCallDialog extends Component {
                       center={
                         this.state.mapLat && this.state.mapLng
                           ? navermaps.LatLng(
-                            this.state.mapLat,
-                            this.state.mapLng
-                          )
+                              this.state.mapLat,
+                              this.state.mapLng
+                            )
                           : this.props.data
-                            ? navermaps.LatLng(
+                          ? navermaps.LatLng(
                               this.props.data.latitude,
                               this.props.data.longitude
                             )
-                            : navermaps.LatLng(lat, lng)
+                          : navermaps.LatLng(lat, lng)
                       }
                       onClick={(e) => {
                         this.setState({
@@ -781,7 +827,7 @@ class RegistCallDialog extends Component {
                                     },
                                   },
                                   () => {
-                                    if (this.state.selectedFr.frIdx !== 0) {
+                                    if (this.state.selectedFr.idx !== 0) {
                                       this.getDeliveryPriceByLatLng(
                                         e.latlng.y,
                                         e.latlng.x
@@ -805,15 +851,15 @@ class RegistCallDialog extends Component {
                         position={
                           this.state.mapLat && this.state.mapLng
                             ? navermaps.LatLng(
-                              this.state.mapLat,
-                              this.state.mapLng
-                            )
+                                this.state.mapLat,
+                                this.state.mapLng
+                              )
                             : this.props.data
-                              ? navermaps.LatLng(
+                            ? navermaps.LatLng(
                                 this.props.data.latitude,
                                 this.props.data.longitude
                               )
-                              : navermaps.LatLng(lat, lng)
+                            : navermaps.LatLng(lat, lng)
                         }
                         icon={
                           require("../../../img/login/map/marker_target.png")

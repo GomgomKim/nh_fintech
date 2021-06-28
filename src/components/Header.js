@@ -1,19 +1,13 @@
-import React from "react";
-import { withRouter } from "react-router-dom";
-import { Layout, Modal, Select } from "antd";
-import { connect } from "react-redux";
-import { reactLocalStorage } from "reactjs-localstorage";
-import { httpPost, httpUrl } from "../api/httpClient";
-import { logout, login, changeBranch } from "../actions/loginAction";
-import con from "../const";
 import {
-  CopyOutlined,
-  PhoneOutlined,
-  TeamOutlined,
-  IdcardOutlined,
-  SettingOutlined,
+  CopyOutlined,SkinOutlined,
+  PhoneOutlined, SettingOutlined, TeamOutlined
 } from "@ant-design/icons";
-const Option = Select.Option;
+import { Layout, Modal } from "antd";
+import React from "react";
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
+import { login, logout } from "../actions/loginAction";
+import { httpPost, httpUrl } from "../api/httpClient";
 
 class Header extends React.Component {
   constructor(props) {
@@ -68,7 +62,11 @@ class Header extends React.Component {
         icon: <TeamOutlined />,
         url: "/rider/RiderMain",
       },
-      // { idx: 4, name: '직원관리', icon: (<IdcardOutlined />), url: '/staff/StaffMain' },
+      { idx: 4, 
+        name: '상품관리', 
+        icon: <SkinOutlined />, 
+        url: "/mall/MallMain" 
+      },
       {
         idx: 5,
         name: "환경설정",
@@ -78,7 +76,7 @@ class Header extends React.Component {
     ];
 
     const currentPage = menus.find(
-      (x) => x.url == this.props.history.location.pathname
+      (x) => x.url === this.props.history.location.pathname
     );
     return (
       <Layout.Header style={{ background: "#fff", padding: 0 }}>
@@ -100,7 +98,7 @@ class Header extends React.Component {
                   // frIdx={this.state.frIdx}
                   onClick={() => this.props.history.push(row.url)}
                   className={
-                    "top-menu " + (row.idx == currentPage.idx ? "active" : "")
+                    "top-menu " + (row.idx === currentPage.idx ? "active" : "")
                   }
                 >
                   {row.icon}&nbsp;

@@ -1,5 +1,5 @@
 {
-  "name": "nnbox-partner-frontend",
+  "name": "nnbox-control-frontend",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

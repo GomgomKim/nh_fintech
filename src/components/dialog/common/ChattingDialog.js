@@ -7,7 +7,12 @@ import { bindActionCreators } from "redux";
 import { login, logout } from "../../../actions/loginAction";
 import { httpGet, httpPost, httpUrl } from "../../../api/httpClient";
 import Const from "../../../const";
-import { formatYMD, formatYMDHMS } from "../../../lib/util/dateUtil";
+import { riderLevelText } from "../../../lib/util/codeUtil";
+import {
+  formatYMD,
+  formatYMDHM,
+  formatYMDHMS
+} from "../../../lib/util/dateUtil";
 import SearchFranchiseDialog from "./SearchFranchiseDialog";
 import SearchRiderDialog from "./SearchRiderDialog";
 
@@ -15,7 +20,7 @@ class ChattingDialog extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      totalTableData: [],
+      // totalTableData: [],
       tableData: [],
       pagination: {
         current: 1,
@@ -42,42 +47,36 @@ class ChattingDialog extends Component {
   }
   componentDidMount() {
     this.getChatList();
-    this.getTotalChatList();
+    // this.getTotalChatList();
     let value = reactLocalStorage.getObject(Const.appName + ":chat");
 
     if (value !== null) {
       try {
         value = JSON.parse(value);
         this.setState({ lastChatTime: value });
-      } catch { }
+      } catch {}
     }
   }
-
-  // testing
-  // componentDidUpdate(prevProps, prevState) {
-  //   if (this.state.currentRoom !== prevState.currentRoom) {
-  //     console.log("prev");
-  //     console.log(prevState.currentRoom);
-  //     console.log("now");
-  //     console.log(this.state.currentRoom);
-  //   }
-  // }
   formatChatDate(time) {
     return time.substr(0, 10) === formatYMD(new Date())
-      ? time.substr(12, time.length)
+      ? time.substr(11, time.length)
       : time.substr(0, 10);
   }
   formatChatName(item) {
     const name =
       item.member1 === this.props.loginReducer.loginInfo.idx
-        ? item.member2Name
-        : item.member1Name;
+        ? item.member2Data.userType === 1
+          ? item.member2Data.riderName
+          : item.member2Data.frName
+        : item.member1Data.userType === 1
+        ? item.member1Data.riderName
+        : item.member1Data.frName;
     return name ? name : "(알수없음)";
   }
   updateTime = (idx) => {
     //방열릴때
     let value = reactLocalStorage.getObject(Const.appName + ":chat");
-    const currentTime = formatYMDHMS(new Date());
+    const currentTime = formatYMDHM(new Date());
     if (value !== null) {
       try {
         if (value) value = JSON.parse(value);
@@ -91,8 +90,6 @@ class ChattingDialog extends Component {
             idx: idx,
             lastChatDate: currentTime,
           });
-          console.log("#### updatetime");
-          console.log(value);
         }
         reactLocalStorage.setObject(
           Const.appName + ":chat",
@@ -100,35 +97,25 @@ class ChattingDialog extends Component {
         );
 
         this.setState({ lastChatTime: value });
-      } catch { }
+      } catch {}
     }
   };
 
-  getTotalChatList = (targetIdx) => {
-    httpGet(httpUrl.chatList, [10000, 1], {})
-      .then((result) => {
-        this.setState(
-          {
-            totalTableData: result.data.chatRooms,
-          },
-          () => {
-            if (targetIdx) {
-              const target = this.state.totalTableData.find(
-                (item) =>
-                  item.member1 === targetIdx || item.member2 === targetIdx
-              );
-              if (target) {
-                this.chatDetailList(target);
-                this.setState({ fakeRoom: false });
-                return;
-              } else {
-                this.setState({ fakeRoom: true });
-              }
-            }
-          }
-        );
+  getChatRoom = (receiverUserIdx) => {
+    httpGet(httpUrl.chatRoom, [receiverUserIdx], {})
+      .then((res) => {
+        if (res.result === "SUCCESS" && res.data.chatRooms.length > 0) {
+          this.chatDetailList(res.data.chatRooms[0]);
+          this.setState({ fakeRoom: false });
+          return;
+        } else {
+          this.setState({ fakeRoom: true });
+        }
       })
-      .catch();
+      .catch((e) => {
+        console.log(e);
+        throw e;
+      });
   };
 
   getChatList = () => {
@@ -189,8 +176,6 @@ class ChattingDialog extends Component {
   };
   // 채팅상세
   chatDetailList = (item) => {
-    console.log("chatdetaillist item");
-    console.log(item);
     this.setState(
       {
         currentRoom: item,
@@ -211,7 +196,7 @@ class ChattingDialog extends Component {
     )
       .then((result) => {
         result = result.data;
-        console.log(result);
+
         if (result.chatMessages.length === 0) {
           this.setState({
             chatMessageEnd: true,
@@ -248,7 +233,6 @@ class ChattingDialog extends Component {
       chatMessage: msg,
       receiveUserIdx,
     }).then((result) => {
-      console.log("SUCCESS");
       result = result.data;
       if (result === "SUCCESS") {
         this.state.chatMessages.unshift({
@@ -265,7 +249,6 @@ class ChattingDialog extends Component {
           sendUserIdx: this.props.loginReducer.loginInfo.idx,
           title: "chat room",
         });
-        console.log(this.state.chatMessages);
         this.setState({ chatMessages: this.state.chatMessages });
         this.updateTime(currentRoom.idx);
         this.updateLastChatMessage(currentRoom.idx, msg);
@@ -284,9 +267,8 @@ class ChattingDialog extends Component {
         if (res.result === "SUCCESS") {
           callback1();
           callback2();
-          console.log("메세지 전송 성공");
+          this.setState({ inputMessage: "" });
         } else {
-          console.log("전송실패");
         }
       })
       .catch((e) => {
@@ -301,26 +283,17 @@ class ChattingDialog extends Component {
         {this.state.searchFranOpen && (
           <SearchFranchiseDialog
             close={() => this.setState({ searchFranOpen: false })}
-            callback={(data) =>
+            callback={(data) => {
               this.setState(
                 { selectedFr: data, selectedRider: null, currentRoom: null },
                 () => {
-                  const target = this.state.totalTableData.find(
-                    (item) =>
-                      item.member1 === this.state.selectedFr.idx ||
-                      item.member2 === this.state.selectedFr.idx
-                  );
-                  if (target) {
-                    console.log(target);
-                    this.chatDetailList(target);
-                    this.setState({ fakeRoom: false });
-                    return;
-                  } else {
-                    this.setState({ fakeRoom: true });
-                  }
+                  console.log(this.state.selectedFr);
+                  console.log(this.state.selectedRider);
+
+                  this.getChatRoom(this.state.selectedFr.idx);
                 }
-              )
-            }
+              );
+            }}
           />
         )}
         {this.state.searchRiderOpen && (
@@ -328,20 +301,12 @@ class ChattingDialog extends Component {
             close={() => this.setState({ searchRiderOpen: false })}
             callback={(data) =>
               this.setState(
-                { selectedRider: data, selectedfr: null, currentRoom: null },
+                { selectedRider: data, selectedFr: null, currentRoom: null },
                 () => {
-                  const target = this.state.totalTableData.find(
-                    (item) =>
-                      item.member1 === this.state.selectedRider.idx ||
-                      item.member2 === this.state.selectedRider.idx
-                  );
-                  if (target) {
-                    this.chatDetailList(target);
-                    this.setState({ fakeRoom: false });
-                    return;
-                  } else {
-                    this.setState({ fakeRoom: true });
-                  }
+                  console.log(this.state.selectedFr);
+                  console.log(this.state.selectedRider);
+
+                  this.getChatRoom(this.state.selectedRider.idx);
                 }
               )
             }
@@ -350,7 +315,6 @@ class ChattingDialog extends Component {
 
         <div className={"Modal-overlay"} onClick={close} />
         <div className={"Modal-chat"}>
-
           <div className="chat-container">
             <div className="chat-subbox">
               <div className="chat-title">냠냠톡</div>
@@ -375,7 +339,24 @@ class ChattingDialog extends Component {
                     <div
                       className="chat-item-container"
                       onClick={() => {
-                        this.chatDetailList(row);
+                        this.setState(
+                          {
+                            fakeRoom: false,
+                            currentRoom: false,
+                            selectedRider: null,
+                            selectedfr: null,
+                          },
+                          () => {
+                            this.chatDetailList(row);
+                            const receiver =
+                              this.props.loginReducer.idx === row.member1
+                                ? row.member1Data
+                                : row.member2Data;
+                            if (receiver.userType === 1) {
+                              this.setState({ selectedRider: receiver });
+                            }
+                          }
+                        );
                       }}
                     >
                       <div className="chat-item-image">
@@ -396,7 +377,9 @@ class ChattingDialog extends Component {
                             {this.formatChatName(row)}
                           </div>
                         </div>
-                        <div className="chat-item-bottom">{row.lastMessage}</div>
+                        <div className="chat-item-bottom">
+                          {row.lastMessage}
+                        </div>
                       </div>
                     </div>
                   );
@@ -415,6 +398,8 @@ class ChattingDialog extends Component {
           {currentRoom && (
             <div className="chat-message-container">
               <div className="chat-title">
+                {this.state.selectedRider &&
+                  riderLevelText[this.state.selectedRider.riderLevel] + " "}
                 {this.formatChatName(currentRoom)}
               </div>
               <div className="chat-message" id="chat-message">
@@ -475,10 +460,15 @@ class ChattingDialog extends Component {
                   <input
                     className="chat-send-input"
                     placeholder="메세지를 입력해주세요."
-                    onChange={(e) => this.setState({ sendMsg: e.target.value })}
-                    value={this.state.sendMsg}
-                    onFocus={() => {
-                      this.setState({ msgInputModalOpen: true });
+                    onChange={(e) =>
+                      this.setState({ inputMessage: e.target.value })
+                    }
+                    value={this.state.inputMessage}
+                    onKeyPress={(e) => {
+                      if (e.key === "Enter") {
+                        this.onPressSend(this.state.inputMessage);
+                        this.setState({ inputMessage: "" });
+                      }
                     }}
                   />
                   <div
@@ -497,6 +487,8 @@ class ChattingDialog extends Component {
           {this.state.fakeRoom && (
             <div className="chat-message-container">
               <div className="chat-title">
+                {this.state.selectedRider &&
+                  riderLevelText[this.state.selectedRider.riderLevel] + " "}
                 {this.state.selectedFr
                   ? this.state.selectedFr.frName
                   : this.state.selectedRider.riderName}
@@ -518,17 +510,42 @@ class ChattingDialog extends Component {
                     this.setState({ inputMessage: e.target.value })
                   }
                   value={this.state.inputMessage}
+                  onKeyPress={(e) => {
+                    if (e.key === "Enter") {
+                      this.send(
+                        () => {
+                          this.getChatRoom(
+                            this.state.selectedFr !== null
+                              ? this.state.selectedFr.idx
+                              : this.state.selectedRider.idx
+                          );
+                        },
+                        () => {
+                          this.setState(
+                            {
+                              pagination: {
+                                ...this.state.pagination,
+                                current: 1,
+                              },
+                            },
+                            () => this.getChatList()
+                          );
+                        }
+                      );
+                    }
+                  }}
                 />
                 <div
                   className="chat-send-btn"
                   onClick={() => {
                     this.send(
-                      () =>
-                        this.getTotalChatList(
+                      () => {
+                        this.getChatRoom(
                           this.state.selectedFr
                             ? this.state.selectedFr.idx
                             : this.state.selectedRider.idx
-                        ),
+                        );
+                      },
                       () => {
                         this.setState(
                           {
