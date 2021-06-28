@@ -181,6 +181,7 @@ class RiderMain extends Component {
   };
   closeRiderGroupModal = () => {
     this.setState({ riderGroupOpen: false });
+    this.getList();
   };
 
   //기사 등록
