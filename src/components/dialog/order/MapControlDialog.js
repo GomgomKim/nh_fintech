@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "../../../css/modal.css";
 import { Input, Table, Button, Modal, Select, Space } from "antd";
-import { formatDate } from "../../../lib/util/dateUtil";
+import { formatDate, formatHM } from "../../../lib/util/dateUtil";
 import moment from "moment";
 import "../../../css/order.css";
 import RegistCallDialog from "../../../components/dialog/order/RegistCallDialog";
@@ -769,11 +769,11 @@ class MapControlDialog extends Component {
         dataIndex: "orderDate",
         className: "table-column-center",
         render: (data, row) => (
-          <div>{formatDate(data)}</div>
+          <div>{formatHM(data)}</div>
         ),
       },
       {
-        title: "경과(분)",
+        title: "남은시간(분)",
         dataIndex: "arriveReqTime",
         className: "table-column-center",
         render: (data) => <div>{arriveReqTime[data]}</div>,
