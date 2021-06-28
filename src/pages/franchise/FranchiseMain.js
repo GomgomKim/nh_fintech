@@ -436,12 +436,12 @@ class FranchiseMain extends Component {
         className: "table-column-center",
         render: (data) => <div>{comma(data)}</div>,
       },
-      {
-        title: "기본배달요금",
-        dataIndex: "basicDeliveryPrice",
-        className: "table-column-center",
-        render: (data) => <div>{comma(data)}</div>,
-      },
+      // {
+      //   title: "기본배달요금",
+      //   dataIndex: "basicDeliveryPrice",
+      //   className: "table-column-center",
+      //   render: (data) => <div>{comma(data)}</div>,
+      // },
       // 가맹여부 추가 후 컬럼이름 확인 필요
       // 가맹여부 추가 후 컬럼이름 확인 필요
       // {
@@ -536,7 +536,7 @@ class FranchiseMain extends Component {
           title: "월회비",
           dataIndex: "dues",
           className: "table-column-center",
-          render: (data) => <div>{data}</div>,
+          render: (data, row) => <div>{row.isMember ? data : "-"}</div>,
         },
         // {
         //   title: "카드가맹상태",
