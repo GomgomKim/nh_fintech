@@ -8,6 +8,7 @@ import {
   Radio,
   Select
 } from "antd";
+import moment from "moment";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { httpPost, httpUrl } from "../../../api/httpClient";
@@ -25,7 +26,11 @@ import {
   riderGroupString,
   riderLevelText
 } from "../../../lib/util/codeUtil";
-import { formatDateSecond, formatYear } from "../../../lib/util/dateUtil";
+import {
+  formatDateSecond,
+  formatDateToDay,
+  formatYear
+} from "../../../lib/util/dateUtil";
 import SearchBikeDialog from "../../dialog/common/SearchBikeDialog";
 
 const Option = Select.Option;
@@ -42,8 +47,6 @@ class RegistRiderDialog extends Component {
         pageSize: 5,
       },
       staffAuth: 1,
-      // riderLevelSelected: false,
-      // riderGroupSelected: false,
       feeManner: 1,
       userGroup: 1,
       riderLevel: 1,
@@ -108,6 +111,12 @@ class RegistRiderDialog extends Component {
             },
             bikeIdx: self.state.selectedBike.idx,
             items: self.formRef.current.getFieldValue("items").join(","),
+            joinDate: formatDateToDay(
+              self.formRef.current.getFieldValue("joinDate")
+            ),
+            leaveDate: formatDateToDay(
+              self.formRef.current.getFieldValue("leaveDate")
+            ),
           });
           httpPost(httpUrl.updateRider, [], {
             ...self.formRef.current.getFieldsValue(),
@@ -119,6 +128,12 @@ class RegistRiderDialog extends Component {
             },
             bikeIdx: self.state.selectedBike.idx,
             items: self.formRef.current.getFieldValue("items").join(","),
+            joinDate: formatDateToDay(
+              self.formRef.current.getFieldValue("joinDate")
+            ),
+            leaveDate: formatDateToDay(
+              self.formRef.current.getFieldValue("leaveDate")
+            ),
           })
             .then((res) => {
               if (res.result === "SUCCESS" && res.data === "SUCCESS") {
@@ -143,6 +158,12 @@ class RegistRiderDialog extends Component {
             bikeIdx: self.state.selectedBike.idx,
             ncash: 0,
             items: self.formRef.current.getFieldValue("items").join(","),
+            joinDate: formatDateToDay(
+              self.formRef.current.getFieldValue("joinDate")
+            ),
+            leaveDate: formatDateToDay(
+              self.formRef.current.getFieldValue("leaveDate")
+            ),
 
             // deliveryPriceFeeType: self.state.feeManner,
           });
@@ -156,6 +177,12 @@ class RegistRiderDialog extends Component {
             userType: 1,
             bikeIdx: self.state.selectedBike.idx,
             items: self.formRef.current.getFieldValue("items").join(","),
+            joinDate: formatDateToDay(
+              self.formRef.current.getFieldValue("joinDate")
+            ),
+            leaveDate: formatDateToDay(
+              self.formRef.current.getFieldValue("leaveDate")
+            ),
 
             // 기사 생성 시 예치금 정책 어떻게 될지에 따라 변경 될 수 있음
             // ncash 컬럼이 not null 이어서 기사 등록 시 0 설정
@@ -169,7 +196,6 @@ class RegistRiderDialog extends Component {
                 registError();
               }
               self.props.close();
-              // this.getList();
             })
             .catch((e) => {
               registError();
@@ -244,6 +270,9 @@ class RegistRiderDialog extends Component {
   render() {
     const { close, data } = this.props;
     console.log(data);
+
+    const dateFormat = "YYYY/MM/DD";
+    const today = new Date();
 
     return (
       <React.Fragment>
@@ -485,9 +514,9 @@ class RegistRiderDialog extends Component {
                       {/* 컬럼 확인 필요 */}
                       <div className="mainTitle">최소보유잔액</div>
                       <FormItem
-                        name=""
+                        name="ncashMin"
                         className="selectItem"
-                        initialValue={data ? data.ncash : 100000}
+                        initialValue={data ? data.ncashMin : 100000}
                       >
                         <Input
                           placeholder="최소보유잔액을 입력해 주세요."
@@ -581,11 +610,58 @@ class RegistRiderDialog extends Component {
                       </FormItem>
                     </div>
                     <div className="contentBlock">
+                      <div className="mainTitle">입사일</div>
+                      <FormItem
+                        name="joinDate"
+                        className="selectItem"
+                        initialValue={
+                          data
+                            ? moment(data.joinDate, "YYYY-MM-DD")
+                            : moment(today, dateFormat)
+                        }
+                      >
+                        <DatePicker
+                          // initialValue={
+                          //   data
+                          //     ? moment(data.joinDate, "YYYY-MM-DD")
+                          //     : moment(today, dateFormat)
+                          // }
+                          className="selectItem"
+                          format={dateFormat}
+                        />
+                      </FormItem>
+                    </div>
+                    <div className="contentBlock">
+                      <div className="mainTitle">퇴사일</div>
+                      <FormItem name="leaveDate" className="selectItem">
+                        <DatePicker
+                          className="selectItem"
+                          defaultValue={
+                            data
+                              ? data.leaveDate
+                                ? moment(data.leaveDate, "YYYY-MM-DD")
+                                : ""
+                              : ""
+                          }
+                          format={dateFormat}
+                        />
+                      </FormItem>
+                    </div>
+
+                    <div className="contentBlock">
                       <div className="mainTitle">비품지급</div>
-                      <FormItem name="items" className="giveBox selectItem">
+                      <FormItem
+                        name="items"
+                        className="giveBox selectItem"
+                        initialValue={
+                          data && data.items ? data.items.split(",") : []
+                        }
+                      >
                         <Checkbox.Group
                           options={items}
-                          initialValue={data && data.items.split(",")}
+                          // initialValue={
+                          //   data && data.items ? data.items.split(",") : []
+                          // }
                           onChange={(value) => console.log(value)}
                         />
                       </FormItem>

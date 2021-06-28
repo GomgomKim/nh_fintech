@@ -1,15 +1,13 @@
+import { Button, Checkbox, Form, Input, Modal } from "antd";
 import React, { Component } from "react";
+import { httpPost, httpUrl } from '../../../api/httpClient';
 import {
-    Form, Input, Button, Modal, Checkbox,
-} from "antd";
-import '../../../css/modal.css';
-import { httpUrl, httpPost } from '../../../api/httpClient';
-import { noticeCategoryType } from "../../../lib/util/codeUtil";
-import SelectBox from "../../../components/input/SelectBox";
-import{
-  customAlert,
-  updateError
+    customAlert,
+    updateError
 } from '../../../api/Modals';
+import SelectBox from "../../../components/input/SelectBox";
+import '../../../css/modal.css';
+import { noticeCategoryType } from "../../../lib/util/codeUtil";
 
 
 const FormItem = Form.Item;
@@ -175,7 +173,7 @@ class RegistNoticeDialog extends Component {
                                                           }}
                                                         />
                                                     </FormItem>
-                                                    {this.state.category == 3 && 
+                                                    {this.state.category === 3 && 
                                                     <>
                                                       <div className="subTitle">
                                                           SMS 전송

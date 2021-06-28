@@ -5,7 +5,7 @@ import {
   FilterOutlined,
   MessageOutlined,
   NotificationFilled,
-  PhoneOutlined,
+  PhoneOutlined
 } from "@ant-design/icons";
 import {
   Button,
@@ -15,16 +15,15 @@ import {
   Modal,
   Popover,
   Select,
-  Table,
+  Table
 } from "antd";
 import moment from "moment";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import {
-  httpGet,
   httpPost,
   httpPostWithNoLoading,
-  httpUrl,
+  httpUrl
 } from "../../api/httpClient";
 import { customError } from "../../api/Modals";
 import ChattingCurrentRoom from "../../components/dialog/common/ChattingCurrentRoom";
@@ -45,7 +44,7 @@ import {
   deliveryStatusCode,
   modifyType,
   paymentMethod,
-  rowColorName,
+  rowColorName
 } from "../../lib/util/codeUtil";
 import { formatDate } from "../../lib/util/dateUtil";
 import { comma } from "../../lib/util/numberUtil";
