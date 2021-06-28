@@ -7,5 +7,12 @@ const comma = (a) => {
   return parts.join(".");
 };
 
-export { comma };
+const remainTime = (reqDate) => {
+  if (!reqDate) return 0;
+  if (reqDate.indexOf('T') < 0) {
+    reqDate = reqDate.replace(' ', 'T') + '+09:00'
+  }
+  return parseInt((new Date(reqDate).getTime() - new Date().getTime()) / 60000);
+}
 
+export { comma, remainTime };

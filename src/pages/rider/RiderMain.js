@@ -181,6 +181,7 @@ class RiderMain extends Component {
   };
   closeRiderGroupModal = () => {
     this.setState({ riderGroupOpen: false });
+    this.getList();
   };
 
   //기사 등록
@@ -394,9 +395,9 @@ class RiderMain extends Component {
         // 컬럼 확인 필요
         {
           title: "최소보유잔액",
-          dataIndex: "",
+          dataIndex: "ncashMin",
           className: "table-column-center",
-          render: (data) => <div>{}</div>,
+          render: (data) => <div>{data}</div>,
         },
         {
           title: "전화번호",

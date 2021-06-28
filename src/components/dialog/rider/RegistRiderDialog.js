@@ -508,8 +508,6 @@ class RegistRiderDialog extends Component {
                         />
                       </FormItem>
                     </div>
-                  </div>
-                  <div className="registRiderWrapper sub">
                     <div className="contentBlock">
                       {/* 컬럼 확인 필요 */}
                       <div className="mainTitle">최소보유잔액</div>
@@ -524,6 +522,8 @@ class RegistRiderDialog extends Component {
                         />
                       </FormItem>
                     </div>
+                  </div>
+                  <div className="registRiderWrapper sub">
                     <div className="contentBlock">
                       <div className="mainTitle">기본 배달료</div>
                       <FormItem
@@ -621,11 +621,7 @@ class RegistRiderDialog extends Component {
                         }
                       >
                         <DatePicker
-                          // initialValue={
-                          //   data
-                          //     ? moment(data.joinDate, "YYYY-MM-DD")
-                          //     : moment(today, dateFormat)
-                          // }
+                          style={{ width: 260 }}
                           className="selectItem"
                           format={dateFormat}
                         />
@@ -635,6 +631,7 @@ class RegistRiderDialog extends Component {
                       <div className="mainTitle">퇴사일</div>
                       <FormItem name="leaveDate" className="selectItem">
                         <DatePicker
+                          style={{ width: 260 }}
                           className="selectItem"
                           defaultValue={
                             data

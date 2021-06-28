@@ -278,11 +278,9 @@ class FranchiseMain extends Component {
           addr1: data["주소"],
           addr3: data["지번주소"],
           addr2: data["상세주소"],
-          basicDeliveryPrice: data["배달요금"],
           password: String(data["비밀번호"]),
           tidNormalRate: data["PG사용여부"] === "사용" ? 100 : 0,
           agreeSms: data["sms 수신여부"] === "수신" ? true : false,
-          basicDeliveryDistance: data["기본거리"],
           isMember: data["가맹여부"] === "가맹" ? true : false,
           nonmemberFee: data["가맹여부"] === "가맹" ? 0 : 1000,
           ownerName: data["대표자 성명"],
@@ -292,6 +290,7 @@ class FranchiseMain extends Component {
           registDate: data["가입일자"],
           memo: data["메모"],
           email: data["이메일"],
+          overload: data["과적기준"],
 
           // // 신규 가맹점 DEFAULT
           ncash: 0,
@@ -310,6 +309,10 @@ class FranchiseMain extends Component {
           // api 찾기
           latitude: 0,
           longitude: 0,
+
+          // 삭제컬럼
+          basicDeliveryPrice: 0,
+          basicDeliveryDistance: 0,
         };
 
         await this.getLatLng(data["주소"], formData);
@@ -436,12 +439,12 @@ class FranchiseMain extends Component {
         className: "table-column-center",
         render: (data) => <div>{comma(data)}</div>,
       },
-      {
-        title: "기본배달요금",
-        dataIndex: "basicDeliveryPrice",
-        className: "table-column-center",
-        render: (data) => <div>{comma(data)}</div>,
-      },
+      // {
+      //   title: "기본배달요금",
+      //   dataIndex: "basicDeliveryPrice",
+      //   className: "table-column-center",
+      //   render: (data) => <div>{comma(data)}</div>,
+      // },
       // 가맹여부 추가 후 컬럼이름 확인 필요
       // 가맹여부 추가 후 컬럼이름 확인 필요
       // {
@@ -536,7 +539,7 @@ class FranchiseMain extends Component {
           title: "월회비",
           dataIndex: "dues",
           className: "table-column-center",
-          render: (data) => <div>{data}</div>,
+          render: (data, row) => <div>{row.isMember ? data : "-"}</div>,
         },
         // {
         //   title: "카드가맹상태",
