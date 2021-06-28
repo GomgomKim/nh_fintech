@@ -8,7 +8,7 @@ import {
   registComplete,
   registError,
   updateComplete,
-  updateError,
+  updateError
 } from "../../../api/Modals";
 import "../../../css/modal.css";
 import { pgUseRate } from "../../../lib/util/codeUtil";
@@ -93,6 +93,10 @@ class RegistFranDialog extends Component {
         chargeDate: formatDateToDay(
           this.formRef.current.getFieldValue("chargeDate")
         ),
+
+        // 삭제컬럼
+        basicDeliveryPrice: 0,
+        basicDeliveryDistance: 0,
       });
       httpPost(httpUrl.franchiseUpdate, [], {
         ...this.formRef.current.getFieldsValue(),
@@ -107,6 +111,10 @@ class RegistFranDialog extends Component {
         chargeDate: formatDateToDay(
           this.formRef.current.getFieldValue("chargeDate")
         ),
+
+        // 삭제컬럼
+        basicDeliveryPrice: 0,
+        basicDeliveryDistance: 0,
       })
         .then((result) => {
           console.log("## result: " + JSON.stringify(result, null, 4));
@@ -142,7 +150,6 @@ class RegistFranDialog extends Component {
         tidPrepay: "",
         // tidNormalRate: this.state.PgRate, // 100 or 0
         duesAutoChargeEnabled: false,
-        dues: 0,
         agreeSms: this.state.agreeSms,
         frSalesUserIdx: this.state.selectedRider.idx,
         nonmemberFee: this.state.isMember ? 0 : 1000,
@@ -152,6 +159,10 @@ class RegistFranDialog extends Component {
         chargeDate: formatDateToDay(
           this.formRef.current.getFieldValue("chargeDate")
         ),
+
+        // 삭제컬럼
+        basicDeliveryPrice: 0,
+        basicDeliveryDistance: 0,
       });
       httpPost(httpUrl.registFranchise, [], {
         ...this.formRef.current.getFieldsValue(),
@@ -173,7 +184,6 @@ class RegistFranDialog extends Component {
         tidPrepay: "",
         // tidNormalRate: this.state.PgRate, // 100 or 0
         duesAutoChargeEnabled: false,
-        dues: 0,
         agreeSms: this.state.agreeSms,
         frSalesUserIdx: this.state.selectedRider.idx,
         nonmemberFee: this.state.isMember ? 0 : 1000,
@@ -183,6 +193,10 @@ class RegistFranDialog extends Component {
         registDate: formatDateToDay(
           this.formRef.current.getFieldValue("registDate")
         ),
+
+        // 삭제컬럼
+        basicDeliveryPrice: 0,
+        basicDeliveryDistance: 0,
       })
         .then((result) => {
           console.log("## result: " + JSON.stringify(result, null, 4));
@@ -476,6 +490,25 @@ class RegistFranDialog extends Component {
                         </div>
                       </FormItem>
                     </div>
+                    <div className="contentBlock">
+                      <div className="mainTitle">과적기준</div>
+                      <FormItem
+                        name="overload"
+                        className="selectItem"
+                        rules={[
+                          {
+                            required: true,
+                            message: "과적기준을 입력해주세요",
+                          },
+                        ]}
+                        initialValue={data && data.overload}
+                      >
+                        <Input
+                          placeholder="과적기준을 입력해 주세요."
+                          className="override-input"
+                        />
+                      </FormItem>
+                    </div>
 
                     <div className="contentBlock">
                       <div className="mainTitle">아이디</div>
@@ -492,25 +525,6 @@ class RegistFranDialog extends Component {
                       >
                         <Input
                           placeholder="아이디를 입력해 주세요."
-                          className="override-input"
-                        />
-                      </FormItem>
-                    </div>
-                    <div className="contentBlock">
-                      <div className="mainTitle">과적기준</div>
-                      <FormItem
-                        name="overload"
-                        className="selectItem"
-                        rules={[
-                          {
-                            required: true,
-                            message: "과적기준을 입력해주세요",
-                          },
-                        ]}
-                        initialValue={data && data.overload}
-                      >
-                        <Input
-                          placeholder="과적기준을 입력해 주세요."
                           className="override-input"
                         />
                       </FormItem>
@@ -639,14 +653,17 @@ class RegistFranDialog extends Component {
                     </div>
                     <div className="contentBlock">
                       <div className="mainTitle">가입일자</div>
-                      <FormItem name="registDate" className="selectItem">
+                      <FormItem
+                        name="registDate"
+                        className="selectItem"
+                        initialValue={
+                          data
+                            ? moment(data.registDate, "YYYY-MM-DD")
+                            : moment(today, dateFormat)
+                        }
+                      >
                         <DatePicker
                           style={{ marginLeft: 20, width: 300 }}
-                          defaultValue={
-                            data
-                              ? moment(data.registDate, "YYYY-MM-DD")
-                              : moment(today, dateFormat)
-                          }
                           format={dateFormat}
                         />
                       </FormItem>
@@ -684,14 +701,14 @@ class RegistFranDialog extends Component {
                           name="chargeDate"
                           className="selectItem"
                           style={{ marginLeft: 10 }}
+                          initialValue={
+                            data
+                              ? moment(data.chargeDate, "YYYY-MM-DD")
+                              : moment(today, dateFormat)
+                          }
                         >
                           <DatePicker
                             style={{ marginLeft: 10 }}
-                            initialValue={
-                              data
-                                ? moment(data.chargeDate, "YYYY-MM-DD")
-                                : moment(today, dateFormat)
-                            }
                             format={dateFormat}
                           />
                         </FormItem>
@@ -699,10 +716,9 @@ class RegistFranDialog extends Component {
                         <FormItem
                           name="dues"
                           className="selectItem"
-                          initialValue={data ? data.dues : "100000"}
+                          initialValue={data ? data.dues : 100000}
                         >
                           <Input
-                            name="dues"
                             placeholder="관리비 입력"
                             className="override-input sub"
                           />
@@ -724,7 +740,6 @@ class RegistFranDialog extends Component {
                         <div className="subTitle">관리비</div>
                         <FormItem name="dues" className="selectItem">
                           <Input
-                            name="dues"
                             placeholder="관리비 입력"
                             className="override-input sub"
                             disabled
