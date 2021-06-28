@@ -66,16 +66,12 @@ class RegistNoticeDialog extends Component {
 
     CheckedMessage = e => {
       console.log('checked = ', e.target.checked);
-      this.setState({
-        checkedMessage: e.target.checked,
-      });
+      this.setState({ checkedMessage: e.target.checked });
     };
 
     handleSubmit = () => {
         let self = this;
         let { data } = this.props;
-        console.log(JSON.stringify("in test 1 : "+this.state.frData.map(x=> x.phone)))
-        console.log(data)
         Modal.confirm({
             title: <div> {data ? "공지 수정" : "공지 등록" } </div>,
             content:  
