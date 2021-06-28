@@ -1,13 +1,15 @@
-import { Button, Checkbox, Form, Input, Modal } from "antd";
 import React, { Component } from "react";
-import { httpPost, httpUrl } from '../../../api/httpClient';
 import {
-    customAlert,
-    updateError
-} from '../../../api/Modals';
-import SelectBox from "../../../components/input/SelectBox";
+    Form, Input, Button, Modal, Checkbox,
+} from "antd";
 import '../../../css/modal.css';
+import { httpUrl, httpPost } from '../../../api/httpClient';
 import { noticeCategoryType } from "../../../lib/util/codeUtil";
+import SelectBox from "../../../components/input/SelectBox";
+import{
+  customAlert,
+  updateError
+} from '../../../api/Modals';
 
 
 const FormItem = Form.Item;
@@ -17,6 +19,7 @@ class RegistNoticeDialog extends Component {
         super(props)
         this.state = {
             list: [],
+            frData: [],
             pagination: {
                 total: 0,
                 current: 1,
@@ -40,7 +43,26 @@ class RegistNoticeDialog extends Component {
     }
 
     componentDidMount() {
+        this.getFrList();
     }
+
+    getFrList = () => {
+        httpPost(httpUrl.franchiseList, [], {
+            pageSize: 2000000000,
+        }).then((result) => {
+            const pagination = {
+                ...this.state.pagination,
+              };
+            pagination.current = result.data.currentPage;
+            pagination.total = result.data.totalCount;
+            this.setState({ frData: result.data.franchises, pagination }, 
+            ()=>{
+            // console.log(JSON.stringify(this.state.frData))
+            console.log(JSON.stringify(this.state.frData.map(x=> x.phone)))
+            });
+        });
+      };
+
 
     CheckedMessage = e => {
       console.log('checked = ', e.target.checked);
@@ -52,6 +74,7 @@ class RegistNoticeDialog extends Component {
     handleSubmit = () => {
         let self = this;
         let { data } = this.props;
+        console.log(JSON.stringify("in test 1 : "+this.state.frData.map(x=> x.phone)))
         console.log(data)
         Modal.confirm({
             title: <div> {data ? "공지 수정" : "공지 등록" } </div>,
@@ -77,9 +100,9 @@ class RegistNoticeDialog extends Component {
               updateError()
             })
 
-              :
+            :
 
-              httpPost(httpUrl.registNotice, [], {
+            httpPost(httpUrl.registNotice, [], {
                 ...self.formRef.current.getFieldsValue(),
                 createDate: self.state.createDate,
                 deleted: false,
@@ -89,12 +112,15 @@ class RegistNoticeDialog extends Component {
               }).then((result) => {
                   if(result.result === "SUCCESS" && result.data === "SUCCESS"){
                     customAlert("완료", self.formRef.current.getFieldsValue().title+"이(가) 등록되었습니다.")
-                    if(this.state.checkedMessage) {
-                      // httpPost(httpUrl.smsSendFran, [], {
-                      //   ...self.formRef.current.getFieldsValue(),
-                      //   subject: "냠냠박스 공지사항",
-                      //   destPhone: 
-                      // })
+                    // 가맹점 핸드폰 메세지 처리
+
+                    console.log("### sms test :"+self.state.frData.map(x=> x.phone))
+                    if(self.state.checkedMessage) {
+                      httpPost(httpUrl.smsSendFran, [], {
+                        destPhones: self.state.frData.map(x=> x.phone),
+                        msgBody: self.formRef.current.getFieldsValue().content,
+                        subject: "냠냠박스 공지사항"
+                      })
                     }
                   }
                   else updateError()
@@ -173,7 +199,7 @@ class RegistNoticeDialog extends Component {
                                                           }}
                                                         />
                                                     </FormItem>
-                                                    {this.state.category === 3 && 
+                                                    {this.state.category == 3 && 
                                                     <>
                                                       <div className="subTitle">
                                                           SMS 전송
