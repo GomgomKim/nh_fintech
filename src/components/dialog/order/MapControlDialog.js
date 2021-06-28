@@ -17,7 +17,8 @@ import {
   riderLevelText,
   rowColorName
 } from "../../../lib/util/codeUtil";
-import { formatDate } from "../../../lib/util/dateUtil";
+import { formatDate, formatHM } from "../../../lib/util/dateUtil";
+import { remainTime } from "../../../lib/util/numberUtil";
 
 const Option = Select.Option;
 const navermaps = window.naver.maps;
@@ -819,20 +820,15 @@ class MapControlDialog extends Component {
         title: "접수시간",
         dataIndex: "orderDate",
         className: "table-column-center",
-        render: (data, row) => <div>{formatDate(data)}</div>,
+        width: 70,
+        render: (data, row) => <div>{formatHM(data)}</div>,
       },
       {
-        title: "경과(분)",
+        title: "남은시간(분)",
         dataIndex: "orderDate",
         className: "table-column-center",
-        render: (data) => {
-          const now = new moment();
-          const orderTime = moment(data, "YYYY-MM-DD HH:mm:ss");
-          const timeDelta = moment.duration(now.diff(orderTime)).asMinutes();
-          console.log("시간차 구하기");
-          console.log(parseInt(timeDelta));
-          return <div>{parseInt(timeDelta)} 분</div>;
-        },
+        width: 100,
+        render: (data) => <div>{remainTime(data)}분</div>,
       },
       {
         title: "도착지",

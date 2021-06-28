@@ -186,6 +186,19 @@ const formatYMD = (date) => {
   );
 };
 
+const formatHM = (date) => {
+  if (!date) return null;
+  if (date instanceof Date) {
+  } else {
+    date = new Date((date + "").substring(0, 19));
+  }
+  return (
+    formatDateUnit(date.getHours()) +
+    ":" +
+    formatDateUnit(date.getMinutes())
+  );
+};
+
 const formatYMDHM = (date) => {
   if (!date) return null;
   if (date instanceof Date) {
@@ -243,5 +256,6 @@ export {
   formatYMDHM,
   formatYMDHMS,
   getDay,
+  formatHM,
 };
 
