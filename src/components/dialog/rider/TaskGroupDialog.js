@@ -273,7 +273,7 @@ class TaskGroupDialog extends Component {
         <div className="Dialog-overlay" onClick={close} />
         <div className="taskGroup-Dialog">
           <div className="taskGroup-content">
-            <div className="taskGroup-title">일차감 그룹관리</div>
+            <div className="taskGroup-title">일차감 라이더관리</div>
             <img
               onClick={close}
               src={require("../../../img/login/close.png").default}
@@ -281,23 +281,6 @@ class TaskGroupDialog extends Component {
               alt="close"
             />
             <div className="taskGroup-inner">
-              <div className="taskGroup-btn">
-                <div className="taskScheduler-btn-01">
-                  {this.state.registRiderGroupOpen && (
-                    <RegistRiderGroupDialog
-                      close={this.closeRegistRiderGroupModal}
-                    />
-                  )}
-                  <Button
-                    className="taskGroup-btn"
-                    onClick={() => {
-                      this.openRegistRiderGroupModal();
-                    }}
-                  >
-                    그룹등록
-                  </Button>
-                </div>
-              </div>
               <Form ref={this.formIdRef} onFinish={this.handleSubmit}>
                 <div className="listBlock">
                   <Table

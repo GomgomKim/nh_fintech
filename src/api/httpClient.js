@@ -242,6 +242,12 @@ const httpUrl = {
   riderListOne: "/rider/list",
   riderLocateList: "/rider/location/list",
   riderLocate: "/rider/location/%s",
+  riderBatchWorkList: "/rider/batchWork/list",
+  riderBatchWorkCreate: "/rider/batchWork/create",
+  riderBatchWorkUpdate: "/rider/batchWork/update",
+  riderBatchWorkDelete: "/rider/batchWork/delete",
+  userBatchWorkCreate: "/rider/userBatchWork/create",
+  userBatchWorkDelete: "/rider/userBatchWork/delete",
 
   // 배차
   assignRiderAdmin: "/order/admin/assignRider",

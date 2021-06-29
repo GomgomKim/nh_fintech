@@ -2386,7 +2386,7 @@
 }
 
 .taskWork-inner {
-  width: 100%;
+  width: 550px;
   overflow-y: scroll;
   border: 1px solid #ccc;
   padding: 20px;
