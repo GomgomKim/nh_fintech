@@ -223,8 +223,12 @@ class DeliveryZoneDialog extends Component {
               <div className="inner-right">
                 {navermaps && (
                   <NaverMap
-                    className="mapLayout"
                     defaultZoom={14}
+                    style={{
+                      width: "550px",
+                      height: "600px",
+                      display: "inline-block",
+                    }}
                     onClick={(e) => this.addPath(e)}
                   >
                     {this.state.paths.length > 0 && (

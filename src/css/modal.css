@@ -4310,12 +4310,12 @@ td.ant-table-column-sort {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: auto;
   z-index: 2;
 }
 
 .zone-content {
   padding: 30px;
+  width: 1060px;
   background-color: white;
 }
 
@@ -4336,25 +4336,20 @@ td.ant-table-column-sort {
   padding: 8px;
 }
 .zone-inner {
-  width: 100%;
-  overflow-y: scroll;
+  width: auto;
   border: 1px solid #ccc;
   padding: 20px;
   text-align: left;
   margin-top: 20px;
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
-}
-.zone-inner::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Opera*/
 }
 .zone-inner > div {
   display: inline-block;
 }
 .inner-left {
-  width: 400px;
+  width: 380px;
   vertical-align: top;
   margin-right: 20px;
+  display: inline-block;
 }
 .inner-left > div:first-child {
   border-top: none;
@@ -4369,7 +4364,7 @@ td.ant-table-column-sort {
   margin-bottom: 0px;
 }
 .inner-right {
-  width: 500px;
+  display: inline-block;
 }
 .zone-title {
   font-size: 20px;
@@ -4383,7 +4378,7 @@ td.ant-table-column-sort {
   float: right;
 }
 .zone-box-wrap {
-  width: 390px;
+  width: 380px;
 }
 .zone-box {
   display: inline-block;
