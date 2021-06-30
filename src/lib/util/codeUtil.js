@@ -226,6 +226,87 @@ const items = [
   "카드리더기",
 ];
 
+// const deliveryZone ={
+//   0: "감정동",
+//   1: "걸포동",
+//   2: "고촌읍",
+//   3: "구래동",
+//   4: "대곶면",
+//   5: "마산동",
+//   6: "북변동",
+//   7: "사우동",
+//   8: "양촌읍",
+//   9: "운양동",
+//   10: "월곶면",
+//   11: "장기동",
+//   12: "통진읍",
+//   13: "풍무동",
+//   14: "하성면",
+// };
+
+const deliveryZone = [
+  {
+    code: 0,
+    text: "감정동",
+    toggle: false,
+    coords: [],
+  },
+  {
+    code: 1,
+    text: "걸포동",
+    toggle: false,
+  },
+  {
+    code: 2,
+    text: "고촌읍",
+    toggle: false,
+  },
+  {
+    code: 3,
+    text: "구래동",
+    toggle: false,
+  },
+  {
+    code: 4,
+    text: "대곶면",
+    toggle: false,
+  },
+  {
+    code: 5,
+    text: "마산동",
+    toggle: false,
+  },
+  {
+    code: 6,
+    text: "북변동",
+    toggle: false,
+  },
+
+  {
+    code: 7,
+    text: "사우동",
+    toggle: false,
+  },
+
+  {
+    code: 8,
+    text: "양촌읍",
+    toggle: false,
+  },
+
+  {
+    code: 9,
+    text: "운양동",
+    toggle: false,
+  },
+
+  {
+    code: 10,
+    text: "월곶면",
+    toggle: false,
+  },
+];
+
 export {
   deliveryStatusCode,
   blockString,
@@ -262,5 +343,5 @@ export {
   bankCode,
   noticeCategoryType,
   items,
+  deliveryZone,
 };
-

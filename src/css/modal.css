@@ -4298,3 +4298,129 @@ td.ant-table-column-sort {
 .marker-name {
   font-family: NotoSansBold;
 }
+
+/* 배송지역 모달 */
+
+.zone-dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: auto;
+  z-index: 2;
+}
+
+.zone-content {
+  padding: 30px;
+  background-color: white;
+}
+
+.zone-content > div:first-child {
+  font-size: 25px;
+  font-weight: bold;
+  line-height: 30px;
+  /* width:300px; */
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.zone-content > img {
+  width: 30px;
+  cursor: pointer;
+  background-color: #fddc00;
+  /* display: inline-block; */
+  float: right;
+  padding: 8px;
+}
+.zone-inner {
+  width: 100%;
+  overflow-y: scroll;
+  border: 1px solid #ccc;
+  padding: 20px;
+  text-align: left;
+  margin-top: 20px;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+.zone-inner::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera*/
+}
+.zone-inner > div {
+  display: inline-block;
+}
+.inner-left {
+  width: 400px;
+  vertical-align: top;
+  margin-right: 30px;
+}
+.inner-left > div:first-child {
+  border-top: none;
+  padding-top: 0px;
+}
+.inner-left > div:nth-child(2n) {
+  margin-bottom: 30px;
+}
+.inner-left > div:nth-child(6),
+.inner-left > div:nth-child(7) {
+  display: inline-block;
+  margin-bottom: 0px;
+}
+.inner-right {
+  width: 600px;
+}
+.zone-title {
+  font-size: 20px;
+  font-weight: bold;
+  color: #1890ff;
+  border-top: 1px solid #b5b5b5;
+  padding-top: 25px;
+  margin-bottom: 10px;
+}
+.zone-box {
+  display: inline-block;
+}
+.zone-box > div {
+  display: inline-block;
+}
+.zone-el {
+  height: auto;
+  background-color: #f5f5f5;
+  border-radius: 5px;
+  padding: 10px 20px;
+  border: none;
+  margin: 5px;
+  font-size: 16px;
+  box-shadow: none;
+  display: inline-block;
+  cursor: pointer;
+}
+.zone-el-new {
+  height: auto;
+  background-color: #f5f5f5;
+  border-radius: 5px;
+  padding: 10px 20px;
+  border: none;
+  margin: 5px;
+  font-size: 16px;
+  box-shadow: none;
+}
+.zone-el:hover {
+  color: black;
+}
+.zone-el-active {
+  background-color: black;
+  color: #fddc00;
+  height: auto;
+  border-radius: 5px;
+  padding: 10px 20px;
+  border: none;
+  margin: 5px;
+  font-size: 16px;
+  box-shadow: none;
+  display: inline-block;
+  cursor: pointer;
+}
+.zone-input {
+  width: 290px;
+  display: inline-block;
+}
