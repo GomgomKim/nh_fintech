@@ -4323,7 +4323,6 @@ td.ant-table-column-sort {
   font-size: 25px;
   font-weight: bold;
   line-height: 30px;
-  /* width:300px; */
   display: inline-block;
   vertical-align: middle;
 }
@@ -4355,7 +4354,7 @@ td.ant-table-column-sort {
 .inner-left {
   width: 400px;
   vertical-align: top;
-  margin-right: 30px;
+  margin-right: 20px;
 }
 .inner-left > div:first-child {
   border-top: none;
@@ -4370,7 +4369,7 @@ td.ant-table-column-sort {
   margin-bottom: 0px;
 }
 .inner-right {
-  width: 600px;
+  width: 500px;
 }
 .zone-title {
   font-size: 20px;
