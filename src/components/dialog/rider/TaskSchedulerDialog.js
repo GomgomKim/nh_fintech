@@ -1,17 +1,18 @@
-import { Button, Checkbox, Form, Table } from "antd";
+import { Button, Checkbox, Form, Table, Tag, Modal } from "antd";
 import React, { Component } from "react";
+import { httpPost, httpUrl, httpDelete } from "../../../api/httpClient";
 import "../../../css/modal.css";
 import { comma } from "../../../lib/util/numberUtil";
 import TaskGroupDialog from "../rider/TaskGroupDialog";
+import SearchRiderDialog from "../common/SearchRiderDialog";
 import TaskWorkDialog from "../rider/TaskWorkDialog";
+import { customAlert, customError} from "../../../api/Modals";
 
 class TaskSchedulerDialog extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      riderStatus: 1,
-      riderName: "",
-      taskGroupOpen: false, //작업 그룹설정
+      searchRiderOpen: false,
       taskWorkOpen: false, //작업 등록
       list: [],
       pagination: {
@@ -40,84 +41,71 @@ class TaskSchedulerDialog extends Component {
     );
   };
 
-  onSearchRider = (value) => {
-    this.setState(
-      {
-        riderName: value,
-      },
-      () => {
-        this.getList();
+  onRefresh = () => {
+    this.setState({
+      pagination: {
+        total: 0,
+        current: 1,
+        pageSize: 5,
       }
-    );
-  };
-
-  onChange = (e) => {
-    // console.log('radio checked', e.target.value);
-    this.setState(
-      {
-        riderStatus: e.target.value,
-      },
-      () => this.getList()
-    );
+    }, ()=>{
+      this.getList()
+    })
   };
 
   getList = () => {
-    var list = [
-      {
-        workName: "리스비",
-        processPrice: "-26300",
-        registerDate: "21-06-01 19:36:25",
-        registerName: "관리자",
-        applyTerm: "매일",
-        nextDate: "20120302",
-        limitTimeUse: "사용",
-        limitTimeStart: "21-06-01",
-        limitTimeFinish: "22-05-31",
-      },
-      {
-        workName: "비품 대여",
-        processPrice: "-2300",
-        registerDate: "21-02-01 19:36:25",
-        registerName: "관리자",
-        applyTerm: "매일",
-        nextDate: "20120302",
-        limitTimeUse: "사용",
-        limitTimeStart: "21-06-01",
-        limitTimeFinish: "22-05-31",
-      },
-      {
-        workName: "패널티",
-        processPrice: "-30000",
-        registerDate: "21-02-01 19:36:25",
-        registerName: "관리자",
-        applyTerm: "매일",
-        nextDate: "20120302",
-        limitTimeUse: "미사용",
-        limitTimeStart: "",
-        limitTimeFinish: "",
-      },
-      {
-        workName: "대출금",
-        processPrice: "-50000",
-        registerDate: "21-02-01 19:36:25",
-        registerName: "관리자",
-        applyTerm: "매일",
-        nextDate: "20120302",
-        limitTimeUse: "사용",
-        limitTimeStart: "21-07-02",
-        limitTimeFinish: "21-12-31",
-      },
-    ];
-    this.setState({
-      list: list,
+    httpPost(httpUrl.riderBatchWorkList, [], {
+      pageNum: this.state.pagination.current,
+      pageSize: this.state.pagination.pageSize,
+    })
+    .then((res) => {
+        console.log("res.data :"+JSON.stringify(res.data, null , 4) )
+        const pagination = { ...this.state.pagination };
+        pagination.current = res.data.currentPage;
+        pagination.total = res.data.totalCount;
+        this.setState({
+          list: res.data.riderBatchWorkList,
+          pagination
+        }, () => console.log(this.state.list))
+  })
+  .catch((e) => {
+      customError("목록 에러", 
+      "에러가 발생하여 목록을 불러올수 없습니다.")
+    }); 
+  };
+
+  // 일차감 삭제
+  onDelete = (row) => {
+    let self = this;
+      Modal.confirm({
+        title: "일차감 삭제",
+        content: <div> {row.title} 를 삭제하시겠습니까?</div>,
+        okText: "확인",
+        cancelText: "취소",
+        onOk() {
+            httpDelete(httpUrl.riderBatchWorkDelete, [], {
+              idx: row.idx
+            })
+                .then((res) => {
+                    if (res.result === "SUCCESS" && res.data === "SUCCESS") {
+                    customAlert("일차감 삭제", row.title+" 일차감이 삭제되었습니다.")
+                    self.getList();
+                    }
+                })
+                .catch((error) => {
+                    customError("삭제 오류", 
+                        "오류가 발생하였습니다. 다시 시도해 주십시오.")
+                });
+        },
     });
+  }
+  
+  // 기사추가 dialog
+  openSearchRiderModal = () => {
+    this.setState({ searchRiderOpen: true });
   };
-  //일차감 그룹설정
-  openTaskGroupModal = () => {
-    this.setState({ taskGroupOpen: true });
-  };
-  closeTaskGroupModal = () => {
-    this.setState({ taskGroupOpen: false });
+  closeSearchRiderModal = () => {
+    this.setState({ searchRiderOpen: false });
   };
 
   //일차감 작업등록
@@ -131,53 +119,113 @@ class TaskSchedulerDialog extends Component {
   render() {
     const columns = [
       {
-        title: "사용여부",
-        className: "table-column-center",
-        render: () => (
-          <div>
-            {
-              <Checkbox
-                className="tabBtn riderGroupTab"
-                onClick={() => {
-                  this.setState({ workTabOpen: true });
-                }}
-              ></Checkbox>
-            }
-          </div>
-        ),
-      },
-      {
         title: "차감명",
-        dataIndex: "workName",
+        dataIndex: "title",
         className: "table-column-center",
       },
       {
         title: "차감금액",
-        dataIndex: "processPrice",
+        dataIndex: "ncashDelta",
         className: "table-column-center",
         render: (data) => <div>{comma(data)}</div>,
       },
       {
-        title: "등록자",
-        dataIndex: "registerName",
-        className: "table-column-center",
-      },
-      {
-        title: "기간제한사용",
-        dataIndex: "limitTimeUse",
-        className: "table-column-center",
-      },
-      {
         title: "기간제한시작일",
-        dataIndex: "limitTimeStart",
+        dataIndex: "startDate",
         className: "table-column-center",
       },
       {
         title: "기간제한종료일",
-        dataIndex: "limitTimeFinish",
+        dataIndex: "endDate",
         className: "table-column-center",
       },
+      // {
+      //   className: "table-column-center",
+      //   render: (data, row) => (
+      //     <div>
+      //       <Button
+      //         className="tabBtn surchargeTab"
+      //         onClick={() => {}}
+      //       >
+      //         수정
+      //       </Button>
+      //     </div>
+      //   ),
+      // },
+      {
+        title: "기사추가",
+        className: "table-column-center",
+        render: () => (
+          <div>
+            {this.state.searchRiderOpen && (
+              <SearchRiderDialog
+                close={this.closeSearchRiderModal}
+                multi={true}
+                callback={(data) =>
+                  this.setState(
+                    {
+                      selectedRider: data,
+                    },
+                    () => {
+                      this.getList();
+                    }
+                  )
+                }
+              />
+            )}
+            <Button
+              className="tabBtn"
+              onClick={() => {
+                this.openSearchRiderModal();
+              }}
+            >
+              추가
+            </Button>
+          </div>
+        ),
+      },
+      {
+        className: "table-column-center",
+        render: (data, row) => (
+          <div>
+            <Button
+              className="tabBtn surchargeTab"
+              onClick={() => this.onDelete(row)}
+            >
+              삭제
+            </Button>
+          </div>
+        ),
+      },
     ];
+    const expandedRowRender = (record) => {
+      const dropColumns = [
+        {
+          dataIndex: "riderName",
+          className: "table-column-center",
+          render: (data) => (
+            <>
+              <Tag
+                style={{ fontSize: 14, padding: 5 }}
+                closable
+                onClose={() => this.setState({ visible: false })}
+              >
+                {data}
+              </Tag>
+            </>
+          ),
+        },
+      ];
+      return (
+        <Table
+          className="subTable"
+          rowKey={(record) => `record: ${record.idx}`}
+          columns={dropColumns}
+          dataSource={record.users}
+          pagination={false}
+        />
+      );
+    };
 
     const { close } = this.props;
 
@@ -196,17 +244,29 @@ class TaskSchedulerDialog extends Component {
             <div className="taskScheduler-inner">
               <div className="taskScheduler-btn">
                 <div className="taskScheduler-btn-01">
-                  {this.state.taskGroupOpen && (
+                  {this.state.taskWorkOpen && (
+                    <TaskWorkDialog 
+                      close={this.closeTaskWorkModal}
+                      callback={this.onRefresh}
+                    />
+                  )}
+                  <Button
+                    className="taskScheduler-btn"
+                    onClick={this.openTaskWorkModal}
+                  >
+                    일차감 등록
+                  </Button>
+                  {/* {this.state.taskGroupOpen && (
                     <TaskGroupDialog close={this.closeTaskGroupModal} />
                   )}
                   <Button
                     className="taskScheduler-btn"
                     onClick={this.openTaskGroupModal}
                   >
-                    그룹관리
-                  </Button>
+                    라이더관리
+                  </Button> */}
                 </div>
-                <div className="taskScheduler-btn-02">
+                {/* <div className="taskScheduler-btn-02">
                   {this.state.taskWorkOpen && (
                     <TaskWorkDialog close={this.closeTaskWorkModal} />
                   )}
@@ -216,23 +276,18 @@ class TaskSchedulerDialog extends Component {
                   >
                     일차감 등록
                   </Button>
-                </div>
-                {/* <div className="taskScheduler-btn-03">
-                                    <Button
-                                        className="tabBtn taskScheduler-btn"
-                                        onClick={() => { }}
-                                    >조회</Button>
-                                </div> */}
+                </div> */}
               </div>
 
               <Form ref={this.formIdRef} onFinish={this.handleIdSubmit}>
                 <div className="listBlock">
                   <Table
-                    // rowKey={(record) => record.idx}
+                    rowKey={(record) => record.idx}
                     dataSource={this.state.list}
                     columns={columns}
                     pagination={this.state.pagination}
                     onChange={this.handleTableChange}
+                    expandedRowRender={expandedRowRender}
                   />
                 </div>
               </Form>
