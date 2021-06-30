@@ -226,7 +226,7 @@ class BlindFranListDialog extends Component {
                 render:
                     (data, row) => (
                         <div>
-                            {data !== true ? blockString[0] : blockString[1]}
+                            {data !== true ? blockString[1] : blockString[2]}
                         </div>
                     ),
             },
@@ -243,7 +243,7 @@ class BlindFranListDialog extends Component {
                             }
                         }}>해제</Button>
                         :
-                        <Button className="tabBtn surchargeTab">-</Button>
+                        <></>
                     }
                     </div>
               },
@@ -357,7 +357,7 @@ class BlindFranListDialog extends Component {
                                                 <FormItem
                                                     name="memo"
                                                     className="selectItem"
-                                                    rules={[{ required: true, message: "차단 메모를 입력해주세요." }]}
+                                                    // rules={[{ required: true, message: "차단 메모를 입력해주세요." }]}
                                                 >
                                                     <Input placeholder="차단메모 입력" className="override-input sub">
                                                     </Input>
