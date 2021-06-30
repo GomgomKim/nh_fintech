@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import { Modal, Button, Input, Form, Tag } from "antd";
+import { Modal, Button, Input, Form, Tag, Radio } from "antd";
 import "../../../css/modal.css";
-import { NaverMap, Polygon } from "react-naver-maps";
+import { NaverMap, Polygon, Marker } from "react-naver-maps";
 import { deliveryZone } from "../../../lib/util/codeUtil";
+import { ArrowLeftOutlined, ReloadOutlined } from "@ant-design/icons";
 
 const FormItem = Form.Item;
 
@@ -27,7 +28,7 @@ class DeliveryZoneDialog extends Component {
 
       // 신규 금지 구역 parameter
       paths: [],
-      viewPaths: [[]],
+      viewPaths: [],
       inputName: "",
     };
     this.navermaps = window.naver.maps;
@@ -80,14 +81,48 @@ class DeliveryZoneDialog extends Component {
     let newState = this.state.customDeliveryZone;
     newState[index].toggle = !newState[index].toggle;
 
-    this.setState({
-      customDeliveryZone: newState,
-      viewPaths: newState[index].toggle
-        ? this.state.viewPaths.concat(
-            this.state.customDeliveryZone[index].coords
-          )
-        : [],
-    });
+    // if (newState[index].toggle) {
+    //   let newViewPath = this.state.viewPaths;
+    //   newViewPath.push(newState[index].coords);
+    //   this.setState({ customDeliveryZone: newState, viewPaths: newViewPath });
+    // } else {
+    //   this.setState({ customDeliveryZone: newState, viewPaths: [] });
+    // }
+
+    // if (this.state.deleteMode) {
+    //   const self = this;
+    //   Modal.confirm({
+    //     onOk: () => {
+    //       self.setState({
+    //         customDeliveryZone: self.state.customDeliveryZone.filter(
+    //           (item) =>
+    //             !(item.code === self.state.customDeliveryZone[index].code)
+    //         ),
+    //         viewPaths: self.state.viewPaths.filter(
+    //           (item) =>
+    //             !(item.code === self.state.customDeliveryZone[index].code)
+    //         ),
+    //       });
+    //       return;
+    //     },
+    //   });
+    // } else {
+    this.setState(
+      {
+        customDeliveryZone: newState,
+        viewPaths: newState[index].toggle
+          ? this.state.viewPaths.concat(this.state.customDeliveryZone[index])
+          : this.state.viewPaths.filter(
+              (item) =>
+                !(item.code === this.state.customDeliveryZone[index].code)
+            ),
+      },
+      () => {
+        console.log("viewpath");
+        console.log(this.state.viewPaths);
+      }
+    );
+    // }
   };
 
   render() {
@@ -126,18 +161,42 @@ class DeliveryZoneDialog extends Component {
                     </div>
                   ))}
                 </div>
-                <div className="zone-title">특정 구역</div>
-                {this.state.customDeliveryZone.map((obj, idx) => (
-                  <div key={obj.code} className="zone-box">
-                    <div
-                      className={obj.toggle ? "zone-el-active" : "zone-el"}
-                      onClick={() => this.handleToggleCustom(idx)}
-                    >
-                      {obj.text}
+                <div className="zone-title">
+                  특정 구역
+                  <Button
+                    checked={this.state.deleteMode}
+                    className="radio-btn"
+                    onClick={() => {
+                      Modal.confirm({
+                        title: "삭제",
+                        content: `삭제하시겠습니까?`,
+                        onOk: () => {
+                          this.setState({
+                            customDeliveryZone:
+                              this.state.customDeliveryZone.filter(
+                                (item) => !item.toggle
+                              ),
+                            viewPaths: [],
+                          });
+                        },
+                      });
+                    }}
+                  >
+                    삭제하기
+                  </Button>
+                </div>
+                <div className="zone-box-wrap">
+                  {this.state.customDeliveryZone.map((obj, idx) => (
+                    <div key={obj.code} className="zone-box">
+                      <div
+                        className={obj.toggle ? "zone-el-active" : "zone-el"}
+                        onClick={() => this.handleToggleCustom(idx)}
+                      >
+                        {obj.text}
+                      </div>
                     </div>
-                  </div>
-                ))}
-
+                  ))}
+                </div>
                 <div className="zone-title">새 구역 등록</div>
                 <div>
                   <Input
@@ -180,17 +239,69 @@ class DeliveryZoneDialog extends Component {
                     )}
                     {this.state.viewPaths.length > 0 &&
                       this.state.viewPaths.map((elem) => {
+                        let sumX = 0;
+                        let sumY = 0;
+
+                        elem.coords.map((el) => {
+                          sumX += el.x;
+                          sumY += el.y;
+                        });
+                        const meanX = sumX / elem.coords.length;
+                        const meanY = sumY / elem.coords.length;
+
+                        const position = navermaps.LatLng(meanY, meanX);
+
                         return (
-                          <Polygon
-                            paths={elem}
-                            fillColor={"#ff0000"}
-                            fillOpacity={0.3}
-                            strokeColor={"#ff0000"}
-                            strokeOpacity={0.6}
-                            strokeWeight={3}
-                          />
+                          <>
+                            <Polygon
+                              paths={elem.coords}
+                              fillColor={"#ff0000"}
+                              fillOpacity={0.3}
+                              strokeColor={"#ff0000"}
+                              strokeOpacity={0.6}
+                              strokeWeight={3}
+                            />
+                            <Marker
+                              position={position}
+                              icon={{
+                                content: [
+                                  '<div style="background-color: black; color: #fddc00; padding: 10px 20px; border-radius: 5px; font-size:16px; transform:translate(-50%,-50%);">' +
+                                    elem.text +
+                                    "</div>",
+                                ].join(""),
+                              }}
+                            />
+                          </>
                         );
                       })}
+                    <Button
+                      type="primary"
+                      icon={<ArrowLeftOutlined />}
+                      style={{ zIndex: 1 }}
+                      onClick={() => {
+                        this.setState(
+                          {
+                            paths: this.state.paths.slice(
+                              0,
+                              this.state.paths.length - 1
+                            ),
+                          },
+                          () => {
+                            if (this.state.paths.length === 1) {
+                              this.setState({
+                                paths: [],
+                              });
+                            }
+                          }
+                        );
+                      }}
+                    />
+                    <Button
+                      type="primary"
+                      icon={<ReloadOutlined />}
+                      style={{ zIndex: 1 }}
+                      onClick={() => this.setState({ paths: [] })}
+                    />
                   </NaverMap>
                 )}
               </div>

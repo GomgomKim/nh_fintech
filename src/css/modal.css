@@ -4376,6 +4376,12 @@ td.ant-table-column-sort {
   padding-top: 25px;
   margin-bottom: 10px;
 }
+.radio-btn {
+  float: right;
+}
+.zone-box-wrap {
+  width: 390px;
+}
 .zone-box {
   display: inline-block;
 }
