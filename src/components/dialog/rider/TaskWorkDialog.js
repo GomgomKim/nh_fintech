@@ -161,7 +161,7 @@ class TaskWorkDialog extends Component {
                   </div>
                 </div> */}
                 <div className="twl taskWork-list-05">
-                  <div className="twl-text">기간제한사용</div>
+                  <div className="twl-text">기간제한</div>
                     <RangePicker
                       placeholder={['시작일', '종료일']}
                       showTime={{ format: 'HH:mm' }}
