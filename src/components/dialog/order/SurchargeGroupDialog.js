@@ -108,6 +108,7 @@ class SurchargeGroupDialog extends Component {
             if (res.result === "SUCCESS") {
                 customAlert("가맹점 삭제", 
                 row.frName+" 가맹점을 삭제하였습니다.")
+                this.getList();
             }
             else {
                 customError("삭제 에러", 
@@ -215,6 +216,7 @@ class SurchargeGroupDialog extends Component {
                     render: (data, row) =>
                         <>
                             <Tag
+                                // key={row.frIdx}
                                 closable
                                 style={{ fontSize: 15, padding: 5}}
                                 onClose={() => this.deleteFranchise(row)}
