@@ -2160,6 +2160,10 @@
   display: none; /* Chrome, Safari, Opera*/
 }
 
+.taskScheduler-inner .ant-table-expanded-row .ant-table-row {
+  display: inline-block;
+}
+
 .listBlock {
   margin-top: 20px;
 }

@@ -4,6 +4,7 @@ import "../../../css/modal.css";
 import SearchBatchGroupDialog from "../common/SearchBatchGroupDialog";
 import moment from 'moment';
 import { httpPost, httpUrl } from "../../../api/httpClient";
+import { customAlert, customError} from "../../../api/Modals";
 
 const FormItem = Form.Item;
 // const Search = Input.Search;
@@ -60,12 +61,17 @@ class TaskWorkDialog extends Component {
       memo: '',
     }).then((res)=>{
       if(res.data === "SUCCESS" && res.result === "SUCCESS"){
-         console.log('성공')
+         customAlert("일차감 등록", 
+         this.formRef.current.getFieldValue("title") + " 일차감이 등록되었습니다.")
          this.props.close()
          this.props.callback()
       }
-      else console.log('실패')
+      else 
+        customError("추가 오류", "오류가 발생하였습니다. 다시 시도해 주십시오.")
     })
+    .catch((error) => {
+      customError("추가 오류", "오류가 발생하였습니다. 다시 시도해 주십시오.")
+    });
   }
 
 

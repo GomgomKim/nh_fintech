@@ -20,6 +20,7 @@ class TaskSchedulerDialog extends Component {
         current: 1,
         pageSize: 5,
       },
+      userIdx: 0
     };
     this.formRef = React.createRef();
   }
@@ -88,21 +89,60 @@ class TaskSchedulerDialog extends Component {
             })
                 .then((res) => {
                     if (res.result === "SUCCESS" && res.data === "SUCCESS") {
-                    customAlert("일차감 삭제", row.title+" 일차감이 삭제되었습니다.")
-                    self.getList();
+                      customAlert("일차감 삭제", row.title+" 일차감이 삭제되었습니다.")
+                      self.getList();
                     }
+                    else customError("삭제 오류", "삭제 오류가 발생하였습니다. 다시 시도해 주십시오.")
                 })
                 .catch((error) => {
-                    customError("삭제 오류", 
-                        "오류가 발생하였습니다. 다시 시도해 주십시오.")
+                  customError("삭제 오류", "일차감에 라이더가 있을시 라이더 삭제후 다시 진행해주세요.")
                 });
         },
     });
   }
+
+  onAddRider = (riderData) => {
+      // console.log(JSON.stringify(riderData + " + " + JSON.stringify(this.state.userIdx)))
+      httpPost(httpUrl.userBatchWorkCreate, [], {
+        userIdx: riderData.idx,
+        batchWorkNcashIdx: this.state.userIdx
+      })
+        .then((res) => {
+            if (res.result === "SUCCESS" && res.data === "SUCCESS") {
+              customAlert("일차감 라이더 추가", riderData.riderName+" 라이더가 추가되었습니다.")
+              this.getList();
+            }
+            else  
+            customError("추가 오류", "오류가 발생하였습니다. 다시 시도해 주십시오.")
+
+        })
+        .catch((error) => {
+            customError("추가 오류", "오류가 발생하였습니다. 해당 라이더가 이미 추가 되있을 시 추가되지 않습니다.")
+        });
+  }
+
+  onDeleteRider = (data,userIdx) => {
+    var self = this;
+    httpDelete(httpUrl.userBatchWorkDelete, [], {
+      batchWorkNcashIdx: data.idx,
+      userIdx
+    })
+    .then((res) => {
+        if (res.result === "SUCCESS" && res.data === "SUCCESS") {
+          customAlert("일차감 라이더 삭제", "일차감 라이더가 삭제되었습니다.")
+          self.getList();
+        }
+        else customError("삭제 오류", "오류가 발생하였습니다. 다시 시도해 주십시오.")
+    })
+    .catch((error) => {
+        customError("삭제 오류", "오류가 발생하였습니다. 다시 시도해 주십시오.")
+    });
+  }
   
   // 기사추가 dialog
-  openSearchRiderModal = () => {
-    this.setState({ searchRiderOpen: true });
+  openSearchRiderModal = (data) => {
+    // userIdx set
+    this.setState({ searchRiderOpen: true, userIdx:data });
   };
   closeSearchRiderModal = () => {
     this.setState({ searchRiderOpen: false });
@@ -154,29 +194,21 @@ class TaskSchedulerDialog extends Component {
       // },
       {
         title: "기사추가",
+        dataIndex: "idx",
         className: "table-column-center",
-        render: () => (
+        render: (data) => (
           <div>
             {this.state.searchRiderOpen && (
               <SearchRiderDialog
+              // multi={true}
                 close={this.closeSearchRiderModal}
-                multi={true}
-                callback={(data) =>
-                  this.setState(
-                    {
-                      selectedRider: data,
-                    },
-                    () => {
-                      this.getList();
-                    }
-                  )
-                }
-              />
+                callback={(riderData) => this.onAddRider(riderData)}/>
             )}
             <Button
               className="tabBtn"
               onClick={() => {
-                this.openSearchRiderModal();
+                // 모달열리면서 data추가
+                this.openSearchRiderModal(data);
               }}
             >
               추가
@@ -199,16 +231,18 @@ class TaskSchedulerDialog extends Component {
       },
     ];
     const expandedRowRender = (record) => {
+      // alert(JSON.stringify(record.users))
       const dropColumns = [
         {
           dataIndex: "riderName",
           className: "table-column-center",
-          render: (data) => (
+          render: (data, row) => (
             <>
               <Tag
+                key={row.userIdx}
                 style={{ fontSize: 14, padding: 5 }}
                 closable
-                onClose={() => this.setState({ visible: false })}
+                onClose={() => this.onDeleteRider(record, row.userIdx)}
               >
                 {data}
               </Tag>
@@ -256,27 +290,7 @@ class TaskSchedulerDialog extends Component {
                   >
                     일차감 등록
                   </Button>
-                  {/* {this.state.taskGroupOpen && (
-                    <TaskGroupDialog close={this.closeTaskGroupModal} />
-                  )}
-                  <Button
-                    className="taskScheduler-btn"
-                    onClick={this.openTaskGroupModal}
-                  >
-                    라이더관리
-                  </Button> */}
                 </div>
-                {/* <div className="taskScheduler-btn-02">
-                  {this.state.taskWorkOpen && (
-                    <TaskWorkDialog close={this.closeTaskWorkModal} />
-                  )}
-                  <Button
-                    className="tabBtn taskScheduler-btn"
-                    onClick={this.openTaskWorkModal}
-                  >
-                    일차감 등록
-                  </Button>
-                </div> */}
               </div>
 
               <Form ref={this.formIdRef} onFinish={this.handleIdSubmit}>
