@@ -5,7 +5,8 @@ import {
   FilterOutlined,
   MessageOutlined,
   NotificationFilled,
-  PhoneOutlined
+  PhoneOutlined,
+  PushpinOutlined
 } from "@ant-design/icons";
 import {
   Button,
@@ -37,6 +38,7 @@ import PaymentDialog from "../../components/dialog/order/PaymentDialog";
 import RegistCallDialog from "../../components/dialog/order/RegistCallDialog";
 import TimeDelayDialog from "../../components/dialog/order/TimeDelayDialog";
 import SendSnsDialog from "../../components/dialog/rider/SendSnsDialog";
+import DeliveryZoneDialog from "../../components/dialog/order/DeliveryZoneDialog";
 import "../../css/common.css";
 import "../../css/order.css";
 import {
@@ -84,6 +86,7 @@ class ReceptionStatus extends Component {
       editable: false,
       orderData: null,
       paymentData: null,
+      deliveryZone: false,
 
       // data
       list: [],
@@ -297,6 +300,15 @@ class ReceptionStatus extends Component {
       () => this.getList()
     );
   };
+  
+  // 호출지역 dialog
+  openDeliveryZoneModal = () => {
+    this.setState({ deliveryZone: true });
+  };
+  closeDeliveryZoneModal = () => {
+    this.setState({ deliveryZone: false });
+  };
+
 
   // 시간지연 dialog
   openTimeDelayModal = () => {
@@ -996,6 +1008,18 @@ class ReceptionStatus extends Component {
             onClick={this.openTimeDelayModal}
           >
             호출설정
+          </Button>
+          {this.state.deliveryZone && (
+            <DeliveryZoneDialog             
+              close={this.closeDeliveryZoneModal}
+            />
+          )}
+          <Button
+            icon={<PushpinOutlined />}
+            className="tabBtn"
+            onClick={this.openDeliveryZoneModal}
+          >
+            배송불가지역
           </Button>
           {this.state.mapControlOpen && (
             <MapControlDialog
