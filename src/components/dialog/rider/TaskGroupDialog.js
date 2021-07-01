@@ -2,7 +2,6 @@ import { Button, Form, Table, Tag } from "antd";
 import React, { Component } from "react";
 import "../../../css/modal.css";
 import SearchRiderDialog from "../common/SearchRiderDialog";
-import RegistRiderGroupDialog from "./RegistRiderGroupDialog";
 
 class TaskGroupDialog extends Component {
   constructor(props) {

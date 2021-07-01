@@ -3,12 +3,11 @@ import React, { Component } from "react";
 import { httpPost, httpUrl, httpDelete } from "../../../api/httpClient";
 import "../../../css/modal.css";
 import { comma } from "../../../lib/util/numberUtil";
-import TaskGroupDialog from "../rider/TaskGroupDialog";
 import SearchRiderDialog from "../common/SearchRiderDialog";
-import TaskWorkDialog from "../rider/TaskWorkDialog";
+import RegistBatchWorkDialog from "../rider/RegistBatchWorkDialog";
 import { customAlert, customError} from "../../../api/Modals";
 
-class TaskSchedulerDialog extends Component {
+class BatchWorkListDialog extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -279,7 +278,7 @@ class TaskSchedulerDialog extends Component {
               <div className="taskScheduler-btn">
                 <div className="taskScheduler-btn-01">
                   {this.state.taskWorkOpen && (
-                    <TaskWorkDialog 
+                    <RegistBatchWorkDialog 
                       close={this.closeTaskWorkModal}
                       callback={this.onRefresh}
                     />
@@ -313,4 +312,4 @@ class TaskSchedulerDialog extends Component {
   }
 }
 
-export default TaskSchedulerDialog;
+export default BatchWorkListDialog;

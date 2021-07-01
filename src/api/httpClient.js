@@ -273,10 +273,8 @@ const httpUrl = {
   blindList: "/rider/admin/block/list",
   registBlind: "/rider/admin/block/create",
   deleteBlind: "/rider/admin/block/delete",
-
   statusBlind: "/rider/block/update",
-  blindAllList:
-    "/rider/block/all/list?deletedList=%s&pageNum=%s&pageSize=%s&statusList=%s",
+  blindAllList: "/rider/block/all/list?deletedList=%s&direction=%s&pageNum=%s&pageSize=%s",
 
   // 채팅
   chatList: "/chat/chatList?pageSize=%s&pageNum=%s&searchName=%s",
