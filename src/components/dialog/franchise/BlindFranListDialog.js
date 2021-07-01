@@ -290,7 +290,10 @@ class BlindFranListDialog extends Component {
                 render:
                     (data, row) => (
                         <div>
-                            {data !== true ? blockString[1] : blockString[2]}
+                            { row.status !== 1 ? 
+                                data !== true ? blockString[1] : blockString[2] : 
+                                row.status === 1 && data == true ? 
+                                blockString[4] : blockString[0]}
                         </div>
                     ),
             },
