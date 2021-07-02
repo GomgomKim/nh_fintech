@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import { Modal, Button, Input, Form, Tag, Radio } from "antd";
-import "../../../css/modal.css";
-import { NaverMap, Polygon, Marker } from "react-naver-maps";
-import { deliveryZone } from "../../../lib/util/codeUtil";
 import { ArrowLeftOutlined, ReloadOutlined } from "@ant-design/icons";
+import { Button, Form, Input, Modal } from "antd";
+import React, { Component } from "react";
+import { Marker, NaverMap, Polygon } from "react-naver-maps";
+import "../../../css/modal.css";
+import { deliveryZone } from "../../../lib/util/codeUtil";
 
 const FormItem = Form.Item;
 
@@ -25,6 +25,10 @@ class DeliveryZoneDialog extends Component {
         },
       ],
       selectMenu: 0,
+      mapCenter: {
+        lat: 37.643623625321474,
+        lng: 126.66509442649551,
+      },
 
       // 신규 금지 구역 parameter
       paths: [],
@@ -224,6 +228,7 @@ class DeliveryZoneDialog extends Component {
                 {navermaps && (
                   <NaverMap
                     defaultZoom={14}
+                    center={this.state.mapCenter}
                     style={{
                       width: "550px",
                       height: "600px",
@@ -274,6 +279,7 @@ class DeliveryZoneDialog extends Component {
                                     "</div>",
                                 ].join(""),
                               }}
+                              title={elem.text}
                             />
                           </>
                         );
