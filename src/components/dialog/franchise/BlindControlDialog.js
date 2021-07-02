@@ -29,7 +29,8 @@ class BlindControlDialog extends Component {
             searchRiderOpen: false,
             searchFranchiseOpen: false,
             blindDirection: 0,
-            blindStatus: [0,1,2],
+            // blindStatus: [0,1,2,3],
+            direction: [1,2]
         };
         this.formRef = React.createRef();
     }
@@ -57,9 +58,10 @@ class BlindControlDialog extends Component {
     getList = () => {
         let pageNum = this.state.pagination.current;
         let pageSize = this.state.pagination.pageSize;
-        let blindStatus = this.state.blindStatus
+        // let blindStatus = this.state.blindStatus
+        let direction = this.state.direction
         let blindList = this.state.deletedCheck !== true ? [0] : [0, 1];
-        httpGet(httpUrl.blindAllList, [blindList, pageSize, pageNum, blindStatus], {}).then((res) => {
+        httpGet(httpUrl.blindAllList, [blindList, direction, pageSize, pageNum], {}).then((res) => {
             console.log(res)
             const pagination = { ...this.state.pagination };
             pagination.current = res.data.currentPage;
@@ -219,8 +221,13 @@ class BlindControlDialog extends Component {
                     })
                         .then((result) => {
                             if (result.result === "SUCCESS") {
-                                unBlindDeny();
-                            self.getList();
+                                httpPost(httpUrl.deleteBlind, [], {
+                                    idx: idx,
+                                }).then(()=>{
+                                    unBlindDeny();
+                                    self.getList();
+                                }) 
+                                
                             } else {
                                 unBlindAgreeError();
                             }
@@ -301,7 +308,10 @@ class BlindControlDialog extends Component {
                 render:
                     (data, row) => (
                         <div>
-                            { row.status !== 1 ? data !== true ? blockString[1] : blockString[2] : blockString[0]}
+                            { row.status !== 1 ? 
+                                data !== true ? blockString[1] : blockString[2] : 
+                                row.status === 1 && data == true ? 
+                                blockString[4] : blockString[0]}
                         </div>
                     ),
             },
@@ -310,9 +320,10 @@ class BlindControlDialog extends Component {
                 className: "table-column-center",
                 render: (data, row) =>
                 <>
-
+                    {/* {console.log(row.idx)} */}
                     { row.status === 1 && 
                       row.direction === 1 &&
+                      row.deleted !== true &&
                     <div>
                         <SelectBox
                             value={blockStatusString[data]}

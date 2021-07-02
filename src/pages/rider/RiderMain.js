@@ -5,7 +5,7 @@ import { customAlert, updateError } from "../../api/Modals";
 import BlindRiderListDialog from "../../components/dialog/rider/BlindRiderListDialog";
 import RegistRiderDialog from "../../components/dialog/rider/RegistRiderDialog";
 import RiderGroupDialog from "../../components/dialog/rider/RiderGroupDialog";
-import TaskSchedulerDialog from "../../components/dialog/rider/TaskSchedulerDialog";
+import BatchWorkListDialog from "../../components/dialog/rider/BatchWorkListDialog";
 import UpdatePasswordDialog from "../../components/dialog/rider/UpdatePasswordDialog";
 import SelectBox from "../../components/input/SelectBox";
 import "../../css/modal.css";
@@ -515,7 +515,7 @@ class RiderMain extends Component {
             기사 그룹 관리
           </Button>
           {this.state.taskSchedulerOpen && (
-            <TaskSchedulerDialog close={this.closeTaskSchedulerModal} />
+            <BatchWorkListDialog close={this.closeTaskSchedulerModal} />
           )}
           <Button
             className="riderManageBtn"

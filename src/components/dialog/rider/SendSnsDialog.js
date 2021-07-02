@@ -118,7 +118,7 @@ class SendSnsDialog extends Component {
                                         >
                                             <TextArea
                                                 className="snsInputBox"
-                                                placeholder="메세지 내용"
+                                                placeholder="전체 라이더에게 보낼 메세지 내용을 입력해주세요."
                                             />
                                         </FormItem>
                                     </div>

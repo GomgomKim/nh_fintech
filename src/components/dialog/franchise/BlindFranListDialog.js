@@ -3,14 +3,15 @@ import {
     Form, Table, Checkbox, Input, Button, Modal,
 } from "antd";
 import '../../../css/modal.css';
-import { frRiderString, blockString } from '../../../lib/util/codeUtil';
+import { blockStatusString, frRiderString, blockString } from '../../../lib/util/codeUtil';
 import { httpPost, httpUrl } from "../../../api/httpClient";
 import SelectBox from '../../../components/input/SelectBox';
 import { formatDate } from "../../../lib/util/dateUtil";
 import { connect } from "react-redux";
 import SearchRiderDialog from "../../dialog/common/SearchRiderDialog";
 import SearchFranchiseDialog from "../../dialog/common/SearchFranchiseDialog";
-import { blindComplete, blindError, unBlindComplete, unBlindError } from "../../../api/Modals";
+import { blindComplete, blindError, unBlindComplete, unBlindError,
+    unBlindAgree, unBlindDeny, unBlindAgreeError } from "../../../api/Modals";
 const FormItem = Form.Item;
 
 class BlindFranListDialog extends Component {
@@ -61,6 +62,7 @@ class BlindFranListDialog extends Component {
             pageNum: this.state.pagination.current,
             pageSize: this.state.pagination.pageSize,
             deletedList: this.state.deletedCheck !== true ? [0] : [0, 1],
+            // direction: [2]
         })
         .then((res) => {
             if (res.result === "SUCCESS") {
@@ -160,6 +162,68 @@ class BlindFranListDialog extends Component {
         }
     }
 
+    // 승인대기 or 승인거부로 상태변경
+    onChangeDeletedStatus = (idx, value) => {
+        let self = this;
+        if (parseInt(value) === 2) {
+            Modal.confirm({
+                title: "승인 완료",
+                content: "해당 블라인드를 승인하시겠습니까?",
+                okText: "확인",
+                cancelText: "취소",
+                onOk() {
+                    httpPost(httpUrl.statusBlind, [], {
+                        idx: idx,
+                        status: 2
+                    })
+                        .then((result) => {
+                            if (result.result === "SUCCESS") {
+                                unBlindAgree();
+                            self.getList();
+                            } else {
+                                unBlindAgreeError();
+                            }
+                            self.getList();
+                        })
+                        .catch((e) => {
+                            unBlindAgreeError();
+                        });
+                }
+            })
+        }
+        else {
+            Modal.confirm({
+                title: "승인 거부",
+                content: "해당 블라인드 승인을 거부하시겠습니까?",
+                okText: "확인",
+                cancelText: "취소",
+                onOk() {
+                    httpPost(httpUrl.statusBlind, [], {
+                        idx: idx,
+                        status: 3
+                    })
+                        .then((result) => {
+                            if (result.result === "SUCCESS") {
+                                httpPost(httpUrl.deleteBlind, [], {
+                                    idx: idx,
+                                }).then(()=>{
+                                    unBlindDeny();
+                                    self.getList();
+                                }) 
+                                
+                            } else {
+                                unBlindAgreeError();
+                            }
+                            self.getList();
+                        })
+                        .catch((e) => {
+                            unBlindAgreeError();
+                        });
+                }
+            })
+        }
+    }
+
     // 가맹점조회 dialog
     openSearchFranchiseModal = () => {
         this.setState({ searchFranchiseOpen: true });
@@ -226,27 +290,56 @@ class BlindFranListDialog extends Component {
                 render:
                     (data, row) => (
                         <div>
-                            {data !== true ? blockString[1] : blockString[2]}
+                            { row.status !== 1 ? 
+                                data !== true ? blockString[1] : blockString[2] : 
+                                row.status === 1 && data == true ? 
+                                blockString[4] : blockString[0]}
                         </div>
                     ),
             },
             {
-                title: "해제",
+                title: "처리",
                 className: "table-column-center",
                 render: (data, row) =>
+                <>
+                    {/* {console.log(row.idx)} */}
+                    { row.status === 1 && 
+                      row.direction === 1 &&
+                      row.deleted !== true &&
                     <div>
-                    {row.deleted !== true ?
-                        <Button className="tabBtn surchargeTab" 
-                        onClick={(value) => {
-                            if (parseInt(value) !== row.deleted) {
-                                this.onDelete(row.idx, row.deleted);
-                            }
-                        }}>해제</Button>
-                        :
-                        <></>
-                    }
+                        <SelectBox
+                            value={blockStatusString[data]}
+                            code={Object.keys(blockStatusString)}
+                            codeString={blockStatusString}
+                            placeholder={"승인대기"}
+                            onChange={(value) => {
+                                console.log(value, row.status);
+                                if (value !== row.status.toString()) {
+                                this.onChangeDeletedStatus(row.idx, value);
+                                }
+                            }}
+                        />
                     </div>
-              },
+                    }
+
+                    {row.status === 2 && 
+                    <div>
+                        {row.deleted !== true ?
+                            <Button
+                            onClick={(value) => {
+                                if (parseInt(value) !== row.deleted) {
+                                    this.onDelete(row.idx, row.deleted);
+                                }
+                            }}>해제</Button>
+                            :
+                            ''
+                        }
+                    </div>
+                    }
+
+              </>
+
+            },
         ];
 
         const { close, data } = this.props;

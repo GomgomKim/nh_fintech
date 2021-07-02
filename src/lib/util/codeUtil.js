@@ -89,6 +89,7 @@ const blockString = {
   1: "차단중",
   2: "차단해제",
   3: "차단거부",
+  4: "본인해제",
 };
 
 const blockStatusString = {

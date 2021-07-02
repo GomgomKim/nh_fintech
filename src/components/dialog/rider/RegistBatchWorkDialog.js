@@ -1,7 +1,6 @@
 import { Button, Checkbox, DatePicker, Form, Input, Select } from "antd";
 import React, { Component } from "react";
 import "../../../css/modal.css";
-import SearchBatchGroupDialog from "../common/SearchBatchGroupDialog";
 import moment from 'moment';
 import { httpPost, httpUrl } from "../../../api/httpClient";
 import { customAlert, customError} from "../../../api/Modals";
@@ -12,7 +11,7 @@ const Option = Select.Option;
 const today = new Date();
 const { RangePicker } = DatePicker;
 
-class TaskWorkDialog extends Component {
+class RegistBatchWorkDialog extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -189,4 +188,4 @@ class TaskWorkDialog extends Component {
   }
 }
 
-export default TaskWorkDialog;
+export default RegistBatchWorkDialog;
