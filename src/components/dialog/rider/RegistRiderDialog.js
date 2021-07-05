@@ -93,7 +93,7 @@ class RegistRiderDialog extends Component {
         <div>
           {data
             ? "기사 정보를 수정하시겠습니까?"
-            : "새로운 기사를 등록하시겠습니까??"}
+            : "새로운 기사를 등록하시겠습니까?"}
         </div>
       ),
 
@@ -481,18 +481,29 @@ class RegistRiderDialog extends Component {
                     </div>
                     <div className="contentBlock">
                       <div className="mainTitle" />
-                      <Input
-                        value={
-                          this.state.selectedBike
-                            ? this.state.selectedBike.bikeNumber
-                            : this.props.data
-                            ? this.props.data.bikeNumber
-                            : ""
-                        }
-                        className="override-input"
-                        placeholder="바이크를 선택해주세요."
-                        disabled
-                      />
+                      <FormItem
+                        name="bikeName"
+                        className="selectItem override-input"
+                        rules={[
+                          {
+                            required: true,
+                            message: "바이크를 선택해주세요",
+                          },
+                        ]}
+                      >
+                        <Input
+                          value={
+                            this.state.selectedBike
+                              ? this.state.selectedBike.bikeNumber
+                              : this.props.data
+                              ? this.props.data.bikeNumber
+                              : ""
+                          }
+                          className="override-input"
+                          placeholder="바이크를 선택해주세요."
+                          disabled
+                        />
+                      </FormItem>
                     </div>
                     <div className="contentBlock">
                       <div className="mainTitle">메모</div>
@@ -663,6 +674,22 @@ class RegistRiderDialog extends Component {
                         />
                       </FormItem>
                     </div>
+
+                    {/* <div className="contentBlock" style={{ marginTop: 10 }}>
+                      <div className="mainTitle">강제배차 사용</div>
+                      <FormItem
+                        name="agreeForceAllocate"
+                        className="giveBox selectItem"
+                        defaultChecked={data ? data.agreeForceAllocate : true}
+                      >
+                        <Checkbox
+                          className="override-input"
+                          defaultChecked={data ? data.agreeForceAllocate : true}
+                        >
+                          사용
+                        </Checkbox>
+                      </FormItem>
+                    </div> */}
 
                     {/* <div className="contentBlock" style={{ marginTop: 10 }}>
                       <div className="mainTitle">SMS수신동의</div>
