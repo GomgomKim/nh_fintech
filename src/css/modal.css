@@ -3637,6 +3637,11 @@
   display: inline-block;
   font-size: 25px;
   line-height: 30px;
+  vertical-align: middle;
+}
+.blind-check-text {
+  display: inline-block;
+  vertical-align: middle;
 }
 .blind-close {
   width: 30px;
