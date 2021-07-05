@@ -6,7 +6,7 @@ import {
   MessageOutlined,
   NotificationFilled,
   PhoneOutlined,
-  PushpinOutlined
+  PushpinOutlined,
 } from "@ant-design/icons";
 import {
   Button,
@@ -16,16 +16,12 @@ import {
   Modal,
   Popover,
   Select,
-  Table
+  Table,
 } from "antd";
 import moment from "moment";
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import {
-  httpPost,
-  httpPostWithNoLoading,
-  httpUrl
-} from "../../api/httpClient";
+import { httpPost, httpPostWithNoLoading, httpUrl } from "../../api/httpClient";
 import { customError } from "../../api/Modals";
 import ChattingCurrentRoom from "../../components/dialog/common/ChattingCurrentRoom";
 import ChattingDialog from "../../components/dialog/common/ChattingDialog";
@@ -46,7 +42,7 @@ import {
   deliveryStatusCode,
   modifyType,
   paymentMethod,
-  rowColorName
+  rowColorName,
 } from "../../lib/util/codeUtil";
 import { formatDate } from "../../lib/util/dateUtil";
 import { comma } from "../../lib/util/numberUtil";
@@ -204,7 +200,6 @@ class ReceptionStatus extends Component {
       });
   };
 
-
   handleToggleCompleteCall = (e) => {
     this.setState(
       {
@@ -300,7 +295,7 @@ class ReceptionStatus extends Component {
       () => this.getList()
     );
   };
-  
+
   // 호출지역 dialog
   openDeliveryZoneModal = () => {
     this.setState({ deliveryZone: true });
@@ -308,7 +303,6 @@ class ReceptionStatus extends Component {
   closeDeliveryZoneModal = () => {
     this.setState({ deliveryZone: false });
   };
-
 
   // 시간지연 dialog
   openTimeDelayModal = () => {
@@ -1010,16 +1004,14 @@ class ReceptionStatus extends Component {
             호출설정
           </Button>
           {this.state.deliveryZone && (
-            <DeliveryZoneDialog             
-              close={this.closeDeliveryZoneModal}
-            />
+            <DeliveryZoneDialog close={this.closeDeliveryZoneModal} />
           )}
           <Button
             icon={<PushpinOutlined />}
             className="tabBtn"
             onClick={this.openDeliveryZoneModal}
           >
-            배송불가지역
+            배송가능지역
           </Button>
           {this.state.mapControlOpen && (
             <MapControlDialog
