@@ -110,3 +110,13 @@
 .btnLayout {
   margin-top: 20px;
 }
+
+#reception-table .ant-table .ant-table-tbody > tr > td:first-child {
+  padding-left: 20px !important;
+}
+#reception-table .ant-table .ant-table-tbody > tr > td:last-child {
+  padding-right: 20px !important;
+}
+#reception-table .ant-table .ant-table-thead > tr > th:last-child {
+  padding-right: 20px !important;
+}

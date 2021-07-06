@@ -11,7 +11,7 @@ import { riderLevelText } from "../../../lib/util/codeUtil";
 import {
   formatYMD,
   formatYMDHM,
-  formatYMDHMS
+  formatYMDHMS,
 } from "../../../lib/util/dateUtil";
 import SearchFranchiseDialog from "./SearchFranchiseDialog";
 import SearchRiderDialog from "./SearchRiderDialog";

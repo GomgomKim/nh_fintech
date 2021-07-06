@@ -893,8 +893,9 @@
   display: inline-block;
   font-size: 16px;
   font-weight: bold;
+  vertical-align: -1px;
 }
-.surchargeLayout .radio-btn {
+.surchargeLayout .radioBtn {
   display: inline-block;
   /* margin-left: 30px; */
   font-size: 16px;
@@ -3437,6 +3438,24 @@
 .chat-page {
   padding: 10px 0px;
 }
+.chat-page > ul > li {
+  width: 32px;
+  height: 32px;
+  line-height: 30px;
+  font-size: 13px;
+}
+.chat-page > ul > li:last-child {
+  display: block;
+  margin-left: 310px;
+  margin-top: 10px;
+}
+.chat-page > ul > li a {
+  padding: 0;
+}
+.chat-page .ant-select-selector {
+  font-size: 12px;
+  height: 30px !important;
+}
 /* .chat-list-container{
   height:650px;
   border:1px solid red;
@@ -3637,6 +3656,11 @@
   display: inline-block;
   font-size: 25px;
   line-height: 30px;
+  vertical-align: middle;
+}
+.blind-check-text {
+  display: inline-block;
+  vertical-align: middle;
 }
 .blind-close {
   width: 30px;
@@ -4246,7 +4270,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
   border-radius: 10px;
-  /* height: 700px; */
+  height: 650px;
   display: flex;
 }
 
