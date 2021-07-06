@@ -142,7 +142,7 @@ class DeliveryZoneDialog extends Component {
 
         <div className="zone-dialog">
           <div className="zone-content">
-            <div> 배송불가지역 </div>
+            <div> 배송가능지역 </div>
 
             <img
               onClick={close}
@@ -152,7 +152,7 @@ class DeliveryZoneDialog extends Component {
 
             <div className="zone-inner">
               <div className="inner-left">
-                <div className="zone-title">배송불가지역</div>
+                <div className="zone-title">배송가능지역</div>
                 <div>
                   {this.state.deliveryZone.map((obj, idx) => (
                     <div key={obj.code} className="zone-box">
