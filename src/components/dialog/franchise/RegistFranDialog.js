@@ -1,3 +1,4 @@
+/*global kakao*/
 import { Button, Checkbox, DatePicker, Form, Input, Radio } from "antd";
 import moment from "moment";
 import React, { Component } from "react";
@@ -8,7 +9,7 @@ import {
   registComplete,
   registError,
   updateComplete,
-  updateError,
+  updateError
 } from "../../../api/Modals";
 import "../../../css/modal.css";
 import { pgUseRate } from "../../../lib/util/codeUtil";
@@ -223,6 +224,20 @@ class RegistFranDialog extends Component {
     this.setState({ isPostCodeOpen: false });
   };
 
+  addressSearchKakao = (address) => {
+    const geocoder = new kakao.maps.services.Geocoder();
+    return new Promise((resolve, reject) => {
+      geocoder.addressSearch(address, function (result, status) {
+        if (status === kakao.maps.services.Status.OK) {
+          const coords = [result[0].y, result[0].x];
+          resolve(coords);
+        } else {
+          reject(status);
+        }
+      });
+    });
+  };
+
   // 우편번호 - 주소 저장
   getAddr = (addrData) => {
     console.log(addrData);
@@ -242,7 +257,7 @@ class RegistFranDialog extends Component {
 
       // console.log(result)
       // console.log(result.addresses.length)
-      if (res.result === "SUCCESS" && result.addresses.length > 0) {
+      if (res.result === "SUCCESS" && result.meta.totalCount !== 0) {
         const lat = result.addresses[0].y;
         const lng = result.addresses[0].x;
         // console.log(lat)
@@ -272,10 +287,21 @@ class RegistFranDialog extends Component {
         //     );
         // });
       } else {
-        customError(
-          "위치 반환 오류",
-          "위치 데이터가 존재하지 않습니다. 관리자에게 문의하세요."
-        );
+        this.addressSearchKakao(addrData.roadAddress)
+          .then((res) => {
+            const [lat, lng] = res;
+            this.setState({
+              latitude: lat,
+              longitude: lng,
+            });
+          })
+          .catch((e) => {
+            customError(
+              "위치 반환 오류",
+              "위치 데이터가 존재하지 않습니다. 관리자에게 문의하세요."
+            );
+            throw e;
+          });
       }
     });
   };

@@ -1,3 +1,4 @@
+/*global kakao*/
 import { Button, Form, Input, Modal, Radio, Table } from "antd";
 import React, { Component } from "react";
 import {
@@ -73,7 +74,7 @@ class SearchAddressDialog extends Component {
       {}
     )
       .then((res) => {
-        console.log(JSON.stringify(res, null, 4))
+        console.log(JSON.stringify(res, null, 4));
         if (res.result === "SUCCESS" && res.data) {
           this.setState({
             list: res.data.addrAptBranches,
@@ -85,7 +86,7 @@ class SearchAddressDialog extends Component {
           });
         }
       })
-      .catch((e) => { });
+      .catch((e) => {});
   };
 
   // 우편번호 검색
@@ -102,6 +103,20 @@ class SearchAddressDialog extends Component {
   };
   closeSelfAdd = () => {
     this.setState({ selfAddOpen: false });
+  };
+
+  addressSearchKakao = (address) => {
+    const geocoder = new kakao.maps.services.Geocoder();
+    return new Promise((resolve, reject) => {
+      geocoder.addressSearch(address, function (result, status) {
+        if (status === kakao.maps.services.Status.OK) {
+          const coords = [result[0].y, result[0].x];
+          resolve(coords);
+        } else {
+          reject(status);
+        }
+      });
+    });
   };
 
   // 우편번호 - 주소 저장
@@ -125,16 +140,27 @@ class SearchAddressDialog extends Component {
     // 좌표변환
     httpGet(httpUrl.getGeocode, [addrData.roadAddress], {}).then((res) => {
       let result = JSON.parse(res.data.json);
-      if (res.result === "SUCCESS" && result.addresses.length > 0) {
+      if (res.result === "SUCCESS" && result.meta.totalCount !== 0) {
         this.setState({
           latitude: result.addresses[0].y,
           longitude: result.addresses[0].x,
         });
       } else {
-        customError(
-          "위치 반환 오류",
-          "위치 데이터가 존재하지 않습니다. 관리자에게 문의하세요."
-        );
+        this.addressSearchKakao(addrData.roadAddress)
+          .then((res) => {
+            const [lat, lng] = res;
+            this.setState({
+              latitude: lat,
+              longitude: lng,
+            });
+          })
+          .catch((e) => {
+            customError(
+              "위치 반환 오류",
+              "위치 데이터가 존재하지 않습니다. 관리자에게 문의하세요."
+            );
+            throw e;
+          });
       }
     });
   };
@@ -153,7 +179,7 @@ class SearchAddressDialog extends Component {
 
   handleSubmit = () => {
     const formData = this.formRef.current.getFieldsValue();
-    var self = this
+    var self = this;
     httpPost(
       httpUrl.createAddrApt,
       [],
@@ -218,11 +244,11 @@ class SearchAddressDialog extends Component {
 
   // 라디오
   onChangeRegistAddType = (e) => {
-    this.setState({ RegistAddType: e.target.value }, () => { });
+    this.setState({ RegistAddType: e.target.value }, () => {});
   };
 
   onChangeSelectAddType = (e) => {
-    this.setState({ selectAddType: e.target.value }, () => { });
+    this.setState({ selectAddType: e.target.value }, () => {});
   };
 
   render() {
@@ -372,8 +398,8 @@ class SearchAddressDialog extends Component {
                     <Button
                       type="primary"
                       htmlType="submit"
-                      style={{ width: 100, backgroundColor: '#1890ff' }}
-                    // onClick={() => this.handleSubmit()}
+                      style={{ width: 100, backgroundColor: "#1890ff" }}
+                      // onClick={() => this.handleSubmit()}
                     >
                       등록하기
                     </Button>
