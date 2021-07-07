@@ -8,7 +8,7 @@ import {
   registComplete,
   registError,
   updateComplete,
-  updateError
+  updateError,
 } from "../../../api/Modals";
 import "../../../css/modal.css";
 import { pgUseRate } from "../../../lib/util/codeUtil";
@@ -377,6 +377,12 @@ class RegistFranDialog extends Component {
                       <FormItem
                         name="frPhone"
                         className="selectItem"
+                        rules={[
+                          {
+                            required: true,
+                            message: "가맹점 전화번호를 입력해주세요",
+                          },
+                        ]}
                         initialValue={data && data.frPhone}
                       >
                         <Input
@@ -479,7 +485,6 @@ class RegistFranDialog extends Component {
                                 ? this.state.selectedRider.riderName
                                 : ""
                             }
-                            required
                           />
                           <Button
                             // style={{ width: 150 }}
@@ -555,11 +560,11 @@ class RegistFranDialog extends Component {
                       <div className="registRiderCheck">
                         <FormItem
                           name="tidNormalRate"
-                          initialValue={data ? data.tidNormalRate : 100}
+                          initialValue={data ? data.tidNormalRate : 0}
                         >
                           <Radio.Group
                             className="searchRequirement"
-                            initialValue={data ? data.tidNormalRate : 100}
+                            initialValue={data ? data.tidNormalRate : 0}
                           >
                             {Object.keys(pgUseRate)
                               .reverse()
@@ -620,7 +625,16 @@ class RegistFranDialog extends Component {
 
                     <div className="contentBlock">
                       <div className="mainTitle">비밀번호</div>
-                      <FormItem name="password" className="selectItem">
+                      <FormItem
+                        name="password"
+                        className="selectItem"
+                        rules={[
+                          {
+                            required: true,
+                            message: "비밀번호를 입력해주세요",
+                          },
+                        ]}
+                      >
                         {data ? (
                           <Input.Password
                             placeholder="비밀번호를 입력해 주세요."
