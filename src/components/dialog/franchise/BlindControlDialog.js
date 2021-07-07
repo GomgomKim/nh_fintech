@@ -369,19 +369,17 @@ class BlindControlDialog extends Component {
                                 <div className="blind-container">
                                     <div className="blind-title">
                                         블라인드 관리
-                                    </div>
-                                    <div>                                      
+                                    </div>                             
                                         <Checkbox
                                             style={{marginRight:5, marginLeft: 20}}
                                             defaultChecked={this.state.deletedCheck ? "checked" : ""}
                                             onChange={this.onDeleteCheck} />
-                                        해제 포함
-                                    </div>
+                                        <div className="blind-check-text">
+                                            해제 포함
+                                        </div>
                                     
                                     <img onClick={close} src={require('../../../img/login/close.png').default} 
                                     className="blind-close" alt='close'/>
-
-                                  
 
                                     <div className="blindLayout">
                                         <div className="listBlock">

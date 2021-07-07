@@ -452,6 +452,12 @@ class RegistFranDialog extends Component {
                         name="addr2"
                         className="selectItem"
                         initialValue={data && data.addr2}
+                        rules={[
+                          {
+                            required: true,
+                            message: "상세주소를 입력해주세요",
+                          },
+                        ]}
                       >
                         <Input
                           placeholder="상세주소를 입력해 주세요."
@@ -500,12 +506,12 @@ class RegistFranDialog extends Component {
                       <FormItem
                         name="overload"
                         className="selectItem"
-                        rules={[
-                          {
-                            required: true,
-                            message: "과적기준을 입력해주세요",
-                          },
-                        ]}
+                        // rules={[
+                        //   {
+                        //     required: true,
+                        //     message: "과적기준을 입력해주세요",
+                        //   },
+                        // ]}
                         initialValue={data && data.overload}
                       >
                         <Input
