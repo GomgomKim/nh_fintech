@@ -542,6 +542,32 @@ class RegistFranDialog extends Component {
                     </div>
 
                     <div className="contentBlock">
+                      <div className="mainTitle">비밀번호</div>
+                      <FormItem
+                        name="password"
+                        className="selectItem"
+                        rules={[
+                          {
+                            required: true,
+                            message: "비밀번호를 입력해주세요",
+                          },
+                        ]}
+                      >
+                        {data ? (
+                          <Input.Password
+                            placeholder="비밀번호를 입력해 주세요."
+                            className="override-input sub"
+                          />
+                        ) : (
+                          <Input.Password
+                            placeholder="비밀번호를 입력해 주세요."
+                            className="override-input sub"
+                          />
+                        )}
+                      </FormItem>
+                    </div>
+
+                    <div className="contentBlock">
                       <div className="mainTitle">이메일</div>
                       <FormItem
                         name="email"
@@ -629,31 +655,6 @@ class RegistFranDialog extends Component {
                       </FormItem>
                     </div> */}
 
-                    <div className="contentBlock">
-                      <div className="mainTitle">비밀번호</div>
-                      <FormItem
-                        name="password"
-                        className="selectItem"
-                        rules={[
-                          {
-                            required: true,
-                            message: "비밀번호를 입력해주세요",
-                          },
-                        ]}
-                      >
-                        {data ? (
-                          <Input.Password
-                            placeholder="비밀번호를 입력해 주세요."
-                            className="override-input sub"
-                          />
-                        ) : (
-                          <Input.Password
-                            placeholder="비밀번호를 입력해 주세요."
-                            className="override-input sub"
-                          />
-                        )}
-                      </FormItem>
-                    </div>
                     <div className="contentBlock">
                       <div className="mainTitle">메모</div>
                       <FormItem name="memo" className="selectItem">
