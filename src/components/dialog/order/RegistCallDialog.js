@@ -1,3 +1,4 @@
+/*global kakao*/
 import { Button, Checkbox, Form, Input, Modal, Select } from "antd";
 import React, { Component } from "react";
 import { Marker, NaverMap } from "react-naver-maps";
@@ -192,6 +193,19 @@ class RegistCallDialog extends Component {
         });
       });
   };
+  addressSearchKakao = (address) => {
+    const geocoder = new kakao.maps.services.Geocoder();
+    return new Promise((resolve, reject) => {
+      geocoder.addressSearch(address, function (result, status) {
+        if (status === kakao.maps.services.Status.OK) {
+          const coords = [result[0].y, result[0].x];
+          resolve(coords);
+        } else {
+          reject(status);
+        }
+      });
+    });
+  };
 
   getDeliveryPrice = () => {
     console.log("getDeliiveryPrice!!!!!!!!!!!!!!!!!");
@@ -200,7 +214,8 @@ class RegistCallDialog extends Component {
       .then((res) => {
         console.log(res);
         let result = JSON.parse(res.data.json);
-        if (res.result === "SUCCESS") {
+        if (res.result === "SUCCESS" && result.meta.totalCount !== 0) {
+          console.log("geocode api");
           const lat = result.addresses[0].y;
           const lng = result.addresses[0].x;
 
@@ -251,6 +266,66 @@ class RegistCallDialog extends Component {
                 title: "등록오류",
                 content: "배달요금 계산 오류2",
               });
+            });
+        } else {
+          console.log("kakao api");
+          this.addressSearchKakao(this.state.selectedDest.roadAddress)
+            .then((res) => {
+              console.log(res);
+              const [lat, lng] = res;
+              this.setState({
+                mapLat: lat,
+                mapLng: lng,
+                data: {
+                  ...this.state.data,
+                  latitude: lat,
+                  longitude: lng,
+                },
+              });
+              console.log(this.state.selectedFr.idx, lat, lng);
+              httpGet(
+                httpUrl.getDeliveryPrice,
+                [this.state.selectedFr.idx, lat, lng],
+                {}
+              )
+                .then((res) => {
+                  if (res.result === "SUCCESS") {
+                    console.log("getdeliveryprice res");
+                    console.log(res);
+                    self.formRef.current.setFieldsValue({
+                      deliveryPrice: comma(
+                        res.data.deliveryPriceBasic +
+                          res.data.deliveryPriceExtra
+                      ),
+                      basicDeliveryPrice: comma(res.data.deliveryPriceBasic),
+                      extraDeliveryPrice: res.data.deliveryPriceExtra,
+                    });
+                    this.setState({
+                      data: {
+                        ...this.state.data,
+                        deliveryPrice:
+                          res.data.deliveryPriceBasic +
+                          res.data.deliveryPriceExtra,
+                        basicDeliveryPrice: res.data.deliveryPriceBasic,
+                        extraDeliveryPrice: res.data.deliveryPriceExtra,
+                      },
+                    });
+                  } else {
+                    Modal.info({
+                      title: "등록오류",
+                      content: "배달요금 계산 오류1",
+                    });
+                  }
+                })
+                .catch((e) => {
+                  Modal.info({
+                    title: "등록오류",
+                    content: "배달요금 계산 오류2",
+                  });
+                });
+            })
+            .catch((e) => {
+              throw e;
             });
         }
       })
