@@ -44,7 +44,7 @@ class SearchRiderDialog extends Component {
             pagination:{
                 current: 1,
                 pageSize: 10,
-              } 
+            } 
         }, () => {
             this.getList();
         })
@@ -214,7 +214,13 @@ class SearchRiderDialog extends Component {
                                                 codeString={tableStatusString}
                                                 onChange={(value) => {
                                                     if (parseInt(value) !== this.state.userStatus) {
-                                                        this.setState({ userStatus: parseInt(value) }, () => this.getList());
+                                                        this.setState({ 
+                                                            userStatus: parseInt(value),
+                                                            pagination:{
+                                                                current: 1,
+                                                                pageSize: 10,
+                                                            } 
+                                                        }, () => this.getList());
                                                     }
                                                 }} />
 
