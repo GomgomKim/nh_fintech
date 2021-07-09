@@ -38,6 +38,11 @@ class SearchFranchiseDialog extends Component {
     this.setState(
       {
         frName: value,
+        pagination: {
+          total: 0,
+          current: 1,
+          pageSize: 10,
+        },
       },
       () => {
         this.getList();
@@ -172,7 +177,6 @@ class SearchFranchiseDialog extends Component {
     const { close, multi } = this.props;
 
     return (
-
       <React.Fragment>
         <div className="Dialog-overlay" onClick={close} />
         <div className="searchFranchise-Dialog">
@@ -196,9 +200,8 @@ class SearchFranchiseDialog extends Component {
                         codeString={tableStatusString}
                         onChange={(value) => {
                           if (parseInt(value) !== this.state.franStatus) {
-                            this.setState(
-                              { franStatus: parseInt(value) },
-                              () => this.getList()
+                            this.setState({ franStatus: parseInt(value) }, () =>
+                              this.getList()
                             );
                           }
                         }}
@@ -211,7 +214,6 @@ class SearchFranchiseDialog extends Component {
                         enterButton
                         allowClear
                         onSearch={this.onSearchFranchisee}
-
                       />
                       {/* <Input
                         id="autoInput"
@@ -223,7 +225,6 @@ class SearchFranchiseDialog extends Component {
                         enterButton
                         allowClear
                       /> */}
-
 
                       {/* 멀티 기능 */}
                       {multi && (
@@ -276,7 +277,6 @@ class SearchFranchiseDialog extends Component {
           </div>
         </div>
       </React.Fragment>
-
     );
   }
 }

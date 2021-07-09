@@ -1,4 +1,5 @@
-import { Button, Checkbox, DatePicker, Form, Input, Radio } from "antd";
+/*global kakao*/
+import { Button, Checkbox, DatePicker, Form, Input, Radio, Select } from "antd";
 import moment from "moment";
 import React, { Component } from "react";
 import { connect } from "react-redux";
@@ -19,6 +20,7 @@ import SearchRiderDialog from "../common/SearchRiderDialog";
 const FormItem = Form.Item;
 const dateFormat = "YYYY/MM/DD";
 const today = new Date();
+const Option = Select.Option;
 
 class RegistFranDialog extends Component {
   constructor(props) {
@@ -223,6 +225,20 @@ class RegistFranDialog extends Component {
     this.setState({ isPostCodeOpen: false });
   };
 
+  addressSearchKakao = (address) => {
+    const geocoder = new kakao.maps.services.Geocoder();
+    return new Promise((resolve, reject) => {
+      geocoder.addressSearch(address, function (result, status) {
+        if (status === kakao.maps.services.Status.OK) {
+          const coords = [result[0].y, result[0].x];
+          resolve(coords);
+        } else {
+          reject(status);
+        }
+      });
+    });
+  };
+
   // 우편번호 - 주소 저장
   getAddr = (addrData) => {
     console.log(addrData);
@@ -242,7 +258,7 @@ class RegistFranDialog extends Component {
 
       // console.log(result)
       // console.log(result.addresses.length)
-      if (res.result === "SUCCESS" && result.addresses.length > 0) {
+      if (res.result === "SUCCESS" && result.meta.totalCount !== 0) {
         const lat = result.addresses[0].y;
         const lng = result.addresses[0].x;
         // console.log(lat)
@@ -272,10 +288,21 @@ class RegistFranDialog extends Component {
         //     );
         // });
       } else {
-        customError(
-          "위치 반환 오류",
-          "위치 데이터가 존재하지 않습니다. 관리자에게 문의하세요."
-        );
+        this.addressSearchKakao(addrData.roadAddress)
+          .then((res) => {
+            const [lat, lng] = res;
+            this.setState({
+              latitude: lat,
+              longitude: lng,
+            });
+          })
+          .catch((e) => {
+            customError(
+              "위치 반환 오류",
+              "위치 데이터가 존재하지 않습니다. 관리자에게 문의하세요."
+            );
+            throw e;
+          });
       }
     });
   };
@@ -377,6 +404,12 @@ class RegistFranDialog extends Component {
                       <FormItem
                         name="frPhone"
                         className="selectItem"
+                        rules={[
+                          {
+                            required: true,
+                            message: "가맹점 전화번호를 입력해주세요",
+                          },
+                        ]}
                         initialValue={data && data.frPhone}
                       >
                         <Input
@@ -485,7 +518,6 @@ class RegistFranDialog extends Component {
                                 ? this.state.selectedRider.riderName
                                 : ""
                             }
-                            required
                           />
                           <Button
                             // style={{ width: 150 }}
@@ -537,6 +569,32 @@ class RegistFranDialog extends Component {
                     </div>
 
                     <div className="contentBlock">
+                      <div className="mainTitle">비밀번호</div>
+                      <FormItem
+                        name="password"
+                        className="selectItem"
+                        rules={[
+                          {
+                            required: true,
+                            message: "비밀번호를 입력해주세요",
+                          },
+                        ]}
+                      >
+                        {data ? (
+                          <Input.Password
+                            placeholder="비밀번호를 입력해 주세요."
+                            className="override-input sub"
+                          />
+                        ) : (
+                          <Input.Password
+                            placeholder="비밀번호를 입력해 주세요."
+                            className="override-input sub"
+                          />
+                        )}
+                      </FormItem>
+                    </div>
+
+                    <div className="contentBlock">
                       <div className="mainTitle">이메일</div>
                       <FormItem
                         name="email"
@@ -555,17 +613,74 @@ class RegistFranDialog extends Component {
                         />
                       </FormItem>
                     </div>
+                    {/* <div className="contentBlock">
+                      <div className="mainTitle">가상계좌 은행</div>
+                      <FormItem
+                        name="vAccoutBank"
+                        className="selectItem"
+                        rules={[
+                          { required: true, message: "은행을 선택해주세요" },
+                        ]}
+                        initialValue={data ? data.vAccountBank : "기업은행,003"}
+                      >
+                        <Select className="override-input">
+                          {Object.keys(bankCode).map((key) => {
+                            return (
+                              <Option value={key + "," + bankCode[key]}>
+                                {key}
+                              </Option>
+                            );
+                          })}
+                        </Select>
+                      </FormItem>
+                    </div>
+                    <div className="contentBlock">
+                      <div className="mainTitle">가상계좌 번호</div>
+                      <FormItem
+                        name="vAccoutNumber"
+                        className="selectItem"
+                        rules={[
+                          {
+                            required: true,
+                            message: "계좌번호를 입력해주세요",
+                          },
+                        ]}
+                        initialValue={data ? data.vAccountNumber : ""}
+                      >
+                        <Input
+                          placeholder="계좌번호를 입력해 주세요."
+                          className="override-input"
+                        />
+                      </FormItem>
+                    </div>
+
+                    <div className="contentBlock">
+                      <div className="mainTitle">예금주</div>
+                      <FormItem
+                        name="vAccoutDepositor"
+                        className="selectItem"
+                        rules={[
+                          { required: true, message: "예금주를 입력해주세요" },
+                        ]}
+                        initialValue={data ? data.vAccountDepositor : ""}
+                      >
+                        <Input
+                          placeholder="예금주를 입력해 주세요."
+                          className="override-input"
+                        />
+                      </FormItem>
+                    </div> */}
 
                     <div className="contentBlock">
                       <div className="mainTitle">PG 사용여부</div>
                       <div className="registRiderCheck">
                         <FormItem
                           name="tidNormalRate"
-                          initialValue={data ? data.tidNormalRate : 100}
+                          initialValue={data ? data.tidNormalRate : 0}
                         >
                           <Radio.Group
                             className="searchRequirement"
-                            initialValue={data ? data.tidNormalRate : 100}
+                            initialValue={data ? data.tidNormalRate : 0}
                           >
                             {Object.keys(pgUseRate)
                               .reverse()
@@ -624,22 +739,6 @@ class RegistFranDialog extends Component {
                       </FormItem>
                     </div> */}
 
-                    <div className="contentBlock">
-                      <div className="mainTitle">비밀번호</div>
-                      <FormItem name="password" className="selectItem">
-                        {data ? (
-                          <Input.Password
-                            placeholder="비밀번호를 입력해 주세요."
-                            className="override-input sub"
-                          />
-                        ) : (
-                          <Input.Password
-                            placeholder="비밀번호를 입력해 주세요."
-                            className="override-input sub"
-                          />
-                        )}
-                      </FormItem>
-                    </div>
                     <div className="contentBlock">
                       <div className="mainTitle">메모</div>
                       <FormItem name="memo" className="selectItem">
