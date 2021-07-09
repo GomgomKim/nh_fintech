@@ -40,7 +40,11 @@ class SearchRiderDialog extends Component {
     // 라이더 검색
     onSearchRider = (value) => {
         this.setState({
-            searchName: value
+            searchName: value,
+            pagination:{
+                current: 1,
+                pageSize: 10,
+              } 
         }, () => {
             this.getList();
         })
