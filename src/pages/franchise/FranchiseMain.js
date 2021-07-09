@@ -63,6 +63,11 @@ class FranchiseMain extends Component {
     this.setState(
       {
         frName: value,
+        pagination: {
+          total: 0,
+          current: 1,
+          pageSize: 10,
+        },
       },
       () => {
         this.getList();
@@ -188,6 +193,11 @@ class FranchiseMain extends Component {
     httpPost(httpUrl.franchiseUpdate, [], {
       idx: idx,
       userStatus: value,
+      pagination: {
+        total: 0,
+        current: 1,
+        pageSize: 10,
+      },
     })
       .then((res) => {
         if (res.result === "SUCCESS" && res.data === "SUCCESS") {
