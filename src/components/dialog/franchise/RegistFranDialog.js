@@ -1,5 +1,5 @@
 /*global kakao*/
-import { Button, Checkbox, DatePicker, Form, Input, Radio } from "antd";
+import { Button, Checkbox, DatePicker, Form, Input, Radio, Select } from "antd";
 import moment from "moment";
 import React, { Component } from "react";
 import { connect } from "react-redux";
@@ -20,6 +20,7 @@ import SearchRiderDialog from "../common/SearchRiderDialog";
 const FormItem = Form.Item;
 const dateFormat = "YYYY/MM/DD";
 const today = new Date();
+const Option = Select.Option;
 
 class RegistFranDialog extends Component {
   constructor(props) {
@@ -612,6 +613,63 @@ class RegistFranDialog extends Component {
                         />
                       </FormItem>
                     </div>
+                    {/* <div className="contentBlock">
+                      <div className="mainTitle">가상계좌 은행</div>
+                      <FormItem
+                        name="vAccoutBank"
+                        className="selectItem"
+                        rules={[
+                          { required: true, message: "은행을 선택해주세요" },
+                        ]}
+                        initialValue={data ? data.vAccountBank : "기업은행,003"}
+                      >
+                        <Select className="override-input">
+                          {Object.keys(bankCode).map((key) => {
+                            return (
+                              <Option value={key + "," + bankCode[key]}>
+                                {key}
+                              </Option>
+                            );
+                          })}
+                        </Select>
+                      </FormItem>
+                    </div>
+                    <div className="contentBlock">
+                      <div className="mainTitle">가상계좌 번호</div>
+                      <FormItem
+                        name="vAccoutNumber"
+                        className="selectItem"
+                        rules={[
+                          {
+                            required: true,
+                            message: "계좌번호를 입력해주세요",
+                          },
+                        ]}
+                        initialValue={data ? data.vAccountNumber : ""}
+                      >
+                        <Input
+                          placeholder="계좌번호를 입력해 주세요."
+                          className="override-input"
+                        />
+                      </FormItem>
+                    </div>
+
+                    <div className="contentBlock">
+                      <div className="mainTitle">예금주</div>
+                      <FormItem
+                        name="vAccoutDepositor"
+                        className="selectItem"
+                        rules={[
+                          { required: true, message: "예금주를 입력해주세요" },
+                        ]}
+                        initialValue={data ? data.vAccountDepositor : ""}
+                      >
+                        <Input
+                          placeholder="예금주를 입력해 주세요."
+                          className="override-input"
+                        />
+                      </FormItem>
+                    </div> */}
 
                     <div className="contentBlock">
                       <div className="mainTitle">PG 사용여부</div>
