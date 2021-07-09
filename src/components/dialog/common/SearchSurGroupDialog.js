@@ -188,7 +188,7 @@ class SearchSurGroupDialog extends Component {
                 <Form ref={this.formRef} onFinish={this.onSubmit}>
                   <div className="layout">
                     <div className="searchFranchiseWrapper">
-                      <div className="searchFranchise-list">
+                      {/* <div className="searchFranchise-list">
                         <div className="inputBox inputBox-searchFranchise sub">
                           <SelectBox
                             value={tableStatusString[this.state.franStatus]}
@@ -213,7 +213,7 @@ class SearchSurGroupDialog extends Component {
                           />
 
                           {/* 멀티 기능 */}
-                          {multi && (
+                          {/* {multi && (
                             <Radio.Group
                               onChange={this.onChangeMulti}
                               value={this.state.isMulti}
@@ -226,7 +226,7 @@ class SearchSurGroupDialog extends Component {
                         </div>
 
                         {/* 멀티 기능 */}
-                        {multi && (
+                        {/* {multi && (
                           <Button
                             type="primary"
                             htmlType="submit"
@@ -235,7 +235,7 @@ class SearchSurGroupDialog extends Component {
                             조회
                           </Button>
                         )}
-                      </div>
+                      </div> */}
                     </div>
 
                     <div className="dataTableLayout-01">
