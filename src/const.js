@@ -13,6 +13,10 @@ const Const = {
   // serverProtocol: "https",
   // serverIp: "manage.nyamnyambox.com",
 
+  //drnana
+  // serverProtocol: "https",
+  // serverIp: "drnana.nnbox.net",
+  
   serverPort: "30001",
 
   //naver map client key
