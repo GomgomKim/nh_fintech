@@ -515,30 +515,20 @@ class RegistRiderDialog extends Component {
                     </div>
                     <div className="contentBlock">
                       <div className="mainTitle" />
-                      <FormItem
+                      {/* <FormItem
                         name="bikeNumber"
                         className="selectItem override-input"
+                      > */}
+                      <Input
                         value={
-                          this.state.selectedBike
-                            ? this.state.selectedBike.bikeNumber
-                            : this.props.data
-                            ? this.props.data.bikeNumber
-                            : ""
+                          this.state.selectedBike &&
+                          this.state.selectedBike.bikeNumber
                         }
-                      >
-                        <Input
-                          value={
-                            this.state.selectedBike
-                              ? this.state.selectedBike.bikeNumber
-                              : this.props.data
-                              ? this.props.data.bikeNumber
-                              : ""
-                          }
-                          className="override-input"
-                          placeholder="바이크를 선택해주세요."
-                          disabled
-                        />
-                      </FormItem>
+                        className="override-input"
+                        placeholder="바이크를 선택해주세요."
+                        disabled
+                      />
+                      {/* </FormItem> */}
                     </div>
                     <div className="contentBlock">
                       <div className="mainTitle">메모</div>
