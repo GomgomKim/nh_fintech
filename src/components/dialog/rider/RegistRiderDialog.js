@@ -32,6 +32,7 @@ import {
   formatYear
 } from "../../../lib/util/dateUtil";
 import SearchBikeDialog from "../../dialog/common/SearchBikeDialog";
+import SearchRiderDialog from "../common/SearchRiderDialog";
 
 const Option = Select.Option;
 const FormItem = Form.Item;
@@ -49,15 +50,17 @@ class RegistRiderDialog extends Component {
       staffAuth: 1,
       feeManner: 1,
       userGroup: 1,
-      riderLevel: 1,
+      riderLevel: null,
       riderGroup: 0,
       withdrawLimit: 100000,
 
       bikeType: 0,
       isSearchBikeOpen: false,
+      searchRiderOpen: false,
       selectedBike: null,
+      selectedRider: null,
 
-      agreeSms: true,
+      // agreeSms: true,
 
       // 바이크 등록 param
       bikeNumber: "",
@@ -73,7 +76,11 @@ class RegistRiderDialog extends Component {
   componentDidMount() {
     // this.getList()
     if (this.props.data) {
-      this.setState({ selectedBike: this.props.data.bike });
+      this.setState({
+        selectedBike: this.props.data.bike,
+        riderLevel: this.props.data.riderLevel,
+        selectedRider: { userIdx: this.props.data.teamManagerIdx },
+      });
     }
     console.log(this.props.data);
   }
@@ -267,6 +274,14 @@ class RegistRiderDialog extends Component {
     this.setState({ isSearchBikeOpen: false });
   };
 
+  openSearchRiderModal = () => {
+    this.setState({ searchRiderOpen: true });
+  };
+
+  closeSearchRiderModal = () => {
+    this.setState({ searchRiderOpen: false });
+  };
+
   render() {
     const { close, data } = this.props;
     console.log(data);
@@ -333,8 +348,8 @@ class RegistRiderDialog extends Component {
                         initialValue={data ? data.riderLevel : 1}
                       >
                         <Select
-                          onChange={() =>
-                            console.log(this.formRef.current.getFieldsValue())
+                          onChange={(value) =>
+                            this.setState({ riderLevel: value })
                           }
                         >
                           {riderLevelText.map((v, index) => {
@@ -425,7 +440,16 @@ class RegistRiderDialog extends Component {
                     </div>
                     <div className="contentBlock">
                       <div className="mainTitle">패스워드</div>
-                      <FormItem name="password" className="selectItem" rules={[{ required: true, message: "패스워드를 입력해주세요" }]}>
+                      <FormItem
+                        name="password"
+                        className="selectItem"
+                        rules={[
+                          {
+                            required: true,
+                            message: "패스워드를 입력해주세요",
+                          },
+                        ]}
+                      >
                         <Input.Password
                           placeholder="패스워드를 입력해 주세요."
                           className="override-input"
@@ -454,7 +478,17 @@ class RegistRiderDialog extends Component {
                     {this.state.isSearchBikeOpen && (
                       <SearchBikeDialog
                         onSelect={(selectedBike) =>
-                          this.setState({ selectedBike: selectedBike })
+                          this.setState({ selectedBike: selectedBike }, () => {
+                            console.log("selectedBike");
+                            console.log(
+                              this.state.selectedBike
+                                ? this.state.selectedBike.bikeNumber
+                                : this.props.data
+                                ? this.props.data.bikeNumber
+                                : ""
+                            );
+                            console.log(this.state.selectedBike);
+                          })
                         }
                         close={this.closeSearchBikeModal}
                       />
@@ -481,23 +515,20 @@ class RegistRiderDialog extends Component {
                     </div>
                     <div className="contentBlock">
                       <div className="mainTitle" />
-                      <FormItem
-                        name="bikeName"
+                      {/* <FormItem
+                        name="bikeNumber"
                         className="selectItem override-input"
-                      >
-                        <Input
-                          value={
-                            this.state.selectedBike
-                              ? this.state.selectedBike.bikeNumber
-                              : this.props.data
-                              ? this.props.data.bikeNumber
-                              : ""
-                          }
-                          className="override-input"
-                          placeholder="바이크를 선택해주세요."
-                          disabled
-                        />
-                      </FormItem>
+                      > */}
+                      <Input
+                        value={
+                          this.state.selectedBike &&
+                          this.state.selectedBike.bikeNumber
+                        }
+                        className="override-input"
+                        placeholder="바이크를 선택해주세요."
+                        disabled
+                      />
+                      {/* </FormItem> */}
                     </div>
                     <div className="contentBlock">
                       <div className="mainTitle">메모</div>
@@ -529,33 +560,76 @@ class RegistRiderDialog extends Component {
                     </div>
                   </div>
                   <div className="registRiderWrapper sub">
-                    <div className="contentBlock">
-                      <div className="mainTitle">기본 배달료</div>
-                      <FormItem
-                        name="basicDeliveryPrice"
-                        className="selectItem"
-                        initialValue={data ? data.basicDeliveryPrice : 2500}
-                      >
-                        <Input
-                          placeholder="기본배달료를 입력해 주세요."
-                          className="override-input"
-                        />
-                      </FormItem>
-                    </div>
-
-                    <div className="contentBlock">
-                      <div className="mainTitle">월기본건수</div>
-                      <FormItem
-                        name="monthBasicAmount"
-                        className="selectItem"
-                        initialValue={data ? data.monthBasicAmount : 10}
-                      >
-                        <Input
-                          placeholder="최소보유잔액을 입력해 주세요."
-                          className="override-input"
-                        />
-                      </FormItem>
-                    </div>
+                    {this.state.riderLevel >= 3 && (
+                      <>
+                        <div className="contentBlock">
+                          <div className="mainTitle">기본 배달료</div>
+                          <FormItem
+                            name="basicDeliveryPrice"
+                            className="selectItem"
+                            initialValue={data ? data.basicDeliveryPrice : 3600}
+                          >
+                            <Input
+                              placeholder="기본배달료를 입력해 주세요."
+                              className="override-input"
+                              // disabled={this.state.riderLevel <= 2}
+                            />
+                          </FormItem>
+                        </div>
+                        <div className="contentBlock">
+                          <div className="mainTitle">월기본건수</div>
+                          <FormItem
+                            name="monthBasicAmount"
+                            className="selectItem"
+                            initialValue={data ? data.monthBasicAmount : 250}
+                          >
+                            <Input
+                              placeholder="월기본건수를 입력해 주세요."
+                              className="override-input"
+                              // disabled={this.state.riderLevel <= 2}
+                            />
+                          </FormItem>
+                        </div>
+                      </>
+                    )}
+                    {this.state.riderLevel < 3 && (
+                      <>
+                        <div className="contentBlock">
+                          <div className="mainTitle">소속팀장</div>
+                          <FormItem
+                            name="teamManagerIdx"
+                            className="selectItem"
+                          >
+                            <Input
+                              style={{ width: 170 }}
+                              placeholder="팀장순번을 입력해 주세요."
+                              value={
+                                this.state.selectedRider &&
+                                this.state.selectedRider.idx
+                              }
+                            />
+                            <Button onClick={() => this.openSearchRiderModal()}>
+                              기사 조회
+                            </Button>
+                          </FormItem>
+                        </div>
+                        {this.state.searchRiderOpen && (
+                          <SearchRiderDialog
+                            callback={(selectedRider) =>
+                              this.setState(
+                                { selectedRider: selectedRider },
+                                () =>
+                                  this.formRef.current.setFieldsValue({
+                                    teamManagerIdx:
+                                      this.state.selectedRider.userIdx,
+                                  })
+                              )
+                            }
+                            close={this.closeSearchRiderModal}
+                          />
+                        )}
+                      </>
+                    )}
 
                     <div className="contentBlock">
                       <div className="mainTitle">은행</div>
@@ -597,7 +671,6 @@ class RegistRiderDialog extends Component {
                         />
                       </FormItem>
                     </div>
-
                     <div className="contentBlock">
                       <div className="mainTitle">예금주</div>
                       <FormItem
@@ -649,7 +722,6 @@ class RegistRiderDialog extends Component {
                         />
                       </FormItem>
                     </div>
-
                     <div className="contentBlock">
                       <div className="mainTitle">비품지급</div>
                       <FormItem
@@ -668,7 +740,6 @@ class RegistRiderDialog extends Component {
                         />
                       </FormItem>
                     </div>
-
                     {/* <div className="contentBlock" style={{ marginTop: 10 }}>
                       <div className="mainTitle">강제배차 사용</div>
                       <FormItem
@@ -684,7 +755,6 @@ class RegistRiderDialog extends Component {
                         </Checkbox>
                       </FormItem>
                     </div> */}
-
                     {/* <div className="contentBlock" style={{ marginTop: 10 }}>
                       <div className="mainTitle">SMS수신동의</div>
                       <FormItem name="agreeSms" className="giveBox selectItem">
@@ -699,7 +769,6 @@ class RegistRiderDialog extends Component {
                         </Checkbox>
                       </FormItem>
                     </div> */}
-
                     <div className="submitBlock">
                       <Button type="primary" htmlType="submit">
                         등록하기

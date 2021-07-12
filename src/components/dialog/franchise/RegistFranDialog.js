@@ -189,9 +189,9 @@ class RegistFranDialog extends Component {
         agreeSms: this.state.agreeSms,
         frSalesUserIdx: this.state.selectedRider.idx,
         nonmemberFee: this.state.isMember ? 0 : 1000,
-        chargeDate: formatDateToDay(
-          this.formRef.current.getFieldValue("chargeDate")
-        ),
+        // chargeDate: formatDateToDay(
+        //   this.formRef.current.getFieldValue("chargeDate")
+        // ),
         registDate: formatDateToDay(
           this.formRef.current.getFieldValue("registDate")
         ),
@@ -199,6 +199,9 @@ class RegistFranDialog extends Component {
         // 삭제컬럼
         basicDeliveryPrice: 0,
         basicDeliveryDistance: 0,
+        dues: 0,
+        chargeDate: "1970-01-01",
+        isMember: true,
       })
         .then((result) => {
           console.log("## result: " + JSON.stringify(result, null, 4));
@@ -339,7 +342,7 @@ class RegistFranDialog extends Component {
               <div className="registFranLayout">
                 <div className="registFranTitle">
                   <div className="registFranTitle-sub">기본정보</div>
-                  <div className="registFran-radio">
+                  {/* <div className="registFran-radio">
                     <FormItem
                       name="isMember"
                       initialValue={data ? data.isMember : true}
@@ -353,7 +356,7 @@ class RegistFranDialog extends Component {
                         <Radio.Button value={false}>무가맹</Radio.Button>
                       </Radio.Group>
                     </FormItem>
-                  </div>
+                  </div> */}
                 </div>
                 <div className="registFranBox">
                   <div className="registFranWrapper">
@@ -793,9 +796,24 @@ class RegistFranDialog extends Component {
                       </FormItem>
                     </div>
                   </div>
+                  <div className="registFran-btn">
+                    <Button
+                      type="primary"
+                      htmlType="submit"
+                      className="callTab"
+                      style={{
+                        width: 180,
+                        height: 40,
+                        fontSize: 18,
+                        marginTop: -5,
+                      }}
+                    >
+                      등록하기
+                    </Button>
+                  </div>
                 </div>
 
-                <div className="registFranWrapper bot">
+                {/* <div className="registFranWrapper bot">
                   <div className="registFranTitle">월관리비 설정</div>
 
                   <div className="contentBlock">
@@ -868,7 +886,7 @@ class RegistFranDialog extends Component {
                       등록하기
                     </Button>
                   </div>
-                </div>
+                </div> */}
               </div>
             </Form>
           </div>

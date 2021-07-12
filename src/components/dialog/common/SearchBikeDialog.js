@@ -111,7 +111,14 @@ class SearchBikeDialog extends Component {
         dataIndex: "idx",
         className: "table-column-center",
         render: (data, row) => (
-          <div style={{ cursor: "pointer" }} onClick={() => this.onSelect(row)}>
+          <div
+            style={{ cursor: "pointer" }}
+            onClick={() => {
+              console.log("onclick");
+              console.log(row);
+              this.onSelect(row);
+            }}
+          >
             {data}
           </div>
         ),
