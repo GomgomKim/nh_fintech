@@ -46,8 +46,8 @@ class RegistBatchWorkDialog extends Component {
 
   onChangeDate = (dateString) => {
     this.setState({
-        startDate: dateString != null ? moment(dateString[0]).format('YYYY-MM-DD HH:mm') : '',
-        endDate: dateString != null ? moment(dateString[1]).format('YYYY-MM-DD HH:mm') : '',
+        startDate: dateString != null ? moment(dateString[0]).format('YYYY-MM-DD 00:00') : '',
+        endDate: dateString != null ? moment(dateString[1]).format('YYYY-MM-DD 23:59') : '',
     })
   };
 
@@ -163,7 +163,7 @@ class RegistBatchWorkDialog extends Component {
                   <div className="twl-text">기간제한</div>
                     <RangePicker
                       placeholder={['시작일', '종료일']}
-                      showTime={{ format: 'HH:mm' }}
+                      // showTime={{ format: 'HH:mm' }}
                       onChange={this.onChangeDate}
                       disabled={this.state.disabled}
                       style={{ width: 350 }}
