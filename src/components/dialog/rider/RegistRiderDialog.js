@@ -613,6 +613,10 @@ class RegistRiderDialog extends Component {
                             <Input
                               style={{ width: 170 }}
                               placeholder="팀장순번을 입력해 주세요."
+                              value={
+                                this.state.selectedRider &&
+                                this.state.selectedRider.idx
+                              }
                             />
                             <Button onClick={() => this.openSearchRiderModal()}>
                               기사 조회
