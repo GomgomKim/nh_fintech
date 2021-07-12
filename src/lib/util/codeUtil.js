@@ -119,20 +119,20 @@ const staffString = {
 
 const riderGroupString = ["", "A", "B", "C", "D", "E"];
 
-// const riderLevelText = [
-//   "",
-//   "라이더",
-//   "부팀장",
-//   "팀장",
-//   "부본부장",
-//   "본부장",
-//   "부지점장",
-//   "지점장",
-//   "부센터장",
-//   "센터장",
-// ];
+const riderLevelText = [
+  "",
+  "라이더",
+  "부팀장",
+  "팀장",
+  "부본부장",
+  "본부장",
+  "부지점장",
+  "지점장",
+  "부센터장",
+  "센터장",
+];
 
-const riderLevelText = ["", "라이더", "소속팀장", "본부장", "지점장", "센터장"];
+// const riderLevelText = ["", "라이더", "소속팀장", "본부장", "지점장", "센터장"];
 
 const pgUseRate = {
   100: "사용",

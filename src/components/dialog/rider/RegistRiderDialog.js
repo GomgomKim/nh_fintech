@@ -49,7 +49,7 @@ class RegistRiderDialog extends Component {
       staffAuth: 1,
       feeManner: 1,
       userGroup: 1,
-      riderLevel: 1,
+      riderLevel: null,
       riderGroup: 0,
       withdrawLimit: 100000,
 
@@ -57,7 +57,7 @@ class RegistRiderDialog extends Component {
       isSearchBikeOpen: false,
       selectedBike: null,
 
-      agreeSms: true,
+      // agreeSms: true,
 
       // 바이크 등록 param
       bikeNumber: "",
@@ -73,7 +73,10 @@ class RegistRiderDialog extends Component {
   componentDidMount() {
     // this.getList()
     if (this.props.data) {
-      this.setState({ selectedBike: this.props.data.bike });
+      this.setState({
+        selectedBike: this.props.data.bike,
+        riderLevel: this.props.data.riderLevel,
+      });
     }
     console.log(this.props.data);
   }
@@ -333,8 +336,8 @@ class RegistRiderDialog extends Component {
                         initialValue={data ? data.riderLevel : 1}
                       >
                         <Select
-                          onChange={() =>
-                            console.log(this.formRef.current.getFieldsValue())
+                          onChange={(value) =>
+                            this.setState({ riderLevel: value })
                           }
                         >
                           {riderLevelText.map((v, index) => {
@@ -465,6 +468,13 @@ class RegistRiderDialog extends Component {
                         onSelect={(selectedBike) =>
                           this.setState({ selectedBike: selectedBike }, () => {
                             console.log("selectedBike");
+                            console.log(
+                              this.state.selectedBike
+                                ? this.state.selectedBike.bikeNumber
+                                : this.props.data
+                                ? this.props.data.bikeNumber
+                                : ""
+                            );
                             console.log(this.state.selectedBike);
                           })
                         }
@@ -494,12 +504,17 @@ class RegistRiderDialog extends Component {
                     <div className="contentBlock">
                       <div className="mainTitle" />
                       <FormItem
-                        name="bikeName"
+                        name="bikeNumber"
                         className="selectItem override-input"
+                        value={
+                          this.state.selectedBike
+                            ? this.state.selectedBike.bikeNumber
+                            : this.props.data
+                            ? this.props.data.bikeNumber
+                            : ""
+                        }
                       >
                         <Input
-                          className="override-input"
-                          placeholder="바이크를 선택해주세요."
                           value={
                             this.state.selectedBike
                               ? this.state.selectedBike.bikeNumber
@@ -507,6 +522,8 @@ class RegistRiderDialog extends Component {
                               ? this.props.data.bikeNumber
                               : ""
                           }
+                          className="override-input"
+                          placeholder="바이크를 선택해주세요."
                           disabled
                         />
                       </FormItem>
@@ -541,34 +558,38 @@ class RegistRiderDialog extends Component {
                     </div>
                   </div>
                   <div className="registRiderWrapper sub">
-                    <div className="contentBlock">
-                      <div className="mainTitle">기본 배달료</div>
-                      <FormItem
-                        name="basicDeliveryPrice"
-                        className="selectItem"
-                        initialValue={data ? data.basicDeliveryPrice : 3600}
-                      >
-                        <Input
-                          placeholder="기본배달료를 입력해 주세요."
-                          className="override-input"
-                        />
-                      </FormItem>
-                    </div>
-
-                    <div className="contentBlock">
-                      <div className="mainTitle">월기본건수</div>
-                      <FormItem
-                        name="monthBasicAmount"
-                        className="selectItem"
-                        initialValue={data ? data.monthBasicAmount : 250}
-                      >
-                        <Input
-                          placeholder="최소보유잔액을 입력해 주세요."
-                          className="override-input"
-                        />
-                      </FormItem>
-                    </div>
-
+                    {this.state.riderLevel >= 3 && (
+                      <>
+                        <div className="contentBlock">
+                          <div className="mainTitle">기본 배달료</div>
+                          <FormItem
+                            name="basicDeliveryPrice"
+                            className="selectItem"
+                            initialValue={data ? data.basicDeliveryPrice : 3600}
+                          >
+                            <Input
+                              placeholder="기본배달료를 입력해 주세요."
+                              className="override-input"
+                              // disabled={this.state.riderLevel <= 2}
+                            />
+                          </FormItem>
+                        </div>
+                        <div className="contentBlock">
+                          <div className="mainTitle">월기본건수</div>
+                          <FormItem
+                            name="monthBasicAmount"
+                            className="selectItem"
+                            initialValue={data ? data.monthBasicAmount : 250}
+                          >
+                            <Input
+                              placeholder="월기본건수를 입력해 주세요."
+                              className="override-input"
+                              // disabled={this.state.riderLevel <= 2}
+                            />
+                          </FormItem>
+                        </div>
+                      </>
+                    )}
                     <div className="contentBlock">
                       <div className="mainTitle">은행</div>
                       <FormItem
@@ -609,7 +630,6 @@ class RegistRiderDialog extends Component {
                         />
                       </FormItem>
                     </div>
-
                     <div className="contentBlock">
                       <div className="mainTitle">예금주</div>
                       <FormItem
@@ -661,7 +681,6 @@ class RegistRiderDialog extends Component {
                         />
                       </FormItem>
                     </div>
-
                     <div className="contentBlock">
                       <div className="mainTitle">비품지급</div>
                       <FormItem
@@ -680,7 +699,6 @@ class RegistRiderDialog extends Component {
                         />
                       </FormItem>
                     </div>
-
                     {/* <div className="contentBlock" style={{ marginTop: 10 }}>
                       <div className="mainTitle">강제배차 사용</div>
                       <FormItem
@@ -696,7 +714,6 @@ class RegistRiderDialog extends Component {
                         </Checkbox>
                       </FormItem>
                     </div> */}
-
                     {/* <div className="contentBlock" style={{ marginTop: 10 }}>
                       <div className="mainTitle">SMS수신동의</div>
                       <FormItem name="agreeSms" className="giveBox selectItem">
@@ -711,7 +728,6 @@ class RegistRiderDialog extends Component {
                         </Checkbox>
                       </FormItem>
                     </div> */}
-
                     <div className="submitBlock">
                       <Button type="primary" htmlType="submit">
                         등록하기
