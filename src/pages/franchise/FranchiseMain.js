@@ -193,11 +193,6 @@ class FranchiseMain extends Component {
     httpPost(httpUrl.franchiseUpdate, [], {
       idx: idx,
       userStatus: value,
-      pagination: {
-        total: 0,
-        current: 1,
-        pageSize: 10,
-      },
     })
       .then((res) => {
         if (res.result === "SUCCESS" && res.data === "SUCCESS") {
@@ -622,7 +617,14 @@ class FranchiseMain extends Component {
             codeString={tableStatusString}
             onChange={(value) => {
               if (parseInt(value) !== this.state.franStatus) {
-                this.setState({ franStatus: parseInt(value) }, () =>
+                this.setState({ 
+                  franStatus: parseInt(value),
+                  pagination: {
+                    total: 0,
+                    current: 1,
+                    pageSize: 10,
+                  }
+                }, () =>
                   this.getList()
                 );
               }

@@ -213,7 +213,7 @@ class RegistNoticeDialog extends Component {
                         }}
                       />
                     </FormItem>
-                    {this.state.category === 3 && (
+                    {this.state.category == 3 && (
                       <>
                         <div className="subTitle">SMS 전송</div>
                         <div className="importantBox">

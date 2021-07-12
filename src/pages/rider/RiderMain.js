@@ -112,6 +112,10 @@ class RiderMain extends Component {
     this.setState(
       {
         searchName: value,
+        pagination:{
+          current: 1,
+          pageSize: 10,
+        }
       },
       () => {
         this.getList();
@@ -483,7 +487,13 @@ class RiderMain extends Component {
             codeString={tableStatusString}
             onChange={(value) => {
               if (parseInt(value) !== this.state.userStatus) {
-                this.setState({ userStatus: parseInt(value) }, () =>
+                this.setState({ 
+                  userStatus: parseInt(value), 
+                  pagination:{
+                    current: 1,
+                    pageSize: 10,
+                  } 
+              }, () =>
                   this.getList()
                 );
               }

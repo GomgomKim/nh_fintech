@@ -200,7 +200,13 @@ class SearchFranchiseDialog extends Component {
                         codeString={tableStatusString}
                         onChange={(value) => {
                           if (parseInt(value) !== this.state.franStatus) {
-                            this.setState({ franStatus: parseInt(value) }, () =>
+                            this.setState({ 
+                              franStatus: parseInt(value),
+                              pagination:{
+                                current: 1,
+                                pageSize: 10,
+                            } 
+                            }, () =>
                               this.getList()
                             );
                           }
