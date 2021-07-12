@@ -6,7 +6,7 @@ import {
   Input,
   Modal,
   Radio,
-  Select
+  Select,
 } from "antd";
 import moment from "moment";
 import React, { Component } from "react";
@@ -16,7 +16,7 @@ import {
   registComplete,
   registError,
   updateComplete,
-  updateError
+  updateError,
 } from "../../../api/Modals";
 import "../../../css/modal.css";
 import {
@@ -24,12 +24,12 @@ import {
   bikeType,
   items,
   riderGroupString,
-  riderLevelText
+  riderLevelText,
 } from "../../../lib/util/codeUtil";
 import {
   formatDateSecond,
   formatDateToDay,
-  formatYear
+  formatYear,
 } from "../../../lib/util/dateUtil";
 import SearchBikeDialog from "../../dialog/common/SearchBikeDialog";
 
@@ -425,7 +425,16 @@ class RegistRiderDialog extends Component {
                     </div>
                     <div className="contentBlock">
                       <div className="mainTitle">패스워드</div>
-                      <FormItem name="password" className="selectItem" rules={[{ required: true, message: "패스워드를 입력해주세요" }]}>
+                      <FormItem
+                        name="password"
+                        className="selectItem"
+                        rules={[
+                          {
+                            required: true,
+                            message: "패스워드를 입력해주세요",
+                          },
+                        ]}
+                      >
                         <Input.Password
                           placeholder="패스워드를 입력해 주세요."
                           className="override-input"
@@ -534,7 +543,7 @@ class RegistRiderDialog extends Component {
                       <FormItem
                         name="basicDeliveryPrice"
                         className="selectItem"
-                        initialValue={data ? data.basicDeliveryPrice : 2500}
+                        initialValue={data ? data.basicDeliveryPrice : 3600}
                       >
                         <Input
                           placeholder="기본배달료를 입력해 주세요."
@@ -548,7 +557,7 @@ class RegistRiderDialog extends Component {
                       <FormItem
                         name="monthBasicAmount"
                         className="selectItem"
-                        initialValue={data ? data.monthBasicAmount : 10}
+                        initialValue={data ? data.monthBasicAmount : 250}
                       >
                         <Input
                           placeholder="최소보유잔액을 입력해 주세요."
