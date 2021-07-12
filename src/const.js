@@ -2,16 +2,16 @@ const Const = {
   appName: "nnboxPartner",
 
   //local
-  serverProtocol: "http",
-  serverIp: "127.0.0.1",
+  // serverProtocol: "http",
+  // serverIp: "127.0.0.1",
 
   //stage
   // serverProtocol: "https",
   // serverIp: "nnstage.nnbox.net",
 
   //prod
-  // serverProtocol: "https",
-  // serverIp: "manage.nyamnyambox.com",
+  serverProtocol: "https",
+  serverIp: "rider.nyamnyambox.com",
 
   //drnana
   // serverProtocol: "https",
