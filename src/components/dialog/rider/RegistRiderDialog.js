@@ -32,6 +32,7 @@ import {
   formatYear
 } from "../../../lib/util/dateUtil";
 import SearchBikeDialog from "../../dialog/common/SearchBikeDialog";
+import SearchRiderDialog from "../common/SearchRiderDialog";
 
 const Option = Select.Option;
 const FormItem = Form.Item;
@@ -55,7 +56,9 @@ class RegistRiderDialog extends Component {
 
       bikeType: 0,
       isSearchBikeOpen: false,
+      searchRiderOpen: false,
       selectedBike: null,
+      selectedRider: null,
 
       // agreeSms: true,
 
@@ -76,6 +79,7 @@ class RegistRiderDialog extends Component {
       this.setState({
         selectedBike: this.props.data.bike,
         riderLevel: this.props.data.riderLevel,
+        selectedRider: { userIdx: this.props.data.teamManagerIdx },
       });
     }
     console.log(this.props.data);
@@ -268,6 +272,14 @@ class RegistRiderDialog extends Component {
 
   closeSearchBikeModal = () => {
     this.setState({ isSearchBikeOpen: false });
+  };
+
+  openSearchRiderModal = () => {
+    this.setState({ searchRiderOpen: true });
+  };
+
+  closeSearchRiderModal = () => {
+    this.setState({ searchRiderOpen: false });
   };
 
   render() {
@@ -590,6 +602,41 @@ class RegistRiderDialog extends Component {
                         </div>
                       </>
                     )}
+                    {this.state.riderLevel < 3 && (
+                      <>
+                        <div className="contentBlock">
+                          <div className="mainTitle">소속팀장</div>
+                          <FormItem
+                            name="teamManagerIdx"
+                            className="selectItem"
+                          >
+                            <Input
+                              style={{ width: 170 }}
+                              placeholder="팀장순번을 입력해 주세요."
+                            />
+                            <Button onClick={() => this.openSearchRiderModal()}>
+                              기사 조회
+                            </Button>
+                          </FormItem>
+                        </div>
+                        {this.state.searchRiderOpen && (
+                          <SearchRiderDialog
+                            callback={(selectedRider) =>
+                              this.setState(
+                                { selectedRider: selectedRider },
+                                () =>
+                                  this.formRef.current.setFieldsValue({
+                                    teamManagerIdx:
+                                      this.state.selectedRider.userIdx,
+                                  })
+                              )
+                            }
+                            close={this.closeSearchRiderModal}
+                          />
+                        )}
+                      </>
+                    )}
+
                     <div className="contentBlock">
                       <div className="mainTitle">은행</div>
                       <FormItem

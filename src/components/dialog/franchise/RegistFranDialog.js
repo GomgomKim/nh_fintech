@@ -189,9 +189,9 @@ class RegistFranDialog extends Component {
         agreeSms: this.state.agreeSms,
         frSalesUserIdx: this.state.selectedRider.idx,
         nonmemberFee: this.state.isMember ? 0 : 1000,
-        chargeDate: formatDateToDay(
-          this.formRef.current.getFieldValue("chargeDate")
-        ),
+        // chargeDate: formatDateToDay(
+        //   this.formRef.current.getFieldValue("chargeDate")
+        // ),
         registDate: formatDateToDay(
           this.formRef.current.getFieldValue("registDate")
         ),
@@ -199,6 +199,9 @@ class RegistFranDialog extends Component {
         // 삭제컬럼
         basicDeliveryPrice: 0,
         basicDeliveryDistance: 0,
+        dues: 0,
+        chargeDate: "1970-01-01",
+        isMember: true,
       })
         .then((result) => {
           console.log("## result: " + JSON.stringify(result, null, 4));
