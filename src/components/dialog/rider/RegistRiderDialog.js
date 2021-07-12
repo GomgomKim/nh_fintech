@@ -6,7 +6,7 @@ import {
   Input,
   Modal,
   Radio,
-  Select,
+  Select
 } from "antd";
 import moment from "moment";
 import React, { Component } from "react";
@@ -16,7 +16,7 @@ import {
   registComplete,
   registError,
   updateComplete,
-  updateError,
+  updateError
 } from "../../../api/Modals";
 import "../../../css/modal.css";
 import {
@@ -24,12 +24,12 @@ import {
   bikeType,
   items,
   riderGroupString,
-  riderLevelText,
+  riderLevelText
 } from "../../../lib/util/codeUtil";
 import {
   formatDateSecond,
   formatDateToDay,
-  formatYear,
+  formatYear
 } from "../../../lib/util/dateUtil";
 import SearchBikeDialog from "../../dialog/common/SearchBikeDialog";
 
@@ -463,7 +463,10 @@ class RegistRiderDialog extends Component {
                     {this.state.isSearchBikeOpen && (
                       <SearchBikeDialog
                         onSelect={(selectedBike) =>
-                          this.setState({ selectedBike: selectedBike })
+                          this.setState({ selectedBike: selectedBike }, () => {
+                            console.log("selectedBike");
+                            console.log(this.state.selectedBike);
+                          })
                         }
                         close={this.closeSearchBikeModal}
                       />
@@ -495,6 +498,8 @@ class RegistRiderDialog extends Component {
                         className="selectItem override-input"
                       >
                         <Input
+                          className="override-input"
+                          placeholder="바이크를 선택해주세요."
                           value={
                             this.state.selectedBike
                               ? this.state.selectedBike.bikeNumber
@@ -502,8 +507,6 @@ class RegistRiderDialog extends Component {
                               ? this.props.data.bikeNumber
                               : ""
                           }
-                          className="override-input"
-                          placeholder="바이크를 선택해주세요."
                           disabled
                         />
                       </FormItem>
