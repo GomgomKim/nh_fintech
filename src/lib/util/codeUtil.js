@@ -119,6 +119,8 @@ const staffString = {
 
 const riderGroupString = ["", "A", "B", "C", "D", "E"];
 
+const riderStatusCode = ['', '근무', '휴식', '퇴근'];
+
 const riderLevelText = [
   "",
   "라이더",
@@ -348,5 +350,6 @@ export {
   noticeCategoryType,
   items,
   deliveryZone,
+  riderStatusCode,
 };
 

@@ -12,7 +12,8 @@ import "../../css/modal.css";
 import {
   riderLevelText,
   statusString,
-  tableStatusString
+  tableStatusString,
+  riderStatusCode
 } from "../../lib/util/codeUtil";
 import { formatDateToDay } from "../../lib/util/dateUtil";
 import { comma } from "../../lib/util/numberUtil";
@@ -269,24 +270,24 @@ class RiderMain extends Component {
         render: (data) => <div>{riderLevelText[data]}</div>,
       },
       // {
-      //   title: "기사그룹",
-      //   dataIndex: "riderSettingGroup",
-      //   className: "table-column-center",
-      //   render: (data) => <div>{data.settingGroupName}</div>,
-      // },
-      {
-        title: "면허정보",
-        dataIndex: "driverLicenseNumber",
-        className: "table-column-center",
-        render: (data, row) => {
-          // 면허정보 컬럼 확정후 확인 필요
-          const content = (
-            <div>
+        //   title: "기사그룹",
+        //   dataIndex: "riderSettingGroup",
+        //   className: "table-column-center",
+        //   render: (data) => <div>{data.settingGroupName}</div>,
+        // },
+        {
+          title: "면허정보",
+          dataIndex: "driverLicenseNumber",
+          className: "table-column-center",
+          render: (data, row) => {
+            // 면허정보 컬럼 확정후 확인 필요
+            const content = (
+              <div>
               <Image
                 src={imageUrl(row.driverLicenseFileIdx)}
                 style={{ width: 400, height: 300 }}
                 alt="면허증 사진"
-              />
+                />
             </div>
           );
           return (
@@ -304,7 +305,7 @@ class RiderMain extends Component {
             <Button
               className="tabBtn surchargeTab"
               onClick={() => this.onResetPW(row)}
-            >
+              >
               초기화
             </Button>
           </div>
@@ -320,7 +321,7 @@ class RiderMain extends Component {
               onClick={() =>
                 this.setState({ blindRiderData: row, blindListOpen: true })
               }
-            >
+              >
               블라인드
             </Button>
           </div>
@@ -365,7 +366,7 @@ class RiderMain extends Component {
                   this.onChangeStatus(row.idx, value);
                 }
               }}
-            />
+              />
           </div>
         ),
       },
@@ -384,13 +385,20 @@ class RiderMain extends Component {
                   () => {
                     console.log(row);
                   }
-                )
-              }
-            >
+                  )
+                }
+                >
               수정
             </Button>
           </div>
         ),
+      },
+      {
+        title: "출근상태",
+        dataIndex: "riderStatus",
+        className: "table-column-center",
+        width: "200px",
+        render: (data) => <div>{riderStatusCode[data]}</div>,
       },
     ];
 
