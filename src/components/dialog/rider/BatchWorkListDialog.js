@@ -6,6 +6,7 @@ import { comma } from "../../../lib/util/numberUtil";
 import SearchRiderDialog from "../common/SearchRiderDialog";
 import RegistBatchWorkDialog from "../rider/RegistBatchWorkDialog";
 import { customAlert, customError} from "../../../api/Modals";
+import { formatDateToDay } from "../../../lib/util/dateUtil";
 
 class BatchWorkListDialog extends Component {
   constructor(props) {
@@ -172,11 +173,13 @@ class BatchWorkListDialog extends Component {
         title: "기간제한시작일",
         dataIndex: "startDate",
         className: "table-column-center",
+        render: (data) => <div>{formatDateToDay(data)}</div>,
       },
       {
         title: "기간제한종료일",
         dataIndex: "endDate",
         className: "table-column-center",
+        render: (data) => <div>{formatDateToDay(data)}</div>,
       },
       // {
       //   className: "table-column-center",
