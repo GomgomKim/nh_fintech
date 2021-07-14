@@ -37,7 +37,6 @@ class RegistNoticeDialog extends Component {
 
   componentDidMount() {
     this.getFrList();
-    alert(JSON.stringify(this.props.branchIdx))
   }
 
   getFrList = () => {
