@@ -5,6 +5,7 @@ import { customAlert, registError, updateError } from "../../../api/Modals";
 import SelectBox from "../../../components/input/SelectBox";
 import "../../../css/modal.css";
 import { noticeCategoryType } from "../../../lib/util/codeUtil";
+import { connect } from "react-redux";
 
 const FormItem = Form.Item;
 
@@ -24,7 +25,6 @@ class RegistNoticeDialog extends Component {
       content: "",
       category: 1,
       sortOrder: 30,
-      branchIdx: 1,
       createDate: "",
       deleteDate: "",
       readDate: "",
@@ -37,6 +37,7 @@ class RegistNoticeDialog extends Component {
 
   componentDidMount() {
     this.getFrList();
+    alert(JSON.stringify(this.props.branchIdx))
   }
 
   getFrList = () => {
@@ -111,7 +112,7 @@ class RegistNoticeDialog extends Component {
               createDate: self.state.createDate,
               deleted: false,
               category: self.state.category,
-              branchIdx: self.state.branchIdx,
+              branchIdx: self.props.branchIdx,
               important: false,
             })
               .then((result) => {
@@ -265,4 +266,15 @@ class RegistNoticeDialog extends Component {
   }
 }
 
-export default RegistNoticeDialog;
+const mapStateToProps = (state) => {
+  return {
+      branchIdx: state.login.loginInfo.branchIdx,
+  };
+}
+const mapDispatchToProps = (dispatch) => {
+  return {
+
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(RegistNoticeDialog);
