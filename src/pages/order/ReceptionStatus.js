@@ -6,7 +6,7 @@ import {
   MessageOutlined,
   NotificationFilled,
   PhoneOutlined,
-  PushpinOutlined,
+  PushpinOutlined
 } from "@ant-design/icons";
 import {
   Button,
@@ -16,7 +16,7 @@ import {
   Modal,
   Popover,
   Select,
-  Table,
+  Table
 } from "antd";
 import moment from "moment";
 import React, { Component } from "react";
@@ -27,6 +27,7 @@ import ChattingCurrentRoom from "../../components/dialog/common/ChattingCurrentR
 import ChattingDialog from "../../components/dialog/common/ChattingDialog";
 import SearchRiderDialog from "../../components/dialog/common/SearchRiderDialog";
 import BlindControlDialog from "../../components/dialog/franchise/BlindControlDialog";
+import DeliveryZoneDialog from "../../components/dialog/order/DeliveryZoneDialog";
 import FilteringDialog from "../../components/dialog/order/FilteringDialog";
 import MapControlDialog from "../../components/dialog/order/MapControlDialog";
 import NoticeDialog from "../../components/dialog/order/NoticeDialog";
@@ -34,7 +35,6 @@ import PaymentDialog from "../../components/dialog/order/PaymentDialog";
 import RegistCallDialog from "../../components/dialog/order/RegistCallDialog";
 import TimeDelayDialog from "../../components/dialog/order/TimeDelayDialog";
 import SendSnsDialog from "../../components/dialog/rider/SendSnsDialog";
-import DeliveryZoneDialog from "../../components/dialog/order/DeliveryZoneDialog";
 import "../../css/common.css";
 import "../../css/order.css";
 import {
@@ -42,7 +42,7 @@ import {
   deliveryStatusCode,
   modifyType,
   paymentMethod,
-  rowColorName,
+  rowColorName
 } from "../../lib/util/codeUtil";
 import { formatDate } from "../../lib/util/dateUtil";
 import { comma } from "../../lib/util/numberUtil";
@@ -97,7 +97,7 @@ class ReceptionStatus extends Component {
 
       // 호출설정 branch 정보
       branchInfo: null,
-      pullingInterval: 20000,
+      pullingInterval: 3000,
 
       messageTarget: null,
       messageTargetName: null,
@@ -551,12 +551,21 @@ class ReceptionStatus extends Component {
       //   dataIndex: "elapsedTime",
       //   className: "table-column-center",
       // },
+
       {
         title: "접수시간",
         dataIndex: "orderDate",
         className: "table-column-center",
         key: (row) => `orderDate:${row.orderDate}`,
         sorter: (a, b) => moment(a.orderDate) - moment(b.orderDate),
+        render: (data, row) => <div>{data}</div>,
+      },
+      {
+        title: "배차시간",
+        dataIndex: "assignDate",
+        className: "table-column-center",
+        key: (row) => `assignDate:${row.assignDate}`,
+        sorter: (a, b) => moment(a.assignDate) - moment(b.assignDate),
         render: (data, row) => <div>{data}</div>,
       },
       {
@@ -606,6 +615,25 @@ class ReceptionStatus extends Component {
           </div>
         ),
       },
+      {
+        title: "기사명",
+        dataIndex: "riderName",
+        className: "table-column-center",
+        key: (row) => `riderName:${row.riderName}`,
+        render: (data, row) => {
+          const content = (
+            <div>
+              <p>{row.riderPhone}</p>
+            </div>
+          );
+          return (
+            <Popover content={content} title="기사연락처">
+              <div>{row.orderStatus >= 2 ? data : "-"} </div>
+            </Popover>
+          );
+        },
+      },
+
       // antd 찾아봐야 될 듯
       // orderPayments - paymentMethod 라서 dataIndex 설정 필요
       // {
@@ -721,24 +749,6 @@ class ReceptionStatus extends Component {
         // 아마도 중복컬럼?
         // 대표님 요청으로 임시로 원복
         // @todo 시연후 확인하자 by riverstyx
-        {
-          title: "기사명",
-          dataIndex: "riderName",
-          className: "table-column-center",
-          key: (row) => `riderName:${row.riderName}`,
-          render: (data, row) => {
-            const content = (
-              <div>
-                <p>{row.riderPhone}</p>
-              </div>
-            );
-            return (
-              <Popover content={content} title="기사연락처">
-                <div>{row.orderStatus >= 2 ? data : "-"} </div>
-              </Popover>
-            );
-          },
-        },
         {
           title: "가맹점명",
           dataIndex: "frName",

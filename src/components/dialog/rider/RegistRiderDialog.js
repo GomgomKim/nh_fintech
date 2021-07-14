@@ -124,6 +124,7 @@ class RegistRiderDialog extends Component {
             leaveDate: formatDateToDay(
               self.formRef.current.getFieldValue("leaveDate")
             ),
+            agreeSms: false,
           });
           httpPost(httpUrl.updateRider, [], {
             ...self.formRef.current.getFieldsValue(),
@@ -141,6 +142,7 @@ class RegistRiderDialog extends Component {
             leaveDate: formatDateToDay(
               self.formRef.current.getFieldValue("leaveDate")
             ),
+            agreeSms: false,
           })
             .then((res) => {
               if (res.result === "SUCCESS" && res.data === "SUCCESS") {
@@ -171,6 +173,7 @@ class RegistRiderDialog extends Component {
             leaveDate: formatDateToDay(
               self.formRef.current.getFieldValue("leaveDate")
             ),
+            agreeSms: false,
 
             // deliveryPriceFeeType: self.state.feeManner,
           });
@@ -190,6 +193,7 @@ class RegistRiderDialog extends Component {
             leaveDate: formatDateToDay(
               self.formRef.current.getFieldValue("leaveDate")
             ),
+            agreeSms: false,
 
             // 기사 생성 시 예치금 정책 어떻게 될지에 따라 변경 될 수 있음
             // ncash 컬럼이 not null 이어서 기사 등록 시 0 설정
@@ -526,7 +530,7 @@ class RegistRiderDialog extends Component {
                         }
                         className="override-input"
                         placeholder="바이크를 선택해주세요."
-                        disabled
+                        // disabled
                       />
                       {/* </FormItem> */}
                     </div>
