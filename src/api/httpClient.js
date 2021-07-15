@@ -142,6 +142,7 @@ const httpDelete = (url, params, data) => {
 };
 
 const httpPost = (url, params, data) => {
+  console.log(makeUrl(url, params));
   return httpExec("POST", makeUrl(url, params), data);
   // return new Promise((resolve, reject) => {
   //   Axios.post(makeUrl(url, params), data)
@@ -208,10 +209,14 @@ const httpUrl = {
   orderList: "/order/list",
   orderUpdate: "/order/update",
   orderCreate: "/order/create",
-  orderPickup: "/order/pickup",
   orderComplete: "/order/complete",
   getDeliveryPrice:
     "/fr/expectDeliveryPrice?frIdx=%s&destLatitude=%s&destLongitude=%s",
+
+  // 주문 상태 변경
+  orderPickup: "/order/pickup",
+  orderComplete: "/order/complete",
+  orderCancel: "/order/cancel",
 
   priceExtraList: "/branch/deliveryPriceExtra/list?pageNum=%s&pageSize=%s",
   priceExtraRegist: "/branch/deliveryPriceExtra/create",
@@ -274,7 +279,8 @@ const httpUrl = {
   registBlind: "/rider/admin/block/create",
   deleteBlind: "/rider/admin/block/delete",
   statusBlind: "/rider/block/update",
-  blindAllList: "/rider/block/all/list?deletedList=%s&direction=%s&pageNum=%s&pageSize=%s",
+  blindAllList:
+    "/rider/block/all/list?deletedList=%s&direction=%s&pageNum=%s&pageSize=%s",
 
   // 채팅
   chatList: "/chat/chatList?pageSize=%s&pageNum=%s&searchName=%s",

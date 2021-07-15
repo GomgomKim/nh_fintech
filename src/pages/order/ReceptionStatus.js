@@ -136,7 +136,7 @@ class ReceptionStatus extends Component {
     httpPostWithNoLoading(httpUrl.orderList, [], data)
       .then((res) => {
         if (res.result === "SUCCESS") {
-          console.log(res);
+          // console.log(res);
           this.setState({
             list: res.data.orders,
             pagination: {
@@ -497,13 +497,40 @@ class ReceptionStatus extends Component {
                   });
                   return;
                 }
-                row.orderStatus = value;
-                httpPost(httpUrl.orderUpdate, [], row)
+
+                const orderStatuseChangeApiCode = [
+                  "",
+                  "",
+                  "",
+                  httpUrl.orderPickup,
+                  httpUrl.orderComplete,
+                  httpUrl.orderCancel,
+                ];
+
+                httpPost(orderStatuseChangeApiCode[value], [], {
+                  orderIdx: row.idx,
+                })
                   .then((res) => {
-                    if (res.result === "SUCCESS") this.getList();
+                    if (res.result === "SUCCESS" && res.data === "SUCCESS") {
+                      Modal.info({
+                        title: "변경 성공",
+                        content: "주문상태가 변경되었습니다.",
+                      });
+                      this.getList();
+                    } else {
+                      Modal.info({
+                        title: "변경 실패",
+                        content: "주문상태 변경에 실패했습니다.",
+                      });
+                    }
                   })
                   .catch((e) => {
-                    console.log(e);
+                    Modal.info({
+                      title: "변경 실패",
+                      content: "주문상태 변경에 실패했습니다.",
+                    });
+
+                    throw e;
                   });
               }}
             >
