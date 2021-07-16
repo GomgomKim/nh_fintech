@@ -994,159 +994,161 @@ class ReceptionStatus extends Component {
     };
 
     return (
-      <div className="reception-box">
-        {this.state.paymentOpen && (
-          <PaymentDialog
-            close={this.closePaymentModal}
-            orderPayments={this.state.paymentData}
-            orderPrice={this.state.orderPrice}
-          />
-        )}
-        {this.state.MessageOpen && (
-          <ChattingDialog close={this.closeMessageModal} />
-        )}
-        {this.state.directMessageOpen && (
-          <ChattingCurrentRoom
-            targetIdx={this.state.messageTarget}
-            targetName={this.state.messageTargetName}
-            targetLevel={this.state.messageTargetLevel}
-            close={this.closeDirectMessageModal}
+      <>
+        {this.state.mapControlOpen && (
+          <MapControlDialog
+            getList={this.getList}
+            callData={this.state.list}
+            close={this.closeMapControlModal}
           />
         )}
 
-        {this.state.addCallOpen && (
-          <RegistCallDialog close={this.closeAddCallModal} />
-        )}
-
-        {this.state.modifyOrder && (
-          <RegistCallDialog
-            close={this.closeModifyOrderModal}
-            editable={this.state.editable}
-            data={this.state.data}
-          />
-        )}
-
-        <div className="btnLayout">
-          {this.state.timeDelayOpen && (
-            <TimeDelayDialog
-              branchInfo={this.state.branchInfo}
-              close={this.closeTimeDelayModal}
+        <div className="reception-box">
+          {this.state.paymentOpen && (
+            <PaymentDialog
+              close={this.closePaymentModal}
+              orderPayments={this.state.paymentData}
+              orderPrice={this.state.orderPrice}
             />
           )}
-          <Button
-            icon={<FieldTimeOutlined />}
-            className="tabBtn delayTab"
-            onClick={this.openTimeDelayModal}
-          >
-            호출설정
-          </Button>
-          {this.state.deliveryZone && (
-            <DeliveryZoneDialog close={this.closeDeliveryZoneModal} />
+          {this.state.MessageOpen && (
+            <ChattingDialog close={this.closeMessageModal} />
           )}
-          <Button
-            icon={<PushpinOutlined />}
-            className="tabBtn"
-            onClick={this.openDeliveryZoneModal}
-          >
-            배송가능지역
-          </Button>
-          {this.state.mapControlOpen && (
-            <MapControlDialog
-              getList={this.getList}
-              callData={this.state.list}
-              close={this.closeMapControlModal}
+          {this.state.directMessageOpen && (
+            <ChattingCurrentRoom
+              targetIdx={this.state.messageTarget}
+              targetName={this.state.messageTargetName}
+              targetLevel={this.state.messageTargetLevel}
+              close={this.closeDirectMessageModal}
             />
           )}
-          <Button
-            icon={<EnvironmentFilled />}
-            className="tabBtn mapTab"
-            onClick={this.openMapControlModal}
-            // onClick={() => { this.props.openMapControl() }}
-          >
-            지도관제
-          </Button>
-          {this.state.surchargeOpen && (
-            <SurchargeDialog close={this.closeSurchargeModal} />
-          )}
-          <Button
-            icon={<DollarCircleOutlined />}
-            className="tabBtn surchargeTab"
-            onClick={this.openSurchargeModal}
-          >
-            할증
-          </Button>
-          <Button
-            icon={<PhoneOutlined />}
-            className="tabBtn registTab"
-            onClick={this.openAddCallModal}
-          >
-            주문등록
-          </Button>
-          <Button
-            icon={<MessageOutlined />}
-            className="tabBtn messageTab"
-            onClick={this.openMessageModal}
-          >
-            상담메세지
-          </Button>
 
-          {this.state.sendSnsOpen && (
-            <SendSnsDialog
-              close={this.closeSendSnsModal}
-              callback={this.onSearchRiderDetail}
+          {this.state.addCallOpen && (
+            <RegistCallDialog close={this.closeAddCallModal} />
+          )}
+
+          {this.state.modifyOrder && (
+            <RegistCallDialog
+              close={this.closeModifyOrderModal}
+              editable={this.state.editable}
+              data={this.state.data}
             />
           )}
-          <Button className="riderManageBtn" onClick={this.openSendSnsModal}>
-            전체메세지
-          </Button>
 
-          {this.state.noticeOpen && (
-            <NoticeDialog close={this.closeNoticeModal} />
-          )}
-          <Button
-            icon={<NotificationFilled />}
-            className="tabBtn noticeTab"
-            onClick={this.openNoticeModal}
-          >
-            공지사항
-          </Button>
-          {this.state.blindControlOpen && (
-            <BlindControlDialog
-              isOpen={this.state.blindControlOpen}
-              close={this.closeBlindControlModal}
+          <div className="btnLayout">
+            {this.state.timeDelayOpen && (
+              <TimeDelayDialog
+                branchInfo={this.state.branchInfo}
+                close={this.closeTimeDelayModal}
+              />
+            )}
+            <Button
+              icon={<FieldTimeOutlined />}
+              className="tabBtn delayTab"
+              onClick={this.openTimeDelayModal}
+            >
+              호출설정
+            </Button>
+            {this.state.deliveryZone && (
+              <DeliveryZoneDialog close={this.closeDeliveryZoneModal} />
+            )}
+            <Button
+              icon={<PushpinOutlined />}
+              className="tabBtn"
+              onClick={this.openDeliveryZoneModal}
+            >
+              배송가능지역
+            </Button>
+            <Button
+              icon={<EnvironmentFilled />}
+              className="tabBtn mapTab"
+              onClick={this.openMapControlModal}
+              // onClick={() => { this.props.openMapControl() }}
+            >
+              지도관제
+            </Button>
+            {this.state.surchargeOpen && (
+              <SurchargeDialog close={this.closeSurchargeModal} />
+            )}
+            <Button
+              icon={<DollarCircleOutlined />}
+              className="tabBtn surchargeTab"
+              onClick={this.openSurchargeModal}
+            >
+              할증
+            </Button>
+            <Button
+              icon={<PhoneOutlined />}
+              className="tabBtn registTab"
+              onClick={this.openAddCallModal}
+            >
+              주문등록
+            </Button>
+            <Button
+              icon={<MessageOutlined />}
+              className="tabBtn messageTab"
+              onClick={this.openMessageModal}
+            >
+              상담메세지
+            </Button>
+
+            {this.state.sendSnsOpen && (
+              <SendSnsDialog
+                close={this.closeSendSnsModal}
+                callback={this.onSearchRiderDetail}
+              />
+            )}
+            <Button className="riderManageBtn" onClick={this.openSendSnsModal}>
+              전체메세지
+            </Button>
+
+            {this.state.noticeOpen && (
+              <NoticeDialog close={this.closeNoticeModal} />
+            )}
+            <Button
+              icon={<NotificationFilled />}
+              className="tabBtn noticeTab"
+              onClick={this.openNoticeModal}
+            >
+              공지사항
+            </Button>
+            {this.state.blindControlOpen && (
+              <BlindControlDialog
+                isOpen={this.state.blindControlOpen}
+                close={this.closeBlindControlModal}
+              />
+            )}
+            <Button
+              className="tabBtn sectionTab"
+              onClick={this.openBlindControlModal}
+            >
+              블라인드관리
+            </Button>
+          </div>
+
+          <div className="selectLayout">
+            <Search
+              placeholder="가맹점검색"
+              enterButton
+              allowClear
+              onChange={(e) => this.setState({ franchisee: e.target.value })}
+              onSearch={this.onSearch}
+              style={{
+                width: 200,
+              }}
             />
-          )}
-          <Button
-            className="tabBtn sectionTab"
-            onClick={this.openBlindControlModal}
-          >
-            블라인드관리
-          </Button>
-        </div>
-
-        <div className="selectLayout">
-          <Search
-            placeholder="가맹점검색"
-            enterButton
-            allowClear
-            onChange={(e) => this.setState({ franchisee: e.target.value })}
-            onSearch={this.onSearch}
-            style={{
-              width: 200,
-            }}
-          />
-          <Search
-            placeholder="기사명검색"
-            enterButton
-            allowClear
-            onChange={(e) => this.setState({ rider: e.target.value })}
-            onSearch={this.onSearch}
-            style={{
-              width: 200,
-              marginLeft: 20,
-            }}
-          />
-          {/* <Search
+            <Search
+              placeholder="기사명검색"
+              enterButton
+              allowClear
+              onChange={(e) => this.setState({ rider: e.target.value })}
+              onSearch={this.onSearch}
+              style={{
+                width: 200,
+                marginLeft: 20,
+              }}
+            />
+            {/* <Search
             placeholder="바이크검색"
             enterButton
             allowClear
@@ -1157,103 +1159,104 @@ class ReceptionStatus extends Component {
               marginLeft: 20,
             }}
           /> */}
-          <FilteringDialog
-            isOpen={this.state.filteringOpen}
-            close={this.closeFilteringModal}
-            selectedOrderStatus={this.state.selectedOrderStatus}
-            selectedPaymentMethods={this.state.selectedPaymentMethods}
-          />
-          {!this.state.checkedCompleteCall && (
-            <Button
-              icon={<FilterOutlined />}
-              className="tabBtn filterTab"
-              onClick={this.openFilteringModal}
-            >
-              필터링 설정
-            </Button>
-          )}
-          {this.state.checkedCompleteCall && (
-            <DatePicker
-              style={{ marginLeft: 20 }}
-              defaultValue={moment(today, dateFormat)}
-              format={dateFormat}
-              onChange={(date) => {
-                if (date) {
-                  const newDate = new Date(
-                    date.get("year"),
-                    date.get("month"),
-                    date.get("date")
-                  );
-
-                  this.setState(
-                    { selectedDate: newDate },
-                    () => {
-                      this.getCompleteList();
-                    },
-                    () => console.log(this.state.selectedDate)
-                  );
-                }
-              }}
+            <FilteringDialog
+              isOpen={this.state.filteringOpen}
+              close={this.closeFilteringModal}
+              selectedOrderStatus={this.state.selectedOrderStatus}
+              selectedPaymentMethods={this.state.selectedPaymentMethods}
             />
-          )}
-          <Checkbox
-            defaultChecked={this.state.checkedCompleteCall ? "checked" : ""}
-            onChange={this.handleToggleCompleteCall}
-          ></Checkbox>
-          <span className="span1">완료조회</span>
-        </div>
-        <div id="reception-table" className="dataTableLayout">
-          <Table
-            rowKey={(record) => record.idx}
-            rowClassName={(record) => rowColorName[record.orderStatus]}
-            dataSource={
-              this.state.checkedCompleteCall
-                ? this.state.totalList
-                : this.state.list
-            }
-            columns={columns}
-            pagination={false}
-            // onChange={this.handleTableChange}
-            expandedRowRender={expandedRowRender}
-          />
-        </div>
+            {!this.state.checkedCompleteCall && (
+              <Button
+                icon={<FilterOutlined />}
+                className="tabBtn filterTab"
+                onClick={this.openFilteringModal}
+              >
+                필터링 설정
+              </Button>
+            )}
+            {this.state.checkedCompleteCall && (
+              <DatePicker
+                style={{ marginLeft: 20 }}
+                defaultValue={moment(today, dateFormat)}
+                format={dateFormat}
+                onChange={(date) => {
+                  if (date) {
+                    const newDate = new Date(
+                      date.get("year"),
+                      date.get("month"),
+                      date.get("date")
+                    );
 
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            marginTop: "1rem",
-          }}
-        >
-          <Button
-            onClick={() => {
-              if (
-                this.state.pagination.pageSize >= this.state.pagination.total
-              ) {
-                Modal.info({
-                  title: "주문정보 오류",
-                  content: "더 이상 주문정보가 존재하지 않습니다.",
-                });
-                return;
+                    this.setState(
+                      { selectedDate: newDate },
+                      () => {
+                        this.getCompleteList();
+                      },
+                      () => console.log(this.state.selectedDate)
+                    );
+                  }
+                }}
+              />
+            )}
+            <Checkbox
+              defaultChecked={this.state.checkedCompleteCall ? "checked" : ""}
+              onChange={this.handleToggleCompleteCall}
+            ></Checkbox>
+            <span className="span1">완료조회</span>
+          </div>
+          <div id="reception-table" className="dataTableLayout">
+            <Table
+              rowKey={(record) => record.idx}
+              rowClassName={(record) => rowColorName[record.orderStatus]}
+              dataSource={
+                this.state.checkedCompleteCall
+                  ? this.state.totalList
+                  : this.state.list
               }
-              this.setState(
-                {
-                  pagination: {
-                    ...this.state.pagination,
-                    pageSize: this.state.pagination.pageSize + 30,
-                  },
-                },
-                () => {
-                  console.log(this.state.pagination);
-                  this.getList();
-                }
-              );
+              columns={columns}
+              pagination={false}
+              // onChange={this.handleTableChange}
+              expandedRowRender={expandedRowRender}
+            />
+          </div>
+
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              marginTop: "1rem",
             }}
           >
-            더 보기
-          </Button>
+            <Button
+              onClick={() => {
+                if (
+                  this.state.pagination.pageSize >= this.state.pagination.total
+                ) {
+                  Modal.info({
+                    title: "주문정보 오류",
+                    content: "더 이상 주문정보가 존재하지 않습니다.",
+                  });
+                  return;
+                }
+                this.setState(
+                  {
+                    pagination: {
+                      ...this.state.pagination,
+                      pageSize: this.state.pagination.pageSize + 30,
+                    },
+                  },
+                  () => {
+                    console.log(this.state.pagination);
+                    this.getList();
+                  }
+                );
+              }}
+            >
+              더 보기
+            </Button>
+          </div>
         </div>
-      </div>
+      </>
     );
   }
 }
