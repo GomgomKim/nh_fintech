@@ -177,7 +177,7 @@ class MapControlDialog extends Component {
         if (self.state.selectedRowKeys.length > 0) {
           Modal.confirm({
             title: "배차 설정",
-            content: `${self.state.selectedRowKeys} 번의 주문을 ${rider.riderName} 기사에게 배정하시겠습니다?`,
+            content: `${self.state.selectedRowKeys} 번의 주문을 ${rider.riderName} 기사에게 배정하시겠습니까?`,
             onOk: () => {
               if (
                 this.state.allResultsSave.find((x) => x.userIdx === rider.idx)
