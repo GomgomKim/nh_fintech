@@ -471,6 +471,27 @@ class RiderMain extends Component {
           dataIndex: "riderName",
           className: "table-column-center",
         },
+        {
+          title: "출금등록",
+          dataIndex: "walletId",
+          className: "table-column-center",
+          render: (data, row) => <div>{data? '완료' : (
+            <Button onClick={()=>{
+              
+              httpPost(httpUrl.createUserWallet, [row.idx], {}).then((response) => {
+                console.log(response)
+                if (response.data.resultCd == "0000") {
+                  this.getList();
+                }
+                else {
+                  alert(response.data.advanceMsg)
+                }
+              })
+              .catch((e) => {
+              });
+            }}>등록하기</Button>
+          )}</div>,
+        },
       ];
       return (
         <Table

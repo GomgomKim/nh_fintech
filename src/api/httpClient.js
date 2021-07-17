@@ -309,6 +309,9 @@ const httpUrl = {
   // 기사그룹
   getRiderGroup: "/rider/settingGroup/list",
   updateRiderGroup: "/rider/settingGroup/update",
+
+  // PG연동
+  createUserWallet: '/payment/wallet/create/user/%s',
 };
 
 const imageType = ["image/jpeg", "image/png", "image/bmp"];
