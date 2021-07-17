@@ -177,6 +177,9 @@ class RegistRiderDialog extends Component {
 
             // deliveryPriceFeeType: self.state.feeManner,
           });
+          self.formRef.current.setFieldsValue({
+            registrationNumber: self.formRef.current.getFieldValue("registrationNumber").replace('-','')
+          })
           httpPost(httpUrl.registRider, [], {
             ...self.formRef.current.getFieldsValue(),
             branchIdx: self.props.branchIdx,
@@ -635,6 +638,25 @@ class RegistRiderDialog extends Component {
                       </>
                     )}
 
+                    <div className="contentBlock">
+                      <div className="mainTitle">주민등록번호</div>
+                      <FormItem
+                        name="registrationNumber"
+                        className="selectItem"
+                        rules={[
+                          {
+                            required: true,
+                            message: "주민번호를 입력해주세요",
+                          },
+                        ]}
+                        initialValue={data ? data.registrationNumber : ""}
+                      >
+                        <Input
+                          placeholder="주민번호를 입력해 주세요."
+                          className="override-input"
+                        />
+                      </FormItem>
+                    </div>
                     <div className="contentBlock">
                       <div className="mainTitle">은행</div>
                       <FormItem
