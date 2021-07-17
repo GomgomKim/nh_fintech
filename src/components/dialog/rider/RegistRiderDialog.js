@@ -452,7 +452,7 @@ class RegistRiderDialog extends Component {
                         className="selectItem"
                         rules={[
                           {
-                            required: true,
+                            required: data ? false : true,
                             message: "패스워드를 입력해주세요",
                           },
                         ]}
