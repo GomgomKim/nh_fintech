@@ -40,7 +40,7 @@ class RiderMain extends Component {
       pagination: {
         total: 0,
         current: 1,
-        pageSize: 10,
+        pageSize: 100,
       },
       dialogData: [],
       userStatus: 0,
@@ -74,7 +74,7 @@ class RiderMain extends Component {
 
     httpGet(
       httpUrl.riderList,
-      [10, pageNum, searchName, userStatus, [1, 2, 3, 4, 5, 6, 7]],
+      [this.state.pagination.pageSize, pageNum, searchName, userStatus, [1, 2, 3, 4, 5, 6, 7]],
       {}
     ).then((result) => {
       console.log(result, null, 4);
@@ -115,7 +115,7 @@ class RiderMain extends Component {
         searchName: value,
         pagination:{
           current: 1,
-          pageSize: 10,
+          pageSize: this.state.pagination.pageSize,
         }
       },
       () => {
@@ -520,7 +520,7 @@ class RiderMain extends Component {
                   userStatus: parseInt(value), 
                   pagination:{
                     current: 1,
-                    pageSize: 10,
+                    pageSize: this.state.pagination.pageSize,
                   } 
               }, () =>
                   this.getList()

@@ -30,7 +30,7 @@ class FranchiseMain extends Component {
       pagination: {
         total: 0,
         current: 1,
-        pageSize: 10,
+        pageSize: 100,
       },
       // test data
       list: [],
@@ -66,7 +66,7 @@ class FranchiseMain extends Component {
         pagination: {
           total: 0,
           current: 1,
-          pageSize: 10,
+          pageSize: this.state.pagination.pageSize,
         },
       },
       () => {
@@ -93,6 +93,7 @@ class FranchiseMain extends Component {
     httpPost(httpUrl.franchiseList, [], {
       frName: this.state.frName,
       pageNum: this.state.pagination.current,
+      pageSize: this.state.pagination.pageSize,
       userGroup: this.state.franGroup,
       userStatus: this.state.franStatus === 0 ? "" : this.state.franStatus,
     }).then((result) => {
