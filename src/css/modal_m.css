@@ -1,4 +1,4 @@
-@media screen and (max-width: 999px) {
+@media screen and (max-width: 1199px) and (min-width:300px){
     .desk {
         display: none !important;
     }
@@ -29,7 +29,38 @@
   .contentBlock:nth-child(1) {
     margin-top: 0px !important;
   }
-  
+
+
+/*헤더*/
+    .ham-menu {
+      float: left;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+    .header-logo {
+      text-align: center;
+      line-height: 45px;
+    }
+    .header-logo img {
+      width: 110px;
+      margin-left: -32px;
+    }
+    .slide-menu-overaly {
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      background-color: rgba(0, 0, 0, 0.56);
+      z-index: 10;
+    }
+    .slide-menu {
+      width: 280px;
+      height: 100%;
+      font-size: 16px;
+     
+      }
+
   /* 가맹점조회 */
   .searchFranchise-Dialog {
     position: fixed;
