@@ -17,6 +17,7 @@ const PaymentDialog = ({
   const [change, setChange] = useState(0);
   const [maxIdx, setMaxIdx] = useState(1);
 
+  // 결제수단별 1개 항목씩만 존재 가능
   const checkPaymentMethods = (data) => {
     if (data.length > 3) {
       return false;
@@ -27,6 +28,15 @@ const PaymentDialog = ({
         return false;
       } else {
         methods.push(data[i].paymentMethod);
+      }
+    }
+    return true;
+  };
+
+  const validatePaymentAmount = (data) => {
+    for (let i = 0; i < data.length; i++) {
+      if (data[i].paymentAmount < 0) {
+        return false;
       }
     }
     return true;
@@ -272,9 +282,16 @@ const PaymentDialog = ({
                     }}
                     type="primary"
                     onClick={() => {
-                      console.log("이게 왜 갑자기 안돼돼");
                       console.log(orderPrice > 0);
                       console.log(calcSum() > orderPrice);
+                      if (!validatePaymentAmount(data)) {
+                        Modal.info({
+                          title: "설정 오류",
+                          content: "결제 금액은 0보다 작을 수 없습니다.",
+                        });
+                        return;
+                      }
+
                       if (orderPrice >= 0 && calcSum() !== orderPrice) {
                         Modal.info({
                           title: "설정 오류",
@@ -282,6 +299,7 @@ const PaymentDialog = ({
                         });
                         return;
                       }
+
                       if (!checkPaymentMethods(data)) {
                         Modal.info({
                           title: "설정 오류",

@@ -120,13 +120,13 @@ class MapControlDialog extends Component {
     console.log("지도 경계");
     const bounds = this.mapRef.getBounds();
     this.setState({ mapBounds: bounds }, () => {
-      console.log(this.state.mapBounds);
-      console.log(this.state.mapBounds._max);
-      console.log(this.state.mapBounds._max.x);
-      console.log(this.state.mapBounds._max.y);
-      console.log(this.state.mapBounds._min);
-      console.log(this.state.mapBounds._min.x);
-      console.log(this.state.mapBounds._min.y);
+      // console.log(this.state.mapBounds);
+      // console.log(this.state.mapBounds._max);
+      // console.log(this.state.mapBounds._max.x);
+      // console.log(this.state.mapBounds._max.y);
+      // console.log(this.state.mapBounds._min);
+      // console.log(this.state.mapBounds._min.x);
+      // console.log(this.state.mapBounds._min.y);
     });
   };
 
@@ -164,9 +164,13 @@ class MapControlDialog extends Component {
 
   // 기사 테이블에서 아이디 클릭했을 때
   // rider : 선택된 라이더 정보
-  onSearchWorkerSelected = (rider) => {
+  onSearchWorkerSelected = async (rider) => {
     var self = this;
-    this.getRiderLocate(rider.idx);
+    const flag = await this.getRiderLocate(
+      rider.userIdx ? rider.userIdx : rider.idx
+    );
+    if (!flag) return;
+
     this.setState(
       {
         selectedRiderIdx: rider.userIdx,
@@ -330,32 +334,36 @@ class MapControlDialog extends Component {
   };
 
   getRiderLocate = (riderIdx) => {
-    httpGet(httpUrl.riderLocate, [riderIdx], {}).then((result) => {
-      console.log("getRiderLocate result");
-      console.log(result);
-      if (result.data !== null) {
-        this.setState(
-          {
-            selectedRiderAssignedOrderCnt: result.data.assignedOrderCnt,
-            mapCenter: {
-              lat: result.data.latitude,
-              lng: result.data.longitude,
+    return new Promise((resolve, reject) => {
+      httpGet(httpUrl.riderLocate, [riderIdx], {}).then((result) => {
+        console.log("getRiderLocate result");
+        console.log(result);
+        if (result.data !== null) {
+          this.setState(
+            {
+              selectedRiderAssignedOrderCnt: result.data.assignedOrderCnt,
+              mapCenter: {
+                lat: result.data.latitude,
+                lng: result.data.longitude,
+              },
+              selectedRiderLatitude: result.data.latitude,
+              selectedRiderLongitude: result.data.longitude,
+              selectedRiderIdx: result.data.userIdx,
+              riderName: result.data.riderName,
             },
-            selectedRiderLatitude: result.data.latitude,
-            selectedRiderLongitude: result.data.longitude,
-            selectedRiderIdx: result.data.userIdx,
-            riderName: result.data.riderName,
-          },
-          () => {
-            this.getList();
-          }
-        );
-      } else {
-        Modal.info({
-          title: "위치정보 조회 오류",
-          content: "라이더의 위치정보가 존재하지 않습니다.",
-        });
-      }
+            () => {
+              this.getList();
+            }
+          );
+          resolve(true);
+        } else {
+          Modal.info({
+            title: "위치정보 조회 오류",
+            content: "라이더의 위치정보가 존재하지 않습니다.",
+          });
+          reject(false);
+        }
+      });
     });
   };
 
@@ -783,6 +791,7 @@ class MapControlDialog extends Component {
           <div
             className="riderName"
             onClick={() => {
+              console.log(row);
               this.onSearchWorkerSelected(row);
             }}
           >
@@ -914,9 +923,7 @@ class MapControlDialog extends Component {
                     onBoundsChanged={this.handleBoundChange}
                   >
                     {this.state.allResults.filter(
-                      (x) =>
-                        x.userIdx === this.state.selectedRiderIdx &&
-                        x.riderStatus === 1
+                      (x) => x.userIdx === this.state.selectedRiderIdx
                     ).length > 0 && (
                       <>
                         <Marker
@@ -929,9 +936,9 @@ class MapControlDialog extends Component {
                               .default
                           }
                           title={this.state.riderName}
-                          onClick={() =>
-                            this.getRiderLocate(this.state.selectedRiderIdx)
-                          }
+                          onClick={() => {
+                            this.getRiderLocate(this.state.selectedRiderIdx);
+                          }}
                         />
                         <Marker
                           key={this.state.selectedRiderIdx}
@@ -970,6 +977,8 @@ class MapControlDialog extends Component {
                           return (
                             <>
                               {this.state.selectedRiderIdx !== row.userIdx && (
+                                // /rider/locationlist에 riderstatus 추가 후 처리 필요
+                                // row.riderStatus === 1 &&
                                 <>
                                   <Marker
                                     key={row.userIdx}
@@ -986,9 +995,11 @@ class MapControlDialog extends Component {
                                             .default
                                     }
                                     title={row.riderName}
-                                    onClick={() =>
-                                      this.getRiderLocate(row.userIdx)
-                                    }
+                                    onClick={() => {
+                                      // this.getRiderLocate(row.userIdx);
+                                      console.log(row);
+                                      this.onSearchWorkerSelected(row);
+                                    }}
                                   />
                                   <Marker
                                     key={row.userIdx}
@@ -1007,9 +1018,10 @@ class MapControlDialog extends Component {
                                       ].join(""),
                                     }}
                                     title={row.riderName}
-                                    onClick={() =>
-                                      this.getRiderLocate(row.userIdx)
-                                    }
+                                    onClick={() => {
+                                      // this.getRiderLocate(row.userIdx);
+                                      this.onSearchWorkerSelected(row);
+                                    }}
                                   />
                                 </>
                               )}
