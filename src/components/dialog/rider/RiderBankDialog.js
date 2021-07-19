@@ -3,6 +3,7 @@ import {
     Form, DatePicker, Table, Button
 } from "antd";
 import '../../../css/modal.css';
+import '../../../css/modal_m.css';
 import moment from 'moment';
 import { comma } from "../../../lib/util/numberUtil";
 const dateFormat = 'YYYY/MM/DD';

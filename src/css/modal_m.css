@@ -1,11 +1,12 @@
 @media screen and (max-width: 999px) {
     .desk {
+        display: none !important;
     }
   
     .mobile {
-      display: none !important;
     }
   
+
   .Dialog-overlay {
     position: fixed;
     top: 0;

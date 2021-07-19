@@ -3,7 +3,8 @@ import {
     Form, Input, Button, Select, Radio
 } from "antd";
 import '../../../css/modal.css';
-import { httpUrl, httpPost} from '../../../api/httpClient';
+import '../../../css/modal_m.css';
+import { httpUrl, httpPost } from '../../../api/httpClient';
 const Option = Select.Option;
 const FormItem = Form.Item;
 
@@ -81,9 +82,9 @@ class UpdateRiderDialog extends Component {
 
     handleChangeRiderLevel = (value) => {
         // console.log(`selected ${value}`);
-        if (value == 1){
+        if (value == 1) {
             this.setState({ riderLevelSelected: true });
-        } else{
+        } else {
             this.setState({ riderLevelSelected: false });
         }
     }
@@ -92,7 +93,7 @@ class UpdateRiderDialog extends Component {
         console.log(`selected ${e.target.value}`);
         this.setState({ feeManner: e.target.value });
     }
-    
+
 
     render() {
         const { isOpen, close, data } = this.props;
@@ -137,7 +138,7 @@ class UpdateRiderDialog extends Component {
                                                         name="riderGroup"
                                                         className="selectItem"
                                                     >
-                                                        <Select placeholder="그룹을 선택해주세요." className="override-select branch"  defaultValue={'A'}>
+                                                        <Select placeholder="그룹을 선택해주세요." className="override-select branch" defaultValue={'A'}>
                                                             <Option value={1}>A</Option>
                                                             <Option value={2}>B</Option>
                                                             <Option value={3}>C</Option>
@@ -181,7 +182,7 @@ class UpdateRiderDialog extends Component {
                                                         </FormItem>
                                                     </div>
                                                 }
-                                                
+
                                                 <div className="contentBlock">
                                                     <div className="mainTitle">
                                                         기사명
@@ -271,10 +272,10 @@ class UpdateRiderDialog extends Component {
                                                         수수료방식
                                                     </div>
                                                     <div className="registRiderCheck">
-                                                    <Radio.Group onChange={this.onChangFeeManner} value={this.state.feeManner}>
-                                                        <Radio value={1}>정량</Radio>
-                                                        <Radio value={2}>정률</Radio>
-                                                    </Radio.Group>
+                                                        <Radio.Group onChange={this.onChangFeeManner} value={this.state.feeManner}>
+                                                            <Radio value={1}>정량</Radio>
+                                                            <Radio value={2}>정률</Radio>
+                                                        </Radio.Group>
                                                     </div>
                                                 </div>
                                                 <div className="contentBlock">
