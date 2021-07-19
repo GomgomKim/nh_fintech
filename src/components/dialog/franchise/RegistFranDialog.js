@@ -86,7 +86,9 @@ class RegistFranDialog extends Component {
         ...this.formRef.current.getFieldsValue(),
         idx: this.props.data.idx,
         branchIdx: this.props.branchIdx,
-        frSalesUserIdx: this.state.selectedRider.idx,
+        frSalesUserIdx: this.state.selectedRider
+          ? this.state.selectedRider.idx
+          : "",
         userGroup: 0,
         nonmemberFee: this.state.isMember ? 0 : 1000,
         registDate: formatDateToDay(
@@ -95,6 +97,10 @@ class RegistFranDialog extends Component {
         chargeDate: formatDateToDay(
           this.formRef.current.getFieldValue("chargeDate")
         ),
+        businessNumber: this.formRef.current
+          .getFieldValue("businessNumber")
+          .split("-")
+          .join(""),
 
         // 삭제컬럼
         basicDeliveryPrice: 0,
@@ -104,7 +110,9 @@ class RegistFranDialog extends Component {
         ...this.formRef.current.getFieldsValue(),
         idx: this.props.data.idx,
         branchIdx: this.props.branchIdx,
-        frSalesUserIdx: this.state.selectedRider.idx,
+        frSalesUserIdx: this.state.selectedRider
+          ? this.state.selectedRider.idx
+          : "",
         userGroup: 0,
         nonmemberFee: this.state.isMember ? 0 : 1000,
         registDate: formatDateToDay(
@@ -113,6 +121,14 @@ class RegistFranDialog extends Component {
         chargeDate: formatDateToDay(
           this.formRef.current.getFieldValue("chargeDate")
         ),
+        password:
+          this.formRef.current.getFieldValue("password")
+            ? this.formRef.current.getFieldValue("password")
+            : this.props.data.password,
+        businessNumber: this.formRef.current
+          .getFieldValue("businessNumber")
+          .split("-")
+          .join(""),
 
         // 삭제컬럼
         basicDeliveryPrice: 0,
@@ -153,7 +169,9 @@ class RegistFranDialog extends Component {
         // tidNormalRate: this.state.PgRate, // 100 or 0
         duesAutoChargeEnabled: false,
         agreeSms: this.state.agreeSms,
-        frSalesUserIdx: this.state.selectedRider.idx,
+        frSalesUserIdx: this.state.selectedRider
+          ? this.state.selectedRider.idx
+          : "",
         nonmemberFee: this.state.isMember ? 0 : 1000,
         registDate: formatDateToDay(
           this.formRef.current.getFieldValue("registDate")
@@ -161,6 +179,10 @@ class RegistFranDialog extends Component {
         chargeDate: formatDateToDay(
           this.formRef.current.getFieldValue("chargeDate")
         ),
+        businessNumber: this.formRef.current
+          .getFieldValue("businessNumber")
+          .split("-")
+          .join(""),
 
         // 삭제컬럼
         basicDeliveryPrice: 0,
@@ -187,7 +209,9 @@ class RegistFranDialog extends Component {
         // tidNormalRate: this.state.PgRate, // 100 or 0
         duesAutoChargeEnabled: false,
         agreeSms: this.state.agreeSms,
-        frSalesUserIdx: this.state.selectedRider.idx,
+        frSalesUserIdx: this.state.selectedRider
+          ? this.state.selectedRider.idx
+          : "",
         nonmemberFee: this.state.isMember ? 0 : 1000,
         // chargeDate: formatDateToDay(
         //   this.formRef.current.getFieldValue("chargeDate")
@@ -195,6 +219,10 @@ class RegistFranDialog extends Component {
         registDate: formatDateToDay(
           this.formRef.current.getFieldValue("registDate")
         ),
+        businessNumber: this.formRef.current
+          .getFieldValue("businessNumber")
+          .split("-")
+          .join(""),
 
         // 삭제컬럼
         basicDeliveryPrice: 0,
@@ -381,7 +409,7 @@ class RegistFranDialog extends Component {
                         initialValue={data && data.businessNumber}
                       >
                         <Input
-                          placeholder="사업자번호를 입력해 주세요."
+                          placeholder="사업자번호를 - 를 빼고 입력해 주세요."
                           className="override-input"
                         />
                       </FormItem>
@@ -429,6 +457,12 @@ class RegistFranDialog extends Component {
                         className="selectItem"
                         // initialValue={data && data.frPhone}
                         initialValue={data && data.phone}
+                        rules={[
+                          {
+                            required: true,
+                            message: "핸드폰 번호를 입력해주세요",
+                          },
+                        ]}
                       >
                         <Input
                           placeholder="휴대전화 번호를 입력해 주세요."
@@ -443,6 +477,12 @@ class RegistFranDialog extends Component {
                         name="addr1"
                         className="selectItem"
                         initialValue={data && data.addr1}
+                        rules={[
+                          {
+                            required: true,
+                            message: "주소를 입력해주세요",
+                          },
+                        ]}
                       >
                         <Input
                           placeholder="주소를 입력해 주세요."
@@ -578,7 +618,7 @@ class RegistFranDialog extends Component {
                         className="selectItem"
                         rules={[
                           {
-                            required: true,
+                            required: data ? false : true,
                             message: "비밀번호를 입력해주세요",
                           },
                         ]}
