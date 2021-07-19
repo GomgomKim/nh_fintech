@@ -26,7 +26,7 @@ class Login extends Component {
     if (value !== null) {
       try {
         value = JSON.parse(value);
-      } catch {}
+      } catch { }
       if (value.type === "saveLoginId") {
         this.formRef.current.setFieldsValue({ id: value.id });
         this.setState({ saveLoginId: true });
@@ -58,14 +58,14 @@ class Login extends Component {
           alert("아이디 또는 비밀번호가 잘못되었습니다.");
         }
       })
-      .catch((error) => {});
+      .catch((error) => { });
   };
 
   render() {
     return (
       <div className="login-container">
         <Form ref={this.formRef} onFinish={this.handleSubmit}>
-          <div className="login-img">
+          <div className="login-img desk">
             <img
               src={require("../img/login/login_img.png").default}
               alt="login_image"
