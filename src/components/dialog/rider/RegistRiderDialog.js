@@ -124,6 +124,8 @@ class RegistRiderDialog extends Component {
             leaveDate: formatDateToDay(
               self.formRef.current.getFieldValue("leaveDate")
             ),
+
+            // 삭제컬럼
             agreeSms: false,
           });
           httpPost(httpUrl.updateRider, [], {
@@ -142,6 +144,11 @@ class RegistRiderDialog extends Component {
             leaveDate: formatDateToDay(
               self.formRef.current.getFieldValue("leaveDate")
             ),
+            password: self.formRef.current.getFieldValue("password")
+              ? self.formRef.current.getFieldValue("password")
+              : null,
+
+            // 삭제컬럼
             agreeSms: false,
           })
             .then((res) => {
@@ -178,8 +185,10 @@ class RegistRiderDialog extends Component {
             // deliveryPriceFeeType: self.state.feeManner,
           });
           self.formRef.current.setFieldsValue({
-            registrationNumber: self.formRef.current.getFieldValue("registrationNumber").replace('-','')
-          })
+            registrationNumber: self.formRef.current
+              .getFieldValue("registrationNumber")
+              .replace("-", ""),
+          });
           httpPost(httpUrl.registRider, [], {
             ...self.formRef.current.getFieldsValue(),
             branchIdx: self.props.branchIdx,
@@ -606,6 +615,12 @@ class RegistRiderDialog extends Component {
                           <FormItem
                             name="teamManagerIdx"
                             className="selectItem"
+                            rules={[
+                              {
+                                required: true,
+                                message: "팀장순번을 입력해주세요",
+                              },
+                            ]}
                           >
                             <Input
                               style={{ width: 170 }}
@@ -622,6 +637,7 @@ class RegistRiderDialog extends Component {
                         </div>
                         {this.state.searchRiderOpen && (
                           <SearchRiderDialog
+                            teamManagerOnly={true}
                             callback={(selectedRider) =>
                               this.setState(
                                 { selectedRider: selectedRider },
