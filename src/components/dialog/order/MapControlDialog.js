@@ -924,8 +924,8 @@ class MapControlDialog extends Component {
                   >
                     {this.state.allResults.filter(
                       (x) =>
-                        x.userIdx === this.state.selectedRiderIdx &&
-                        x.riderStatus === 1
+                        x.userIdx === this.state.selectedRiderIdx
+                        // && x.riderStatus === 1
                     ).length > 0 && (
                       <>
                         <Marker
