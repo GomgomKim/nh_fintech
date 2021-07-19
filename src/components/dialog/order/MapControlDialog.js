@@ -923,9 +923,7 @@ class MapControlDialog extends Component {
                     onBoundsChanged={this.handleBoundChange}
                   >
                     {this.state.allResults.filter(
-                      (x) =>
-                        x.userIdx === this.state.selectedRiderIdx
-                        // && x.riderStatus === 1
+                      (x) => x.userIdx === this.state.selectedRiderIdx
                     ).length > 0 && (
                       <>
                         <Marker
@@ -979,6 +977,8 @@ class MapControlDialog extends Component {
                           return (
                             <>
                               {this.state.selectedRiderIdx !== row.userIdx && (
+                                // /rider/locationlist에 riderstatus 추가 후 처리 필요
+                                // row.riderStatus === 1 &&
                                 <>
                                   <Marker
                                     key={row.userIdx}
