@@ -13,7 +13,7 @@ import {
   riderLevelText,
   statusString,
   tableStatusString,
-  riderStatusCode
+  riderStatusCode,
 } from "../../lib/util/codeUtil";
 import { formatDateToDay } from "../../lib/util/dateUtil";
 import { comma } from "../../lib/util/numberUtil";
@@ -74,7 +74,13 @@ class RiderMain extends Component {
 
     httpGet(
       httpUrl.riderList,
-      [this.state.pagination.pageSize, pageNum, searchName, userStatus, [1, 2, 3, 4, 5, 6, 7]],
+      [
+        this.state.pagination.pageSize,
+        pageNum,
+        searchName,
+        userStatus,
+        [1, 2, 3, 4, 5, 6, 7],
+      ],
       {}
     ).then((result) => {
       console.log(result, null, 4);
@@ -113,10 +119,10 @@ class RiderMain extends Component {
     this.setState(
       {
         searchName: value,
-        pagination:{
+        pagination: {
           current: 1,
           pageSize: this.state.pagination.pageSize,
-        }
+        },
       },
       () => {
         this.getList();
@@ -254,12 +260,22 @@ class RiderMain extends Component {
       {
         title: "기사명",
         dataIndex: "riderName",
-        className: "table-column-center",
+        className: "table-column-center desk",
+      },
+      {
+        title: "기사명",
+        dataIndex: "riderName",
+        className: "table-column-center mobile",
+        render: (data, row) => (
+          <div>
+            {row.riderName} {row.id}
+          </div>
+        ),
       },
       {
         title: "아이디",
         dataIndex: "id",
-        className: "table-column-center",
+        className: "table-column-center desk",
         width: "200px",
       },
       {
@@ -270,24 +286,24 @@ class RiderMain extends Component {
         render: (data) => <div>{riderLevelText[data]}</div>,
       },
       // {
-        //   title: "기사그룹",
-        //   dataIndex: "riderSettingGroup",
-        //   className: "table-column-center",
-        //   render: (data) => <div>{data.settingGroupName}</div>,
-        // },
-        {
-          title: "면허정보",
-          dataIndex: "driverLicenseNumber",
-          className: "table-column-center",
-          render: (data, row) => {
-            // 면허정보 컬럼 확정후 확인 필요
-            const content = (
-              <div>
+      //   title: "기사그룹",
+      //   dataIndex: "riderSettingGroup",
+      //   className: "table-column-center",
+      //   render: (data) => <div>{data.settingGroupName}</div>,
+      // },
+      {
+        title: "면허정보",
+        dataIndex: "driverLicenseNumber",
+        className: "table-column-center",
+        render: (data, row) => {
+          // 면허정보 컬럼 확정후 확인 필요
+          const content = (
+            <div>
               <Image
                 src={imageUrl(row.driverLicenseFileIdx)}
                 style={{ width: 400, height: 300 }}
                 alt="면허증 사진"
-                />
+              />
             </div>
           );
           return (
@@ -305,7 +321,7 @@ class RiderMain extends Component {
             <Button
               className="tabBtn surchargeTab"
               onClick={() => this.onResetPW(row)}
-              >
+            >
               초기화
             </Button>
           </div>
@@ -321,7 +337,7 @@ class RiderMain extends Component {
               onClick={() =>
                 this.setState({ blindRiderData: row, blindListOpen: true })
               }
-              >
+            >
               블라인드
             </Button>
           </div>
@@ -366,7 +382,7 @@ class RiderMain extends Component {
                   this.onChangeStatus(row.idx, value);
                 }
               }}
-              />
+            />
           </div>
         ),
       },
@@ -385,9 +401,9 @@ class RiderMain extends Component {
                   () => {
                     console.log(row);
                   }
-                  )
-                }
-                >
+                )
+              }
+            >
               수정
             </Button>
           </div>
@@ -475,28 +491,45 @@ class RiderMain extends Component {
           title: "출금등록",
           dataIndex: "walletId",
           className: "table-column-center",
-          render: (data, row) => <div>{data? '완료' : (
-            <Button onClick={()=>{
-              
-              httpPost(httpUrl.createUserWallet, [row.idx], {}).then((response) => {
-                console.log(response)
-                if (response.data.resultCd == "0000") {
-                  this.getList();
-                }
-                else {
-                  alert(response.data.advanceMsg)
-                }
-              })
-              .catch((e) => {
-              });
-            }}>등록하기</Button>
-          )}</div>,
+          render: (data, row) => (
+            <div>
+              {data ? (
+                "완료"
+              ) : (
+                <Button
+                  onClick={() => {
+                    httpPost(httpUrl.createUserWallet, [row.idx], {})
+                      .then((response) => {
+                        console.log(response);
+                        if (response.data.resultCd == "0000") {
+                          this.getList();
+                        } else {
+                          alert(response.data.advanceMsg);
+                        }
+                      })
+                      .catch((e) => {});
+                  }}
+                >
+                  등록하기
+                </Button>
+              )}
+            </div>
+          ),
         },
       ];
       return (
         <Table
+          className="desk"
           rowKey={(record) => `record: ${record.idx}`}
           columns={dropColumns}
+          dataSource={[record]}
+          pagination={false}
+        />
+      );
+      return (
+        <Table
+          className="mobile"
+          rowKey={(record) => `record: ${record.idx}`}
           dataSource={[record]}
           pagination={false}
         />
@@ -505,7 +538,15 @@ class RiderMain extends Component {
 
     return (
       <div className="">
-        <div className="selectLayout">
+        <Search
+          placeholder="기사검색"
+          className="searchRiderInput"
+          enterButton
+          allowClear
+          onSearch={this.onSearchRider}
+          style={{}}
+        />
+        <div className="selectLayout desk">
           <span className="searchRequirementText">검색조건</span>
           <br />
           <br />
@@ -516,14 +557,15 @@ class RiderMain extends Component {
             codeString={tableStatusString}
             onChange={(value) => {
               if (parseInt(value) !== this.state.userStatus) {
-                this.setState({ 
-                  userStatus: parseInt(value), 
-                  pagination:{
-                    current: 1,
-                    pageSize: this.state.pagination.pageSize,
-                  } 
-              }, () =>
-                  this.getList()
+                this.setState(
+                  {
+                    userStatus: parseInt(value),
+                    pagination: {
+                      current: 1,
+                      pageSize: this.state.pagination.pageSize,
+                    },
+                  },
+                  () => this.getList()
                 );
               }
             }}

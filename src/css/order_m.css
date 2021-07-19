@@ -1,6 +1,10 @@
-@media screen and (min-width: 1000px) {
-  .mobile {
+@media screen and (max-width: 999px) {
+  .desk {
     display: none !important;
+  }
+  .reception-box {
+    width: 360px;
+    overflow: scroll;
   }
   .tabBtn {
     margin-left: 10px;
