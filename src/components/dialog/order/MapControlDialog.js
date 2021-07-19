@@ -166,7 +166,9 @@ class MapControlDialog extends Component {
   // rider : 선택된 라이더 정보
   onSearchWorkerSelected = async (rider) => {
     var self = this;
-    const flag = await this.getRiderLocate(rider.idx);
+    const flag = await this.getRiderLocate(
+      rider.userIdx ? rider.userIdx : rider.idx
+    );
     if (!flag) return;
 
     this.setState(
@@ -789,6 +791,7 @@ class MapControlDialog extends Component {
           <div
             className="riderName"
             onClick={() => {
+              console.log(row);
               this.onSearchWorkerSelected(row);
             }}
           >
@@ -993,7 +996,8 @@ class MapControlDialog extends Component {
                                     }
                                     title={row.riderName}
                                     onClick={() => {
-                                      this.getRiderLocate(row.userIdx);
+                                      // this.getRiderLocate(row.userIdx);
+                                      console.log(row);
                                       this.onSearchWorkerSelected(row);
                                     }}
                                   />
@@ -1015,7 +1019,7 @@ class MapControlDialog extends Component {
                                     }}
                                     title={row.riderName}
                                     onClick={() => {
-                                      this.getRiderLocate(row.userIdx);
+                                      // this.getRiderLocate(row.userIdx);
                                       this.onSearchWorkerSelected(row);
                                     }}
                                   />
