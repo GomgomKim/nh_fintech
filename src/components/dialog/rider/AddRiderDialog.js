@@ -3,6 +3,7 @@ import {
     Form, Table, Button, Select
 } from "antd";
 import '../../../css/modal.css';
+import '../../../css/modal_m.css';
 const Option = Select.Option;
 const FormItem = Form.Item;
 

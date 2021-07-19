@@ -5,6 +5,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { httpPostWithNoLoading, httpUrl } from '../../../api/httpClient';
 import '../../../css/modal.css';
+import '../../../css/modal_m.css';
 const { TextArea } = Input;
 const FormItem = Form.Item;
 
@@ -50,21 +51,21 @@ class SendSnsDialog extends Component {
                     ...self.formRef.current.getFieldsValue(),
                     branchIdx: self.props.branchIdx
                 }).then((res) => {
-                    if(res.result === "SUCCESS" && res.data === "SUCCESS"){
+                    if (res.result === "SUCCESS" && res.data === "SUCCESS") {
                         Modal.info({
                             title: "완료",
                             content: (
                                 <div>
-                                전체 라이더에게 메세지가 전송되었습니다.
-                            </div>
-                        ),
-                    });
-                } else {
-                    Modal.info({
-                        title: " 오류",
-                        content: "오류가 발생하였습니다. 다시 시도해 주십시오."
-                    });
-                }
+                                    전체 라이더에게 메세지가 전송되었습니다.
+                                </div>
+                            ),
+                        });
+                    } else {
+                        Modal.info({
+                            title: " 오류",
+                            content: "오류가 발생하였습니다. 다시 시도해 주십시오."
+                        });
+                    }
                 }).catch((error) => {
                     Modal.info({
                         title: " 오류",
@@ -129,7 +130,7 @@ class SendSnsDialog extends Component {
                                             className="tabBtn insertTab snsBtn"
                                         >
                                             전송
-                                    </Button>
+                                        </Button>
                                     </div>
                                 </div>
                             </Form>
@@ -143,11 +144,10 @@ class SendSnsDialog extends Component {
 
 const mapStateToProps = (state) => ({
     branchIdx: state.login.loginInfo.branchIdx,
-  });
-  
-  const mapDispatchToProps = (dispatch) => {
+});
+
+const mapDispatchToProps = (dispatch) => {
     return {};
-  };
-  
-  export default connect(mapStateToProps, mapDispatchToProps)(SendSnsDialog);
-  
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SendSnsDialog);

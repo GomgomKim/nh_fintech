@@ -8,6 +8,7 @@ import { createStore } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
 import App from "./App";
 import "./css/index.css";
+import "./css/index_m.css";
 import "./css/notosans.css";
 import reducer from "./reducers";
 import reportWebVitals from "./reportWebVitals";
