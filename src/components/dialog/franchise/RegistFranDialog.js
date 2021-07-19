@@ -124,7 +124,7 @@ class RegistFranDialog extends Component {
         password:
           this.formRef.current.getFieldValue("password")
             ? this.formRef.current.getFieldValue("password")
-            : this.props.data.password,
+            : null,
         businessNumber: this.formRef.current
           .getFieldValue("businessNumber")
           .split("-")
