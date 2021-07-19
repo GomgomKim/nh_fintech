@@ -2,7 +2,7 @@ import React from "react";
 import { Layout as AntLayout } from "antd";
 import { withRouter,  } from "react-router-dom";
 
-import {  Header, Footer, Content } from "./";
+import {  Header, Footer, Content, NNWebSocket } from "./";
 import { connect } from "react-redux";
 
 class Layout extends React.Component {
@@ -15,6 +15,7 @@ class Layout extends React.Component {
           <Header/>
           <Content/>
           <Footer />
+          <NNWebSocket />
         </AntLayout>
       </AntLayout>
     );
