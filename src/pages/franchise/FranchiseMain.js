@@ -390,6 +390,20 @@ class FranchiseMain extends Component {
 
   render() {
     const columns = [
+      // 모바일
+      {
+        title: "가맹점 정보",
+        dataIndex: "frName",
+        className: "table-column-center mobile",
+        render: (data, row) =>
+          <div>
+            <span style={{ backgroundColor: "#fddc00", color: "#000", padding: "0px 10px", borderRadius: "10px" }}>{row.frName}<br /></span>
+            사업자번호: {row.businessNumber}<br />
+            가맹점번호: {row.frPhone}<br />
+            대표자번호: {row.phone}<br />
+            주소:{row.addr1}<br />
+          </div >,
+      },
       {
         title: "상태",
         dataIndex: "userStatus",
@@ -417,7 +431,7 @@ class FranchiseMain extends Component {
       {
         title: "가맹점명",
         dataIndex: "frName",
-        className: "table-column-center",
+        className: "table-column-center desk",
       },
       {
         title: "사업자번호",
@@ -427,7 +441,7 @@ class FranchiseMain extends Component {
       {
         title: "가맹점번호",
         dataIndex: "frPhone",
-        className: "table-column-center",
+        className: "table-column-center desk",
       },
       {
         title: "대표자번호",
@@ -446,6 +460,12 @@ class FranchiseMain extends Component {
         className: "table-column-center",
         render: (data) => <div>{comma(data)}</div>,
       },
+      // {
+      //   title: "잔액",
+      //   dataIndex: "ncash",
+      //   className: "table-column-center mobile",
+      //   render: (data) => <div>{comma(data)}</div>,
+      // },
       // {
       //   title: "기본배달요금",
       //   dataIndex: "basicDeliveryPrice",
@@ -519,10 +539,29 @@ class FranchiseMain extends Component {
           </div>
         ),
       },
+
     ];
 
     const expandedRowRender = (record) => {
       const dropColumns = [
+        // 모바일
+        {
+          title: "세부정보",
+          dataIndex: "chargeDate",
+          className: "table-column-center mobile",
+          render: (data, row) =>
+            <div>
+              <b>가맹여부:</b> {row.isMember}<br />
+              <b>가입일:</b> {row.registDate}<br />
+              <b>월회비 최초납부일:</b> {row.chargeDate}<br />
+              <b>월회비:</b> {row.dues}<br />
+              <b>VAN:</b> {row.tidNormal}<br />
+              <b>PG:</b> {row.tidPrepay}<br />
+              <b>PG사용여부:</b> {row.tidNormalRate}<br />
+              <b>영업담당자:</b> {row.frSalesRiderName}<br />
+            </div>,
+        },
+
         {
           title: "월회비 최초납부일",
           dataIndex: "chargeDate",
@@ -532,7 +571,7 @@ class FranchiseMain extends Component {
         {
           title: "가맹여부",
           dataIndex: "isMember",
-          className: "table-column-center",
+          className: "table-column-center desk",
           render: (data) => <div>{data ? "가맹" : "무가맹"}</div>,
         },
 
@@ -557,19 +596,19 @@ class FranchiseMain extends Component {
         {
           title: "VAN",
           dataIndex: "tidNormal",
-          className: "table-column-center",
+          className: "table-column-center desk",
           render: (data) => <div>{data}</div>,
         },
         {
           title: "PG",
           dataIndex: "tidPrepay",
-          className: "table-column-center",
+          className: "table-column-center desk",
           render: (data) => <div>{data}</div>,
         },
         {
           title: "PG 사용여부",
           dataIndex: "tidNormalRate",
-          className: "table-column-center",
+          className: "table-column-center desk",
           render: (data) => <div>{data === 100 ? "미사용" : "사용"}</div>,
         },
         {
@@ -608,7 +647,7 @@ class FranchiseMain extends Component {
     };
 
     return (
-      <div className="franchiseContainer">
+      <div className="franchiseContainer" >
         <div className="selectLayout">
           <span className="searchRequirementText desk">검색조건</span>
           <br />
@@ -739,7 +778,7 @@ class FranchiseMain extends Component {
             data={this.state.dialogData}
           />
         )}
-      </div>
+      </div >
     );
   }
 }
