@@ -79,7 +79,7 @@ class RegistRiderDialog extends Component {
       this.setState({
         selectedBike: this.props.data.bike,
         riderLevel: this.props.data.riderLevel,
-        selectedRider: { userIdx: this.props.data.teamManagerIdx },
+        selectedRider: { idx: this.props.data.teamManagerIdx },
       });
     }
     console.log(this.props.data);
