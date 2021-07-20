@@ -2,13 +2,6 @@
   .desk {
     display: none !important;
   }
-  .reception-box {
-    width: 360px;
-    overflow: scroll;
-  }
-  .tabBtn {
-    margin-left: 10px;
-  }
 
   .arriveArea {
     text-align: left;
@@ -128,4 +121,18 @@
   #reception-table .ant-table .ant-table-thead > tr > th:last-child {
     padding-right: 20px !important;
   }
+}
+/* 기사관리-테이블 재정의 */
+.droptable {
+  width: 360px;
+}
+.riderMain-container {
+  width: 360px;
+  overflow: scroll;
+}
+.dataTableLayout {
+  width: 360px;
+}
+.rider-blind-btn {
+  width: 100px;
 }

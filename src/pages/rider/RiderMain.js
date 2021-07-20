@@ -9,6 +9,7 @@ import BatchWorkListDialog from "../../components/dialog/rider/BatchWorkListDial
 import UpdatePasswordDialog from "../../components/dialog/rider/UpdatePasswordDialog";
 import SelectBox from "../../components/input/SelectBox";
 import "../../css/modal.css";
+import "../../css/order_m.css";
 import {
   riderLevelText,
   statusString,
@@ -264,11 +265,21 @@ class RiderMain extends Component {
       },
       {
         title: "기사명",
-        dataIndex: "riderName",
+        dataIndex: [
+          "riderName",
+          "riderLevel",
+          "riderSettingGroup",
+          "riderStatus",
+        ],
         className: "table-column-center mobile",
         render: (data, row) => (
           <div>
-            {row.riderName} {row.id}
+            {row.riderName}({row.id}) {riderLevelText[row.riderLevel]}(
+            {row.riderSettingGroup.settingGroupName})
+            <br />
+            {row.phone} / {riderStatusCode[row.riderStatus]} <br />
+            {formatDateToDay(row.createDate)} /{" "}
+            {formatDateToDay(row.deleteDate)} <br />
           </div>
         ),
       },
@@ -281,7 +292,7 @@ class RiderMain extends Component {
       {
         title: "직급",
         dataIndex: "riderLevel",
-        className: "table-column-center",
+        className: "table-column-center desk",
         width: "200px",
         render: (data) => <div>{riderLevelText[data]}</div>,
       },
@@ -294,7 +305,7 @@ class RiderMain extends Component {
       {
         title: "면허정보",
         dataIndex: "driverLicenseNumber",
-        className: "table-column-center",
+        className: "table-column-center desk",
         render: (data, row) => {
           // 면허정보 컬럼 확정후 확인 필요
           const content = (
@@ -333,7 +344,7 @@ class RiderMain extends Component {
         render: (data, row) => (
           <div>
             <Button
-              className="tabBtn surchargeTab"
+              className="tabBtn"
               onClick={() =>
                 this.setState({ blindRiderData: row, blindListOpen: true })
               }
@@ -346,7 +357,7 @@ class RiderMain extends Component {
       {
         title: "입사일",
         dataIndex: "createDate",
-        className: "table-column-center",
+        className: "table-column-center desk",
         render: (data) => <div>{formatDateToDay(data)}</div>,
         // render: (data, row) => <div>
         //   <DatePicker
@@ -358,7 +369,7 @@ class RiderMain extends Component {
       {
         title: "퇴사일",
         dataIndex: "deleteDate",
-        className: "table-column-center",
+        className: "table-column-center desk",
         render: (data) => <div>{formatDateToDay(data)}</div>,
         // render: (data, row) => <div>
         //   <DatePicker
@@ -388,7 +399,7 @@ class RiderMain extends Component {
       },
       {
         title: "수정",
-        className: "table-column-center",
+        className: "table-column-center desk",
         render: (data, row) => (
           <div>
             {/* {this.state.riderUpdateOpen &&
@@ -412,7 +423,7 @@ class RiderMain extends Component {
       {
         title: "출근상태",
         dataIndex: "riderStatus",
-        className: "table-column-center",
+        className: "table-column-center desk",
         width: "200px",
         render: (data) => <div>{riderStatusCode[data]}</div>,
       },
@@ -424,37 +435,50 @@ class RiderMain extends Component {
         {
           title: "최소보유잔액",
           dataIndex: "ncashMin",
-          className: "table-column-center",
+          className: "table-column-center desk",
           render: (data) => <div>{data}</div>,
+        },
+        {
+          title: "계좌정보",
+          dataIndex: ["ncashMin", "ncash"],
+          className: "table-column-center mobile",
+          render: (data, row) => (
+            <div>
+              <span>잔액</span>
+              {comma(row.ncash)} <br />
+              <span>최소보유잔액</span>
+              <br />({row.ncashMin})
+            </div>
+          ),
         },
         {
           title: "전화번호",
           dataIndex: "phone",
-          className: "table-column-center",
+          className: "table-column-center desk",
         },
         {
           title: "잔액",
           dataIndex: "ncash",
-          className: "table-column-center",
+          className: "table-column-center desk",
           render: (data) => <div>{comma(data)}</div>,
         },
         {
           title: "메모",
           dataIndex: "memo",
-          className: "table-column-center",
+          className: "table-column-center desk",
           render: (data) => <div>{data}</div>,
         },
         {
           title: "기사그룹",
           dataIndex: "riderSettingGroup",
-          className: "table-column-center",
+          className: "table-column-center desk",
           render: (data) => <div>{data.settingGroupName}</div>,
         },
 
         {
           title: "수수료방식",
           dataIndex: "riderSettingGroup",
-          className: "table-column-center",
+          className: "table-column-center desk",
           render: (data) => (
             <div>{data.deliveryPriceFeeType === 1 ? "정량" : "정율"}</div>
           ),
@@ -462,7 +486,7 @@ class RiderMain extends Component {
         {
           title: "수수료",
           dataIndex: "riderSettingGroup",
-          className: "table-column-center",
+          className: "table-column-center desk",
           render: (data) => (
             <div>
               {data.deliveryPriceFeeType === 1
@@ -472,25 +496,49 @@ class RiderMain extends Component {
           ),
         },
         {
+          title: "수수료",
+          dataIndex: "riderSettingGroup",
+          className: "table-column-center mobile",
+          render: (data, row) => (
+            <div>
+              {row.deliveryPriceFeeType === 1
+                ? data.deliveryPriceFeeAmount + "원"
+                : data.deliveryPriceFeeAmount + "%"}
+              <br />({row.deliveryPriceFeeType === 1 ? "정량" : "정율"})
+            </div>
+          ),
+        },
+        {
           title: "은행명",
           dataIndex: "bank",
-          className: "table-column-center",
+          className: "table-column-center desk",
           render: (data) => <div>{data.split(",")[0]}</div>,
         },
         {
           title: "계좌번호",
           dataIndex: "bankAccount",
-          className: "table-column-center",
+          className: "table-column-center desk",
+        },
+        {
+          title: "계좌번호",
+          dataIndex: ["bank", "bankAccount"],
+          className: "table-column-center mobile",
+          render: (data, row) => (
+            <div>
+              {row.bank.split(",")[0]} <br /> {row.bankAccount} <br />{" "}
+              {row.riderName}
+            </div>
+          ),
         },
         {
           title: "예금주",
           dataIndex: "riderName",
-          className: "table-column-center",
+          className: "table-column-center desk",
         },
         {
           title: "출금등록",
           dataIndex: "walletId",
-          className: "table-column-center",
+          className: "table-column-center desk",
           render: (data, row) => (
             <div>
               {data ? (
@@ -516,20 +564,41 @@ class RiderMain extends Component {
             </div>
           ),
         },
+        {
+          title: "출금등록",
+          dataIndex: "walletId",
+          className: "table-column-center mobile",
+          render: (data, row) => (
+            <div>
+              {data ? (
+                "완료"
+              ) : (
+                <Button
+                  onClick={() => {
+                    httpPost(httpUrl.createUserWallet, [row.idx], {})
+                      .then((response) => {
+                        console.log(response);
+                        if (response.data.resultCd == "0000") {
+                          this.getList();
+                        } else {
+                          alert(response.data.advanceMsg);
+                        }
+                      })
+                      .catch((e) => {});
+                  }}
+                >
+                  등록
+                </Button>
+              )}
+            </div>
+          ),
+        },
       ];
       return (
         <Table
-          className="desk"
+          className="droptable"
           rowKey={(record) => `record: ${record.idx}`}
           columns={dropColumns}
-          dataSource={[record]}
-          pagination={false}
-        />
-      );
-      return (
-        <Table
-          className="mobile"
-          rowKey={(record) => `record: ${record.idx}`}
           dataSource={[record]}
           pagination={false}
         />
@@ -537,10 +606,10 @@ class RiderMain extends Component {
     };
 
     return (
-      <div className="">
+      <div className="riderMain-container">
         <Search
           placeholder="기사검색"
-          className="searchRiderInput"
+          className="searchRiderInput mobile"
           enterButton
           allowClear
           onSearch={this.onSearchRider}
@@ -615,12 +684,14 @@ class RiderMain extends Component {
 
         <div className="dataTableLayout">
           <Table
+            className="rider-table"
             rowKey={(record) => record.idx}
             dataSource={this.state.results}
             columns={columns}
             pagination={this.state.pagination}
             onChange={this.handleTableChange}
             expandedRowRender={expandedRowRender}
+            expandedRowRender={expandedRowRenderSub}
           />
         </div>
         {this.state.riderUpdateOpen && (
