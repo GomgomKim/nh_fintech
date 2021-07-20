@@ -1,4 +1,4 @@
-@media screen and (max-width: 999px) {
+@media screen and (max-width: 1199px) and (min-width:300px){
     .desk {
         display: none !important;
     }

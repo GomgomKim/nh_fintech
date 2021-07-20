@@ -1,10 +1,11 @@
-@media screen and (min-width: 1600px) {
+@media screen and (min-width: 1200px) {
   .desk {
   }
 
   .mobile {
     display: none !important;
   }
+
 
 .Dialog-overlay {
   position: fixed;
