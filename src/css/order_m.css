@@ -144,12 +144,15 @@
     width: 310px;
     margin-top: 20px;
   }
-  .ant-table-row-expand-icon-cell{
-    width:20px!important;
-  }
+  /* .ant-table-row-expand-icon-cell{
+    width:10px!important;
+  } */
   .franchiseContainer{
     width:310px;
     overflow:scroll;
+  }
+  .droptable_fr {
+    width: 308px;
   }
  
 }

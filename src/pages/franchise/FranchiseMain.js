@@ -396,12 +396,13 @@ class FranchiseMain extends Component {
         dataIndex: "frName",
         className: "table-column-center mobile",
         render: (data, row) =>
-          <div>
+          <div style={{ padding: "10px 0px" }}>
             <span style={{ backgroundColor: "#fddc00", color: "#000", padding: "0px 10px", borderRadius: "10px" }}>{row.frName}<br /></span>
-            사업자번호: {row.businessNumber}<br />
-            가맹점번호: {row.frPhone}<br />
-            대표자번호: {row.phone}<br />
-            주소:{row.addr1}<br />
+            사업자: {row.businessNumber}<br />
+            가맹점: {row.frPhone}<br />
+            대표자: {row.phone}<br />
+            주소: {row.addr1}<br />
+            {/* 코인잔액: {comma(row.ncash)} */}
           </div >,
       },
       {
@@ -457,7 +458,7 @@ class FranchiseMain extends Component {
       {
         title: "코인잔액",
         dataIndex: "ncash",
-        className: "table-column-center",
+        className: "table-column-center desk",
         render: (data) => <div>{comma(data)}</div>,
       },
       // {
@@ -503,7 +504,7 @@ class FranchiseMain extends Component {
       // },
       {
         title: "블라인드",
-        className: "table-column-center desk",
+        className: "table-column-center",
         render: (data, row) => (
           <div>
             <Button
@@ -551,6 +552,7 @@ class FranchiseMain extends Component {
           className: "table-column-center mobile",
           render: (data, row) =>
             <div>
+              <b>코인잔액:</b> {comma(row.ncash)}<br />
               <b>가맹여부:</b> {(row.isMember) ? "가맹" : "무가맹"}<br />
               <b>가입일:</b> {formatDateToDay(row.registDate)}<br />
               <b>최초납부일:</b> {formatDateToDay(row.chargeDate)}<br />
@@ -559,6 +561,7 @@ class FranchiseMain extends Component {
               <b>PG:</b> {row.tidPrepay}<br />
               <b>PG사용여부:</b>{(row.tidNormalRate) === 100 ? "미사용" : "사용"}<br />
               <b>영업담당자:</b> {row.frSalesRiderName}<br />
+
             </div>,
         },
 
@@ -638,7 +641,7 @@ class FranchiseMain extends Component {
 
       return (
         <Table
-          className="droptable"
+          className="droptable_fr"
           rowKey={(record) => `record: ${record.idx}`}
           columns={dropColumns}
           dataSource={[record]}

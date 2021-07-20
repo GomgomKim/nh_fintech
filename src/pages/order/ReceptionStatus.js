@@ -36,6 +36,7 @@ import RegistCallDialog from "../../components/dialog/order/RegistCallDialog";
 import TimeDelayDialog from "../../components/dialog/order/TimeDelayDialog";
 import SendSnsDialog from "../../components/dialog/rider/SendSnsDialog";
 import "../../css/common.css";
+import "../../css/common_m.css";
 import "../../css/order.css";
 import "../../css/order_m.css";
 import {
@@ -712,7 +713,7 @@ class ReceptionStatus extends Component {
           data.length > 1 ? (
             <Button
               onClick={() => this.openPaymentModal(data, row)}
-              // close={this.closePaymentModal}
+            // close={this.closePaymentModal}
             >
               보기
             </Button>
@@ -1064,7 +1065,7 @@ class ReceptionStatus extends Component {
               icon={<EnvironmentFilled />}
               className="tabBtn mapTab"
               onClick={this.openMapControlModal}
-              // onClick={() => { this.props.openMapControl() }}
+            // onClick={() => { this.props.openMapControl() }}
             >
               지도관제
             </Button>
