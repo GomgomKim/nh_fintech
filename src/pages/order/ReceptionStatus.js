@@ -6,7 +6,7 @@ import {
   MessageOutlined,
   NotificationFilled,
   PhoneOutlined,
-  PushpinOutlined
+  PushpinOutlined,
 } from "@ant-design/icons";
 import {
   Button,
@@ -16,7 +16,7 @@ import {
   Modal,
   Popover,
   Select,
-  Table
+  Table,
 } from "antd";
 import moment from "moment";
 import React, { Component } from "react";
@@ -37,12 +37,13 @@ import TimeDelayDialog from "../../components/dialog/order/TimeDelayDialog";
 import SendSnsDialog from "../../components/dialog/rider/SendSnsDialog";
 import "../../css/common.css";
 import "../../css/order.css";
+import "../../css/order_m.css";
 import {
   arriveReqTime,
   deliveryStatusCode,
   modifyType,
   paymentMethod,
-  rowColorName
+  rowColorName,
 } from "../../lib/util/codeUtil";
 import { formatDate } from "../../lib/util/dateUtil";
 import { comma } from "../../lib/util/numberUtil";
@@ -1035,7 +1036,7 @@ class ReceptionStatus extends Component {
             />
           )}
 
-          <div className="btnLayout">
+          <div className="btnLayout desk">
             {this.state.timeDelayOpen && (
               <TimeDelayDialog
                 branchInfo={this.state.branchInfo}
@@ -1126,7 +1127,7 @@ class ReceptionStatus extends Component {
             </Button>
           </div>
 
-          <div className="selectLayout">
+          <div className="selectLayout desk">
             <Search
               placeholder="가맹점검색"
               enterButton
@@ -1204,6 +1205,7 @@ class ReceptionStatus extends Component {
             ></Checkbox>
             <span className="span1">완료조회</span>
           </div>
+
           <div id="reception-table" className="dataTableLayout">
             <Table
               rowKey={(record) => record.idx}

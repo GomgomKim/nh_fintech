@@ -1,12 +1,14 @@
-@media screen and (max-width: 1199px) and (min-width:300px){
-    .desk {
-        display: none !important;
-    }
-  
-    .mobile {
-    }
-  
+@media screen and (max-width: 1199px) and (min-width: 300px) {
+  .desk {
+    display: none !important;
+  }
 
+  .mobile {
+  }
+
+  .riderMain-container {
+    width: 360px;
+  }
   .Dialog-overlay {
     position: fixed;
     top: 0;
@@ -25,41 +27,39 @@
     border-radius: 30px;
     z-index: 2;
   }
-  
+
   .contentBlock:nth-child(1) {
     margin-top: 0px !important;
   }
 
-
-/*헤더*/
-    .ham-menu {
-      float: left;
-      margin-top: 10px;
-      cursor: pointer;
-    }
-    .header-logo {
-      text-align: center;
-      line-height: 45px;
-    }
-    .header-logo img {
-      width: 110px;
-      margin-left: -32px;
-    }
-    .slide-menu-overaly {
-      position: fixed;
-      top: 0;
-      left: 0;
-      bottom: 0;
-      right: 0;
-      background-color: rgba(0, 0, 0, 0.56);
-      z-index: 10;
-    }
-    .slide-menu {
-      width: 280px;
-      height: 100%;
-      font-size: 16px;
-     
-      }
+  /*헤더*/
+  .ham-menu {
+    float: left;
+    margin-top: 10px;
+    cursor: pointer;
+  }
+  .header-logo {
+    text-align: center;
+    line-height: 45px;
+  }
+  .header-logo img {
+    width: 110px;
+    margin-left: -32px;
+  }
+  .slide-menu-overaly {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.56);
+    z-index: 10;
+  }
+  .slide-menu {
+    width: 280px;
+    height: 100%;
+    font-size: 16px;
+  }
 
   /* 가맹점조회 */
   .searchFranchise-Dialog {
@@ -71,34 +71,34 @@
     border-radius: 30px;
     z-index: 30;
   }
-  
+
   .searchFranchise-Dialog .layout::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera*/
   }
-  
+
   .frNameTag {
     cursor: pointer;
     color: blue;
     text-decoration: underline;
   }
-  
+
   .riderNameTag {
     cursor: pointer;
     color: blue;
     text-decoration: underline;
   }
-  
+
   .selMulti {
     margin-left: 20px !important;
   }
-  
+
   .searchFranchise-content {
     background-color: white;
     padding: 30px;
     text-align: left;
     color: #777;
   }
-  
+
   .searchFranchise-title {
     letter-spacing: -1px;
     font-weight: bold;
@@ -108,7 +108,7 @@
     font-size: 25px;
     line-height: 30px;
   }
-  
+
   .searchFranchise-close {
     width: 30px;
     cursor: pointer;
@@ -127,20 +127,20 @@
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
   }
-  
+
   .searchFranchise-Dialog .layout .contentBlock {
     display: inline-block;
     line-height: 20px;
   }
-  
+
   .searchFranchise-Dialog .layout .contentBlock span {
     font-size: 18px;
   }
-  
+
   .searchFranchise-Dialog .layout .submitBtn {
     float: right;
   }
-  
+
   .searchFranchise-list {
     display: inline-block;
     vertical-align: bottom;
@@ -157,7 +157,7 @@
     display: inline-block;
     vertical-align: bottom;
   }
-  
+
   .searchFranchise-btn .ant-btn-primary {
     background-color: black;
     border-style: none;
@@ -166,14 +166,14 @@
     float: right;
     margin: 20px 0;
   }
-  
+
   .searchFranchise-Dialog .layout .dataTableLayout-01 {
     margin-top: 30px;
   }
   .searchFranchise-Dialog .layout .ant-table-tbody > tr > td {
     padding: 0 !important;
   }
-  
+
   /* 우편번호 팝업 */
   .postCode-Dialog {
     position: fixed;
@@ -184,7 +184,7 @@
     border-radius: 30px;
     z-index: 3;
   }
-  
+
   .postCode-Dialog-overlay {
     position: fixed;
     top: 0;
@@ -194,7 +194,7 @@
     background-color: rgba(0, 0, 0, 0.2);
     z-index: 1;
   }
-  
+
   .postCode-close {
     width: 30px;
     position: absolute;
@@ -204,7 +204,7 @@
     background-color: #fddc00;
     padding: 8px;
   }
-  
+
   /* 직원 수정 dialog */
   .updateStaff-Dialog-overlay {
     position: fixed;
@@ -215,7 +215,7 @@
     background-color: rgba(0, 0, 0, 0.2);
     z-index: 1;
   }
-  
+
   .updateStaff-Dialog {
     position: fixed;
     top: 50%;
@@ -225,14 +225,14 @@
     border-radius: 30px;
     z-index: 2;
   }
-  
+
   .updateStaff-content {
     background-color: white;
     padding: 30px;
     text-align: left;
     color: #777;
   }
-  
+
   .updateStaff-title {
     letter-spacing: -1px;
     font-weight: bold;
@@ -242,7 +242,7 @@
     font-size: 25px;
     line-height: 30px;
   }
-  
+
   .updateStaff-close {
     width: 30px;
     cursor: pointer;
@@ -251,16 +251,16 @@
     float: right;
     padding: 8px;
   }
-  
+
   .updateStaffWrapper .mainTitle {
     width: 130px;
   }
-  
+
   .updateStaffWrapper .updateStaffCheck {
     display: inline-block;
     margin-left: 22px;
   }
-  
+
   .updateStaff-Dialog .layout {
     margin-top: 20px;
     width: 100%;
@@ -271,32 +271,32 @@
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
   }
-  
+
   .updateStaff-Dialog .layout::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera*/
   }
-  
+
   .updateStaff-Dialog .layout .contentBlock {
     margin-top: 25px;
   }
-  
+
   .updateStaffWrapper .submitBlock {
     margin-top: 30px;
     text-align: center;
   }
-  
+
   .updateStaffWrapper .clearBtn {
     margin-left: 20px;
   }
-  
+
   .updateStaffWrapper .contentBlock .override-select.branch {
     width: 240px;
   }
-  
+
   .updateStaffWrapper .override-select.sub {
     width: 270px !important;
   }
-  
+
   .updateStaffWrapper .contentBlock .override-input {
     width: 270px;
   }
@@ -312,7 +312,7 @@
     height: 40px !important;
     font-size: 18px !important;
   }
-  
+
   /* 지도 관제 dialog */
   .map-Dialog {
     position: fixed;
@@ -323,33 +323,33 @@
     height: 100%; */
     z-index: 2;
   }
-  
+
   .map-Dialog .mapLayout {
     width: 100vw;
     height: 100vh;
   }
-  
+
   .map-Dialog .mapLayout .map-navermap {
     width: 100%;
     height: 100%;
   }
-  
+
   .map-Dialog .layout::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera*/
   }
-  
+
   .assign-rider-btn {
     position: absolute;
     top: 10%;
     left: 24.95%;
   }
-  
+
   .map-content {
     background-color: white;
     /* height: 100vh;
     width: 100vw; */
   }
-  
+
   .map-title {
     font-size: 25px;
     font-weight: bold;
@@ -358,7 +358,7 @@
     display: inline-block;
     vertical-align: middle;
   }
-  
+
   .map-close {
     position: absolute;
     top: 30px;
@@ -370,7 +370,7 @@
     /* display: inline-block; */
     padding: 8px;
   }
-  
+
   .select-rider-orderCnt {
     position: absolute;
     top: 10px;
@@ -380,7 +380,7 @@
     cursor: pointer;
     padding: 8px;
   }
-  
+
   .map-inner {
     /* width: 100%;
     height: 100%; */
@@ -388,25 +388,25 @@
     /* border: 1px solid #ccc;  */
     text-align: left;
   }
-  
+
   .select-rider-orderCnt {
     position: absolute;
     /* right: 10px; */
     /* left: 1793px; */
     /* top: 110px; */
   }
-  
+
   .callDataTable {
     width: 45%;
     position: absolute;
     top: 35%;
   }
-  
+
   .table-column-center.arrive {
     overflow: hidden;
     text-overflow: ellipsis;
   }
-  
+
   .riderListInMapControl {
     width: 42%;
     position: absolute;
@@ -425,7 +425,7 @@
     color: #fff;
     cursor: pointer;
   }
-  
+
   .order-list-show-btn {
     float: right;
     position: absolute;
@@ -437,26 +437,26 @@
     color: #fff;
     cursor: pointer;
   }
-  
+
   .map-box .ant-checkbox {
     top: 0em !important;
   }
   .map-box .ant-checkbox-wrapper {
     display: table;
   }
-  
+
   .map-box .ant-checkbox-wrapper > span {
     display: table-cell;
     text-align: center;
   }
-  
+
   .map-box > div {
     width: 120px;
     height: 52px;
     float: left;
     /* margin:20px; */
   }
-  
+
   .map-box .ant-checkbox-inner {
     width: 45px;
     height: 45px;
@@ -465,12 +465,12 @@
     width: 25px;
     height: 25px;
   }
-  
+
   .map-box .ant-checkbox + span {
     font-size: 20px;
     vertical-align: middle;
   }
-  
+
   /* 기사 추가 dialog */
   .addRider-Dialog-overlay {
     position: fixed;
@@ -481,7 +481,7 @@
     background-color: rgba(0, 0, 0, 0.2);
     z-index: 1;
   }
-  
+
   .addRider-Dialog {
     position: fixed;
     top: 50%;
@@ -491,14 +491,14 @@
     border-radius: 30px;
     z-index: 2;
   }
-  
+
   .addRider-content {
     background-color: white;
     padding: 30px;
     /* text-align: left; */
     /* color: #777; */
   }
-  
+
   .addRider-title {
     letter-spacing: -1px;
     font-weight: bold;
@@ -508,7 +508,7 @@
     font-size: 25px;
     line-height: 30px;
   }
-  
+
   .addRider-close {
     width: 30px;
     cursor: pointer;
@@ -517,28 +517,28 @@
     float: right;
     padding: 8px;
   }
-  
+
   .addRider-Dialog .addRiderlayout {
     height: 540px;
   }
-  
+
   .addRiderWrapper .contentBlock {
     margin-top: 30px !important;
   }
-  
+
   .addRiderWrapper .contentBlock .selectItem .override-select {
     width: 345px;
   }
-  
+
   .addRider-Dialog .dataTableBlock {
     margin-top: 40px;
   }
-  
+
   .addRiderWrapper .submitBlock {
     margin-top: 30px;
     text-align: center;
   }
-  
+
   /* 그룹 추가 dialog */
   .addGroup-Dialog-overlay {
     position: fixed;
@@ -549,7 +549,7 @@
     background-color: rgba(0, 0, 0, 0.2);
     z-index: 1;
   }
-  
+
   .addGroup-Dialog {
     position: fixed;
     top: 50%;
@@ -559,7 +559,7 @@
     border-radius: 30px;
     z-index: 2;
   }
-  
+
   .addGroup-content {
     background-color: white;
     padding: 30px;
@@ -567,7 +567,7 @@
     /* text-align: left; */
     /* color: #777; */
   }
-  
+
   .addGroup-title {
     letter-spacing: -1px;
     font-weight: bold;
@@ -577,7 +577,7 @@
     font-size: 25px;
     line-height: 30px;
   }
-  
+
   .addGroupWrapper {
     margin-top: 20px;
   }
@@ -590,11 +590,11 @@
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
   }
-  
+
   .addGrouplayout .contentBlock .override-input {
     width: 260px;
   }
-  
+
   .addGroup-close {
     width: 30px;
     cursor: pointer;
@@ -603,22 +603,22 @@
     float: right;
     padding: 8px;
   }
-  
+
   /* .addGroupWrapper .contentBlock {
     margin-top: 30px;
   } */
-  
+
   .addGroupWrapper .submitBlock {
     margin-top: 30px;
     text-align: center;
   }
-  
+
   .addGroupWrapper .ant-btn-primary {
     width: 130px;
     height: 40px;
     font-size: 18px;
   }
-  
+
   /* 공지사항 dialog */
   .noticeDialog {
     position: fixed;
@@ -630,7 +630,7 @@
     padding: 20px;
     z-index: 2;
   }
-  
+
   .noticeLayout {
     margin-top: 5px;
     width: 100%;
@@ -641,30 +641,30 @@
     scrollbar-width: none; /* Firefox */
     padding: 20px;
   }
-  
+
   .deleteBox {
     float: left;
     margin-bottom: 20px;
   }
-  
+
   .noticeLayout .ant-checkbox-wrapper {
     height: 32px;
     margin-left: 0 !important;
     vertical-align: top;
   }
-  
+
   .registBtn {
     float: right;
     margin-bottom: 20px;
   }
-  
+
   .noticeDialog .container {
     background-color: white;
     padding: 30px;
     text-align: left;
     color: #777;
   }
-  
+
   .notice-title {
     /* font-size: 28px; */
     letter-spacing: -1px;
@@ -675,7 +675,7 @@
     font-size: 25px;
     line-height: 30px;
   }
-  
+
   .notice-close {
     width: 30px;
     background-color: #fddc00;
@@ -684,16 +684,16 @@
     /* display: inline-block; */
     float: right;
   }
-  
+
   .noticeLayout::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera*/
   }
-  
+
   .noticeLayout .noticelistBlock {
     float: left;
     width: 100%;
   }
-  
+
   .noticeTag {
     cursor: pointer;
     color: blue;
@@ -701,7 +701,7 @@
     padding-top: 8px;
     padding-bottom: 8px;
   }
-  
+
   /* 공지사항 등록 dialog */
   .registNoticeDialog {
     position: fixed;
@@ -713,7 +713,7 @@
     padding: 20px;
     z-index: 2;
   }
-  
+
   .Regist-Notice-Dialog-overlay {
     position: fixed;
     top: 0;
@@ -723,14 +723,14 @@
     background-color: rgba(0, 0, 0, 0.3);
     z-index: 2;
   }
-  
+
   .registNotice-content {
     background-color: white;
     padding: 30px;
     text-align: left;
     color: #777;
   }
-  
+
   .registNotice-title {
     letter-spacing: -1px;
     font-weight: bold;
@@ -740,7 +740,7 @@
     font-size: 25px;
     line-height: 30px;
   }
-  
+
   .registNotice-close {
     width: 30px;
     cursor: pointer;
@@ -749,7 +749,7 @@
     float: right;
     padding: 8px;
   }
-  
+
   .registNoticeDialog .layout {
     margin-top: 20px;
     width: 100%;
@@ -760,86 +760,86 @@
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
   }
-  
+
   .registNoticeWrapper {
     display: inline-block;
   }
-  
+
   .registNoticeWrapper .mainTitle {
     width: 130px;
   }
-  
+
   .registNoticeWrapper .subTitle {
     width: 100px;
     margin-left: 20px;
   }
-  
+
   .registNoticeWrapper .importantBox {
     /* margin-left: -; */
     display: inline-block;
   }
-  
+
   .registNoticeCheck {
     display: inline-block;
     margin-left: 20px;
     height: 31.7px;
   }
-  
+
   .registNoticeDialog .layout::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera*/
   }
-  
+
   .registNoticeDialog .layout .contentBlock {
     margin-top: 25px;
   }
-  
+
   .registNoticeWrapper .submitBlock {
     margin-top: 20px;
     text-align: right;
   }
-  
+
   .registNoticeWrapper .clearBtn {
     margin-left: 20px;
   }
-  
+
   .registNoticeWrapper .contentBlock .override-select.branch {
     width: 240px;
   }
-  
+
   .registNoticeWrapper .override-select.sub {
     width: 270px !important;
   }
-  
+
   .registNoticeWrapper .contentBlock .override-input {
     width: 260px;
     margin-left: 0 !important;
   }
-  
+
   .registNoticeWrapper .ant-radio-group {
     margin-left: 20px;
   }
-  
+
   .registNoticeWrapper span.ant-radio + * {
     padding-left: 5px;
     padding-right: 5px;
   }
-  
+
   .registNoticeDialog .ant-btn {
     width: 130px;
     height: 40px !important;
     font-size: 18px !important;
   }
-  
+
   .registNoticeWrapper.sub {
     display: inline-block;
     margin-left: 70px;
   }
-  
+
   .registNoticeWrapper.sub .contentBlock .override-input {
     width: 260px;
     height: 85px;
   }
-  
+
   .notice-content {
     display: inline-block !important;
     overflow-wrap: break-word !important;
@@ -847,17 +847,17 @@
     /* max-width: 20px; */
     /* height: 200px !important; */
   }
-  
+
   .registNoticeDialog .ant-btn {
     width: 130px;
     height: 40px;
     font-size: 18px !important;
   }
-  
+
   .registNoticeDialog .importantBox .ant-checkbox-wrapper {
     margin-left: 15px !important;
   }
-  
+
   /* 할증 dialog */
   .surcharge-Dialog {
     position: fixed;
@@ -970,7 +970,7 @@
     margin-left: 10px;
     text-align: center;
   }
-  
+
   .mainTitle {
     display: inline-block;
     font-size: 16px;
@@ -989,7 +989,7 @@
     /* margin-left: 18px; */
     font-size: 16px;
     font-weight: bold;
-  
+
     vertical-align: middle;
     width: 80px;
   }
@@ -1061,7 +1061,7 @@
     margin-top: 20px;
     float: right;
   }
-  
+
   /* 콜등록 dialog */
   .registCall-Dialog {
     position: fixed;
@@ -1221,7 +1221,7 @@
   /* .registCallLayout #myMap {
     width: 895px;
   } */
-  
+
   /* 가맹점등록 dialog */
   .registFran-Dialog {
     position: fixed;
@@ -1270,7 +1270,7 @@
   .registFranLayout::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera*/
   }
-  
+
   /* 왼쪽 wrappper */
   .registFranWrapper {
     display: inline-block;
@@ -1316,7 +1316,7 @@
   .registFranLayout .contentBlock {
     margin-top: 15px;
   }
-  
+
   .registFranWrapper .ant-form-item {
     margin-bottom: 0px;
   }
@@ -1339,15 +1339,15 @@
     margin-left: 20px;
     width: 300px;
   }
-  
+
   .registFranWrapper .override-input.addrText {
     width: 160px;
   }
-  
+
   .registFranWrapper .override-input.addrBtn {
     width: 120px;
   }
-  
+
   /* 오른쪽 wrappper */
   .registFranWrapper.sub {
     vertical-align: top;
@@ -1433,12 +1433,12 @@
     width: 800px;
     z-index: 2;
   }
-  
+
   .coinTran-content {
     padding: 30px;
     background-color: white;
   }
-  
+
   .coinTran-title {
     font-size: 25px;
     font-weight: bold;
@@ -1522,16 +1522,16 @@
     font-family: NotoSansBold;
   }
   /* 코인이체모달-antd 수정 */
-  
+
   .coinTran-Dialog .coinTran-inner .dataTableLayout {
     margin: 0;
   }
-  
+
   .coinTran-Dialog .ant-table-content thead th {
     background-color: #222 !important;
     padding: 10px;
   }
-  
+
   /* 가맹점수정 dialog */
   .modifyFran-Dialog {
     position: fixed;
@@ -1683,7 +1683,7 @@
     display: inline-block;
     vertical-align: middle;
   }
-  
+
   /* 출금 비밀번호 초기화 */
   .updatePassword-inner {
     width: 100%;
@@ -1696,15 +1696,15 @@
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
   }
-  
+
   .updatePassword-inner::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera*/
   }
-  
+
   .updatePassword-inner .twl .coinRider-list {
     margin-left: 0 !important;
   }
-  
+
   /* 라이더 코인충전 dialog */
   .coinRider-Dialog {
     position: fixed;
@@ -1714,12 +1714,12 @@
     width: 500px;
     z-index: 2;
   }
-  
+
   .coinRider-content {
     padding: 20px;
     background-color: white;
   }
-  
+
   .coinRider-title {
     font-size: 25px;
     font-weight: bold;
@@ -1798,9 +1798,9 @@
     margin-left: -20px;
     width: 300px;
   }
-  
+
   /*입출금내역 dialog*/
-  
+
   .riderBank-Dialog {
     position: fixed;
     top: 50%;
@@ -1809,12 +1809,12 @@
     width: 1000px;
     z-index: 2;
   }
-  
+
   .riderBank-content {
     padding: 30px;
     background-color: white;
   }
-  
+
   .riderBank-title {
     font-size: 25px;
     font-weight: bold;
@@ -1823,7 +1823,7 @@
     display: inline-block;
     vertical-align: middle;
   }
-  
+
   .riderBank-close {
     width: 30px;
     cursor: pointer;
@@ -1832,7 +1832,7 @@
     float: right;
     padding: 8px;
   }
-  
+
   .riderBank-inner {
     width: 100%;
     height: 650px;
@@ -1844,7 +1844,7 @@
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
   }
-  
+
   .riderBank-inner::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera*/
   }
@@ -1857,11 +1857,11 @@
     text-align: left;
     margin-top: 30px;
   }
-  
+
   .riderBank-list-01 .riderBank-datepicker {
     display: inline-block;
   }
-  
+
   .riderBank-list-01 td {
     display: inline-block;
     width: 100px;
@@ -1882,12 +1882,12 @@
     width: 690px;
     z-index: 2;
   }
-  
+
   .timeDelay-content {
     padding: 20px;
     background-color: white;
   }
-  
+
   .timeDelay-title {
     font-size: 25px;
     font-weight: bold;
@@ -1896,14 +1896,14 @@
     display: inline-block;
     vertical-align: middle;
   }
-  
+
   .timeDelay-sub-title {
     font-size: 20px;
     font-weight: bold;
     line-height: 30px;
     display: inline-block;
   }
-  
+
   .timeDelay-close {
     width: 30px;
     cursor: pointer;
@@ -1912,7 +1912,7 @@
     float: right;
     padding: 8px;
   }
-  
+
   .timeDelay-inner {
     width: 100%;
     overflow-y: scroll;
@@ -1923,11 +1923,11 @@
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
   }
-  
+
   .timeDelay-inner::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera*/
   }
-  
+
   .timeDelay-box {
     display: flex;
     flex-wrap: wrap;
@@ -1936,12 +1936,12 @@
     height: 300px;
     margin: 1rem;
   }
-  
+
   .timeDelay-box > .ant-btn:hover {
     color: #000;
     border: #000 1px solid;
   }
-  
+
   .timeDelay-box > button {
     width: 144px;
     height: 144px;
@@ -1949,22 +1949,22 @@
     border-radius: 10px;
     font-size: 25px;
   }
-  
+
   .timeDelay-box > .timeDelay-box-off {
     background-color: grey;
     opacity: 0.3;
   }
-  
+
   .timeDelay-box > .ant-btn:active {
     color: none;
     border: 1px solid #777;
   }
-  
+
   .timeDelay-box > .ant-btn:focus {
     border: 1px solid #777;
     color: black;
   }
-  
+
   /* .timeDelay-box .timeDelay-box-01, .timeDelay-box-05, .timeDelay-box-09 {
     margin-left:0px!important;
   }
@@ -1972,7 +1972,7 @@
   .timeDelay-box .timeDelay-box-10, .timeDelay-box-11, .timeDelay-box-12 {
     margin-bottom:0px!important;
   } */
-  
+
   .timeDelay-place1 {
     text-align: center;
     display: inline-block;
@@ -1982,7 +1982,7 @@
     .ant-select-selector {
     width: 220px;
   }
-  
+
   .timeDelay-btn {
     display: inline-block;
     vertical-align: middle;
@@ -1993,7 +1993,7 @@
     display:inline-block;
     vertical-align: middle; 
   } */
-  
+
   .timeDelay-btn-01 {
     width: 80px;
     color: #000;
@@ -2002,7 +2002,7 @@
     display: inline-block;
     margin-left: 15px;
   }
-  
+
   .timeDelay-btn .ant-checkbox-inner {
     width: 20px;
     height: 22px;
@@ -2010,16 +2010,16 @@
     vertical-align: middle;
     margin-top: -10px;
   }
-  
+
   .timeDelay-btn .ant-checkbox-inner::after {
     width: 10px;
     height: 10px;
   }
-  
+
   /* .timeDelay-btn .ant-checkbox-input {
     height:40px;
   } */
-  
+
   .timeDelay-btn-02 {
     text-align: center;
     display: inline-block;
@@ -2028,7 +2028,7 @@
     float: right;
     background-color: grey;
   }
-  
+
   .timeDelay-btn-02 > button {
     width: 130px;
     height: 40px;
@@ -2042,20 +2042,20 @@
   .timeDelay-btn-02 .timeDelay-btn {
     margin: 0px !important;
   }
-  
+
   .timeDelay-box .anticon {
     /* width:2em;
     height:2em; */
     /* font-size: 20px; */
     width: 20px;
   }
-  
+
   .timeDelay-box td {
     width: 200px;
     font-size: 20px;
     text-align: center;
   }
-  
+
   /* 필터링 dialog */
   .filtering-Dialog {
     position: fixed;
@@ -2064,12 +2064,12 @@
     transform: translate(-50%, -50%);
     z-index: 2;
   }
-  
+
   .filtering-content {
     padding: 30px;
     background-color: white;
   }
-  
+
   .filtering-title {
     font-size: 25px;
     font-weight: bold;
@@ -2077,7 +2077,7 @@
     display: inline-block;
     vertical-align: middle;
   }
-  
+
   .filtering-close {
     width: 30px;
     cursor: pointer;
@@ -2086,7 +2086,7 @@
     float: right;
     padding: 8px;
   }
-  
+
   .filtering-inner {
     width: 100%;
     overflow-y: scroll;
@@ -2097,40 +2097,40 @@
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
   }
-  
+
   .filtering-inner::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera*/
   }
-  
+
   .filtering-box {
     display: inline-block;
     margin-bottom: 10px;
   }
-  
+
   .filtering-box-wrapper > div:last-child {
     margin-bottom: 0;
     display: block;
   }
-  
+
   .filtering-box .ant-checkbox {
     top: 0em !important;
   }
-  
+
   .filtering-box .ant-checkbox-wrapper {
     display: table;
   }
-  
+
   .filtering-box .ant-checkbox-wrapper > span {
     display: table-cell;
     text-align: center;
   }
-  
+
   .filtering-box > div:first-child {
     width: 90px;
     vertical-align: top;
     /* margin:20px; */
   }
-  
+
   .filtering-box .ant-checkbox-inner {
     width: 20px;
     height: 20px;
@@ -2150,20 +2150,20 @@
     display: inline-block;
     padding: 5px 0;
   }
-  
+
   .filtering-box .ant-checkbox + span {
     font-size: 18px;
     vertical-align: top;
     line-height: 25px;
   }
-  
+
   .riderManageBtn {
     margin-left: 10px;
   }
-  
+
   /*기사관리*/
   /*일차감*/
-  
+
   .taskScheduler-Dialog {
     position: fixed;
     top: 50%;
@@ -2172,12 +2172,12 @@
     width: 1000px;
     z-index: 2;
   }
-  
+
   .taskScheduler-content {
     padding: 30px;
     background-color: white;
   }
-  
+
   .taskScheduler-title {
     font-size: 25px;
     font-weight: bold;
@@ -2186,7 +2186,7 @@
     display: inline-block;
     vertical-align: middle;
   }
-  
+
   .taskScheduler-close {
     width: 30px;
     cursor: pointer;
@@ -2195,7 +2195,7 @@
     float: right;
     padding: 8px;
   }
-  
+
   .taskScheduler-inner {
     width: 100%;
     overflow-y: scroll;
@@ -2206,22 +2206,22 @@
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
   }
-  
+
   .taskScheduler-inner::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera*/
   }
-  
+
   .taskScheduler-inner .ant-table-expanded-row .ant-table-row {
     display: inline-block;
   }
-  
+
   .listBlock {
     margin-top: 20px;
   }
   .listBlock .ant-btn {
     margin-left: -5px;
   }
-  
+
   .mainTitle {
     display: inline-block;
     /* font-size: 20px; */
@@ -2229,18 +2229,18 @@
     font-weight: bold;
     /* width: 75px; */
   }
-  
+
   .taskScheduler-btn {
     display: inline-block;
     width: 1098px;
   }
-  
+
   .taskScheduler-btn-01 {
     text-align: center;
     vertical-align: middle;
     display: inline-block;
   }
-  
+
   .rtaskScheduler-btn-01 .tabBtn {
     margin: 0px !important;
   }
@@ -2257,7 +2257,7 @@
     vertical-align: middle;
     display: inline-block;
   }
-  
+
   .taskScheduler-btn-02 > button {
     height: 32px;
     width: 110px;
@@ -2266,7 +2266,7 @@
     padding: 0px !important;
     display: inline-block;
   }
-  
+
   .taskScheduler-btn-03 {
     vertical-align: middle;
     display: inline-block;
@@ -2282,7 +2282,7 @@
     display: inline-block;
   }
   /*일차감 그룹 설정*/
-  
+
   .taskGroup-Dialog {
     position: fixed;
     top: 50%;
@@ -2291,12 +2291,12 @@
     /* width:650px; */
     z-index: 2;
   }
-  
+
   .taskGroup-content {
     padding: 30px;
     background-color: white;
   }
-  
+
   .taskGroup-title {
     font-size: 25px;
     font-weight: bold;
@@ -2305,7 +2305,7 @@
     display: inline-block;
     vertical-align: middle;
   }
-  
+
   .taskGroup-close {
     width: 30px;
     cursor: pointer;
@@ -2314,7 +2314,7 @@
     float: right;
     padding: 8px;
   }
-  
+
   .taskGroup-inner {
     width: 100%;
     overflow-y: scroll;
@@ -2325,11 +2325,11 @@
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
   }
-  
+
   .taskGroup-inner::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera*/
   }
-  
+
   .taskGroup-inner .subTable .ant-table-thead {
     /* display: none; */
   }
@@ -2339,17 +2339,17 @@
   .taskGroup-inner .subTable .ant-table-row {
     display: inline-block;
   }
-  
+
   .taskGroup-btn {
     display: inline-block;
   }
-  
+
   .taskGroup-btn-01 {
     text-align: center;
     vertical-align: middle;
     display: inline-block;
   }
-  
+
   .taskGroup-btn-01 .tabBtn {
     margin: 0px !important;
   }
@@ -2362,7 +2362,7 @@
     display: inline-block;
     padding: 0px !important;
   }
-  
+
   .taskGroup-list {
     border: 1px solid red;
     width: 900px;
@@ -2395,9 +2395,9 @@
   .taskGroup-content .listBlock {
     width: 550px;
   }
-  
+
   /*일차감 작업등록*/
-  
+
   .taskWork-Dialog {
     position: fixed;
     top: 50%;
@@ -2406,12 +2406,12 @@
     /* width: 700px; */
     z-index: 2;
   }
-  
+
   .taskWork-content {
     padding: 20px;
     background-color: white;
   }
-  
+
   .taskWork-title {
     font-size: 25px;
     font-weight: bold;
@@ -2420,7 +2420,7 @@
     display: inline-block;
     vertical-align: middle;
   }
-  
+
   .taskWork-close {
     width: 30px;
     cursor: pointer;
@@ -2429,7 +2429,7 @@
     float: right;
     padding: 8px;
   }
-  
+
   .taskWork-title-sub {
     text-align: center;
     margin-top: 20px;
@@ -2439,7 +2439,7 @@
     height: 32px;
     line-height: 32px;
   }
-  
+
   .taskWork-inner {
     width: 550px;
     overflow-y: scroll;
@@ -2450,11 +2450,11 @@
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
   }
-  
+
   .taskWork-inner::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera*/
   }
-  
+
   .taskWork-list {
     /* border:1px solid red; */
     /* height:360px; */
@@ -2465,11 +2465,11 @@
     display: inline-block;
     /* border:1px solid blue; */
   }
-  
+
   .taskWork-list-01 .useText {
     margin-left: 5px;
   }
-  
+
   .taskWork-list-01 .taskWorkSub {
     width: 90px;
     font-size: 16px;
@@ -2477,16 +2477,16 @@
     float: left;
     /* border:1px solid blue; */
   }
-  
+
   .taskWork-list-05 .useBtn {
     margin-left: 10px;
     margin-right: 15px;
   }
-  
+
   .taskWork-list .taskWork-place1 {
     display: inline-block;
   }
-  
+
   .taskWork-list .twl {
     width: 100%;
     display: inline-block;
@@ -2494,11 +2494,11 @@
     line-height: 50px;
     /* border:1px solid red */
   }
-  
+
   .twl:nth-child(1) {
     margin-top: -10px;
   }
-  
+
   .taskWork-place1 .searchRiderInput {
     width: 185px !important;
     margin-left: 0px !important;
@@ -2507,7 +2507,7 @@
     margin-top: 20px;
     text-align: center;
   }
-  
+
   .taskWork-btn-01 .tabBtn {
     margin: 0px !important;
   }
@@ -2521,7 +2521,7 @@
     display: inline-block;
     padding: 0px !important;
   }
-  
+
   .taskWork-list-06
     .ant-select:not(.ant-select-customize-input)
     .ant-select-selector {
@@ -2534,7 +2534,7 @@
     margin-left: -10px;
     width: 186.82px;
   }
-  
+
   /*기사 그룹관리*/
   .riderGroup-Dialog {
     position: fixed;
@@ -2544,12 +2544,12 @@
     width: 1000px;
     z-index: 2;
   }
-  
+
   .riderGroup-content {
     padding: 30px;
     background-color: white;
   }
-  
+
   .riderGroup-title {
     font-size: 25px;
     font-weight: bold;
@@ -2558,7 +2558,7 @@
     display: inline-block;
     vertical-align: middle;
   }
-  
+
   .riderGroup-close {
     width: 30px;
     cursor: pointer;
@@ -2567,7 +2567,7 @@
     float: right;
     padding: 8px;
   }
-  
+
   .riderGroup-inner {
     width: 100%;
     overflow-y: scroll;
@@ -2578,18 +2578,18 @@
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
   }
-  
+
   .riderGroup-inner::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera*/
   }
-  
+
   .riderGroup-inner .listBlock {
     margin-top: 20px;
   }
   .riderGroup-inner .listBlock .ant-btn {
     margin-left: -5px;
   }
-  
+
   .riderGroup-inner .mainTitle {
     display: inline-block;
     font-size: 20px;
@@ -2597,7 +2597,7 @@
     font-weight: bold;
     /* width: 75px; */
   }
-  
+
   .riderGroup-ftline {
     line-height: 30px;
     font-size: 18px;
@@ -2623,7 +2623,7 @@
     width: 150px;
     display: inline-block;
   }
-  
+
   .riderGroup-ftline-02 .riderSubtext,
   .riderGroup-ftline-03 .riderSubtext,
   .riderGroup-ftline-04 .riderSubtext {
@@ -2638,19 +2638,19 @@
   .riderGroup-ftline-06 {
     display: inline-block;
   }
-  
+
   .riderGroup-btn {
     display: inline-block;
     float: right;
   }
-  
+
   .riderGroup-btn-01 {
     text-align: center;
     vertical-align: middle;
     display: inline-block;
     /* margin-left:20px; */
   }
-  
+
   .riderGroup-btn-01 .tabBtn {
     margin: 0px !important;
     display: inline-block;
@@ -2664,12 +2664,12 @@
     text-align: center;
     padding: 0px !important;
   }
-  
+
   .riderGroup-ftline-01,
   .riderGroup-ftline-05 {
     display: inline-block;
   }
-  
+
   .riderGroup-ftline-05 .ant-input {
     margin-left: 20px;
   }
@@ -2691,39 +2691,39 @@
   .riderGroup-ftline .ant-input {
     padding: 0px !important;
   }
-  
+
   .riderGroup-ftline .inputBox {
     display: inline-block;
     vertical-align: middle;
     margin-left: 0px !important;
   }
-  
+
   .riderGroup-ftline .inputBox-rider.sub .ant-input {
     margin-left: -10px;
   }
-  
+
   .riderGroup-ftline .select-fee-pay-type {
     margin-left: 20px;
   }
-  
+
   .riderGroup-inner .listBlock .ant-pagination {
     display: none;
   }
-  
+
   .riderGroup-inner .ant-table-row-level-0-active {
     background-color: #1a1a1a;
   }
-  
+
   .ant-checkbox-checked:checked .ant-table-row-level-0:active {
     background-color: #fddc00;
   }
-  
+
   /*기사 그룹관리 라인활성화*/
-  
+
   .clickRowStyl {
     background-color: #40a9ff;
   }
-  
+
   /* .riderGroup-inner .ant-table-row-level-0:hover{
     background-color: #40a9ff !important;
   }
@@ -2732,7 +2732,7 @@
     background-color: #40a9ff !important;
     transition: all 10s ease-in-out;
   } */
-  
+
   /*기사 등록*/
   .registRider-Dialog {
     position: fixed;
@@ -2743,7 +2743,7 @@
     border-radius: 30px;
     z-index: 2;
   }
-  
+
   .registRider-content {
     background-color: white;
     padding: 30px;
@@ -2764,7 +2764,7 @@
   .registRiderLayout::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera*/
   }
-  
+
   .registRider-title {
     letter-spacing: -1px;
     font-weight: bold;
@@ -2774,7 +2774,7 @@
     font-size: 25px;
     line-height: 30px;
   }
-  
+
   .registRider-close {
     width: 30px;
     cursor: pointer;
@@ -2783,28 +2783,31 @@
     float: right;
     padding: 8px;
   }
-  
+
   .registRiderWrapper {
     display: inline-block;
     vertical-align: top;
   }
-  
+
   .registRiderWrapper .contentBlock {
     margin-top: 15px;
   }
-  
+
   .registRiderWrapper .ant-form-item-control-input-content {
     width: 260px;
   }
-  
-  .registRiderWrapper .ant-form-item-control-input-content .ant-checkbox + span {
+
+  .registRiderWrapper
+    .ant-form-item-control-input-content
+    .ant-checkbox
+    + span {
     padding-right: 0;
   }
-  
+
   .registRiderWrapper .mainTitle {
     width: 120px;
   }
-  
+
   .registRiderCheck {
     margin-left: 20px;
     display: inline-block;
@@ -2817,24 +2820,24 @@
     margin-top: 20px;
     text-align: right;
   }
-  
+
   .registRiderWrapper .clearBtn {
     margin-left: 20px;
   }
-  
+
   .registRiderWrapper .contentBlock .override-input {
     margin-left: 0px;
   }
-  
+
   .registRiderWrapper .contentBlock .override-select.branch {
     width: 260px !important;
     margin-left: 0px;
   }
-  
+
   .registRiderWrapper .contentBlock .override-input {
     width: 260px !important;
   }
-  
+
   /*오른쪽*/
   .registRiderBox {
     display: inline-block;
@@ -2844,29 +2847,29 @@
     margin-left: 70px;
     /* width: 400px; */
   }
-  
+
   .registRider-Dialog .submitBlock .ant-btn {
     width: 125px;
     height: 40px;
     font-size: 16px !important;
   }
-  
+
   .giveBox {
     width: 280px;
   }
-  
+
   .giveBox .ant-checkbox-wrapper {
     width: 90px;
     margin: 0px !important;
   }
-  
+
   .registRiderWrapper.sub .submitBlock {
     width: 390px;
     /* margin-top: 55px; */
   }
-  
+
   /* 하단 */
-  
+
   .bike-type-box {
     border-top: 1px solid #ccc;
     padding-top: 30px;
@@ -2901,11 +2904,11 @@
     display: inline-block;
     width: 165px;
     margin: 0 0 0 15px;
-  
+
     vertical-align: 0px;
   }
   /*직원 등록*/
-  
+
   .registStaff-Dialog {
     position: fixed;
     top: 50%;
@@ -2915,14 +2918,14 @@
     border-radius: 30px;
     z-index: 2;
   }
-  
+
   .registStaff-content {
     background-color: white;
     padding: 30px;
     text-align: left;
     color: #777;
   }
-  
+
   .registStaff-title {
     letter-spacing: -1px;
     font-weight: bold;
@@ -2932,7 +2935,7 @@
     font-size: 25px;
     line-height: 30px;
   }
-  
+
   .registStaff-close {
     width: 30px;
     cursor: pointer;
@@ -2941,16 +2944,16 @@
     float: right;
     padding: 8px;
   }
-  
+
   .registStaffWrapper .mainTitle {
     width: 130px;
   }
-  
+
   .registStaffWrapper .registStaffCheck {
     display: inline-block;
     margin-left: 22px;
   }
-  
+
   .registStaff-Dialog .layout {
     margin-top: 20px;
     width: 100%;
@@ -2961,32 +2964,32 @@
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
   }
-  
+
   .registStaff-Dialog .layout::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera*/
   }
-  
+
   .registStaff-Dialog .layout .contentBlock {
     margin-top: 25px;
   }
-  
+
   .registStaffWrapper .submitBlock {
     margin-top: 30px;
     text-align: center;
   }
-  
+
   .registStaffWrapper .clearBtn {
     margin-left: 20px;
   }
-  
+
   .registStaffWrapper .contentBlock .override-select.branch {
     width: 240px;
   }
-  
+
   .registStaffWrapper .override-select.sub {
     width: 270px !important;
   }
-  
+
   .registStaffWrapper .contentBlock .override-input {
     width: 240px;
   }
@@ -3002,9 +3005,9 @@
     height: 40px !important;
     font-size: 18px !important;
   }
-  
+
   /*기사 차단*/
-  
+
   .blackRider-Dialog {
     position: fixed;
     top: 50%;
@@ -3014,14 +3017,14 @@
     border-radius: 30px;
     z-index: 2;
   }
-  
+
   .blackRider-content {
     background-color: white;
     padding: 30px;
     text-align: left;
     color: #777;
   }
-  
+
   .blackRider-title {
     letter-spacing: -1px;
     font-weight: bold;
@@ -3031,7 +3034,7 @@
     font-size: 25px;
     line-height: 30px;
   }
-  
+
   .blackRider-close {
     width: 30px;
     cursor: pointer;
@@ -3040,7 +3043,7 @@
     float: right;
     padding: 8px;
   }
-  
+
   .blackRider-Dialog .layout {
     margin-top: 20px;
     width: 100%;
@@ -3051,28 +3054,28 @@
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
   }
-  
+
   .blackRider-Dialog .layout::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera*/
   }
-  
+
   .blackRiderWrapper .mainTitle {
     width: 130px;
   }
-  
+
   .blackRiderWrapper .contentBlock {
     margin-top: 25px;
   }
-  
+
   .blackRiderWrapper .submitBlock {
     margin-top: 30px;
     text-align: center;
   }
-  
+
   .blackRiderWrapper .clearBtn {
     margin-left: 20px;
   }
-  
+
   .blackRiderWrapper .submitBlock button {
     height: 40px;
     width: 130px;
@@ -3081,18 +3084,18 @@
   .blackRiderWrapper .contentBlock .override-select.branch {
     width: 240px !important;
   }
-  
+
   .blackRiderWrapper .contentBlock .override-input {
     width: 240px !important;
   }
-  
+
   .blackRiderWrapper .contentBlock .override-input.branch {
     width: 240px !important;
     height: 200px;
   }
-  
+
   /* 환경설정 */
-  
+
   .pwChange-root {
     padding: 24px;
   }
@@ -3138,9 +3141,9 @@
     text-align: center;
     padding: 10px 0;
   }
-  
+
   /* 주소검색관리 */
-  
+
   .searchAddress-Dialog {
     position: fixed;
     top: 50%;
@@ -3150,14 +3153,14 @@
     border-radius: 30px;
     z-index: 2;
   }
-  
+
   .searchAddress-content {
     background-color: white;
     padding: 30px;
     text-align: left;
     color: #777;
   }
-  
+
   .searchAddress-title {
     letter-spacing: -1px;
     font-weight: bold;
@@ -3170,7 +3173,7 @@
   .searchAddressWrapper {
     margin-bottom: 20px;
   }
-  
+
   .searchAddress-close {
     width: 30px;
     cursor: pointer;
@@ -3189,29 +3192,29 @@
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
   }
-  
+
   .searchAddress-Dialog .layout .contentBlock {
     display: inline-block;
     line-height: 20px;
     margin-bottom: 5px;
   }
-  
+
   .searchAddress-Dialog .layout .contentBlock span {
     font-size: 14px;
   }
-  
+
   /* .searchAddress-Dialog .layout .contentbox,
   .contentBlock span {
     font-size: 18px;
   } */
-  
+
   .searchAddress-btn {
     display: inline-block;
     margin-top: 113px;
     margin-right: 20px;
     float: right;
   }
-  
+
   .searchAddress-btn .ant-btn-primary {
     background-color: black;
     border-style: none;
@@ -3220,15 +3223,15 @@
     float: right;
     margin: 20px 0;
   }
-  
+
   .searchAddress-Dialog .layout .dataTableLayout-01 {
     margin-top: 30px;
   }
-  
+
   .searchAddress-Dialog .ant-table-content thead th {
     padding: 10px;
   }
-  
+
   .searchAddress-Dialog .layout .ant-table-tbody > tr > td {
     padding: 0px;
   }
@@ -3241,21 +3244,21 @@
     font-weight: bold;
     color: #1890ff;
   }
-  
+
   .contentbox {
     display: inline-block;
     width: 450px;
     vertical-align: top;
     margin-left: 30px;
   }
-  
+
   .second {
     display: inline-block;
     width: 570px;
     vertical-align: top;
     margin-left: 30px;
   }
-  
+
   .searchAddress-Dialog .searchRequirement {
     margin-top: 0 !important;
     margin-left: 20px;
@@ -3268,11 +3271,11 @@
     width: 120px;
     margin-left: 20px;
   }
-  
+
   .searchAddress-Dialog .contentBlock .addrBtn span {
     font-size: 14px;
   }
-  
+
   .searchAddress-Dialog .contentBlock .mainTitle {
     font-size: 16px;
     color: #222;
@@ -3281,7 +3284,7 @@
   .searchAddress-Dialog .contentBlock .short {
     width: 210px;
   }
-  
+
   .map-address-Dialog {
     position: fixed;
     top: 50%;
@@ -3307,7 +3310,7 @@
     padding: 5px 15px;
   }
   /* 강제배차 Dialog */
-  
+
   .forceAllocate-Dialog {
     position: fixed;
     top: 50%;
@@ -3317,12 +3320,12 @@
     border-radius: 30px;
     z-index: 2;
   }
-  
+
   .forceAllocate-content {
     padding: 30px;
     background-color: white;
   }
-  
+
   .forceAllocate-title {
     letter-spacing: -1px;
     font-weight: bold;
@@ -3333,7 +3336,7 @@
     margin-bottom: 10px;
     float: left;
   }
-  
+
   .forceAllocate-close {
     width: 30px;
     cursor: pointer;
@@ -3342,7 +3345,7 @@
     float: right;
     padding: 8px;
   }
-  
+
   .forceAllocate-inner {
     width: 100%;
     border: 1px solid #ccc;
@@ -3352,25 +3355,25 @@
     scrollbar-width: none; /* Firefox */
     clear: both;
   }
-  
+
   .forceAllocate-inner::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera*/
   }
-  
+
   .forceAllocate-list {
     text-align: left;
     margin: 20px 0;
   }
-  
+
   .forceAllocate-list span {
     text-align: left;
   }
-  
+
   .forceAllocate-btn-01 {
     margin-top: 20px;
     text-align: center;
   }
-  
+
   .forceAllocate-btn-01 .tabBtn {
     margin: 0px !important;
   }
@@ -3385,20 +3388,20 @@
     display: inline-block;
     padding: 0px !important;
   }
-  
+
   .forceAllocate-select-btn .ant-checkbox-wrapper {
     margin: 0 !important;
   }
-  
+
   .forceAllocate-Dialog .ant-table-content thead th {
     padding: 10px;
   }
-  
+
   .forceAllocate-Dialog .forceAllocate-inner .ant-spin-container .ant-table {
     margin: 0 !important;
   }
   /* 메세지 dialog */
-  
+
   .message-Dialog {
     position: fixed;
     top: 50%;
@@ -3407,12 +3410,12 @@
     width: 345px;
     z-index: 2;
   }
-  
+
   .message-content {
     padding: 30px;
     background-color: white;
   }
-  
+
   .message-title {
     font-size: 25px;
     font-weight: bold;
@@ -3421,7 +3424,7 @@
     display: inline-block;
     vertical-align: middle;
   }
-  
+
   .message-close {
     width: 30px;
     cursor: pointer;
@@ -3430,7 +3433,7 @@
     float: right;
     padding: 8px;
   }
-  
+
   .message-inner {
     width: 100%;
     overflow-y: scroll;
@@ -3441,19 +3444,19 @@
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
   }
-  
+
   .message-inner::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera*/
   }
-  
+
   .selectLayout {
     margin-left: 0;
     margin-right: 1rem;
-    margin-top:-30px;
+    margin-top: -30px;
   }
-  
+
   /* ModifyOrdeDialog */
-  
+
   .modifyOrderLayout {
     margin-top: 20px;
     border: 1px solid #ccc;
@@ -3462,7 +3465,7 @@
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
   }
-  
+
   .modifyOrder-Dialog {
     position: fixed;
     top: 50%;
@@ -3522,7 +3525,7 @@
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
   }
-  
+
   .chat-item-container {
     padding: 10px 20px;
     cursor: pointer;
@@ -3564,7 +3567,7 @@
     text-overflow: ellipsis;
     white-space: nowrap;
   }
-  
+
   .chat-message-container {
     /* float: right; */
     padding: 0px;
@@ -3582,7 +3585,7 @@
     height: 55px;
     background-color: #fff;
   }
-  
+
   .chat-send-input {
     width: 330px;
     font-size: 18px;
@@ -3610,13 +3613,13 @@
     color: #fff;
     cursor: pointer;
   }
-  
+
   .msginput-container {
     padding: 10px;
     background-color: #000;
     border-radius: 7px;
   }
-  
+
   .msginput-basic {
     margin: 10px;
     padding: 10px;
@@ -3628,7 +3631,7 @@
     border-radius: 5px;
     cursor: pointer;
   }
-  
+
   .chat-message {
     height: 500px;
     padding: 20px;
@@ -3677,7 +3680,7 @@
   .chat-message-content-date.my {
     padding-right: 10px;
   }
-  
+
   /* 블라인드 */
   .blind-Dialog {
     position: fixed;
@@ -3697,7 +3700,7 @@
   .blind-container > div:nth-child(2) {
     display: inline-block;
   }
-  
+
   .blind-title {
     /* font-size: 28px; */
     letter-spacing: -1px;
@@ -3744,7 +3747,7 @@
     vertical-align: middle;
     /* text-align: center; */
   }
-  
+
   .blindWrapper.bot {
     margin-top: 10px;
     text-align: left;
@@ -3795,26 +3798,26 @@
     display: inline-block;
     vertical-align: middle;
   }
-  
+
   .modifyOrderWrapper {
     display: inline-block;
   }
-  
+
   .modifyOrderLayout .contentBlock {
     margin-top: 1rem;
   }
-  
+
   .modifyOrderLayout .mainTitle {
     width: 8rem;
   }
-  
+
   .modifyOrderBtn {
     margin-top: 3rem;
     text-align: center;
   }
-  
+
   /* paymentModal */
-  
+
   .payment-container {
     position: fixed;
     top: 50%;
@@ -3913,7 +3916,7 @@
     text-align: center;
     width: 100px;
   }
-  
+
   /*sns전송ㅇ*/
   .snsDialog {
     position: fixed;
@@ -3925,7 +3928,7 @@
     padding: 20px;
     z-index: 2;
   }
-  
+
   .snsLayout {
     margin-top: 5px;
     width: 100%;
@@ -3937,14 +3940,14 @@
     padding: 20px;
     margin-top: 20px;
   }
-  
+
   .snsDialog .container {
     background-color: white;
     padding: 30px;
     text-align: left;
     color: #777;
   }
-  
+
   .sns-title {
     /* font-size: 28px; */
     letter-spacing: -1px;
@@ -3955,7 +3958,7 @@
     font-size: 25px;
     line-height: 30px;
   }
-  
+
   .sns-close {
     width: 30px;
     background-color: #fddc00;
@@ -3964,28 +3967,28 @@
     /* display: inline-block; */
     float: right;
   }
-  
+
   .snsLayout::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera*/
   }
-  
+
   /* .snsLayout .snslistBlock {
     float: left;
     width: 55%;
   } */
-  
+
   .snsLayout .snsDetailBlock {
     margin: 0 auto;
     width: 100%;
     /* border:1px solid red; */
   }
-  
+
   .snsLayout .inputBox {
     width: 100%;
     color: #000;
     font-size: 17px;
   }
-  
+
   /* .snsLayout .snsInputBox {
     width: 100%;
     height: 380px;
@@ -3996,11 +3999,11 @@
     margin-left: -10px;
     padding-bottom: 100px;
   }
-  
+
   .snsLayout .dataTableLayout-01 {
     margin-top: 20px;
   }
-  
+
   .snsLayout .submitBtn {
     float: right;
     background-color: #fff;
@@ -4008,7 +4011,7 @@
     color: #1890ff;
     box-shadow: none;
   }
-  
+
   /* paymentDialog */
   .plusBtn {
     width: 30px;
@@ -4038,7 +4041,7 @@
     flex-direction: row-reverse;
     margin-top: 15px;
   }
-  
+
   /* 할증 그룹관리 dialog */
   .surchargeGroupList-Dialog {
     position: fixed;
@@ -4048,12 +4051,12 @@
     width: 900px;
     z-index: 2;
   }
-  
+
   .surchargeGroupList-content {
     padding: 30px;
     background-color: white;
   }
-  
+
   .surchargeGroupList-title {
     font-size: 25px;
     font-weight: bold;
@@ -4062,7 +4065,7 @@
     display: inline-block;
     vertical-align: middle;
   }
-  
+
   .surchargeGroupList-close {
     width: 30px;
     cursor: pointer;
@@ -4071,7 +4074,7 @@
     float: right;
     padding: 8px;
   }
-  
+
   .surchargeGroupList-inner {
     width: 100%;
     overflow-y: scroll;
@@ -4091,11 +4094,11 @@
     vertical-align: middle;
     /* text-align: center; */
   }
-  
+
   .surchargeGroupList-inner::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera*/
   }
-  
+
   .surchargeGroupList-inner .subTable .ant-table-thead {
     /* display: none; */
   }
@@ -4105,17 +4108,17 @@
   .surchargeGroupList-inner .subTable .ant-table-row {
     display: inline-block;
   }
-  
+
   .surchargeGroupList-btn {
     display: inline-block;
   }
-  
+
   .surchargeGroupList-btn-01 {
     text-align: center;
     vertical-align: middle;
     display: inline-block;
   }
-  
+
   .surchargeGroupList-btn-01 .tabBtn {
     margin: 0px !important;
   }
@@ -4128,7 +4131,7 @@
     display: inline-block;
     padding: 0px !important;
   }
-  
+
   .surchargeGroupList-list {
     border: 1px solid red;
     width: 900px;
@@ -4161,7 +4164,7 @@
   .surchargeGroupList-content .listBlock {
     /* width: 550px; */
   }
-  
+
   /* 할증 가맹점 추가 dialog */
   .surchargeFr-Dialog-overlay {
     position: fixed;
@@ -4172,7 +4175,7 @@
     background-color: rgba(0, 0, 0, 0.2);
     z-index: 1;
   }
-  
+
   .surchargeFr-Dialog {
     position: fixed;
     top: 50%;
@@ -4182,14 +4185,14 @@
     border-radius: 30px;
     z-index: 2;
   }
-  
+
   .surchargeFr-content {
     background-color: white;
     padding: 30px;
     /* text-align: left; */
     /* color: #777; */
   }
-  
+
   .surchargeFr-title {
     letter-spacing: -1px;
     font-weight: bold;
@@ -4199,7 +4202,7 @@
     font-size: 25px;
     line-height: 30px;
   }
-  
+
   .surchargeFr-close {
     width: 30px;
     cursor: pointer;
@@ -4208,28 +4211,28 @@
     float: right;
     padding: 8px;
   }
-  
+
   .surchargeFr-Dialog .addRiderlayout {
     height: 540px;
   }
-  
+
   .surchargeFrWrapper .contentBlock {
     margin-top: 30px !important;
   }
-  
+
   .surchargeFrWrapper .contentBlock .selectItem .override-select {
     width: 345px;
   }
-  
+
   .surchargeFr-Dialog .dataTableBlock {
     margin-top: 40px;
   }
-  
+
   .surchargeFrWrapper .submitBlock {
     margin-top: 30px;
     text-align: center;
   }
-  
+
   /* 할증 그룹 추가 dialog */
   .surchargeGroup-Dialog-overlay {
     position: fixed;
@@ -4240,7 +4243,7 @@
     background-color: rgba(0, 0, 0, 0.2);
     z-index: 1;
   }
-  
+
   .surchargeGroup-Dialog {
     position: fixed;
     top: 50%;
@@ -4250,14 +4253,14 @@
     border-radius: 30px;
     z-index: 2;
   }
-  
+
   .surchargeGroup-content {
     background-color: white;
     padding: 30px;
     /* text-align: left; */
     /* color: #777; */
   }
-  
+
   .surchargeGroup-title {
     letter-spacing: -1px;
     font-weight: bold;
@@ -4267,18 +4270,18 @@
     font-size: 25px;
     line-height: 30px;
   }
-  
+
   .surchargeGroupWrapper {
     margin-top: 20px;
   }
   .surchargeGrouplayout .contentBlock {
     width: 400px;
   }
-  
+
   .surchargeGrouplayout .contentBlock .override-input {
     width: 300px;
   }
-  
+
   .surchargeGroup-close {
     width: 30px;
     cursor: pointer;
@@ -4287,22 +4290,22 @@
     float: right;
     padding: 8px;
   }
-  
+
   .surchargeGroup-Dialog .addGrouplayout {
     height: 100px;
   }
-  
+
   .surchargeGroupWrapper .submitBlock {
     margin-top: 30px;
     text-align: center;
   }
-  
+
   .surchargeGroupWrapper .ant-btn-primary {
     width: 130px;
     height: 40px;
     font-size: 18px;
   }
-  
+
   /* 채팅 */
   .Modal-overlay {
     position: fixed;
@@ -4313,7 +4316,7 @@
     background-color: rgba(0, 0, 0, 0.56);
     z-index: 10;
   }
-  
+
   .Modal-chat {
     z-index: 20;
     position: fixed;
@@ -4324,13 +4327,13 @@
     height: 650px;
     display: flex;
   }
-  
+
   .Modal-chat .search-wrapper {
     display: flex;
     flex-direction: center;
     /* margin-top: 20px; */
   }
-  
+
   .Modal-chat .search-wrapper .search-btn {
     width: 50%;
     height: 50px;
@@ -4338,22 +4341,22 @@
     background-color: black;
     color: #fddc00;
   }
-  
+
   .Modal-chat .search-wrapper .ant-btn:hover,
   .Modal-chat .search-wrapper .ant-btn:focus {
     color: #fddc00;
     background: black;
     border-color: none;
   }
-  
+
   .error-message {
     color: red;
   }
-  
+
   td.ant-table-column-sort {
     background: none;
   }
-  
+
   .ant-table-filter-trigger-container-open,
   .ant-table-filter-trigger-container:hover,
   .ant-table-thead
@@ -4365,7 +4368,7 @@
   .ant-table-filter-trigger:hover {
     color: #bfbfbf;
   }
-  
+
   .regist-bike-title {
     display: "inline-block";
     width: 80px;
@@ -4373,13 +4376,13 @@
   .bike-type-box .ant-picker {
     width: 165px;
   }
-  
+
   .marker-name {
     font-family: NotoSansBold;
   }
-  
+
   /* 배송지역 모달 */
-  
+
   .zone-dialog {
     position: fixed;
     top: 50%;
@@ -4387,13 +4390,13 @@
     transform: translate(-50%, -50%);
     z-index: 2;
   }
-  
+
   .zone-content {
     padding: 30px;
     width: 1060px;
     background-color: white;
   }
-  
+
   .zone-content > div:first-child {
     font-size: 25px;
     font-weight: bold;
@@ -4401,7 +4404,7 @@
     display: inline-block;
     vertical-align: middle;
   }
-  
+
   .zone-content > img {
     width: 30px;
     cursor: pointer;
@@ -4505,6 +4508,4 @@
   }
 
   /*모바일버전- 가맹점관리 */
-
-
-  }
+}

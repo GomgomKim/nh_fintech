@@ -1,11 +1,16 @@
 import {
-  CopyOutlined, SkinOutlined,
-  PhoneOutlined, SettingOutlined, TeamOutlined, MobileFilled, LogoutOutlined
+  CopyOutlined,
+  SkinOutlined,
+  PhoneOutlined,
+  SettingOutlined,
+  TeamOutlined,
+  MobileFilled,
+  LogoutOutlined,
 } from "@ant-design/icons";
 import { Layout, Modal } from "antd";
 import React from "react";
 import { connect } from "react-redux";
-import { comma } from '../lib/util/numberUtil';
+import { comma } from "../lib/util/numberUtil";
 import { withRouter, Link } from "react-router-dom";
 import { login, logout } from "../actions/loginAction";
 import { httpPost, httpUrl } from "../api/httpClient";
@@ -41,7 +46,6 @@ class Header extends React.Component {
     // this.initializeUserInfo();
   }
 
-
   render() {
     // console.log(this.props.history.location.pathname);
     // console.log("frIdx : "+this.state.frIdx)
@@ -68,17 +72,17 @@ class Header extends React.Component {
       {
         idx: 4,
         idx: "desk",
-        name: '상품관리',
+        name: "상품관리",
         icon: <SkinOutlined />,
         url: "/mall/MallMain",
-        className: "desk"
+        className: "desk",
       },
       {
         idx: 5,
         name: "환경설정",
         icon: <SettingOutlined />,
         url: "/setting/SettingMain",
-        className: "desk"
+        className: "desk",
       },
     ];
 
@@ -94,7 +98,6 @@ class Header extends React.Component {
             fontWeight: "bold",
             color: "#fff",
             textAlign: "left",
-            paddingRight: "20px",
           }}
         >
           <div className="menu-wrapper desk">
@@ -133,7 +136,6 @@ class Header extends React.Component {
               );
             })}
           </div>
-
 
           {/* <div className="header"> 모바일 햄버거
             <div className="header-top-menu mobile">
