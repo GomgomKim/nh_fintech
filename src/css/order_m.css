@@ -25,11 +25,6 @@
   .filterTab {
     margin-left: 20px !important;
   }
-
-  .dataTableLayout {
-    margin-top: 40px;
-  }
-
   .riderTableLayout {
     min-height: 200px;
     position: absolute;
@@ -74,7 +69,9 @@
     color: blue;
     text-decoration: underline;
   }
-
+  .reception-box {
+    width: 100%;
+  }
   .reception-box .ant-checkbox-inner {
     width: 25px;
     height: 25px;
@@ -112,30 +109,56 @@
   .btnLayout {
     margin-top: 20px;
   }
-
+  #reception-table .ant-table .ant-table-tbody > tr {
+    width: 100vw;
+  }
   #reception-table .ant-table .ant-table-tbody > tr > td:first-child {
-    padding-left: 20px !important;
+    padding-left: 10px !important;
+    width: 10%;
   }
   #reception-table .ant-table .ant-table-tbody > tr > td:last-child {
-    padding-right: 20px !important;
   }
-  /* #reception-table .ant-table .ant-table-thead > tr > th:last-child {
-    padding-right: 20px !important;
-  } */
+  #reception-table .ant-table .ant-table-thead > tr > th {
+  }
+  #reception-table .ant-table .ant-table-thead > tr > th:last-child {
+    padding-right: 10px !important;
+  }
 
   /* 기사관리-테이블 재정의 */
-  .droptable {
-    width: 330px;
-  }
   .riderMain-container {
-    width: 330px;
-    overflow: scroll;
+    width: 100%;
   }
   .dataTableLayout {
-    width: 330px;
     margin-top: 20px;
+    width: 100vw;
   }
-  .rider-blind-btn {
-    width: 100px;
+
+  #rider-dataTableLayout .ant-table .ant-table-tbody > tr > td:first-child {
+    padding-left: 10px !important;
+  }
+  #rider-dataTableLayout .ant-table .ant-table-tbody > tr > td:last-child {
+  }
+
+  #rider-dataTableLayout .ant-table .ant-table-thead > tr {
+    width: 100vw !important;
+    border: 1px solid red;
+  }
+  #rider-dataTableLayout .ant-table .ant-table-thead > tr > th {
+    width: 100vw;
+  }
+
+  #rider-dataTableLayout .ant-table .ant-table-thead > tr > th:last-child {
+    padding-right: 10px !important;
+    width: 100vw;
+  }
+  .status-box {
+    padding-bottom: 10px;
+  }
+
+  /* hr css */
+  .light-hr {
+    border: 0;
+    height: 1px;
+    background-color: #d1d1d1;
   }
 }

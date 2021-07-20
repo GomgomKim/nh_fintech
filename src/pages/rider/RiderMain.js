@@ -261,16 +261,6 @@ class RiderMain extends Component {
       {
         title: "기사명",
         dataIndex: "riderName",
-        className: "table-column-center desk",
-      },
-      {
-        title: "기사명",
-        dataIndex: [
-          "riderName",
-          "riderLevel",
-          "riderSettingGroup",
-          "riderStatus",
-        ],
         className: "table-column-center mobile",
         render: (data, row) => (
           <div>
@@ -280,28 +270,55 @@ class RiderMain extends Component {
             {row.phone} / {riderStatusCode[row.riderStatus]} <br />
             {formatDateToDay(row.createDate)} /{" "}
             {formatDateToDay(row.deleteDate)} <br />
+            <div>
+              상태 :{" "}
+              <SelectBox
+                value={statusString[row.userStatus]}
+                code={Object.keys(statusString)}
+                codeString={statusString}
+                onChange={(value) => {
+                  if (parseInt(value) !== row.userStatus) {
+                    this.onChangeStatus(row.idx, value);
+                  }
+                }}
+              />
+            </div>
           </div>
         ),
+      },
+      {
+        title: "블라인드",
+        className: "table-column-center mobile",
+        render: (data, row) => (
+          <div>
+            <Button
+              className="tabBtn"
+              onClick={() =>
+                this.setState({ blindRiderData: row, blindListOpen: true })
+              }
+            >
+              블라인드
+            </Button>
+          </div>
+        ),
+      },
+      {
+        title: "기사명",
+        dataIndex: "riderName",
+        className: "table-column-center desk",
       },
       {
         title: "아이디",
         dataIndex: "id",
         className: "table-column-center desk",
-        width: "200px",
       },
       {
         title: "직급",
         dataIndex: "riderLevel",
         className: "table-column-center desk",
-        width: "200px",
+
         render: (data) => <div>{riderLevelText[data]}</div>,
       },
-      // {
-      //   title: "기사그룹",
-      //   dataIndex: "riderSettingGroup",
-      //   className: "table-column-center",
-      //   render: (data) => <div>{data.settingGroupName}</div>,
-      // },
       {
         title: "면허정보",
         dataIndex: "driverLicenseNumber",
@@ -326,13 +343,10 @@ class RiderMain extends Component {
       },
       {
         title: "출금비밀번호",
-        className: "table-column-center",
+        className: "table-column-center desk",
         render: (data, row) => (
           <div>
-            <Button
-              className="tabBtn surchargeTab"
-              onClick={() => this.onResetPW(row)}
-            >
+            <Button className="tabBtn" onClick={() => this.onResetPW(row)}>
               초기화
             </Button>
           </div>
@@ -340,7 +354,7 @@ class RiderMain extends Component {
       },
       {
         title: "블라인드",
-        className: "table-column-center",
+        className: "table-column-center desk",
         render: (data, row) => (
           <div>
             <Button
@@ -381,7 +395,7 @@ class RiderMain extends Component {
       {
         title: "상태",
         dataIndex: "userStatus",
-        className: "table-column-center",
+        className: "table-column-center desk",
         render: (data, row) => (
           <div>
             <SelectBox
@@ -424,7 +438,6 @@ class RiderMain extends Component {
         title: "출근상태",
         dataIndex: "riderStatus",
         className: "table-column-center desk",
-        width: "200px",
         render: (data) => <div>{riderStatusCode[data]}</div>,
       },
     ];
@@ -691,7 +704,6 @@ class RiderMain extends Component {
 
           <div className="dataTableLayout">
             <Table
-              className="rider-table"
               rowKey={(record) => record.idx}
               dataSource={this.state.results}
               columns={columns}
