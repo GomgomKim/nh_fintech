@@ -461,26 +461,26 @@ class FranchiseMain extends Component {
       //   render: (data) => <div>{}</div>,
       // },
 
-      {
-        title: "출금설정",
-        dataIndex: "withdrawEnabled",
-        className: "table-column-center desk",
-        render: (data, row) => (
-          <div>
-            <SelectBox
-              value={withdrawString[data]}
-              code={Object.keys(withdrawString)}
-              codeString={withdrawString}
-              onChange={(value) => {
-                console.log(value, row.withdrawEnabled);
-                if (value !== row.withdrawEnabled.toString()) {
-                  this.onChangeWithdraw(row.idx, value);
-                }
-              }}
-            />
-          </div>
-        ),
-      },
+      // {
+      //   title: "출금설정",
+      //   dataIndex: "withdrawEnabled",
+      //   className: "table-column-center desk",
+      //   render: (data, row) => (
+      //     <div>
+      //       <SelectBox
+      //         value={withdrawString[data]}
+      //         code={Object.keys(withdrawString)}
+      //         codeString={withdrawString}
+      //         onChange={(value) => {
+      //           console.log(value, row.withdrawEnabled);
+      //           if (value !== row.withdrawEnabled.toString()) {
+      //             this.onChangeWithdraw(row.idx, value);
+      //           }
+      //         }}
+      //       />
+      //     </div>
+      //   ),
+      // },
       {
         title: "블라인드",
         className: "table-column-center desk",
