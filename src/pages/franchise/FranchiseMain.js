@@ -286,7 +286,7 @@ class FranchiseMain extends Component {
           addr3: data["지번주소"],
           addr2: data["상세주소"],
           password: String(data["비밀번호"]),
-          tidNormalRate: data["PG사용여부"] === "사용" ? 100 : 0,
+          tidNormalRate: data["PG사용여부"] === "사용" ? 0 : 100,
           agreeSms: data["sms 수신여부"] === "수신" ? true : false,
           isMember: data["가맹여부"] === "가맹" ? true : false,
           nonmemberFee: data["가맹여부"] === "가맹" ? 0 : 1000,
@@ -393,7 +393,7 @@ class FranchiseMain extends Component {
       {
         title: "상태",
         dataIndex: "userStatus",
-        className: "table-column-center",
+        className: "table-column-center desk",
         render: (data, row) => (
           <div>
             <SelectBox
@@ -412,7 +412,7 @@ class FranchiseMain extends Component {
       {
         title: "순번",
         dataIndex: "idx",
-        className: "table-column-center",
+        className: "table-column-center desk",
       },
       {
         title: "가맹점명",
@@ -437,7 +437,7 @@ class FranchiseMain extends Component {
       {
         title: "주소",
         dataIndex: "addr1",
-        className: "table-column-center",
+        className: "table-column-center desk",
         render: (data, row) => <div>{row.addr1 + " " + row.addr2}</div>,
       },
       {
@@ -461,26 +461,26 @@ class FranchiseMain extends Component {
       //   render: (data) => <div>{}</div>,
       // },
 
-      {
-        title: "출금설정",
-        dataIndex: "withdrawEnabled",
-        className: "table-column-center desk",
-        render: (data, row) => (
-          <div>
-            <SelectBox
-              value={withdrawString[data]}
-              code={Object.keys(withdrawString)}
-              codeString={withdrawString}
-              onChange={(value) => {
-                console.log(value, row.withdrawEnabled);
-                if (value !== row.withdrawEnabled.toString()) {
-                  this.onChangeWithdraw(row.idx, value);
-                }
-              }}
-            />
-          </div>
-        ),
-      },
+      // {
+      //   title: "출금설정",
+      //   dataIndex: "withdrawEnabled",
+      //   className: "table-column-center desk",
+      //   render: (data, row) => (
+      //     <div>
+      //       <SelectBox
+      //         value={withdrawString[data]}
+      //         code={Object.keys(withdrawString)}
+      //         codeString={withdrawString}
+      //         onChange={(value) => {
+      //           console.log(value, row.withdrawEnabled);
+      //           if (value !== row.withdrawEnabled.toString()) {
+      //             this.onChangeWithdraw(row.idx, value);
+      //           }
+      //         }}
+      //       />
+      //     </div>
+      //   ),
+      // },
       {
         title: "블라인드",
         className: "table-column-center desk",
@@ -526,7 +526,7 @@ class FranchiseMain extends Component {
         {
           title: "월회비 최초납부일",
           dataIndex: "chargeDate",
-          className: "table-column-center",
+          className: "table-column-center desk",
           render: (data) => <div>{formatDateToDay(data)}</div>,
         },
         {
@@ -545,7 +545,7 @@ class FranchiseMain extends Component {
         {
           title: "월회비",
           dataIndex: "dues",
-          className: "table-column-center",
+          className: "table-column-center desk",
           render: (data, row) => <div>{row.isMember ? data : "-"}</div>,
         },
         // {
@@ -570,23 +570,23 @@ class FranchiseMain extends Component {
           title: "PG 사용여부",
           dataIndex: "tidNormalRate",
           className: "table-column-center",
-          render: (data) => <div>{data === 100 ? "사용" : "미사용"}</div>,
+          render: (data) => <div>{data === 100 ? "미사용" : "사용"}</div>,
         },
         {
           title: "메모",
           dataIndex: "memo",
-          className: "table-column-center",
+          className: "table-column-center desk",
         },
         {
           title: "가입일",
           dataIndex: "registDate",
-          className: "table-column-center",
+          className: "table-column-center desk",
           render: (data) => <div>{formatDateToDay(data)}</div>,
         },
         {
           title: "영업담당자",
           dataIndex: "frSalesRiderName",
-          className: "table-column-center",
+          className: "table-column-center desk",
           render: (data) => <div>{data}</div>,
         },
         // {

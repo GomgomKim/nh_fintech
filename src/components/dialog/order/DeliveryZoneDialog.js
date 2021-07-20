@@ -38,6 +38,13 @@ class DeliveryZoneDialog extends Component {
     this.navermaps = window.naver.maps;
   }
 
+  componentDidMount() {
+    this.state.deliveryZone.forEach(value => {
+      value.toggle = true;
+    })
+    this.setState({deliveryZone})
+  }
+
   addPath = (e) => {
     let newPath = this.state.paths;
     newPath.push(new this.navermaps.LatLng(e.coord.y, e.coord.x));
