@@ -1,6 +1,13 @@
-@media screen and (max-width: 999px) {
+@media screen and (max-width: 1199px) and (min-width: 300px) {
   .desk {
     display: none !important;
+  }
+
+  .mobile {
+  }
+
+  .tabBtn {
+    margin-left: 10px;
   }
 
   .arriveArea {
@@ -13,11 +20,6 @@
 
   .orderTab {
     margin-right: 20px !important;
-  }
-
-  .selectLayout {
-    margin-top: 20px !important;
-    display: inline-block;
   }
 
   .filterTab {
@@ -50,7 +52,6 @@
     font-size: 18px;
     font-family: NotoSansBold;
   }
-
   .mapLayout {
     width: 100%;
     height: 600px;
@@ -118,21 +119,22 @@
   #reception-table .ant-table .ant-table-tbody > tr > td:last-child {
     padding-right: 20px !important;
   }
-  #reception-table .ant-table .ant-table-thead > tr > th:last-child {
+  /* #reception-table .ant-table .ant-table-thead > tr > th:last-child {
     padding-right: 20px !important;
+  } */
+
+  /* 기사관리-테이블 재정의 */
+  .droptable {
+    width: 360px;
   }
-}
-/* 기사관리-테이블 재정의 */
-.droptable {
-  width: 360px;
-}
-.riderMain-container {
-  width: 360px;
-  overflow: scroll;
-}
-.dataTableLayout {
-  width: 360px;
-}
-.rider-blind-btn {
-  width: 100px;
+  .riderMain-container {
+    width: 360px;
+    overflow: scroll;
+  }
+  .dataTableLayout {
+    width: 360px;
+  }
+  .rider-blind-btn {
+    width: 100px;
+  }
 }

@@ -147,7 +147,7 @@ class MapControlDialog extends Component {
       userIdx: this.state.selectedRiderIdx,
     })
       .then((res) => {
-        this.getList(rider.idx);
+        this.getList(rider.idx ? rider.idx : rider.userIdx);
         this.getOrderList();
         this.setState({
           selectedRowKeys: [],
@@ -173,7 +173,7 @@ class MapControlDialog extends Component {
 
     this.setState(
       {
-        selectedRiderIdx: rider.userIdx,
+        selectedRiderIdx: rider.userIdx ? rider.userIdx : rider.idx,
         riderName: rider.riderName,
       },
       () => {
@@ -184,8 +184,9 @@ class MapControlDialog extends Component {
             content: `${self.state.selectedRowKeys} 번의 주문을 ${rider.riderName} 기사에게 배정하시겠습니까?`,
             onOk: () => {
               if (
-                this.state.allResultsSave.find((x) => x.userIdx === rider.idx)
-                  .orders.length >= 5
+                this.state.allResultsSave.find(
+                  (x) => x.userIdx === rider.idx || x.userIdx === rider.userIdx
+                ).orders.length >= 5
               ) {
                 customError("배차 오류", "배차는 5개의 주문까지 가능합니다.");
               } else {
@@ -981,7 +982,7 @@ class MapControlDialog extends Component {
                                 // row.riderStatus === 1 &&
                                 <>
                                   <Marker
-                                    key={row.userIdx}
+                                    key={row.userIdx + " " + row.riderName}
                                     position={navermaps.LatLng(
                                       row.latitude,
                                       row.longitude

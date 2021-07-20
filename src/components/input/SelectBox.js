@@ -37,27 +37,51 @@ export default class SelectBox extends Component {
       className
     } = this.props;
     return (
-      <Select
-        className={className}
-        size={size}
-        mode={mode}
-        disabled={disable}
-        style={{ width: "100px", ...style }}
-        placeholder={placeholder}
-        value={value}
-        onChange={value => {
-          if (type) {
-            onChange(value, type);
-          } else if (data) {
-            if (page) {
-              onChange(value, data, page);
-            } else onChange(value, data);
-          } else {
-            onChange(value);
-          }
-        }}>
-        {this.renderOption()}
-      </Select>
+      <>
+        <Select
+          className="desk"
+          size={size}
+          mode={mode}
+          disabled={disable}
+          style={{ width: "100px", ...style }}
+          placeholder={placeholder}
+          value={value}
+          onChange={value => {
+            if (type) {
+              onChange(value, type);
+            } else if (data) {
+              if (page) {
+                onChange(value, data, page);
+              } else onChange(value, data);
+            } else {
+              onChange(value);
+            }
+          }}>
+          {this.renderOption()}
+        </Select>
+
+        <Select
+          className="mobile"
+          size={size}
+          mode={mode}
+          disabled={disable}
+          style={{ width: "70px", ...style }}
+          placeholder={placeholder}
+          value={value}
+          onChange={value => {
+            if (type) {
+              onChange(value, type);
+            } else if (data) {
+              if (page) {
+                onChange(value, data, page);
+              } else onChange(value, data);
+            } else {
+              onChange(value);
+            }
+          }}>
+          {this.renderOption()}
+        </Select>
+      </>
     );
   }
 }

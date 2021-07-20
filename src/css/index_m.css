@@ -1,4 +1,4 @@
-@media screen and (max-width: 999px) {
+@media screen and (max-width: 1199px) and (min-width: 300px) {
   .desk {
     display: none !important;
   }
@@ -188,6 +188,7 @@
   }
 
   .menu-wrapper {
+    padding-top: 30px;
   }
   .menu-right {
     position: absolute;
@@ -196,11 +197,10 @@
   }
   .top-menu {
     display: inline-block;
-    margin: 0px 15px;
-    padding: 0px 15px;
+    margin: 0px 5px;
     cursor: pointer;
     font-family: NotoSansRegular;
-    font-size: 18px;
+    font-size: 14px;
     color: #fff;
     font-weight: normal;
   }
@@ -298,5 +298,8 @@
   .logo {
     width: 300px;
     margin-bottom: 50px;
+  }
+  .ant-layout-header {
+    line-height: 30px !important;
   }
 }

@@ -1,4 +1,12 @@
-.franchiseContainer .selectLayout {
+@media screen and (min-width: 1200px) {
+  .desk {
+  }
+
+  .mobile {
+    display: none !important;
+  }
+
+  .franchiseContainer .selectLayout {
   /* margin-top: 20px; */
   vertical-align: middle;
 }
@@ -35,3 +43,4 @@
 /* .franchiseContainer .ant-input-group-wrapper{
     vertical-align: middle;
 } */
+}
