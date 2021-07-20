@@ -393,7 +393,7 @@ class FranchiseMain extends Component {
       {
         title: "상태",
         dataIndex: "userStatus",
-        className: "table-column-center",
+        className: "table-column-center desk",
         render: (data, row) => (
           <div>
             <SelectBox
@@ -412,7 +412,7 @@ class FranchiseMain extends Component {
       {
         title: "순번",
         dataIndex: "idx",
-        className: "table-column-center",
+        className: "table-column-center desk",
       },
       {
         title: "가맹점명",
@@ -437,7 +437,7 @@ class FranchiseMain extends Component {
       {
         title: "주소",
         dataIndex: "addr1",
-        className: "table-column-center",
+        className: "table-column-center desk",
         render: (data, row) => <div>{row.addr1 + " " + row.addr2}</div>,
       },
       {
@@ -526,7 +526,7 @@ class FranchiseMain extends Component {
         {
           title: "월회비 최초납부일",
           dataIndex: "chargeDate",
-          className: "table-column-center",
+          className: "table-column-center desk",
           render: (data) => <div>{formatDateToDay(data)}</div>,
         },
         {
@@ -545,7 +545,7 @@ class FranchiseMain extends Component {
         {
           title: "월회비",
           dataIndex: "dues",
-          className: "table-column-center",
+          className: "table-column-center desk",
           render: (data, row) => <div>{row.isMember ? data : "-"}</div>,
         },
         // {
@@ -575,18 +575,18 @@ class FranchiseMain extends Component {
         {
           title: "메모",
           dataIndex: "memo",
-          className: "table-column-center",
+          className: "table-column-center desk",
         },
         {
           title: "가입일",
           dataIndex: "registDate",
-          className: "table-column-center",
+          className: "table-column-center desk",
           render: (data) => <div>{formatDateToDay(data)}</div>,
         },
         {
           title: "영업담당자",
           dataIndex: "frSalesRiderName",
-          className: "table-column-center",
+          className: "table-column-center desk",
           render: (data) => <div>{data}</div>,
         },
         // {

@@ -12,7 +12,7 @@ export default class Content extends Component {
 
   render() {
     return (
-      <Layout.Content style={{ margin: "16px 8px 0" }}>
+      <Layout.Content style={{ margin: "8px 8px 0" }}>
         <div style={{ padding: 8, background: "#fff" }}>
           <Switch>
             {/* 게시글 */}

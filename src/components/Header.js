@@ -1,6 +1,6 @@
 import {
   CopyOutlined, SkinOutlined,
-  PhoneOutlined, SettingOutlined, TeamOutlined
+  PhoneOutlined, SettingOutlined, TeamOutlined, MobileFilled, LogoutOutlined
 } from "@ant-design/icons";
 import { Layout, Modal } from "antd";
 import React from "react";
@@ -9,7 +9,8 @@ import { comma } from '../lib/util/numberUtil';
 import { withRouter, Link } from "react-router-dom";
 import { login, logout } from "../actions/loginAction";
 import { httpPost, httpUrl } from "../api/httpClient";
-
+import "../css/modal_m.css";
+import "../css/modal.css";
 class Header extends React.Component {
   constructor(props) {
     super(props);
@@ -40,10 +41,10 @@ class Header extends React.Component {
     // this.initializeUserInfo();
   }
 
+
   render() {
     // console.log(this.props.history.location.pathname);
     // console.log("frIdx : "+this.state.frIdx)
-
     const menus = [
       {
         idx: 1,
@@ -51,6 +52,7 @@ class Header extends React.Component {
         icon: <CopyOutlined />,
         url: "/order/OrderMain",
       },
+
       {
         idx: 2,
         name: "가맹점관리",
@@ -65,15 +67,18 @@ class Header extends React.Component {
       },
       {
         idx: 4,
+        idx: "desk",
         name: '상품관리',
         icon: <SkinOutlined />,
-        url: "/mall/MallMain"
+        url: "/mall/MallMain",
+        className: "desk"
       },
       {
         idx: 5,
         name: "환경설정",
         icon: <SettingOutlined />,
         url: "/setting/SettingMain",
+        className: "desk"
       },
     ];
 
@@ -92,7 +97,7 @@ class Header extends React.Component {
             paddingRight: "20px",
           }}
         >
-          <div className="menu-wrapper">
+          <div className="menu-wrapper desk">
             {menus.map((row) => {
               return (
                 <div
@@ -109,6 +114,27 @@ class Header extends React.Component {
               );
             })}
           </div>
+          <div className="menu-wrapper mobile">
+            {menus.map((row) => {
+              return (
+                <div
+                  key={row.className}
+                  // frIdx={this.state.frIdx}
+                  onClick={() => this.props.history.push(row.url)}
+                  className={
+                    "top-menu " +
+                    (row.idx === currentPage.idx ? "active" : "") +
+                    (row.className && " " + row.className)
+                  }
+                >
+                  {row.icon}&nbsp;
+                  {row.name}
+                </div>
+              );
+            })}
+          </div>
+
+
           {/* <div className="header"> 모바일 햄버거
             <div className="header-top-menu mobile">
               <div className="ham-menu" onClick={() => { this.setState({ openSlideMenu: 1 }) }}>
@@ -149,11 +175,22 @@ class Header extends React.Component {
             </div>
             <div
               style={{ display: "inline-block", cursor: "pointer" }}
+              className="desk"
               onClick={() => {
                 this.setState({ visible: true });
               }}
             >
               &nbsp;&nbsp;&nbsp;로그아웃
+            </div>
+            <div
+              style={{ display: "inline-block", cursor: "pointer" }}
+              className="mobile"
+              onClick={() => {
+                this.setState({ visible: true });
+              }}
+            >
+              &nbsp;&nbsp;&nbsp;
+              <LogoutOutlined />
             </div>
           </div>
         </div>
