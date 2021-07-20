@@ -1,21 +1,15 @@
 import {
-  CopyOutlined,
-  SkinOutlined,
-  PhoneOutlined,
-  SettingOutlined,
-  TeamOutlined,
-  MobileFilled,
-  LogoutOutlined,
+  CopyOutlined, LogoutOutlined, PhoneOutlined,
+  SettingOutlined, SkinOutlined, TeamOutlined
 } from "@ant-design/icons";
 import { Layout, Modal } from "antd";
 import React from "react";
 import { connect } from "react-redux";
-import { comma } from "../lib/util/numberUtil";
-import { withRouter, Link } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import { login, logout } from "../actions/loginAction";
 import { httpPost, httpUrl } from "../api/httpClient";
-import "../css/modal_m.css";
 import "../css/modal.css";
+import "../css/modal_m.css";
 class Header extends React.Component {
   constructor(props) {
     super(props);
@@ -121,7 +115,7 @@ class Header extends React.Component {
             {menus.map((row) => {
               return (
                 <div
-                  key={row.className}
+                  key={row.idx}
                   // frIdx={this.state.frIdx}
                   onClick={() => this.props.history.push(row.url)}
                   className={
