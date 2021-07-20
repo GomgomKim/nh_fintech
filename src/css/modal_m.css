@@ -3449,6 +3449,7 @@
   .selectLayout {
     margin-left: 0;
     margin-right: 1rem;
+    margin-top:-30px;
   }
   
   /* ModifyOrdeDialog */
@@ -4502,4 +4503,8 @@
     width: 290px;
     display: inline-block;
   }
+
+  /*모바일버전- 가맹점관리 */
+
+
   }

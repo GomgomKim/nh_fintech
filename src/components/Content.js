@@ -12,8 +12,8 @@ export default class Content extends Component {
 
   render() {
     return (
-      <Layout.Content style={{ margin: "24px 16px 0" }}>
-        <div style={{ padding: 24, background: "#fff" }}>
+      <Layout.Content style={{ margin: "16px 8px 0" }}>
+        <div style={{ padding: 8, background: "#fff" }}>
           <Switch>
             {/* 게시글 */}
             <Route exact path="/order/OrderMain" component={OrderMain} />
