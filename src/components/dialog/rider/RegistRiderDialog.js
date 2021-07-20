@@ -641,11 +641,12 @@ class RegistRiderDialog extends Component {
                             callback={(selectedRider) =>
                               this.setState(
                                 { selectedRider: selectedRider },
-                                () =>
+                                () => {
                                   this.formRef.current.setFieldsValue({
                                     teamManagerIdx:
-                                      this.state.selectedRider.userIdx,
-                                  })
+                                      this.state.selectedRider.idx,
+                                  });
+                                }
                               )
                             }
                             close={this.closeSearchRiderModal}
