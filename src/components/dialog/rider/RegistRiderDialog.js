@@ -76,11 +76,17 @@ class RegistRiderDialog extends Component {
   componentDidMount() {
     // this.getList()
     if (this.props.data) {
-      this.setState({
-        selectedBike: this.props.data.bike,
-        riderLevel: this.props.data.riderLevel,
-        selectedRider: { idx: this.props.data.teamManagerIdx },
-      });
+      this.setState(
+        {
+          selectedBike: this.props.data.bike,
+          riderLevel: this.props.data.riderLevel,
+          selectedRider: { idx: this.props.data.teamManagerIdx },
+        },
+        () =>
+          this.formRef.current.setFieldsValue({
+            teamManagerIdx: this.state.selectedRider.idx,
+          })
+      );
     }
     console.log(this.props.data);
   }
@@ -124,6 +130,9 @@ class RegistRiderDialog extends Component {
             leaveDate: formatDateToDay(
               self.formRef.current.getFieldValue("leaveDate")
             ),
+            registrationNumber: self.formRef.current
+              .getFieldValue("registrationNumber")
+              .replace("-", ""),
 
             // 삭제컬럼
             agreeSms: false,
@@ -147,6 +156,9 @@ class RegistRiderDialog extends Component {
             password: self.formRef.current.getFieldValue("password")
               ? self.formRef.current.getFieldValue("password")
               : null,
+            registrationNumber: self.formRef.current
+              .getFieldValue("registrationNumber")
+              .replace("-", ""),
 
             // 삭제컬럼
             agreeSms: false,
@@ -181,13 +193,11 @@ class RegistRiderDialog extends Component {
               self.formRef.current.getFieldValue("leaveDate")
             ),
             agreeSms: false,
-
-            // deliveryPriceFeeType: self.state.feeManner,
-          });
-          self.formRef.current.setFieldsValue({
             registrationNumber: self.formRef.current
               .getFieldValue("registrationNumber")
               .replace("-", ""),
+
+            // deliveryPriceFeeType: self.state.feeManner,
           });
           httpPost(httpUrl.registRider, [], {
             ...self.formRef.current.getFieldsValue(),
@@ -206,6 +216,9 @@ class RegistRiderDialog extends Component {
               self.formRef.current.getFieldValue("leaveDate")
             ),
             agreeSms: false,
+            registrationNumber: self.formRef.current
+              .getFieldValue("registrationNumber")
+              .replace("-", ""),
 
             // 기사 생성 시 예치금 정책 어떻게 될지에 따라 변경 될 수 있음
             // ncash 컬럼이 not null 이어서 기사 등록 시 0 설정
