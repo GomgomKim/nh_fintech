@@ -719,11 +719,11 @@ class RegistFranDialog extends Component {
                       <div className="registRiderCheck">
                         <FormItem
                           name="tidNormalRate"
-                          initialValue={data ? data.tidNormalRate : 0}
+                          initialValue={data ? data.tidNormalRate : 100}
                         >
                           <Radio.Group
                             className="searchRequirement"
-                            initialValue={data ? data.tidNormalRate : 0}
+                            initialValue={data ? data.tidNormalRate : 100}
                           >
                             {Object.keys(pgUseRate)
                               .reverse()

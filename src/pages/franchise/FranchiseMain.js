@@ -286,7 +286,7 @@ class FranchiseMain extends Component {
           addr3: data["지번주소"],
           addr2: data["상세주소"],
           password: String(data["비밀번호"]),
-          tidNormalRate: data["PG사용여부"] === "사용" ? 100 : 0,
+          tidNormalRate: data["PG사용여부"] === "사용" ? 0 : 100,
           agreeSms: data["sms 수신여부"] === "수신" ? true : false,
           isMember: data["가맹여부"] === "가맹" ? true : false,
           nonmemberFee: data["가맹여부"] === "가맹" ? 0 : 1000,
@@ -570,7 +570,7 @@ class FranchiseMain extends Component {
           title: "PG 사용여부",
           dataIndex: "tidNormalRate",
           className: "table-column-center",
-          render: (data) => <div>{data === 100 ? "사용" : "미사용"}</div>,
+          render: (data) => <div>{data === 100 ? "미사용" : "사용"}</div>,
         },
         {
           title: "메모",
