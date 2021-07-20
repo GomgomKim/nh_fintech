@@ -125,14 +125,15 @@
 
   /* 기사관리-테이블 재정의 */
   .droptable {
-    width: 360px;
+    width: 330px;
   }
   .riderMain-container {
-    width: 360px;
+    width: 330px;
     overflow: scroll;
   }
   .dataTableLayout {
-    width: 360px;
+    width: 330px;
+    margin-top: 20px;
   }
   .rider-blind-btn {
     width: 100px;

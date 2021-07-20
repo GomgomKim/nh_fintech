@@ -188,12 +188,14 @@
   }
 
   .menu-wrapper {
-    padding-top: 30px;
+    padding: 15px 10px;
+    display: inline-block;
   }
   .menu-right {
-    position: absolute;
-    right: 30px;
-    top: 0px;
+    display: inline-block;
+    float: right;
+    margin-top: 15px;
+    margin-right: 10px;
   }
   .top-menu {
     display: inline-block;

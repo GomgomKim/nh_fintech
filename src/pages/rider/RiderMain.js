@@ -439,15 +439,18 @@ class RiderMain extends Component {
           render: (data) => <div>{data}</div>,
         },
         {
-          title: "계좌정보",
+          title: () => (
+            <div>
+              잔액
+              <br />
+              (최소보유잔액)
+            </div>
+          ),
           dataIndex: ["ncashMin", "ncash"],
           className: "table-column-center mobile",
           render: (data, row) => (
             <div>
-              <span>잔액</span>
-              {comma(row.ncash)} <br />
-              <span>최소보유잔액</span>
-              <br />({row.ncashMin})
+              {comma(row.ncash)} <br />({row.ncashMin})
             </div>
           ),
         },
@@ -606,106 +609,110 @@ class RiderMain extends Component {
     };
 
     return (
-      <div className="riderMain-container">
+      <div>
         <Search
           placeholder="기사검색"
           className="searchRiderInput mobile"
           enterButton
           allowClear
           onSearch={this.onSearchRider}
-          style={{}}
+          style={{ marginTop: 15, marginLeft: 0 }}
         />
-        <div className="selectLayout desk">
-          <span className="searchRequirementText">검색조건</span>
-          <br />
-          <br />
+        <div className="riderMain-container">
+          <div className="selectLayout desk">
+            <span className="searchRequirementText">검색조건</span>
+            <br />
+            <br />
 
-          <SelectBox
-            value={tableStatusString[this.state.userStatus]}
-            code={Object.keys(tableStatusString)}
-            codeString={tableStatusString}
-            onChange={(value) => {
-              if (parseInt(value) !== this.state.userStatus) {
-                this.setState(
-                  {
-                    userStatus: parseInt(value),
-                    pagination: {
-                      current: 1,
-                      pageSize: this.state.pagination.pageSize,
+            <SelectBox
+              value={tableStatusString[this.state.userStatus]}
+              code={Object.keys(tableStatusString)}
+              codeString={tableStatusString}
+              onChange={(value) => {
+                if (parseInt(value) !== this.state.userStatus) {
+                  this.setState(
+                    {
+                      userStatus: parseInt(value),
+                      pagination: {
+                        current: 1,
+                        pageSize: this.state.pagination.pageSize,
+                      },
                     },
-                  },
-                  () => this.getList()
-                );
-              }
-            }}
-          />
+                    () => this.getList()
+                  );
+                }
+              }}
+            />
 
-          <Search
-            placeholder="기사검색"
-            className="searchRiderInput"
-            enterButton
-            allowClear
-            onSearch={this.onSearchRider}
-            style={{}}
-          />
-          {this.state.registRiderOpen && (
-            <RegistRiderDialog close={this.closeRegistRiderModal} />
-          )}
-          <Button
-            className="riderManageBtn"
-            onClick={this.openRegistRiderModal}
-          >
-            기사 등록
-          </Button>
+            <Search
+              placeholder="기사검색"
+              className="searchRiderInput"
+              enterButton
+              allowClear
+              onSearch={this.onSearchRider}
+              style={{}}
+            />
+            {this.state.registRiderOpen && (
+              <RegistRiderDialog close={this.closeRegistRiderModal} />
+            )}
+            <Button
+              className="riderManageBtn"
+              onClick={this.openRegistRiderModal}
+            >
+              기사 등록
+            </Button>
 
-          {this.state.riderGroupOpen && (
-            <RiderGroupDialog close={this.closeRiderGroupModal} />
-          )}
-          <Button className="riderManageBtn" onClick={this.openRiderGroupModal}>
-            기사 그룹 관리
-          </Button>
-          {this.state.taskSchedulerOpen && (
-            <BatchWorkListDialog close={this.closeTaskSchedulerModal} />
-          )}
-          <Button
-            className="riderManageBtn"
-            onClick={this.openTaskSchedulerModal}
-          >
-            일차감
-          </Button>
+            {this.state.riderGroupOpen && (
+              <RiderGroupDialog close={this.closeRiderGroupModal} />
+            )}
+            <Button
+              className="riderManageBtn"
+              onClick={this.openRiderGroupModal}
+            >
+              기사 그룹 관리
+            </Button>
+            {this.state.taskSchedulerOpen && (
+              <BatchWorkListDialog close={this.closeTaskSchedulerModal} />
+            )}
+            <Button
+              className="riderManageBtn"
+              onClick={this.openTaskSchedulerModal}
+            >
+              일차감
+            </Button>
 
-          {this.state.blindListOpen && (
-            <BlindRiderListDialog
-              close={this.closeBlindModal}
-              data={this.state.blindRiderData}
+            {this.state.blindListOpen && (
+              <BlindRiderListDialog
+                close={this.closeBlindModal}
+                data={this.state.blindRiderData}
+              />
+            )}
+          </div>
+
+          <div className="dataTableLayout">
+            <Table
+              className="rider-table"
+              rowKey={(record) => record.idx}
+              dataSource={this.state.results}
+              columns={columns}
+              pagination={this.state.pagination}
+              onChange={this.handleTableChange}
+              expandedRowRender={expandedRowRender}
+            />
+          </div>
+          {this.state.riderUpdateOpen && (
+            <RegistRiderDialog
+              close={this.closeUpdateRiderModal}
+              data={this.state.dialogData}
+            />
+          )}
+          {this.state.updatePasswordOpen && (
+            <UpdatePasswordDialog
+              rider={this.state.selRider}
+              close={this.closeUpdatePasswordModal}
             />
           )}
         </div>
-
-        <div className="dataTableLayout">
-          <Table
-            className="rider-table"
-            rowKey={(record) => record.idx}
-            dataSource={this.state.results}
-            columns={columns}
-            pagination={this.state.pagination}
-            onChange={this.handleTableChange}
-            expandedRowRender={expandedRowRender}
-            expandedRowRender={expandedRowRenderSub}
-          />
-        </div>
-        {this.state.riderUpdateOpen && (
-          <RegistRiderDialog
-            close={this.closeUpdateRiderModal}
-            data={this.state.dialogData}
-          />
-        )}
-        {this.state.updatePasswordOpen && (
-          <UpdatePasswordDialog
-            rider={this.state.selRider}
-            close={this.closeUpdatePasswordModal}
-          />
-        )}
       </div>
     );
   }
