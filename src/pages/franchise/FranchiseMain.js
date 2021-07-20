@@ -551,13 +551,13 @@ class FranchiseMain extends Component {
           className: "table-column-center mobile",
           render: (data, row) =>
             <div>
-              <b>가맹여부:</b> {row.isMember}<br />
-              <b>가입일:</b> {row.registDate}<br />
-              <b>월회비 최초납부일:</b> {row.chargeDate}<br />
-              <b>월회비:</b> {row.dues}<br />
+              <b>가맹여부:</b> {(row.isMember) ? "가맹" : "무가맹"}<br />
+              <b>가입일:</b> {formatDateToDay(row.registDate)}<br />
+              <b>최초납부일:</b> {formatDateToDay(row.chargeDate)}<br />
+              <b>월회비:</b> {row.isMember ? (row.dues) : "-"}<br />
               <b>VAN:</b> {row.tidNormal}<br />
               <b>PG:</b> {row.tidPrepay}<br />
-              <b>PG사용여부:</b> {row.tidNormalRate}<br />
+              <b>PG사용여부:</b>{(row.tidNormalRate) === 100 ? "미사용" : "사용"}<br />
               <b>영업담당자:</b> {row.frSalesRiderName}<br />
             </div>,
         },
@@ -638,6 +638,7 @@ class FranchiseMain extends Component {
 
       return (
         <Table
+          className="droptable"
           rowKey={(record) => `record: ${record.idx}`}
           columns={dropColumns}
           dataSource={[record]}
@@ -760,7 +761,7 @@ class FranchiseMain extends Component {
           )}
         </div>
 
-        <div className="dataTableLayout">
+        <div className="dataTableLayout2">
           <Table
             rowKey={(record) => record.idx}
             dataSource={this.state.list}

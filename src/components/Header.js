@@ -171,7 +171,8 @@ class Header extends React.Component {
             } </div> 모바일버전 끝 */}
 
           <div className="menu-right">
-            <div style={{ display: "inline-block" }}>
+            <div className="desk"
+              style={{ display: "inline-block" }}>
               관리자&nbsp;&nbsp;&nbsp;|
               {/* {this.props.loginInfo.userId}&nbsp;&nbsp;&nbsp;| */}
             </div>

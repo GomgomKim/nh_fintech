@@ -34,7 +34,9 @@
   .dataTableLayout {
     margin-top: 40px;
   }
-
+  .dataTableLayout2 {
+    margin-top: 40px;
+  }
   .riderTableLayout {
     min-height: 200px;
     position: absolute;
