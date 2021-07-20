@@ -137,8 +137,8 @@ const riderLevelText = [
 // const riderLevelText = ["", "라이더", "소속팀장", "본부장", "지점장", "센터장"];
 
 const pgUseRate = {
-  100: "사용",
-  0: "미사용",
+  100: "미사용",
+  0: "사용",
 };
 
 const arriveReqTime = {
