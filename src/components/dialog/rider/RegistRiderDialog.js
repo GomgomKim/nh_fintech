@@ -676,7 +676,7 @@ class RegistRiderDialog extends Component {
                         rules={[
                           {
                             required: true,
-                            message: "주민번호를 입력해주세요",
+                            message: "주민번호를 '-'를 빼고 입력해주세요",
                           },
                         ]}
                         initialValue={data ? data.registrationNumber : ""}
