@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import {
-    Form, Input, Button, Select, 
+    Form, Input, Button, Select,
 } from "antd";
 import '../../../css/modal.css';
-import {  httpUrl, httpPost } from "../../../api/httpClient";
+import '../../../css/modal_m.css';
+import { httpUrl, httpPost } from "../../../api/httpClient";
 const Option = Select.Option;
 const FormItem = Form.Item;
 

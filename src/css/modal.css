@@ -1,3 +1,12 @@
+@media screen and (min-width: 1200px) {
+  .desk {
+  }
+
+  .mobile {
+    display: none !important;
+  }
+
+
 .Dialog-overlay {
   position: fixed;
   top: 0;
@@ -4461,4 +4470,5 @@ td.ant-table-column-sort {
 .zone-input {
   width: 290px;
   display: inline-block;
+}
 }

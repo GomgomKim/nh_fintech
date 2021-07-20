@@ -12,6 +12,7 @@ import RegistFranDialog from "../../components/dialog/franchise/RegistFranDialog
 import SearchAddressDialog from "../../components/dialog/franchise/SearchAddressDialog";
 import SelectBox from "../../components/input/SelectBox";
 import "../../css/franchise.css";
+import "../../css/franchise_m.css";
 import {
   statusString,
   tableStatusString,
@@ -421,7 +422,7 @@ class FranchiseMain extends Component {
       {
         title: "사업자번호",
         dataIndex: "businessNumber",
-        className: "table-column-center",
+        className: "table-column-center desk",
       },
       {
         title: "가맹점번호",
@@ -431,7 +432,7 @@ class FranchiseMain extends Component {
       {
         title: "대표자번호",
         dataIndex: "phone",
-        className: "table-column-center",
+        className: "table-column-center desk",
       },
       {
         title: "주소",
@@ -463,7 +464,7 @@ class FranchiseMain extends Component {
       {
         title: "출금설정",
         dataIndex: "withdrawEnabled",
-        className: "table-column-center",
+        className: "table-column-center desk",
         render: (data, row) => (
           <div>
             <SelectBox
@@ -482,7 +483,7 @@ class FranchiseMain extends Component {
       },
       {
         title: "블라인드",
-        className: "table-column-center",
+        className: "table-column-center desk",
         render: (data, row) => (
           <div>
             <Button
@@ -498,7 +499,7 @@ class FranchiseMain extends Component {
       },
       {
         title: "수정",
-        className: "table-column-center",
+        className: "table-column-center desk",
         render: (data, row) => (
           <div>
             {/* {this.state.modifyFranOpen && (
@@ -609,7 +610,7 @@ class FranchiseMain extends Component {
     return (
       <div className="franchiseContainer">
         <div className="selectLayout">
-          <span className="searchRequirementText">검색조건</span>
+          <span className="searchRequirementText desk">검색조건</span>
           <br />
           <br />
           <SelectBox
@@ -618,7 +619,7 @@ class FranchiseMain extends Component {
             codeString={tableStatusString}
             onChange={(value) => {
               if (parseInt(value) !== this.state.franStatus) {
-                this.setState({ 
+                this.setState({
                   franStatus: parseInt(value),
                   pagination: {
                     total: 0,
@@ -648,7 +649,7 @@ class FranchiseMain extends Component {
           )}
           <Button
             icon={<BankOutlined />}
-            className="tabBtn addFranTab"
+            className="tabBtn addFranTab desk"
             onClick={this.openRegistFranchiseModal}
           >
             가맹점등록
@@ -660,7 +661,7 @@ class FranchiseMain extends Component {
             />
           )}
           <Button
-            className="tabBtn sectionTab"
+            className="tabBtn sectionTab desk"
             onClick={this.openSearchAddressModal}
           >
             주소검색관리
@@ -688,7 +689,7 @@ class FranchiseMain extends Component {
           )}
 
           {/* 엑셀업로드버튼 */}
-          <a href="/franchise_regist_templete.xlsx" download>
+          <a href="/franchise_regist_templete.xlsx" download className="desk">
             <Button className="tabBtn sectionTab exel">
               <img src={require("../../img/login/excel.png").default} alt="" />
               양식 다운로드
@@ -696,7 +697,7 @@ class FranchiseMain extends Component {
           </a>
 
           <Button
-            className="tabBtn sectionTab exel"
+            className="tabBtn sectionTab exel desk"
             onClick={() => this.setState({ inputOpen: !this.state.inputOpen })}
           >
             <img src={require("../../img/login/excel.png").default} alt="" />
@@ -705,7 +706,7 @@ class FranchiseMain extends Component {
           {this.state.inputOpen && (
             <>
               <div
-                className="orderPayment-wrapper"
+                className="orderPayment-wrapper desk"
                 style={{ marginTop: "15px" }}
               >
                 <Input type="file" onChange={this.readExcel} />

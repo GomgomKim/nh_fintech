@@ -4,6 +4,7 @@ import {
 } from "antd";
 import '../../../css/rider.css';
 import '../../../css/modal.css';
+import '../../../css/modal_m.css';
 
 const FormItem = Form.Item;
 
@@ -44,45 +45,45 @@ class UpdatePasswordDialog extends Component {
 
         return (
 
-                        <React.Fragment>
-                            <div className="Dialog-overlay" onClick={close} />
-                            <div className="coinRider-Dialog">
+            <React.Fragment>
+                <div className="Dialog-overlay" onClick={close} />
+                <div className="coinRider-Dialog">
 
-                                <div className="coinRider-content">
-                                    <div className="coinRider-title">
-                                        출금 비밀번호 초기화
-                                    </div>
-                                    <img onClick={close} src={require('../../../img/login/close.png').default} className="coinRider-close" alt="닫기"/>
-                                    <div className="coinRider-title-sub">
-                                        기사명 : {this.props.rider.riderName}
-                                    </div>
-                                    <div className="updatePassword-inner">
+                    <div className="coinRider-content">
+                        <div className="coinRider-title">
+                            출금 비밀번호 초기화
+                        </div>
+                        <img onClick={close} src={require('../../../img/login/close.png').default} className="coinRider-close" alt="닫기" />
+                        <div className="coinRider-title-sub">
+                            기사명 : {this.props.rider.riderName}
+                        </div>
+                        <div className="updatePassword-inner">
 
-                                            <div className="twl coinRider-list" style={{marginRight:5}}>
-                                                <td>출금 비밀번호</td>
-                                                    <FormItem
-                                                        name="coinBalance"
-                                                        rules={[{ required: true, message: "0건." }]}
-                                                    >
-                                                        <Input style={{width:100}}/>
-                                                    </FormItem>
-                                            </div>
-
-                                    </div>
-
-                                    <div className="coinRider-btn-01">
-                                        <Button
-                                            className="tabBtn coinRider-btn"
-                                            onClick={() => { }}
-                                        >설정</Button>
-
-
-                                    </div>
-
-
-                                </div>
+                            <div className="twl coinRider-list" style={{ marginRight: 5 }}>
+                                <td>출금 비밀번호</td>
+                                <FormItem
+                                    name="coinBalance"
+                                    rules={[{ required: true, message: "0건." }]}
+                                >
+                                    <Input style={{ width: 100 }} />
+                                </FormItem>
                             </div>
-                        </React.Fragment>
+
+                        </div>
+
+                        <div className="coinRider-btn-01">
+                            <Button
+                                className="tabBtn coinRider-btn"
+                                onClick={() => { }}
+                            >설정</Button>
+
+
+                        </div>
+
+
+                    </div>
+                </div>
+            </React.Fragment>
 
         )
     }

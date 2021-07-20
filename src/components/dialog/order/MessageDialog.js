@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Image } from 'antd';
 import '../../../css/modal.css';
+import '../../../css/modal_m.css';
 
 class MessageDialog extends Component {
     constructor(props) {

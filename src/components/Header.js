@@ -1,11 +1,12 @@
 import {
-  CopyOutlined,SkinOutlined,
+  CopyOutlined, SkinOutlined,
   PhoneOutlined, SettingOutlined, TeamOutlined
 } from "@ant-design/icons";
 import { Layout, Modal } from "antd";
 import React from "react";
 import { connect } from "react-redux";
-import { withRouter } from "react-router-dom";
+import { comma } from '../lib/util/numberUtil';
+import { withRouter, Link } from "react-router-dom";
 import { login, logout } from "../actions/loginAction";
 import { httpPost, httpUrl } from "../api/httpClient";
 
@@ -62,10 +63,11 @@ class Header extends React.Component {
         icon: <TeamOutlined />,
         url: "/rider/RiderMain",
       },
-      { idx: 4, 
-        name: '상품관리', 
-        icon: <SkinOutlined />, 
-        url: "/mall/MallMain" 
+      {
+        idx: 4,
+        name: '상품관리',
+        icon: <SkinOutlined />,
+        url: "/mall/MallMain"
       },
       {
         idx: 5,
@@ -107,6 +109,38 @@ class Header extends React.Component {
               );
             })}
           </div>
+          {/* <div className="header"> 모바일 햄버거
+            <div className="header-top-menu mobile">
+              <div className="ham-menu" onClick={() => { this.setState({ openSlideMenu: 1 }) }}>
+                <div /><div /><div />
+              </div>
+
+              <div className="header-logo">
+                <Link to='/receptionstatus'><img src={require('../img/header/header_logo-m-02.png').default} alt="logo" /></Link>
+              </div>
+            </div>
+
+            {this.state.openSlideMenu === 1 &&
+              <div className="slide-menu-overaly mobile" onClick={() => { this.setState({ openSlideMenu: 0 }) }}>
+                <div className="slide-menu" >
+                  <div>
+                    <div> <img src={require('../img/header/reset.png').default} alt="close" /></div>
+                    <div> <img src={require('../img/header/shop.png').default} alt="shop" />  </div>
+
+
+                  </div>
+
+                  <div>
+                    <Link to='/receptionStatus'><div>  접수현황 </div></Link>
+                    <Link to='/franchiseMain'><div> 가맹점관리 </div></Link>
+                    <Link to='/riderMain'><div>  라이더관리 </div></Link>
+
+                    <div onClick={() => { this.logout() }}> <img src={require('../img/header/logout.png').default} alt="logout" /> 로그아웃 </div>
+                  </div>
+
+                </div>
+              </div>
+            } </div> 모바일버전 끝 */}
 
           <div className="menu-right">
             <div style={{ display: "inline-block" }}>

@@ -3,9 +3,10 @@ import {
     Form, Input, Button
 } from "antd";
 import '../../../css/modal.css';
+import '../../../css/modal_m.css';
 import { connect } from "react-redux";
 import { httpUrl, httpPost } from '../../../api/httpClient';
-import { customAlert, customError} from "../../../api/Modals";
+import { customAlert, customError } from "../../../api/Modals";
 const FormItem = Form.Item;
 
 class SurchargeFrGroupDialog extends Component {
@@ -26,7 +27,7 @@ class SurchargeFrGroupDialog extends Component {
 
     componentDidMount() {
     }
-    
+
     handleTableChange = (pagination) => {
         console.log(pagination)
         const pager = { ...this.state.pagination };
@@ -48,19 +49,19 @@ class SurchargeFrGroupDialog extends Component {
             branchIdx: this.props.branchIdx,
             settingGroupName: form.getFieldValue("settingGroupName")
         })
-        .then((res) => {
-            console.log(res)
-            if (res.result === "SUCCESS" && res.data === "SUCCESS") {
-                customAlert("새로운 그룹 추가", 
-                form.getFieldValue("settingGroupName")+"그룹을 추가 하였습니다.")
-                this.handleClear()
-                this.props.close()
-            }
-            else {
-                customError("목록 에러", 
-                "에러가 발생하여 삭제할수 없습니다.")
-            }
-        })
+            .then((res) => {
+                console.log(res)
+                if (res.result === "SUCCESS" && res.data === "SUCCESS") {
+                    customAlert("새로운 그룹 추가",
+                        form.getFieldValue("settingGroupName") + "그룹을 추가 하였습니다.")
+                    this.handleClear()
+                    this.props.close()
+                }
+                else {
+                    customError("목록 에러",
+                        "에러가 발생하여 삭제할수 없습니다.")
+                }
+            })
     }
 
     render() {
@@ -79,7 +80,7 @@ class SurchargeFrGroupDialog extends Component {
                                         그룹 추가
                                     </div>
                                     <img onClick={close} src={require('../../../img/login/close.png').default}
-                                        className="addRider-close" alt='close'/>
+                                        className="addRider-close" alt='close' />
 
                                     <Form ref={this.formRef} onFinish={this.handleSubmit}>
                                         <div className="surchargeGrouplayout">

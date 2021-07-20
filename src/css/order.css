@@ -1,4 +1,12 @@
-.tabBtn {
+@media screen and (min-width: 1200px) {
+  .desk {
+  }
+
+  .mobile {
+    display: none !important;
+  }
+  
+  .tabBtn {
   margin-left: 10px;
 }
 
@@ -119,4 +127,5 @@
 }
 #reception-table .ant-table .ant-table-thead > tr > th:last-child {
   padding-right: 20px !important;
+}
 }

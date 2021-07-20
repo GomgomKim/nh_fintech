@@ -2,10 +2,12 @@ import { Button, Checkbox, Form, Input, Modal, Table } from "antd";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { httpGet, httpPost, httpUrl } from "../../../api/httpClient";
-import { blindComplete, blindError, unBlindComplete, unBlindError,
+import {
+    blindComplete, blindError, unBlindComplete, unBlindError,
     unBlindAgree, unBlindDeny, unBlindAgreeError
 } from "../../../api/Modals";
 import '../../../css/modal.css';
+import '../../../css/modal_m.css';
 import { blockStatusString, blockString, frRiderString } from '../../../lib/util/codeUtil';
 import { formatDate } from "../../../lib/util/dateUtil";
 import SelectBox from '../../input/SelectBox';
@@ -30,7 +32,7 @@ class BlindControlDialog extends Component {
             searchFranchiseOpen: false,
             blindDirection: 0,
             // blindStatus: [0,1,2,3],
-            direction: [1,2]
+            direction: [1, 2]
         };
         this.formRef = React.createRef();
     }
@@ -54,7 +56,7 @@ class BlindControlDialog extends Component {
         }, () => this.getList());
     };
 
-    
+
     getList = () => {
         let pageNum = this.state.pagination.current;
         let pageSize = this.state.pagination.pageSize;
@@ -67,10 +69,10 @@ class BlindControlDialog extends Component {
             pagination.current = res.data.currentPage;
             pagination.total = res.data.totalCount;
             this.setState({
-              list: res.data.riderFrBlocks,
-            //   pagination,
+                list: res.data.riderFrBlocks,
+                //   pagination,
             });
-          });
+        });
     };
 
     // getList = () => {
@@ -98,8 +100,8 @@ class BlindControlDialog extends Component {
     //         }
     //     })
     // };
-    
-    handleSubmit = () =>{
+
+    handleSubmit = () => {
         const form = this.formRef.current;
         let self = this;
         Modal.confirm({
@@ -114,8 +116,8 @@ class BlindControlDialog extends Component {
                     frIdx: self.state.selectedFr.idx,
                     memo: form.getFieldValue('memo'),
                     riderIdx: self.state.selectedRider.idx
-                }).then((result) =>{
-                    if(result.result === "SUCCESS" && result.data === "SUCCESS") {
+                }).then((result) => {
+                    if (result.result === "SUCCESS" && result.data === "SUCCESS") {
                         blindComplete();
                         self.handleClear();
                         self.getList();
@@ -129,20 +131,20 @@ class BlindControlDialog extends Component {
                         blindError();
                     }
                 })
-                .catch((e) => {
-                    blindError();
-                });    
+                    .catch((e) => {
+                        blindError();
+                    });
             }
         })
     }
-    
+
     handleClear = () => {
         this.formRef.current.resetFields();
     };
-    
+
     onDeleteCheck = (e) => {
         this.setState({ deletedCheck: e.target.checked }
-        ,() => { this.getList() }
+            , () => { this.getList() }
         );
     };
 
@@ -161,7 +163,7 @@ class BlindControlDialog extends Component {
                         .then((result) => {
                             if (result.result === "SUCCESS") {
                                 unBlindComplete();
-                            self.getList();
+                                self.getList();
                             } else {
                                 unBlindError();
                             }
@@ -196,7 +198,7 @@ class BlindControlDialog extends Component {
                         .then((result) => {
                             if (result.result === "SUCCESS") {
                                 unBlindAgree();
-                            self.getList();
+                                self.getList();
                             } else {
                                 unBlindAgreeError();
                             }
@@ -223,11 +225,11 @@ class BlindControlDialog extends Component {
                             if (result.result === "SUCCESS") {
                                 httpPost(httpUrl.deleteBlind, [], {
                                     idx: idx,
-                                }).then(()=>{
+                                }).then(() => {
                                     unBlindDeny();
                                     self.getList();
-                                }) 
-                                
+                                })
+
                             } else {
                                 unBlindAgreeError();
                             }
@@ -264,13 +266,13 @@ class BlindControlDialog extends Component {
                 title: "차단자",
                 dataIndex: "direction",
                 className: "table-column-center",
-                render: (data, row) => 
-                <div>
-                    {data === 1 ? 
-                        <div style={{color: 'blue', fontWeight:'bold'}}>기사</div> 
-                        : <div style={{color: 'red', fontWeight:'bold'}}>가맹점</div> 
-                    }
-                </div>
+                render: (data, row) =>
+                    <div>
+                        {data === 1 ?
+                            <div style={{ color: 'blue', fontWeight: 'bold' }}>기사</div>
+                            : <div style={{ color: 'red', fontWeight: 'bold' }}>가맹점</div>
+                        }
+                    </div>
             },
             {
                 title: "가맹점명",
@@ -308,10 +310,10 @@ class BlindControlDialog extends Component {
                 render:
                     (data, row) => (
                         <div>
-                            { row.status !== 1 ? 
-                                data !== true ? blockString[1] : blockString[2] : 
-                                row.status === 1 && data == true ? 
-                                blockString[4] : blockString[0]}
+                            {row.status !== 1 ?
+                                data !== true ? blockString[1] : blockString[2] :
+                                row.status === 1 && data == true ?
+                                    blockString[4] : blockString[0]}
                         </div>
                     ),
             },
@@ -319,170 +321,170 @@ class BlindControlDialog extends Component {
                 title: "처리",
                 className: "table-column-center",
                 render: (data, row) =>
-                <>
-                    {/* {console.log(row.idx)} */}
-                    { row.status === 1 && 
-                      row.direction === 1 &&
-                      row.deleted !== true &&
-                    <div>
-                        <SelectBox
-                            value={blockStatusString[data]}
-                            code={Object.keys(blockStatusString)}
-                            codeString={blockStatusString}
-                            placeholder={"승인대기"}
-                            onChange={(value) => {
-                                console.log(value, row.status);
-                                if (value !== row.status.toString()) {
-                                this.onChangeDeletedStatus(row.idx, value);
-                                }
-                            }}
-                        />
-                    </div>
-                    }
-
-                    {row.status === 2 && 
-                    <div>
-                        {row.deleted !== true ?
-                            <Button
-                            onClick={(value) => {
-                                if (parseInt(value) !== row.deleted) {
-                                    this.onDelete(row.idx, row.deleted);
-                                }
-                            }}>해제</Button>
-                            :
-                            ''
+                    <>
+                        {/* {console.log(row.idx)} */}
+                        {row.status === 1 &&
+                            row.direction === 1 &&
+                            row.deleted !== true &&
+                            <div>
+                                <SelectBox
+                                    value={blockStatusString[data]}
+                                    code={Object.keys(blockStatusString)}
+                                    codeString={blockStatusString}
+                                    placeholder={"승인대기"}
+                                    onChange={(value) => {
+                                        console.log(value, row.status);
+                                        if (value !== row.status.toString()) {
+                                            this.onChangeDeletedStatus(row.idx, value);
+                                        }
+                                    }}
+                                />
+                            </div>
                         }
-                    </div>
-                    }
 
-              </>
+                        {row.status === 2 &&
+                            <div>
+                                {row.deleted !== true ?
+                                    <Button
+                                        onClick={(value) => {
+                                            if (parseInt(value) !== row.deleted) {
+                                                this.onDelete(row.idx, row.deleted);
+                                            }
+                                        }}>해제</Button>
+                                    :
+                                    ''
+                                }
+                            </div>
+                        }
 
-              },
+                    </>
+
+            },
         ];
 
         const { close } = this.props;
         return (
 
-                        <React.Fragment>
-                            <div className="Dialog-overlay" onClick={close} />
-                            <div className="blind-Dialog">
-                                <div className="blind-container">
-                                    <div className="blind-title">
-                                        블라인드 관리
-                                    </div>                             
-                                        <Checkbox
-                                            style={{marginRight:5, marginLeft: 20}}
-                                            defaultChecked={this.state.deletedCheck ? "checked" : ""}
-                                            onChange={this.onDeleteCheck} />
-                                        <div className="blind-check-text">
-                                            해제 포함
-                                        </div>
-                                    
-                                    <img onClick={close} src={require('../../../img/login/close.png').default} 
-                                    className="blind-close" alt='close'/>
+            <React.Fragment>
+                <div className="Dialog-overlay" onClick={close} />
+                <div className="blind-Dialog">
+                    <div className="blind-container">
+                        <div className="blind-title">
+                            블라인드 관리
+                        </div>
+                        <Checkbox
+                            style={{ marginRight: 5, marginLeft: 20 }}
+                            defaultChecked={this.state.deletedCheck ? "checked" : ""}
+                            onChange={this.onDeleteCheck} />
+                        <div className="blind-check-text">
+                            해제 포함
+                        </div>
 
-                                    <div className="blindLayout">
-                                        <div className="listBlock">
-                                            <Table
-                                                // rowKey={(record) => record.idx}
-                                                dataSource={this.state.list}
-                                                columns={columns}
-                                                pagination={this.state.pagination}
-                                                onChange={this.handleTableChange}
-                                            />
-                                        </div>
+                        <img onClick={close} src={require('../../../img/login/close.png').default}
+                            className="blind-close" alt='close' />
 
-                                    </div>
-                                    <div className="blindWrapper bot">
-                                        <Form ref={this.formRef} onFinish={this.handleSubmit}>
-                                            <div className="contentBlock">
-                                                <div className="mainTitle">
-                                                    차단자
-                                            </div>
-                                                <FormItem
-                                                    name="direction"
-                                                    className="selectItem"
-                                                    rules={[{ required: true, message: "차단자를 선택해주세요." }]}
-                                                >
-                                                    <SelectBox
-                                                        placeholder={'선택'}
-                                                        style={{ marginLeft:10 }}
-                                                        value={frRiderString[this.state.blindDirection]}
-                                                        code={Object.keys(frRiderString)}
-                                                        codeString={frRiderString}
-                                                        onChange={(value) => {
-                                                            if (parseInt(value) !== this.state.blindDirection) {
-                                                                this.setState({ blindDirection: parseInt(value) })
-                                                                // alert(value)
-                                                            }
-                                                        }}
-                                                    />
-                                                </FormItem>
-                                                <div className="subTitle">
-                                                    가맹점명
-                                                </div>
-                                                {this.state.searchFranchiseOpen &&
-                                                <SearchFranchiseDialog
-                                                    close={this.closeSearchFranchiseModal}
-                                                    callback={(data) => this.setState({
-                                                        selectedFr: data
-                                                    })}
-                                                />}
-                                                <FormItem
-                                                    name="frName"
-                                                    className="selectItem"
-                                                >
-                                                    <Input placeholder="가맹점명 입력" className="override-input sub" required
-                                                        value={ this.state.selectedFr ? this.state.selectedFr.frName : ""}>
-                                                    </Input>
-                                                    <Button onClick={this.openSearchFranchiseModal}>
-                                                    조회
-                                                    </Button>
-                                                </FormItem>
-
-                                                <div className="subTitle">
-                                                    기사명
-                                                </div>
-                                                {this.state.searchRiderOpen &&
-                                                <SearchRiderDialog
-                                                    close={this.closeSearchRiderModal}
-                                                    callback={(data) => this.setState({
-                                                        selectedRider: data
-                                                    })}
-                                                />}
-                                                <FormItem
-                                                    name="riderName"
-                                                    className="selectItem"
-                                                >
-                                                     <Input placeholder="기사명 입력" className="override-input sub" required
-                                                     value={ this.state.selectedRider ? this.state.selectedRider.riderName : "" }>
-                                                    </Input>
-                                                    <Button onClick={this.openSearchRiderModal}>
-                                                    조회
-                                                    </Button>
-                                                </FormItem>
-
-                                                <div className="subTitle">
-                                                    메모
-                                                </div>
-                                                <FormItem
-                                                    name="memo"
-                                                    className="selectItem"
-                                                    rules={[{ required: true, message: "차단 메모를 입력해주세요." }]}
-                                                >
-                                                    <Input placeholder="차단메모 입력" className="override-input sub">
-                                                    </Input>
-                                                </FormItem>
-
-                                                <Button type="primary" htmlType="submit" className="callTab">
-                                                    차단하기
-                                            </Button>
-                                            </div>
-                                        </Form>
-                                    </div>
-                                </div>
+                        <div className="blindLayout">
+                            <div className="listBlock">
+                                <Table
+                                    // rowKey={(record) => record.idx}
+                                    dataSource={this.state.list}
+                                    columns={columns}
+                                    pagination={this.state.pagination}
+                                    onChange={this.handleTableChange}
+                                />
                             </div>
-                        </React.Fragment>
+
+                        </div>
+                        <div className="blindWrapper bot">
+                            <Form ref={this.formRef} onFinish={this.handleSubmit}>
+                                <div className="contentBlock">
+                                    <div className="mainTitle">
+                                        차단자
+                                    </div>
+                                    <FormItem
+                                        name="direction"
+                                        className="selectItem"
+                                        rules={[{ required: true, message: "차단자를 선택해주세요." }]}
+                                    >
+                                        <SelectBox
+                                            placeholder={'선택'}
+                                            style={{ marginLeft: 10 }}
+                                            value={frRiderString[this.state.blindDirection]}
+                                            code={Object.keys(frRiderString)}
+                                            codeString={frRiderString}
+                                            onChange={(value) => {
+                                                if (parseInt(value) !== this.state.blindDirection) {
+                                                    this.setState({ blindDirection: parseInt(value) })
+                                                    // alert(value)
+                                                }
+                                            }}
+                                        />
+                                    </FormItem>
+                                    <div className="subTitle">
+                                        가맹점명
+                                    </div>
+                                    {this.state.searchFranchiseOpen &&
+                                        <SearchFranchiseDialog
+                                            close={this.closeSearchFranchiseModal}
+                                            callback={(data) => this.setState({
+                                                selectedFr: data
+                                            })}
+                                        />}
+                                    <FormItem
+                                        name="frName"
+                                        className="selectItem"
+                                    >
+                                        <Input placeholder="가맹점명 입력" className="override-input sub" required
+                                            value={this.state.selectedFr ? this.state.selectedFr.frName : ""}>
+                                        </Input>
+                                        <Button onClick={this.openSearchFranchiseModal}>
+                                            조회
+                                        </Button>
+                                    </FormItem>
+
+                                    <div className="subTitle">
+                                        기사명
+                                    </div>
+                                    {this.state.searchRiderOpen &&
+                                        <SearchRiderDialog
+                                            close={this.closeSearchRiderModal}
+                                            callback={(data) => this.setState({
+                                                selectedRider: data
+                                            })}
+                                        />}
+                                    <FormItem
+                                        name="riderName"
+                                        className="selectItem"
+                                    >
+                                        <Input placeholder="기사명 입력" className="override-input sub" required
+                                            value={this.state.selectedRider ? this.state.selectedRider.riderName : ""}>
+                                        </Input>
+                                        <Button onClick={this.openSearchRiderModal}>
+                                            조회
+                                        </Button>
+                                    </FormItem>
+
+                                    <div className="subTitle">
+                                        메모
+                                    </div>
+                                    <FormItem
+                                        name="memo"
+                                        className="selectItem"
+                                        rules={[{ required: true, message: "차단 메모를 입력해주세요." }]}
+                                    >
+                                        <Input placeholder="차단메모 입력" className="override-input sub">
+                                        </Input>
+                                    </FormItem>
+
+                                    <Button type="primary" htmlType="submit" className="callTab">
+                                        차단하기
+                                    </Button>
+                                </div>
+                            </Form>
+                        </div>
+                    </div>
+                </div>
+            </React.Fragment>
 
         )
     }
