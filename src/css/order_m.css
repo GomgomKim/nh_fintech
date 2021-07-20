@@ -161,4 +161,21 @@
     height: 1px;
     background-color: #d1d1d1;
   }
+
+  /*가맹점관리-*/
+  .dataTableLayout2 {
+    width: 310px;
+    margin-top: 20px;
+  }
+  /* .ant-table-row-expand-icon-cell{
+    width:10px!important;
+  } */
+  .franchiseContainer{
+    width:310px;
+    overflow:scroll;
+  }
+  .droptable_fr {
+    width: 308px;
+  }
+ 
 }
