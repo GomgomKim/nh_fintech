@@ -584,38 +584,6 @@ class RiderMain extends Component {
             </div>
           ),
         },
-<<<<<<< HEAD
-        {
-          title: "출금등록",
-          dataIndex: "walletId",
-          className: "table-column-center mobile",
-          render: (data, row) => (
-            <div>
-              {data ? (
-                "완료"
-              ) : (
-                <Button
-                  onClick={() => {
-                    httpPost(httpUrl.createUserWallet, [row.idx], {})
-                      .then((response) => {
-                        console.log(response);
-                        if (response.data.resultCd == "0000") {
-                          this.getList();
-                        } else {
-                          alert(response.data.advanceMsg);
-                        }
-                      })
-                      .catch((e) => { });
-                  }}
-                >
-                  등록
-                </Button>
-              )}
-            </div>
-          ),
-        },
-=======
->>>>>>> 268429d50423a44df03f12198e33fef8e929d097
       ];
       return (
         <Table
