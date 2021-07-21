@@ -266,10 +266,11 @@ class RiderMain extends Component {
         dataIndex: "riderName",
         className: "table-column-center mobile",
         render: (data, row) => (
-          <div>
-            {row.riderName}({row.id}) {riderLevelText[row.riderLevel]}(
-            {row.riderSettingGroup.settingGroupName})
-            <br />
+          <div className="status-box">
+            <p>
+              {row.riderName}({row.id}) {riderLevelText[row.riderLevel]}(
+              {row.riderSettingGroup.settingGroupName})
+            </p>
             {row.phone} / {riderStatusCode[row.riderStatus]} <br />
             {formatDateToDay(row.createDate)} /{" "}
             {formatDateToDay(row.deleteDate)} <br />
@@ -308,17 +309,17 @@ class RiderMain extends Component {
       {
         title: "기사명",
         dataIndex: "riderName",
-        className: "table-column-center desk",
+        className: "table-column-center desk tableSub",
       },
       {
         title: "아이디",
         dataIndex: "id",
-        className: "table-column-center desk",
+        className: "table-column-center desk tableSub",
       },
       {
         title: "직급",
         dataIndex: "riderLevel",
-        className: "table-column-center desk",
+        className: "table-column-center desk tableSub",
 
         render: (data) => <div>{riderLevelText[data]}</div>,
       },
@@ -583,6 +584,7 @@ class RiderMain extends Component {
             </div>
           ),
         },
+<<<<<<< HEAD
         {
           title: "출금등록",
           dataIndex: "walletId",
@@ -612,6 +614,8 @@ class RiderMain extends Component {
             </div>
           ),
         },
+=======
+>>>>>>> 268429d50423a44df03f12198e33fef8e929d097
       ];
       return (
         <Table
@@ -705,7 +709,7 @@ class RiderMain extends Component {
             )}
           </div>
 
-          <div className="dataTableLayout">
+          <div id="#rider-dataTableLayout" className="dataTableLayout">
             <Table
               rowKey={(record) => record.idx}
               dataSource={this.state.results}

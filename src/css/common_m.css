@@ -1,32 +1,30 @@
-@media screen and (max-width: 1199px) and (min-width:300px){
-    .desk {
-        display: none !important;
-    }
-  
-    .mobile {
-    }
-  
-    
-    
-    .ant-table-content thead th {
+@media screen and (max-width: 1199px) and (min-width: 300px) {
+  .desk {
+    display: none !important;
+  }
+
+  .mobile {
+  }
+
+  .ant-table-content thead th {
     /* 흐릿하게 */
     /* background-color:rgba( 253, 220, 0, 0.4 ) !important; */
     background-color: black !important;
     color: white !important;
   }
-  
+
   .ant-radio-checked .ant-radio-inner {
     border-color: #fddc00 !important;
   }
-  
+
   .ant-radio-checked .ant-radio-inner:after {
     background-color: #fddc00 !important;
   }
-  
+
   .ant-radio:hover .ant-radio-inner {
     border-color: #fddc00 !important;
   }
-  
+
   .ant-input-search-button {
     background-color: #222 !important;
     border-color: #222 !important;
@@ -39,14 +37,13 @@
   }
   .ant-table-thead > tr > th:first-child {
     padding: 5px !important;
-    height:40px!important;
+    height: 40px !important;
   }
 
-  .ant-table-container table > thead > tr:first-child th:first-child{
-    width:5%!important;
+  .ant-table-container table > thead > tr:first-child th:first-child {
+    /* width:5%!important; */
     /* border:1px solid #fff; */
   }
-
 
   .ant-table-expanded-row .ant-table-thead > tr > th {
     background-color: #e0e0e0 !important;
@@ -55,4 +52,4 @@
   .ant-table-expanded-row .ant-table-wrapper {
     margin-bottom: 30px !important;
   }
-  }
+}
