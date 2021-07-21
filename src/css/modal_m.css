@@ -3683,13 +3683,13 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 1000px;
+     width: 320px; 
     border-radius: 30px;
     z-index: 2;
   }
   .blind-container {
     background-color: white;
-    padding: 30px 30px 70px 30px;
+    padding: 15px 15px 65px 15px;
     text-align: left;
     color: #777;
   }
@@ -3704,7 +3704,7 @@
     color: #333;
     text-align: right;
     display: inline-block;
-    font-size: 25px;
+    font-size: 18px;
     line-height: 30px;
     vertical-align: middle;
   }
@@ -3719,6 +3719,10 @@
     cursor: pointer;
     /* display: inline-block; */
     float: right;
+  }
+  .blind-check{
+    float:right;
+    margin-bottom:10px;
   }
   .blindLayout {
     margin-top: 20px;
@@ -3754,18 +3758,20 @@
     font-weight: bold;
     color: #1890ff;
   }
+ 
   .blindWrapper.bot .mainTitle {
     /* font-size: 20px; */
     vertical-align: middle;
     font-weight: bold;
-    /* width: 75px; */
+    width: 70px;
+    margin-bottom:10px;
   }
   .blindWrapper.bot .subTitle {
     font-size: 18px;
     vertical-align: middle;
     font-weight: bold;
-    /* width: 70px; */
-    margin-left: 28px;
+    width: 70px;
+    margin-bottom:10px;
   }
   .blindWrapper.bot .ant-checkbox-inner {
     width: 20px;
