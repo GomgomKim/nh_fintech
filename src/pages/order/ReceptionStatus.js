@@ -601,7 +601,7 @@ class ReceptionStatus extends Component {
 
                 const orderStatuseChangeApiCode = [
                   "",
-                  "",
+                  httpUrl.orderAssignCancel,
                   "",
                   httpUrl.orderPickup,
                   httpUrl.orderComplete,
