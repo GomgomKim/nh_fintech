@@ -5,127 +5,129 @@
   .mobile {
     display: none !important;
   }
-  
+
   .tabBtn {
-  margin-left: 10px;
-}
+    margin-left: 10px;
+  }
 
-.arriveArea {
-  text-align: left;
-}
+  .arriveArea {
+    text-align: left;
+  }
 
-.delayTab {
-  margin-left: 0px !important;
-}
+  .delayTab {
+    margin-left: 0px !important;
+  }
 
-.orderTab {
-  margin-right: 20px !important;
-}
+  .orderTab {
+    margin-right: 20px !important;
+  }
 
-.selectLayout {
-  margin-top: 20px !important;
-  display: inline-block;
-}
+  .selectLayout {
+    margin-top: 20px !important;
+    display: inline-block;
+  }
 
-.filterTab {
-  margin-left: 20px !important;
-}
+  .filterTab {
+    margin-left: 20px !important;
+  }
 
-.dataTableLayout {
-  margin-top: 40px;
-}
+  .dataTableLayout {
+    margin-top: 40px;
+  }
+  .dataTableLayout2 {
+    margin-top: 40px;
+  }
+  .riderTableLayout {
+    min-height: 200px;
+    position: absolute;
+    top: 20px;
+    left: 10px;
+    right: 10px;
+    z-index: 80;
+  }
 
-.riderTableLayout {
-  min-height: 200px;
-  position: absolute;
-  top: 20px;
-  left: 10px;
-  right: 10px;
-  z-index: 80;
-}
+  .orderTab {
+    margin-left: 0px !important;
+  }
 
-.orderTab {
-  margin-left: 0px !important;
-}
+  .textLayout {
+    height: 30px;
+  }
 
-.textLayout {
-  height: 30px;
-}
+  .riderText {
+    margin-left: 120px;
+    font-size: 18px;
+    font-family: NotoSansBold;
+  }
 
-.riderText {
-  margin-left: 120px;
-  font-size: 18px;
-  font-family: NotoSansBold;
-}
+  .mapLayout {
+    width: 100%;
+    height: 600px;
+    float: left;
+  }
+  .regist-call-map {
+    height: 200px;
+    overflow: hidden;
+  }
 
-.mapLayout {
-  width: 100%;
-  height: 600px;
-  float: left;
-}
-.regist-call-map {
-  height: 200px;
-  overflow: hidden;
-}
+  .map-navermap {
+    border-bottom-left-radius: 30px;
+    border-bottom-right-radius: 30px;
+    width: 100%;
+    height: 100%;
+  }
 
-.map-navermap {
-  border-bottom-left-radius: 30px;
-  border-bottom-right-radius: 30px;
-  width: 100%;
-  height: 100%;
-}
+  .riderName {
+    cursor: pointer;
+    color: blue;
+    text-decoration: underline;
+  }
 
-.riderName {
-  cursor: pointer;
-  color: blue;
-  text-decoration: underline;
-}
+  .reception-box .ant-checkbox-inner {
+    width: 25px;
+    height: 25px;
+  }
+  .reception-box .ant-checkbox-inner::after {
+    width: 15px;
+    height: 15px;
+  }
 
-.reception-box .ant-checkbox-inner {
-  width: 25px;
-  height: 25px;
-}
-.reception-box .ant-checkbox-inner::after {
-  width: 15px;
-  height: 15px;
-}
+  .reception-box .ant-checkbox-wrapper {
+    height: 32px;
+    margin-left: 20px !important;
+    vertical-align: top;
+  }
 
-.reception-box .ant-checkbox-wrapper {
-  height: 32px;
-  margin-left: 20px !important;
-  vertical-align: top;
-}
+  .reception-box .span1 {
+    font-size: 16px;
+    margin-left: 10px;
+  }
 
-.reception-box .span1 {
-  font-size: 16px;
-  margin-left: 10px;
-}
+  .table-red {
+    background-color: #fed8d6;
+  }
+  .table-gray {
+    background-color: gray;
+  }
+  .table-blue {
+    background-color: #d6edfe;
+    /* color: white; */
+  }
+  .table-white {
+    background-color: white;
+  }
 
-.table-red {
-  background-color: #fed8d6;
-}
-.table-gray {
-  background-color: gray;
-}
-.table-blue {
-  background-color: #d6edfe;
-  /* color: white; */
-}
-.table-white {
-  background-color: white;
-}
+  .btnLayout {
+    margin-top: 20px;
+  }
 
-.btnLayout {
-  margin-top: 20px;
-}
-
-#reception-table .ant-table .ant-table-tbody > tr > td:first-child {
-  padding-left: 20px !important;
-}
-#reception-table .ant-table .ant-table-tbody > tr > td:last-child {
-  padding-right: 20px !important;
-}
-#reception-table .ant-table .ant-table-thead > tr > th:last-child {
-  padding-right: 20px !important;
-}
+  #reception-table .ant-table .ant-table-tbody > tr > td:first-child {
+    padding-left: 20px !important;
+  }
+  #reception-table .ant-table .ant-table-tbody > tr > td:last-child {
+    padding-right: 20px !important;
+  }
+  #reception-table .ant-table .ant-table-thead > tr > th:last-child {
+    padding-right: 20px !important;
+  }
 }

@@ -6,7 +6,7 @@ import {
   MessageOutlined,
   NotificationFilled,
   PhoneOutlined,
-  PushpinOutlined
+  PushpinOutlined,
 } from "@ant-design/icons";
 import {
   Button,
@@ -16,7 +16,7 @@ import {
   Modal,
   Popover,
   Select,
-  Table
+  Table,
 } from "antd";
 import moment from "moment";
 import React, { Component } from "react";
@@ -36,13 +36,15 @@ import RegistCallDialog from "../../components/dialog/order/RegistCallDialog";
 import TimeDelayDialog from "../../components/dialog/order/TimeDelayDialog";
 import SendSnsDialog from "../../components/dialog/rider/SendSnsDialog";
 import "../../css/common.css";
+import "../../css/common_m.css";
 import "../../css/order.css";
+import "../../css/order_m.css";
 import {
   arriveReqTime,
   deliveryStatusCode,
   modifyType,
   paymentMethod,
-  rowColorName
+  rowColorName,
 } from "../../lib/util/codeUtil";
 import { formatDate } from "../../lib/util/dateUtil";
 import { comma } from "../../lib/util/numberUtil";
@@ -443,15 +445,113 @@ class ReceptionStatus extends Component {
       {
         title: "주문번호",
         dataIndex: "idx",
-        className: "table-column-center",
+        className: "table-column-center desk",
         key: (row) => `idx:${row.idx}`,
         sorter: (a, b) => a.idx - b.idx,
         render: (data) => <div>{data}</div>,
       },
+
+      {
+        title: "주문내용",
+        dataIndex: "idx",
+        className: "table-column-center mobile",
+        render: (data, row) => (
+          <div className="status-box">
+            No.{row.idx} / {arriveReqTime[row.arriveReqTime]} /{" "}
+            {row.itemPrepared ? "완료" : "준비중"} <br />
+            <hr className="light-hr" />
+            접수시간 :{row.orderDate}
+            <br />
+            배차시간 :{row.assignDate}
+            <br />
+            픽업시간 :{row.orderStatus >= 3 ? formatDate(row.pickupDate) : "-"}
+            <br />
+            완료시간 :
+            {row.orderStatus >= 4 ? formatDate(row.completeDate) : "-"}
+            <hr className="light-hr" />
+            {row.destAddr1 + " " + row.destAddr2} <br />
+            {row.riderName} /{" "}
+            {paymentMethod[row.orderPayments[0]["paymentMethod"]]}
+            <br />
+            가격 : {comma(row.orderPrice)} / 총요금 : {comma(row.deliveryPrice)}
+            <br />
+            기본요금 : {comma(row.basicDeliveryPrice)} / 할증요금 :{" "}
+            {comma(row.extraDeliveryPrice)}
+            <hr className="light-hr" />
+            <div className="table-column-sub">
+              상태 :{" "}
+              <Select
+                defaultValue={data}
+                value={row.orderStatus}
+                onChange={(value) => {
+                  if (!modifyType[row.orderStatus].includes(value)) {
+                    Modal.info({
+                      content: <div>상태를 바꿀 수 없습니다.</div>,
+                    });
+                    return;
+                  }
+                  // 대기중 -> 픽업중 변경 시 강제배차 알림
+                  if (row.orderStatus === 1 && value === 2) {
+                    Modal.info({
+                      content: <div>강제배차를 사용하세요.</div>,
+                    });
+                    return;
+                  }
+
+                  const orderStatuseChangeApiCode = [
+                    "",
+                    "",
+                    "",
+                    httpUrl.orderPickup,
+                    httpUrl.orderComplete,
+                    httpUrl.orderCancel,
+                  ];
+
+                  httpPost(orderStatuseChangeApiCode[value], [], {
+                    orderIdx: row.idx,
+                  })
+                    .then((res) => {
+                      if (res.result === "SUCCESS" && res.data === "SUCCESS") {
+                        Modal.info({
+                          title: "변경 성공",
+                          content: "주문상태가 변경되었습니다.",
+                        });
+                        this.getList();
+                      } else {
+                        Modal.info({
+                          title: "변경 실패",
+                          content: "주문상태 변경에 실패했습니다.",
+                        });
+                      }
+                    })
+                    .catch((e) => {
+                      Modal.info({
+                        title: "변경 실패",
+                        content: "주문상태 변경에 실패했습니다.",
+                      });
+
+                      throw e;
+                    });
+                }}
+              >
+                {deliveryStatusCode.map((value, index) => {
+                  if (index === 0) return <></>;
+                  else
+                    return (
+                      <Option key={index} value={index}>
+                        {value}
+                      </Option>
+                    );
+                })}
+              </Select>
+            </div>
+          </div>
+        ),
+      },
       {
         title: "상태",
         dataIndex: "orderStatus",
-        className: "table-column-center",
+        className: "table-column-center desk",
         key: (row) => `orderStatus:${row.orderStatus}`,
         filters: [
           {
@@ -550,7 +650,7 @@ class ReceptionStatus extends Component {
       {
         title: "요청시간",
         dataIndex: "arriveReqTime",
-        className: "table-column-center",
+        className: "table-column-center desk",
         key: (row) => `arriveReqTime:${row.arriveReqTime}`,
         sorter: (a, b) => a.arriveReqTime - b.arriveReqTime,
         render: (data) => <div>{arriveReqTime[data]}</div>,
@@ -558,7 +658,7 @@ class ReceptionStatus extends Component {
       {
         title: "음식준비",
         dataIndex: "itemPrepared",
-        className: "table-column-center",
+        className: "table-column-center desk",
         key: (row) => `itemPrepared:${row.itemPrepared}`,
         filters: [
           {
@@ -582,7 +682,7 @@ class ReceptionStatus extends Component {
       {
         title: "접수시간",
         dataIndex: "orderDate",
-        className: "table-column-center",
+        className: "table-column-center desk",
         key: (row) => `orderDate:${row.orderDate}`,
         sorter: (a, b) => moment(a.orderDate) - moment(b.orderDate),
         render: (data, row) => <div>{data}</div>,
@@ -590,7 +690,7 @@ class ReceptionStatus extends Component {
       {
         title: "배차시간",
         dataIndex: "assignDate",
-        className: "table-column-center",
+        className: "table-column-center desk",
         key: (row) => `assignDate:${row.assignDate}`,
         sorter: (a, b) => moment(a.assignDate) - moment(b.assignDate),
         render: (data, row) => <div>{data}</div>,
@@ -598,7 +698,7 @@ class ReceptionStatus extends Component {
       {
         title: "픽업시간",
         dataIndex: "pickupDate",
-        className: "table-column-center",
+        className: "table-column-center desk",
         key: (row) => `pickupDate:${row.pickupDate}`,
         sorter: (a, b) => moment(a.pickupDate) - moment(b.pickupDate),
         render: (data, row) => (
@@ -608,7 +708,7 @@ class ReceptionStatus extends Component {
       {
         title: "완료시간",
         dataIndex: "completeDate",
-        className: "table-column-center",
+        className: "table-column-center desk",
         key: (row) => `completeDate:${row.completeDate}`,
         sorter: (a, b) => moment(a.completeDate) - moment(b.completeDate),
         render: (data, row) => (
@@ -632,7 +732,7 @@ class ReceptionStatus extends Component {
       {
         title: "도착지",
         // dataIndex: "destAddr1",
-        className: "table-column-center",
+        className: "table-column-center desk",
         key: (row) => `destAddr1:${row.destAddr1}`,
         sorter: (a, b) =>
           (a.destAddr1 + a.destAddr2).localeCompare(b.destAddr1 + b.destAddr2),
@@ -645,7 +745,7 @@ class ReceptionStatus extends Component {
       {
         title: "기사명",
         dataIndex: "riderName",
-        className: "table-column-center",
+        className: "table-column-center desk",
         key: (row) => `riderName:${row.riderName}`,
         render: (data, row) => {
           const content = (
@@ -671,7 +771,7 @@ class ReceptionStatus extends Component {
       {
         title: "가격",
         dataIndex: "orderPrice",
-        className: "table-column-center",
+        className: "table-column-center desk",
         key: (row) => `orderPrice:${row.orderPrice}`,
         sorter: (a, b) => a.orderPrice - b.orderPrice,
         render: (data) => <div>{comma(data)}</div>,
@@ -679,7 +779,7 @@ class ReceptionStatus extends Component {
       {
         title: "총배달요금",
         dataIndex: "deliveryPrice",
-        className: "table-column-center",
+        className: "table-column-center desk",
         key: (row) => `deliveryPrice:${row.deliveryPrice}`,
         sorter: (a, b) => a.deliveryPrice - b.deliveryPrice,
         render: (data) => <div>{comma(data)}</div>,
@@ -687,7 +787,7 @@ class ReceptionStatus extends Component {
       {
         title: "기본배달요금",
         dataIndex: "basicDeliveryPrice",
-        className: "table-column-center",
+        className: "table-column-center desk",
         key: (row) => `basicDeliveryPrice:${row.basicDeliveryPrice}`,
         sorter: (a, b) => a.basicDeliveryPrice - b.basicDeliveryPrice,
         render: (data) => <div>{comma(data)}</div>,
@@ -696,7 +796,7 @@ class ReceptionStatus extends Component {
       {
         title: "할증배달요금",
         dataIndex: "extraDeliveryPrice",
-        className: "table-column-center",
+        className: "table-column-center desk",
         key: (row) => `extraDeliveryPrice:${row.extraDeliveryPrice}`,
         sorter: (a, b) => a.extraDeliveryPrice - b.extraDeliveryPrice,
         render: (data) => <div>{comma(data)}</div>,
@@ -705,13 +805,13 @@ class ReceptionStatus extends Component {
       {
         title: "결제방식",
         dataIndex: "orderPayments",
-        className: "table-column-center",
+        className: "table-column-center desk",
         key: (row) => `orderPayments:${row.orderPayments}`,
         render: (data, row) =>
           data.length > 1 ? (
             <Button
               onClick={() => this.openPaymentModal(data, row)}
-              // close={this.closePaymentModal}
+            // close={this.closePaymentModal}
             >
               보기
             </Button>
@@ -820,7 +920,7 @@ class ReceptionStatus extends Component {
         {
           title: "결제방식",
           dataIndex: "orderPayments",
-          className: "table-column-center",
+          className: "table-column-center desk",
           key: (row) => `orderPayments:${row.idx}`,
           render: (data, row) =>
             data.length > 1 ? (
@@ -862,7 +962,7 @@ class ReceptionStatus extends Component {
         {
           title: "메세지",
           dataIndex: "franchisePhoneNum",
-          className: "table-column-center",
+          className: "table-column-center desk",
           key: (row) => `franchisePhoneNum:${row.franchisePhoneNum}`,
           render: (data, row) => (
             <span>
@@ -893,7 +993,7 @@ class ReceptionStatus extends Component {
         {
           title: "주문수정",
           dataIndex: "updateOrder",
-          className: "table-column-center",
+          className: "table-column-center desk",
           key: (row) => `updateOrder:${row.updateOrder}`,
           render: (data, row) => (
             <Button
@@ -1035,7 +1135,7 @@ class ReceptionStatus extends Component {
             />
           )}
 
-          <div className="btnLayout">
+          <div className="btnLayout desk">
             {this.state.timeDelayOpen && (
               <TimeDelayDialog
                 branchInfo={this.state.branchInfo}
@@ -1063,7 +1163,7 @@ class ReceptionStatus extends Component {
               icon={<EnvironmentFilled />}
               className="tabBtn mapTab"
               onClick={this.openMapControlModal}
-              // onClick={() => { this.props.openMapControl() }}
+            // onClick={() => { this.props.openMapControl() }}
             >
               지도관제
             </Button>
@@ -1126,7 +1226,7 @@ class ReceptionStatus extends Component {
             </Button>
           </div>
 
-          <div className="selectLayout">
+          <div className="selectLayout desk">
             <Search
               placeholder="가맹점검색"
               enterButton
@@ -1204,7 +1304,8 @@ class ReceptionStatus extends Component {
             ></Checkbox>
             <span className="span1">완료조회</span>
           </div>
-          <div id="reception-table" className="dataTableLayout">
+
+          <div id="reception-table">
             <Table
               rowKey={(record) => record.idx}
               rowClassName={(record) => rowColorName[record.orderStatus]}

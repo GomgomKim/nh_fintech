@@ -34,6 +34,22 @@
         margin-right: 5px;
         margin-bottom: 3px;
       }
+
+      
+  /*가맹점관리-모바일*/
+  .dataTableLayout2 {
+    /* width: 310px; */
+    margin-top: 20px;
+  }
+ 
+  /* .franchiseContainer{
+    width:310px;
+  } */
+  .droptable_fr {
+    width: 308px;
+  }
+
+
       /* 상세 */
       /* .franchiseContainer .ant-table-tbody > tr > td > 
       .ant-table-wrapper:only-child .ant-table{

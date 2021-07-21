@@ -38,32 +38,36 @@ class Login extends Component {
       ...this.formRef.current.getFieldsValue(),
     })
       .then((res) => {
-        if(res.data.user.userStatus === 1) {
-          if(res.data.user.userType === 4) {
-            if (res.data.result) {
-              this.props.onLogin(res.data.user);
+        if(res.data.reason !== "INVALID_USER_STATUS"){
+          if(res.data.user.userStatus === 1) {
+            if(res.data.user.userType === 4) {
+              if (res.data.result) {
+                this.props.onLogin(res.data.user);
 
-              let localData = {};
-              if (this.state.saveLoginId) {
-                localData = {
-                  type: "saveLoginId",
-                  id: this.formRef.current.getFieldValue("id"),
-                };
+                let localData = {};
+                if (this.state.saveLoginId) {
+                  localData = {
+                    type: "saveLoginId",
+                    id: this.formRef.current.getFieldValue("id"),
+                  };
+                }
+                reactLocalStorage.setObject(
+                  Const.appName + ":auth",
+                  JSON.stringify(localData)
+                );
+
+                this.props.history.push("/order/OrderMain");
+              } else {
+                alert("아이디 또는 비밀번호가 잘못되었습니다.");
               }
-              reactLocalStorage.setObject(
-                Const.appName + ":auth",
-                JSON.stringify(localData)
-              );
-
-              this.props.history.push("/order/OrderMain");
             } else {
-              alert("아이디 또는 비밀번호가 잘못되었습니다.");
+              alert("사용자가 관제가 아닙니다.");
             }
           } else {
-            alert("사용자가 관제가 아닙니다.");
+            alert("중지/탈퇴인 사용자입니다.");
           }
-        } else {
-          alert("중지/탈퇴인 사용자입니다.");
+        } else{
+          alert("유효하지 않은 사용자입니다.")
         }
       })
       .catch((error) => { });

@@ -1,16 +1,15 @@
 import {
-  CopyOutlined, SkinOutlined,
-  PhoneOutlined, SettingOutlined, TeamOutlined, MobileFilled, LogoutOutlined
+  CopyOutlined, LogoutOutlined, PhoneOutlined,
+  SettingOutlined, SkinOutlined, TeamOutlined
 } from "@ant-design/icons";
 import { Layout, Modal } from "antd";
 import React from "react";
 import { connect } from "react-redux";
-import { comma } from '../lib/util/numberUtil';
-import { withRouter, Link } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import { login, logout } from "../actions/loginAction";
 import { httpPost, httpUrl } from "../api/httpClient";
-import "../css/modal_m.css";
 import "../css/modal.css";
+import "../css/modal_m.css";
 class Header extends React.Component {
   constructor(props) {
     super(props);
@@ -41,7 +40,6 @@ class Header extends React.Component {
     // this.initializeUserInfo();
   }
 
-
   render() {
     // console.log(this.props.history.location.pathname);
     // console.log("frIdx : "+this.state.frIdx)
@@ -68,17 +66,17 @@ class Header extends React.Component {
       {
         idx: 4,
         idx: "desk",
-        name: '상품관리',
+        name: "상품관리",
         icon: <SkinOutlined />,
         url: "/mall/MallMain",
-        className: "desk"
+        className: "desk",
       },
       {
         idx: 5,
         name: "환경설정",
         icon: <SettingOutlined />,
         url: "/setting/SettingMain",
-        className: "desk"
+        className: "desk",
       },
     ];
 
@@ -94,7 +92,6 @@ class Header extends React.Component {
             fontWeight: "bold",
             color: "#fff",
             textAlign: "left",
-            paddingRight: "20px",
           }}
         >
           <div className="menu-wrapper desk">
@@ -118,7 +115,7 @@ class Header extends React.Component {
             {menus.map((row) => {
               return (
                 <div
-                  key={row.className}
+                  key={row.idx}
                   // frIdx={this.state.frIdx}
                   onClick={() => this.props.history.push(row.url)}
                   className={
@@ -133,7 +130,6 @@ class Header extends React.Component {
               );
             })}
           </div>
-
 
           {/* <div className="header"> 모바일 햄버거
             <div className="header-top-menu mobile">
@@ -169,7 +165,8 @@ class Header extends React.Component {
             } </div> 모바일버전 끝 */}
 
           <div className="menu-right">
-            <div style={{ display: "inline-block" }}>
+            <div className="desk"
+              style={{ display: "inline-block" }}>
               관리자&nbsp;&nbsp;&nbsp;|
               {/* {this.props.loginInfo.userId}&nbsp;&nbsp;&nbsp;| */}
             </div>
