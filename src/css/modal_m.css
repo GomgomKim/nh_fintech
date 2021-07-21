@@ -170,7 +170,9 @@
     padding: 0 !important;
   }
   .inputBox-searchFranchise .searchRiderInput {
-    width: 180px !important;
+    width: 170px !important;
+    display: inline-block;
+    margin-left:10px!important;
   }
   .inputBox-searchFranchise .searchFranchiseInput {
     width: 180px !important;
