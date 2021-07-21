@@ -9,6 +9,9 @@ import BatchWorkListDialog from "../../components/dialog/rider/BatchWorkListDial
 import UpdatePasswordDialog from "../../components/dialog/rider/UpdatePasswordDialog";
 import SelectBox from "../../components/input/SelectBox";
 import "../../css/modal.css";
+import "../../css/modal_m.css";
+import "../../css/rider.css";
+import "../../css/order.css";
 import "../../css/order_m.css";
 import {
   riderLevelText,
@@ -571,7 +574,7 @@ class RiderMain extends Component {
                           alert(response.data.advanceMsg);
                         }
                       })
-                      .catch((e) => {});
+                      .catch((e) => { });
                   }}
                 >
                   등록하기
@@ -600,7 +603,7 @@ class RiderMain extends Component {
                           alert(response.data.advanceMsg);
                         }
                       })
-                      .catch((e) => {});
+                      .catch((e) => { });
                   }}
                 >
                   등록
