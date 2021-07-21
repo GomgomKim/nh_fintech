@@ -170,10 +170,10 @@
     padding: 0 !important;
   }
   .inputBox-searchFranchise .searchRiderInput {
-    width: 185px !important;
+    width: 180px !important;
   }
   .inputBox-searchFranchise .searchFranchiseInput {
-    width: 185px !important;
+    width: 180px !important;
   }
 
   /* 우편번호 팝업 */
@@ -3703,7 +3703,6 @@
     display: inline-block;
   }
 
-  
   .blind-title {
     /* font-size: 28px; */
     letter-spacing: -1px;
