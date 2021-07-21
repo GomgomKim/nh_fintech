@@ -595,35 +595,37 @@ class RiderMain extends Component {
 
     return (
       <div>
-        <SelectBox
-          className="selectRiderBox mobile"
-          style={{ marginTop: 15 }}
-          value={tableStatusString[this.state.userStatus]}
-          code={Object.keys(tableStatusString)}
-          codeString={tableStatusString}
-          onChange={(value) => {
-            if (parseInt(value) !== this.state.userStatus) {
-              this.setState(
-                {
-                  userStatus: parseInt(value),
-                  pagination: {
-                    current: 1,
-                    pageSize: this.state.pagination.pageSize,
+        <div className="mobile">
+          <SelectBox
+            className="selectRiderBox"
+            style={{ marginTop: 15 }}
+            value={tableStatusString[this.state.userStatus]}
+            code={Object.keys(tableStatusString)}
+            codeString={tableStatusString}
+            onChange={(value) => {
+              if (parseInt(value) !== this.state.userStatus) {
+                this.setState(
+                  {
+                    userStatus: parseInt(value),
+                    pagination: {
+                      current: 1,
+                      pageSize: this.state.pagination.pageSize,
+                    },
                   },
-                },
-                () => this.getList()
-              );
-            }
-          }}
-        />
-        <Search
-          placeholder="기사검색"
-          className="searchRiderInput mobile"
-          enterButton
-          allowClear
-          onSearch={this.onSearchRider}
-          style={{ marginTop: 15, marginLeft: 15 }}
-        />
+                  () => this.getList()
+                );
+              }
+            }}
+          />
+          <Search
+            placeholder="기사검색"
+            className="searchRiderInput"
+            enterButton
+            allowClear
+            onSearch={this.onSearchRider}
+            style={{ marginTop: 15, marginLeft: 15 }}
+          />
+        </div>
         <div className="riderMain-container">
           <div className="selectLayout desk">
             <span className="searchRequirementText">검색조건</span>
