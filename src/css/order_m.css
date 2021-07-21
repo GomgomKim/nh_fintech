@@ -6,9 +6,9 @@
   .mobile {
   }
 
-  .tabBtn {
+  /* .tabBtn {
     margin-left: 10px;
-  }
+  } */
 
   .arriveArea {
     text-align: left;
@@ -109,12 +109,12 @@
   .btnLayout {
     margin-top: 20px;
   }
+
   #reception-table .ant-table .ant-table-tbody > tr {
     width: 100vw;
   }
   #reception-table .ant-table .ant-table-tbody > tr > td:first-child {
     padding-left: 10px !important;
-    width: 10%;
   }
   #reception-table .ant-table .ant-table-tbody > tr > td:last-child {
   }
@@ -130,29 +130,17 @@
   }
   .dataTableLayout {
     margin-top: 20px;
-    width: 100vw;
-  }
-
-  #rider-dataTableLayout .ant-table .ant-table-tbody > tr > td:first-child {
-    padding-left: 10px !important;
-  }
-  #rider-dataTableLayout .ant-table .ant-table-tbody > tr > td:last-child {
-  }
-
-  #rider-dataTableLayout .ant-table .ant-table-thead > tr {
-    width: 100vw !important;
-    border: 1px solid red;
-  }
-  #rider-dataTableLayout .ant-table .ant-table-thead > tr > th {
-    width: 100vw;
-  }
-
-  #rider-dataTableLayout .ant-table .ant-table-thead > tr > th:last-child {
-    padding-right: 10px !important;
-    width: 100vw;
   }
   .status-box {
-    padding-bottom: 10px;
+    padding: 10px 0;
+    line-height: 26px;
+  }
+  .status-box > p {
+    margin: 0;
+    padding: 0;
+    background-color: #fcdd00;
+    font-weight: bold;
+    border-radius: 15px;
   }
 
   /* hr css */
@@ -170,12 +158,11 @@
   /* .ant-table-row-expand-icon-cell{
     width:10px!important;
   } */
-  .franchiseContainer{
-    width:310px;
-    overflow:scroll;
+  .franchiseContainer {
+    width: 310px;
+    overflow: scroll;
   }
   .droptable_fr {
     width: 308px;
   }
- 
 }
