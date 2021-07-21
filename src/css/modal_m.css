@@ -63,7 +63,7 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 800px;
+    width: 90vw;
     border-radius: 30px;
     z-index: 30;
   }
@@ -90,7 +90,7 @@
 
   .searchFranchise-content {
     background-color: white;
-    padding: 30px;
+    padding: 15px;
     text-align: left;
     color: #777;
   }
@@ -118,7 +118,7 @@
     width: 100%;
     overflow-y: scroll;
     border: 1px solid #ccc;
-    padding: 20px 20px;
+    padding: 10px;
     text-align: left;
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
@@ -164,10 +164,16 @@
   }
 
   .searchFranchise-Dialog .layout .dataTableLayout-01 {
-    margin-top: 30px;
+    margin-top: 20px;
   }
   .searchFranchise-Dialog .layout .ant-table-tbody > tr > td {
     padding: 0 !important;
+  }
+  .inputBox-searchFranchise .searchRiderInput {
+    width: 185px !important;
+  }
+  .inputBox-searchFranchise .searchFranchiseInput {
+    width: 185px !important;
   }
 
   /* 우편번호 팝업 */
@@ -3683,7 +3689,7 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-     width: 320px; 
+    width: 90vw;
     border-radius: 30px;
     z-index: 2;
   }
@@ -3720,17 +3726,17 @@
     /* display: inline-block; */
     float: right;
   }
-  .blind-check{
-    float:right;
-    margin-bottom:10px;
+  .blind-check {
+    float: right;
+    margin-bottom: 10px;
   }
   .blindLayout {
-    margin-top: 20px;
+    margin-top: 10px;
     width: 100%;
     /* height: 350px; */
     overflow-y: scroll;
     border: 1px solid #ccc;
-    padding: 20px;
+    padding: 10px;
     text-align: left;
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
@@ -3758,20 +3764,20 @@
     font-weight: bold;
     color: #1890ff;
   }
- 
+
   .blindWrapper.bot .mainTitle {
     /* font-size: 20px; */
     vertical-align: middle;
     font-weight: bold;
     width: 70px;
-    margin-bottom:10px;
+    margin-bottom: 10px;
   }
   .blindWrapper.bot .subTitle {
     font-size: 18px;
     vertical-align: middle;
     font-weight: bold;
     width: 70px;
-    margin-bottom:10px;
+    margin-bottom: 10px;
   }
   .blindWrapper.bot .ant-checkbox-inner {
     width: 20px;
@@ -3799,6 +3805,28 @@
     margin-left: 45px;
     display: inline-block;
     vertical-align: middle;
+  }
+  /* 모바일버전 블라인드 라이더 모달 창 */
+  .riderBlind-box > div {
+    display: inline-block;
+  }
+  .riderBlind-box > div:nth-child(2) {
+    vertical-align: top;
+    float: right;
+  }
+  .riderBlind-box > div:last-child {
+    vertical-align: top;
+    float: right;
+    text-align: right;
+  }
+  .riderBlind-box .blind-title {
+    text-align: left;
+  }
+  .riderBlind-box .blind-close {
+    float: none;
+  }
+  .riderBlind-box .listBlock {
+    margin-top: 0;
   }
 
   .modifyOrderWrapper {

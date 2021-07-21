@@ -288,22 +288,6 @@ class RiderMain extends Component {
         ),
       },
       {
-        title: "블라인드",
-        className: "table-column-center mobile",
-        render: (data, row) => (
-          <div>
-            <Button
-              className="tabBtn"
-              onClick={() =>
-                this.setState({ blindRiderData: row, blindListOpen: true })
-              }
-            >
-              블라인드
-            </Button>
-          </div>
-        ),
-      },
-      {
         title: "기사명",
         dataIndex: "riderName",
         className: "table-column-center desk tableSub",
@@ -355,7 +339,7 @@ class RiderMain extends Component {
       },
       {
         title: "블라인드",
-        className: "table-column-center desk",
+        className: "table-column-center",
         render: (data, row) => (
           <div>
             <Button
@@ -665,15 +649,13 @@ class RiderMain extends Component {
             >
               일차감
             </Button>
-
-            {this.state.blindListOpen && (
-              <BlindRiderListDialog
-                close={this.closeBlindModal}
-                data={this.state.blindRiderData}
-              />
-            )}
           </div>
-
+          {this.state.blindListOpen && (
+            <BlindRiderListDialog
+              close={this.closeBlindModal}
+              data={this.state.blindRiderData}
+            />
+          )}
           <div id="#rider-dataTableLayout" className="dataTableLayout">
             <Table
               rowKey={(record) => record.idx}
@@ -684,6 +666,7 @@ class RiderMain extends Component {
               expandedRowRender={expandedRowRender}
             />
           </div>
+
           {this.state.riderUpdateOpen && (
             <RegistRiderDialog
               close={this.closeUpdateRiderModal}

@@ -3,9 +3,9 @@ import React, { Component } from "react";
 import { httpGet, httpUrl } from "../../../api/httpClient";
 import "../../../css/modal.css";
 import {
-    riderLevelText,
-    tableStatusString,
-    userGroupString
+  riderLevelText,
+  tableStatusString,
+  userGroupString,
 } from "../../../lib/util/codeUtil";
 import SelectBox from "../../input/SelectBox";
 
@@ -164,7 +164,7 @@ class SearchRiderDialog extends Component {
       {
         title: "순번",
         dataIndex: "idx",
-        className: "table-column-center",
+        className: "table-column-center desk",
       },
       {
         title: "기사명",
@@ -187,14 +187,24 @@ class SearchRiderDialog extends Component {
       {
         title: "직급",
         dataIndex: "riderLevel",
-        className: "table-column-center",
-        width: "200px",
+        className: "table-column-center desk tableSub",
         render: (data) => <div>{riderLevelText[data]}</div>,
+      },
+      {
+        title: "직급",
+        dataIndex: "riderLevel",
+        className: "table-column-center mobile",
+        render: (data, row) => (
+          <div>
+            {riderLevelText[row.riderLevel]}(
+            {userGroupString[row.riderSettingGroup]})
+          </div>
+        ),
       },
       {
         title: "기사그룹",
         dataIndex: "riderSettingGroup",
-        className: "table-column-center",
+        className: "table-column-center desk",
         render: (data) => <div>{userGroupString[data]}</div>,
       },
     ];
