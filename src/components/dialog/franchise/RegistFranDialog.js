@@ -422,6 +422,12 @@ class RegistFranDialog extends Component {
                         className="selectItem"
                         // initialValue={data && data.ownerName}
                         initialValue={data && data.ownerName}
+                        rules={[
+                          {
+                            required: true,
+                            message: "대표자명을 입력해 주세요",
+                          },
+                        ]}
                       >
                         <Input
                           placeholder="대표자명을 입력해 주세요."
