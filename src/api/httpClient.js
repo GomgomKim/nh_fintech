@@ -214,6 +214,7 @@ const httpUrl = {
     "/fr/expectDeliveryPrice?frIdx=%s&destLatitude=%s&destLongitude=%s",
 
   // 주문 상태 변경
+  orderAssignCancel: '/order/admin/admin/assignRiderCancel',
   orderPickup: "/order/pickup",
   orderComplete: "/order/complete",
   orderCancel: "/order/cancel",
