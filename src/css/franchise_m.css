@@ -49,6 +49,10 @@
     width: 308px;
   }
 
+  .blind-mobilebtn{
+    margin-left:10px;
+  }
+
 
       /* 상세 */
       /* .franchiseContainer .ant-table-tbody > tr > td > 
