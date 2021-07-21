@@ -680,6 +680,24 @@ class ReceptionStatus extends Component {
       // },
 
       {
+        title: "가맹점명",
+        dataIndex: "frName",
+        className: "table-column-center",
+        key: (row) => `frName:${row.frName}`,
+        render: (data, row) => {
+          const content = (
+            <div>
+              <p>{row.frPhone}</p>
+            </div>
+          );
+          return (
+            <Popover content={content} title="가맹점연락처">
+              <div>{data} </div>
+            </Popover>
+          );
+        },
+      },
+      {
         title: "접수시간",
         dataIndex: "orderDate",
         className: "table-column-center desk",
@@ -876,24 +894,6 @@ class ReceptionStatus extends Component {
         // 아마도 중복컬럼?
         // 대표님 요청으로 임시로 원복
         // @todo 시연후 확인하자 by riverstyx
-        {
-          title: "가맹점명",
-          dataIndex: "frName",
-          className: "table-column-center",
-          key: (row) => `frName:${row.frName}`,
-          render: (data, row) => {
-            const content = (
-              <div>
-                <p>{row.frPhone}</p>
-              </div>
-            );
-            return (
-              <Popover content={content} title="가맹점연락처">
-                <div>{data} </div>
-              </Popover>
-            );
-          },
-        },
         // {
         //   title: "가맹점 번호",
         //   dataIndex: "frPhone",
