@@ -243,6 +243,61 @@ class BlindRiderListDialog extends Component {
     render() {
         const columns = [
             {
+                title: "블라인드 정보",
+                dataIndex: "direction",
+                className: "table-column-center mobile",
+                render: (data, row) =>
+                    <div>
+                        <b>차단자:</b> {row.direction === 1 ?
+                            <div style={{ color: 'blue', fontWeight: 'bold' }}>기사</div>
+                            : <div style={{ color: 'red', fontWeight: 'bold' }}>가맹점</div>
+                        }
+                        <b>가맹점명:</b> {row.frName}<br />
+                        <b>기사명:</b> {row.frName}<br />
+                        <b>차단메모:</b> {row.frName}<br />
+                        <b>설정일:</b> {formatDate(row.createDate)}<br />
+                        <b>해제일:</b> {formatDate(row.endDate)}<br />
+                        <b>상태:</b>  {row.status !== 1 ?
+                            row.status !== true ? blockString[1] : blockString[2] :
+                            row.status === 1 && row.status == true ?
+                                blockString[4] : blockString[0]}<br />
+                        <b>처리:</b>
+                        {row.status === 1 &&
+                            row.direction === 1 &&
+                            row.deleted !== true &&
+                            <div>
+                                <SelectBox
+                                    value={blockStatusString[data]}
+                                    code={Object.keys(blockStatusString)}
+                                    codeString={blockStatusString}
+                                    placeholder={"승인대기"}
+                                    onChange={(value) => {
+                                        console.log(value, row.status);
+                                        if (value !== row.status.toString()) {
+                                            this.onChangeDeletedStatus(row.idx, value);
+                                        }
+                                    }}
+                                />
+                            </div>
+                        }
+
+                        {row.status === 2 &&
+                            <div>
+                                {row.deleted !== true ?
+                                    <Button
+                                        onClick={(value) => {
+                                            if (parseInt(value) !== row.deleted) {
+                                                this.onDelete(row.idx, row.deleted);
+                                            }
+                                        }}>해제</Button>
+                                    :
+                                    ''
+                                }
+                            </div>
+                        }
+                    </div>
+            },//모바일
+            {
                 title: "차단자",
                 dataIndex: "direction",
                 className: "table-column-center",
@@ -350,10 +405,15 @@ class BlindRiderListDialog extends Component {
                 <div className="Dialog-overlay" onClick={close} />
                 <div className="blind-Dialog">
                     <div className="blind-container">
-                        <div className="blind-title">
+                        <div className="blind-title desk">
                             {data.riderName} 라이더 님의 블라인드 목록
                         </div>
-                        <div>
+                        <img onClick={close} src={require('../../../img/login/close.png').default}
+                            className="blind-close mobile" alt='close' />
+                        <div className="blind-title mobile">
+                            {data.frName}의 블라인드 목록
+                        </div>
+                        <div className="blind-check">
                             <Checkbox
                                 style={{ marginRight: 5, marginLeft: 20 }}
                                 defaultChecked={this.state.deletedCheck ? "checked" : ""}
@@ -361,7 +421,7 @@ class BlindRiderListDialog extends Component {
                             해제 포함
                         </div>
                         <img onClick={close} src={require('../../../img/login/close.png').default}
-                            className="blind-close" alt='닫기' />
+                            className="blind-close desk" alt='닫기' />
 
 
 
@@ -380,71 +440,75 @@ class BlindRiderListDialog extends Component {
                         <div className="blindWrapper bot">
                             <Form ref={this.formRef} onFinish={this.handleSubmit}>
                                 <div className="contentBlock">
-                                    <div className="mainTitle">
-                                        차단자
+                                    <div className="blind_botbox">
+                                        <div className="mainTitle">
+                                            차단자
+                                        </div>
+                                        <FormItem
+                                            name="direction"
+                                            className="selectItem"
+                                            rules={[{ required: true, message: "차단자를 선택해주세요." }]}
+                                        >
+                                            <SelectBox
+                                                placeholder={'선택'}
+                                                style={{ marginLeft: 10 }}
+                                                value={frRiderString[this.state.blindStatus]}
+                                                code={Object.keys(frRiderString)}
+                                                codeString={frRiderString}
+                                                onChange={(value) => {
+                                                    if (parseInt(value) !== this.state.blindStatus) {
+                                                        this.setState({ blindStatus: parseInt(value) })
+                                                    }
+                                                }}
+                                            />
+                                        </FormItem>
                                     </div>
-                                    <FormItem
-                                        name="direction"
-                                        className="selectItem"
-                                        rules={[{ required: true, message: "차단자를 선택해주세요." }]}
-                                    >
-                                        <SelectBox
-                                            placeholder={'선택'}
-                                            style={{ marginLeft: 10 }}
-                                            value={frRiderString[this.state.blindStatus]}
-                                            code={Object.keys(frRiderString)}
-                                            codeString={frRiderString}
-                                            onChange={(value) => {
-                                                if (parseInt(value) !== this.state.blindStatus) {
-                                                    this.setState({ blindStatus: parseInt(value) })
-                                                }
-                                            }}
-                                        />
-                                    </FormItem>
-                                    <div className="subTitle">
-                                        가맹점명
+                                    <div className="blind_botbox">
+                                        <div className="subTitle">
+                                            가맹점명
+                                        </div>
+                                        {this.state.searchFranchiseOpen &&
+                                            <SearchFranchiseDialog
+                                                close={this.closeSearchFranchiseModal}
+                                                callback={(data) => {
+                                                    this.setState({ selectedFr: data })
+                                                }}
+                                            />}
+                                        <FormItem
+                                            name="frName"
+                                            className="selectItem"
+                                        >
+                                            <Input placeholder="가맹점명 입력" className="override-input sub" required
+                                                value={this.state.selectedFr ? this.state.selectedFr.frName : ""}>
+                                            </Input>
+                                            <Button onClick={this.openSearchFranchiseModal}>
+                                                조회
+                                            </Button>
+                                        </FormItem>
                                     </div>
-                                    {this.state.searchFranchiseOpen &&
-                                        <SearchFranchiseDialog
-                                            close={this.closeSearchFranchiseModal}
-                                            callback={(data) => {
-                                                this.setState({ selectedFr: data })
-                                            }}
-                                        />}
-                                    <FormItem
-                                        name="frName"
-                                        className="selectItem"
-                                    >
-                                        <Input placeholder="가맹점명 입력" className="override-input sub" required
-                                            value={this.state.selectedFr ? this.state.selectedFr.frName : ""}>
-                                        </Input>
-                                        <Button onClick={this.openSearchFranchiseModal}>
-                                            조회
-                                        </Button>
-                                    </FormItem>
-
-                                    <div className="subTitle">
-                                        기사명
+                                    <div className="blind_botbox">
+                                        <div className="subTitle">
+                                            기사명
+                                        </div>
+                                        {this.state.searchRiderOpen &&
+                                            <SearchRiderDialog
+                                                close={this.closeSearchRiderModal}
+                                                callback={(data) => {
+                                                    this.setState({ selectedRider: data })
+                                                }}
+                                            />}
+                                        <FormItem
+                                            name="riderName"
+                                            className="selectItem"
+                                        >
+                                            <Input placeholder="기사명 입력" className="override-input sub" required
+                                                value={this.state.selectedRider ? this.state.selectedRider.riderName : ""}>
+                                            </Input>
+                                            <Button onClick={this.openSearchRiderModal}>
+                                                조회
+                                            </Button>
+                                        </FormItem>
                                     </div>
-                                    {this.state.searchRiderOpen &&
-                                        <SearchRiderDialog
-                                            close={this.closeSearchRiderModal}
-                                            callback={(data) => {
-                                                this.setState({ selectedRider: data })
-                                            }}
-                                        />}
-                                    <FormItem
-                                        name="riderName"
-                                        className="selectItem"
-                                    >
-                                        <Input placeholder="기사명 입력" className="override-input sub" required
-                                            value={this.state.selectedRider ? this.state.selectedRider.riderName : ""}>
-                                        </Input>
-                                        <Button onClick={this.openSearchRiderModal}>
-                                            조회
-                                        </Button>
-                                    </FormItem>
-
                                     <div className="subTitle">
                                         메모
                                     </div>
@@ -465,7 +529,7 @@ class BlindRiderListDialog extends Component {
                         </div>
                     </div>
                 </div>
-            </React.Fragment>
+            </React.Fragment >
 
         )
     }

@@ -457,9 +457,10 @@ class ReceptionStatus extends Component {
         className: "table-column-center mobile",
         render: (data, row) => (
           <div className="status-box">
-            No.{row.idx} / {arriveReqTime[row.arriveReqTime]} /{" "}
-            {row.itemPrepared ? "완료" : "준비중"} <br />
-            <hr className="light-hr" />
+            <p>
+              No.{row.idx} / {arriveReqTime[row.arriveReqTime]} /{" "}
+              {row.itemPrepared ? "완료" : "준비중"} <br />{" "}
+            </p>
             접수시간 :{row.orderDate}
             <br />
             배차시간 :{row.assignDate}
@@ -829,7 +830,7 @@ class ReceptionStatus extends Component {
           data.length > 1 ? (
             <Button
               onClick={() => this.openPaymentModal(data, row)}
-            // close={this.closePaymentModal}
+              // close={this.closePaymentModal}
             >
               보기
             </Button>
@@ -1163,7 +1164,7 @@ class ReceptionStatus extends Component {
               icon={<EnvironmentFilled />}
               className="tabBtn mapTab"
               onClick={this.openMapControlModal}
-            // onClick={() => { this.props.openMapControl() }}
+              // onClick={() => { this.props.openMapControl() }}
             >
               지도관제
             </Button>
@@ -1303,6 +1304,32 @@ class ReceptionStatus extends Component {
               onChange={this.handleToggleCompleteCall}
             ></Checkbox>
             <span className="span1">완료조회</span>
+          </div>
+
+          <div className="mobile">
+            <Search
+              placeholder="가맹점검색"
+              enterButton
+              allowClear
+              onChange={(e) => this.setState({ franchisee: e.target.value })}
+              onSearch={this.onSearch}
+              style={{
+                width: 200,
+                marginTop: 15,
+                marginBottom: 10,
+              }}
+            />
+            <Search
+              placeholder="기사명검색"
+              enterButton
+              allowClear
+              onChange={(e) => this.setState({ rider: e.target.value })}
+              onSearch={this.onSearch}
+              style={{
+                width: 200,
+                marginBottom: 20,
+              }}
+            />
           </div>
 
           <div id="reception-table">

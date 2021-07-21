@@ -403,6 +403,19 @@ class FranchiseMain extends Component {
             대표자: {row.phone}<br />
             주소: {row.addr1}<br />
             {/* 코인잔액: {comma(row.ncash)} */}
+            <div>
+              상태 :{" "}
+              <SelectBox
+                value={statusString[row.userStatus]}
+                code={Object.keys(statusString)}
+                codeString={statusString}
+                onChange={(value) => {
+                  if (parseInt(value) !== row.userStatus) {
+                    this.onChangeStatus(row.idx, value);
+                  }
+                }}
+              />
+            </div>
           </div >,
       },
       {

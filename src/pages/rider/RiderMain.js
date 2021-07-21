@@ -9,6 +9,9 @@ import BatchWorkListDialog from "../../components/dialog/rider/BatchWorkListDial
 import UpdatePasswordDialog from "../../components/dialog/rider/UpdatePasswordDialog";
 import SelectBox from "../../components/input/SelectBox";
 import "../../css/modal.css";
+import "../../css/modal_m.css";
+import "../../css/rider.css";
+import "../../css/order.css";
 import "../../css/order_m.css";
 import {
   riderLevelText,
@@ -263,10 +266,11 @@ class RiderMain extends Component {
         dataIndex: "riderName",
         className: "table-column-center mobile",
         render: (data, row) => (
-          <div>
-            {row.riderName}({row.id}) {riderLevelText[row.riderLevel]}(
-            {row.riderSettingGroup.settingGroupName})
-            <br />
+          <div className="status-box">
+            <p>
+              {row.riderName}({row.id}) {riderLevelText[row.riderLevel]}(
+              {row.riderSettingGroup.settingGroupName})
+            </p>
             {row.phone} / {riderStatusCode[row.riderStatus]} <br />
             {formatDateToDay(row.createDate)} /{" "}
             {formatDateToDay(row.deleteDate)} <br />
@@ -305,17 +309,17 @@ class RiderMain extends Component {
       {
         title: "기사명",
         dataIndex: "riderName",
-        className: "table-column-center desk",
+        className: "table-column-center desk tableSub",
       },
       {
         title: "아이디",
         dataIndex: "id",
-        className: "table-column-center desk",
+        className: "table-column-center desk tableSub",
       },
       {
         title: "직급",
         dataIndex: "riderLevel",
-        className: "table-column-center desk",
+        className: "table-column-center desk tableSub",
 
         render: (data) => <div>{riderLevelText[data]}</div>,
       },
@@ -571,39 +575,10 @@ class RiderMain extends Component {
                           alert(response.data.advanceMsg);
                         }
                       })
-                      .catch((e) => {});
+                      .catch((e) => { });
                   }}
                 >
                   등록하기
-                </Button>
-              )}
-            </div>
-          ),
-        },
-        {
-          title: "출금등록",
-          dataIndex: "walletId",
-          className: "table-column-center mobile",
-          render: (data, row) => (
-            <div>
-              {data ? (
-                "완료"
-              ) : (
-                <Button
-                  onClick={() => {
-                    httpPost(httpUrl.createUserWallet, [row.idx], {})
-                      .then((response) => {
-                        console.log(response);
-                        if (response.data.resultCd == "0000") {
-                          this.getList();
-                        } else {
-                          alert(response.data.advanceMsg);
-                        }
-                      })
-                      .catch((e) => {});
-                  }}
-                >
-                  등록
                 </Button>
               )}
             </div>
@@ -702,7 +677,7 @@ class RiderMain extends Component {
             )}
           </div>
 
-          <div className="dataTableLayout">
+          <div id="#rider-dataTableLayout" className="dataTableLayout">
             <Table
               rowKey={(record) => record.idx}
               dataSource={this.state.results}

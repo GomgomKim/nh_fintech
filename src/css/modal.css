@@ -3665,7 +3665,12 @@
 .blind-container > div:nth-child(2) {
   display: inline-block;
 }
-
+.blind_botbox{
+  display: inline-block;
+}
+.blind-check{
+  display: inline-block;
+}
 .blind-title {
   /* font-size: 28px; */
   letter-spacing: -1px;
