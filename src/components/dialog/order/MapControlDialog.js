@@ -15,7 +15,7 @@ import {
   modifyType,
   orderCnt,
   riderLevelText,
-  rowColorName
+  rowColorName,
 } from "../../../lib/util/codeUtil";
 import { formatDate, formatHM } from "../../../lib/util/dateUtil";
 import { remainTime } from "../../../lib/util/numberUtil";
@@ -871,22 +871,23 @@ class MapControlDialog extends Component {
         <div className="Dialog-overlay" onClick={close} />
         <div className="map-Dialog">
           <div className="map-content">
+            <div className="select-rider-orderCnt">
+              <SelectBox
+                value={orderCnt[this.state.selOrderCnt]}
+                code={Object.keys(orderCnt)}
+                codeString={orderCnt}
+                onChange={(value) => {
+                  if (parseInt(value) !== this.state.selOrderCnt) {
+                    this.setAssignCnt(parseInt(value));
+                  }
+                }}
+              />
+            </div>
             <img
               onClick={close}
               src={require("../../../img/login/close.png").default}
               className="map-close"
               alt="닫기"
-            />
-            <SelectBox
-              className="select-rider-orderCnt"
-              value={orderCnt[this.state.selOrderCnt]}
-              code={Object.keys(orderCnt)}
-              codeString={orderCnt}
-              onChange={(value) => {
-                if (parseInt(value) !== this.state.selOrderCnt) {
-                  this.setAssignCnt(parseInt(value));
-                }
-              }}
             />
 
             <div className="map-inner">
