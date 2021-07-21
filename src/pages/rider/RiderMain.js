@@ -566,6 +566,8 @@ class RiderMain extends Component {
               ) : (
                 <Button
                   onClick={() => {
+                    alert('라이더 가상계좌 작업중입니다.')
+                    return;
                     httpPost(httpUrl.createUserWallet, [row.idx], {})
                       .then((response) => {
                         console.log(response);
