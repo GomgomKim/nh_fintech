@@ -248,7 +248,6 @@ class BlindRiderListDialog extends Component {
 
   render() {
     const columns = [
-      // 모바일버전
       {
         title: "블라인드 정보",
         dataIndex: "direction",

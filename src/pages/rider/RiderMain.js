@@ -9,6 +9,9 @@ import BatchWorkListDialog from "../../components/dialog/rider/BatchWorkListDial
 import UpdatePasswordDialog from "../../components/dialog/rider/UpdatePasswordDialog";
 import SelectBox from "../../components/input/SelectBox";
 import "../../css/modal.css";
+import "../../css/modal_m.css";
+import "../../css/rider.css";
+import "../../css/order.css";
 import "../../css/order_m.css";
 import {
   riderLevelText,
@@ -271,7 +274,20 @@ class RiderMain extends Component {
             {row.phone} / {riderStatusCode[row.riderStatus]} <br />
             {formatDateToDay(row.createDate)} /{" "}
             {formatDateToDay(row.deleteDate)} <br />
-            <div>
+            <hr className="light-hr" />
+            잔액/최소보유잔액 : {comma(row.ncash)} / {row.ncashMin}
+            <br />
+            수수료 :{" "}
+            {row.riderSettingGroup.deliveryPriceFeeType === 1
+              ? row.riderSettingGroup.deliveryPriceFeeAmount + "원"
+              : row.riderSettingGroup.deliveryPriceFeeAmount + "%"}
+            (
+            {row.riderSettingGroup.deliveryPriceFeeType === 1 ? "정량" : "정율"}
+            )<br />
+            계좌번호 : {row.bank.split(",")[0]} / {row.bankAccount} /{" "}
+            {row.riderName}
+            <hr className="light-hr" />
+            <div className="table-column-sub">
               상태 :{" "}
               <SelectBox
                 value={statusString[row.userStatus]}
@@ -283,6 +299,17 @@ class RiderMain extends Component {
                   }
                 }}
               />
+            </div>
+            <div className="table-column-sub">
+              <Button
+                className="tabBtn"
+                style={{ marginLeft: 10 }}
+                onClick={() =>
+                  this.setState({ blindRiderData: row, blindListOpen: true })
+                }
+              >
+                블라인드
+              </Button>
             </div>
           </div>
         ),
@@ -339,7 +366,7 @@ class RiderMain extends Component {
       },
       {
         title: "블라인드",
-        className: "table-column-center",
+        className: "table-column-center desk",
         render: (data, row) => (
           <div>
             <Button
@@ -497,19 +524,6 @@ class RiderMain extends Component {
           ),
         },
         {
-          title: "수수료",
-          dataIndex: "riderSettingGroup",
-          className: "table-column-center mobile",
-          render: (data, row) => (
-            <div>
-              {row.deliveryPriceFeeType === 1
-                ? data.deliveryPriceFeeAmount + "원"
-                : data.deliveryPriceFeeAmount + "%"}
-              <br />({row.deliveryPriceFeeType === 1 ? "정량" : "정율"})
-            </div>
-          ),
-        },
-        {
           title: "은행명",
           dataIndex: "bank",
           className: "table-column-center desk",
@@ -547,6 +561,8 @@ class RiderMain extends Component {
               ) : (
                 <Button
                   onClick={() => {
+                    alert("라이더 가상계좌 작업중입니다.");
+                    return;
                     httpPost(httpUrl.createUserWallet, [row.idx], {})
                       .then((response) => {
                         console.log(response);
@@ -656,7 +672,7 @@ class RiderMain extends Component {
               data={this.state.blindRiderData}
             />
           )}
-          <div id="#rider-dataTableLayout" className="dataTableLayout">
+          <div id="#rider-dataTableLayout" className="dataTableLayout desk">
             <Table
               rowKey={(record) => record.idx}
               dataSource={this.state.results}
@@ -664,6 +680,15 @@ class RiderMain extends Component {
               pagination={this.state.pagination}
               onChange={this.handleTableChange}
               expandedRowRender={expandedRowRender}
+            />
+          </div>
+          <div id="#rider-dataTableLayout" className="dataTableLayout mobile">
+            <Table
+              rowKey={(record) => record.idx}
+              dataSource={this.state.results}
+              columns={columns}
+              pagination={this.state.pagination}
+              onChange={this.handleTableChange}
             />
           </div>
 

@@ -132,7 +132,7 @@
     margin-top: 20px;
   }
   .status-box {
-    padding: 10px 0;
+    padding: 10px 5px;
     line-height: 26px;
   }
   .status-box > p {
@@ -148,6 +148,9 @@
     border: 0;
     height: 1px;
     background-color: #d1d1d1;
+  }
+  .table-column-sub {
+    display: inline-block;
   }
 
   /*가맹점관리-*/

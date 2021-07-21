@@ -458,7 +458,7 @@ class ReceptionStatus extends Component {
         render: (data, row) => (
           <div className="status-box">
             <p>
-              No.{row.idx} / {arriveReqTime[row.arriveReqTime]} /{" "}
+              No.{row.idx} / {row.frName} / {arriveReqTime[row.arriveReqTime]} /{" "}
               {row.itemPrepared ? "완료" : "준비중"} <br />{" "}
             </p>
             접수시간 :{row.orderDate}
@@ -471,7 +471,7 @@ class ReceptionStatus extends Component {
             {row.orderStatus >= 4 ? formatDate(row.completeDate) : "-"}
             <hr className="light-hr" />
             {row.destAddr1 + " " + row.destAddr2} <br />
-            {row.riderName} /{" "}
+            {row.riderName} / {row.distance}km /{" "}
             {paymentMethod[row.orderPayments[0]["paymentMethod"]]}
             <br />
             가격 : {comma(row.orderPrice)} / 총요금 : {comma(row.deliveryPrice)}
@@ -482,6 +482,7 @@ class ReceptionStatus extends Component {
             <div className="table-column-sub">
               상태 :{" "}
               <Select
+                style={{ marginRight: 5 }}
                 defaultValue={data}
                 value={row.orderStatus}
                 onChange={(value) => {
@@ -545,6 +546,17 @@ class ReceptionStatus extends Component {
                     );
                 })}
               </Select>
+            </div>
+            {""}
+            <div className="table-column-sub">
+              {/* <ForceAllocateDialog */}
+              <Button
+                style={{ marginLeft: 5 }}
+                className="tabBtn"
+                onClick={this.openForceModal}
+              >
+                강제배차
+              </Button>
             </div>
           </div>
         ),
@@ -680,6 +692,24 @@ class ReceptionStatus extends Component {
       //   className: "table-column-center",
       // },
 
+      {
+        title: "가맹점명",
+        dataIndex: "frName",
+        className: "table-column-center desk",
+        key: (row) => `frName:${row.frName}`,
+        render: (data, row) => {
+          const content = (
+            <div>
+              <p>{row.frPhone}</p>
+            </div>
+          );
+          return (
+            <Popover content={content} title="가맹점연락처">
+              <div>{data} </div>
+            </Popover>
+          );
+        },
+      },
       {
         title: "접수시간",
         dataIndex: "orderDate",
@@ -877,24 +907,6 @@ class ReceptionStatus extends Component {
         // 아마도 중복컬럼?
         // 대표님 요청으로 임시로 원복
         // @todo 시연후 확인하자 by riverstyx
-        {
-          title: "가맹점명",
-          dataIndex: "frName",
-          className: "table-column-center",
-          key: (row) => `frName:${row.frName}`,
-          render: (data, row) => {
-            const content = (
-              <div>
-                <p>{row.frPhone}</p>
-              </div>
-            );
-            return (
-              <Popover content={content} title="가맹점연락처">
-                <div>{data} </div>
-              </Popover>
-            );
-          },
-        },
         // {
         //   title: "가맹점 번호",
         //   dataIndex: "frPhone",
@@ -915,7 +927,7 @@ class ReceptionStatus extends Component {
         {
           title: "거리(km)",
           dataIndex: "distance",
-          className: "table-column-center",
+          className: "table-column-center desk",
           key: (row) => `distance:${row.distance}`,
         },
         {
@@ -943,7 +955,7 @@ class ReceptionStatus extends Component {
         {
           title: "배차",
           dataIndex: "forceLocate",
-          className: "table-column-center",
+          className: "table-column-center desk",
           key: (row) => `forceLocate:${row.idx}`,
           render: (data, row) => (
             <span>
@@ -1103,7 +1115,12 @@ class ReceptionStatus extends Component {
             close={this.closeMapControlModal}
           />
         )}
-
+        {this.state.forceOpen && (
+          <SearchRiderDialog
+            close={this.closeForceingModal}
+            callback={(data, row) => this.assignRider(row.forceLocate, row.idx)}
+          />
+        )}
         <div className="reception-box">
           {this.state.paymentOpen && (
             <PaymentDialog
@@ -1332,7 +1349,7 @@ class ReceptionStatus extends Component {
             />
           </div>
 
-          <div id="reception-table">
+          <div id="reception-table" className="desk">
             <Table
               rowKey={(record) => record.idx}
               rowClassName={(record) => rowColorName[record.orderStatus]}
@@ -1345,6 +1362,21 @@ class ReceptionStatus extends Component {
               pagination={false}
               // onChange={this.handleTableChange}
               expandedRowRender={expandedRowRender}
+            />
+          </div>
+          <div id="reception-table" className="mobile">
+            <Table
+              rowKey={(record) => record.idx}
+              rowClassName={(record) => rowColorName[record.orderStatus]}
+              dataSource={
+                this.state.checkedCompleteCall
+                  ? this.state.totalList
+                  : this.state.list
+              }
+              columns={columns}
+              pagination={false}
+              // onChange={this.handleTableChange}
+              // expandedRowRender={expandedRowRender}
             />
           </div>
 

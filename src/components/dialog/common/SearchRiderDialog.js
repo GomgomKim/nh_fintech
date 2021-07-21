@@ -73,7 +73,7 @@ class SearchRiderDialog extends Component {
     const pageNum = this.state.pagination.current;
     const userStatus = this.state.userStatus === 0 ? "" : this.state.userStatus;
     const searchName = this.state.searchName;
-    const riderLevel = this.props.teamManagerOnly ? [3] : "";
+    const riderLevel = this.props.teamManagerOnly ? [3] : [1,2,3,4,5,6,7,8,9];
 
     httpGet(
       httpUrl.riderList,
