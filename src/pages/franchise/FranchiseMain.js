@@ -396,7 +396,7 @@ class FranchiseMain extends Component {
         dataIndex: "frName",
         className: "table-column-center mobile",
         render: (data, row) =>
-          <div style={{ padding: "10px 0px" }}>
+          <div className="status-box">
             <span style={{ backgroundColor: "#fddc00", color: "#000", padding: "0px 10px", borderRadius: "10px" }}>{row.frName}<br /></span>
             사업자: {row.businessNumber}<br />
             가맹점: {row.frPhone}<br />

@@ -412,23 +412,43 @@ class BlindFranListDialog extends Component {
                             {data.frName} 가맹점의 블라인드 목록
                         </div>
 
-                        <img onClick={close} src={require('../../../img/login/close.png').default}
-                            className="blind-close mobile" alt='close' />
-
-
-                        <div className="blind-title mobile">
-                            {data.frName}의 블라인드 목록
-                        </div>
-                        <div className="blind-check">
+                        <div className="desk">
                             <Checkbox
                                 style={{ marginRight: 5, marginLeft: 20 }}
                                 defaultChecked={this.state.deletedCheck ? "checked" : ""}
                                 onChange={this.onDeleteCheck} />
                             해제 포함
                         </div>
-                        <img onClick={close} src={require('../../../img/login/close.png').default}
-                            className="blind-close desk" alt='close' />
+                        <img onClick={close}
+                            src={require('../../../img/login/close.png').default}
+                            className="blind-close desk"
+                            alt='close' />
 
+                        <div className="riderBlind-box mobile">
+                            <div className="blind-title">
+                                {data.frName} 님의 <br />
+                                블라인드 목록
+                            </div>
+                            <div>
+                                <div>
+                                    <img
+                                        onClick={close}
+                                        src={require("../../../img/login/close.png").default}
+                                        className="blind-close"
+                                        alt="닫기"
+                                    />
+                                </div>
+                                <div>
+                                    <Checkbox
+                                        className="riderBlind-checkbox"
+                                        style={{ marginRight: 5, marginTop: 5 }}
+                                        defaultChecked={this.state.deletedCheck ? "checked" : ""}
+                                        onChange={this.onDeleteCheck}
+                                    />
+                                    해제 포함
+                                </div>
+                            </div>
+                        </div>
 
                         <div className="blindLayout">
                             <div className="listBlock">
