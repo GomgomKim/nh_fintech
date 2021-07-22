@@ -168,6 +168,11 @@ class Header extends React.Component {
           <div className="menu-right">
             <div className="desk"
               style={{ display: "inline-block" }}>
+              {this.props.websockInfo.isConnected ? '채팅접속중' : '채팅연결끊김'}&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+              {/* {this.props.loginInfo.userId}&nbsp;&nbsp;&nbsp;| */}
+            </div>
+            <div className="desk"
+              style={{ display: "inline-block" }}>
               관리자&nbsp;&nbsp;&nbsp;|
               {/* {this.props.loginInfo.userId}&nbsp;&nbsp;&nbsp;| */}
             </div>
