@@ -424,40 +424,16 @@ class ChattingCurrentRoom extends Component {
                   value={this.state.inputMessage}
                   onKeyPress={(e) => {
                     if (e.key === "Enter") {
-                      this.send(
-                        () => this.getTotalChatList(this.props.targetIdx),
-                        () => {
-                          this.setState(
-                            {
-                              pagination: {
-                                ...this.state.pagination,
-                                current: 1,
-                              },
-                            },
-                            () => this.getChatList()
-                          );
-                        }
-                      );
+                      this.onPressSend(this.state.inputMessage);
+                      this.setState({ inputMessage: "" });
                     }
                   }}
                 />
                 <div
                   className="chat-send-btn"
                   onClick={() => {
-                    this.send(
-                      () => this.getTotalChatList(this.props.targetIdx),
-                      () => {
-                        this.setState(
-                          {
-                            pagination: {
-                              ...this.state.pagination,
-                              current: 1,
-                            },
-                          },
-                          () => this.getChatList()
-                        );
-                      }
-                    );
+                    this.onPressSend(this.state.inputMessage);
+                    this.setState({ inputMessage: "" });
                   }}
                 >
                   전송

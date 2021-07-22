@@ -504,8 +504,8 @@ class ChattingDialog extends Component {
                   <div
                     className="chat-send-btn"
                     onClick={() => {
-                      this.onPressSend(this.state.sendMsg);
-                      this.setState({ sendMsg: "" });
+                      this.onPressSend(this.state.inputMessage);
+                      this.setState({ inputMessage: "" });
                     }}
                   >
                     전송
@@ -542,52 +542,16 @@ class ChattingDialog extends Component {
                   value={this.state.inputMessage}
                   onKeyPress={(e) => {
                     if (e.key === "Enter") {
-                      this.send(
-                        () => {
-                          this.getChatRoom(
-                            this.state.selectedFr !== null
-                              ? this.state.selectedFr.idx
-                              : this.state.selectedRider.idx
-                          );
-                        },
-                        () => {
-                          this.setState(
-                            {
-                              pagination: {
-                                ...this.state.pagination,
-                                current: 1,
-                              },
-                            },
-                            () => this.getChatList()
-                          );
-                        }
-                      );
+                      this.onPressSend(this.state.inputMessage);
+                      this.setState({ inputMessage: "" });
                     }
                   }}
                 />
                 <div
                   className="chat-send-btn"
                   onClick={() => {
-                    this.send(
-                      () => {
-                        this.getChatRoom(
-                          this.state.selectedFr
-                            ? this.state.selectedFr.idx
-                            : this.state.selectedRider.idx
-                        );
-                      },
-                      () => {
-                        this.setState(
-                          {
-                            pagination: {
-                              ...this.state.pagination,
-                              current: 1,
-                            },
-                          },
-                          () => this.getChatList()
-                        );
-                      }
-                    );
+                    this.onPressSend(this.state.inputMessage);
+                    this.setState({ inputMessage: "" });
                   }}
                 >
                   전송
