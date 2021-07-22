@@ -2,8 +2,8 @@ import { ArrowLeftOutlined, ReloadOutlined } from "@ant-design/icons";
 import { Button, Form, Input, Modal } from "antd";
 import React, { Component } from "react";
 import { Marker, NaverMap, Polygon } from "react-naver-maps";
+import { httpGet, httpPost, httpUrl } from "../../../api/httpClient";
 import "../../../css/modal.css";
-import { deliveryZone } from "../../../lib/util/codeUtil";
 
 const FormItem = Form.Item;
 
@@ -15,7 +15,8 @@ class DeliveryZoneDialog extends Component {
       mapLat: null,
       mapLng: null,
 
-      deliveryZone: deliveryZone,
+      deliveryZone: [],
+      prevDeliveryZone: [],
       customDeliveryZone: [
         {
           code: 10000,
@@ -39,11 +40,64 @@ class DeliveryZoneDialog extends Component {
   }
 
   componentDidMount() {
-    this.state.deliveryZone.forEach(value => {
+    this.state.deliveryZone.forEach((value) => {
       value.toggle = true;
-    })
-    this.setState({deliveryZone})
+    });
+    this.getList();
   }
+
+  getList = () => {
+    httpGet(httpUrl.getAddrBranch, [1, 1000], {})
+      .then((res) => {
+        if (res.result === "SUCCESS") {
+          this.setState({
+            deliveryZone: res.data.addrBranches,
+            prevDeliveryZone: res.data.addrBranches,
+          });
+        }
+      })
+      .catch((e) => {
+        throw e;
+      });
+  };
+
+  handleUpdate = async () => {
+    let failed = [];
+    for (let i = 0; i < this.state.deliveryZone.length; i++) {
+      console.log(i);
+      console.log(this.state.deliveryZone[i].canDeliver);
+      console.log(this.state.prevDeliveryZone[i].canDeliver);
+      // if (
+      //   this.state.deliveryZone[i].canDeliver !==
+      //   this.state.prevDeliveryZone[i].canDeliver
+      // ) {
+      const res = await httpPost(httpUrl.updateAddrBranch, [], {
+        canDeliver: this.state.deliveryZone[i].canDeliver,
+        idx: this.state.deliveryZone[i].idx,
+      });
+
+      console.log("res");
+      console.log(res);
+
+      if (res.result !== "SUCCESS") {
+        failed.push(this.state.deliveryZone[i].eupMyeonDong);
+      }
+      // }
+    }
+    if (failed.length === 0) {
+      Modal.info({
+        title: "적용 성공",
+        content: "배송가능지역 적용에 성공했습니다.",
+      });
+    } else {
+      Modal.info({
+        title: "적용 실패",
+        content: `${failed} 지역의 적용에 실패했습니다.`,
+      });
+    }
+
+    // this.getgetList();
+  };
 
   addPath = (e) => {
     let newPath = this.state.paths;
@@ -52,22 +106,12 @@ class DeliveryZoneDialog extends Component {
   };
 
   handleToggle = (index) => {
-    let newState = this.state.deliveryZone;
-    newState[index].toggle = !newState[index].toggle;
-    this.setState({ deliveryZone: newState });
-
-    // const toggledZone = this.state.deliveryZone.map((zonebtn) => {
-    //   if (zonebtn.value === value) {
-    //     return {
-    //       value: value,
-    //       text: zonebtn.text,
-    //       toggle: !zonebtn.toggle,
-    //     };
-    //   } else {
-    //     return zonebtn;
-    //   }
-    // });
-    // this.setState({ deliveryZone: toggledZone });
+    let newState = [...this.state.deliveryZone];
+    newState[index].canDeliver = !newState[index].canDeliver;
+    this.setState({ deliveryZone: newState }, () => {
+      console.log(this.state.deliveryZone);
+      console.log(this.state.prevDeliveryZone);
+    });
   };
 
   registCustomZone = () => {
@@ -159,15 +203,25 @@ class DeliveryZoneDialog extends Component {
 
             <div className="zone-inner">
               <div className="inner-left">
-                <div className="zone-title">배송가능지역</div>
+                <div className="zone-title">
+                  배송가능지역
+                  <Button
+                    onClick={() => this.handleUpdate()}
+                    style={{ float: "right" }}
+                  >
+                    적용하기
+                  </Button>
+                </div>
                 <div>
                   {this.state.deliveryZone.map((obj, idx) => (
-                    <div key={obj.code} className="zone-box">
+                    <div key={obj.idx} className="zone-box">
                       <div
-                        className={obj.toggle ? "zone-el-active" : "zone-el"}
+                        className={
+                          obj.canDeliver ? "zone-el-active" : "zone-el"
+                        }
                         onClick={() => this.handleToggle(idx)}
                       >
-                        {obj.text}
+                        {obj.eupMyeonDong}
                       </div>
                     </div>
                   ))}
