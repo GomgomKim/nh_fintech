@@ -121,7 +121,7 @@ class ChattingCurrentRoom extends Component {
       } catch {}
     }
   };
-  receiveUserIdx
+  
   getTotalChatList = (targetIdx) => {
     httpGet(httpUrl.chatListByUser, [1, 1, '', targetIdx], {})
       .then((result) => {
@@ -248,6 +248,20 @@ class ChattingCurrentRoom extends Component {
       this.setState({ tableDate: this.state.tableData });
     }
   };
+  onPressSendFirst = (receiveUserIdx, msg) => {
+    httpPost(httpUrl.chatSend, [], {
+      chatMessage: msg,
+      receiveUserIdx,
+    }).then((result) => {
+      console.log("SUCCESS");
+      result = result.data;
+      if (result === "SUCCESS") {
+        //방세팅
+        this.getTotalChatList(this.props.targetIdx);
+      }
+    });
+
+  }
   onPressSend = (msg) => {
     if (!this.state.currentRoom) return;
     const { currentRoom } = this.state;
@@ -424,7 +438,7 @@ class ChattingCurrentRoom extends Component {
                   value={this.state.inputMessage}
                   onKeyPress={(e) => {
                     if (e.key === "Enter") {
-                      this.onPressSend(this.state.inputMessage);
+                      this.onPressSendFirst(this.props.targetIdx, this.state.inputMessage);
                       this.setState({ inputMessage: "" });
                     }
                   }}
@@ -432,7 +446,7 @@ class ChattingCurrentRoom extends Component {
                 <div
                   className="chat-send-btn"
                   onClick={() => {
-                    this.onPressSend(this.state.inputMessage);
+                    this.onPressSendFirst(this.props.targetIdx, this.state.inputMessage);
                     this.setState({ inputMessage: "" });
                   }}
                 >

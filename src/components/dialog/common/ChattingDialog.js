@@ -541,17 +541,54 @@ class ChattingDialog extends Component {
                   }
                   value={this.state.inputMessage}
                   onKeyPress={(e) => {
-                    if (e.key === "Enter") {
-                      this.onPressSend(this.state.inputMessage);
-                      this.setState({ inputMessage: "" });
+                    if (e.key === "Enter") {this.send(
+                      () => {
+                        this.getChatRoom(
+                          this.state.selectedFr !== null
+                            ? this.state.selectedFr.idx
+                            : this.state.selectedRider.idx
+                        );
+                      },
+                      () => {
+                        this.setState(
+                          {
+                            pagination: {
+                              ...this.state.pagination,
+                              current: 1,
+                            },
+                            inputMessage: ""
+                          },
+                          () => this.getChatList()
+                        );
+                      }
+                    );
+
                     }
                   }}
                 />
                 <div
                   className="chat-send-btn"
-                  onClick={() => {
-                    this.onPressSend(this.state.inputMessage);
-                    this.setState({ inputMessage: "" });
+                  onClick={() => {this.send(
+                    () => {
+                      this.getChatRoom(
+                        this.state.selectedFr !== null
+                          ? this.state.selectedFr.idx
+                          : this.state.selectedRider.idx
+                      );
+                    },
+                    () => {
+                      this.setState(
+                        {
+                          pagination: {
+                            ...this.state.pagination,
+                            current: 1,
+                          },
+                          inputMessage: ""
+                        },
+                        () => this.getChatList()
+                      );
+                    }
+                  );
                   }}
                 >
                   전송
