@@ -99,7 +99,7 @@ class ReceptionStatus extends Component {
 
       // 호출설정 branch 정보
       branchInfo: null,
-      pullingInterval: 3000,
+      pullingInterval: 5000,
 
       messageTarget: null,
       messageTargetName: null,

@@ -34,6 +34,7 @@ class ChattingCurrentRoom extends Component {
     };
   }
   componentDidMount() {
+    console.log('###chatroom mount')
     console.log(this.props);
     if (this.props.targetIdx) {
       this.getTotalChatList(this.props.targetIdx);
@@ -48,6 +49,36 @@ class ChattingCurrentRoom extends Component {
         this.setState({ lastChatTime: value });
       } catch {}
     }
+
+    global.chatDetailAprear = true;
+    global.chatDetailListener = (data) => {
+      console.log('send to room success')
+      console.log(this.state.currentRoom);
+      console.log(data);
+        if (this.state.currentRoom.idx == data.idx) {
+            this.state.chatMessages.unshift({
+                chatDate: formatYMDHMS(new Date()), 
+                chatMessage: data.lastMessage, 
+                chatRoomCreateDate: "", 
+                chatRoomIdx: null, 
+                idx: 0, 
+                isRead: null, 
+                member1: data.member1, 
+                member2: data.member2, 
+                readDate: null, 
+                receiveUserIdx: this.props.loginReducer.loginInfo.idx, 
+                sendUserIdx: this.props.loginReducer.loginInfo.idx == data.member1 ? data.member2 : data.member1, 
+                title: "chat room"
+            });
+            this.setState({chatMessages:this.state.chatMessages})
+            this.updateTime(data.idx);
+        }
+    }
+  }
+  componentWillUnmount() {
+  }
+  componentDidUpdate(prevProps, prevState) {
+
   }
   formatChatDate(time) {
     return time.substr(0, 10) === formatYMD(new Date())
@@ -90,30 +121,23 @@ class ChattingCurrentRoom extends Component {
       } catch {}
     }
   };
-
+  receiveUserIdx
   getTotalChatList = (targetIdx) => {
-    httpGet(httpUrl.chatList, [10000, 1], {})
+    httpGet(httpUrl.chatListByUser, [1, 1, '', targetIdx], {})
       .then((result) => {
-        this.setState(
-          {
-            totalTableData: result.data.chatRooms,
-          },
-          () => {
-            if (targetIdx) {
-              const target = this.state.totalTableData.find(
-                (item) =>
-                  item.member1 === targetIdx || item.member2 === targetIdx
-              );
-              if (target) {
-                this.chatDetailList(target);
-                this.setState({ fakeRoom: false });
-                return;
-              } else {
-                this.setState({ fakeRoom: true });
-              }
-            }
+        if (targetIdx) {
+          const target = result.data.chatRooms.find(
+            (item) =>
+              item.member1 === targetIdx || item.member2 === targetIdx
+          );
+          if (target) {
+            this.chatDetailList(target);
+            this.setState({ fakeRoom: false });
+            return;
+          } else {
+            this.setState({ fakeRoom: true });
           }
-        );
+        }
       })
       .catch();
   };

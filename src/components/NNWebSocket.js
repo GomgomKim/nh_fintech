@@ -103,40 +103,18 @@ class NNWebSocket extends Component {
         }
         else oppName = message.data.member1Name;
 
-        this.setState({
-          visible: true, 
-          message: '['+oppName+'] ' + message.data.lastMessage
-        })
-
-        // alert('챗')
-        // if (!global.chatAprear && !global.chatDetailAprear) {
-        //   //채팅중이 아닐때만 띄우기
-        //   let oppName = data.member1 == this.props.loginReducer.loginInfo.idx ? data.member2Name : data.member1Name
-        //   if (oppName == '') oppName = '관제'
-        //   Navigation.showModal({
-        //     component: {
-        //       name: 'navigation.BasicDialog',
-        //       passProps: {
-        //         title: data.title,
-        //         content:
-        //         '#[채팅] ' + oppName + '# ' + data.lastMessage,
-        //         okText: '확인',
-        //         onOk: () => {
-        //         },
-        //       },
-        //       options: {
-        //         topBar: {drawBehind: true, visible: false},
-        //         screenBackgroundColor: 'transparent',
-        //         modalPresentationStyle: 'overCurrentContext',
-        //       },
-        //     },
-        //   });
-        // }
-        // else {
-        //   //채팅창 활성화 시 해당 컴포넌트로 전송
-        //   if (global.chatListener) global.chatListener(data);
-        //   if (global.chatDetailListener) global.chatDetailListener(data);
-        // }
+        if (!global.chatAprear && !global.chatDetailAprear) {
+          //채팅중이 아닐때만 띄우기
+          this.setState({
+            visible: true, 
+            message: '['+oppName+'] ' + message.data.lastMessage
+          })
+        }
+        else {
+          //채팅창 활성화 시 해당 컴포넌트로 전송
+          if (global.chatListener) global.chatListener(message.data);
+          if (global.chatDetailListener) global.chatDetailListener(message.data);
+        }
       }
     };
     global.ws.onerror = (e) => {

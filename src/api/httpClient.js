@@ -285,6 +285,7 @@ const httpUrl = {
 
   // 채팅
   chatList: "/chat/chatList?pageSize=%s&pageNum=%s&searchName=%s",
+  chatListByUser: "/chat/chatList?pageSize=%s&pageNum=%s&searchName=%s&receiveUserIdx=%s",
   chatMessageList: "/chat/messageList?pageSize=%s&pageNum=%s&chatRoomIdx=%s",
   chatSend: "/chat/send",
   chatRoom: "/chat/chatroom?receiveUserIdx=%s",
