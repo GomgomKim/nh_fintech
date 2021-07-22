@@ -52,9 +52,6 @@ class ChattingCurrentRoom extends Component {
 
     global.chatDetailAprear = true;
     global.chatDetailListener = (data) => {
-      console.log('send to room success')
-      console.log(this.state.currentRoom);
-      console.log(data);
         if (this.state.currentRoom.idx == data.idx) {
             this.state.chatMessages.unshift({
                 chatDate: formatYMDHMS(new Date()), 
@@ -76,6 +73,9 @@ class ChattingCurrentRoom extends Component {
     }
   }
   componentWillUnmount() {
+    global.chatDetailAprear = false;
+    
+    global.chatDetailListener = null;
   }
   componentDidUpdate(prevProps, prevState) {
 

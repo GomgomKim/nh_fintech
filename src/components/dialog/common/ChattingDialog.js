@@ -56,6 +56,36 @@ class ChattingDialog extends Component {
         this.setState({ lastChatTime: value });
       } catch {}
     }
+
+    global.chatAprear = true;
+    global.chatListener = (data) => {
+
+      this.updateLastChatMessage(data.idx, data.lastMessage);
+      this.updateTime(data.idx);
+
+      if (this.state.currentRoom && this.state.currentRoom.idx == data.idx) {
+          this.state.chatMessages.unshift({
+              chatDate: formatYMDHMS(new Date()), 
+              chatMessage: data.lastMessage, 
+              chatRoomCreateDate: "", 
+              chatRoomIdx: null, 
+              idx: 0, 
+              isRead: null, 
+              member1: data.member1, 
+              member2: data.member2, 
+              readDate: null, 
+              receiveUserIdx: this.props.loginReducer.loginInfo.idx, 
+              sendUserIdx: this.props.loginReducer.loginInfo.idx == data.member1 ? data.member2 : data.member1, 
+              title: "chat room"
+          });
+          this.setState({chatMessages:this.state.chatMessages})
+      }
+    }
+  }
+  componentWillUnmount() {
+    global.chatAprear = false;
+    
+    global.chatListener = null;
   }
   formatChatDate(time) {
     return time.substr(0, 10) === formatYMD(new Date())
