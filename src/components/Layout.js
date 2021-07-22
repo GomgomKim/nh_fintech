@@ -26,6 +26,7 @@ class Layout extends React.Component {
               <Header />
               <Content />
               <Footer />
+              <NNWebSocket />
             </AntLayout>
           </AntLayout>
         </div>

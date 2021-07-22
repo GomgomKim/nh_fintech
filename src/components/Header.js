@@ -7,6 +7,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { login, logout } from "../actions/loginAction";
+import { websockConnected, websockDisconnected, websockDuplicated } from "../actions/websocketAction";
 import { httpPost, httpUrl } from "../api/httpClient";
 import "../css/modal.css";
 import "../css/modal_m.css";
@@ -213,6 +214,7 @@ let mapStateToProps = (state) => {
   return {
     isLogin: state.login.isLogin,
     loginInfo: state.login.loginInfo,
+    websockInfo: state.websock
   };
 };
 
@@ -220,6 +222,9 @@ let mapDispatchToProps = (dispatch) => {
   return {
     onLogin: (userinfo) => dispatch(login(userinfo)),
     onLogout: () => dispatch(logout()),
+    onWebsockConnect: () => dispatch(websockConnected()),
+    onWebsockDisconnect: () => dispatch(websockDisconnected()),
+    onWebsockDuplicate: () => dispatch(websockDuplicated()),
   };
 };
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Header));

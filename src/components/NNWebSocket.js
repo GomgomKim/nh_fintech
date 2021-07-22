@@ -38,6 +38,7 @@ class NNWebSocket extends Component {
   }
 
   componentDidMount() {
+    alert(global.ws)
     this.initWS();
     this.wsTimeInterval = setInterval(() => {
       this.checkWS();
@@ -48,7 +49,6 @@ class NNWebSocket extends Component {
   }
 
   initWS = () => {
-    debugger;
     console.log('=================initWS==================');
     if (global.ws != null) {
       console.log('ws is not null');
