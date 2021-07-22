@@ -48,6 +48,13 @@ const tableStatusString = {
   3: "탈퇴",
 };
 
+const typeString = [
+  "",
+  "리스료",
+  "산재보험",
+  "기타",
+];
+
 // 가맹점 - 출금설정
 const withdrawString = {
   true: "출금 가능",
@@ -351,5 +358,6 @@ export {
   items,
   deliveryZone,
   riderStatusCode,
+  typeString,
 };
 

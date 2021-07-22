@@ -2435,6 +2435,13 @@
     margin-left: 5px;
   }
 
+  .taskWork-list-01 .selectItem {
+    margin: 0;
+    vertical-align: middle;
+    display: inline-block;
+    width: 250px;
+  }
+
   .taskWork-list-01 .taskWorkSub {
     width: 90px;
     font-size: 16px;
