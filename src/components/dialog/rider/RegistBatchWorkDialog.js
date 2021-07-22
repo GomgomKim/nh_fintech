@@ -4,6 +4,7 @@ import "../../../css/modal.css";
 import moment from 'moment';
 import { httpPost, httpUrl } from "../../../api/httpClient";
 import { customAlert, customError } from "../../../api/Modals";
+import {typeString} from "../../../lib/util/codeUtil";
 
 const FormItem = Form.Item;
 // const Search = Input.Search;
@@ -93,11 +94,30 @@ class RegistBatchWorkDialog extends Component {
               <div className="taskWork-title-sub">일차감 등록정보</div>
               <div className="taskWork-inner">
                 <div className="taskWork-list">
-                  {/* <div className="twl taskWork-list-01">
-                  <div className="twl-text">사용여부</div>
+                  <div className="twl taskWork-list-01">
+                  <div className="twl-text">속성</div>
+                  <FormItem
+                        // name="type"
+                        className="selectItem"
+                        // rules={[
+                        //   { required: true, message: "속성을 선택해주세요" },
+                        // ]}
+                  >
+                    <Select
+                      // onChange={(value) =>
+                      //   this.setState({ type: value })
+                      // }
+                    >
+                    {typeString.map((v, index) => {
+                      if (index === 0) return <></>;
+                      return <Option value={index}>{v}</Option>;
+                    })}
+                    </Select>
+                                  </FormItem>
+                  {/* <div className="twl-text">사용여부</div>
                   <Checkbox></Checkbox>
-                  {/* <span className="useText">사용함</span> */}
-                  {/* </div> */}
+                  <span className="useText">사용함</span> */}
+                  </div>
                   <div className="twl taskWork-list-02">
                     <div className="twl-text">차감명</div>
                     <div className="inputBox inputBox-taskWork sub">
