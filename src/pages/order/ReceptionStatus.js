@@ -1358,7 +1358,7 @@ class ReceptionStatus extends Component {
               onChange={(e) => this.setState({ franchisee: e.target.value })}
               onSearch={this.onSearch}
               style={{
-                width: 300,
+                width: 308,
                 marginTop: 15,
                 marginBottom: 10,
               }}
@@ -1370,7 +1370,7 @@ class ReceptionStatus extends Component {
               onChange={(e) => this.setState({ rider: e.target.value })}
               onSearch={this.onSearch}
               style={{
-                width: 300,
+                width: 308,
                 marginBottom: 20,
               }}
             />
