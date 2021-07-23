@@ -6,20 +6,21 @@
   .mobile {
   }
 
-  /* .tabBtn {
+  .tabBtn {
     margin-left: 10px;
-  } */
+  }
 
   .arriveArea {
     text-align: left;
   }
 
-  .delayTab {
+  .mapTab {
     margin-left: 0px !important;
+    width:145px;
   }
 
-  .orderTab {
-    margin-right: 20px !important;
+  .registTab {
+    width:145px;
   }
 
   .filterTab {

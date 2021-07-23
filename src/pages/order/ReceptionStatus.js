@@ -1253,6 +1253,24 @@ class ReceptionStatus extends Component {
             </Button>
           </div>
 
+          <div className="btnLayout mobile">
+            <Button
+              icon={<EnvironmentFilled />}
+              className="tabBtn mapTab"
+              onClick={this.openMapControlModal}
+            // onClick={() => { this.props.openMapControl() }}
+            >
+              지도관제
+            </Button>
+            <Button
+              icon={<PhoneOutlined />}
+              className="tabBtn registTab"
+              onClick={this.openAddCallModal}
+            >
+              주문등록
+            </Button>
+          </div>
+
           <div className="selectLayout desk">
             <Search
               placeholder="가맹점검색"
@@ -1340,7 +1358,7 @@ class ReceptionStatus extends Component {
               onChange={(e) => this.setState({ franchisee: e.target.value })}
               onSearch={this.onSearch}
               style={{
-                width: 200,
+                width: 300,
                 marginTop: 15,
                 marginBottom: 10,
               }}
@@ -1352,7 +1370,7 @@ class ReceptionStatus extends Component {
               onChange={(e) => this.setState({ rider: e.target.value })}
               onSearch={this.onSearch}
               style={{
-                width: 200,
+                width: 300,
                 marginBottom: 20,
               }}
             />
