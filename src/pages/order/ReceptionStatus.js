@@ -461,24 +461,10 @@ class ReceptionStatus extends Component {
               No.{row.idx} / {row.frName} / {arriveReqTime[row.arriveReqTime]} /{" "}
               {row.itemPrepared ? "완료" : "준비중"} <br />{" "}
             </p>
-            접수시간 :{row.orderDate}
-            <br />
-            배차시간 :{row.assignDate}
-            <br />
-            픽업시간 :{row.orderStatus >= 3 ? formatDate(row.pickupDate) : "-"}
-            <br />
-            완료시간 :
-            {row.orderStatus >= 4 ? formatDate(row.completeDate) : "-"}
-            <hr className="light-hr" />
             {row.destAddr1 + " " + row.destAddr2} <br />
             {row.riderName} / {row.distance}km /{" "}
             {paymentMethod[row.orderPayments[0]["paymentMethod"]]}
             <br />
-            가격 : {comma(row.orderPrice)} / 총요금 : {comma(row.deliveryPrice)}
-            <br />
-            기본요금 : {comma(row.basicDeliveryPrice)} / 할증요금 :{" "}
-            {comma(row.extraDeliveryPrice)}
-            <hr className="light-hr" />
             <div className="table-column-sub">
               상태 :{" "}
               <Select
@@ -842,7 +828,7 @@ class ReceptionStatus extends Component {
           data.length > 1 ? (
             <Button
               onClick={() => this.openPaymentModal(data, row)}
-              // close={this.closePaymentModal}
+            // close={this.closePaymentModal}
             >
               보기
             </Button>
@@ -854,6 +840,29 @@ class ReceptionStatus extends Component {
 
     const expandedRowRender = (record) => {
       const dropColumns = [
+        {
+          title: "세부내용",
+          dataIndex: "distance",
+          className: "table-column-center mobile",
+          render: (data, row) => (
+            <div className="status-box">
+              접수시간 :{row.orderDate}
+              <br />
+              배차시간 :{row.assignDate}
+              <br />
+              픽업시간 :{row.orderStatus >= 3 ? formatDate(row.pickupDate) : "-"}
+              <br />
+              완료시간 :
+              {row.orderStatus >= 4 ? formatDate(row.completeDate) : "-"}
+              <br />
+              <hr className="light-hr" />
+              가격 : {comma(row.orderPrice)} / 총요금 : {comma(row.deliveryPrice)}
+              <br />
+              기본요금 : {comma(row.basicDeliveryPrice)} / 할증요금 :{" "}
+              {comma(row.extraDeliveryPrice)}
+            </div>
+          ),
+        },
         // {
         //   title: "수수료",
         //   dataIndex: "deliveryPriceFee",
@@ -1181,7 +1190,7 @@ class ReceptionStatus extends Component {
               icon={<EnvironmentFilled />}
               className="tabBtn mapTab"
               onClick={this.openMapControlModal}
-              // onClick={() => { this.props.openMapControl() }}
+            // onClick={() => { this.props.openMapControl() }}
             >
               지도관제
             </Button>
@@ -1376,7 +1385,7 @@ class ReceptionStatus extends Component {
               columns={columns}
               pagination={false}
               // onChange={this.handleTableChange}
-              // expandedRowRender={expandedRowRender}
+              expandedRowRender={expandedRowRender}
             />
           </div>
 
