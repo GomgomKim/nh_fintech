@@ -838,7 +838,7 @@ class MapControlDialog extends Component {
         dataIndex: "orderDate",
         className: "table-column-center",
         width: 100,
-        render: (data) => <div>{remainTime(data)}분</div>,
+        render: (data, row) => <div>{remainTime(row.orderDate, row.arriveReqTime)}분</div>,
       },
       {
         title: "도착지",
@@ -1108,10 +1108,16 @@ class MapControlDialog extends Component {
                     )}
                     rowSelection={rowSelection}
                     columns={columns_callList}
-                    rowClassName={(record) => rowColorName[record.orderStatus]}
+                    rowClassName={(row) => {
+                      const remainTimeNum = remainTime(row.orderDate, row.arriveReqTime);
+                      if (remainTimeNum >= 0) return 'table-white';
+                      else if (remainTimeNum <= -30) return 'table-red';
+                      else if (remainTimeNum <= -20) return 'table-orange';
+                      else if (remainTimeNum <= -10) return 'table-yellow';
+                    }}
                     pagination={this.state.paginationCallList}
                     onChange={this.handleCallListTableChange}
-                    className="callDataTable"
+                    className={"callDataTable"}
                   />
                 </>
               )}

@@ -1,3 +1,5 @@
+
+import moment from "moment";
 const comma = (a) => {
   if (!a) return 0;
   if (a === 0 || a === "0") return 0;
@@ -7,12 +9,10 @@ const comma = (a) => {
   return parts.join(".");
 };
 
-const remainTime = (reqDate) => {
-  if (!reqDate) return 0;
-  if (reqDate.indexOf('T') < 0) {
-    reqDate = reqDate.replace(' ', 'T') + '+09:00'
-  }
-  return parseInt((new Date(reqDate).getTime() - new Date().getTime()) / 60000);
+const remainTime = (orderDate, arriveReqTime) => {
+  const arriveReqDate = moment(orderDate).add(arriveReqTime, 'minutes');
+  const time = arriveReqDate.diff(moment(), 'minutes');
+  return time;
 }
 
 export { comma, remainTime };

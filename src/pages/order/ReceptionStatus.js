@@ -49,6 +49,7 @@ import {
 import { formatDate } from "../../lib/util/dateUtil";
 import { comma } from "../../lib/util/numberUtil";
 import SurchargeDialog from "./../../components/dialog/order/SurchargeDialog";
+import { remainTime } from "../../lib/util/numberUtil";
 
 const Option = Select.Option;
 const Search = Input.Search;
@@ -165,7 +166,7 @@ class ReceptionStatus extends Component {
       startDate.getDate() + 1
     );
     const data = {
-      orderStatuses: [4],
+      orderStatuses: [4, 5],
       pageNum: this.state.pagination.current,
       pageSize: this.state.pagination.pageSize,
       paymentMethods: [1, 2, 3],
@@ -458,8 +459,8 @@ class ReceptionStatus extends Component {
         render: (data, row) => (
           <div className="status-box">
             <p>
-              No.{row.idx} / {row.frName} / {arriveReqTime[row.arriveReqTime]} /{" "}
-              {row.itemPrepared ? "완료" : "준비중"} <br />{" "}
+              No.{row.idx} / {row.frName} / {arriveReqTime[row.arriveReqTime]} / {remainTime(row.orderDate, row.arriveReqTime)}분 {" "}
+              {/* {row.itemPrepared ? "완료" : "준비중"} <br />{" "} */}
             </p>
             {row.destAddr1 + " " + row.destAddr2} <br />
             {row.riderName} / {row.distance}km /{" "}
@@ -482,6 +483,13 @@ class ReceptionStatus extends Component {
                   if (row.orderStatus === 1 && value === 2) {
                     Modal.info({
                       content: <div>강제배차를 사용하세요.</div>,
+                    });
+                    return;
+                  }
+                  // 픽업 -> 접수 변경 시 배차상태로 변경 알림
+                  if (row.orderStatus === 3 && value === 1) {
+                    Modal.info({
+                      content: <div>배차상태로 먼저 변경한 후 접수로 변경해주세요.</div>,
                     });
                     return;
                   }
@@ -596,6 +604,13 @@ class ReceptionStatus extends Component {
                   });
                   return;
                 }
+                // 픽업 -> 접수 변경 시 배차상태로 변경 알림
+                if (row.orderStatus === 3 && value === 1) {
+                  Modal.info({
+                    content: <div>배차상태로 먼저 변경한 후 접수로 변경해주세요.</div>,
+                  });
+                  return;
+                }
 
                 const orderStatuseChangeApiCode = [
                   "",
@@ -655,6 +670,14 @@ class ReceptionStatus extends Component {
         render: (data) => <div>{arriveReqTime[data]}</div>,
       },
       {
+        title: "남은시간",
+        dataIndex: "arriveReqTime",
+        className: "table-column-center desk",
+        key: (row) => `remainTime:${row.idx}`,
+        sorter: (a, b) => remainTime(a.orderDate, a.arriveReqTime) - remainTime(b.orderDate, b.arriveReqTime),
+        render: (data, row) => <div>{remainTime(row.orderDate, row.arriveReqTime)}분</div>,
+      },
+      {
         title: "음식준비",
         dataIndex: "itemPrepared",
         className: "table-column-center desk",
@@ -703,34 +726,6 @@ class ReceptionStatus extends Component {
         key: (row) => `orderDate:${row.orderDate}`,
         sorter: (a, b) => moment(a.orderDate) - moment(b.orderDate),
         render: (data, row) => <div>{data}</div>,
-      },
-      {
-        title: "배차시간",
-        dataIndex: "assignDate",
-        className: "table-column-center desk",
-        key: (row) => `assignDate:${row.assignDate}`,
-        sorter: (a, b) => moment(a.assignDate) - moment(b.assignDate),
-        render: (data, row) => <div>{data}</div>,
-      },
-      {
-        title: "픽업시간",
-        dataIndex: "pickupDate",
-        className: "table-column-center desk",
-        key: (row) => `pickupDate:${row.pickupDate}`,
-        sorter: (a, b) => moment(a.pickupDate) - moment(b.pickupDate),
-        render: (data, row) => (
-          <div>{row.orderStatus >= 3 ? formatDate(data) : "-"}</div>
-        ),
-      },
-      {
-        title: "완료시간",
-        dataIndex: "completeDate",
-        className: "table-column-center desk",
-        key: (row) => `completeDate:${row.completeDate}`,
-        sorter: (a, b) => moment(a.completeDate) - moment(b.completeDate),
-        render: (data, row) => (
-          <div>{row.orderStatus >= 4 ? formatDate(data) : "-"}</div>
-        ),
       },
       // {
       //   title: "완료시간",
@@ -794,29 +789,15 @@ class ReceptionStatus extends Component {
         render: (data) => <div>{comma(data)}</div>,
       },
       {
-        title: "총배달요금",
+        title: "배달요금",
         dataIndex: "deliveryPrice",
         className: "table-column-center desk",
         key: (row) => `deliveryPrice:${row.deliveryPrice}`,
         sorter: (a, b) => a.deliveryPrice - b.deliveryPrice,
-        render: (data) => <div>{comma(data)}</div>,
-      },
-      {
-        title: "기본배달요금",
-        dataIndex: "basicDeliveryPrice",
-        className: "table-column-center desk",
-        key: (row) => `basicDeliveryPrice:${row.basicDeliveryPrice}`,
-        sorter: (a, b) => a.basicDeliveryPrice - b.basicDeliveryPrice,
-        render: (data) => <div>{comma(data)}</div>,
-      },
-
-      {
-        title: "할증배달요금",
-        dataIndex: "extraDeliveryPrice",
-        className: "table-column-center desk",
-        key: (row) => `extraDeliveryPrice:${row.extraDeliveryPrice}`,
-        sorter: (a, b) => a.extraDeliveryPrice - b.extraDeliveryPrice,
-        render: (data) => <div>{comma(data)}</div>,
+        render: (data, row) => <div>
+          {comma(data)}<br/>
+          ({comma(row.basicDeliveryPrice)} + {comma(row.extraDeliveryPrice)})
+          </div>,
       },
 
       {
@@ -835,6 +816,34 @@ class ReceptionStatus extends Component {
           ) : (
             <div>{paymentMethod[data[0]["paymentMethod"]]}</div>
           ),
+      },
+      {
+        title: "배차시간",
+        dataIndex: "assignDate",
+        className: "table-column-center desk",
+        key: (row) => `assignDate:${row.assignDate}`,
+        sorter: (a, b) => moment(a.assignDate) - moment(b.assignDate),
+        render: (data, row) => <div>{data}</div>,
+      },
+      {
+        title: "픽업시간",
+        dataIndex: "pickupDate",
+        className: "table-column-center desk",
+        key: (row) => `pickupDate:${row.pickupDate}`,
+        sorter: (a, b) => moment(a.pickupDate) - moment(b.pickupDate),
+        render: (data, row) => (
+          <div>{row.orderStatus >= 3 ? formatDate(data) : "-"}</div>
+        ),
+      },
+      {
+        title: "완료시간",
+        dataIndex: "completeDate",
+        className: "table-column-center desk",
+        key: (row) => `completeDate:${row.completeDate}`,
+        sorter: (a, b) => moment(a.completeDate) - moment(b.completeDate),
+        render: (data, row) => (
+          <div>{row.orderStatus >= 4 ? formatDate(data) : "-"}</div>
+        ),
       },
     ];
 
