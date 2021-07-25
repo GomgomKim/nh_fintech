@@ -216,6 +216,7 @@ const httpUrl = {
   // 주문 상태 변경
   orderAssignCancel: "/order/admin/admin/assignRiderCancel",
   orderPickup: "/order/pickup",
+  orderPickupCancel: '/order/pickupCancel',  
   orderComplete: "/order/complete",
   orderCancel: "/order/cancel",
 
