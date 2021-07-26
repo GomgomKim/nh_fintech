@@ -204,7 +204,7 @@ class MapControlDialog extends Component {
                 }
               }
             },
-            onCancel: () => {},
+            onCancel: () => { },
           });
         } else {
           this.getList(rider.idx);
@@ -609,9 +609,9 @@ class MapControlDialog extends Component {
     onFilter: (value, record) =>
       record[dataIndex]
         ? record[dataIndex]
-            .toString()
-            .toLowerCase()
-            .includes(value.toLowerCase())
+          .toString()
+          .toLowerCase()
+          .includes(value.toLowerCase())
         : "",
     onFilterDropdownVisibleChange: (visible) => {
       if (visible) {
@@ -687,7 +687,7 @@ class MapControlDialog extends Component {
                     .then((res) => {
                       // console.log(res);
                     })
-                    .catch((e) => {});
+                    .catch((e) => { });
                   this.getList();
                 }
               }}
@@ -838,7 +838,7 @@ class MapControlDialog extends Component {
         dataIndex: "orderDate",
         className: "table-column-center",
         width: 100,
-        render: (data) => <div>{remainTime(data)}분</div>,
+        render: (data, row) => <div>{remainTime(row.orderDate, row.arriveReqTime)}분</div>,
       },
       {
         title: "도착지",
@@ -927,44 +927,44 @@ class MapControlDialog extends Component {
                     {this.state.allResults.filter(
                       (x) => x.userIdx === this.state.selectedRiderIdx
                     ).length > 0 && (
-                      <>
-                        <Marker
-                          position={navermaps.LatLng(
-                            this.state.selectedRiderLatitude,
-                            this.state.selectedRiderLongitude
-                          )}
-                          icon={
-                            require("../../../img/login/map/marker_rider_red.png")
-                              .default
-                          }
-                          title={this.state.riderName}
-                          onClick={() => {
-                            this.getRiderLocate(this.state.selectedRiderIdx);
-                          }}
-                        />
-                        <Marker
-                          key={this.state.selectedRiderIdx}
-                          position={navermaps.LatLng(
-                            this.state.selectedRiderLatitude,
-                            this.state.selectedRiderLongitude
-                          )}
-                          icon={{
-                            content: [
-                              '<div class="marker-name"><div style="transform: translateX(-50%)">' +
+                        <>
+                          <Marker
+                            position={navermaps.LatLng(
+                              this.state.selectedRiderLatitude,
+                              this.state.selectedRiderLongitude
+                            )}
+                            icon={
+                              require("../../../img/login/map/marker_rider_red.png")
+                                .default
+                            }
+                            title={this.state.riderName}
+                            onClick={() => {
+                              this.getRiderLocate(this.state.selectedRiderIdx);
+                            }}
+                          />
+                          <Marker
+                            key={this.state.selectedRiderIdx}
+                            position={navermaps.LatLng(
+                              this.state.selectedRiderLatitude,
+                              this.state.selectedRiderLongitude
+                            )}
+                            icon={{
+                              content: [
+                                '<div class="marker-name"><div style="transform: translateX(-50%)">' +
                                 this.state.riderName +
                                 " (" +
                                 this.state.riderOrderList.length +
                                 ")" +
                                 "</div></div>",
-                            ].join(""),
-                          }}
-                          title={this.state.riderName}
-                          onClick={() =>
-                            this.getRiderLocate(this.state.selectedRiderIdx)
-                          }
-                        />
-                      </>
-                    )}
+                              ].join(""),
+                            }}
+                            title={this.state.riderName}
+                            onClick={() =>
+                              this.getRiderLocate(this.state.selectedRiderIdx)
+                            }
+                          />
+                        </>
+                      )}
 
                     {this.state.allResults.map((row, index) => {
                       if (this.state.mapBounds) {
@@ -992,9 +992,9 @@ class MapControlDialog extends Component {
                                     icon={
                                       row.riderLevel >= 3
                                         ? require("../../../img/login/map/marker_rider_blue.png")
-                                            .default
+                                          .default
                                         : require("../../../img/login/map/marker_rider.png")
-                                            .default
+                                          .default
                                     }
                                     title={row.riderName}
                                     onClick={() => {
@@ -1012,11 +1012,11 @@ class MapControlDialog extends Component {
                                     icon={{
                                       content: [
                                         '<div class="marker-name"><div style="transform: translateX(-50%)">' +
-                                          row.riderName +
-                                          " (" +
-                                          row.orders.length +
-                                          ")" +
-                                          "</div></div>",
+                                        row.riderName +
+                                        " (" +
+                                        row.orders.length +
+                                        ")" +
+                                        "</div></div>",
                                       ].join(""),
                                     }}
                                     title={row.riderName}
@@ -1108,17 +1108,23 @@ class MapControlDialog extends Component {
                     )}
                     rowSelection={rowSelection}
                     columns={columns_callList}
-                    rowClassName={(record) => rowColorName[record.orderStatus]}
+                    rowClassName={(row) => {
+                      const remainTimeNum = remainTime(row.orderDate, row.arriveReqTime);
+                      if (remainTimeNum >= 0) return 'table-white';
+                      else if (remainTimeNum <= -30) return 'table-red';
+                      else if (remainTimeNum <= -20) return 'table-orange';
+                      else if (remainTimeNum <= -10) return 'table-yellow';
+                    }}
                     pagination={this.state.paginationCallList}
                     onChange={this.handleCallListTableChange}
-                    className="callDataTable"
+                    className={"callDataTable"}
                   />
                 </>
               )}
 
               {!this.state.orderListOpen && (
                 <div
-                  className="order-list-show-btn"
+                  className="order-list-show-btn desk"
                   onClick={() => this.setState({ orderListOpen: true })}
                 >
                   주문 목록 열기
@@ -1158,7 +1164,7 @@ class MapControlDialog extends Component {
               )}
               {!this.state.riderListOpen && (
                 <div
-                  className="rider-list-show-btn"
+                  className="rider-list-show-btn desk"
                   onClick={() => this.setState({ riderListOpen: true })}
                 >
                   기사 목록 열기

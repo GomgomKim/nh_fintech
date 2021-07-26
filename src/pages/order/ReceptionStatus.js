@@ -49,6 +49,7 @@ import {
 import { formatDate } from "../../lib/util/dateUtil";
 import { comma } from "../../lib/util/numberUtil";
 import SurchargeDialog from "./../../components/dialog/order/SurchargeDialog";
+import { remainTime } from "../../lib/util/numberUtil";
 
 const Option = Select.Option;
 const Search = Input.Search;
@@ -99,7 +100,7 @@ class ReceptionStatus extends Component {
 
       // 호출설정 branch 정보
       branchInfo: null,
-      pullingInterval: 3000,
+      pullingInterval: 5000,
 
       messageTarget: null,
       messageTargetName: null,
@@ -165,7 +166,7 @@ class ReceptionStatus extends Component {
       startDate.getDate() + 1
     );
     const data = {
-      orderStatuses: [4],
+      orderStatuses: [4, 5],
       pageNum: this.state.pagination.current,
       pageSize: this.state.pagination.pageSize,
       paymentMethods: [1, 2, 3],
@@ -458,27 +459,13 @@ class ReceptionStatus extends Component {
         render: (data, row) => (
           <div className="status-box">
             <p>
-              No.{row.idx} / {row.frName} / {arriveReqTime[row.arriveReqTime]} /{" "}
-              {row.itemPrepared ? "완료" : "준비중"} <br />{" "}
+              No.{row.idx} / {row.frName} / {arriveReqTime[row.arriveReqTime]} / {remainTime(row.orderDate, row.arriveReqTime)}분 {" "}
+              {/* {row.itemPrepared ? "완료" : "준비중"} <br />{" "} */}
             </p>
-            접수시간 :{row.orderDate}
-            <br />
-            배차시간 :{row.assignDate}
-            <br />
-            픽업시간 :{row.orderStatus >= 3 ? formatDate(row.pickupDate) : "-"}
-            <br />
-            완료시간 :
-            {row.orderStatus >= 4 ? formatDate(row.completeDate) : "-"}
-            <hr className="light-hr" />
             {row.destAddr1 + " " + row.destAddr2} <br />
             {row.riderName} / {row.distance}km /{" "}
             {paymentMethod[row.orderPayments[0]["paymentMethod"]]}
             <br />
-            가격 : {comma(row.orderPrice)} / 총요금 : {comma(row.deliveryPrice)}
-            <br />
-            기본요금 : {comma(row.basicDeliveryPrice)} / 할증요금 :{" "}
-            {comma(row.extraDeliveryPrice)}
-            <hr className="light-hr" />
             <div className="table-column-sub">
               상태 :{" "}
               <Select
@@ -499,11 +486,18 @@ class ReceptionStatus extends Component {
                     });
                     return;
                   }
+                  // 픽업 -> 접수 변경 시 배차상태로 변경 알림
+                  if (row.orderStatus === 3 && value === 1) {
+                    Modal.info({
+                      content: <div>배차상태로 먼저 변경한 후 접수로 변경해주세요.</div>,
+                    });
+                    return;
+                  }
 
                   const orderStatuseChangeApiCode = [
                     "",
-                    "",
-                    "",
+                    httpUrl.orderAssignCancel,
+                    httpUrl.orderPickupCancel,
                     httpUrl.orderPickup,
                     httpUrl.orderComplete,
                     httpUrl.orderCancel,
@@ -610,11 +604,18 @@ class ReceptionStatus extends Component {
                   });
                   return;
                 }
+                // 픽업 -> 접수 변경 시 배차상태로 변경 알림
+                if (row.orderStatus === 3 && value === 1) {
+                  Modal.info({
+                    content: <div>배차상태로 먼저 변경한 후 접수로 변경해주세요.</div>,
+                  });
+                  return;
+                }
 
                 const orderStatuseChangeApiCode = [
                   "",
                   httpUrl.orderAssignCancel,
-                  "",
+                  httpUrl.orderPickupCancel,
                   httpUrl.orderPickup,
                   httpUrl.orderComplete,
                   httpUrl.orderCancel,
@@ -669,6 +670,14 @@ class ReceptionStatus extends Component {
         render: (data) => <div>{arriveReqTime[data]}</div>,
       },
       {
+        title: "남은시간",
+        dataIndex: "arriveReqTime",
+        className: "table-column-center desk",
+        key: (row) => `remainTime:${row.idx}`,
+        sorter: (a, b) => remainTime(a.orderDate, a.arriveReqTime) - remainTime(b.orderDate, b.arriveReqTime),
+        render: (data, row) => <div>{remainTime(row.orderDate, row.arriveReqTime)}분</div>,
+      },
+      {
         title: "음식준비",
         dataIndex: "itemPrepared",
         className: "table-column-center desk",
@@ -717,34 +726,6 @@ class ReceptionStatus extends Component {
         key: (row) => `orderDate:${row.orderDate}`,
         sorter: (a, b) => moment(a.orderDate) - moment(b.orderDate),
         render: (data, row) => <div>{data}</div>,
-      },
-      {
-        title: "배차시간",
-        dataIndex: "assignDate",
-        className: "table-column-center desk",
-        key: (row) => `assignDate:${row.assignDate}`,
-        sorter: (a, b) => moment(a.assignDate) - moment(b.assignDate),
-        render: (data, row) => <div>{data}</div>,
-      },
-      {
-        title: "픽업시간",
-        dataIndex: "pickupDate",
-        className: "table-column-center desk",
-        key: (row) => `pickupDate:${row.pickupDate}`,
-        sorter: (a, b) => moment(a.pickupDate) - moment(b.pickupDate),
-        render: (data, row) => (
-          <div>{row.orderStatus >= 3 ? formatDate(data) : "-"}</div>
-        ),
-      },
-      {
-        title: "완료시간",
-        dataIndex: "completeDate",
-        className: "table-column-center desk",
-        key: (row) => `completeDate:${row.completeDate}`,
-        sorter: (a, b) => moment(a.completeDate) - moment(b.completeDate),
-        render: (data, row) => (
-          <div>{row.orderStatus >= 4 ? formatDate(data) : "-"}</div>
-        ),
       },
       // {
       //   title: "완료시간",
@@ -808,29 +789,15 @@ class ReceptionStatus extends Component {
         render: (data) => <div>{comma(data)}</div>,
       },
       {
-        title: "총배달요금",
+        title: "배달요금",
         dataIndex: "deliveryPrice",
         className: "table-column-center desk",
         key: (row) => `deliveryPrice:${row.deliveryPrice}`,
         sorter: (a, b) => a.deliveryPrice - b.deliveryPrice,
-        render: (data) => <div>{comma(data)}</div>,
-      },
-      {
-        title: "기본배달요금",
-        dataIndex: "basicDeliveryPrice",
-        className: "table-column-center desk",
-        key: (row) => `basicDeliveryPrice:${row.basicDeliveryPrice}`,
-        sorter: (a, b) => a.basicDeliveryPrice - b.basicDeliveryPrice,
-        render: (data) => <div>{comma(data)}</div>,
-      },
-
-      {
-        title: "할증배달요금",
-        dataIndex: "extraDeliveryPrice",
-        className: "table-column-center desk",
-        key: (row) => `extraDeliveryPrice:${row.extraDeliveryPrice}`,
-        sorter: (a, b) => a.extraDeliveryPrice - b.extraDeliveryPrice,
-        render: (data) => <div>{comma(data)}</div>,
+        render: (data, row) => <div>
+          {comma(data)}<br/>
+          ({comma(row.basicDeliveryPrice)} + {comma(row.extraDeliveryPrice)})
+          </div>,
       },
 
       {
@@ -842,7 +809,7 @@ class ReceptionStatus extends Component {
           data.length > 1 ? (
             <Button
               onClick={() => this.openPaymentModal(data, row)}
-              // close={this.closePaymentModal}
+            // close={this.closePaymentModal}
             >
               보기
             </Button>
@@ -850,10 +817,61 @@ class ReceptionStatus extends Component {
             <div>{paymentMethod[data[0]["paymentMethod"]]}</div>
           ),
       },
+      {
+        title: "배차시간",
+        dataIndex: "assignDate",
+        className: "table-column-center desk",
+        key: (row) => `assignDate:${row.assignDate}`,
+        sorter: (a, b) => moment(a.assignDate) - moment(b.assignDate),
+        render: (data, row) => <div>{data}</div>,
+      },
+      {
+        title: "픽업시간",
+        dataIndex: "pickupDate",
+        className: "table-column-center desk",
+        key: (row) => `pickupDate:${row.pickupDate}`,
+        sorter: (a, b) => moment(a.pickupDate) - moment(b.pickupDate),
+        render: (data, row) => (
+          <div>{row.orderStatus >= 3 ? formatDate(data) : "-"}</div>
+        ),
+      },
+      {
+        title: "완료시간",
+        dataIndex: "completeDate",
+        className: "table-column-center desk",
+        key: (row) => `completeDate:${row.completeDate}`,
+        sorter: (a, b) => moment(a.completeDate) - moment(b.completeDate),
+        render: (data, row) => (
+          <div>{row.orderStatus >= 4 ? formatDate(data) : "-"}</div>
+        ),
+      },
     ];
 
     const expandedRowRender = (record) => {
       const dropColumns = [
+        {
+          title: "세부내용",
+          dataIndex: "distance",
+          className: "table-column-center mobile",
+          render: (data, row) => (
+            <div className="status-box">
+              접수시간 :{row.orderDate}
+              <br />
+              배차시간 :{row.assignDate}
+              <br />
+              픽업시간 :{row.orderStatus >= 3 ? formatDate(row.pickupDate) : "-"}
+              <br />
+              완료시간 :
+              {row.orderStatus >= 4 ? formatDate(row.completeDate) : "-"}
+              <br />
+              <hr className="light-hr" />
+              가격 : {comma(row.orderPrice)} / 총요금 : {comma(row.deliveryPrice)}
+              <br />
+              기본요금 : {comma(row.basicDeliveryPrice)} / 할증요금 :{" "}
+              {comma(row.extraDeliveryPrice)}
+            </div>
+          ),
+        },
         // {
         //   title: "수수료",
         //   dataIndex: "deliveryPriceFee",
@@ -1181,7 +1199,7 @@ class ReceptionStatus extends Component {
               icon={<EnvironmentFilled />}
               className="tabBtn mapTab"
               onClick={this.openMapControlModal}
-              // onClick={() => { this.props.openMapControl() }}
+            // onClick={() => { this.props.openMapControl() }}
             >
               지도관제
             </Button>
@@ -1241,6 +1259,24 @@ class ReceptionStatus extends Component {
               onClick={this.openBlindControlModal}
             >
               블라인드관리
+            </Button>
+          </div>
+
+          <div className="btnLayout mobile">
+            <Button
+              icon={<EnvironmentFilled />}
+              className="tabBtn mapTab"
+              onClick={this.openMapControlModal}
+            // onClick={() => { this.props.openMapControl() }}
+            >
+              지도관제
+            </Button>
+            <Button
+              icon={<PhoneOutlined />}
+              className="tabBtn registTab"
+              onClick={this.openAddCallModal}
+            >
+              주문등록
             </Button>
           </div>
 
@@ -1331,7 +1367,7 @@ class ReceptionStatus extends Component {
               onChange={(e) => this.setState({ franchisee: e.target.value })}
               onSearch={this.onSearch}
               style={{
-                width: 200,
+                width: 308,
                 marginTop: 15,
                 marginBottom: 10,
               }}
@@ -1343,7 +1379,7 @@ class ReceptionStatus extends Component {
               onChange={(e) => this.setState({ rider: e.target.value })}
               onSearch={this.onSearch}
               style={{
-                width: 200,
+                width: 308,
                 marginBottom: 20,
               }}
             />
@@ -1387,7 +1423,7 @@ class ReceptionStatus extends Component {
               columns={columns}
               pagination={false}
               // onChange={this.handleTableChange}
-              // expandedRowRender={expandedRowRender}
+              expandedRowRender={expandedRowRender}
             />
           </div>
 

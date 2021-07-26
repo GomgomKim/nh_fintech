@@ -29,6 +29,7 @@ class Layout extends React.Component {
             </AntLayout>
           </AntLayout>
         </div>
+        <NNWebSocket />
       </>
     );
   }

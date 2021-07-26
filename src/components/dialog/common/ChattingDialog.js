@@ -56,6 +56,36 @@ class ChattingDialog extends Component {
         this.setState({ lastChatTime: value });
       } catch {}
     }
+
+    global.chatAprear = true;
+    global.chatListener = (data) => {
+
+      this.updateLastChatMessage(data.idx, data.lastMessage);
+      this.updateTime(data.idx);
+
+      if (this.state.currentRoom && this.state.currentRoom.idx == data.idx) {
+          this.state.chatMessages.unshift({
+              chatDate: formatYMDHMS(new Date()), 
+              chatMessage: data.lastMessage, 
+              chatRoomCreateDate: "", 
+              chatRoomIdx: null, 
+              idx: 0, 
+              isRead: null, 
+              member1: data.member1, 
+              member2: data.member2, 
+              readDate: null, 
+              receiveUserIdx: this.props.loginReducer.loginInfo.idx, 
+              sendUserIdx: this.props.loginReducer.loginInfo.idx == data.member1 ? data.member2 : data.member1, 
+              title: "chat room"
+          });
+          this.setState({chatMessages:this.state.chatMessages})
+      }
+    }
+  }
+  componentWillUnmount() {
+    global.chatAprear = false;
+    
+    global.chatListener = null;
   }
   formatChatDate(time) {
     return time.substr(0, 10) === formatYMD(new Date())
@@ -474,8 +504,8 @@ class ChattingDialog extends Component {
                   <div
                     className="chat-send-btn"
                     onClick={() => {
-                      this.onPressSend(this.state.sendMsg);
-                      this.setState({ sendMsg: "" });
+                      this.onPressSend(this.state.inputMessage);
+                      this.setState({ inputMessage: "" });
                     }}
                   >
                     전송
@@ -511,37 +541,10 @@ class ChattingDialog extends Component {
                   }
                   value={this.state.inputMessage}
                   onKeyPress={(e) => {
-                    if (e.key === "Enter") {
-                      this.send(
-                        () => {
-                          this.getChatRoom(
-                            this.state.selectedFr !== null
-                              ? this.state.selectedFr.idx
-                              : this.state.selectedRider.idx
-                          );
-                        },
-                        () => {
-                          this.setState(
-                            {
-                              pagination: {
-                                ...this.state.pagination,
-                                current: 1,
-                              },
-                            },
-                            () => this.getChatList()
-                          );
-                        }
-                      );
-                    }
-                  }}
-                />
-                <div
-                  className="chat-send-btn"
-                  onClick={() => {
-                    this.send(
+                    if (e.key === "Enter") {this.send(
                       () => {
                         this.getChatRoom(
-                          this.state.selectedFr
+                          this.state.selectedFr !== null
                             ? this.state.selectedFr.idx
                             : this.state.selectedRider.idx
                         );
@@ -553,11 +556,39 @@ class ChattingDialog extends Component {
                               ...this.state.pagination,
                               current: 1,
                             },
+                            inputMessage: ""
                           },
                           () => this.getChatList()
                         );
                       }
                     );
+
+                    }
+                  }}
+                />
+                <div
+                  className="chat-send-btn"
+                  onClick={() => {this.send(
+                    () => {
+                      this.getChatRoom(
+                        this.state.selectedFr !== null
+                          ? this.state.selectedFr.idx
+                          : this.state.selectedRider.idx
+                      );
+                    },
+                    () => {
+                      this.setState(
+                        {
+                          pagination: {
+                            ...this.state.pagination,
+                            current: 1,
+                          },
+                          inputMessage: ""
+                        },
+                        () => this.getChatList()
+                      );
+                    }
+                  );
                   }}
                 >
                   전송

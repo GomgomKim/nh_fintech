@@ -123,11 +123,54 @@ const PaymentDialog = ({
                     {data.map((orderPayment, i) => {
                       return (
                         <div key={orderPayment.idx}>
-                          <div>
+                          <div className="desk">
                             {editable ? (
                               <Select
                                 style={{
                                   width: 100,
+                                  fontSize: 16,
+                                  marginRight: 5,
+                                  marginBottom: 10,
+                                }}
+                                defaultValue={orderPayment.paymentMethod}
+                                onChange={(value) => {
+                                  const newData = data;
+                                  newData[i].paymentMethod = value;
+                                  setData(newData);
+                                }}
+                              >
+                                {paymentMethod.map((value, index) => {
+                                  if (index === 0) {
+                                    return <></>;
+                                  }
+                                  return <Option value={index}>{value}</Option>;
+                                })}
+                              </Select>
+                            ) : (
+                              <Select
+                                style={{
+                                  width: 90,
+                                  fontSize: 16,
+                                  marginRight: 5,
+                                  marginBottom: 10,
+                                }}
+                                value={orderPayment.paymentMethod}
+                                disabled
+                              >
+                                {paymentMethod.map((value, index) => {
+                                  if (index === 0) {
+                                    return <></>;
+                                  }
+                                  return <Option value={index}>{value}</Option>;
+                                })}
+                              </Select>
+                            )}
+                          </div>
+                          <div className="mobile">
+                            {editable ? (
+                              <Select
+                                style={{
+                                  width: 75,
                                   fontSize: 16,
                                   marginRight: 5,
                                   marginBottom: 10,
@@ -189,7 +232,7 @@ const PaymentDialog = ({
                             )}
                           </div>
 
-                          <div>
+                          <div className="desk">
                             {editable ? (
                               <Input
                                 type="number"
@@ -220,6 +263,45 @@ const PaymentDialog = ({
                                 value={orderPayment.paymentAmount}
                                 style={{
                                   width: 180,
+                                  textAlign: "center",
+                                  fontSize: 16,
+                                  padding: 3,
+                                  marginBottom: 10,
+                                }}
+                              ></Input>
+                            )}
+                          </div>
+                          <div className="mobile">
+                            {editable ? (
+                              <Input
+                                type="number"
+                                style={{
+                                  width: 125,
+                                  textAlign: "center",
+                                  fontSize: 16,
+                                  padding: 3,
+                                  marginBottom: 10,
+                                }}
+                                defaultValue={
+                                  orderPayment.paymentAmount === ""
+                                    ? 0
+                                    : orderPayment.paymentAmount
+                                }
+                                onChange={(e) => {
+                                  const newData = data;
+                                  newData[i].paymentAmount = parseInt(
+                                    e.target.value
+                                  );
+                                  setData(newData);
+                                  calcChange();
+                                }}
+                              ></Input>
+                            ) : (
+                              <Input
+                                type="number"
+                                value={orderPayment.paymentAmount}
+                                style={{
+                                  width: 125,
                                   textAlign: "center",
                                   fontSize: 16,
                                   padding: 3,

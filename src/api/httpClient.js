@@ -214,8 +214,9 @@ const httpUrl = {
     "/fr/expectDeliveryPrice?frIdx=%s&destLatitude=%s&destLongitude=%s",
 
   // 주문 상태 변경
-  orderAssignCancel: '/order/admin/admin/assignRiderCancel',
+  orderAssignCancel: "/order/admin/admin/assignRiderCancel",
   orderPickup: "/order/pickup",
+  orderPickupCancel: '/order/pickupCancel',  
   orderComplete: "/order/complete",
   orderCancel: "/order/cancel",
 
@@ -285,6 +286,7 @@ const httpUrl = {
 
   // 채팅
   chatList: "/chat/chatList?pageSize=%s&pageNum=%s&searchName=%s",
+  chatListByUser: "/chat/chatList?pageSize=%s&pageNum=%s&searchName=%s&receiveUserIdx=%s",
   chatMessageList: "/chat/messageList?pageSize=%s&pageNum=%s&chatRoomIdx=%s",
   chatSend: "/chat/send",
   chatRoom: "/chat/chatroom?receiveUserIdx=%s",
@@ -318,7 +320,11 @@ const httpUrl = {
   updateRiderGroup: "/rider/settingGroup/update",
 
   // PG연동
-  createUserWallet: '/payment/wallet/create/user/%s',
+  createUserWallet: "/payment/wallet/create/user/%s",
+
+  // 배송가능지역
+  getAddrBranch: "/branch/addrBranch/list?pageNum=%s&pageSize=%s",
+  updateAddrBranch: "/branch/addrBranch/update",
 };
 
 const imageType = ["image/jpeg", "image/png", "image/bmp"];
