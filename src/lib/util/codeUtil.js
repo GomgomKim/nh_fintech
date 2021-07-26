@@ -51,8 +51,8 @@ const tableStatusString = {
 const typeString = [
   "",
   "리스료",
-  "산재보험",
-  "기타",
+  "대출 상환",
+  "산재 보험비",
 ];
 
 // 가맹점 - 출금설정

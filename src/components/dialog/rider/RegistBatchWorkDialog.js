@@ -5,6 +5,7 @@ import moment from 'moment';
 import { httpPost, httpUrl } from "../../../api/httpClient";
 import { customAlert, customError } from "../../../api/Modals";
 import {typeString} from "../../../lib/util/codeUtil";
+import SelectBox from "../../../components/input/SelectBox";
 
 const FormItem = Form.Item;
 // const Search = Input.Search;
@@ -27,7 +28,8 @@ class RegistBatchWorkDialog extends Component {
         pageSize: 5,
       },
       batchSearchGrp: null,
-      disabled: false
+      disabled: false,
+      kind : 1,
     };
     this.formRef = React.createRef();
   }
@@ -96,24 +98,18 @@ class RegistBatchWorkDialog extends Component {
                 <div className="taskWork-list">
                   <div className="twl taskWork-list-01">
                   <div className="twl-text">속성</div>
-                  <FormItem
-                        // name="type"
-                        className="selectItem"
-                        // rules={[
-                        //   { required: true, message: "속성을 선택해주세요" },
-                        // ]}
-                  >
-                    <Select
-                      // onChange={(value) =>
-                      //   this.setState({ type: value })
-                      // }
-                    >
-                    {typeString.map((v, index) => {
-                      if (index === 0) return <></>;
-                      return <Option value={index}>{v}</Option>;
-                    })}
-                    </Select>
-                                  </FormItem>
+                  <FormItem name="kind" className="selectItem">
+                      <SelectBox
+                        value={typeString[this.state.kind]}
+                        code={Object.keys(typeString)}
+                        codeString={typeString}
+                        onChange={(value) => {
+                          if (value) {
+                            this.setState({ kind: value });
+                          }
+                        }}
+                      />
+                    </FormItem>
                   {/* <div className="twl-text">사용여부</div>
                   <Checkbox></Checkbox>
                   <span className="useText">사용함</span> */}
