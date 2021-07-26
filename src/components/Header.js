@@ -174,7 +174,7 @@ class Header extends React.Component {
               style={{ display: "inline-block", cursor: "pointer" }}
               className="desk"
               onClick={() => {
-                this.setState({ visible: true });
+                this.logout()
               }}
             >
               &nbsp;&nbsp;&nbsp;로그아웃
@@ -183,7 +183,7 @@ class Header extends React.Component {
               style={{ display: "inline-block", cursor: "pointer" }}
               className="mobile"
               onClick={() => {
-                this.setState({ visible: true });
+                this.logout()
               }}
             >
               &nbsp;&nbsp;&nbsp;
@@ -191,7 +191,7 @@ class Header extends React.Component {
             </div>
           </div>
         </div>
-        <Modal
+        {/* <Modal
           visible={this.state.visible}
           title="로그아웃"
           okText="확인"
@@ -203,7 +203,7 @@ class Header extends React.Component {
           destroyOnClose={true}
         >
           <div>로그아웃 하시겠습니까?</div>
-        </Modal>
+        </Modal> */}
       </Layout.Header>
     );
   }

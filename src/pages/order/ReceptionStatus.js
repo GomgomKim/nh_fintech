@@ -1348,6 +1348,17 @@ class ReceptionStatus extends Component {
               }}
             />
           </div>
+          <div>
+            <div className="delivery-status" style={{background: "white"}}>
+              픽업 : {this.state.list.filter(item => item.orderStatus === 3).length} 건
+            </div>
+            <div className="delivery-status" style={{background: '#d6edfe'}}>
+              배차 : {this.state.list.filter(item => item.orderStatus === 2).length} 건
+            </div>
+            <div className="delivery-status" style={{background: '#fed8d6'}}>
+              접수 : {this.state.list.filter(item => item.orderStatus === 1).length} 건
+            </div>
+          </div>
 
           <div id="reception-table" className="desk">
             <Table
