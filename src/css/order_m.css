@@ -172,4 +172,12 @@
   .droptable_fr {
     width: 308px;
   }
+  .delivery-status-mobile {
+    display:inline-block;
+    border:1px solid; 
+    text-align: center;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+  }
 }
