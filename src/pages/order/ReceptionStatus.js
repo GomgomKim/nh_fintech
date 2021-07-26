@@ -1391,7 +1391,7 @@ class ReceptionStatus extends Component {
             <div className="delivery-status" style={{background: '#d6edfe'}}>
               배차 : {this.state.list.filter(item => item.orderStatus === 2).length} 건
             </div>
-            <div className="delivery-status" style={{background: '#fed8d6'}}>
+            <div className="delivery-status" style={{background: 'rgb(247, 128, 128)'}}>
               접수 : {this.state.list.filter(item => item.orderStatus === 1).length} 건
             </div>
           </div>
