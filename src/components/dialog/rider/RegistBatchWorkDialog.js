@@ -4,7 +4,7 @@ import "../../../css/modal.css";
 import moment from 'moment';
 import { httpPost, httpUrl } from "../../../api/httpClient";
 import { customAlert, customError } from "../../../api/Modals";
-import {typeString} from "../../../lib/util/codeUtil";
+import {kindString} from "../../../lib/util/codeUtil";
 import SelectBox from "../../../components/input/SelectBox";
 
 const FormItem = Form.Item;
@@ -112,7 +112,7 @@ class RegistBatchWorkDialog extends Component {
                             this.setState({ kind: value })
                           }
                         >
-                          {typeString.map((v, index) => {
+                          {kindString.map((v, index) => {
                             if (index === 0) return <></>;
                             return <Option value={index}>{v}</Option>;
                           })}
@@ -120,9 +120,9 @@ class RegistBatchWorkDialog extends Component {
                       </FormItem>
                   {/* <FormItem name="kind" className="selectItem">
                       <SelectBox
-                        value={typeString[this.state.kind]}
-                        code={Object.keys(typeString)}
-                        codeString={typeString}
+                        value={kindString[this.state.kind]}
+                        code={Object.keys(kindString)}
+                        codeString={kindString}
                         onChange={(value) => {
                           if (value) {
                             this.setState({ kind: value });

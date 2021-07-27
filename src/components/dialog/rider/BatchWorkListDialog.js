@@ -7,6 +7,7 @@ import SearchRiderDialog from "../common/SearchRiderDialog";
 import RegistBatchWorkDialog from "../rider/RegistBatchWorkDialog";
 import { customAlert, customError} from "../../../api/Modals";
 import { formatDateToDay } from "../../../lib/util/dateUtil";
+import { kindString } from "../../../lib/util/codeUtil";
 
 class BatchWorkListDialog extends Component {
   constructor(props) {
@@ -162,6 +163,7 @@ class BatchWorkListDialog extends Component {
         title: "속성",
         dataIndex: "kind",
         className: "table-column-center",
+        render: (data) => <div>{kindString[data]}</div>,
       },
       {
         title: "차감명",

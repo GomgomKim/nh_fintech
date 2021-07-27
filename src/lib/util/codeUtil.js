@@ -48,7 +48,7 @@ const tableStatusString = {
   3: "탈퇴",
 };
 
-const typeString = [
+const kindString = [
   "",
   "리스료",
   "대출 상환",
@@ -358,6 +358,6 @@ export {
   items,
   deliveryZone,
   riderStatusCode,
-  typeString,
+  kindString,
 };
 
