@@ -74,6 +74,9 @@ class RegistBatchWorkDialog extends Component {
         customError("추가 오류", "오류가 발생하였습니다. 다시 시도해 주십시오.")
     })
       .catch((error) => {
+        if (this.state.startDate === '')
+        customError("추가 오류", "기간제한을 입력해 주십시오.")
+        else
         customError("추가 오류", "오류가 발생하였습니다. 다시 시도해 주십시오.")
       });
   }
@@ -103,9 +106,9 @@ class RegistBatchWorkDialog extends Component {
                   <FormItem
                         name="kind"
                         className="selectItem"
-                        // rules={[
-                        //   { required: true, message: "속성을 선택해주세요" },
-                        // ]}
+                        rules={[
+                          { required: true, message: "속성을 선택해주세요" },
+                        ]}
                       >
                         <Select
                           onChange={(value) =>
