@@ -456,104 +456,129 @@ class ReceptionStatus extends Component {
         title: "주문내용",
         dataIndex: "idx",
         className: "table-column-center mobile",
-        render: (data, row) => (
-          <div className="status-box">
-            <p>
-              No.{row.idx} / {row.frName} / {arriveReqTime[row.arriveReqTime]} / {remainTime(row.orderDate, row.arriveReqTime)}분 {" "}
-              {/* {row.itemPrepared ? "완료" : "준비중"} <br />{" "} */}
-            </p>
-            {row.destAddr1 + " " + row.destAddr2} <br />
-            {row.riderName} / {row.distance}km /{" "}
-            {paymentMethod[row.orderPayments[0]["paymentMethod"]]}
-            <br />
-            <div className="table-column-sub">
-              상태 :{" "}
-              <Select
-                style={{ marginRight: 5 }}
-                defaultValue={data}
-                value={row.orderStatus}
-                onChange={(value) => {
-                  if (!modifyType[row.orderStatus].includes(value)) {
-                    Modal.info({
-                      content: <div>상태를 바꿀 수 없습니다.</div>,
-                    });
-                    return;
-                  }
-                  // 대기중 -> 픽업중 변경 시 강제배차 알림
-                  if (row.orderStatus === 1 && value === 2) {
-                    Modal.info({
-                      content: <div>강제배차를 사용하세요.</div>,
-                    });
-                    return;
-                  }
-                  // 픽업 -> 접수 변경 시 배차상태로 변경 알림
-                  if (row.orderStatus === 3 && value === 1) {
-                    Modal.info({
-                      content: <div>배차상태로 먼저 변경한 후 접수로 변경해주세요.</div>,
-                    });
-                    return;
-                  }
+        render: (data, row) => {
+          let remainTimeString = '';
 
-                  const orderStatuseChangeApiCode = [
-                    "",
-                    httpUrl.orderAssignCancel,
-                    httpUrl.orderPickupCancel,
-                    httpUrl.orderPickup,
-                    httpUrl.orderComplete,
-                    httpUrl.orderCancel,
-                  ];
+          if (row.orderStatus == 5) remainTimeString = ''; //취소는 남은시간 없음
+          else if (row.orderStatus == 4) { //완료는 요청시간에서 완료시간까지 계산
+            if (row.arriveReqTime > 1000) { //배차후 주문 처리
+              const arriveReqDate = moment(row.assignDate).add(row.arriveReqTime % 1000, 'minutes');
+              const time = arriveReqDate.diff(moment(row.completeDate), 'minutes');
+              return remainTimeString = time + '분';
+            }
+            else {
+              const arriveReqDate = moment(row.orderDate).add(row.arriveReqTime, 'minutes');
+              const time = arriveReqDate.diff(moment(row.completeDate), 'minutes');
+              return remainTimeString = time + '분';
+            }
+          }
+          else { //진행중
+            if (row.arriveReqTime > 1000) {
+              if (row.orderStatus == 1) remainTimeString = '';
+              else remainTimeString = remainTime(row.assignDate, row.arriveReqTime % 1000) + '분';
+            }
+            else remainTimeString = remainTime(row.orderDate, row.arriveReqTime) + '분';
+          }
 
-                  httpPost(orderStatuseChangeApiCode[value], [], {
-                    orderIdx: row.idx,
-                  })
-                    .then((res) => {
-                      if (res.result === "SUCCESS" && res.data === "SUCCESS") {
-                        Modal.info({
-                          title: "변경 성공",
-                          content: "주문상태가 변경되었습니다.",
-                        });
-                        this.getList();
-                      } else {
+          return (
+            <div className="status-box">
+              <p>
+                No.{row.idx} / {row.frName} / {arriveReqTime[row.arriveReqTime]} / {remainTimeString} {" "}
+                {/* {row.itemPrepared ? "완료" : "준비중"} <br />{" "} */}
+              </p>
+              {row.destAddr1 + " " + row.destAddr2} <br />
+              {row.riderName} / {row.distance}km /{" "}
+              {paymentMethod[row.orderPayments[0]["paymentMethod"]]}
+              <br />
+              <div className="table-column-sub">
+                상태 :{" "}
+                <Select
+                  style={{ marginRight: 5 }}
+                  defaultValue={data}
+                  value={row.orderStatus}
+                  onChange={(value) => {
+                    if (!modifyType[row.orderStatus].includes(value)) {
+                      Modal.info({
+                        content: <div>상태를 바꿀 수 없습니다.</div>,
+                      });
+                      return;
+                    }
+                    // 대기중 -> 픽업중 변경 시 강제배차 알림
+                    if (row.orderStatus === 1 && value === 2) {
+                      Modal.info({
+                        content: <div>강제배차를 사용하세요.</div>,
+                      });
+                      return;
+                    }
+                    // 픽업 -> 접수 변경 시 배차상태로 변경 알림
+                    if (row.orderStatus === 3 && value === 1) {
+                      Modal.info({
+                        content: <div>배차상태로 먼저 변경한 후 접수로 변경해주세요.</div>,
+                      });
+                      return;
+                    }
+  
+                    const orderStatuseChangeApiCode = [
+                      "",
+                      httpUrl.orderAssignCancel,
+                      httpUrl.orderPickupCancel,
+                      httpUrl.orderPickup,
+                      httpUrl.orderComplete,
+                      httpUrl.orderCancel,
+                    ];
+  
+                    httpPost(orderStatuseChangeApiCode[value], [], {
+                      orderIdx: row.idx,
+                    })
+                      .then((res) => {
+                        if (res.result === "SUCCESS" && res.data === "SUCCESS") {
+                          Modal.info({
+                            title: "변경 성공",
+                            content: "주문상태가 변경되었습니다.",
+                          });
+                          this.getList();
+                        } else {
+                          Modal.info({
+                            title: "변경 실패",
+                            content: "주문상태 변경에 실패했습니다.",
+                          });
+                        }
+                      })
+                      .catch((e) => {
                         Modal.info({
                           title: "변경 실패",
                           content: "주문상태 변경에 실패했습니다.",
                         });
-                      }
-                    })
-                    .catch((e) => {
-                      Modal.info({
-                        title: "변경 실패",
-                        content: "주문상태 변경에 실패했습니다.",
+  
+                        throw e;
                       });
-
-                      throw e;
-                    });
-                }}
-              >
-                {deliveryStatusCode.map((value, index) => {
-                  if (index === 0) return <></>;
-                  else
-                    return (
-                      <Option key={index} value={index}>
-                        {value}
-                      </Option>
-                    );
-                })}
-              </Select>
+                  }}
+                >
+                  {deliveryStatusCode.map((value, index) => {
+                    if (index === 0) return <></>;
+                    else
+                      return (
+                        <Option key={index} value={index}>
+                          {value}
+                        </Option>
+                      );
+                  })}
+                </Select>
+              </div>
+              {""}
+              <div className="table-column-sub">
+                {/* <ForceAllocateDialog */}
+                <Button
+                  style={{ marginLeft: 5 }}
+                  className="tabBtn"
+                  onClick={this.openForceModal}
+                >
+                  강제배차
+                </Button>
+              </div>
             </div>
-            {""}
-            <div className="table-column-sub">
-              {/* <ForceAllocateDialog */}
-              <Button
-                style={{ marginLeft: 5 }}
-                className="tabBtn"
-                onClick={this.openForceModal}
-              >
-                강제배차
-              </Button>
-            </div>
-          </div>
-        ),
+          )
+        },
       },
       {
         title: "상태",
@@ -675,7 +700,28 @@ class ReceptionStatus extends Component {
         className: "table-column-center desk",
         key: (row) => `remainTime:${row.idx}`,
         sorter: (a, b) => remainTime(a.orderDate, a.arriveReqTime) - remainTime(b.orderDate, b.arriveReqTime),
-        render: (data, row) => <div>{remainTime(row.orderDate, row.arriveReqTime)}분</div>,
+        render: (data, row) => {
+          if (row.orderStatus == 5) return (<div></div>); //취소는 남은시간 없음
+          else if (row.orderStatus == 4) { //완료는 요청시간에서 완료시간까지 계산
+            if (row.arriveReqTime > 1000) { //배차후 주문 처리
+              const arriveReqDate = moment(row.assignDate).add(row.arriveReqTime % 1000, 'minutes');
+              const time = arriveReqDate.diff(moment(row.completeDate), 'minutes');
+              return (<div>{time}분</div>);
+            }
+            else {
+              const arriveReqDate = moment(row.orderDate).add(row.arriveReqTime, 'minutes');
+              const time = arriveReqDate.diff(moment(row.completeDate), 'minutes');
+              return (<div>{time}분</div>);
+            }
+          }
+          else { //진행중
+            if (row.arriveReqTime > 1000) { //배차후 주문 처리
+              if (row.orderStatus == 1) return (<div></div>);
+              else return (<div>{remainTime(row.assignDate, row.arriveReqTime % 1000)}분</div>);
+            }
+            else return (<div>{remainTime(row.orderDate, row.arriveReqTime)}분</div>);
+          }
+        },
       },
       {
         title: "음식준비",
