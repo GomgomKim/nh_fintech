@@ -120,43 +120,49 @@ class ReceptionStatus extends Component {
   // pollingList = setInterval(this.getList, 5000);
 
   getList = () => {
-    const startDate = this.state.selectedDate;
-    const endDate = new moment();
-    var data = {
-      orderStatuses: this.state.selectedOrderStatus,
-      pageNum: this.state.pagination.current,
-      pageSize: this.state.pagination.pageSize,
-      paymentMethods: this.state.selectedPaymentMethods,
-      startDate: formatDate(startDate).split(" ")[0],
-      endDate: formatDate(endDate.add("1", "d")).split(" ")[0],
-    };
-    if (this.state.franchisee) {
-      data.frName = this.state.franchisee;
-    }
-    if (this.state.rider) {
-      data.riderName = this.state.rider;
-    }
-    httpPostWithNoLoading(httpUrl.orderList, [], data)
-      .then((res) => {
-        if (res.result === "SUCCESS") {
-          // console.log(res);
-          this.setState({
-            list: res.data.orders,
-            pagination: {
-              ...this.state.pagination,
-              total: res.data.totalCount,
-            },
-          });
-        } else {
+    try {
+
+      const startDate = this.state.selectedDate;
+      const endDate = new moment();
+      var data = {
+        orderStatuses: this.state.selectedOrderStatus,
+        pageNum: this.state.pagination.current,
+        pageSize: this.state.pagination.pageSize,
+        paymentMethods: this.state.selectedPaymentMethods,
+        startDate: formatDate(startDate).split(" ")[0],
+        endDate: formatDate(endDate.add("1", "d")).split(" ")[0],
+      };
+      if (this.state.franchisee) {
+        data.frName = this.state.franchisee;
+      }
+      if (this.state.rider) {
+        data.riderName = this.state.rider;
+      }
+      httpPostWithNoLoading(httpUrl.orderList, [], data)
+        .then((res) => {
+          if (res.result === "SUCCESS") {
+            // console.log(res);
+            this.setState({
+              list: res.data.orders,
+              pagination: {
+                ...this.state.pagination,
+                total: res.data.totalCount,
+              },
+            });
+          } else {
+            console.log("Pulling Error");
+            return;
+          }
+        })
+        .catch((e) => {
           console.log("Pulling Error");
-          return;
-        }
-      })
-      .catch((e) => {
-        console.log("Pulling Error");
-        console.log(e);
-        throw e;
-      });
+          console.log(e);
+          throw e;
+        });
+    }
+    catch(e) {
+      
+    }
   };
   getCompleteList = () => {
     const startDate = this.state.selectedDate;
