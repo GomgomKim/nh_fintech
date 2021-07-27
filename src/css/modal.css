@@ -2431,6 +2431,14 @@
     /* border:1px solid blue; */
   }
 
+  .taskWork-list-02 .twl-text {
+    width: 110px;
+  }
+
+  .taskWork-list-04 .twl-text {
+    width: 110px;
+  }
+
   .taskWork-list-01 .useText {
     margin-left: 5px;
   }
@@ -2462,8 +2470,8 @@
   .taskWork-list .twl {
     width: 100%;
     display: inline-block;
-    height: 50px;
-    line-height: 50px;
+    height: 55px;
+    line-height: 55px;
     /* border:1px solid red */
   }
 
@@ -2503,7 +2511,7 @@
     color: #222 !important;
   }
   .taskWork-list .inputBox-taskWork.sub .ant-input {
-    margin-left: -10px;
+    /* margin-left: -10px; */
     width: 186.82px;
   }
 

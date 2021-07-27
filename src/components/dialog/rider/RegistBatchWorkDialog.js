@@ -4,7 +4,7 @@ import "../../../css/modal.css";
 import moment from 'moment';
 import { httpPost, httpUrl } from "../../../api/httpClient";
 import { customAlert, customError } from "../../../api/Modals";
-import {typeString} from "../../../lib/util/codeUtil";
+import {kindString} from "../../../lib/util/codeUtil";
 import SelectBox from "../../../components/input/SelectBox";
 
 const FormItem = Form.Item;
@@ -57,11 +57,13 @@ class RegistBatchWorkDialog extends Component {
   handleSubmit = () => {
     httpPost(httpUrl.riderBatchWorkCreate, [], {
       ...this.formRef.current.getFieldsValue(),
+      // kind: this.state.kind,
       startDate: this.state.startDate,
       endDate: this.state.endDate,
       category: 1,
       memo: '',
     }).then((res) => {
+      console.log("aaa " + JSON.stringify(res.data.riderBatchWorkList,null, 4))
       if (res.data === "SUCCESS" && res.result === "SUCCESS") {
         customAlert("일차감 등록",
           this.formRef.current.getFieldValue("title") + " 일차감이 등록되었습니다.")
@@ -72,6 +74,9 @@ class RegistBatchWorkDialog extends Component {
         customError("추가 오류", "오류가 발생하였습니다. 다시 시도해 주십시오.")
     })
       .catch((error) => {
+        if (this.state.startDate === '')
+        customError("추가 오류", "기간제한을 입력해 주십시오.")
+        else
         customError("추가 오류", "오류가 발생하였습니다. 다시 시도해 주십시오.")
       });
   }
@@ -98,18 +103,36 @@ class RegistBatchWorkDialog extends Component {
                 <div className="taskWork-list">
                   <div className="twl taskWork-list-01">
                   <div className="twl-text">속성</div>
-                  <FormItem name="kind" className="selectItem">
+                  <FormItem
+                        name="kind"
+                        className="selectItem"
+                        rules={[
+                          { required: true, message: "속성을 선택해주세요" },
+                        ]}
+                      >
+                        <Select
+                          onChange={(value) =>
+                            this.setState({ kind: value })
+                          }
+                        >
+                          {kindString.map((v, index) => {
+                            if (index === 0) return <></>;
+                            return <Option value={index}>{v}</Option>;
+                          })}
+                        </Select>
+                      </FormItem>
+                  {/* <FormItem name="kind" className="selectItem">
                       <SelectBox
-                        value={typeString[this.state.kind]}
-                        code={Object.keys(typeString)}
-                        codeString={typeString}
+                        value={kindString[this.state.kind]}
+                        code={Object.keys(kindString)}
+                        codeString={kindString}
                         onChange={(value) => {
                           if (value) {
                             this.setState({ kind: value });
                           }
                         }}
                       />
-                    </FormItem>
+                    </FormItem> */}
                   {/* <div className="twl-text">사용여부</div>
                   <Checkbox></Checkbox>
                   <span className="useText">사용함</span> */}
