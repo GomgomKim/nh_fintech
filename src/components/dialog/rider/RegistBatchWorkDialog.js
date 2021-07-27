@@ -57,11 +57,13 @@ class RegistBatchWorkDialog extends Component {
   handleSubmit = () => {
     httpPost(httpUrl.riderBatchWorkCreate, [], {
       ...this.formRef.current.getFieldsValue(),
+      // kind: this.state.kind,
       startDate: this.state.startDate,
       endDate: this.state.endDate,
       category: 1,
       memo: '',
     }).then((res) => {
+      console.log("aaa " + JSON.stringify(res.data.riderBatchWorkList,null, 4))
       if (res.data === "SUCCESS" && res.result === "SUCCESS") {
         customAlert("일차감 등록",
           this.formRef.current.getFieldValue("title") + " 일차감이 등록되었습니다.")
@@ -98,7 +100,25 @@ class RegistBatchWorkDialog extends Component {
                 <div className="taskWork-list">
                   <div className="twl taskWork-list-01">
                   <div className="twl-text">속성</div>
-                  <FormItem name="kind" className="selectItem">
+                  <FormItem
+                        name="kind"
+                        className="selectItem"
+                        // rules={[
+                        //   { required: true, message: "속성을 선택해주세요" },
+                        // ]}
+                      >
+                        <Select
+                          onChange={(value) =>
+                            this.setState({ kind: value })
+                          }
+                        >
+                          {typeString.map((v, index) => {
+                            if (index === 0) return <></>;
+                            return <Option value={index}>{v}</Option>;
+                          })}
+                        </Select>
+                      </FormItem>
+                  {/* <FormItem name="kind" className="selectItem">
                       <SelectBox
                         value={typeString[this.state.kind]}
                         code={Object.keys(typeString)}
@@ -109,7 +129,7 @@ class RegistBatchWorkDialog extends Component {
                           }
                         }}
                       />
-                    </FormItem>
+                    </FormItem> */}
                   {/* <div className="twl-text">사용여부</div>
                   <Checkbox></Checkbox>
                   <span className="useText">사용함</span> */}
