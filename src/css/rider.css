@@ -6,4 +6,19 @@
 .searchRiderInput {
     width: 200px !important;
     margin-left: 15px;
-  }
+}
+@media screen and (min-width: 1200px) {
+    .rider-status {
+        float: right;
+        display:inline-block;
+        width:120px;
+        font-size:15px;
+        border:1px solid; 
+        text-align: center;
+        margin-right: 15px;
+        margin-top: -29px;
+        border-radius: 5px;
+        height: 30px;
+        line-height: 30px;
+    }
+}

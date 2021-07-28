@@ -180,6 +180,7 @@ class Header extends React.Component {
               style={{ display: "inline-block", cursor: "pointer" }}
               className="desk"
               onClick={() => {
+                // this.setState({ visible: true });
                 this.logout()
               }}
             >
@@ -189,6 +190,7 @@ class Header extends React.Component {
               style={{ display: "inline-block", cursor: "pointer" }}
               className="mobile"
               onClick={() => {
+                // this.setState({ visible: true });
                 this.logout()
               }}
             >
