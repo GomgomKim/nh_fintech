@@ -441,6 +441,7 @@ class SurchargeDialog extends Component {
                         </FormItem>
                         }
                       </div>
+                      <div>* 상시할증을 체크하는 경우 기간이 아니라 매일 등록시간에 해당하는 경우 적용됩니다.</div>
                     </div>
 
                     <div>

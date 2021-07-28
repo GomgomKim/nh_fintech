@@ -180,19 +180,6 @@ const httpGetWithNoLoading = (url, params, data) => {
   // });
 };
 
-const httpGetWithNoLoading = (url, params, data) => {
-  return httpExecWithNoLoading("GET", makeUrl(url, params), data);
-  // return new Promise((resolve, reject) => {
-  //   Axios.get(makeUrl(url, params), data)
-  //     .then(response => {
-  //       resolve(response.data);
-  //     })
-  //     .catch(error => {
-  //       reject(error);
-  //     });
-  // });
-};
-
 const httpDownload = (url, params, data) => {
   // return httpExec('GET', makeUrl(url, params), data);
   return new Promise((resolve, reject) => {
