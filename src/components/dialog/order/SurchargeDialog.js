@@ -421,7 +421,7 @@ class SurchargeDialog extends Component {
                         }
                       />
 
-                      <div className="subDatePrice">등록기간</div>
+                      <div className="subDatePrice">{this.state.pickerChange == false ? "등록기간" : "등록시간"}</div>
                       <div className="selectBox">
                         {this.state.pickerChange == false ? 
                         <FormItem name="surchargeDate">
