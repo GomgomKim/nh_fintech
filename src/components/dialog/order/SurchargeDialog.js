@@ -434,7 +434,7 @@ class SurchargeDialog extends Component {
                         :
                         <FormItem name="surchargeDate">
                            <TimePicker.RangePicker
-                            placeholder={["시작일", "종료일"]}
+                            placeholder={["시작시간", "종료시간"]}
                             showTime={{ format: "HH:mm" }}
                             onChange={this.onChangeDate}
                             />
