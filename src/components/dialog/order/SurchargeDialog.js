@@ -8,6 +8,7 @@ import {
   Modal,
   Checkbox,
   Radio,
+  TimePicker,
 } from "antd";
 import { httpUrl, httpPost, httpGet } from "../../../api/httpClient";
 import "../../../css/modal.css";
@@ -45,6 +46,8 @@ class SurchargeDialog extends Component {
       surchargeType: 0,
       surchargeCheck: false,
       disabled: false,
+      toggleDisable: "",
+      pickerChange: false
     };
     this.formRef = React.createRef();
   }
@@ -182,7 +185,15 @@ class SurchargeDialog extends Component {
 
   // 할증 등록기간 설정
   onChangeDate = (dateString) => {
-    this.setState({
+    // 상시할증
+    if(this.state.pickerChange){
+      this.setState({
+        startDate: dateString != null ? moment(dateString[0]).format("1999-01-01 HH:mm") : "",
+        endDate: dateString != null ? moment(dateString[1]).format("2999-12-31 HH:mm") : "",
+      });
+    }
+    // 기간설정 할증
+    else this.setState({
       startDate:
         dateString != null
           ? moment(dateString[0]).format("YYYY-MM-DD HH:mm")
@@ -191,15 +202,6 @@ class SurchargeDialog extends Component {
         dateString != null
           ? moment(dateString[1]).format("YYYY-MM-DD HH:mm")
           : "",
-    });
-  };
-
-  // 상시할증 적용 disabled
-  toggleDisable = () => {
-    this.setState({
-      disabled: !this.state.disabled,
-      startDate: moment().format("1999-01-01 00:00"),
-      endDate: moment().format("2999-12-31 00:00"),
     });
   };
 
@@ -414,19 +416,30 @@ class SurchargeDialog extends Component {
                         defaultChecked={
                           this.state.toggleDisable ? "checked" : ""
                         }
-                        onChange={this.toggleDisable}
+                        onChange={(e) =>
+                          this.setState({ pickerChange: e.target.checked })
+                        }
                       />
 
                       <div className="subDatePrice">등록기간</div>
                       <div className="selectBox">
+                        {this.state.pickerChange == false ? 
                         <FormItem name="surchargeDate">
                           <RangePicker
                             placeholder={["시작일", "종료일"]}
                             showTime={{ format: "HH:mm" }}
                             onChange={this.onChangeDate}
-                            disabled={this.state.disabled}
-                          />
+                            />
                         </FormItem>
+                        :
+                        <FormItem name="surchargeDate">
+                           <TimePicker.RangePicker
+                            placeholder={["시작일", "종료일"]}
+                            showTime={{ format: "HH:mm" }}
+                            onChange={this.onChangeDate}
+                            />
+                        </FormItem>
+                        }
                       </div>
                     </div>
 
