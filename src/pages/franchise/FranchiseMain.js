@@ -433,6 +433,21 @@ class FranchiseMain extends Component {
         title: "상태",
         dataIndex: "userStatus",
         className: "table-column-center desk",
+        filters: [
+          {
+            text:"사용",
+            value: 1,
+          },
+          {
+            text:"중지",
+            value: 2,
+          },
+          {
+            text:"탈퇴",
+            value: 3,
+          },
+        ],
+        onFilter: (value, record) => value === record.userStatus,
         render: (data, row) => (
           <div>
             <SelectBox
@@ -452,11 +467,13 @@ class FranchiseMain extends Component {
         title: "순번",
         dataIndex: "idx",
         className: "table-column-center desk",
+        sorter: (a, b) => a.idx - b.idx,
       },
       {
         title: "가맹점명",
         dataIndex: "frName",
         className: "table-column-center desk",
+        sorter: (a, b) => a.frName.localeCompare(b.frName),
       },
       {
         title: "사업자번호",
@@ -477,12 +494,15 @@ class FranchiseMain extends Component {
         title: "주소",
         dataIndex: "addr1",
         className: "table-column-center desk",
+        sorter: (a, b) =>
+        (a.addr1 + a.addr2).localeCompare(b.addr1 + b.addr2),
         render: (data, row) => <div>{row.addr1 + " " + row.addr2}</div>,
       },
       {
         title: "코인잔액",
         dataIndex: "ncash",
         className: "table-column-center desk",
+        sorter: (a, b) => a.ncash - b.ncash,
         render: (data) => <div>{comma(data)}</div>,
       },
       // {
