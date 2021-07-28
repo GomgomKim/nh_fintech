@@ -561,8 +561,6 @@ class RiderMain extends Component {
               ) : (
                 <Button
                   onClick={() => {
-                    alert("라이더 가상계좌 작업중입니다.");
-                    return;
                     httpPost(httpUrl.createUserWallet, [row.idx], {})
                       .then((response) => {
                         console.log(response);
@@ -595,14 +593,37 @@ class RiderMain extends Component {
 
     return (
       <div>
-        <Search
-          placeholder="기사검색"
-          className="searchRiderInput mobile"
-          enterButton
-          allowClear
-          onSearch={this.onSearchRider}
-          style={{ marginTop: 15, marginLeft: 0 }}
-        />
+        <div className="mobile">
+          <SelectBox
+            className="selectRiderBox"
+            style={{ marginTop: 15 }}
+            value={tableStatusString[this.state.userStatus]}
+            code={Object.keys(tableStatusString)}
+            codeString={tableStatusString}
+            onChange={(value) => {
+              if (parseInt(value) !== this.state.userStatus) {
+                this.setState(
+                  {
+                    userStatus: parseInt(value),
+                    pagination: {
+                      current: 1,
+                      pageSize: this.state.pagination.pageSize,
+                    },
+                  },
+                  () => this.getList()
+                );
+              }
+            }}
+          />
+          <Search
+            placeholder="기사검색"
+            className="searchRiderInput"
+            enterButton
+            allowClear
+            onSearch={this.onSearchRider}
+            style={{ marginTop: 15, marginLeft: 15 }}
+          />
+        </div>
         <div className="riderMain-container">
           <div className="selectLayout desk">
             <span className="searchRequirementText">검색조건</span>

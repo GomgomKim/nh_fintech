@@ -18,7 +18,7 @@ const cardStatus = ["요청", "등록완료"];
 const modifyType = {
   1: [2, 5],
   2: [1, 5],
-  3: [5],
+  3: [1, 2, 5],
   4: [],
   5: [1],
 };
@@ -47,6 +47,13 @@ const tableStatusString = {
   2: "중지",
   3: "탈퇴",
 };
+
+const kindString = [
+  "",
+  "리스료",
+  "대출 상환",
+  "산재 보험비",
+];
 
 // 가맹점 - 출금설정
 const withdrawString = {
@@ -351,5 +358,6 @@ export {
   items,
   deliveryZone,
   riderStatusCode,
+  kindString,
 };
 

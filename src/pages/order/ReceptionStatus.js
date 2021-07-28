@@ -6,7 +6,7 @@ import {
   MessageOutlined,
   NotificationFilled,
   PhoneOutlined,
-  PushpinOutlined,
+  PushpinOutlined
 } from "@ant-design/icons";
 import {
   Button,
@@ -16,7 +16,7 @@ import {
   Modal,
   Popover,
   Select,
-  Table,
+  Table
 } from "antd";
 import moment from "moment";
 import React, { Component } from "react";
@@ -44,10 +44,10 @@ import {
   deliveryStatusCode,
   modifyType,
   paymentMethod,
-  rowColorName,
+  rowColorName
 } from "../../lib/util/codeUtil";
 import { formatDate } from "../../lib/util/dateUtil";
-import { comma } from "../../lib/util/numberUtil";
+import { comma, remainTime } from "../../lib/util/numberUtil";
 import SurchargeDialog from "./../../components/dialog/order/SurchargeDialog";
 
 const Option = Select.Option;
@@ -99,7 +99,7 @@ class ReceptionStatus extends Component {
 
       // 호출설정 branch 정보
       branchInfo: null,
-      pullingInterval: 3000,
+      pullingInterval: 5000,
 
       messageTarget: null,
       messageTargetName: null,
@@ -119,43 +119,45 @@ class ReceptionStatus extends Component {
   // pollingList = setInterval(this.getList, 5000);
 
   getList = () => {
-    const startDate = this.state.selectedDate;
-    const endDate = new moment();
-    var data = {
-      orderStatuses: this.state.selectedOrderStatus,
-      pageNum: this.state.pagination.current,
-      pageSize: this.state.pagination.pageSize,
-      paymentMethods: this.state.selectedPaymentMethods,
-      startDate: formatDate(startDate).split(" ")[0],
-      endDate: formatDate(endDate.add("1", "d")).split(" ")[0],
-    };
-    if (this.state.franchisee) {
-      data.frName = this.state.franchisee;
-    }
-    if (this.state.rider) {
-      data.riderName = this.state.rider;
-    }
-    httpPostWithNoLoading(httpUrl.orderList, [], data)
-      .then((res) => {
-        if (res.result === "SUCCESS") {
-          // console.log(res);
-          this.setState({
-            list: res.data.orders,
-            pagination: {
-              ...this.state.pagination,
-              total: res.data.totalCount,
-            },
-          });
-        } else {
+    try {
+      const startDate = this.state.selectedDate;
+      const endDate = new moment();
+      var data = {
+        orderStatuses: this.state.selectedOrderStatus,
+        pageNum: this.state.pagination.current,
+        pageSize: this.state.pagination.pageSize,
+        paymentMethods: this.state.selectedPaymentMethods,
+        startDate: formatDate(startDate).split(" ")[0],
+        endDate: formatDate(endDate.add("1", "d")).split(" ")[0],
+      };
+      if (this.state.franchisee) {
+        data.frName = this.state.franchisee;
+      }
+      if (this.state.rider) {
+        data.riderName = this.state.rider;
+      }
+      httpPostWithNoLoading(httpUrl.orderList, [], data)
+        .then((res) => {
+          if (res.result === "SUCCESS") {
+            // console.log(res);
+            this.setState({
+              list: res.data.orders,
+              pagination: {
+                ...this.state.pagination,
+                total: res.data.totalCount,
+              },
+            });
+          } else {
+            console.log("Pulling Error");
+            return;
+          }
+        })
+        .catch((e) => {
           console.log("Pulling Error");
-          return;
-        }
-      })
-      .catch((e) => {
-        console.log("Pulling Error");
-        console.log(e);
-        throw e;
-      });
+          console.log(e);
+          throw e;
+        });
+    } catch (e) {}
   };
   getCompleteList = () => {
     const startDate = this.state.selectedDate;
@@ -165,7 +167,7 @@ class ReceptionStatus extends Component {
       startDate.getDate() + 1
     );
     const data = {
-      orderStatuses: [4],
+      orderStatuses: [4, 5],
       pageNum: this.state.pagination.current,
       pageSize: this.state.pagination.pageSize,
       paymentMethods: [1, 2, 3],
@@ -179,6 +181,8 @@ class ReceptionStatus extends Component {
     if (this.state.rider) {
       data.riderName = this.state.rider;
     }
+
+    console.log(data);
 
     httpPost(httpUrl.orderList, [], data)
       .then((res) => {
@@ -232,7 +236,11 @@ class ReceptionStatus extends Component {
   };
 
   onSearch = () => {
-    this.getList();
+    if (this.state.checkedCompleteCall) {
+      this.getCompleteList();
+    } else {
+      this.getList();
+    }
   };
 
   assignRider = (data, orderIdx) => {
@@ -455,111 +463,154 @@ class ReceptionStatus extends Component {
         title: "주문내용",
         dataIndex: "idx",
         className: "table-column-center mobile",
-        render: (data, row) => (
-          <div className="status-box">
-            <p>
-              No.{row.idx} / {row.frName} / {arriveReqTime[row.arriveReqTime]} /{" "}
-              {row.itemPrepared ? "완료" : "준비중"} <br />{" "}
-            </p>
-            접수시간 :{row.orderDate}
-            <br />
-            배차시간 :{row.assignDate}
-            <br />
-            픽업시간 :{row.orderStatus >= 3 ? formatDate(row.pickupDate) : "-"}
-            <br />
-            완료시간 :
-            {row.orderStatus >= 4 ? formatDate(row.completeDate) : "-"}
-            <hr className="light-hr" />
-            {row.destAddr1 + " " + row.destAddr2} <br />
-            {row.riderName} / {row.distance}km /{" "}
-            {paymentMethod[row.orderPayments[0]["paymentMethod"]]}
-            <br />
-            가격 : {comma(row.orderPrice)} / 총요금 : {comma(row.deliveryPrice)}
-            <br />
-            기본요금 : {comma(row.basicDeliveryPrice)} / 할증요금 :{" "}
-            {comma(row.extraDeliveryPrice)}
-            <hr className="light-hr" />
-            <div className="table-column-sub">
-              상태 :{" "}
-              <Select
-                style={{ marginRight: 5 }}
-                defaultValue={data}
-                value={row.orderStatus}
-                onChange={(value) => {
-                  if (!modifyType[row.orderStatus].includes(value)) {
-                    Modal.info({
-                      content: <div>상태를 바꿀 수 없습니다.</div>,
-                    });
-                    return;
-                  }
-                  // 대기중 -> 픽업중 변경 시 강제배차 알림
-                  if (row.orderStatus === 1 && value === 2) {
-                    Modal.info({
-                      content: <div>강제배차를 사용하세요.</div>,
-                    });
-                    return;
-                  }
+        render: (data, row) => {
+          let remainTimeString = "";
 
-                  const orderStatuseChangeApiCode = [
-                    "",
-                    "",
-                    "",
-                    httpUrl.orderPickup,
-                    httpUrl.orderComplete,
-                    httpUrl.orderCancel,
-                  ];
+          if (row.orderStatus == 5) remainTimeString = "";
+          //취소는 남은시간 없음
+          else if (row.orderStatus == 4) {
+            //완료는 요청시간에서 완료시간까지 계산
+            if (row.arriveReqTime > 1000) {
+              //배차후 주문 처리
+              const arriveReqDate = moment(row.assignDate).add(
+                row.arriveReqTime % 1000,
+                "minutes"
+              );
+              const time = arriveReqDate.diff(
+                moment(row.completeDate),
+                "minutes"
+              );
+              return (remainTimeString = time + "분");
+            } else {
+              const arriveReqDate = moment(row.orderDate).add(
+                row.arriveReqTime,
+                "minutes"
+              );
+              const time = arriveReqDate.diff(
+                moment(row.completeDate),
+                "minutes"
+              );
+              return (remainTimeString = time + "분");
+            }
+          } else {
+            //진행중
+            if (row.arriveReqTime > 1000) {
+              if (row.orderStatus == 1) remainTimeString = "";
+              else
+                remainTimeString =
+                  remainTime(row.assignDate, row.arriveReqTime % 1000) + "분";
+            } else
+              remainTimeString =
+                remainTime(row.orderDate, row.arriveReqTime) + "분";
+          }
 
-                  httpPost(orderStatuseChangeApiCode[value], [], {
-                    orderIdx: row.idx,
-                  })
-                    .then((res) => {
-                      if (res.result === "SUCCESS" && res.data === "SUCCESS") {
-                        Modal.info({
-                          title: "변경 성공",
-                          content: "주문상태가 변경되었습니다.",
-                        });
-                        this.getList();
-                      } else {
+          return (
+            <div className="status-box">
+              <p>
+                No.{row.idx} / {row.frName} / {arriveReqTime[row.arriveReqTime]}{" "}
+                / {remainTimeString}{" "}
+                {/* {row.itemPrepared ? "완료" : "준비중"} <br />{" "} */}
+              </p>
+              {row.destAddr1 + " " + row.destAddr2} <br />
+              {row.riderName} / {row.distance}km /{" "}
+              {paymentMethod[row.orderPayments[0]["paymentMethod"]]}
+              <br />
+              <div className="table-column-sub">
+                상태 :{" "}
+                <Select
+                  style={{ marginRight: 5 }}
+                  defaultValue={data}
+                  value={row.orderStatus}
+                  onChange={(value) => {
+                    if (!modifyType[row.orderStatus].includes(value)) {
+                      Modal.info({
+                        content: <div>상태를 바꿀 수 없습니다.</div>,
+                      });
+                      return;
+                    }
+                    // 대기중 -> 픽업중 변경 시 강제배차 알림
+                    if (row.orderStatus === 1 && value === 2) {
+                      Modal.info({
+                        content: <div>강제배차를 사용하세요.</div>,
+                      });
+                      return;
+                    }
+                    // 픽업 -> 접수 변경 시 배차상태로 변경 알림
+                    if (row.orderStatus === 3 && value === 1) {
+                      Modal.info({
+                        content: (
+                          <div>
+                            배차상태로 먼저 변경한 후 접수로 변경해주세요.
+                          </div>
+                        ),
+                      });
+                      return;
+                    }
+
+                    const orderStatuseChangeApiCode = [
+                      "",
+                      httpUrl.orderAssignCancel,
+                      httpUrl.orderPickupCancel,
+                      httpUrl.orderPickup,
+                      httpUrl.orderComplete,
+                      httpUrl.orderCancel,
+                    ];
+
+                    httpPost(orderStatuseChangeApiCode[value], [], {
+                      orderIdx: row.idx,
+                    })
+                      .then((res) => {
+                        if (
+                          res.result === "SUCCESS" &&
+                          res.data === "SUCCESS"
+                        ) {
+                          Modal.info({
+                            title: "변경 성공",
+                            content: "주문상태가 변경되었습니다.",
+                          });
+                          this.getList();
+                        } else {
+                          Modal.info({
+                            title: "변경 실패",
+                            content: "주문상태 변경에 실패했습니다.",
+                          });
+                        }
+                      })
+                      .catch((e) => {
                         Modal.info({
                           title: "변경 실패",
                           content: "주문상태 변경에 실패했습니다.",
                         });
-                      }
-                    })
-                    .catch((e) => {
-                      Modal.info({
-                        title: "변경 실패",
-                        content: "주문상태 변경에 실패했습니다.",
-                      });
 
-                      throw e;
-                    });
-                }}
-              >
-                {deliveryStatusCode.map((value, index) => {
-                  if (index === 0) return <></>;
-                  else
-                    return (
-                      <Option key={index} value={index}>
-                        {value}
-                      </Option>
-                    );
-                })}
-              </Select>
+                        throw e;
+                      });
+                  }}
+                >
+                  {deliveryStatusCode.map((value, index) => {
+                    if (index === 0) return <></>;
+                    else
+                      return (
+                        <Option key={index} value={index}>
+                          {value}
+                        </Option>
+                      );
+                  })}
+                </Select>
+              </div>
+              {""}
+              <div className="table-column-sub">
+                {/* <ForceAllocateDialog */}
+                <Button
+                  style={{ marginLeft: 5 }}
+                  className="tabBtn"
+                  onClick={this.openForceModal}
+                >
+                  강제배차
+                </Button>
+              </div>
             </div>
-            {""}
-            <div className="table-column-sub">
-              {/* <ForceAllocateDialog */}
-              <Button
-                style={{ marginLeft: 5 }}
-                className="tabBtn"
-                onClick={this.openForceModal}
-              >
-                강제배차
-              </Button>
-            </div>
-          </div>
-        ),
+          );
+        },
       },
       {
         title: "상태",
@@ -610,11 +661,20 @@ class ReceptionStatus extends Component {
                   });
                   return;
                 }
+                // 픽업 -> 접수 변경 시 배차상태로 변경 알림
+                if (row.orderStatus === 3 && value === 1) {
+                  Modal.info({
+                    content: (
+                      <div>배차상태로 먼저 변경한 후 접수로 변경해주세요.</div>
+                    ),
+                  });
+                  return;
+                }
 
                 const orderStatuseChangeApiCode = [
                   "",
                   httpUrl.orderAssignCancel,
-                  "",
+                  httpUrl.orderPickupCancel,
                   httpUrl.orderPickup,
                   httpUrl.orderComplete,
                   httpUrl.orderCancel,
@@ -669,6 +729,59 @@ class ReceptionStatus extends Component {
         render: (data) => <div>{arriveReqTime[data]}</div>,
       },
       {
+        title: "남은시간",
+        dataIndex: "arriveReqTime",
+        className: "table-column-center desk",
+        key: (row) => `remainTime:${row.idx}`,
+        sorter: (a, b) =>
+          remainTime(a.orderDate, a.arriveReqTime) -
+          remainTime(b.orderDate, b.arriveReqTime),
+        render: (data, row) => {
+          if (row.orderStatus == 5) return <div></div>;
+          //취소는 남은시간 없음
+          else if (row.orderStatus == 4) {
+            //완료는 요청시간에서 완료시간까지 계산
+            if (row.arriveReqTime > 1000) {
+              //배차후 주문 처리
+              const arriveReqDate = moment(row.assignDate).add(
+                row.arriveReqTime % 1000,
+                "minutes"
+              );
+              const time = arriveReqDate.diff(
+                moment(row.completeDate),
+                "minutes"
+              );
+              return <div>{time}분</div>;
+            } else {
+              const arriveReqDate = moment(row.orderDate).add(
+                row.arriveReqTime,
+                "minutes"
+              );
+              const time = arriveReqDate.diff(
+                moment(row.completeDate),
+                "minutes"
+              );
+              return <div>{time}분</div>;
+            }
+          } else {
+            //진행중
+            if (row.arriveReqTime > 1000) {
+              //배차후 주문 처리
+              if (row.orderStatus == 1) return <div></div>;
+              else
+                return (
+                  <div>
+                    {remainTime(row.assignDate, row.arriveReqTime % 1000)}분
+                  </div>
+                );
+            } else
+              return (
+                <div>{remainTime(row.orderDate, row.arriveReqTime)}분</div>
+              );
+          }
+        },
+      },
+      {
         title: "음식준비",
         dataIndex: "itemPrepared",
         className: "table-column-center desk",
@@ -717,34 +830,6 @@ class ReceptionStatus extends Component {
         key: (row) => `orderDate:${row.orderDate}`,
         sorter: (a, b) => moment(a.orderDate) - moment(b.orderDate),
         render: (data, row) => <div>{data}</div>,
-      },
-      {
-        title: "배차시간",
-        dataIndex: "assignDate",
-        className: "table-column-center desk",
-        key: (row) => `assignDate:${row.assignDate}`,
-        sorter: (a, b) => moment(a.assignDate) - moment(b.assignDate),
-        render: (data, row) => <div>{data}</div>,
-      },
-      {
-        title: "픽업시간",
-        dataIndex: "pickupDate",
-        className: "table-column-center desk",
-        key: (row) => `pickupDate:${row.pickupDate}`,
-        sorter: (a, b) => moment(a.pickupDate) - moment(b.pickupDate),
-        render: (data, row) => (
-          <div>{row.orderStatus >= 3 ? formatDate(data) : "-"}</div>
-        ),
-      },
-      {
-        title: "완료시간",
-        dataIndex: "completeDate",
-        className: "table-column-center desk",
-        key: (row) => `completeDate:${row.completeDate}`,
-        sorter: (a, b) => moment(a.completeDate) - moment(b.completeDate),
-        render: (data, row) => (
-          <div>{row.orderStatus >= 4 ? formatDate(data) : "-"}</div>
-        ),
       },
       // {
       //   title: "완료시간",
@@ -808,29 +893,18 @@ class ReceptionStatus extends Component {
         render: (data) => <div>{comma(data)}</div>,
       },
       {
-        title: "총배달요금",
+        title: "배달요금",
         dataIndex: "deliveryPrice",
         className: "table-column-center desk",
         key: (row) => `deliveryPrice:${row.deliveryPrice}`,
         sorter: (a, b) => a.deliveryPrice - b.deliveryPrice,
-        render: (data) => <div>{comma(data)}</div>,
-      },
-      {
-        title: "기본배달요금",
-        dataIndex: "basicDeliveryPrice",
-        className: "table-column-center desk",
-        key: (row) => `basicDeliveryPrice:${row.basicDeliveryPrice}`,
-        sorter: (a, b) => a.basicDeliveryPrice - b.basicDeliveryPrice,
-        render: (data) => <div>{comma(data)}</div>,
-      },
-
-      {
-        title: "할증배달요금",
-        dataIndex: "extraDeliveryPrice",
-        className: "table-column-center desk",
-        key: (row) => `extraDeliveryPrice:${row.extraDeliveryPrice}`,
-        sorter: (a, b) => a.extraDeliveryPrice - b.extraDeliveryPrice,
-        render: (data) => <div>{comma(data)}</div>,
+        render: (data, row) => (
+          <div>
+            {comma(data)}
+            <br />({comma(row.basicDeliveryPrice)} +{" "}
+            {comma(row.extraDeliveryPrice)})
+          </div>
+        ),
       },
 
       {
@@ -850,10 +924,63 @@ class ReceptionStatus extends Component {
             <div>{paymentMethod[data[0]["paymentMethod"]]}</div>
           ),
       },
+      {
+        title: "배차시간",
+        dataIndex: "assignDate",
+        className: "table-column-center desk",
+        key: (row) => `assignDate:${row.assignDate}`,
+        sorter: (a, b) => moment(a.assignDate) - moment(b.assignDate),
+        render: (data, row) => <div>{data}</div>,
+      },
+      {
+        title: "픽업시간",
+        dataIndex: "pickupDate",
+        className: "table-column-center desk",
+        key: (row) => `pickupDate:${row.pickupDate}`,
+        sorter: (a, b) => moment(a.pickupDate) - moment(b.pickupDate),
+        render: (data, row) => (
+          <div>{row.orderStatus >= 3 ? formatDate(data) : "-"}</div>
+        ),
+      },
+      {
+        title: "완료시간",
+        dataIndex: "completeDate",
+        className: "table-column-center desk",
+        key: (row) => `completeDate:${row.completeDate}`,
+        sorter: (a, b) => moment(a.completeDate) - moment(b.completeDate),
+        render: (data, row) => (
+          <div>{row.orderStatus >= 4 ? formatDate(data) : "-"}</div>
+        ),
+      },
     ];
 
     const expandedRowRender = (record) => {
       const dropColumns = [
+        {
+          title: "세부내용",
+          dataIndex: "distance",
+          className: "table-column-center mobile",
+          render: (data, row) => (
+            <div className="status-box">
+              접수시간 :{row.orderDate}
+              <br />
+              배차시간 :{row.assignDate}
+              <br />
+              픽업시간 :
+              {row.orderStatus >= 3 ? formatDate(row.pickupDate) : "-"}
+              <br />
+              완료시간 :
+              {row.orderStatus >= 4 ? formatDate(row.completeDate) : "-"}
+              <br />
+              <hr className="light-hr" />
+              가격 : {comma(row.orderPrice)} / 총요금 :{" "}
+              {comma(row.deliveryPrice)}
+              <br />
+              기본요금 : {comma(row.basicDeliveryPrice)} / 할증요금 :{" "}
+              {comma(row.extraDeliveryPrice)}
+            </div>
+          ),
+        },
         // {
         //   title: "수수료",
         //   dataIndex: "deliveryPriceFee",
@@ -1244,6 +1371,24 @@ class ReceptionStatus extends Component {
             </Button>
           </div>
 
+          <div className="btnLayout mobile">
+            <Button
+              icon={<EnvironmentFilled />}
+              className="tabBtn mapTab"
+              onClick={this.openMapControlModal}
+              // onClick={() => { this.props.openMapControl() }}
+            >
+              지도관제
+            </Button>
+            <Button
+              icon={<PhoneOutlined />}
+              className="tabBtn registTab"
+              onClick={this.openAddCallModal}
+            >
+              주문등록
+            </Button>
+          </div>
+
           <div className="selectLayout desk">
             <Search
               placeholder="가맹점검색"
@@ -1331,7 +1476,7 @@ class ReceptionStatus extends Component {
               onChange={(e) => this.setState({ franchisee: e.target.value })}
               onSearch={this.onSearch}
               style={{
-                width: 200,
+                width: 308,
                 marginTop: 15,
                 marginBottom: 10,
               }}
@@ -1343,10 +1488,56 @@ class ReceptionStatus extends Component {
               onChange={(e) => this.setState({ rider: e.target.value })}
               onSearch={this.onSearch}
               style={{
-                width: 200,
+                width: 308,
                 marginBottom: 20,
               }}
             />
+          </div>
+          <div className="desk">
+            <div className="delivery-status" style={{ background: "white" }}>
+              픽업 :{" "}
+              {this.state.list.filter((item) => item.orderStatus === 3).length}{" "}
+              건
+            </div>
+            <div className="delivery-status" style={{ background: "#d6edfe" }}>
+              배차 :{" "}
+              {this.state.list.filter((item) => item.orderStatus === 2).length}{" "}
+              건
+            </div>
+            <div
+              className="delivery-status"
+              style={{ background: "rgb(247, 128, 128)" }}
+            >
+              접수 :{" "}
+              {this.state.list.filter((item) => item.orderStatus === 1).length}{" "}
+              건
+            </div>
+          </div>
+          <div className="mobile">
+            <div
+              className="delivery-status-mobile"
+              style={{ background: "rgb(247, 128, 128)" }}
+            >
+              접수 :{" "}
+              {this.state.list.filter((item) => item.orderStatus === 1).length}{" "}
+              건
+            </div>
+            <div
+              className="delivery-status-mobile"
+              style={{ background: "#d6edfe" }}
+            >
+              배차 :{" "}
+              {this.state.list.filter((item) => item.orderStatus === 2).length}{" "}
+              건
+            </div>
+            <div
+              className="delivery-status-mobile"
+              style={{ background: "white" }}
+            >
+              픽업 :{" "}
+              {this.state.list.filter((item) => item.orderStatus === 3).length}{" "}
+              건
+            </div>
           </div>
 
           <div id="reception-table" className="desk">
@@ -1376,7 +1567,7 @@ class ReceptionStatus extends Component {
               columns={columns}
               pagination={false}
               // onChange={this.handleTableChange}
-              // expandedRowRender={expandedRowRender}
+              expandedRowRender={expandedRowRender}
             />
           </div>
 

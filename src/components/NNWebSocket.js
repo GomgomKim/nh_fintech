@@ -1,7 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import { withRouter } from "react-router-dom";
+import { Layout, Modal, Button } from "antd";
 import { login, logout } from "../actions/loginAction";
+import { websockConnected, websockDisconnected, websockDuplicated } from "../actions/websocketAction";
 import { httpGet, httpPost, httpUrl } from "../api/httpClient";
 import Const from "../const";
 
@@ -34,6 +37,8 @@ class NNWebSocket extends Component {
       '/ws/nnbox';
     this.state = {
       appState: '',
+      visible: false,
+      message: ''
     };
   }
 
@@ -48,7 +53,6 @@ class NNWebSocket extends Component {
   }
 
   initWS = () => {
-    debugger;
     console.log('=================initWS==================');
     if (global.ws != null) {
       console.log('ws is not null');
@@ -60,31 +64,15 @@ class NNWebSocket extends Component {
       // connection opened
       console.log('ws open!!');
       global.ws.send('something'); // send a message
+      this.props.websockConnected();
     };
     global.ws.onmessage = (e) => {
       // a message was received
       console.log(`ws onmessage, data: ${e.data}, type: ${typeof e.data}`);
       if (e.data == 'logged in from another location') {
-        // alert('중복로그인')
-        // this.props.logout();
-        // httpPost(httpUrl.logout, [], {})
-        //   .then((result) => {
-        //     console.log('logout result=' + result);
-        //   })
-        //   .catch((e) => console.log('## logout error: ' + e));
-        // alert('다른 핸드폰에서 접속하여 로그아웃됩니다.');
-        // console.log('다른 핸드폰에서 접속하여 로그아웃됩니다.');
-
-        // Navigation.setRoot({
-        //   root: {
-        //     component: {
-        //       name: 'navigation.Login',
-        //       passProps: {
-        //         manualLogout: true,
-        //       },
-        //     },
-        //   },
-        // });
+        this.props.websockDuplicated();
+        this.props.websockDisconnected();
+        alert('다른곳에서 접속하여 채팅서버 연결이 종료됩니다. 다시 로그인하기 전까지 채팅메시지를 실시간으로 받을 수 없습니다.')
         return;
       }
       let message = {};
@@ -106,35 +94,27 @@ class NNWebSocket extends Component {
       else data = JSON.parse(message.data);
       console.log(data);
       if (message.messageType == 'CHAT') {
-        // alert('챗')
-        // if (!global.chatAprear && !global.chatDetailAprear) {
-        //   //채팅중이 아닐때만 띄우기
-        //   let oppName = data.member1 == this.props.loginReducer.loginInfo.idx ? data.member2Name : data.member1Name
-        //   if (oppName == '') oppName = '관제'
-        //   Navigation.showModal({
-        //     component: {
-        //       name: 'navigation.BasicDialog',
-        //       passProps: {
-        //         title: data.title,
-        //         content:
-        //         '#[채팅] ' + oppName + '# ' + data.lastMessage,
-        //         okText: '확인',
-        //         onOk: () => {
-        //         },
-        //       },
-        //       options: {
-        //         topBar: {drawBehind: true, visible: false},
-        //         screenBackgroundColor: 'transparent',
-        //         modalPresentationStyle: 'overCurrentContext',
-        //       },
-        //     },
-        //   });
-        // }
-        // else {
-        //   //채팅창 활성화 시 해당 컴포넌트로 전송
-        //   if (global.chatListener) global.chatListener(data);
-        //   if (global.chatDetailListener) global.chatDetailListener(data);
-        // }
+        console.log('## chat message ##')
+        console.log(message)
+
+        let oppName = '';
+        if (this.props.loginReducer.loginInfo.idx == message.data.member1) {
+          oppName = message.data.member2Name;
+        }
+        else oppName = message.data.member1Name;
+
+        if (!global.chatAprear && !global.chatDetailAprear) {
+          //채팅중이 아닐때만 띄우기
+          this.setState({
+            visible: true, 
+            message: '['+oppName+'] ' + message.data.lastMessage
+          })
+        }
+        else {
+          //채팅창 활성화 시 해당 컴포넌트로 전송
+          if (global.chatListener) global.chatListener(message.data);
+          if (global.chatDetailListener) global.chatDetailListener(message.data);
+        }
       }
     };
     global.ws.onerror = (e) => {
@@ -144,6 +124,7 @@ class NNWebSocket extends Component {
     global.ws.onclose = (e) => {
       // connection closed
       console.log(`ws onclose. code: ${e.code}, reason: ${e.reason}`);
+      this.props.websockDisconnected();
     };
   };
   checkWS = () => {
@@ -155,6 +136,9 @@ class NNWebSocket extends Component {
     if (global.ws === null || typeof global.ws === 'undefined') {
       console.log(`wsTimeInterval. ws invalid type. type: ${typeof global.ws}`);
       return;
+    }
+    if (this.props.websockInfo.isDuplicated) {
+      console.log('connected from another PC')
     }
     if (global.ws.readyState !== wsReadyState.OPEN) {
       console.log(
@@ -173,14 +157,35 @@ class NNWebSocket extends Component {
   render() {
     return (
         <div>
+          <Modal
+            visible={this.state.visible}
+            title="채팅알람"
+            okText="확인"
+            onOk={() => {
+              this.setState({ visible: false });
+            }}
+            footer={[
+              <Button key="ok" onClick={() => {
+                this.setState({ visible: false });
+              }}>
+                확인
+              </Button>]}
+            destroyOnClose={true}
+          >
+            <div>{this.state.message}</div>
+          </Modal>
         </div>
     );
   }
 }
 
-const mapStateToProps = (state) => ({
-  loginReducer: state.login,
-});
-const mapDispatchToProps = (dispatch) =>
-  bindActionCreators({ login, logout }, dispatch);
-export default connect(mapStateToProps, mapDispatchToProps)(NNWebSocket);
+let mapStateToProps = (state) => {
+  return {
+    loginReducer: state.login,
+    websockInfo: state.websock
+  };
+};
+
+let mapDispatchToProps = (dispatch) => 
+    bindActionCreators({ login, logout, websockConnected, websockDisconnected, websockDuplicated }, dispatch);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(NNWebSocket));

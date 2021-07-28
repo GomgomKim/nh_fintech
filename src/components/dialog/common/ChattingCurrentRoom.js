@@ -34,6 +34,7 @@ class ChattingCurrentRoom extends Component {
     };
   }
   componentDidMount() {
+    console.log('###chatroom mount')
     console.log(this.props);
     if (this.props.targetIdx) {
       this.getTotalChatList(this.props.targetIdx);
@@ -48,6 +49,36 @@ class ChattingCurrentRoom extends Component {
         this.setState({ lastChatTime: value });
       } catch {}
     }
+
+    global.chatDetailAprear = true;
+    global.chatDetailListener = (data) => {
+        if (this.state.currentRoom.idx == data.idx) {
+            this.state.chatMessages.unshift({
+                chatDate: formatYMDHMS(new Date()), 
+                chatMessage: data.lastMessage, 
+                chatRoomCreateDate: "", 
+                chatRoomIdx: null, 
+                idx: 0, 
+                isRead: null, 
+                member1: data.member1, 
+                member2: data.member2, 
+                readDate: null, 
+                receiveUserIdx: this.props.loginReducer.loginInfo.idx, 
+                sendUserIdx: this.props.loginReducer.loginInfo.idx == data.member1 ? data.member2 : data.member1, 
+                title: "chat room"
+            });
+            this.setState({chatMessages:this.state.chatMessages})
+            this.updateTime(data.idx);
+        }
+    }
+  }
+  componentWillUnmount() {
+    global.chatDetailAprear = false;
+    
+    global.chatDetailListener = null;
+  }
+  componentDidUpdate(prevProps, prevState) {
+
   }
   formatChatDate(time) {
     return time.substr(0, 10) === formatYMD(new Date())
@@ -90,30 +121,23 @@ class ChattingCurrentRoom extends Component {
       } catch {}
     }
   };
-
+  
   getTotalChatList = (targetIdx) => {
-    httpGet(httpUrl.chatList, [10000, 1], {})
+    httpGet(httpUrl.chatListByUser, [1, 1, '', targetIdx], {})
       .then((result) => {
-        this.setState(
-          {
-            totalTableData: result.data.chatRooms,
-          },
-          () => {
-            if (targetIdx) {
-              const target = this.state.totalTableData.find(
-                (item) =>
-                  item.member1 === targetIdx || item.member2 === targetIdx
-              );
-              if (target) {
-                this.chatDetailList(target);
-                this.setState({ fakeRoom: false });
-                return;
-              } else {
-                this.setState({ fakeRoom: true });
-              }
-            }
+        if (targetIdx) {
+          const target = result.data.chatRooms.find(
+            (item) =>
+              item.member1 === targetIdx || item.member2 === targetIdx
+          );
+          if (target) {
+            this.chatDetailList(target);
+            this.setState({ fakeRoom: false });
+            return;
+          } else {
+            this.setState({ fakeRoom: true });
           }
-        );
+        }
       })
       .catch();
   };
@@ -224,6 +248,20 @@ class ChattingCurrentRoom extends Component {
       this.setState({ tableDate: this.state.tableData });
     }
   };
+  onPressSendFirst = (receiveUserIdx, msg) => {
+    httpPost(httpUrl.chatSend, [], {
+      chatMessage: msg,
+      receiveUserIdx,
+    }).then((result) => {
+      console.log("SUCCESS");
+      result = result.data;
+      if (result === "SUCCESS") {
+        //방세팅
+        this.getTotalChatList(this.props.targetIdx);
+      }
+    });
+
+  }
   onPressSend = (msg) => {
     if (!this.state.currentRoom) return;
     const { currentRoom } = this.state;
@@ -400,40 +438,16 @@ class ChattingCurrentRoom extends Component {
                   value={this.state.inputMessage}
                   onKeyPress={(e) => {
                     if (e.key === "Enter") {
-                      this.send(
-                        () => this.getTotalChatList(this.props.targetIdx),
-                        () => {
-                          this.setState(
-                            {
-                              pagination: {
-                                ...this.state.pagination,
-                                current: 1,
-                              },
-                            },
-                            () => this.getChatList()
-                          );
-                        }
-                      );
+                      this.onPressSendFirst(this.props.targetIdx, this.state.inputMessage);
+                      this.setState({ inputMessage: "" });
                     }
                   }}
                 />
                 <div
                   className="chat-send-btn"
                   onClick={() => {
-                    this.send(
-                      () => this.getTotalChatList(this.props.targetIdx),
-                      () => {
-                        this.setState(
-                          {
-                            pagination: {
-                              ...this.state.pagination,
-                              current: 1,
-                            },
-                          },
-                          () => this.getChatList()
-                        );
-                      }
-                    );
+                    this.onPressSendFirst(this.props.targetIdx, this.state.inputMessage);
+                    this.setState({ inputMessage: "" });
                   }}
                 >
                   전송

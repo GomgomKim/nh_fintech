@@ -6,20 +6,21 @@
   .mobile {
   }
 
-  /* .tabBtn {
+  .tabBtn {
     margin-left: 10px;
-  } */
+  }
 
   .arriveArea {
     text-align: left;
   }
 
-  .delayTab {
+  .mapTab {
     margin-left: 0px !important;
+    width:149px;
   }
 
-  .orderTab {
-    margin-right: 20px !important;
+  .registTab {
+    width:149px;
   }
 
   .filterTab {
@@ -128,6 +129,9 @@
   .riderMain-container {
     width: 100%;
   }
+  .selectRiderBox {
+    margin-top: 30px;
+  }
   .dataTableLayout {
     margin-top: 20px;
   }
@@ -167,5 +171,13 @@
   }
   .droptable_fr {
     width: 308px;
+  }
+  .delivery-status-mobile {
+    display:inline-block;
+    border:1px solid; 
+    text-align: center;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    border-radius: 5px;
   }
 }

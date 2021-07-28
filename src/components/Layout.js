@@ -5,30 +5,35 @@ import { Header, Footer, Content, NNWebSocket } from "./";
 import { connect } from "react-redux";
 
 class Layout extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      pageWidth: window.innerWidth
+    }
+  }
+  componentDidMount() {
+    window.addEventListener('resize', this.handleResize);
+  }
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.handleResize);
+  }
+  handleResize = ()=> {
+    this.setState({pageWidth: window.innerWidth})
+  }
+  
   render() {
     // 개발시 주석 처리
     return (
       <>
-        <div className="desk">
           <AntLayout>
             {/* <Sider location={this.props.location} /> */}
-            <AntLayout style={{ minWidth: "1280px" }}>
+            <AntLayout style={{ minWidth: this.state.pageWidth > 1199 ? "1280px" : "300px" }}>
               <Header />
               <Content />
               <Footer />
             </AntLayout>
           </AntLayout>
-        </div>
-        <div className="mobile">
-          <AntLayout>
-            {/* <Sider location={this.props.location} /> */}
-            <AntLayout style={{ minWidth: "300px" }}>
-              <Header />
-              <Content />
-              <Footer />
-            </AntLayout>
-          </AntLayout>
-        </div>
+        <NNWebSocket />
       </>
     );
   }

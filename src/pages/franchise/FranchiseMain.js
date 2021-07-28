@@ -397,7 +397,7 @@ class FranchiseMain extends Component {
         className: "table-column-center mobile",
         render: (data, row) =>
           <div className="status-box">
-            <span style={{ backgroundColor: "#fddc00", color: "#000", padding: "0px 10px", borderRadius: "10px" }}>{row.frName}<br /></span>
+            <p>{row.frName}<br /></p>
             사업자: {row.businessNumber}<br />
             가맹점: {row.frPhone}<br />
             대표자: {row.phone}<br />
@@ -415,6 +415,17 @@ class FranchiseMain extends Component {
                   }
                 }}
               />
+
+              <Button
+                className="tabBtn surchargeTab blind-mobilebtn"
+                onClick={() =>
+                  this.setState({ blindListOpen: true, blindFrData: row })
+                }
+              >
+                블라인드
+              </Button>
+
+
             </div>
           </div >,
       },
@@ -517,7 +528,7 @@ class FranchiseMain extends Component {
       // },
       {
         title: "블라인드",
-        className: "table-column-center",
+        className: "table-column-center desk",
         render: (data, row) => (
           <div>
             <Button

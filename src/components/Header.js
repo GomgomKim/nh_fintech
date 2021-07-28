@@ -7,6 +7,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { login, logout } from "../actions/loginAction";
+import { websockConnected, websockDisconnected, websockDuplicated } from "../actions/websocketAction";
 import { httpPost, httpUrl } from "../api/httpClient";
 import "../css/modal.css";
 import "../css/modal_m.css";
@@ -167,6 +168,11 @@ class Header extends React.Component {
           <div className="menu-right">
             <div className="desk"
               style={{ display: "inline-block" }}>
+              {this.props.websockInfo.isConnected ? '채팅접속중' : '채팅연결끊김'}&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+              {/* {this.props.loginInfo.userId}&nbsp;&nbsp;&nbsp;| */}
+            </div>
+            <div className="desk"
+              style={{ display: "inline-block" }}>
               관리자&nbsp;&nbsp;&nbsp;|
               {/* {this.props.loginInfo.userId}&nbsp;&nbsp;&nbsp;| */}
             </div>
@@ -174,7 +180,7 @@ class Header extends React.Component {
               style={{ display: "inline-block", cursor: "pointer" }}
               className="desk"
               onClick={() => {
-                this.setState({ visible: true });
+                this.logout()
               }}
             >
               &nbsp;&nbsp;&nbsp;로그아웃
@@ -183,7 +189,7 @@ class Header extends React.Component {
               style={{ display: "inline-block", cursor: "pointer" }}
               className="mobile"
               onClick={() => {
-                this.setState({ visible: true });
+                this.logout()
               }}
             >
               &nbsp;&nbsp;&nbsp;
@@ -191,7 +197,7 @@ class Header extends React.Component {
             </div>
           </div>
         </div>
-        <Modal
+        {/* <Modal
           visible={this.state.visible}
           title="로그아웃"
           okText="확인"
@@ -203,7 +209,7 @@ class Header extends React.Component {
           destroyOnClose={true}
         >
           <div>로그아웃 하시겠습니까?</div>
-        </Modal>
+        </Modal> */}
       </Layout.Header>
     );
   }
@@ -213,6 +219,7 @@ let mapStateToProps = (state) => {
   return {
     isLogin: state.login.isLogin,
     loginInfo: state.login.loginInfo,
+    websockInfo: state.websock
   };
 };
 
@@ -220,6 +227,9 @@ let mapDispatchToProps = (dispatch) => {
   return {
     onLogin: (userinfo) => dispatch(login(userinfo)),
     onLogout: () => dispatch(logout()),
+    onWebsockConnect: () => dispatch(websockConnected()),
+    onWebsockDisconnect: () => dispatch(websockDisconnected()),
+    onWebsockDuplicate: () => dispatch(websockDuplicated()),
   };
 };
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Header));

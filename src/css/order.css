@@ -103,7 +103,7 @@
   }
 
   .table-red {
-    background-color: #fed8d6;
+    background-color: rgb(247, 128, 128);
   }
   .table-gray {
     background-color: gray;
@@ -114,6 +114,12 @@
   }
   .table-white {
     background-color: white;
+  }
+  .table-yellow {
+    background-color: yellow;
+  }
+  .table-orange {
+    background-color: orange;
   }
 
   .btnLayout {
@@ -134,5 +140,18 @@
   }
   .tableSub {
     width: 150px;
+  }
+  .delivery-status {
+    float: right;
+    display:inline-block;
+    width:125px;
+    font-size:18px;
+    border:1px solid; 
+    text-align: center;
+    margin-right: 15px;
+    margin-top: -30px;
+    border-radius: 5px;
+    height: 35px;
+    line-height: 35px;
   }
 }
