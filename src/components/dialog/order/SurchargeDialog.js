@@ -408,11 +408,11 @@ class SurchargeDialog extends Component {
                       </div>
                     </div>
 
-                    <div>
-                      <div className="checkbox">상시할증</div>
+                    <div className="surcheck">
+                      <div className="checkbox" style={{height: 32}}>상시할증</div>
 
                       <Checkbox
-                        style={{ paddingLeft: 5, marginRight: 20, width: 210 }}
+                        style={{ width: 225 }}
                         defaultChecked={
                           this.state.toggleDisable ? "checked" : ""
                         }
@@ -421,7 +421,7 @@ class SurchargeDialog extends Component {
                         }
                       />
 
-                      <div className="subDatePrice">등록기간</div>
+                      <div className="subDatePrice">{this.state.pickerChange == false ? "등록기간" : "등록시간"}</div>
                       <div className="selectBox">
                         {this.state.pickerChange == false ? 
                         <FormItem name="surchargeDate">
@@ -434,7 +434,7 @@ class SurchargeDialog extends Component {
                         :
                         <FormItem name="surchargeDate">
                            <TimePicker.RangePicker
-                            placeholder={["시작일", "종료일"]}
+                            placeholder={["시작시간", "종료시간"]}
                             showTime={{ format: "HH:mm" }}
                             onChange={this.onChangeDate}
                             />
