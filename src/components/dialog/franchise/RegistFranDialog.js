@@ -9,7 +9,8 @@ import {
   registComplete,
   registError,
   updateComplete,
-  updateError
+  updateError,
+  idDuplicated
 } from "../../../api/Modals";
 import "../../../css/modal.css";
 import { pgUseRate } from "../../../lib/util/codeUtil";
@@ -232,10 +233,12 @@ class RegistFranDialog extends Component {
         isMember: true,
       })
         .then((result) => {
-          console.log("## result: " + JSON.stringify(result, null, 4));
-          if (result.result === "SUCCESS") {
+          // console.log("## result: " + JSON.stringify(result, null, 4));
+          if (result.result === "SUCCESS" && result.data === "SUCCESS") {
             this.props.getList();
             registComplete();
+          } else if (result.result === "SUCCESS" && result.data == "ID_DUPLICATED") {
+            idDuplicated();
           } else {
             registError();
           }
@@ -340,7 +343,7 @@ class RegistFranDialog extends Component {
 
   onChangFeeManner = (e) => {
     console.log(e.target.value);
-    this.setState({ feeManner: e.target.value }, () => {});
+    this.setState({ feeManner: e.target.value }, () => { });
   };
 
   onChangeIsMember(e) {
