@@ -10,13 +10,14 @@ import { updateComplete, updateError } from "../../api/Modals";
 import BlindFranListDialog from "../../components/dialog/franchise/BlindFranListDialog";
 import RegistFranDialog from "../../components/dialog/franchise/RegistFranDialog";
 import SearchAddressDialog from "../../components/dialog/franchise/SearchAddressDialog";
+import RegistVANDialog from "../../components/dialog/franchise/RegistVANDialog";
 import SelectBox from "../../components/input/SelectBox";
 import "../../css/franchise.css";
 import "../../css/franchise_m.css";
 import {
   statusString,
   tableStatusString,
-  withdrawString
+  withdrawString,
 } from "../../lib/util/codeUtil";
 import { formatDateToDay } from "../../lib/util/dateUtil";
 import { comma } from "../../lib/util/numberUtil";
@@ -46,8 +47,10 @@ class FranchiseMain extends Component {
       // blindControlOpen: false,
       dialogData: [],
       blindFrData: [],
+      ResistVANData: [],
       blindListOpen: false,
       inputOpen: false,
+      ResistVANOpen: false,
 
       // excel data
       data: {},
@@ -140,6 +143,11 @@ class FranchiseMain extends Component {
     this.setState({ SearchAddressOpen: false });
   };
 
+  // VAN등록요청 dialog
+  closeResistVANModal = () => {
+    this.setState({ ResistVANOpen: false });
+  };
+
   // // 블라인드관리 dialog
   // openBlindControlModal = () => {
   //   this.setState({ blindControlOpen: true });
@@ -154,14 +162,6 @@ class FranchiseMain extends Component {
   };
   closeBlindModal = () => {
     this.setState({ blindListOpen: false });
-  };
-
-  // 주소검색관리 dialog
-  openSearchAddressModal = () => {
-    this.setState({ SearchAddressOpen: true });
-  };
-  closeSearchAddressModal = () => {
-    this.setState({ SearchAddressOpen: false });
   };
 
   // 출금설정
@@ -395,13 +395,20 @@ class FranchiseMain extends Component {
         title: "가맹점 정보",
         dataIndex: "frName",
         className: "table-column-center mobile",
-        render: (data, row) =>
+        render: (data, row) => (
           <div className="status-box">
-            <p>{row.frName}<br /></p>
-            사업자: {row.businessNumber}<br />
-            가맹점: {row.frPhone}<br />
-            대표자: {row.phone}<br />
-            주소: {row.addr1}<br />
+            <p>
+              {row.frName}
+              <br />
+            </p>
+            사업자: {row.businessNumber}
+            <br />
+            가맹점: {row.frPhone}
+            <br />
+            대표자: {row.phone}
+            <br />
+            주소: {row.addr1}
+            <br />
             {/* 코인잔액: {comma(row.ncash)} */}
             <div>
               상태 :{" "}
@@ -415,7 +422,6 @@ class FranchiseMain extends Component {
                   }
                 }}
               />
-
               <Button
                 className="tabBtn surchargeTab blind-mobilebtn"
                 onClick={() =>
@@ -424,10 +430,9 @@ class FranchiseMain extends Component {
               >
                 블라인드
               </Button>
-
-
             </div>
-          </div >,
+          </div>
+        ),
       },
       {
         title: "상태",
@@ -547,6 +552,20 @@ class FranchiseMain extends Component {
       //   ),
       // },
       {
+        title: "VAN등록요청",
+        className: "table-column-center desk",
+        render: (data, row) => (
+          <div>
+            <Button
+              className="tabBtn surchargeTab"
+              onClick={() => this.setState({ ResistVANOpen: true })}
+            >
+              VAN등록요청
+            </Button>
+          </div>
+        ),
+      },
+      {
         title: "블라인드",
         className: "table-column-center desk",
         render: (data, row) => (
@@ -584,7 +603,6 @@ class FranchiseMain extends Component {
           </div>
         ),
       },
-
     ];
 
     const expandedRowRender = (record) => {
@@ -594,19 +612,29 @@ class FranchiseMain extends Component {
           title: "세부정보",
           dataIndex: "chargeDate",
           className: "table-column-center mobile",
-          render: (data, row) =>
+          render: (data, row) => (
             <div>
-              <b>코인잔액:</b> {comma(row.ncash)}<br />
-              <b>가맹여부:</b> {(row.isMember) ? "가맹" : "무가맹"}<br />
-              <b>가입일:</b> {formatDateToDay(row.registDate)}<br />
-              <b>최초납부일:</b> {formatDateToDay(row.chargeDate)}<br />
-              <b>월회비:</b> {row.isMember ? (row.dues) : "-"}<br />
-              <b>VAN:</b> {row.tidNormal}<br />
-              <b>PG:</b> {row.tidPrepay}<br />
-              <b>PG사용여부:</b>{(row.tidNormalRate) === 100 ? "미사용" : "사용"}<br />
-              <b>영업담당자:</b> {row.frSalesRiderName}<br />
-
-            </div>,
+              <b>코인잔액:</b> {comma(row.ncash)}
+              <br />
+              <b>가맹여부:</b> {row.isMember ? "가맹" : "무가맹"}
+              <br />
+              <b>가입일:</b> {formatDateToDay(row.registDate)}
+              <br />
+              <b>최초납부일:</b> {formatDateToDay(row.chargeDate)}
+              <br />
+              <b>월회비:</b> {row.isMember ? row.dues : "-"}
+              <br />
+              <b>VAN:</b> {row.tidNormal}
+              <br />
+              <b>PG:</b> {row.tidPrepay}
+              <br />
+              <b>PG사용여부:</b>
+              {row.tidNormalRate === 100 ? "미사용" : "사용"}
+              <br />
+              <b>영업담당자:</b> {row.frSalesRiderName}
+              <br />
+            </div>
+          ),
         },
 
         {
@@ -695,7 +723,7 @@ class FranchiseMain extends Component {
     };
 
     return (
-      <div className="franchiseContainer" >
+      <div className="franchiseContainer">
         <div className="selectLayout">
           <span className="searchRequirementText desk">검색조건</span>
           <br />
@@ -706,15 +734,16 @@ class FranchiseMain extends Component {
             codeString={tableStatusString}
             onChange={(value) => {
               if (parseInt(value) !== this.state.franStatus) {
-                this.setState({
-                  franStatus: parseInt(value),
-                  pagination: {
-                    total: 0,
-                    current: 1,
-                    pageSize: 10,
-                  }
-                }, () =>
-                  this.getList()
+                this.setState(
+                  {
+                    franStatus: parseInt(value),
+                    pagination: {
+                      total: 0,
+                      current: 1,
+                      pageSize: 10,
+                    },
+                  },
+                  () => this.getList()
                 );
               }
             }}
@@ -753,7 +782,13 @@ class FranchiseMain extends Component {
           >
             주소검색관리
           </Button>
-
+          {/* VAN등록요청 */}
+          {this.state.ResistVANOpen && (
+            <RegistVANDialog
+              close={this.closeResistVANModal}
+              // data={this.state.ResistVANData}
+            />
+          )}
           {/* {this.state.blindControlOpen && (
             <BlindControlDialog
               isOpen={this.state.blindControlOpen}
@@ -826,7 +861,7 @@ class FranchiseMain extends Component {
             data={this.state.dialogData}
           />
         )}
-      </div >
+      </div>
     );
   }
 }

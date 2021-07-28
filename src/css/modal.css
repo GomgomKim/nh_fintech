@@ -4610,4 +4610,49 @@
     width: 290px;
     display: inline-block;
   }
+
+  /* VAN 등록요청 모달 */
+
+  .VAN-content {
+    padding: 25px;
+    width: 30vw;
+    background-color: white;
+  }
+  .VAN-content > div:first-child {
+    font-size: 25px;
+    font-weight: bold;
+    line-height: 30px;
+    display: inline-block;
+    vertical-align: middle;
+  }
+  .VAN-content > img {
+    width: 30px;
+    cursor: pointer;
+    background-color: #fddc00;
+    /* display: inline-block; */
+    float: right;
+    padding: 8px;
+  }
+  .VAN-txt-sub {
+    color: #888;
+    padding-left: 5px;
+  }
+  .VAN-content-box {
+    padding: 10px 0;
+  }
+  .VAN-content-box > div {
+    padding: 10px 0;
+  }
+  .VAN-content-box .mainTitle {
+    width: 120px;
+  }
+  .VAN-upload {
+    display: inline-block;
+  }
+  .VAN-btn {
+    display: inline-block;
+    position: absolute;
+    bottom: 55px;
+    right: 55px;
+  }
 }

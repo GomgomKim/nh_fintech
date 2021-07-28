@@ -461,6 +461,7 @@ class RiderMain extends Component {
           </div>
         ),
       },
+
       {
         title: "블라인드",
         className: "table-column-center desk",
@@ -476,6 +477,12 @@ class RiderMain extends Component {
             </Button>
           </div>
         ),
+      },
+      {
+        title: "코인잔액",
+        dataIndex: "ncash",
+        className: "table-column-center desk",
+        render: (data) => <div>{comma(data)}</div>,
       },
       {
         title: "입사일",
@@ -702,7 +709,7 @@ class RiderMain extends Component {
                           alert(response.data.advanceMsg);
                         }
                       })
-                      .catch((e) => {});
+                      .catch((e) => { });
                   }}
                 >
                   등록하기
