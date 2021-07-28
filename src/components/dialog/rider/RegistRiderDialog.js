@@ -16,7 +16,8 @@ import {
   registComplete,
   registError,
   updateComplete,
-  updateError
+  updateError,
+  idDuplicated
 } from "../../../api/Modals";
 import "../../../css/modal.css";
 import {
@@ -167,8 +168,6 @@ class RegistRiderDialog extends Component {
               console.log(JSON.stringify(res.data, null, 4))
               if (res.result === "SUCCESS" && res.data === "SUCCESS") {
                 updateComplete();
-              } else if (res.result === "SUCCESS" && res.data == "ID_DUPLICATED") {
-
               }
               else {
                 updateError();
@@ -232,6 +231,8 @@ class RegistRiderDialog extends Component {
             .then((res) => {
               if (res.result === "SUCCESS") {
                 registComplete();
+              } else if (res.result === "SUCCESS" && res.data == "ID_DUPLICATED") {
+                idDuplicated();
               } else {
                 registError();
               }
