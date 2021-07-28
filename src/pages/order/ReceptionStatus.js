@@ -1462,7 +1462,7 @@ class ReceptionStatus extends Component {
           <div id="reception-table" className="desk">
             <Table
               rowKey={(record) => record.idx}
-              rowClassName={(record) => rowColorName[record.orderStatus]}
+              rowClassName={(record) => record.deliveryPrice == 0 ? 'table-redalert' : rowColorName[record.orderStatus]}
               dataSource={
                 this.state.checkedCompleteCall
                   ? this.state.totalList
@@ -1477,7 +1477,7 @@ class ReceptionStatus extends Component {
           <div id="reception-table" className="mobile">
             <Table
               rowKey={(record) => record.idx}
-              rowClassName={(record) => rowColorName[record.orderStatus]}
+              rowClassName={(record) => record.deliveryPrice == 0 ? 'table-redalert' : rowColorName[record.orderStatus]}
               dataSource={
                 this.state.checkedCompleteCall
                   ? this.state.totalList
