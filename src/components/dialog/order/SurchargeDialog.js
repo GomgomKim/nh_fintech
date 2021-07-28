@@ -408,11 +408,11 @@ class SurchargeDialog extends Component {
                       </div>
                     </div>
 
-                    <div>
-                      <div className="checkbox">상시할증</div>
+                    <div className="surcheck">
+                      <div className="checkbox" style={{height: 32}}>상시할증</div>
 
                       <Checkbox
-                        style={{ paddingLeft: 5, marginRight: 20, width: 210 }}
+                        style={{ width: 225 }}
                         defaultChecked={
                           this.state.toggleDisable ? "checked" : ""
                         }
