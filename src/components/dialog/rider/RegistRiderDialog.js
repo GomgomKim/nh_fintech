@@ -164,9 +164,13 @@ class RegistRiderDialog extends Component {
             agreeSms: false,
           })
             .then((res) => {
+              console.log(JSON.stringify(res.data, null, 4))
               if (res.result === "SUCCESS" && res.data === "SUCCESS") {
                 updateComplete();
-              } else {
+              } else if (res.result === "SUCCESS" && res.data == "ID_DUPLICATED") {
+
+              }
+              else {
                 updateError();
               }
               self.props.close();
@@ -284,7 +288,7 @@ class RegistRiderDialog extends Component {
   };
 
   onChangFeeManner = (e) => {
-    this.setState({ feeManner: e.target.value }, () => {});
+    this.setState({ feeManner: e.target.value }, () => { });
   };
 
   onSelectChange = (selectedRowKeys) => {
@@ -351,10 +355,10 @@ class RegistRiderDialog extends Component {
                         initialValue={
                           data
                             ? riderGroupString.findIndex(
-                                (item) =>
-                                  item ===
-                                  data.riderSettingGroup.settingGroupName
-                              )
+                              (item) =>
+                                item ===
+                                data.riderSettingGroup.settingGroupName
+                            )
                             : 3
                         }
                       >
@@ -513,8 +517,8 @@ class RegistRiderDialog extends Component {
                               this.state.selectedBike
                                 ? this.state.selectedBike.bikeNumber
                                 : this.props.data
-                                ? this.props.data.bikeNumber
-                                : ""
+                                  ? this.props.data.bikeNumber
+                                  : ""
                             );
                             console.log(this.state.selectedBike);
                           })
@@ -555,7 +559,7 @@ class RegistRiderDialog extends Component {
                         }
                         className="override-input"
                         placeholder="바이크를 선택해주세요."
-                        // disabled
+                      // disabled
                       />
                       {/* </FormItem> */}
                     </div>
@@ -601,7 +605,7 @@ class RegistRiderDialog extends Component {
                             <Input
                               placeholder="기본배달료를 입력해 주세요."
                               className="override-input"
-                              // disabled={this.state.riderLevel <= 2}
+                            // disabled={this.state.riderLevel <= 2}
                             />
                           </FormItem>
                         </div>
@@ -615,7 +619,7 @@ class RegistRiderDialog extends Component {
                             <Input
                               placeholder="월기본건수를 입력해 주세요."
                               className="override-input"
-                              // disabled={this.state.riderLevel <= 2}
+                            // disabled={this.state.riderLevel <= 2}
                             />
                           </FormItem>
                         </div>
@@ -1053,6 +1057,6 @@ const mapStateToProps = (state) => ({
   branchIdx: state.login.loginInfo.branchIdx,
 });
 
-const mapDispatchToProps = () => {};
+const mapDispatchToProps = () => { };
 
 export default connect(mapStateToProps, mapDispatchToProps)(RegistRiderDialog);
