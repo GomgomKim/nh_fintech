@@ -152,7 +152,7 @@ class MapControlDialog extends Component {
         this.setState({
           selectedRowKeys: [],
         });
-        if (res.result !== "SUCCESS") {
+        if (res.result !== "SUCCESS" && res.data !== "SUCCESS") {
           failedIdx.push(orderIdx);
         }
       })
