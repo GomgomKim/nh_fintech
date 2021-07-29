@@ -275,7 +275,8 @@ class RiderMain extends Component {
             {formatDateToDay(row.createDate)} /{" "}
             {formatDateToDay(row.deleteDate)} <br />
             <hr className="light-hr" />
-            잔액/최소보유잔액 : {comma(row.ncash)} / {row.ncashMin}
+            코인잔액:{comma(row.ncash)} <br />
+            최소보유잔액 : {row.ncashMin}
             <br />
             수수료 :{" "}
             {row.riderSettingGroup.deliveryPriceFeeType === 1
@@ -491,12 +492,12 @@ class RiderMain extends Component {
           dataIndex: "phone",
           className: "table-column-center desk",
         },
-        {
-          title: "잔액",
-          dataIndex: "ncash",
-          className: "table-column-center desk",
-          render: (data) => <div>{comma(data)}</div>,
-        },
+        // {
+        //   title: "잔액",
+        //   dataIndex: "ncash",
+        //   className: "table-column-center desk",
+        //   render: (data) => <div>{comma(data)}</div>,
+        // },
         {
           title: "메모",
           dataIndex: "memo",
