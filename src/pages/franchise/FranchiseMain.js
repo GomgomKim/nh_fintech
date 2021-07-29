@@ -572,7 +572,7 @@ class FranchiseMain extends Component {
               className="tabBtn surchargeTab"
               onClick={() => this.setState({ ResistVANOpen: true })}
             >
-              VAN등록요청
+              등록요청
             </Button>
           </div>
         ),

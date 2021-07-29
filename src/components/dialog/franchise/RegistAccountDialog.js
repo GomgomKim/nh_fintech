@@ -139,7 +139,7 @@ class RegistAccountDialog extends Component {
                                                     <FormItem
                                                         name="bankAccount"
                                                         className="selectItem"
-                                                        initialValue={data ? data.bankAccount : 0 || null == ""}
+                                                        initialValue={data ? data.bankAccount : null == ""}
                                                     >
                                                         <Input placeholder="- 를 포함한 계좌번호를 입력해 주세요." className="override-input">
                                                         </Input>
@@ -152,7 +152,7 @@ class RegistAccountDialog extends Component {
                                                     <FormItem
                                                         name="depositor"
                                                         className="selectItem"
-                                                        initialValue={data ? data.depositor : 0 || null == ""}
+                                                        initialValue={data ? data.depositor : null == ""}
                                                     >
                                                         <Input placeholder="예금주를 입력해 주세요." className="override-input">
                                                         </Input>
