@@ -265,6 +265,7 @@ const httpUrl = {
   registFranchise: "/fr/create",
   franchiseList: "/fr/list",
   franchiseUpdate: "/fr/update",
+  frAccount: "/fr/account/create",
 
   // 지점 수정
   updateBranch: "/branch/update",

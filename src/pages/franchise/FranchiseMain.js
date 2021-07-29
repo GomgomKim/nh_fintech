@@ -10,6 +10,7 @@ import { updateComplete, updateError } from "../../api/Modals";
 import BlindFranListDialog from "../../components/dialog/franchise/BlindFranListDialog";
 import RegistFranDialog from "../../components/dialog/franchise/RegistFranDialog";
 import SearchAddressDialog from "../../components/dialog/franchise/SearchAddressDialog";
+import RegistAccountDialog from "../../components/dialog/franchise/RegistAccountDialog";
 import SelectBox from "../../components/input/SelectBox";
 import "../../css/franchise.css";
 import "../../css/franchise_m.css";
@@ -45,6 +46,8 @@ class FranchiseMain extends Component {
       SearchAddressOpen: false,
       // blindControlOpen: false,
       dialogData: [],
+      accountData: [],
+      accountRegistOpen: false,
       blindFrData: [],
       blindListOpen: false,
       inputOpen: false,
@@ -147,6 +150,15 @@ class FranchiseMain extends Component {
   // closeBlindControlModal = () => {
   //   this.setState({ blindControlOpen: false });
   // };
+
+  // 출금계정 dialog
+  openAccountModal = () => {
+    this.setState({ accountRegistOpen: true });
+  };
+  closeAccountModal = () => {
+    this.setState({ accountRegistOpen: false });
+    this.getList();
+  };
 
   // 블라인드 dialog
   openBlindModal = () => {
@@ -527,6 +539,22 @@ class FranchiseMain extends Component {
       //   ),
       // },
       {
+        title: "출금계정",
+        className: "table-column-center desk",
+        render: (data, row) => (
+          <div>
+            <Button
+              className="tabBtn surchargeTab"
+              onClick={() =>
+                this.setState({ accountRegistOpen: true, accountData: row })
+              }
+            >
+              등록/수정
+            </Button>
+          </div>
+        ),
+      },
+      {
         title: "블라인드",
         className: "table-column-center desk",
         render: (data, row) => (
@@ -746,6 +774,14 @@ class FranchiseMain extends Component {
           >
             블라인드관리
           </Button> */}
+
+          {/* 출금계정 */}
+          {this.state.accountRegistOpen && (
+            <RegistAccountDialog
+              close={this.closeAccountModal}
+              data={this.state.accountData}
+            />
+          )}
 
           {/* 블라인드 */}
           {this.state.blindListOpen && (
