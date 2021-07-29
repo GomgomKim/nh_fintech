@@ -231,6 +231,7 @@ const httpUrl = {
   orderPickupCancel: '/order/pickupCancel',  
   orderComplete: "/order/complete",
   orderCancel: "/order/cancel",
+  orderCompleteRestore: "/order/complete/restore",
 
   priceExtraList: "/branch/deliveryPriceExtra/list?pageNum=%s&pageSize=%s",
   priceExtraRegist: "/branch/deliveryPriceExtra/create",

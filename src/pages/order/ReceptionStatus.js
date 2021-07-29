@@ -547,6 +547,39 @@ class ReceptionStatus extends Component {
                       return;
                     }
 
+                    //완료를 복원시키는 경우
+                    if (row.orderStatus === 4 && value === 3) {
+                      const self = this;
+                      Modal.confirm({
+                        title: "주문복구",
+                        content: "주문을 복구하는 경우 라이더에게 지급된 가맹점 배달료도 북구됩니다. 정말 복구하시겠습니까?",
+                        okText: "확인",
+                        cancelText: "취소",
+                        onOk() {
+                          httpPost(httpUrl.orderCompleteRestore, [], {
+                            orderIdx: row.idx,
+                          }).then((res) => {
+                            if (
+                              res.result === "SUCCESS" &&
+                              res.data === "SUCCESS"
+                            ) {
+                              Modal.info({
+                                title: "변경 성공",
+                                content: "주문상태가 변경되었습니다.",
+                              });
+                              self.getList();
+                            } else {
+                              Modal.info({
+                                title: "변경 실패",
+                                content: "주문상태 변경에 실패했습니다.",
+                              });
+                            }
+                          });
+                        },
+                      });
+                      return;
+                    }
+
                     const orderStatuseChangeApiCode = [
                       "",
                       httpUrl.orderAssignCancel,
@@ -671,6 +704,38 @@ class ReceptionStatus extends Component {
                   return;
                 }
 
+                    //완료를 복원시키는 경우
+                    if (row.orderStatus === 4 && value === 3) {
+                      const self = this;
+                      Modal.confirm({
+                        title: "주문복구",
+                        content: "주문을 복구하는 경우 라이더에게 지급된 가맹점 배달료도 북구됩니다. 정말 복구하시겠습니까?",
+                        okText: "확인",
+                        cancelText: "취소",
+                        onOk() {
+                          httpPost(httpUrl.orderCompleteRestore, [], {
+                            orderIdx: row.idx,
+                          }).then((res) => {
+                            if (
+                              res.result === "SUCCESS" &&
+                              res.data === "SUCCESS"
+                            ) {
+                              Modal.info({
+                                title: "변경 성공",
+                                content: "주문상태가 변경되었습니다.",
+                              });
+                              self.getList();
+                            } else {
+                              Modal.info({
+                                title: "변경 실패",
+                                content: "주문상태 변경에 실패했습니다.",
+                              });
+                            }
+                          });
+                        },
+                      });
+                      return;
+                    }
                 const orderStatuseChangeApiCode = [
                   "",
                   httpUrl.orderAssignCancel,
