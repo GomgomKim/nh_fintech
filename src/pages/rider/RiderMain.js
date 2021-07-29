@@ -482,6 +482,7 @@ class RiderMain extends Component {
         title: "코인잔액",
         dataIndex: "ncash",
         className: "table-column-center desk",
+        sorter: (a, b) => a.ncash - b.ncash,
         render: (data) => <div>{comma(data)}</div>,
       },
       {

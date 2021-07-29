@@ -1506,7 +1506,7 @@ class ReceptionStatus extends Component {
             </div>
             <div
               className="delivery-status"
-              style={{ background: "rgb(247, 128, 128)" }}
+              style={{ background: "rgb(255, 204, 204)" }}
             >
               접수 :{" "}
               {this.state.list.filter((item) => item.orderStatus === 1).length}{" "}
@@ -1516,7 +1516,7 @@ class ReceptionStatus extends Component {
           <div className="mobile">
             <div
               className="delivery-status-mobile"
-              style={{ background: "rgb(247, 128, 128)" }}
+              style={{ background: "rgb(255, 204, 204)" }}
             >
               접수 :{" "}
               {this.state.list.filter((item) => item.orderStatus === 1).length}{" "}
