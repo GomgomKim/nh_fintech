@@ -2515,6 +2515,58 @@
     width: 186.82px;
   }
 
+  /* 일차감 내역 */
+  .taskWorkList-Dialog {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 1100px;
+    z-index: 2;
+  }
+
+  .taskWorkList-content {
+    padding: 30px;
+    background-color: white;
+  }
+
+  .taskWorkList-title {
+    font-size: 25px;
+    font-weight: bold;
+    line-height: 30px;
+    /* width:300px; */
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  .taskWorkList-close {
+    width: 30px;
+    cursor: pointer;
+    background-color: #fddc00;
+    /* display: inline-block; */
+    float: right;
+    padding: 8px;
+  }
+
+  .taskWorkList-inner {
+    width: 100%;
+    overflow-y: scroll;
+    border: 1px solid #ccc;
+    padding: 20px;
+    text-align: left;
+    margin-top: 20px;
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+
+  .taskWorkList-inner::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera*/
+  }
+
+  .listBlock {
+    margin-top: 20px;
+  }
+
   /*기사 그룹관리*/
   .riderGroup-Dialog {
     position: fixed;
@@ -4638,5 +4690,50 @@
   .zone-input {
     width: 290px;
     display: inline-block;
+  }
+
+  /* VAN 등록요청 모달 */
+
+  .VAN-content {
+    padding: 25px;
+    width: 30vw;
+    background-color: white;
+  }
+  .VAN-content > div:first-child {
+    font-size: 25px;
+    font-weight: bold;
+    line-height: 30px;
+    display: inline-block;
+    vertical-align: middle;
+  }
+  .VAN-content > img {
+    width: 30px;
+    cursor: pointer;
+    background-color: #fddc00;
+    /* display: inline-block; */
+    float: right;
+    padding: 8px;
+  }
+  .VAN-txt-sub {
+    color: #888;
+    padding-left: 5px;
+  }
+  .VAN-content-box {
+    padding: 10px 0;
+  }
+  .VAN-content-box > div {
+    padding: 10px 0;
+  }
+  .VAN-content-box .mainTitle {
+    width: 120px;
+  }
+  .VAN-upload {
+    display: inline-block;
+  }
+  .VAN-btn {
+    display: inline-block;
+    position: absolute;
+    bottom: 55px;
+    right: 55px;
   }
 }

@@ -267,6 +267,7 @@ class SurchargeGroupDialog extends Component {
                                             </div>
 
                                         </div>
+                                        <div>* 가맹점은 하나의 그룹에만 속할 수 있습니다. A그룹에 속한 가맹점을 B그룹에 추가하면 A그룹에서는 삭제됩니다.</div>
                                         <div className="listBlock">
                                             <Table
                                                 rowKey={(record) => record}

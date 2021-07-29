@@ -3,7 +3,7 @@ import { Button, Input, Modal, Select, Space, Table } from "antd";
 import moment from "moment";
 import React, { Component } from "react";
 import { Marker, NaverMap, Polyline } from "react-naver-maps";
-import { httpGet, httpPost, httpUrl } from "../../../api/httpClient";
+import { httpGet, httpPost, httpUrl, httpGetWithNoLoading } from "../../../api/httpClient";
 import { customAlert, customError, deleteError } from "../../../api/Modals";
 import RegistCallDialog from "../../../components/dialog/order/RegistCallDialog";
 import SelectBox from "../../../components/input/SelectBox";
@@ -114,8 +114,13 @@ class MapControlDialog extends Component {
     this.getRiderList();
     this.getRiderLocateList();
     this.getBounds();
+
+    this.riderListInterval = setInterval(this.getRiderLocateList, 7033);
   }
 
+  componentWillUnmount() {
+    clearInterval(this.riderListInterval)
+  }
   getBounds = () => {
     console.log("지도 경계");
     const bounds = this.mapRef.getBounds();
@@ -323,7 +328,7 @@ class MapControlDialog extends Component {
   };
 
   getRiderLocateList = () => {
-    httpGet(httpUrl.riderLocateList, [], {}).then((result) => {
+    httpGetWithNoLoading(httpUrl.riderLocateList, [], {}).then((result) => {
       console.log("getRiderLocateList result");
       console.log(result);
       this.setState({
