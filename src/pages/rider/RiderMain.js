@@ -1,11 +1,12 @@
 import { Button, Image, Input, Modal, Popover, Table } from "antd";
 import React, { Component } from "react";
-import { httpGet, httpPost, httpUrl, imageUrl } from "../../api/httpClient";
+import { httpGet, httpPost, httpUrl, imageUrl, httpGetWithNoLoading } from "../../api/httpClient";
 import { customAlert, updateError } from "../../api/Modals";
 import BlindRiderListDialog from "../../components/dialog/rider/BlindRiderListDialog";
 import RegistRiderDialog from "../../components/dialog/rider/RegistRiderDialog";
 import RiderGroupDialog from "../../components/dialog/rider/RiderGroupDialog";
 import BatchWorkListDialog from "../../components/dialog/rider/BatchWorkListDialog";
+import BatchWorkedListDialog from "../../components/dialog/rider/BatchWorkedListDialog";
 import UpdatePasswordDialog from "../../components/dialog/rider/UpdatePasswordDialog";
 import SelectBox from "../../components/input/SelectBox";
 import "../../css/modal.css";
@@ -21,6 +22,7 @@ import {
 } from "../../lib/util/codeUtil";
 import { formatDateToDay } from "../../lib/util/dateUtil";
 import { comma } from "../../lib/util/numberUtil";
+import moment from "moment";
 
 const Search = Input.Search;
 
@@ -32,6 +34,7 @@ class RiderMain extends Component {
       userData: 1,
       searchName: "",
       taskSchedulerOpen: false, // 일차감
+      taskWorkListOpen: false, //일차감 내역
       riderGroupOpen: false, // 기사 그룹 관리
       registRiderOpen: false, // 기사등록
       riderCoinOpen: false, // 기사코인충전
@@ -46,15 +49,23 @@ class RiderMain extends Component {
         current: 1,
         pageSize: 100,
       },
+      paginationStatus: {
+        total: 0,
+        current: 1,
+        pageSize: 10500,
+      },
       dialogData: [],
       userStatus: 0,
       selRider: "",
       withdrawPassword: 1111,
+      resultsStatus:[],
+      results:[],
     };
   }
 
   componentDidMount() {
     this.getList();
+    this.getStatusList();
   }
 
   handleTableChange = (pagination) => {
@@ -96,6 +107,42 @@ class RiderMain extends Component {
         pagination,
       });
     });
+  };
+
+  getStatusList = () => {
+    let pageSize = this.state.paginationStatus.pageSize;
+    let pageNum = this.state.paginationStatus.current;
+    // riderLevel = this.state.riderLevel;
+    let searchName = '';
+    let userStatus = this.state.userStatus === 0 ? "" : this.state.userStatus;
+    var data = [
+      pageSize,
+      pageNum,
+      // riderLevel = this.state.riderLevel,
+      searchName,
+      userStatus,
+    ];
+    httpGetWithNoLoading(httpUrl.riderList, data, {})
+      .then((res) => {
+        if (res.result === "SUCCESS") {
+          // console.log(res);
+          this.setState({
+            resultsStatus: res.data.riders,
+            pagination: {
+              ...this.state.pagination,
+              total: res.data.totalCount,
+            },
+          });
+        } else {
+          console.log("riderStatus Error");
+          return;
+        }
+      })
+      .catch((e) => {
+        console.log("riderStatus Error");
+        console.log(e);
+        throw e;
+      });
   };
 
   onChangeStatus = (index, value) => {
@@ -189,6 +236,13 @@ class RiderMain extends Component {
   closeTaskSchedulerModal = () => {
     this.setState({ taskSchedulerOpen: false });
   };
+  //일차감 내역
+  openTaskWorkListModal = () => {
+    this.setState({ taskWorkListOpen : true})
+  }
+  closeTaskWorkListModal = () => {
+    this.setState({ taskWorkListOpen : false})
+  }
 
   //기사 그룹관리
   openRiderGroupModal = () => {
@@ -206,6 +260,7 @@ class RiderMain extends Component {
   closeRegistRiderModal = () => {
     this.setState({ registRiderOpen: false });
     this.getList();
+    this.getStatusList();
   };
 
   //기사 수정
@@ -319,17 +374,59 @@ class RiderMain extends Component {
         title: "기사명",
         dataIndex: "riderName",
         className: "table-column-center desk tableSub",
+        sorter: (a, b) => a.riderName.localeCompare(b.riderName),
       },
       {
         title: "아이디",
         dataIndex: "id",
+        width:"7%",
         className: "table-column-center desk tableSub",
+        sorter: (a, b) => a.id.localeCompare(b.id),
       },
       {
         title: "직급",
         dataIndex: "riderLevel",
         className: "table-column-center desk tableSub",
-
+        filters:[
+          {
+            text:'라이더',
+            value: 1,
+          },
+          {
+            text:'부팀장',
+            value: 2,
+          },
+          {
+            text:'팀장',
+            value: 3,
+          },
+          {
+            text:'부본부장',
+            value: 4,
+          },
+          {
+            text:'본부장',
+            value: 5,
+          },
+          {
+            text:'부지점장',
+            value: 6,
+          },
+          {
+            text:'지점장',
+            value: 7,
+          },
+          {
+            text:'부센터장',
+            value: 8,
+          },
+          {
+            text:'센터장',
+            value: 9,
+          },
+        ],
+        onFilter: (value, record) => value === record.riderLevel,
+        sorter: (a, b) => a.riderLevel - b.riderLevel,
         render: (data) => <div>{riderLevelText[data]}</div>,
       },
       {
@@ -392,6 +489,7 @@ class RiderMain extends Component {
         title: "입사일",
         dataIndex: "createDate",
         className: "table-column-center desk",
+        sorter: (a, b) => moment(a.createDate) - moment(b.createDate),
         render: (data) => <div>{formatDateToDay(data)}</div>,
         // render: (data, row) => <div>
         //   <DatePicker
@@ -403,7 +501,9 @@ class RiderMain extends Component {
       {
         title: "퇴사일",
         dataIndex: "deleteDate",
+        width: "7%",
         className: "table-column-center desk",
+        sorter: (a, b) => moment(a.deleteDate) - moment(b.deleteDate),
         render: (data) => <div>{formatDateToDay(data)}</div>,
         // render: (data, row) => <div>
         //   <DatePicker
@@ -416,6 +516,21 @@ class RiderMain extends Component {
         title: "상태",
         dataIndex: "userStatus",
         className: "table-column-center desk",
+        filters: [
+          {
+            text:"사용",
+            value: 1,
+          },
+          {
+            text:"중지",
+            value: 2,
+          },
+          {
+            text:"탈퇴",
+            value: 3,
+          },
+        ],
+        onFilter: (value, record) => value === record.userStatus,
         render: (data, row) => (
           <div>
             <SelectBox
@@ -434,6 +549,7 @@ class RiderMain extends Component {
       {
         title: "수정",
         className: "table-column-center desk",
+        width: "8%",
         render: (data, row) => (
           <div>
             {/* {this.state.riderUpdateOpen &&
@@ -458,6 +574,22 @@ class RiderMain extends Component {
         title: "출근상태",
         dataIndex: "riderStatus",
         className: "table-column-center desk",
+        filters: [
+          {
+            text:"근무",
+            value: 1,
+          },
+          {
+            text:"휴식",
+            value: 2,
+          },
+          {
+            text:"퇴근",
+            value: 3,
+          },
+        ],
+        onFilter: (value, record) => value === record.riderStatus,
+        sorter: (a, b) => a.riderStatus - b.riderStatus,
         render: (data) => <div>{riderStatusCode[data]}</div>,
       },
     ];
@@ -691,9 +823,29 @@ class RiderMain extends Component {
             <Button
               className="riderManageBtn"
               onClick={this.openTaskSchedulerModal}
-            >
+              >
               일차감
             </Button>
+            {this.state.taskWorkListOpen && (
+              <BatchWorkedListDialog close={this.closeTaskWorkListModal} />
+            )}
+            <Button
+              className="riderManageBtn"
+              onClick={this.openTaskWorkListModal}
+            >
+              일차감 내역
+            </Button>
+          </div>
+          <div className= "desk">
+            <div className="rider-status">
+              퇴근 : {this.state.resultsStatus.filter(item => item.riderStatus === 3).length} 명
+            </div>
+            <div className="rider-status">
+              휴식 : {this.state.resultsStatus.filter(item => item.riderStatus === 2).length} 명
+            </div>
+            <div className="rider-status">
+              근무 : {this.state.resultsStatus.filter(item => item.riderStatus === 1).length} 명
+            </div>
           </div>
           {this.state.blindListOpen && (
             <BlindRiderListDialog

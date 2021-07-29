@@ -94,7 +94,11 @@
   }
 
   .table-red {
-    background-color: #fed8d6;
+    background-color: rgb(255, 181, 181);
+  }
+  .table-redalert {
+    background-color: #ff0000;
+    color: white;
   }
   .table-gray {
     background-color: gray;

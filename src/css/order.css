@@ -115,7 +115,11 @@
   }
 
   .table-red {
-    background-color: rgb(247, 128, 128);
+    background-color: rgb(255, 204, 204);
+  }
+  .table-redalert {
+    background-color: #ff0000;
+    color: white;
   }
 
   .table-gray {

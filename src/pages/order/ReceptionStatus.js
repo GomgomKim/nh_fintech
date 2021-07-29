@@ -513,7 +513,7 @@ class ReceptionStatus extends Component {
               </p>
               {row.destAddr1 + " " + row.destAddr2} <br />
               {row.riderName} / {row.distance}km /{" "}
-              {paymentMethod[row.orderPayments[0]["paymentMethod"]]}
+              {paymentMethod[row.orderPayments[0] ? row.orderPayments[0]["paymentMethod"] : 0]}
               <br />
               <div className="table-column-sub">
                 상태 :{" "}
@@ -921,7 +921,7 @@ class ReceptionStatus extends Component {
               보기
             </Button>
           ) : (
-            <div>{paymentMethod[data[0]["paymentMethod"]]}</div>
+            <div>{paymentMethod[data[0] ? data[0]["paymentMethod"] : 0]}</div>
           ),
       },
       {
@@ -1075,7 +1075,7 @@ class ReceptionStatus extends Component {
                 </Button>
               </>
             ) : (
-              <div>{paymentMethod[data[0]["paymentMethod"]]}</div>
+              <div>{paymentMethod[data[0] ? data[0]["paymentMethod"] : 0]}</div>
             ),
         },
 
@@ -1543,7 +1543,7 @@ class ReceptionStatus extends Component {
           <div id="reception-table" className="desk">
             <Table
               rowKey={(record) => record.idx}
-              rowClassName={(record) => rowColorName[record.orderStatus]}
+              rowClassName={(record) => record.deliveryPrice == 0 ? 'table-redalert' : rowColorName[record.orderStatus]}
               dataSource={
                 this.state.checkedCompleteCall
                   ? this.state.totalList
@@ -1558,7 +1558,7 @@ class ReceptionStatus extends Component {
           <div id="reception-table" className="mobile">
             <Table
               rowKey={(record) => record.idx}
-              rowClassName={(record) => rowColorName[record.orderStatus]}
+              rowClassName={(record) => record.deliveryPrice == 0 ? 'table-redalert' : rowColorName[record.orderStatus]}
               dataSource={
                 this.state.checkedCompleteCall
                   ? this.state.totalList

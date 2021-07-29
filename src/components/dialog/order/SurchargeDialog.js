@@ -434,13 +434,14 @@ class SurchargeDialog extends Component {
                         :
                         <FormItem name="surchargeDate">
                            <TimePicker.RangePicker
-                            placeholder={["시작일", "종료일"]}
+                            placeholder={["시작시간", "종료시간"]}
                             showTime={{ format: "HH:mm" }}
                             onChange={this.onChangeDate}
                             />
                         </FormItem>
                         }
                       </div>
+                      <div>* 상시할증을 체크하는 경우 기간이 아니라 매일 등록시간에 해당하는 경우 적용됩니다.</div>
                     </div>
 
                     <div>
