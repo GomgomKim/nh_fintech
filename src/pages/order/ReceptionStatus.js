@@ -109,16 +109,24 @@ class ReceptionStatus extends Component {
 
   componentDidMount() {
     this.getList();
-    this.pullingList = setInterval(this.getList, this.state.pullingInterval);
+    this.pollingList = setInterval(
+      this.pollingFunction,
+      this.state.pullingInterval
+    );
   }
 
   componentWillUnmount() {
-    clearInterval(this.pullingList);
+    clearInterval(this.pollingList);
   }
 
   // pollingList = setInterval(this.getList, 5000);
 
+  pollingFunction = () => {
+    this.state.checkedCompleteCall ? this.getCompleteList() : this.getList();
+  };
+
   getList = () => {
+    console.log("getlist");
     try {
       const startDate = this.state.selectedDate;
       const endDate = new moment();
@@ -160,6 +168,8 @@ class ReceptionStatus extends Component {
     } catch (e) {}
   };
   getCompleteList = () => {
+    console.log("getcompletelist");
+
     const startDate = this.state.selectedDate;
     const endDate = new Date(
       startDate.getFullYear(),
@@ -182,9 +192,7 @@ class ReceptionStatus extends Component {
       data.riderName = this.state.rider;
     }
 
-    console.log(data);
-
-    httpPost(httpUrl.orderList, [], data)
+    httpPostWithNoLoading(httpUrl.orderList, [], data)
       .then((res) => {
         if (res.result === "SUCCESS") {
           console.log(res);
@@ -513,7 +521,13 @@ class ReceptionStatus extends Component {
               </p>
               {row.destAddr1 + " " + row.destAddr2} <br />
               {row.riderName} / {row.distance}km /{" "}
-              {paymentMethod[row.orderPayments[0] ? row.orderPayments[0]["paymentMethod"] : 0]}
+              {
+                paymentMethod[
+                  row.orderPayments[0]
+                    ? row.orderPayments[0]["paymentMethod"]
+                    : 0
+                ]
+              }
               <br />
               <div className="table-column-sub">
                 상태 :{" "}
@@ -552,7 +566,8 @@ class ReceptionStatus extends Component {
                       const self = this;
                       Modal.confirm({
                         title: "주문복구",
-                        content: "주문을 복구하는 경우 라이더에게 지급된 가맹점 배달료도 북구됩니다. 정말 복구하시겠습니까?",
+                        content:
+                          "주문을 복구하는 경우 라이더에게 지급된 가맹점 배달료도 북구됩니다. 정말 복구하시겠습니까?",
                         okText: "확인",
                         cancelText: "취소",
                         onOk() {
@@ -704,38 +719,39 @@ class ReceptionStatus extends Component {
                   return;
                 }
 
-                    //완료를 복원시키는 경우
-                    if (row.orderStatus === 4 && value === 3) {
-                      const self = this;
-                      Modal.confirm({
-                        title: "주문복구",
-                        content: "주문을 복구하는 경우 라이더에게 지급된 가맹점 배달료도 북구됩니다. 정말 복구하시겠습니까?",
-                        okText: "확인",
-                        cancelText: "취소",
-                        onOk() {
-                          httpPost(httpUrl.orderCompleteRestore, [], {
-                            orderIdx: row.idx,
-                          }).then((res) => {
-                            if (
-                              res.result === "SUCCESS" &&
-                              res.data === "SUCCESS"
-                            ) {
-                              Modal.info({
-                                title: "변경 성공",
-                                content: "주문상태가 변경되었습니다.",
-                              });
-                              self.getList();
-                            } else {
-                              Modal.info({
-                                title: "변경 실패",
-                                content: "주문상태 변경에 실패했습니다.",
-                              });
-                            }
+                //완료를 복원시키는 경우
+                if (row.orderStatus === 4 && value === 3) {
+                  const self = this;
+                  Modal.confirm({
+                    title: "주문복구",
+                    content:
+                      "주문을 복구하는 경우 라이더에게 지급된 가맹점 배달료도 북구됩니다. 정말 복구하시겠습니까?",
+                    okText: "확인",
+                    cancelText: "취소",
+                    onOk() {
+                      httpPost(httpUrl.orderCompleteRestore, [], {
+                        orderIdx: row.idx,
+                      }).then((res) => {
+                        if (
+                          res.result === "SUCCESS" &&
+                          res.data === "SUCCESS"
+                        ) {
+                          Modal.info({
+                            title: "변경 성공",
+                            content: "주문상태가 변경되었습니다.",
                           });
-                        },
+                          self.getList();
+                        } else {
+                          Modal.info({
+                            title: "변경 실패",
+                            content: "주문상태 변경에 실패했습니다.",
+                          });
+                        }
                       });
-                      return;
-                    }
+                    },
+                  });
+                  return;
+                }
                 const orderStatuseChangeApiCode = [
                   "",
                   httpUrl.orderAssignCancel,
@@ -1608,7 +1624,11 @@ class ReceptionStatus extends Component {
           <div id="reception-table" className="desk">
             <Table
               rowKey={(record) => record.idx}
-              rowClassName={(record) => record.deliveryPrice == 0 ? 'table-redalert' : rowColorName[record.orderStatus]}
+              rowClassName={(record) =>
+                record.deliveryPrice == 0
+                  ? "table-redalert"
+                  : rowColorName[record.orderStatus]
+              }
               dataSource={
                 this.state.checkedCompleteCall
                   ? this.state.totalList
@@ -1623,7 +1643,11 @@ class ReceptionStatus extends Component {
           <div id="reception-table" className="mobile">
             <Table
               rowKey={(record) => record.idx}
-              rowClassName={(record) => record.deliveryPrice == 0 ? 'table-redalert' : rowColorName[record.orderStatus]}
+              rowClassName={(record) =>
+                record.deliveryPrice == 0
+                  ? "table-redalert"
+                  : rowColorName[record.orderStatus]
+              }
               dataSource={
                 this.state.checkedCompleteCall
                   ? this.state.totalList
