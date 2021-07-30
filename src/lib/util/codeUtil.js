@@ -49,8 +49,10 @@ const tableStatusString = {
 };
 
 const kindString = [
+  //API 변경후
   // "전체",
-  "",
+
+  "", //API 변경전
   "리스료",
   "대출 상환",
   "산재 보험비",

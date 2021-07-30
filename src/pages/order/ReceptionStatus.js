@@ -1757,8 +1757,9 @@ class ReceptionStatus extends Component {
               {this.state.list.filter((item) => item.orderStatus === 3).length}{" "}
               건
             </div>
-            {/* <div
-              className="delivery-status-mobile"
+          </div>
+          {/* <div className="delivery-status-box-sub desk">              
+            <div
               style={{ background: "gray" }}
             >
               완료 :{" "}
@@ -1766,14 +1767,13 @@ class ReceptionStatus extends Component {
               건
             </div>
             <div
-              className="delivery-status-mobile"
               style={{ background: "gray" }}
             >
               취소 :{" "}
               {this.state.list.filter((item) => item.orderStatus === 5).length}{" "}
               건
-            </div> */}
-          </div>
+            </div>
+          </div> */}
           <div className="mobile">
             <div
               className="delivery-status-mobile"
