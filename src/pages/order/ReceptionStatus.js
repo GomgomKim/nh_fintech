@@ -109,14 +109,14 @@ class ReceptionStatus extends Component {
 
   componentDidMount() {
     this.getList();
-    this.pollingList = setInterval(
-      this.pollingFunction,
-      this.state.pullingInterval
-    );
+    // this.pollingList = setInterval(
+    //   this.pollingFunction,
+    //   this.state.pullingInterval
+    // );
   }
 
   componentWillUnmount() {
-    clearInterval(this.pollingList);
+    if (this.pollingList) clearInterval(this.pollingList);
   }
 
   // pollingList = setInterval(this.getList, 5000);
@@ -144,6 +144,7 @@ class ReceptionStatus extends Component {
       if (this.state.rider) {
         data.riderName = this.state.rider;
       }
+      console.log(data);
       httpPostWithNoLoading(httpUrl.orderList, [], data)
         .then((res) => {
           if (res.result === "SUCCESS") {
@@ -176,7 +177,7 @@ class ReceptionStatus extends Component {
       startDate.getMonth(),
       startDate.getDate() + 1
     );
-    const data = {
+    var data = {
       orderStatuses: [4, 5],
       pageNum: this.state.pagination.current,
       pageSize: this.state.pagination.pageSize,
@@ -184,14 +185,13 @@ class ReceptionStatus extends Component {
       startDate: formatDate(this.state.selectedDate).split(" ")[0],
       endDate: formatDate(endDate).split(" ")[0],
     };
-
     if (this.state.franchisee) {
       data.frName = this.state.franchisee;
     }
     if (this.state.rider) {
       data.riderName = this.state.rider;
     }
-
+    console.log(data);
     httpPostWithNoLoading(httpUrl.orderList, [], data)
       .then((res) => {
         if (res.result === "SUCCESS") {
@@ -1475,7 +1475,13 @@ class ReceptionStatus extends Component {
               placeholder="가맹점검색"
               enterButton
               allowClear
-              onChange={(e) => this.setState({ franchisee: e.target.value })}
+              onChange={(e) => {
+                this.setState({ franchisee: e.target.value }, () => {
+                  if (e.target.value === "") {
+                    this.pollingFunction();
+                  }
+                });
+              }}
               onSearch={this.onSearch}
               style={{
                 width: 200,
@@ -1485,7 +1491,13 @@ class ReceptionStatus extends Component {
               placeholder="기사명검색"
               enterButton
               allowClear
-              onChange={(e) => this.setState({ rider: e.target.value })}
+              onChange={(e) => {
+                this.setState({ rider: e.target.value }, () => {
+                  if (e.target.value === "") {
+                    this.pollingFunction();
+                  }
+                });
+              }}
               onSearch={this.onSearch}
               style={{
                 width: 200,
@@ -1554,7 +1566,13 @@ class ReceptionStatus extends Component {
               placeholder="가맹점검색"
               enterButton
               allowClear
-              onChange={(e) => this.setState({ franchisee: e.target.value })}
+              onChange={(e) =>
+                this.setState({ franchisee: e.target.value }, () => {
+                  if (e.target.value === "") {
+                    this.pollingFunction();
+                  }
+                })
+              }
               onSearch={this.onSearch}
               style={{
                 width: 308,
@@ -1566,7 +1584,13 @@ class ReceptionStatus extends Component {
               placeholder="기사명검색"
               enterButton
               allowClear
-              onChange={(e) => this.setState({ rider: e.target.value })}
+              onChange={(e) =>
+                this.setState({ rider: e.target.value }, () => {
+                  if (e.target.value === "") {
+                    this.pollingFunction();
+                  }
+                })
+              }
               onSearch={this.onSearch}
               style={{
                 width: 308,
