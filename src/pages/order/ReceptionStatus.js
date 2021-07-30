@@ -65,6 +65,11 @@ class ReceptionStatus extends Component {
         current: 1,
         pageSize: 100,
       },
+      totalPagination: {
+        total: 0,
+        current: 1,
+        pageSize: 100,
+      },
       data: null,
 
       // modal open / close
@@ -168,8 +173,8 @@ class ReceptionStatus extends Component {
     );
     const data = {
       orderStatuses: [4, 5],
-      pageNum: this.state.pagination.current,
-      pageSize: this.state.pagination.pageSize,
+      pageNum: this.state.totalPagination.current,
+      pageSize: this.state.totalPagination.pageSize,
       paymentMethods: [1, 2, 3],
       startDate: formatDate(this.state.selectedDate).split(" ")[0],
       endDate: formatDate(endDate).split(" ")[0],
@@ -190,6 +195,10 @@ class ReceptionStatus extends Component {
           console.log(res);
           this.setState({
             totalList: res.data.orders,
+            totalPagination: {
+              ...this.state.totalPagination,
+              total: res.data.totalCount,
+            },
           });
         } else {
           Modal.info({
@@ -1645,27 +1654,46 @@ class ReceptionStatus extends Component {
           >
             <Button
               onClick={() => {
-                if (
-                  this.state.pagination.pageSize >= this.state.pagination.total
-                ) {
-                  Modal.info({
-                    title: "주문정보 오류",
-                    content: "더 이상 주문정보가 존재하지 않습니다.",
-                  });
-                  return;
-                }
-                this.setState(
-                  {
-                    pagination: {
-                      ...this.state.pagination,
-                      pageSize: this.state.pagination.pageSize + 30,
-                    },
-                  },
-                  () => {
-                    console.log(this.state.pagination);
-                    this.getList();
+                if (this.state.checkedCompleteCall) {
+                  if (this.state.totalPagination.pageSize >= this.state.totalPagination.total) {
+                    Modal.info({
+                      title: "주문정보 오류",
+                      content: "더 이상 주문정보가 존재하지 않습니다.",
+                    });
+                    return;
                   }
-                );
+                  this.setState({
+                    totalPagination: {
+                        ...this.state.totalPagination,
+                        pageSize: this.state.totalPagination.pageSize + 100,
+                      },
+                    },
+                    () => {
+                      this.getCompleteList();
+                    }
+                  );
+
+                }
+                else {
+                  if (this.state.pagination.pageSize >= this.state.pagination.total) {
+                    Modal.info({
+                      title: "주문정보 오류",
+                      content: "더 이상 주문정보가 존재하지 않습니다.",
+                    });
+                    return;
+                  }
+                  this.setState({
+                      pagination: {
+                        ...this.state.pagination,
+                        pageSize: this.state.pagination.pageSize + 100,
+                      },
+                    },
+                    () => {
+                      this.getList();
+                    }
+                  );
+
+                }
               }}
             >
               더 보기
