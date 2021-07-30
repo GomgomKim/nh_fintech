@@ -109,10 +109,10 @@ class ReceptionStatus extends Component {
 
   componentDidMount() {
     this.getList();
-    // this.pollingList = setInterval(
-    //   this.pollingFunction,
-    //   this.state.pullingInterval
-    // );
+    this.pollingList = setInterval(
+      this.pollingFunction,
+      this.state.pullingInterval
+    );
   }
 
   componentWillUnmount() {
@@ -148,7 +148,7 @@ class ReceptionStatus extends Component {
       httpPostWithNoLoading(httpUrl.orderList, [], data)
         .then((res) => {
           if (res.result === "SUCCESS") {
-            // console.log(res);
+            console.log(res);
             this.setState({
               list: res.data.orders,
               pagination: {
