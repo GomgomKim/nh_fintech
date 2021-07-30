@@ -1863,8 +1863,8 @@
   }
 
   .timeDelay-sub-title {
-    font-size: 20px;
-    font-weight: bold;
+    font-size: 15px;
+    /* font-weight: bold; */
     line-height: 30px;
     display: inline-block;
   }
@@ -2069,7 +2069,8 @@
 
   .filtering-box {
     display: inline-block;
-    margin-bottom: 10px;
+    /* margin-bottom: 10px; */
+    margin-top: 10px;
   }
 
   .filtering-box-wrapper > div:last-child {
@@ -2117,7 +2118,7 @@
   }
 
   .filtering-box .ant-checkbox + span {
-    font-size: 18px;
+    font-size: 15px;
     vertical-align: top;
     line-height: 25px;
   }

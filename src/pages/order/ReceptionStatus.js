@@ -2,7 +2,6 @@ import {
   DollarCircleOutlined,
   EnvironmentFilled,
   FieldTimeOutlined,
-  FilterOutlined,
   MessageOutlined,
   NotificationFilled,
   PhoneOutlined,
@@ -28,7 +27,6 @@ import ChattingDialog from "../../components/dialog/common/ChattingDialog";
 import SearchRiderDialog from "../../components/dialog/common/SearchRiderDialog";
 import BlindControlDialog from "../../components/dialog/franchise/BlindControlDialog";
 import DeliveryZoneDialog from "../../components/dialog/order/DeliveryZoneDialog";
-import FilteringDialog from "../../components/dialog/order/FilteringDialog";
 import MapControlDialog from "../../components/dialog/order/MapControlDialog";
 import NoticeDialog from "../../components/dialog/order/NoticeDialog";
 import PaymentDialog from "../../components/dialog/order/PaymentDialog";
@@ -104,6 +102,48 @@ class ReceptionStatus extends Component {
       messageTarget: null,
       messageTargetName: null,
       messageTargetLevel: null,
+
+      orderStatus: [
+        {
+          key: "orderStatus-1",
+          value: 1,
+          text: "접수",
+        },
+        {
+          key: "orderStatus-2",
+          value: 2,
+          text: "배차",
+        },
+        {
+          key: "orderStatus-3",
+          value: 3,
+          text: "픽업",
+        },
+        {
+          key: "orderStatus-4",
+          value: 5,
+          text: "취소",
+        },
+      ],
+      paymentMethod: [
+        {
+          key: "paymentMethod-1",
+          value: 1,
+          text: "카드",
+        },
+        {
+          key: "paymentMethod-2",
+          value: 2,
+          text: "현금",
+        },
+        {
+          key: "paymentMethod-3",
+          value: 3,
+          text: "선결",
+        },
+      ],
+      selectedOrderStatus: [1, 2, 3],
+      selectedPaymentMethods: [1, 2, 3],
     };
   }
 
@@ -117,6 +157,15 @@ class ReceptionStatus extends Component {
 
   componentWillUnmount() {
     if (this.pollingList) clearInterval(this.pollingList);
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      this.state.selectedOrderStatus !== prevState.selectedOrderStatus ||
+      this.state.selectedPaymentMethods !== prevState.selectedPaymentMethods
+    ) {
+      this.getList();
+    }
   }
 
   // pollingList = setInterval(this.getList, 5000);
@@ -157,12 +206,12 @@ class ReceptionStatus extends Component {
               },
             });
           } else {
-            console.log("Pulling Error");
+            console.log("polling Error");
             return;
           }
         })
         .catch((e) => {
-          console.log("Pulling Error");
+          console.log("polling Error");
           console.log(e);
           throw e;
         });
@@ -665,31 +714,31 @@ class ReceptionStatus extends Component {
         dataIndex: "orderStatus",
         className: "table-column-center desk",
         key: (row) => `orderStatus:${row.orderStatus}`,
-        filters: [
-          {
-            text: "접수",
-            value: 1,
-          },
-          {
-            text: "배차",
-            value: 2,
-          },
-          {
-            text: "픽업",
-            value: 3,
-          },
+        // filters: [
+        //   {
+        //     text: "접수",
+        //     value: 1,
+        //   },
+        //   {
+        //     text: "배차",
+        //     value: 2,
+        //   },
+        //   {
+        //     text: "픽업",
+        //     value: 3,
+        //   },
 
-          {
-            text: "완료",
-            value: 4,
-          },
+        //   {
+        //     text: "완료",
+        //     value: 4,
+        //   },
 
-          {
-            text: "취소",
-            value: 5,
-          },
-        ],
-        onFilter: (value, record) => value === record.orderStatus,
+        //   {
+        //     text: "취소",
+        //     value: 5,
+        //   },
+        // ],
+        // onFilter: (value, record) => value === record.orderStatus,
         render: (data, row) => (
           <div className="table-column-sub">
             <Select
@@ -867,17 +916,17 @@ class ReceptionStatus extends Component {
         dataIndex: "itemPrepared",
         className: "table-column-center desk",
         key: (row) => `itemPrepared:${row.itemPrepared}`,
-        filters: [
-          {
-            text: "준비중",
-            value: false,
-          },
-          {
-            text: "완료",
-            value: true,
-          },
-        ],
-        onFilter: (value, record) => value === record.itemPrepared,
+        // filters: [
+        //   {
+        //     text: "준비중",
+        //     value: false,
+        //   },
+        //   {
+        //     text: "완료",
+        //     value: true,
+        //   },
+        // ],
+        // onFilter: (value, record) => value === record.itemPrepared,
         render: (data) => <div>{data ? "완료" : "준비중"}</div>,
       },
       // {
@@ -1515,7 +1564,7 @@ class ReceptionStatus extends Component {
               marginLeft: 20,
             }}
           /> */}
-            <FilteringDialog
+            {/* <FilteringDialog
               isOpen={this.state.filteringOpen}
               close={this.closeFilteringModal}
               selectedOrderStatus={this.state.selectedOrderStatus}
@@ -1529,7 +1578,7 @@ class ReceptionStatus extends Component {
               >
                 필터링 설정
               </Button>
-            )}
+            )} */}
             {this.state.checkedCompleteCall && (
               <DatePicker
                 style={{ marginLeft: 20 }}
@@ -1559,6 +1608,86 @@ class ReceptionStatus extends Component {
               onChange={this.handleToggleCompleteCall}
             ></Checkbox>
             <span className="span1">완료조회</span>
+          </div>
+          <div className="filtering-box-wrapper">
+            <div className="filtering-box">
+              <div className="timeDelay-sub-title">주문상태</div>
+
+              {this.state.orderStatus.map((o) => {
+                return (
+                  <div className="filtering-btn">
+                    <Checkbox
+                      key={o.key}
+                      value={o.value}
+                      onChange={(e) => {
+                        if (e.target.checked) {
+                          const result = this.state.selectedOrderStatus.concat(
+                            e.target.value
+                          );
+                          this.setState({
+                            selectedOrderStatus: result,
+                          });
+                        } else {
+                          const result = this.state.selectedOrderStatus.filter(
+                            (el) => el !== e.target.value
+                          );
+                          this.setState({
+                            selectedOrderStatus: result,
+                          });
+                        }
+                      }}
+                      defaultChecked={
+                        this.state.selectedOrderStatus.includes(o.value)
+                          ? "checked"
+                          : ""
+                      }
+                    >
+                      {o.text}
+                    </Checkbox>
+                  </div>
+                );
+              })}
+            </div>
+            <div className="filtering-box">
+              <div className="timeDelay-sub-title">결제방식</div>
+
+              {this.state.paymentMethod.map((o) => {
+                return (
+                  <div className="filtering-btn">
+                    <Checkbox
+                      key={o.key}
+                      value={o.value}
+                      onChange={(e) => {
+                        if (e.target.checked) {
+                          const result =
+                            this.state.selectedPaymentMethods.concat(
+                              e.target.value
+                            );
+                          this.setState({
+                            selectedPaymentMethods: result,
+                          });
+                        } else {
+                          const result =
+                            this.state.selectedPaymentMethods.filter(
+                              (el) => el !== e.target.value
+                            );
+                          this.setState({
+                            selectedPaymentMethods: result,
+                          });
+                        }
+                      }}
+                      defaultChecked={
+                        this.state.selectedPaymentMethods.includes(o.value)
+                          ? "checked"
+                          : ""
+                      }
+                    >
+                      {o.text}
+                    </Checkbox>
+                  </div>
+                );
+              })}
+            </div>
           </div>
 
           <div className="mobile">
