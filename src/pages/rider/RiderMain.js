@@ -1,28 +1,26 @@
 import { Button, Image, Input, Modal, Popover, Table } from "antd";
+import moment from "moment";
 import React, { Component } from "react";
-import { httpGet, httpPost, httpUrl, imageUrl, httpGetWithNoLoading } from "../../api/httpClient";
+import { httpGet, httpGetWithNoLoading, httpPost, httpUrl, imageUrl } from "../../api/httpClient";
 import { customAlert, updateError } from "../../api/Modals";
+import BatchWorkedListDialog from "../../components/dialog/rider/BatchWorkedListDialog";
+import BatchWorkListDialog from "../../components/dialog/rider/BatchWorkListDialog";
 import BlindRiderListDialog from "../../components/dialog/rider/BlindRiderListDialog";
 import RegistRiderDialog from "../../components/dialog/rider/RegistRiderDialog";
 import RiderGroupDialog from "../../components/dialog/rider/RiderGroupDialog";
-import BatchWorkListDialog from "../../components/dialog/rider/BatchWorkListDialog";
-import BatchWorkedListDialog from "../../components/dialog/rider/BatchWorkedListDialog";
 import UpdatePasswordDialog from "../../components/dialog/rider/UpdatePasswordDialog";
 import SelectBox from "../../components/input/SelectBox";
 import "../../css/modal.css";
 import "../../css/modal_m.css";
-import "../../css/rider.css";
 import "../../css/order.css";
 import "../../css/order_m.css";
+import "../../css/rider.css";
 import {
-  riderLevelText,
-  statusString,
-  tableStatusString,
-  riderStatusCode,
+  riderLevelText, riderStatusCode, statusString,
+  tableStatusString
 } from "../../lib/util/codeUtil";
 import { formatDateToDay } from "../../lib/util/dateUtil";
 import { comma } from "../../lib/util/numberUtil";
-import moment from "moment";
 
 const Search = Input.Search;
 
@@ -862,6 +860,7 @@ class RiderMain extends Component {
               pagination={this.state.pagination}
               onChange={this.handleTableChange}
               expandedRowRender={expandedRowRender}
+              scroll={{ y: '50vh' }}
             />
           </div>
           <div id="#rider-dataTableLayout" className="dataTableLayout mobile">
