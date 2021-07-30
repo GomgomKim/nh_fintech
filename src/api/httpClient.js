@@ -228,7 +228,7 @@ const httpUrl = {
   // 주문 상태 변경
   orderAssignCancel: "/order/admin/admin/assignRiderCancel",
   orderPickup: "/order/pickup",
-  orderPickupCancel: '/order/pickupCancel',  
+  orderPickupCancel: "/order/pickupCancel",
   orderComplete: "/order/complete",
   orderCancel: "/order/cancel",
   orderCompleteRestore: "/order/complete/restore",
@@ -301,7 +301,8 @@ const httpUrl = {
 
   // 채팅
   chatList: "/chat/chatList?pageSize=%s&pageNum=%s&searchName=%s",
-  chatListByUser: "/chat/chatList?pageSize=%s&pageNum=%s&searchName=%s&receiveUserIdx=%s",
+  chatListByUser:
+    "/chat/chatList?pageSize=%s&pageNum=%s&searchName=%s&receiveUserIdx=%s",
   chatMessageList: "/chat/messageList?pageSize=%s&pageNum=%s&chatRoomIdx=%s",
   chatSend: "/chat/send",
   chatRoom: "/chat/chatroom?receiveUserIdx=%s",
@@ -340,6 +341,9 @@ const httpUrl = {
   // 배송가능지역
   getAddrBranch: "/branch/addrBranch/list?pageNum=%s&pageSize=%s",
   updateAddrBranch: "/branch/addrBranch/update",
+
+  // VAN등록요청 - 파일업로드
+  FileUpload: "/file/upload",
 };
 
 const imageType = ["image/jpeg", "image/png", "image/bmp"];
@@ -359,4 +363,3 @@ export {
   httpPostWithNoLoading,
   httpGetWithNoLoading,
 };
-

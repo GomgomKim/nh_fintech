@@ -229,15 +229,17 @@ class RegistRiderDialog extends Component {
             // deliveryPriceFeeType: self.state.feeManner,
           })
             .then((res) => {
-              console.log(JSON.stringify(res, null, 4))
+              // console.log(JSON.stringify(res, null, 4))
               if (res.result === "SUCCESS" && res.data == "SUCCESS") {
                 registComplete();
+                self.props.close();
               } else if (res.result === "SUCCESS" && res.data == "ID_DUPLICATED") {
                 idDuplicated();
               } else {
                 registError();
+                self.props.close();
               }
-              self.props.close();
+
             })
             .catch((e) => {
               registError();
