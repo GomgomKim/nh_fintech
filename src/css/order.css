@@ -91,14 +91,15 @@
     height: 25px;
   }
 
-  .reception-box .ant-checkbox-inner::after {
+  /* .reception-box .ant-checkbox-inner::after {
     width: 15px;
     height: 15px;
-  }
+  } */
 
   .reception-box .ant-checkbox-wrapper {
     height: 32px;
     margin-left: 20px !important;
+    margin-top: 5px;
     vertical-align: top;
   }
 
@@ -111,8 +112,9 @@
   }
 
   .reception-box .span1 {
-    font-size: 16px;
-    margin-left: 10px;
+    font-size: 15px;
+    margin-left: 0px;
+    vertical-align: top;
   }
 
   .table-red {
@@ -168,18 +170,21 @@
     width: 150px;
   }
   .delivery-status-box {
-    width: 100%;
-    text-align: right;
+    display: inline-block;
+    float: right;
   }
   .delivery-status-box > div {
     display: inline-block;
     width: 125px;
-    font-size: 16px;
+    font-size: 15px;
     text-align: center;
     margin-right: 15px;
-    margin-top: -30px;
+    margin-top: 15px;
     border-radius: 5px;
     height: 35px;
     line-height: 35px;
+  }
+  .delivery-status-box > div:last-child {
+    border: 1px solid #d1d1d1;
   }
 }

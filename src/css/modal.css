@@ -2069,17 +2069,23 @@
 
   .filtering-box {
     display: inline-block;
-    /* margin-bottom: 10px; */
   }
   .filtering-box-wrapper {
-    float: right;
-    display: block;
+    display: inline-block;
+    margin-left: 20px;
   }
   .filtering-box-wrapper > div:last-child {
     margin-bottom: 0;
-    display: block;
+    margin-left: 30px;
   }
-
+  .filtering-name {
+    font-size: 14px;
+    line-height: 30px;
+    display: inline-block;
+    border: 1px solid #e0e0e0;
+    text-align: center;
+    margin-right: 10px;
+  }
   .filtering-box .ant-checkbox {
     top: 0em !important;
   }
@@ -2099,16 +2105,16 @@
     /* margin:20px; */
   }
 
-  .filtering-box .ant-checkbox-inner {
-    width: 20px;
-    height: 20px;
-  }
+  /* .filtering-box .ant-checkbox-inner {
+    width: 15px;
+    height: 15px;
+  } */
   .filtering-box .ant-checkbox-inner:hover {
     display: none;
   }
   .filtering-box .ant-checkbox-inner::after {
-    width: 10px;
-    height: 10px;
+    width: 8px;
+    height: 8px;
   }
   .filtering-box .ant-checkbox-checked::after {
     width: 100%;
@@ -2116,13 +2122,14 @@
   }
   .filtering-btn {
     display: inline-block;
-    padding: 5px 0;
+    margin-top: -2px;
+    margin-left: -10px;
   }
 
   .filtering-box .ant-checkbox + span {
-    font-size: 15px;
+    font-size: 14px;
     vertical-align: top;
-    line-height: 25px;
+    padding-top: 2px;
   }
 
   .riderManageBtn {

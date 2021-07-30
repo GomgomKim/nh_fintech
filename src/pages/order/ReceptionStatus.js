@@ -63,6 +63,11 @@ class ReceptionStatus extends Component {
         current: 1,
         pageSize: 100,
       },
+      totalPagination: {
+        total: 0,
+        current: 1,
+        pageSize: 100,
+      },
       data: null,
 
       // modal open / close
@@ -228,8 +233,8 @@ class ReceptionStatus extends Component {
     );
     var data = {
       orderStatuses: [4, 5],
-      pageNum: this.state.pagination.current,
-      pageSize: this.state.pagination.pageSize,
+      pageNum: this.state.totalPagination.current,
+      pageSize: this.state.totalPagination.pageSize,
       paymentMethods: [1, 2, 3],
       startDate: formatDate(this.state.selectedDate).split(" ")[0],
       endDate: formatDate(endDate).split(" ")[0],
@@ -247,6 +252,10 @@ class ReceptionStatus extends Component {
           console.log(res);
           this.setState({
             totalList: res.data.orders,
+            totalPagination: {
+              ...this.state.totalPagination,
+              total: res.data.totalCount,
+            },
           });
         } else {
           Modal.info({
@@ -1606,93 +1615,95 @@ class ReceptionStatus extends Component {
             <Checkbox
               defaultChecked={this.state.checkedCompleteCall ? "checked" : ""}
               onChange={this.handleToggleCompleteCall}
-            ></Checkbox>
-            <span className="span1">완료조회</span>
+            >
+              <span className="span1">완료조회</span>
+            </Checkbox>
+
+            {!this.state.checkedCompleteCall && (
+              <div className="filtering-box-wrapper">
+                <div className="filtering-box">
+                  <div className="filtering-name">주문상태</div>
+
+                  {this.state.orderStatus.map((o) => {
+                    return (
+                      <div className="filtering-btn">
+                        <Checkbox
+                          key={o.key}
+                          value={o.value}
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              const result =
+                                this.state.selectedOrderStatus.concat(
+                                  e.target.value
+                                );
+                              this.setState({
+                                selectedOrderStatus: result,
+                              });
+                            } else {
+                              const result =
+                                this.state.selectedOrderStatus.filter(
+                                  (el) => el !== e.target.value
+                                );
+                              this.setState({
+                                selectedOrderStatus: result,
+                              });
+                            }
+                          }}
+                          defaultChecked={
+                            this.state.selectedOrderStatus.includes(o.value)
+                              ? "checked"
+                              : ""
+                          }
+                        >
+                          {o.text}
+                        </Checkbox>
+                      </div>
+                    );
+                  })}
+                </div>
+                <div className="filtering-box">
+                  <div className="filtering-name">결제방식</div>
+
+                  {this.state.paymentMethod.map((o) => {
+                    return (
+                      <div className="filtering-btn">
+                        <Checkbox
+                          key={o.key}
+                          value={o.value}
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              const result =
+                                this.state.selectedPaymentMethods.concat(
+                                  e.target.value
+                                );
+                              this.setState({
+                                selectedPaymentMethods: result,
+                              });
+                            } else {
+                              const result =
+                                this.state.selectedPaymentMethods.filter(
+                                  (el) => el !== e.target.value
+                                );
+                              this.setState({
+                                selectedPaymentMethods: result,
+                              });
+                            }
+                          }}
+                          defaultChecked={
+                            this.state.selectedPaymentMethods.includes(o.value)
+                              ? "checked"
+                              : ""
+                          }
+                        >
+                          {o.text}
+                        </Checkbox>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
           </div>
-          {!this.state.checkedCompleteCall && (
-            <div className="filtering-box-wrapper">
-              <div className="filtering-box">
-                <div className="timeDelay-sub-title">주문상태</div>
-
-                {this.state.orderStatus.map((o) => {
-                  return (
-                    <div className="filtering-btn">
-                      <Checkbox
-                        key={o.key}
-                        value={o.value}
-                        onChange={(e) => {
-                          if (e.target.checked) {
-                            const result =
-                              this.state.selectedOrderStatus.concat(
-                                e.target.value
-                              );
-                            this.setState({
-                              selectedOrderStatus: result,
-                            });
-                          } else {
-                            const result =
-                              this.state.selectedOrderStatus.filter(
-                                (el) => el !== e.target.value
-                              );
-                            this.setState({
-                              selectedOrderStatus: result,
-                            });
-                          }
-                        }}
-                        defaultChecked={
-                          this.state.selectedOrderStatus.includes(o.value)
-                            ? "checked"
-                            : ""
-                        }
-                      >
-                        {o.text}
-                      </Checkbox>
-                    </div>
-                  );
-                })}
-              </div>
-              <div className="filtering-box">
-                <div className="timeDelay-sub-title">결제방식</div>
-
-                {this.state.paymentMethod.map((o) => {
-                  return (
-                    <div className="filtering-btn">
-                      <Checkbox
-                        key={o.key}
-                        value={o.value}
-                        onChange={(e) => {
-                          if (e.target.checked) {
-                            const result =
-                              this.state.selectedPaymentMethods.concat(
-                                e.target.value
-                              );
-                            this.setState({
-                              selectedPaymentMethods: result,
-                            });
-                          } else {
-                            const result =
-                              this.state.selectedPaymentMethods.filter(
-                                (el) => el !== e.target.value
-                              );
-                            this.setState({
-                              selectedPaymentMethods: result,
-                            });
-                          }
-                        }}
-                        defaultChecked={
-                          this.state.selectedPaymentMethods.includes(o.value)
-                            ? "checked"
-                            : ""
-                        }
-                      >
-                        {o.text}
-                      </Checkbox>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          )}
           <div className="mobile">
             <Search
               placeholder="가맹점검색"
@@ -1736,7 +1747,6 @@ class ReceptionStatus extends Component {
               {this.state.list.filter((item) => item.orderStatus === 1).length}{" "}
               건
             </div>
-
             <div style={{ background: "#d6edfe" }}>
               배차 :{" "}
               {this.state.list.filter((item) => item.orderStatus === 2).length}{" "}
@@ -1823,27 +1833,46 @@ class ReceptionStatus extends Component {
           >
             <Button
               onClick={() => {
-                if (
-                  this.state.pagination.pageSize >= this.state.pagination.total
-                ) {
-                  Modal.info({
-                    title: "주문정보 오류",
-                    content: "더 이상 주문정보가 존재하지 않습니다.",
-                  });
-                  return;
-                }
-                this.setState(
-                  {
-                    pagination: {
-                      ...this.state.pagination,
-                      pageSize: this.state.pagination.pageSize + 30,
-                    },
-                  },
-                  () => {
-                    console.log(this.state.pagination);
-                    this.getList();
+                if (this.state.checkedCompleteCall) {
+                  if (this.state.totalPagination.pageSize >= this.state.totalPagination.total) {
+                    Modal.info({
+                      title: "주문정보 오류",
+                      content: "더 이상 주문정보가 존재하지 않습니다.",
+                    });
+                    return;
                   }
-                );
+                  this.setState({
+                    totalPagination: {
+                        ...this.state.totalPagination,
+                        pageSize: this.state.totalPagination.pageSize + 100,
+                      },
+                    },
+                    () => {
+                      this.getCompleteList();
+                    }
+                  );
+
+                }
+                else {
+                  if (this.state.pagination.pageSize >= this.state.pagination.total) {
+                    Modal.info({
+                      title: "주문정보 오류",
+                      content: "더 이상 주문정보가 존재하지 않습니다.",
+                    });
+                    return;
+                  }
+                  this.setState({
+                      pagination: {
+                        ...this.state.pagination,
+                        pageSize: this.state.pagination.pageSize + 100,
+                      },
+                    },
+                    () => {
+                      this.getList();
+                    }
+                  );
+
+                }
               }}
             >
               더 보기
