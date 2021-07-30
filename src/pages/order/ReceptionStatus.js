@@ -2,7 +2,6 @@ import {
   DollarCircleOutlined,
   EnvironmentFilled,
   FieldTimeOutlined,
-  FilterOutlined,
   MessageOutlined,
   NotificationFilled,
   PhoneOutlined,
@@ -28,7 +27,6 @@ import ChattingDialog from "../../components/dialog/common/ChattingDialog";
 import SearchRiderDialog from "../../components/dialog/common/SearchRiderDialog";
 import BlindControlDialog from "../../components/dialog/franchise/BlindControlDialog";
 import DeliveryZoneDialog from "../../components/dialog/order/DeliveryZoneDialog";
-import FilteringDialog from "../../components/dialog/order/FilteringDialog";
 import MapControlDialog from "../../components/dialog/order/MapControlDialog";
 import NoticeDialog from "../../components/dialog/order/NoticeDialog";
 import PaymentDialog from "../../components/dialog/order/PaymentDialog";
@@ -104,21 +102,80 @@ class ReceptionStatus extends Component {
       messageTarget: null,
       messageTargetName: null,
       messageTargetLevel: null,
+
+      orderStatus: [
+        {
+          key: "orderStatus-1",
+          value: 1,
+          text: "접수",
+        },
+        {
+          key: "orderStatus-2",
+          value: 2,
+          text: "배차",
+        },
+        {
+          key: "orderStatus-3",
+          value: 3,
+          text: "픽업",
+        },
+        {
+          key: "orderStatus-4",
+          value: 5,
+          text: "취소",
+        },
+      ],
+      paymentMethod: [
+        {
+          key: "paymentMethod-1",
+          value: 1,
+          text: "카드",
+        },
+        {
+          key: "paymentMethod-2",
+          value: 2,
+          text: "현금",
+        },
+        {
+          key: "paymentMethod-3",
+          value: 3,
+          text: "선결",
+        },
+      ],
+      selectedOrderStatus: [1, 2, 3],
+      selectedPaymentMethods: [1, 2, 3],
     };
   }
 
   componentDidMount() {
     this.getList();
-    this.pullingList = setInterval(this.getList, this.state.pullingInterval);
+    this.pollingList = setInterval(
+      this.pollingFunction,
+      this.state.pullingInterval
+    );
   }
 
   componentWillUnmount() {
-    clearInterval(this.pullingList);
+    if (this.pollingList) clearInterval(this.pollingList);
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      this.state.selectedOrderStatus !== prevState.selectedOrderStatus ||
+      this.state.selectedPaymentMethods !== prevState.selectedPaymentMethods
+    ) {
+      this.getList();
+    }
   }
 
   // pollingList = setInterval(this.getList, 5000);
 
+  pollingFunction = () => {
+    this.state.checkedCompleteCall ? this.getCompleteList() : this.getList();
+  };
+
   getList = () => {
+    console.log("getlist");
     try {
       const startDate = this.state.selectedDate;
       const endDate = new moment();
@@ -136,10 +193,11 @@ class ReceptionStatus extends Component {
       if (this.state.rider) {
         data.riderName = this.state.rider;
       }
+      console.log(data);
       httpPostWithNoLoading(httpUrl.orderList, [], data)
         .then((res) => {
           if (res.result === "SUCCESS") {
-            // console.log(res);
+            console.log(res);
             this.setState({
               list: res.data.orders,
               pagination: {
@@ -148,25 +206,27 @@ class ReceptionStatus extends Component {
               },
             });
           } else {
-            console.log("Pulling Error");
+            console.log("polling Error");
             return;
           }
         })
         .catch((e) => {
-          console.log("Pulling Error");
+          console.log("polling Error");
           console.log(e);
           throw e;
         });
     } catch (e) {}
   };
   getCompleteList = () => {
+    console.log("getcompletelist");
+
     const startDate = this.state.selectedDate;
     const endDate = new Date(
       startDate.getFullYear(),
       startDate.getMonth(),
       startDate.getDate() + 1
     );
-    const data = {
+    var data = {
       orderStatuses: [4, 5],
       pageNum: this.state.pagination.current,
       pageSize: this.state.pagination.pageSize,
@@ -174,17 +234,14 @@ class ReceptionStatus extends Component {
       startDate: formatDate(this.state.selectedDate).split(" ")[0],
       endDate: formatDate(endDate).split(" ")[0],
     };
-
     if (this.state.franchisee) {
       data.frName = this.state.franchisee;
     }
     if (this.state.rider) {
       data.riderName = this.state.rider;
     }
-
     console.log(data);
-
-    httpPost(httpUrl.orderList, [], data)
+    httpPostWithNoLoading(httpUrl.orderList, [], data)
       .then((res) => {
         if (res.result === "SUCCESS") {
           console.log(res);
@@ -513,7 +570,13 @@ class ReceptionStatus extends Component {
               </p>
               {row.destAddr1 + " " + row.destAddr2} <br />
               {row.riderName} / {row.distance}km /{" "}
-              {paymentMethod[row.orderPayments[0] ? row.orderPayments[0]["paymentMethod"] : 0]}
+              {
+                paymentMethod[
+                  row.orderPayments[0]
+                    ? row.orderPayments[0]["paymentMethod"]
+                    : 0
+                ]
+              }
               <br />
               <div className="table-column-sub">
                 상태 :{" "}
@@ -543,6 +606,40 @@ class ReceptionStatus extends Component {
                             배차상태로 먼저 변경한 후 접수로 변경해주세요.
                           </div>
                         ),
+                      });
+                      return;
+                    }
+
+                    //완료를 복원시키는 경우
+                    if (row.orderStatus === 4 && value === 3) {
+                      const self = this;
+                      Modal.confirm({
+                        title: "주문복구",
+                        content:
+                          "주문을 복구하는 경우 라이더에게 지급된 가맹점 배달료도 북구됩니다. 정말 복구하시겠습니까?",
+                        okText: "확인",
+                        cancelText: "취소",
+                        onOk() {
+                          httpPost(httpUrl.orderCompleteRestore, [], {
+                            orderIdx: row.idx,
+                          }).then((res) => {
+                            if (
+                              res.result === "SUCCESS" &&
+                              res.data === "SUCCESS"
+                            ) {
+                              Modal.info({
+                                title: "변경 성공",
+                                content: "주문상태가 변경되었습니다.",
+                              });
+                              self.getList();
+                            } else {
+                              Modal.info({
+                                title: "변경 실패",
+                                content: "주문상태 변경에 실패했습니다.",
+                              });
+                            }
+                          });
+                        },
                       });
                       return;
                     }
@@ -617,31 +714,31 @@ class ReceptionStatus extends Component {
         dataIndex: "orderStatus",
         className: "table-column-center desk",
         key: (row) => `orderStatus:${row.orderStatus}`,
-        filters: [
-          {
-            text: "접수",
-            value: 1,
-          },
-          {
-            text: "배차",
-            value: 2,
-          },
-          {
-            text: "픽업",
-            value: 3,
-          },
+        // filters: [
+        //   {
+        //     text: "접수",
+        //     value: 1,
+        //   },
+        //   {
+        //     text: "배차",
+        //     value: 2,
+        //   },
+        //   {
+        //     text: "픽업",
+        //     value: 3,
+        //   },
 
-          {
-            text: "완료",
-            value: 4,
-          },
+        //   {
+        //     text: "완료",
+        //     value: 4,
+        //   },
 
-          {
-            text: "취소",
-            value: 5,
-          },
-        ],
-        onFilter: (value, record) => value === record.orderStatus,
+        //   {
+        //     text: "취소",
+        //     value: 5,
+        //   },
+        // ],
+        // onFilter: (value, record) => value === record.orderStatus,
         render: (data, row) => (
           <div className="table-column-sub">
             <Select
@@ -671,6 +768,39 @@ class ReceptionStatus extends Component {
                   return;
                 }
 
+                //완료를 복원시키는 경우
+                if (row.orderStatus === 4 && value === 3) {
+                  const self = this;
+                  Modal.confirm({
+                    title: "주문복구",
+                    content:
+                      "주문을 복구하는 경우 라이더에게 지급된 가맹점 배달료도 북구됩니다. 정말 복구하시겠습니까?",
+                    okText: "확인",
+                    cancelText: "취소",
+                    onOk() {
+                      httpPost(httpUrl.orderCompleteRestore, [], {
+                        orderIdx: row.idx,
+                      }).then((res) => {
+                        if (
+                          res.result === "SUCCESS" &&
+                          res.data === "SUCCESS"
+                        ) {
+                          Modal.info({
+                            title: "변경 성공",
+                            content: "주문상태가 변경되었습니다.",
+                          });
+                          self.getList();
+                        } else {
+                          Modal.info({
+                            title: "변경 실패",
+                            content: "주문상태 변경에 실패했습니다.",
+                          });
+                        }
+                      });
+                    },
+                  });
+                  return;
+                }
                 const orderStatuseChangeApiCode = [
                   "",
                   httpUrl.orderAssignCancel,
@@ -786,17 +916,17 @@ class ReceptionStatus extends Component {
         dataIndex: "itemPrepared",
         className: "table-column-center desk",
         key: (row) => `itemPrepared:${row.itemPrepared}`,
-        filters: [
-          {
-            text: "준비중",
-            value: false,
-          },
-          {
-            text: "완료",
-            value: true,
-          },
-        ],
-        onFilter: (value, record) => value === record.itemPrepared,
+        // filters: [
+        //   {
+        //     text: "준비중",
+        //     value: false,
+        //   },
+        //   {
+        //     text: "완료",
+        //     value: true,
+        //   },
+        // ],
+        // onFilter: (value, record) => value === record.itemPrepared,
         render: (data) => <div>{data ? "완료" : "준비중"}</div>,
       },
       // {
@@ -1394,7 +1524,13 @@ class ReceptionStatus extends Component {
               placeholder="가맹점검색"
               enterButton
               allowClear
-              onChange={(e) => this.setState({ franchisee: e.target.value })}
+              onChange={(e) => {
+                this.setState({ franchisee: e.target.value }, () => {
+                  if (e.target.value === "") {
+                    this.pollingFunction();
+                  }
+                });
+              }}
               onSearch={this.onSearch}
               style={{
                 width: 200,
@@ -1404,7 +1540,13 @@ class ReceptionStatus extends Component {
               placeholder="기사명검색"
               enterButton
               allowClear
-              onChange={(e) => this.setState({ rider: e.target.value })}
+              onChange={(e) => {
+                this.setState({ rider: e.target.value }, () => {
+                  if (e.target.value === "") {
+                    this.pollingFunction();
+                  }
+                });
+              }}
               onSearch={this.onSearch}
               style={{
                 width: 200,
@@ -1422,7 +1564,7 @@ class ReceptionStatus extends Component {
               marginLeft: 20,
             }}
           /> */}
-            <FilteringDialog
+            {/* <FilteringDialog
               isOpen={this.state.filteringOpen}
               close={this.closeFilteringModal}
               selectedOrderStatus={this.state.selectedOrderStatus}
@@ -1436,7 +1578,7 @@ class ReceptionStatus extends Component {
               >
                 필터링 설정
               </Button>
-            )}
+            )} */}
             {this.state.checkedCompleteCall && (
               <DatePicker
                 style={{ marginLeft: 20 }}
@@ -1467,13 +1609,102 @@ class ReceptionStatus extends Component {
             ></Checkbox>
             <span className="span1">완료조회</span>
           </div>
+          {!this.state.checkedCompleteCall && (
+            <div className="filtering-box-wrapper">
+              <div className="filtering-box">
+                <div className="timeDelay-sub-title">주문상태</div>
 
+                {this.state.orderStatus.map((o) => {
+                  return (
+                    <div className="filtering-btn">
+                      <Checkbox
+                        key={o.key}
+                        value={o.value}
+                        onChange={(e) => {
+                          if (e.target.checked) {
+                            const result =
+                              this.state.selectedOrderStatus.concat(
+                                e.target.value
+                              );
+                            this.setState({
+                              selectedOrderStatus: result,
+                            });
+                          } else {
+                            const result =
+                              this.state.selectedOrderStatus.filter(
+                                (el) => el !== e.target.value
+                              );
+                            this.setState({
+                              selectedOrderStatus: result,
+                            });
+                          }
+                        }}
+                        defaultChecked={
+                          this.state.selectedOrderStatus.includes(o.value)
+                            ? "checked"
+                            : ""
+                        }
+                      >
+                        {o.text}
+                      </Checkbox>
+                    </div>
+                  );
+                })}
+              </div>
+              <div className="filtering-box">
+                <div className="timeDelay-sub-title">결제방식</div>
+
+                {this.state.paymentMethod.map((o) => {
+                  return (
+                    <div className="filtering-btn">
+                      <Checkbox
+                        key={o.key}
+                        value={o.value}
+                        onChange={(e) => {
+                          if (e.target.checked) {
+                            const result =
+                              this.state.selectedPaymentMethods.concat(
+                                e.target.value
+                              );
+                            this.setState({
+                              selectedPaymentMethods: result,
+                            });
+                          } else {
+                            const result =
+                              this.state.selectedPaymentMethods.filter(
+                                (el) => el !== e.target.value
+                              );
+                            this.setState({
+                              selectedPaymentMethods: result,
+                            });
+                          }
+                        }}
+                        defaultChecked={
+                          this.state.selectedPaymentMethods.includes(o.value)
+                            ? "checked"
+                            : ""
+                        }
+                      >
+                        {o.text}
+                      </Checkbox>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
           <div className="mobile">
             <Search
               placeholder="가맹점검색"
               enterButton
               allowClear
-              onChange={(e) => this.setState({ franchisee: e.target.value })}
+              onChange={(e) =>
+                this.setState({ franchisee: e.target.value }, () => {
+                  if (e.target.value === "") {
+                    this.pollingFunction();
+                  }
+                })
+              }
               onSearch={this.onSearch}
               style={{
                 width: 308,
@@ -1485,7 +1716,13 @@ class ReceptionStatus extends Component {
               placeholder="기사명검색"
               enterButton
               allowClear
-              onChange={(e) => this.setState({ rider: e.target.value })}
+              onChange={(e) =>
+                this.setState({ rider: e.target.value }, () => {
+                  if (e.target.value === "") {
+                    this.pollingFunction();
+                  }
+                })
+              }
               onSearch={this.onSearch}
               style={{
                 width: 308,
@@ -1543,7 +1780,11 @@ class ReceptionStatus extends Component {
           <div id="reception-table" className="desk">
             <Table
               rowKey={(record) => record.idx}
-              rowClassName={(record) => record.deliveryPrice == 0 ? 'table-redalert' : rowColorName[record.orderStatus]}
+              rowClassName={(record) =>
+                record.deliveryPrice == 0
+                  ? "table-redalert"
+                  : rowColorName[record.orderStatus]
+              }
               dataSource={
                 this.state.checkedCompleteCall
                   ? this.state.totalList
@@ -1558,7 +1799,11 @@ class ReceptionStatus extends Component {
           <div id="reception-table" className="mobile">
             <Table
               rowKey={(record) => record.idx}
-              rowClassName={(record) => record.deliveryPrice == 0 ? 'table-redalert' : rowColorName[record.orderStatus]}
+              rowClassName={(record) =>
+                record.deliveryPrice == 0
+                  ? "table-redalert"
+                  : rowColorName[record.orderStatus]
+              }
               dataSource={
                 this.state.checkedCompleteCall
                   ? this.state.totalList
