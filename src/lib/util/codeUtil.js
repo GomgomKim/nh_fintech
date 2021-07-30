@@ -49,6 +49,7 @@ const tableStatusString = {
 };
 
 const kindString = [
+  // "전체",
   "",
   "리스료",
   "대출 상환",

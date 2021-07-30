@@ -1494,6 +1494,16 @@ class ReceptionStatus extends Component {
             />
           </div>
           <div className="desk">
+            {/* <div className="delivery-status" style={{ background: "gray" }}>
+              취소 :{" "}
+              {this.state.list.filter((item) => item.orderStatus === 5).length}{" "}
+              건
+            </div>
+            <div className="delivery-status" style={{ background: "gray" }}>
+              완료 :{" "}
+              {this.state.list.filter((item) => item.orderStatus === 4).length}{" "}
+              건
+            </div> */}
             <div className="delivery-status" style={{ background: "white" }}>
               픽업 :{" "}
               {this.state.list.filter((item) => item.orderStatus === 3).length}{" "}
@@ -1538,6 +1548,22 @@ class ReceptionStatus extends Component {
               {this.state.list.filter((item) => item.orderStatus === 3).length}{" "}
               건
             </div>
+            {/* <div
+              className="delivery-status-mobile"
+              style={{ background: "gray" }}
+            >
+              완료 :{" "}
+              {this.state.list.filter((item) => item.orderStatus === 4).length}{" "}
+              건
+            </div>
+            <div
+              className="delivery-status-mobile"
+              style={{ background: "gray" }}
+            >
+              취소 :{" "}
+              {this.state.list.filter((item) => item.orderStatus === 5).length}{" "}
+              건
+            </div> */}
           </div>
 
           <div id="reception-table" className="desk">
