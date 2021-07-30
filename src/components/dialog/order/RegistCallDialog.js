@@ -243,7 +243,7 @@ class RegistCallDialog extends Component {
                     res.data.deliveryPriceBasic + res.data.deliveryPriceExtra
                   ),
                   basicDeliveryPrice: comma(res.data.deliveryPriceBasic),
-                  extraDeliveryPrice: res.data.deliveryPriceExtra,
+                  extraDeliveryPrice: this.props.data ? this.props.data.extraDeliveryPrice :  res.data.deliveryPriceExtra,
                 });
                 this.setState({
                   data: {
@@ -251,7 +251,7 @@ class RegistCallDialog extends Component {
                     deliveryPrice:
                       res.data.deliveryPriceBasic + res.data.deliveryPriceExtra,
                     basicDeliveryPrice: res.data.deliveryPriceBasic,
-                    extraDeliveryPrice: res.data.deliveryPriceExtra,
+                    extraDeliveryPrice: this.props.data ? this.props.data.extraDeliveryPrice :  res.data.deliveryPriceExtra,
                   },
                 });
               } else {
@@ -348,7 +348,7 @@ class RegistCallDialog extends Component {
             deliveryPrice:
               res.data.deliveryPriceBasic + res.data.deliveryPriceExtra,
             basicDeliveryPrice: res.data.deliveryPriceBasic,
-            extraDeliveryPrice: res.data.deliveryPriceExtra,
+            extraDeliveryPrice: this.props.data ? this.props.data.extraDeliveryPrice : res.data.deliveryPriceExtra,
           });
           this.setState({
             data: {
@@ -356,7 +356,7 @@ class RegistCallDialog extends Component {
               deliveryPrice:
                 res.data.deliveryPriceBasic + res.data.deliveryPriceExtra,
               basicDeliveryPrice: res.data.deliveryPriceBasic,
-              extraDeliveryPrice: res.data.deliveryPriceExtra,
+              extraDeliveryPrice: this.props.data ? this.props.data.extraDeliveryPrice : res.data.deliveryPriceExtra,
             },
           });
         } else {
