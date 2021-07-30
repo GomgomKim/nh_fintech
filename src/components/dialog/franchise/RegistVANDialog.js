@@ -138,7 +138,7 @@ class RegistVANDialog extends Component {
                         <div>사업자 등록증</div>
                         <div>
                           <FormItem name="licenseImg">
-                            <Upload {...imgUpload}>
+                            <Upload {...imgUpload} method="post">
                               <Button icon={<UploadOutlined />}>Upload</Button>
                             </Upload>
                           </FormItem>
@@ -148,7 +148,7 @@ class RegistVANDialog extends Component {
                         <div>영업신고증</div>
                         <div>
                           <FormItem name="licenseImg">
-                            <Upload {...imgUpload}>
+                            <Upload {...imgUpload} method="post">
                               <Button icon={<UploadOutlined />}>Upload</Button>
                             </Upload>
                           </FormItem>
@@ -158,7 +158,7 @@ class RegistVANDialog extends Component {
                         <div>대표자 신분증</div>
                         <div>
                           <FormItem name="ownerImg">
-                            <Upload {...imgUpload}>
+                            <Upload {...imgUpload} method="post">
                               <Button icon={<UploadOutlined />}>Upload</Button>
                             </Upload>
                           </FormItem>
@@ -194,7 +194,7 @@ class RegistVANDialog extends Component {
                         <div>통장 사본</div>
                         <div>
                           <FormItem name="bankbookImg">
-                            <Upload {...imgUpload}>
+                            <Upload {...imgUpload} method="post">
                               <Button icon={<UploadOutlined />}>Upload</Button>
                             </Upload>
                           </FormItem>
@@ -204,7 +204,7 @@ class RegistVANDialog extends Component {
                         <div>매장 외부 사진</div>
                         <div>
                           <FormItem name="bankbookImg">
-                            <Upload {...imgUpload}>
+                            <Upload {...imgUpload} method="post">
                               <Button icon={<UploadOutlined />}>Upload</Button>
                             </Upload>
                           </FormItem>
@@ -214,7 +214,7 @@ class RegistVANDialog extends Component {
                         <div>매장 내부 사진</div>
                         <div>
                           <FormItem name="bankbookImg">
-                            <Upload {...imgUpload}>
+                            <Upload {...imgUpload} method="post">
                               <Button icon={<UploadOutlined />}>Upload</Button>
                             </Upload>
                           </FormItem>
@@ -240,7 +240,7 @@ class RegistVANDialog extends Component {
                             <div>법인등기부등본</div>
                             <div>
                               <FormItem name="bankbookImg">
-                                <Upload {...imgUpload}>
+                                <Upload {...imgUpload} method="post">
                                   <Button icon={<UploadOutlined />}>
                                     Upload
                                   </Button>
@@ -252,7 +252,7 @@ class RegistVANDialog extends Component {
                             <div>법인인감증명서</div>
                             <div>
                               <FormItem name="bankbookImg">
-                                <Upload {...imgUpload}>
+                                <Upload {...imgUpload} method="post">
                                   <Button icon={<UploadOutlined />}>
                                     Upload
                                   </Button>
@@ -264,7 +264,7 @@ class RegistVANDialog extends Component {
                             <div>주주명부</div>
                             <div>
                               <FormItem name="bankbookImg">
-                                <Upload {...imgUpload}>
+                                <Upload {...imgUpload} method="post">
                                   <Button icon={<UploadOutlined />}>
                                     Upload
                                   </Button>
@@ -278,7 +278,7 @@ class RegistVANDialog extends Component {
                             <div>사용인감계(선택)</div>
                             <div>
                               <FormItem name="bankbookImg">
-                                <Upload {...imgUpload}>
+                                <Upload {...imgUpload} method="post">
                                   <Button icon={<UploadOutlined />}>
                                     Upload
                                   </Button>
@@ -290,7 +290,7 @@ class RegistVANDialog extends Component {
                             <div>본사 유선</div>
                             <div>
                               <FormItem name="bankbookImg">
-                                <Upload {...imgUpload}>
+                                <Upload {...imgUpload} method="post">
                                   <Button icon={<UploadOutlined />}>
                                     Upload
                                   </Button>
@@ -335,7 +335,7 @@ class RegistVANDialog extends Component {
                         <div>대표자 신분증</div>
                         <div>
                           <FormItem name="ownerImg">
-                            <Upload {...imgUpload}>
+                            <Upload {...imgUpload} method="post">
                               <Button
                                 onClick={this.onClickHandler}
                                 icon={<UploadOutlined />}
@@ -350,7 +350,7 @@ class RegistVANDialog extends Component {
                         <div>통장 사본</div>
                         <div>
                           <FormItem name="bankbookImg">
-                            <Upload {...imgUpload}>
+                            <Upload {...imgUpload} method="post">
                               <Button
                                 onClick={this.onClickHandler}
                                 icon={<UploadOutlined />}

@@ -1,5 +1,6 @@
 @media screen and (min-width: 1200px) {
-  .desk {}
+  .desk {
+  }
 
   .mobile {
     display: none !important;
@@ -151,28 +152,29 @@
     margin-top: 40px;
   }
 
-  #reception-table .ant-table .ant-table-tbody>tr>td:first-child {
+  #reception-table .ant-table .ant-table-tbody > tr > td:first-child {
     padding-left: 20px !important;
   }
 
-  #reception-table .ant-table .ant-table-tbody>tr>td:last-child {
+  #reception-table .ant-table .ant-table-tbody > tr > td:last-child {
     padding-right: 20px !important;
   }
 
-  #reception-table .ant-table .ant-table-thead>tr>th:last-child {
+  #reception-table .ant-table .ant-table-thead > tr > th:last-child {
     padding-right: 20px !important;
   }
 
   .tableSub {
     width: 150px;
   }
-
-  .delivery-status {
-    float: right;
+  .delivery-status-box {
+    width: 100%;
+    text-align: right;
+  }
+  .delivery-status-box > div {
     display: inline-block;
     width: 125px;
-    font-size: 18px;
-    border: 1px solid;
+    font-size: 16px;
     text-align: center;
     margin-right: 15px;
     margin-top: -30px;

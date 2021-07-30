@@ -5,7 +5,7 @@ import {
   MessageOutlined,
   NotificationFilled,
   PhoneOutlined,
-  PushpinOutlined
+  PushpinOutlined,
 } from "@ant-design/icons";
 import {
   Button,
@@ -15,7 +15,7 @@ import {
   Modal,
   Popover,
   Select,
-  Table
+  Table,
 } from "antd";
 import moment from "moment";
 import React, { Component } from "react";
@@ -42,7 +42,7 @@ import {
   deliveryStatusCode,
   modifyType,
   paymentMethod,
-  rowColorName
+  rowColorName,
 } from "../../lib/util/codeUtil";
 import { formatDate } from "../../lib/util/dateUtil";
 import { comma, remainTime } from "../../lib/util/numberUtil";
@@ -1730,23 +1730,21 @@ class ReceptionStatus extends Component {
               }}
             />
           </div>
-          <div className="desk">
-            <div className="delivery-status" style={{ background: "white" }}>
-              픽업 :{" "}
-              {this.state.list.filter((item) => item.orderStatus === 3).length}{" "}
+          <div className="delivery-status-box desk">
+            <div style={{ background: "rgb(255, 204, 204)" }}>
+              접수 :{" "}
+              {this.state.list.filter((item) => item.orderStatus === 1).length}{" "}
               건
             </div>
-            <div className="delivery-status" style={{ background: "#d6edfe" }}>
+
+            <div style={{ background: "#d6edfe" }}>
               배차 :{" "}
               {this.state.list.filter((item) => item.orderStatus === 2).length}{" "}
               건
             </div>
-            <div
-              className="delivery-status"
-              style={{ background: "rgb(255, 204, 204)" }}
-            >
-              접수 :{" "}
-              {this.state.list.filter((item) => item.orderStatus === 1).length}{" "}
+            <div style={{ background: "white" }}>
+              픽업 :{" "}
+              {this.state.list.filter((item) => item.orderStatus === 3).length}{" "}
               건
             </div>
           </div>
