@@ -4696,7 +4696,7 @@
 
   .VAN-content {
     padding: 25px;
-    width: 30vw;
+    width: auto;
     background-color: white;
   }
   .VAN-content > div:first-child {
@@ -4714,26 +4714,53 @@
     float: right;
     padding: 8px;
   }
+
   .VAN-txt-sub {
     color: #888;
-    padding-left: 5px;
+    padding-left: 130px;
+    margin-top: -25px;
+    margin-bottom: 10px;
+    font-size: 13px;
+  }
+  .VAN-content-first-box {
+    border-bottom: 1px solid #d1d1d1;
+    margin-bottom: 30px;
+  }
+  .VAN-content-first-box > div:first-child {
+    width: 130px;
+  }
+  .VAN-content-first-box > div:nth-child(2) {
+    display: inline-block;
   }
   .VAN-content-box {
-    padding: 10px 0;
-  }
-  .VAN-content-box > div {
-    padding: 10px 0;
-  }
-  .VAN-content-box .mainTitle {
-    width: 120px;
-  }
-  .VAN-upload {
     display: inline-block;
+    width: auto;
+    vertical-align: top;
+    padding-right: 30px;
+  }
+  .right {
+    padding-right: 50px;
+  }
+  .VAN-content-block > div:first-child {
+    width: 130px;
+    display: inline-block;
+    font-size: 16px;
+    vertical-align: middle;
+    font-weight: bold;
+  }
+  .VAN-content-block > div:last-child {
+    display: inline-block;
+  }
+  .VAN-content-block .ant-upload-list-item-name {
+    flex: auto;
+    padding: 0 8px;
+    width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
   .VAN-btn {
-    display: inline-block;
-    position: absolute;
-    bottom: 55px;
-    right: 55px;
+    text-align: right;
+    margin-bottom: 20px;
   }
 }

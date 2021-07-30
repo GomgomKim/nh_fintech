@@ -48,12 +48,7 @@ const tableStatusString = {
   3: "탈퇴",
 };
 
-const kindString = [
-  "",
-  "리스료",
-  "대출 상환",
-  "산재 보험비",
-];
+const kindString = ["", "리스료", "대출 상환", "산재 보험비"];
 
 // 가맹점 - 출금설정
 const withdrawString = {
@@ -126,7 +121,7 @@ const staffString = {
 
 const riderGroupString = ["", "A", "B", "C", "D", "E"];
 
-const riderStatusCode = ['', '근무', '휴식', '퇴근'];
+const riderStatusCode = ["", "근무", "휴식", "퇴근"];
 
 const riderLevelText = [
   "",
@@ -319,7 +314,19 @@ const deliveryZone = [
     toggle: false,
   },
 ];
+const contarctType = {
+  1: "기존 사업자",
+  0: "신규 사업자",
+};
 
+const phoneAgency = {
+  0: "SKT",
+  1: "KT",
+  2: "LG U+",
+  3: "SKT(알뜰폰)",
+  4: "KT(알뜰폰)",
+  5: "LG U+(알뜰폰)",
+};
 export {
   deliveryStatusCode,
   blockString,
@@ -359,5 +366,6 @@ export {
   deliveryZone,
   riderStatusCode,
   kindString,
+  contarctType,
+  phoneAgency,
 };
-
