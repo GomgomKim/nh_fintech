@@ -1606,93 +1606,95 @@ class ReceptionStatus extends Component {
             <Checkbox
               defaultChecked={this.state.checkedCompleteCall ? "checked" : ""}
               onChange={this.handleToggleCompleteCall}
-            ></Checkbox>
-            <span className="span1">완료조회</span>
+            >
+              <span className="span1">완료조회</span>
+            </Checkbox>
+
+            {!this.state.checkedCompleteCall && (
+              <div className="filtering-box-wrapper">
+                <div className="filtering-box">
+                  <div className="filtering-name">주문상태</div>
+
+                  {this.state.orderStatus.map((o) => {
+                    return (
+                      <div className="filtering-btn">
+                        <Checkbox
+                          key={o.key}
+                          value={o.value}
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              const result =
+                                this.state.selectedOrderStatus.concat(
+                                  e.target.value
+                                );
+                              this.setState({
+                                selectedOrderStatus: result,
+                              });
+                            } else {
+                              const result =
+                                this.state.selectedOrderStatus.filter(
+                                  (el) => el !== e.target.value
+                                );
+                              this.setState({
+                                selectedOrderStatus: result,
+                              });
+                            }
+                          }}
+                          defaultChecked={
+                            this.state.selectedOrderStatus.includes(o.value)
+                              ? "checked"
+                              : ""
+                          }
+                        >
+                          {o.text}
+                        </Checkbox>
+                      </div>
+                    );
+                  })}
+                </div>
+                <div className="filtering-box">
+                  <div className="filtering-name">결제방식</div>
+
+                  {this.state.paymentMethod.map((o) => {
+                    return (
+                      <div className="filtering-btn">
+                        <Checkbox
+                          key={o.key}
+                          value={o.value}
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              const result =
+                                this.state.selectedPaymentMethods.concat(
+                                  e.target.value
+                                );
+                              this.setState({
+                                selectedPaymentMethods: result,
+                              });
+                            } else {
+                              const result =
+                                this.state.selectedPaymentMethods.filter(
+                                  (el) => el !== e.target.value
+                                );
+                              this.setState({
+                                selectedPaymentMethods: result,
+                              });
+                            }
+                          }}
+                          defaultChecked={
+                            this.state.selectedPaymentMethods.includes(o.value)
+                              ? "checked"
+                              : ""
+                          }
+                        >
+                          {o.text}
+                        </Checkbox>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
           </div>
-          {!this.state.checkedCompleteCall && (
-            <div className="filtering-box-wrapper">
-              <div className="filtering-box">
-                <div className="timeDelay-sub-title">주문상태</div>
-
-                {this.state.orderStatus.map((o) => {
-                  return (
-                    <div className="filtering-btn">
-                      <Checkbox
-                        key={o.key}
-                        value={o.value}
-                        onChange={(e) => {
-                          if (e.target.checked) {
-                            const result =
-                              this.state.selectedOrderStatus.concat(
-                                e.target.value
-                              );
-                            this.setState({
-                              selectedOrderStatus: result,
-                            });
-                          } else {
-                            const result =
-                              this.state.selectedOrderStatus.filter(
-                                (el) => el !== e.target.value
-                              );
-                            this.setState({
-                              selectedOrderStatus: result,
-                            });
-                          }
-                        }}
-                        defaultChecked={
-                          this.state.selectedOrderStatus.includes(o.value)
-                            ? "checked"
-                            : ""
-                        }
-                      >
-                        {o.text}
-                      </Checkbox>
-                    </div>
-                  );
-                })}
-              </div>
-              <div className="filtering-box">
-                <div className="timeDelay-sub-title">결제방식</div>
-
-                {this.state.paymentMethod.map((o) => {
-                  return (
-                    <div className="filtering-btn">
-                      <Checkbox
-                        key={o.key}
-                        value={o.value}
-                        onChange={(e) => {
-                          if (e.target.checked) {
-                            const result =
-                              this.state.selectedPaymentMethods.concat(
-                                e.target.value
-                              );
-                            this.setState({
-                              selectedPaymentMethods: result,
-                            });
-                          } else {
-                            const result =
-                              this.state.selectedPaymentMethods.filter(
-                                (el) => el !== e.target.value
-                              );
-                            this.setState({
-                              selectedPaymentMethods: result,
-                            });
-                          }
-                        }}
-                        defaultChecked={
-                          this.state.selectedPaymentMethods.includes(o.value)
-                            ? "checked"
-                            : ""
-                        }
-                      >
-                        {o.text}
-                      </Checkbox>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          )}
           <div className="mobile">
             <Search
               placeholder="가맹점검색"
@@ -1736,7 +1738,6 @@ class ReceptionStatus extends Component {
               {this.state.list.filter((item) => item.orderStatus === 1).length}{" "}
               건
             </div>
-
             <div style={{ background: "#d6edfe" }}>
               배차 :{" "}
               {this.state.list.filter((item) => item.orderStatus === 2).length}{" "}
