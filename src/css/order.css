@@ -166,6 +166,19 @@
     padding-right: 20px !important;
   }
 
+  .ant-table .ant-table-thead > tr > th {
+    background-color: black;
+    color: white;
+  }
+
+  #reception-table .ant-table .ant-table-tbody > tr {
+    width: "100vw";
+  }
+
+  .ant-table .ant-table-thead > tr > th.ant-table-cell-scrollbar {
+    display: none;
+  }
+
   .tableSub {
     width: 150px;
   }

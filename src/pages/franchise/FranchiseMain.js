@@ -8,17 +8,16 @@ import { httpGet, httpPost, httpUrl } from "../../api/httpClient";
 import { updateComplete, updateError } from "../../api/Modals";
 // import BlindControlDialog from "../../components/dialog/franchise/BlindControlDialog";
 import BlindFranListDialog from "../../components/dialog/franchise/BlindFranListDialog";
-import RegistFranDialog from "../../components/dialog/franchise/RegistFranDialog";
-import SearchAddressDialog from "../../components/dialog/franchise/SearchAddressDialog";
 import RegistAccountDialog from "../../components/dialog/franchise/RegistAccountDialog";
+import RegistFranDialog from "../../components/dialog/franchise/RegistFranDialog";
 import RegistVANDialog from "../../components/dialog/franchise/RegistVANDialog";
+import SearchAddressDialog from "../../components/dialog/franchise/SearchAddressDialog";
 import SelectBox from "../../components/input/SelectBox";
 import "../../css/franchise.css";
 import "../../css/franchise_m.css";
 import {
   statusString,
-  tableStatusString,
-  withdrawString,
+  tableStatusString
 } from "../../lib/util/codeUtil";
 import { formatDateToDay } from "../../lib/util/dateUtil";
 import { comma } from "../../lib/util/numberUtil";
@@ -885,6 +884,7 @@ class FranchiseMain extends Component {
             pagination={this.state.pagination}
             onChange={this.handleTableChange}
             expandedRowRender={expandedRowRender}
+            scroll={{ y: '50vh' }}
           />
         </div>
         {this.state.modifyFranOpen && (

@@ -5,7 +5,7 @@ import {
   MessageOutlined,
   NotificationFilled,
   PhoneOutlined,
-  PushpinOutlined,
+  PushpinOutlined
 } from "@ant-design/icons";
 import {
   Button,
@@ -15,7 +15,7 @@ import {
   Modal,
   Popover,
   Select,
-  Table,
+  Table
 } from "antd";
 import moment from "moment";
 import React, { Component } from "react";
@@ -42,7 +42,7 @@ import {
   deliveryStatusCode,
   modifyType,
   paymentMethod,
-  rowColorName,
+  rowColorName
 } from "../../lib/util/codeUtil";
 import { formatDate } from "../../lib/util/dateUtil";
 import { comma, remainTime } from "../../lib/util/numberUtil";
@@ -1834,6 +1834,7 @@ class ReceptionStatus extends Component {
               pagination={false}
               // onChange={this.handleTableChange}
               expandedRowRender={expandedRowRender}
+              scroll={{ y: '50vh' }}
             />
           </div>
           <div id="reception-table" className="mobile">
@@ -1866,15 +1867,19 @@ class ReceptionStatus extends Component {
             <Button
               onClick={() => {
                 if (this.state.checkedCompleteCall) {
-                  if (this.state.totalPagination.pageSize >= this.state.totalPagination.total) {
+                  if (
+                    this.state.totalPagination.pageSize >=
+                    this.state.totalPagination.total
+                  ) {
                     Modal.info({
                       title: "주문정보 오류",
                       content: "더 이상 주문정보가 존재하지 않습니다.",
                     });
                     return;
                   }
-                  this.setState({
-                    totalPagination: {
+                  this.setState(
+                    {
+                      totalPagination: {
                         ...this.state.totalPagination,
                         pageSize: this.state.totalPagination.pageSize + 100,
                       },
@@ -1883,17 +1888,19 @@ class ReceptionStatus extends Component {
                       this.getCompleteList();
                     }
                   );
-
-                }
-                else {
-                  if (this.state.pagination.pageSize >= this.state.pagination.total) {
+                } else {
+                  if (
+                    this.state.pagination.pageSize >=
+                    this.state.pagination.total
+                  ) {
                     Modal.info({
                       title: "주문정보 오류",
                       content: "더 이상 주문정보가 존재하지 않습니다.",
                     });
                     return;
                   }
-                  this.setState({
+                  this.setState(
+                    {
                       pagination: {
                         ...this.state.pagination,
                         pageSize: this.state.pagination.pageSize + 100,
@@ -1903,7 +1910,6 @@ class ReceptionStatus extends Component {
                       this.getList();
                     }
                   );
-
                 }
               }}
             >
