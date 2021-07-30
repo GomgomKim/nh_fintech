@@ -18,8 +18,8 @@ const cardStatus = ["요청", "등록완료"];
 const modifyType = {
   1: [2, 5],
   2: [1, 5],
-  3: [1, 2, 5],
-  4: [],
+  3: [1, 2, 4, 5],
+  4: [3],
   5: [1],
 };
 
@@ -127,7 +127,7 @@ const staffString = {
 
 const riderGroupString = ["", "A", "B", "C", "D", "E"];
 
-const riderStatusCode = ['', '근무', '휴식', '퇴근'];
+const riderStatusCode = ["", "근무", "휴식", "퇴근"];
 
 const riderLevelText = [
   "",
@@ -320,7 +320,19 @@ const deliveryZone = [
     toggle: false,
   },
 ];
+const contarctType = {
+  1: "기존 사업자",
+  0: "신규 사업자",
+};
 
+const phoneAgency = {
+  0: "SKT",
+  1: "KT",
+  2: "LG U+",
+  3: "SKT(알뜰폰)",
+  4: "KT(알뜰폰)",
+  5: "LG U+(알뜰폰)",
+};
 export {
   deliveryStatusCode,
   blockString,
@@ -360,5 +372,6 @@ export {
   deliveryZone,
   riderStatusCode,
   kindString,
+  contarctType,
+  phoneAgency,
 };
-
