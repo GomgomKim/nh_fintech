@@ -754,7 +754,7 @@ class MapControlDialog extends Component {
         title: "거리(m)",
         dataIndex: "distance",
         className: "table-column-center",
-        render: (data, row) => {comma(data)},
+        render: (data, row) => <div>{comma(data)}</div>,
       },
       {
         title: "주문수정",

@@ -1195,7 +1195,7 @@ class ReceptionStatus extends Component {
           dataIndex: "distance",
           className: "table-column-center desk",
           key: (row) => `distance:${row.distance}`,
-          render: (data, row) => {comma(data)},
+          render: (data, row) => <div>{comma(data)}</div>,
         },
         {
           title: "결제방식",
