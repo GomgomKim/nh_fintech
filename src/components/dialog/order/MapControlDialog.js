@@ -18,7 +18,7 @@ import {
   rowColorName,
 } from "../../../lib/util/codeUtil";
 import { formatDate, formatHM } from "../../../lib/util/dateUtil";
-import { remainTime } from "../../../lib/util/numberUtil";
+import { comma, remainTime } from "../../../lib/util/numberUtil";
 
 const Option = Select.Option;
 const navermaps = window.naver.maps;
@@ -751,9 +751,10 @@ class MapControlDialog extends Component {
         ),
       },
       {
-        title: "거리(km)",
+        title: "거리(m)",
         dataIndex: "distance",
         className: "table-column-center",
+        render: (data, row) => {comma(data)},
       },
       {
         title: "주문수정",

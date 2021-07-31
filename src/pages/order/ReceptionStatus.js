@@ -578,7 +578,7 @@ class ReceptionStatus extends Component {
                 {/* {row.itemPrepared ? "완료" : "준비중"} <br />{" "} */}
               </p>
               {row.destAddr1 + " " + row.destAddr2} <br />
-              {row.riderName} / {row.distance}km /{" "}
+              {row.riderName} / {comma(row.distance)}m /{" "}
               {
                 paymentMethod[
                   row.orderPayments[0]
@@ -1191,10 +1191,11 @@ class ReceptionStatus extends Component {
         //   render: (data) => <div>{comma(data)}</div>,
         // },
         {
-          title: "거리(km)",
+          title: "거리(m)",
           dataIndex: "distance",
           className: "table-column-center desk",
           key: (row) => `distance:${row.distance}`,
+          render: (data, row) => {comma(data)},
         },
         {
           title: "결제방식",
@@ -1834,7 +1835,7 @@ class ReceptionStatus extends Component {
               pagination={false}
               // onChange={this.handleTableChange}
               expandedRowRender={expandedRowRender}
-              scroll={{ y: '50vh' }}
+              // scroll={{ y: '50vh' }}
             />
           </div>
           <div id="reception-table" className="mobile">
