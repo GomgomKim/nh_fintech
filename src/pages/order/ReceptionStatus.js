@@ -20,7 +20,7 @@ import {
 import moment from "moment";
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { httpPost, httpPostWithNoLoading, httpUrl } from "../../api/httpClient";
+import { httpGet, httpPost, httpPostWithNoLoading, httpUrl } from "../../api/httpClient";
 import { customError } from "../../api/Modals";
 import ChattingCurrentRoom from "../../components/dialog/common/ChattingCurrentRoom";
 import ChattingDialog from "../../components/dialog/common/ChattingDialog";
@@ -108,6 +108,9 @@ class ReceptionStatus extends Component {
       messageTargetName: null,
       messageTargetLevel: null,
 
+      totalCancel: 0,
+      totalComplete: 0,
+
       orderStatus: [
         {
           key: "orderStatus-1",
@@ -158,6 +161,8 @@ class ReceptionStatus extends Component {
       this.pollingFunction,
       this.state.pullingInterval
     );
+    this.canceledTotal();
+    this.completedTotal();
   }
 
   componentWillUnmount() {
@@ -180,7 +185,7 @@ class ReceptionStatus extends Component {
   };
 
   getList = () => {
-    console.log("getlist");
+    // console.log("getlist");
     try {
       const startDate = this.state.selectedDate;
       const endDate = new moment();
@@ -198,11 +203,11 @@ class ReceptionStatus extends Component {
       if (this.state.rider) {
         data.riderName = this.state.rider;
       }
-      console.log(data);
+      // console.log(data);
       httpPostWithNoLoading(httpUrl.orderList, [], data)
         .then((res) => {
           if (res.result === "SUCCESS") {
-            console.log(res);
+            // console.log(res);
             this.setState({
               list: res.data.orders,
               pagination: {
@@ -307,6 +312,18 @@ class ReceptionStatus extends Component {
     } else {
       this.getList();
     }
+  };
+
+  canceledTotal = () => {
+    httpGet(httpUrl.canceledCount,[],{}).then((res)=>{
+      this.setState({totalCancel: res.data})
+    })
+  };
+
+  completedTotal = () => {
+    httpGet(httpUrl.completedCount,[],{}).then((res)=>{
+      this.setState({totalComplete: res.data})
+    })
   };
 
   assignRider = (data, orderIdx) => {
@@ -1758,23 +1775,21 @@ class ReceptionStatus extends Component {
               {this.state.list.filter((item) => item.orderStatus === 3).length}{" "}
               건
             </div>
-          </div>
-          {/* <div className="delivery-status-box-sub desk">              
             <div
               style={{ background: "gray" }}
             >
               완료 :{" "}
-              {this.state.list.filter((item) => item.orderStatus === 4).length}{" "}
+              {this.state.totalComplete}{" "}
               건
             </div>
             <div
               style={{ background: "gray" }}
             >
               취소 :{" "}
-              {this.state.list.filter((item) => item.orderStatus === 5).length}{" "}
+              {this.state.totalCancel}{" "}
               건
             </div>
-          </div> */}
+          </div>
           <div className="mobile">
             <div
               className="delivery-status-mobile"
@@ -1800,12 +1815,12 @@ class ReceptionStatus extends Component {
               {this.state.list.filter((item) => item.orderStatus === 3).length}{" "}
               건
             </div>
-            {/* <div
+            <div
               className="delivery-status-mobile"
               style={{ background: "gray" }}
             >
               완료 :{" "}
-              {this.state.list.filter((item) => item.orderStatus === 4).length}{" "}
+              {this.state.totalComplete}{" "}
               건
             </div>
             <div
@@ -1813,9 +1828,9 @@ class ReceptionStatus extends Component {
               style={{ background: "gray" }}
             >
               취소 :{" "}
-              {this.state.list.filter((item) => item.orderStatus === 5).length}{" "}
+              {this.state.totalCancel}{" "}
               건
-            </div> */}
+            </div>
           </div>
 
           <div id="reception-table" className="desk">
@@ -1835,7 +1850,7 @@ class ReceptionStatus extends Component {
               pagination={false}
               // onChange={this.handleTableChange}
               expandedRowRender={expandedRowRender}
-              scroll={{ y: '50vh' }}
+              // scroll={{ y: "50vh" }}
             />
           </div>
           <div id="reception-table" className="mobile">

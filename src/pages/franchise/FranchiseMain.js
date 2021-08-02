@@ -767,7 +767,7 @@ class FranchiseMain extends Component {
                     pagination: {
                       total: 0,
                       current: 1,
-                      pageSize: 10,
+                      pageSize: this.state.pagination.pageSize,
                     },
                   },
                   () => this.getList()
