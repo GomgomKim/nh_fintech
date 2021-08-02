@@ -180,7 +180,7 @@ class ReceptionStatus extends Component {
   };
 
   getList = () => {
-    console.log("getlist");
+    // console.log("getlist");
     try {
       const startDate = this.state.selectedDate;
       const endDate = new moment();
@@ -198,11 +198,11 @@ class ReceptionStatus extends Component {
       if (this.state.rider) {
         data.riderName = this.state.rider;
       }
-      console.log(data);
+      // console.log(data);
       httpPostWithNoLoading(httpUrl.orderList, [], data)
         .then((res) => {
           if (res.result === "SUCCESS") {
-            console.log(res);
+            // console.log(res);
             this.setState({
               list: res.data.orders,
               pagination: {
@@ -1835,7 +1835,7 @@ class ReceptionStatus extends Component {
               pagination={false}
               // onChange={this.handleTableChange}
               expandedRowRender={expandedRowRender}
-              scroll={{ y: '50vh' }}
+              // scroll={{ y: "50vh" }}
             />
           </div>
           <div id="reception-table" className="mobile">
