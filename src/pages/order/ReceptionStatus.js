@@ -1835,7 +1835,7 @@ class ReceptionStatus extends Component {
               pagination={false}
               // onChange={this.handleTableChange}
               expandedRowRender={expandedRowRender}
-              // scroll={{ y: '50vh' }}
+              scroll={{ y: '50vh' }}
             />
           </div>
           <div id="reception-table" className="mobile">
