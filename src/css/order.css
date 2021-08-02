@@ -124,6 +124,10 @@
     background-color: #ff0000;
     color: white;
   }
+  .table-redalert:hover {
+    background-color: #fff;
+    color: #000;
+  }
 
   .table-gray {
     background-color: gray;
@@ -191,6 +195,7 @@
   .delivery-status-box {
     display: inline-block;
     float: right;
+    margin-bottom: 5px;
   }
   .delivery-status-box > div {
     display: inline-block;
@@ -205,20 +210,5 @@
   }
   .delivery-status-box > div:nth-child(3) {
     border: 1px solid #d1d1d1;
-  }
-  .delivery-status-box-sub {
-    display: inline-block;
-    float: right;
-  }
-  .delivery-status-box-sub > div {
-    display: inline-block;
-    width: 125px;
-    font-size: 15px;
-    text-align: center;
-    margin-right: 15px;
-    margin-top: -2.5px;
-    border-radius: 5px;
-    height: 35px;
-    line-height: 35px;
   }
 }
