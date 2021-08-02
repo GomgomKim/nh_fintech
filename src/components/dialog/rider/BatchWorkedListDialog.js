@@ -17,7 +17,7 @@ class BatchWorkListDialog extends Component {
         current: 1,
         pageSize: 5,
       },
-      kind: 1,
+      kind: '',
     };
     this.formRef = React.createRef();
   }
