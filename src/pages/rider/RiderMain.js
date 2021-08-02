@@ -1,7 +1,13 @@
 import { Button, Image, Input, Modal, Popover, Table } from "antd";
 import moment from "moment";
 import React, { Component } from "react";
-import { httpGet, httpGetWithNoLoading, httpPost, httpUrl, imageUrl } from "../../api/httpClient";
+import {
+  httpGet,
+  httpGetWithNoLoading,
+  httpPost,
+  httpUrl,
+  imageUrl,
+} from "../../api/httpClient";
 import { customAlert, updateError } from "../../api/Modals";
 import BatchWorkedListDialog from "../../components/dialog/rider/BatchWorkedListDialog";
 import BatchWorkListDialog from "../../components/dialog/rider/BatchWorkListDialog";
@@ -16,8 +22,10 @@ import "../../css/order.css";
 import "../../css/order_m.css";
 import "../../css/rider.css";
 import {
-  riderLevelText, riderStatusCode, statusString,
-  tableStatusString
+  riderLevelText,
+  riderStatusCode,
+  statusString,
+  tableStatusString,
 } from "../../lib/util/codeUtil";
 import { formatDateToDay } from "../../lib/util/dateUtil";
 import { comma } from "../../lib/util/numberUtil";
@@ -56,8 +64,8 @@ class RiderMain extends Component {
       userStatus: 0,
       selRider: "",
       withdrawPassword: 1111,
-      resultsStatus:[],
-      results:[],
+      resultsStatus: [],
+      results: [],
     };
   }
 
@@ -111,7 +119,7 @@ class RiderMain extends Component {
     let pageSize = this.state.paginationStatus.pageSize;
     let pageNum = this.state.paginationStatus.current;
     // riderLevel = this.state.riderLevel;
-    let searchName = '';
+    let searchName = "";
     let userStatus = this.state.userStatus === 0 ? "" : this.state.userStatus;
     var data = [
       pageSize,
@@ -236,11 +244,11 @@ class RiderMain extends Component {
   };
   //일차감 내역
   openTaskWorkListModal = () => {
-    this.setState({ taskWorkListOpen : true})
-  }
+    this.setState({ taskWorkListOpen: true });
+  };
   closeTaskWorkListModal = () => {
-    this.setState({ taskWorkListOpen : false})
-  }
+    this.setState({ taskWorkListOpen: false });
+  };
 
   //기사 그룹관리
   openRiderGroupModal = () => {
@@ -377,7 +385,7 @@ class RiderMain extends Component {
       {
         title: "아이디",
         dataIndex: "id",
-        width:"7%",
+        width: "7%",
         className: "table-column-center desk tableSub",
         sorter: (a, b) => a.id.localeCompare(b.id),
       },
@@ -385,41 +393,41 @@ class RiderMain extends Component {
         title: "직급",
         dataIndex: "riderLevel",
         className: "table-column-center desk tableSub",
-        filters:[
+        filters: [
           {
-            text:'라이더',
+            text: "라이더",
             value: 1,
           },
           {
-            text:'부팀장',
+            text: "부팀장",
             value: 2,
           },
           {
-            text:'팀장',
+            text: "팀장",
             value: 3,
           },
           {
-            text:'부본부장',
+            text: "부본부장",
             value: 4,
           },
           {
-            text:'본부장',
+            text: "본부장",
             value: 5,
           },
           {
-            text:'부지점장',
+            text: "부지점장",
             value: 6,
           },
           {
-            text:'지점장',
+            text: "지점장",
             value: 7,
           },
           {
-            text:'부센터장',
+            text: "부센터장",
             value: 8,
           },
           {
-            text:'센터장',
+            text: "센터장",
             value: 9,
           },
         ],
@@ -517,15 +525,15 @@ class RiderMain extends Component {
         className: "table-column-center desk",
         filters: [
           {
-            text:"사용",
+            text: "사용",
             value: 1,
           },
           {
-            text:"중지",
+            text: "중지",
             value: 2,
           },
           {
-            text:"탈퇴",
+            text: "탈퇴",
             value: 3,
           },
         ],
@@ -575,15 +583,15 @@ class RiderMain extends Component {
         className: "table-column-center desk",
         filters: [
           {
-            text:"근무",
+            text: "근무",
             value: 1,
           },
           {
-            text:"휴식",
+            text: "휴식",
             value: 2,
           },
           {
-            text:"퇴근",
+            text: "퇴근",
             value: 3,
           },
         ],
@@ -709,7 +717,7 @@ class RiderMain extends Component {
                           alert(response.data.advanceMsg);
                         }
                       })
-                      .catch((e) => { });
+                      .catch((e) => {});
                   }}
                 >
                   등록하기
@@ -822,7 +830,7 @@ class RiderMain extends Component {
             <Button
               className="riderManageBtn"
               onClick={this.openTaskSchedulerModal}
-              >
+            >
               일차감
             </Button>
             {this.state.taskWorkListOpen && (
@@ -835,15 +843,33 @@ class RiderMain extends Component {
               일차감 내역
             </Button>
           </div>
-          <div className= "desk">
+          <div className="desk">
             <div className="rider-status">
-              퇴근 : {this.state.resultsStatus.filter(item => item.riderStatus === 3).length} 명
+              퇴근 :{" "}
+              {
+                this.state.resultsStatus.filter(
+                  (item) => item.riderStatus === 3
+                ).length
+              }{" "}
+              명
             </div>
             <div className="rider-status">
-              휴식 : {this.state.resultsStatus.filter(item => item.riderStatus === 2).length} 명
+              휴식 :{" "}
+              {
+                this.state.resultsStatus.filter(
+                  (item) => item.riderStatus === 2
+                ).length
+              }{" "}
+              명
             </div>
             <div className="rider-status">
-              근무 : {this.state.resultsStatus.filter(item => item.riderStatus === 1).length} 명
+              근무 :{" "}
+              {
+                this.state.resultsStatus.filter(
+                  (item) => item.riderStatus === 1
+                ).length
+              }{" "}
+              명
             </div>
           </div>
           {this.state.blindListOpen && (
@@ -852,7 +878,7 @@ class RiderMain extends Component {
               data={this.state.blindRiderData}
             />
           )}
-          <div id="#rider-dataTableLayout" className="dataTableLayout desk">
+          <div id="rider-dataTableLayout" className="dataTableLayout desk">
             <Table
               rowKey={(record) => record.idx}
               dataSource={this.state.results}
@@ -860,10 +886,10 @@ class RiderMain extends Component {
               pagination={this.state.pagination}
               onChange={this.handleTableChange}
               expandedRowRender={expandedRowRender}
-              scroll={{ y: '50vh' }}
+              scroll={{ y: "50vh" }}
             />
           </div>
-          <div id="#rider-dataTableLayout" className="dataTableLayout mobile">
+          <div id="rider-dataTableLayout" className="dataTableLayout mobile">
             <Table
               rowKey={(record) => record.idx}
               dataSource={this.state.results}

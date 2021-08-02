@@ -171,13 +171,15 @@
     color: white;
   }
 
-  #reception-table .ant-table-body .ant-table-measure-row {
+  #reception-table .ant-table-measure-row > td:last-child {
     display: none;
   }
-
-  /* #reception-table .ant-table .ant-table-tbody > tr {
-    width: "100vw";
-  } */
+  .dataTableLayout2 .ant-table-measure-row > td:last-child {
+    display: none;
+  }
+  #rider-dataTableLayout .ant-table-measure-row > td:last-child {
+    display: none;
+  }
 
   .ant-table .ant-table-thead > tr > th.ant-table-cell-scrollbar {
     display: none;
