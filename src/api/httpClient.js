@@ -36,7 +36,7 @@ const httpExecWithNoLoading = (method, url, data) => {
       })
       .catch((error) => {
         if (error.message.includes("401")) {
-          alert("로그인이 만료되었습니다. 다시 로그인해주세요");
+          // alert("로그인이 만료되었습니다. 다시 로그인해주세요");
           reactLocalStorage.remove("adminUser");
           global.location.href = "/";
         }
@@ -83,7 +83,7 @@ const httpExec = (method, url, data) => {
       .catch((error) => {
         // console.log(JSON.stringify(error, null, 4));
         if (error.message.includes("401")) {
-          alert("로그인이 만료되었습니다. 다시 로그인해주세요");
+          // alert("로그인이 만료되었습니다. 다시 로그인해주세요");
           reactLocalStorage.remove("adminUser");
           global.location.href = "/";
         }
