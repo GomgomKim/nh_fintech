@@ -124,6 +124,10 @@
     background-color: #ff0000;
     color: white;
   }
+  .table-redalert:hover {
+    background-color: #fff;
+    color: #000;
+  }
 
   .table-gray {
     background-color: gray;
