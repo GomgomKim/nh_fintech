@@ -1,24 +1,28 @@
-.riderContainer .ant-table-tbody > tr > td > 
-.ant-table-wrapper:only-child .ant-table{
-    margin: 0px;
+.riderContainer
+  .ant-table-tbody
+  > tr
+  > td
+  > .ant-table-wrapper:only-child
+  .ant-table {
+  margin: 0px;
 }
 
 .searchRiderInput {
-    width: 200px !important;
-    margin-left: 15px;
+  width: 200px !important;
+  margin-left: 15px;
 }
 @media screen and (min-width: 1200px) {
-    .rider-status {
-        float: right;
-        display:inline-block;
-        width:120px;
-        font-size:15px;
-        border:1px solid; 
-        text-align: center;
-        margin-right: 15px;
-        margin-top: -29px;
-        border-radius: 5px;
-        height: 30px;
-        line-height: 30px;
-    }
+  .rider-status {
+    float: right;
+    display: inline-block;
+    width: 120px;
+    font-size: 15px;
+    border: 1px solid #d1d1d1;
+    text-align: center;
+    margin-right: 15px;
+    margin-top: -29px;
+    border-radius: 5px;
+    height: 35px;
+    line-height: 35px;
+  }
 }
