@@ -15,10 +15,7 @@ import SearchAddressDialog from "../../components/dialog/franchise/SearchAddress
 import SelectBox from "../../components/input/SelectBox";
 import "../../css/franchise.css";
 import "../../css/franchise_m.css";
-import {
-  statusString,
-  tableStatusString
-} from "../../lib/util/codeUtil";
+import { statusString, tableStatusString } from "../../lib/util/codeUtil";
 import { formatDateToDay } from "../../lib/util/dateUtil";
 import { comma } from "../../lib/util/numberUtil";
 
@@ -64,6 +61,9 @@ class FranchiseMain extends Component {
     // console.log("props tag :"+this.props)
   }
 
+  vanWatinAlert() {
+    alert("준비중입니다.");
+  }
   // 가맹점 검색
   onSearchFranchisee = (value) => {
     this.setState(
@@ -451,15 +451,15 @@ class FranchiseMain extends Component {
         className: "table-column-center desk",
         filters: [
           {
-            text:"사용",
+            text: "사용",
             value: 1,
           },
           {
-            text:"중지",
+            text: "중지",
             value: 2,
           },
           {
-            text:"탈퇴",
+            text: "탈퇴",
             value: 3,
           },
         ],
@@ -510,8 +510,7 @@ class FranchiseMain extends Component {
         title: "주소",
         dataIndex: "addr1",
         className: "table-column-center desk",
-        sorter: (a, b) =>
-        (a.addr1 + a.addr2).localeCompare(b.addr1 + b.addr2),
+        sorter: (a, b) => (a.addr1 + a.addr2).localeCompare(b.addr1 + b.addr2),
         render: (data, row) => <div>{row.addr1 + " " + row.addr2}</div>,
       },
       {
@@ -569,7 +568,8 @@ class FranchiseMain extends Component {
           <div>
             <Button
               className="tabBtn surchargeTab"
-              onClick={() => this.setState({ ResistVANOpen: true })}
+              // onClick={() => this.setState({ ResistVANOpen: true })}
+              onClick={this.vanWatinAlert}
             >
               등록요청
             </Button>
@@ -583,12 +583,14 @@ class FranchiseMain extends Component {
           <div>
             <Button
               className="tabBtn surchargeTab"
-              onClick={() => this.setState({ accountRegistOpen: true, accountData: row })}
+              onClick={() =>
+                this.setState({ accountRegistOpen: true, accountData: row })
+              }
             >
               등록/수정
             </Button>
           </div>
-        )
+        ),
       },
       {
         title: "블라인드",
@@ -884,7 +886,7 @@ class FranchiseMain extends Component {
             pagination={this.state.pagination}
             onChange={this.handleTableChange}
             expandedRowRender={expandedRowRender}
-            scroll={{ y: '50vh' }}
+            scroll={{ y: "50vh" }}
           />
         </div>
         {this.state.modifyFranOpen && (
