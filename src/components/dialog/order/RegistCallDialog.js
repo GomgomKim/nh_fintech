@@ -238,26 +238,69 @@ class RegistCallDialog extends Component {
               if (res.result === "SUCCESS") {
                 console.log("getdeliveryprice res");
                 console.log(res);
-                self.formRef.current.setFieldsValue({
-                  deliveryPrice: comma(
-                    res.data.deliveryPriceBasic + res.data.deliveryPriceExtra
-                  ),
-                  basicDeliveryPrice: comma(res.data.deliveryPriceBasic),
-                  extraDeliveryPrice: this.props.data
-                    ? this.formRef.current.getFieldValue("extraDeliveryPrice")
-                    : res.data.deliveryPriceExtra,
-                });
-                this.setState({
-                  data: {
-                    ...this.state.data,
-                    deliveryPrice:
-                      res.data.deliveryPriceBasic + res.data.deliveryPriceExtra,
-                    basicDeliveryPrice: res.data.deliveryPriceBasic,
-                    extraDeliveryPrice: this.props.data
-                      ? this.formRef.current.getFieldValue("extraDeliveryPrice")
-                      : res.data.deliveryPriceExtra,
-                  },
-                });
+
+
+
+                // self.formRef.current.setFieldsValue({
+                //   deliveryPrice: comma(
+                //     res.data.deliveryPriceBasic + res.data.deliveryPriceExtra
+                //   ),
+                //   basicDeliveryPrice: comma(res.data.deliveryPriceBasic),
+                //   extraDeliveryPrice: this.props.data
+                //     ? this.formRef.current.getFieldValue("extraDeliveryPrice")
+                //     : res.data.deliveryPriceExtra,
+                // });
+                // this.setState({
+                //   data: {
+                //     ...this.state.data,
+                //     deliveryPrice:
+                //       res.data.deliveryPriceBasic + res.data.deliveryPriceExtra,
+                //     basicDeliveryPrice: res.data.deliveryPriceBasic,
+                //     extraDeliveryPrice: this.props.data
+                //       ? this.formRef.current.getFieldValue("extraDeliveryPrice")
+                //       : res.data.deliveryPriceExtra,
+                //   },
+                // });
+
+
+
+
+                if (this.props.data) {
+                  self.formRef.current.setFieldsValue({
+                    deliveryPrice: comma(
+                      res.data.deliveryPriceBasic + this.formRef.current.getFieldValue("extraDeliveryPrice")
+                    ),
+                    basicDeliveryPrice: comma(res.data.deliveryPriceBasic),
+                  });
+                  this.setState({
+                    data: {
+                      ...this.state.data,
+                      deliveryPrice:
+                        res.data.deliveryPriceBasic + this.formRef.current.getFieldValue("extraDeliveryPrice"),
+                      basicDeliveryPrice: res.data.deliveryPriceBasic,
+                    },
+                  });
+                }
+                else {
+                  self.formRef.current.setFieldsValue({
+                    deliveryPrice: comma(
+                      res.data.deliveryPriceBasic + res.data.deliveryPriceExtra
+                    ),
+                    basicDeliveryPrice: comma(res.data.deliveryPriceBasic),
+                    extraDeliveryPrice: res.data.deliveryPriceExtra,
+                  });
+                  this.setState({
+                    data: {
+                      ...this.state.data,
+                      deliveryPrice:
+                        res.data.deliveryPriceBasic + res.data.deliveryPriceExtra,
+                      basicDeliveryPrice: res.data.deliveryPriceBasic,
+                      extraDeliveryPrice: res.data.deliveryPriceExtra,
+                    },
+                  });
+                }
+
+
               } else {
                 Modal.info({
                   title: "등록오류",
@@ -296,24 +339,43 @@ class RegistCallDialog extends Component {
                   if (res.result === "SUCCESS") {
                     console.log("getdeliveryprice res");
                     console.log(res);
-                    self.formRef.current.setFieldsValue({
-                      deliveryPrice: comma(
-                        res.data.deliveryPriceBasic +
-                          res.data.deliveryPriceExtra
-                      ),
-                      basicDeliveryPrice: comma(res.data.deliveryPriceBasic),
-                      extraDeliveryPrice: res.data.deliveryPriceExtra,
-                    });
-                    this.setState({
-                      data: {
-                        ...this.state.data,
-                        deliveryPrice:
-                          res.data.deliveryPriceBasic +
-                          res.data.deliveryPriceExtra,
-                        basicDeliveryPrice: res.data.deliveryPriceBasic,
+                    
+
+                    if (this.props.data) {
+                      self.formRef.current.setFieldsValue({
+                        deliveryPrice: comma(
+                          res.data.deliveryPriceBasic + this.formRef.current.getFieldValue("extraDeliveryPrice")
+                        ),
+                        basicDeliveryPrice: comma(res.data.deliveryPriceBasic),
+                      });
+                      this.setState({
+                        data: {
+                          ...this.state.data,
+                          deliveryPrice:
+                            res.data.deliveryPriceBasic + this.formRef.current.getFieldValue("extraDeliveryPrice"),
+                          basicDeliveryPrice: res.data.deliveryPriceBasic,
+                        },
+                      });
+                    }
+                    else {
+                      self.formRef.current.setFieldsValue({
+                        deliveryPrice: comma(
+                          res.data.deliveryPriceBasic + res.data.deliveryPriceExtra
+                        ),
+                        basicDeliveryPrice: comma(res.data.deliveryPriceBasic),
                         extraDeliveryPrice: res.data.deliveryPriceExtra,
-                      },
-                    });
+                      });
+                      this.setState({
+                        data: {
+                          ...this.state.data,
+                          deliveryPrice:
+                            res.data.deliveryPriceBasic + res.data.deliveryPriceExtra,
+                          basicDeliveryPrice: res.data.deliveryPriceBasic,
+                          extraDeliveryPrice: res.data.deliveryPriceExtra,
+                        },
+                      });
+                    }
+
                   } else {
                     Modal.info({
                       title: "등록오류",
@@ -348,25 +410,46 @@ class RegistCallDialog extends Component {
       .then((res) => {
         if (res.result === "SUCCESS") {
           console.log(res);
-          self.formRef.current.setFieldsValue({
-            deliveryPrice:
-              res.data.deliveryPriceBasic + res.data.deliveryPriceExtra,
-            basicDeliveryPrice: res.data.deliveryPriceBasic,
-            extraDeliveryPrice: this.props.data
-              ? this.formRef.current.getFieldValue("extraDeliveryPrice")
-              : res.data.deliveryPriceExtra,
-          });
-          this.setState({
-            data: {
-              ...this.state.data,
-              deliveryPrice:
-                res.data.deliveryPriceBasic + res.data.deliveryPriceExtra,
-              basicDeliveryPrice: res.data.deliveryPriceBasic,
-              extraDeliveryPrice: this.props.data
-                ? this.formRef.current.getFieldValue("extraDeliveryPrice")
-                : res.data.deliveryPriceExtra,
-            },
-          });
+
+
+          
+          if (this.props.data) {
+            self.formRef.current.setFieldsValue({
+              deliveryPrice: comma(
+                res.data.deliveryPriceBasic + this.formRef.current.getFieldValue("extraDeliveryPrice")
+              ),
+              basicDeliveryPrice: comma(res.data.deliveryPriceBasic),
+            });
+            this.setState({
+              data: {
+                ...this.state.data,
+                deliveryPrice:
+                  res.data.deliveryPriceBasic + this.formRef.current.getFieldValue("extraDeliveryPrice"),
+                basicDeliveryPrice: res.data.deliveryPriceBasic,
+              },
+            });
+          }
+          else {
+            self.formRef.current.setFieldsValue({
+              deliveryPrice: comma(
+                res.data.deliveryPriceBasic + res.data.deliveryPriceExtra
+              ),
+              basicDeliveryPrice: comma(res.data.deliveryPriceBasic),
+              extraDeliveryPrice: res.data.deliveryPriceExtra,
+            });
+            this.setState({
+              data: {
+                ...this.state.data,
+                deliveryPrice:
+                  res.data.deliveryPriceBasic + res.data.deliveryPriceExtra,
+                basicDeliveryPrice: res.data.deliveryPriceBasic,
+                extraDeliveryPrice: res.data.deliveryPriceExtra,
+              },
+            });
+          }
+
+
+
         } else {
           Modal.info({
             title: "등록오류",
@@ -411,6 +494,8 @@ class RegistCallDialog extends Component {
             });
             return;
           }
+          console.log('====================update===============')
+          console.log(this.state.data)
           httpPost(httpUrl.orderUpdate, [], this.state.data)
             .then((res) => {
               console.log(res);
