@@ -318,12 +318,20 @@ class ReceptionStatus extends Component {
     httpGet(httpUrl.canceledCount,[],{}).then((res)=>{
       this.setState({totalCancel: res.data})
     })
+    .catch((e) => {
+      customError("취소건수 에러", 
+      "에러가 발생하여 취소건수를 불러올수 없습니다.")
+    }); 
   };
 
   completedTotal = () => {
     httpGet(httpUrl.completedCount,[],{}).then((res)=>{
       this.setState({totalComplete: res.data})
     })
+    .catch((e) => {
+      customError("완료건수 에러", 
+      "에러가 발생하여 완료건수를 불러올수 없습니다.")
+    }); 
   };
 
   assignRider = (data, orderIdx) => {
