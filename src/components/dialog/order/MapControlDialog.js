@@ -3,7 +3,12 @@ import { Button, Input, Modal, Select, Space, Table } from "antd";
 import moment from "moment";
 import React, { Component } from "react";
 import { Marker, NaverMap, Polyline } from "react-naver-maps";
-import { httpGet, httpPost, httpUrl, httpGetWithNoLoading } from "../../../api/httpClient";
+import {
+  httpGet,
+  httpGetWithNoLoading,
+  httpPost,
+  httpUrl
+} from "../../../api/httpClient";
 import { customAlert, customError, deleteError } from "../../../api/Modals";
 import RegistCallDialog from "../../../components/dialog/order/RegistCallDialog";
 import SelectBox from "../../../components/input/SelectBox";
@@ -15,7 +20,7 @@ import {
   modifyType,
   orderCnt,
   riderLevelText,
-  rowColorName,
+  rowColorName
 } from "../../../lib/util/codeUtil";
 import { formatDate, formatHM } from "../../../lib/util/dateUtil";
 import { comma, remainTime } from "../../../lib/util/numberUtil";
@@ -115,24 +120,19 @@ class MapControlDialog extends Component {
     this.getRiderLocateList();
     this.getBounds();
 
-    this.riderListInterval = setInterval(this.getRiderLocateList, 7033);
+    this.riderLocateListInterval = setInterval(this.getRiderLocateList, 7033);
+    this.riderListInterval = setInterval(this.getRiderList, 7033);
   }
 
   componentWillUnmount() {
-    clearInterval(this.riderListInterval)
+    if (this.riderLocateListInterval)
+      clearInterval(this.riderLocateListInterval);
+    if (this.riderListInterval) clearInterval(this.riderListInterval);
   }
   getBounds = () => {
     console.log("지도 경계");
     const bounds = this.mapRef.getBounds();
-    this.setState({ mapBounds: bounds }, () => {
-      // console.log(this.state.mapBounds);
-      // console.log(this.state.mapBounds._max);
-      // console.log(this.state.mapBounds._max.x);
-      // console.log(this.state.mapBounds._max.y);
-      // console.log(this.state.mapBounds._min);
-      // console.log(this.state.mapBounds._min.x);
-      // console.log(this.state.mapBounds._min.y);
-    });
+    this.setState({ mapBounds: bounds }, () => {});
   };
 
   handleBoundChange = (bounds) => {
@@ -184,33 +184,43 @@ class MapControlDialog extends Component {
       () => {
         let failedIdx = [];
         if (self.state.selectedRowKeys.length > 0) {
-          Modal.confirm({
-            title: "배차 설정",
-            content: `${self.state.selectedRowKeys} 번의 주문을 ${rider.riderName} 기사에게 배정하시겠습니까?`,
-            onOk: () => {
-              if (
-                this.state.allResultsSave.find(
-                  (x) => x.userIdx === rider.idx || x.userIdx === rider.userIdx
-                ).orders.length >= 5
-              ) {
-                customError("배차 오류", "배차는 5개의 주문까지 가능합니다.");
-              } else {
-                self.state.selectedRowKeys.forEach(
-                  async (orderIdx) =>
-                    await self.assignRiderApi(orderIdx, rider, failedIdx)
-                );
-                if (failedIdx.length === 0) {
-                  customAlert("배차 성공", "배차에 성공했습니다.");
-                } else {
+          if (rider.riderStatus === 1) {
+            Modal.confirm({
+              title: "배차 설정",
+              content: `${self.state.selectedRowKeys} 번의 주문을 ${rider.riderName} 기사에게 배정하시겠습니까?`,
+              onOk: () => {
+                if (
+                  this.state.allResultsSave.find(
+                    (x) =>
+                      x.userIdx === rider.idx || x.userIdx === rider.userIdx
+                  ).orders.length +
+                    self.state.selectedRowKeys.length >
+                  rider.riderSettingGroup.amountPerOneTime
+                ) {
                   customError(
-                    "배차 실패",
-                    `${failedIdx} 번의 주문 배차에 실패했습니다.`
+                    "배차 오류",
+                    `${rider.riderSettingGroup.settingGroupName}그룹 배차는 ${rider.riderSettingGroup.amountPerOneTime}개의 주문까지 가능합니다.`
                   );
+                } else {
+                  self.state.selectedRowKeys.forEach(
+                    async (orderIdx) =>
+                      await self.assignRiderApi(orderIdx, rider, failedIdx)
+                  );
+                  if (failedIdx.length === 0) {
+                    customAlert("배차 성공", "배차에 성공했습니다.");
+                  } else {
+                    customError(
+                      "배차 실패",
+                      `${failedIdx} 번의 주문 배차에 실패했습니다.`
+                    );
+                  }
                 }
-              }
-            },
-            onCancel: () => { },
-          });
+              },
+              onCancel: () => {},
+            });
+          } else {
+            customError("배차 실패", "근무중인 라이더가 아닙니다.");
+          }
         } else {
           this.getList(rider.idx);
         }
@@ -614,9 +624,9 @@ class MapControlDialog extends Component {
     onFilter: (value, record) =>
       record[dataIndex]
         ? record[dataIndex]
-          .toString()
-          .toLowerCase()
-          .includes(value.toLowerCase())
+            .toString()
+            .toLowerCase()
+            .includes(value.toLowerCase())
         : "",
     onFilterDropdownVisibleChange: (visible) => {
       if (visible) {
@@ -692,7 +702,7 @@ class MapControlDialog extends Component {
                     .then((res) => {
                       // console.log(res);
                     })
-                    .catch((e) => { });
+                    .catch((e) => {});
                   this.getList();
                 }
               }}
@@ -844,7 +854,14 @@ class MapControlDialog extends Component {
         dataIndex: "orderDate",
         className: "table-column-center",
         width: 100,
-        render: (data, row) => <div>{row.arriveReqTime > 1000 ? 0 : remainTime(row.orderDate, row.arriveReqTime)}분</div>,
+        render: (data, row) => (
+          <div>
+            {row.arriveReqTime > 1000
+              ? 0
+              : remainTime(row.orderDate, row.arriveReqTime)}
+            분
+          </div>
+        ),
       },
       {
         title: "도착지",
@@ -933,44 +950,44 @@ class MapControlDialog extends Component {
                     {this.state.allResults.filter(
                       (x) => x.userIdx === this.state.selectedRiderIdx
                     ).length > 0 && (
-                        <>
-                          <Marker
-                            position={navermaps.LatLng(
-                              this.state.selectedRiderLatitude,
-                              this.state.selectedRiderLongitude
-                            )}
-                            icon={
-                              require("../../../img/login/map/marker_rider_red.png")
-                                .default
-                            }
-                            title={this.state.riderName}
-                            onClick={() => {
-                              this.getRiderLocate(this.state.selectedRiderIdx);
-                            }}
-                          />
-                          <Marker
-                            key={this.state.selectedRiderIdx}
-                            position={navermaps.LatLng(
-                              this.state.selectedRiderLatitude,
-                              this.state.selectedRiderLongitude
-                            )}
-                            icon={{
-                              content: [
-                                '<div class="marker-name"><div style="transform: translateX(-50%)">' +
+                      <>
+                        <Marker
+                          position={navermaps.LatLng(
+                            this.state.selectedRiderLatitude,
+                            this.state.selectedRiderLongitude
+                          )}
+                          icon={
+                            require("../../../img/login/map/marker_rider_red.png")
+                              .default
+                          }
+                          title={this.state.riderName}
+                          onClick={() => {
+                            this.getRiderLocate(this.state.selectedRiderIdx);
+                          }}
+                        />
+                        <Marker
+                          key={this.state.selectedRiderIdx}
+                          position={navermaps.LatLng(
+                            this.state.selectedRiderLatitude,
+                            this.state.selectedRiderLongitude
+                          )}
+                          icon={{
+                            content: [
+                              '<div class="marker-name"><div style="transform: translateX(-50%)">' +
                                 this.state.riderName +
                                 " (" +
                                 this.state.riderOrderList.length +
                                 ")" +
                                 "</div></div>",
-                              ].join(""),
-                            }}
-                            title={this.state.riderName}
-                            onClick={() =>
-                              this.getRiderLocate(this.state.selectedRiderIdx)
-                            }
-                          />
-                        </>
-                      )}
+                            ].join(""),
+                          }}
+                          title={this.state.riderName}
+                          onClick={() =>
+                            this.getRiderLocate(this.state.selectedRiderIdx)
+                          }
+                        />
+                      </>
+                    )}
 
                     {this.state.allResults.map((row, index) => {
                       if (this.state.mapBounds) {
@@ -984,55 +1001,56 @@ class MapControlDialog extends Component {
                           // const homePath = window.HOME_PATH
                           return (
                             <>
-                              {this.state.selectedRiderIdx !== row.userIdx && (
-                                // /rider/locationlist에 riderstatus 추가 후 처리 필요
-                                // row.riderStatus === 1 &&
-                                <>
-                                  <Marker
-                                    key={row.userIdx + " " + row.riderName}
-                                    position={navermaps.LatLng(
-                                      row.latitude,
-                                      row.longitude
-                                    )}
-                                    // 팀장 이상 파랑 마크
-                                    icon={
-                                      row.riderLevel >= 3
-                                        ? require("../../../img/login/map/marker_rider_blue.png")
-                                          .default
-                                        : require("../../../img/login/map/marker_rider.png")
-                                          .default
-                                    }
-                                    title={row.riderName}
-                                    onClick={() => {
-                                      // this.getRiderLocate(row.userIdx);
-                                      console.log(row);
-                                      this.onSearchWorkerSelected(row);
-                                    }}
-                                  />
-                                  <Marker
-                                    key={row.userIdx}
-                                    position={navermaps.LatLng(
-                                      row.latitude,
-                                      row.longitude
-                                    )}
-                                    icon={{
-                                      content: [
-                                        '<div class="marker-name"><div style="transform: translateX(-50%)">' +
-                                        row.riderName +
-                                        " (" +
-                                        row.orders.length +
-                                        ")" +
-                                        "</div></div>",
-                                      ].join(""),
-                                    }}
-                                    title={row.riderName}
-                                    onClick={() => {
-                                      // this.getRiderLocate(row.userIdx);
-                                      this.onSearchWorkerSelected(row);
-                                    }}
-                                  />
-                                </>
-                              )}
+                              {this.state.selectedRiderIdx !== row.userIdx &&
+                                row.riderStatus === 1 && (
+                                  // /rider/locationlist에 riderstatus 추가 후 처리 필요
+                                  // row.riderStatus === 1 &&
+                                  <>
+                                    <Marker
+                                      key={row.userIdx + " " + row.riderName}
+                                      position={navermaps.LatLng(
+                                        row.latitude,
+                                        row.longitude
+                                      )}
+                                      // 팀장 이상 파랑 마크
+                                      icon={
+                                        row.riderLevel >= 3
+                                          ? require("../../../img/login/map/marker_rider_blue.png")
+                                              .default
+                                          : require("../../../img/login/map/marker_rider.png")
+                                              .default
+                                      }
+                                      title={row.riderName}
+                                      onClick={() => {
+                                        // this.getRiderLocate(row.userIdx);
+                                        console.log(row);
+                                        this.onSearchWorkerSelected(row);
+                                      }}
+                                    />
+                                    <Marker
+                                      key={row.userIdx}
+                                      position={navermaps.LatLng(
+                                        row.latitude,
+                                        row.longitude
+                                      )}
+                                      icon={{
+                                        content: [
+                                          '<div class="marker-name"><div style="transform: translateX(-50%)">' +
+                                            row.riderName +
+                                            " (" +
+                                            row.orders.length +
+                                            ")" +
+                                            "</div></div>",
+                                        ].join(""),
+                                      }}
+                                      title={row.riderName}
+                                      onClick={() => {
+                                        // this.getRiderLocate(row.userIdx);
+                                        this.onSearchWorkerSelected(row);
+                                      }}
+                                    />
+                                  </>
+                                )}
                             </>
                           );
                         } else return <></>;
@@ -1115,11 +1133,14 @@ class MapControlDialog extends Component {
                     rowSelection={rowSelection}
                     columns={columns_callList}
                     rowClassName={(row) => {
-                      const remainTimeNum = row.arriveReqTime > 1000 ? 0 : remainTime(row.orderDate, row.arriveReqTime);
-                      if (remainTimeNum >= 0) return 'table-white';
-                      else if (remainTimeNum <= -30) return 'table-red';
-                      else if (remainTimeNum <= -20) return 'table-orange';
-                      else if (remainTimeNum <= -10) return 'table-yellow';
+                      const remainTimeNum =
+                        row.arriveReqTime > 1000
+                          ? 0
+                          : remainTime(row.orderDate, row.arriveReqTime);
+                      if (remainTimeNum >= 0) return "table-white";
+                      else if (remainTimeNum <= -30) return "table-red";
+                      else if (remainTimeNum <= -20) return "table-orange";
+                      else if (remainTimeNum <= -10) return "table-yellow";
                     }}
                     pagination={this.state.paginationCallList}
                     onChange={this.handleCallListTableChange}
