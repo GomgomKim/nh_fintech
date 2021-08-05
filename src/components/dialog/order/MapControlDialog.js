@@ -989,73 +989,79 @@ class MapControlDialog extends Component {
                       </>
                     )}
 
-                    {this.state.allResults.map((row, index) => {
-                      if (this.state.mapBounds) {
-                        const { _max, _min } = this.state.mapBounds;
-                        if (
-                          parseFloat(row.latitude) <= _max.y &&
-                          parseFloat(row.latitude) >= _min.y &&
-                          parseFloat(row.longitude) <= _max.x &&
-                          parseFloat(row.longitude) >= _min.x
-                        ) {
-                          // const homePath = window.HOME_PATH
-                          return (
-                            <>
-                              {this.state.selectedRiderIdx !== row.userIdx &&
-                                row.riderStatus === 1 && (
-                                  // /rider/locationlist에 riderstatus 추가 후 처리 필요
-                                  // row.riderStatus === 1 &&
-                                  <>
-                                    <Marker
-                                      key={row.userIdx + " " + row.riderName}
-                                      position={navermaps.LatLng(
-                                        row.latitude,
-                                        row.longitude
-                                      )}
-                                      // 팀장 이상 파랑 마크
-                                      icon={
-                                        row.riderLevel >= 3
-                                          ? require("../../../img/login/map/marker_rider_blue.png")
-                                              .default
-                                          : require("../../../img/login/map/marker_rider.png")
-                                              .default
-                                      }
-                                      title={row.riderName}
-                                      onClick={() => {
-                                        // this.getRiderLocate(row.userIdx);
-                                        console.log(row);
-                                        this.onSearchWorkerSelected(row);
-                                      }}
-                                    />
-                                    <Marker
-                                      key={row.userIdx}
-                                      position={navermaps.LatLng(
-                                        row.latitude,
-                                        row.longitude
-                                      )}
-                                      icon={{
-                                        content: [
-                                          '<div class="marker-name"><div style="transform: translateX(-50%)">' +
-                                            row.riderName +
-                                            " (" +
-                                            row.orders.length +
-                                            ")" +
-                                            "</div></div>",
-                                        ].join(""),
-                                      }}
-                                      title={row.riderName}
-                                      onClick={() => {
-                                        // this.getRiderLocate(row.userIdx);
-                                        this.onSearchWorkerSelected(row);
-                                      }}
-                                    />
-                                  </>
-                                )}
-                            </>
-                          );
+                    {this.state.allResults
+                      .filter((row) => {
+                        return this.state.selOrderCnt === 99
+                          ? true
+                          : this.state.selOrderCnt === 5
+                          ? row.orders.length >= 5
+                          : row.orders.length === this.state.selOrderCnt;
+                      })
+                      .map((row, index) => {
+                        if (this.state.mapBounds) {
+                          const { _max, _min } = this.state.mapBounds;
+                          if (
+                            parseFloat(row.latitude) <= _max.y &&
+                            parseFloat(row.latitude) >= _min.y &&
+                            parseFloat(row.longitude) <= _max.x &&
+                            parseFloat(row.longitude) >= _min.x
+                          ) {
+                            // const homePath = window.HOME_PATH
+                            return (
+                              <>
+                                {this.state.selectedRiderIdx !== row.userIdx &&
+                                  row.riderStatus === 1 && (
+                                    <>
+                                      <Marker
+                                        key={row.userIdx + " " + row.riderName}
+                                        position={navermaps.LatLng(
+                                          row.latitude,
+                                          row.longitude
+                                        )}
+                                        // 팀장 이상 파랑 마크
+                                        icon={
+                                          row.riderLevel >= 3
+                                            ? require("../../../img/login/map/marker_rider_blue.png")
+                                                .default
+                                            : require("../../../img/login/map/marker_rider.png")
+                                                .default
+                                        }
+                                        title={row.riderName}
+                                        onClick={() => {
+                                          // this.getRiderLocate(row.userIdx);
+                                          console.log(row);
+                                          this.onSearchWorkerSelected(row);
+                                        }}
+                                      />
+                                      <Marker
+                                        key={row.userIdx}
+                                        position={navermaps.LatLng(
+                                          row.latitude,
+                                          row.longitude
+                                        )}
+                                        icon={{
+                                          content: [
+                                            '<div class="marker-name"><div style="transform: translateX(-50%)">' +
+                                              row.riderName +
+                                              " (" +
+                                              row.orders.length +
+                                              ")" +
+                                              "</div></div>",
+                                          ].join(""),
+                                        }}
+                                        title={row.riderName}
+                                        onClick={() => {
+                                          // this.getRiderLocate(row.userIdx);
+                                          this.onSearchWorkerSelected(row);
+                                        }}
+                                      />
+                                    </>
+                                  )}
+                              </>
+                            );
+                          } else return <></>;
                         } else return <></>;
-                      } else return <></>;
-                    })}
+                      })}
 
                     {this.state.riderAllLocates.map((row, index) => {
                       return (
