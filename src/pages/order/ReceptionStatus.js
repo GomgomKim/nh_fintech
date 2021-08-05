@@ -20,7 +20,12 @@ import {
 import moment from "moment";
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { httpGet, httpPost, httpPostWithNoLoading, httpUrl } from "../../api/httpClient";
+import {
+  httpGet,
+  httpPost,
+  httpPostWithNoLoading,
+  httpUrl
+} from "../../api/httpClient";
 import { customError } from "../../api/Modals";
 import ChattingCurrentRoom from "../../components/dialog/common/ChattingCurrentRoom";
 import ChattingDialog from "../../components/dialog/common/ChattingDialog";
@@ -315,23 +320,29 @@ class ReceptionStatus extends Component {
   };
 
   canceledTotal = () => {
-    httpGet(httpUrl.canceledCount,[],{}).then((res)=>{
-      this.setState({totalCancel: res.data})
-    })
-    .catch((e) => {
-      customError("취소건수 에러", 
-      "에러가 발생하여 취소건수를 불러올수 없습니다.")
-    }); 
+    httpGet(httpUrl.canceledCount, [], {})
+      .then((res) => {
+        this.setState({ totalCancel: res.data });
+      })
+      .catch((e) => {
+        customError(
+          "취소건수 에러",
+          "에러가 발생하여 취소건수를 불러올수 없습니다."
+        );
+      });
   };
 
   completedTotal = () => {
-    httpGet(httpUrl.completedCount,[],{}).then((res)=>{
-      this.setState({totalComplete: res.data})
-    })
-    .catch((e) => {
-      customError("완료건수 에러", 
-      "에러가 발생하여 완료건수를 불러올수 없습니다.")
-    }); 
+    httpGet(httpUrl.completedCount, [], {})
+      .then((res) => {
+        this.setState({ totalComplete: res.data });
+      })
+      .catch((e) => {
+        customError(
+          "완료건수 에러",
+          "에러가 발생하여 완료건수를 불러올수 없습니다."
+        );
+      });
   };
 
   assignRider = (data, orderIdx) => {
@@ -974,6 +985,8 @@ class ReceptionStatus extends Component {
         dataIndex: "frName",
         className: "table-column-center desk",
         key: (row) => `frName:${row.frName}`,
+        sorter: (a, b) => a.frName.localeCompare(b.frName),
+
         render: (data, row) => {
           const content = (
             <div>
@@ -1027,6 +1040,11 @@ class ReceptionStatus extends Component {
         dataIndex: "riderName",
         className: "table-column-center desk",
         key: (row) => `riderName:${row.riderName}`,
+        // sorter: (a, b) => {
+        //   console.log(a);
+        //   console.log(b);
+        //   a.riderName.localeCompare(b.riderName);
+        // },
         render: (data, row) => {
           const content = (
             <div>
@@ -1783,19 +1801,11 @@ class ReceptionStatus extends Component {
               {this.state.list.filter((item) => item.orderStatus === 3).length}{" "}
               건
             </div>
-            <div
-              style={{ background: "gray" }}
-            >
-              완료 :{" "}
-              {this.state.totalComplete}{" "}
-              건
+            <div style={{ background: "gray" }}>
+              완료 : {this.state.totalComplete} 건
             </div>
-            <div
-              style={{ background: "gray" }}
-            >
-              취소 :{" "}
-              {this.state.totalCancel}{" "}
-              건
+            <div style={{ background: "gray" }}>
+              취소 : {this.state.totalCancel} 건
             </div>
           </div>
           <div className="mobile">
@@ -1827,17 +1837,13 @@ class ReceptionStatus extends Component {
               className="delivery-status-mobile"
               style={{ background: "gray" }}
             >
-              완료 :{" "}
-              {this.state.totalComplete}{" "}
-              건
+              완료 : {this.state.totalComplete} 건
             </div>
             <div
               className="delivery-status-mobile"
               style={{ background: "gray" }}
             >
-              취소 :{" "}
-              {this.state.totalCancel}{" "}
-              건
+              취소 : {this.state.totalCancel} 건
             </div>
           </div>
 
