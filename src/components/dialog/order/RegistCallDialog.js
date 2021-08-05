@@ -1,7 +1,7 @@
 /*global kakao*/
 import { Button, Checkbox, Form, Input, Modal, Select } from "antd";
 import React, { Component } from "react";
-import { Marker, NaverMap } from "react-naver-maps";
+import { Marker, NaverMap, Polyline } from "react-naver-maps";
 import { httpGet, httpPost, httpUrl } from "../../../api/httpClient";
 import {
   registComplete,
@@ -105,8 +105,8 @@ class RegistCallDialog extends Component {
         : null,
       selectedFr: {
         idx: this.props.data ? this.props.data.frIdx : 0,
-        frLatitude: this.props.data ? this.props.data.frLatitude : 0,
-        frLongitude: this.props.data ? this.props.data.frLongitude : 0,
+        latitude: this.props.data ? this.props.data.frLatitude : 0,
+        longitude: this.props.data ? this.props.data.frLongitude : 0,
         frName: this.props.data ? this.props.data.frName : "",
         frPhone: this.props.data ? this.props.data.frPhone : "",
       },
@@ -577,6 +577,9 @@ class RegistCallDialog extends Component {
       : this.props.data
       ? this.props.data.basicDeliveryPrice
       : "";
+
+    console.log("this.state.selectedFr");
+    console.log(this.state.selectedFr);
 
     return (
       <React.Fragment>
@@ -1087,6 +1090,43 @@ class RegistCallDialog extends Component {
                             .default
                         }
                       />
+                      {this.state.selectedFr &&
+                        this.state.selectedFr.latitude !== 0 &&
+                        this.state.selectedFr.longitude !== 0 && (
+                          <>
+                            <Marker
+                              position={navermaps.LatLng(
+                                this.state.selectedFr.latitude,
+                                this.state.selectedFr.longitude
+                              )}
+                              icon={
+                                require("../../../img/login/map/marker_rider.png")
+                                  .default
+                              }
+                            />
+                            <Polyline
+                              path={[
+                                this.state.mapLat && this.state.mapLng
+                                  ? navermaps.LatLng(
+                                      this.state.mapLat,
+                                      this.state.mapLng
+                                    )
+                                  : this.props.data
+                                  ? navermaps.LatLng(
+                                      this.props.data.latitude,
+                                      this.props.data.longitude
+                                    )
+                                  : navermaps.LatLng(lat, lng),
+                                navermaps.LatLng(
+                                  this.state.selectedFr.latitude,
+                                  this.state.selectedFr.longitude
+                                ),
+                              ]}
+                              strokeColor={"#0000ff"}
+                              strokeWeight={5}
+                            />
+                          </>
+                        )}
                     </NaverMap>
                   )}
                 </div>
