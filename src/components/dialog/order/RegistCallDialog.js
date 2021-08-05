@@ -239,8 +239,6 @@ class RegistCallDialog extends Component {
                 console.log("getdeliveryprice res");
                 console.log(res);
 
-
-
                 // self.formRef.current.setFieldsValue({
                 //   deliveryPrice: comma(
                 //     res.data.deliveryPriceBasic + res.data.deliveryPriceExtra
@@ -262,13 +260,11 @@ class RegistCallDialog extends Component {
                 //   },
                 // });
 
-
-
-
                 if (this.props.data) {
                   self.formRef.current.setFieldsValue({
                     deliveryPrice: comma(
-                      res.data.deliveryPriceBasic + this.formRef.current.getFieldValue("extraDeliveryPrice")
+                      res.data.deliveryPriceBasic +
+                        this.formRef.current.getFieldValue("extraDeliveryPrice")
                     ),
                     basicDeliveryPrice: comma(res.data.deliveryPriceBasic),
                   });
@@ -276,12 +272,14 @@ class RegistCallDialog extends Component {
                     data: {
                       ...this.state.data,
                       deliveryPrice:
-                        res.data.deliveryPriceBasic + this.formRef.current.getFieldValue("extraDeliveryPrice"),
+                        res.data.deliveryPriceBasic +
+                        this.formRef.current.getFieldValue(
+                          "extraDeliveryPrice"
+                        ),
                       basicDeliveryPrice: res.data.deliveryPriceBasic,
                     },
                   });
-                }
-                else {
+                } else {
                   self.formRef.current.setFieldsValue({
                     deliveryPrice: comma(
                       res.data.deliveryPriceBasic + res.data.deliveryPriceExtra
@@ -293,14 +291,13 @@ class RegistCallDialog extends Component {
                     data: {
                       ...this.state.data,
                       deliveryPrice:
-                        res.data.deliveryPriceBasic + res.data.deliveryPriceExtra,
+                        res.data.deliveryPriceBasic +
+                        res.data.deliveryPriceExtra,
                       basicDeliveryPrice: res.data.deliveryPriceBasic,
                       extraDeliveryPrice: res.data.deliveryPriceExtra,
                     },
                   });
                 }
-
-
               } else {
                 Modal.info({
                   title: "등록오류",
@@ -339,12 +336,14 @@ class RegistCallDialog extends Component {
                   if (res.result === "SUCCESS") {
                     console.log("getdeliveryprice res");
                     console.log(res);
-                    
 
                     if (this.props.data) {
                       self.formRef.current.setFieldsValue({
                         deliveryPrice: comma(
-                          res.data.deliveryPriceBasic + this.formRef.current.getFieldValue("extraDeliveryPrice")
+                          res.data.deliveryPriceBasic +
+                            this.formRef.current.getFieldValue(
+                              "extraDeliveryPrice"
+                            )
                         ),
                         basicDeliveryPrice: comma(res.data.deliveryPriceBasic),
                       });
@@ -352,15 +351,18 @@ class RegistCallDialog extends Component {
                         data: {
                           ...this.state.data,
                           deliveryPrice:
-                            res.data.deliveryPriceBasic + this.formRef.current.getFieldValue("extraDeliveryPrice"),
+                            res.data.deliveryPriceBasic +
+                            this.formRef.current.getFieldValue(
+                              "extraDeliveryPrice"
+                            ),
                           basicDeliveryPrice: res.data.deliveryPriceBasic,
                         },
                       });
-                    }
-                    else {
+                    } else {
                       self.formRef.current.setFieldsValue({
                         deliveryPrice: comma(
-                          res.data.deliveryPriceBasic + res.data.deliveryPriceExtra
+                          res.data.deliveryPriceBasic +
+                            res.data.deliveryPriceExtra
                         ),
                         basicDeliveryPrice: comma(res.data.deliveryPriceBasic),
                         extraDeliveryPrice: res.data.deliveryPriceExtra,
@@ -369,13 +371,13 @@ class RegistCallDialog extends Component {
                         data: {
                           ...this.state.data,
                           deliveryPrice:
-                            res.data.deliveryPriceBasic + res.data.deliveryPriceExtra,
+                            res.data.deliveryPriceBasic +
+                            res.data.deliveryPriceExtra,
                           basicDeliveryPrice: res.data.deliveryPriceBasic,
                           extraDeliveryPrice: res.data.deliveryPriceExtra,
                         },
                       });
                     }
-
                   } else {
                     Modal.info({
                       title: "등록오류",
@@ -411,12 +413,11 @@ class RegistCallDialog extends Component {
         if (res.result === "SUCCESS") {
           console.log(res);
 
-
-          
           if (this.props.data) {
             self.formRef.current.setFieldsValue({
               deliveryPrice: comma(
-                res.data.deliveryPriceBasic + this.formRef.current.getFieldValue("extraDeliveryPrice")
+                res.data.deliveryPriceBasic +
+                  this.formRef.current.getFieldValue("extraDeliveryPrice")
               ),
               basicDeliveryPrice: comma(res.data.deliveryPriceBasic),
             });
@@ -424,12 +425,12 @@ class RegistCallDialog extends Component {
               data: {
                 ...this.state.data,
                 deliveryPrice:
-                  res.data.deliveryPriceBasic + this.formRef.current.getFieldValue("extraDeliveryPrice"),
+                  res.data.deliveryPriceBasic +
+                  this.formRef.current.getFieldValue("extraDeliveryPrice"),
                 basicDeliveryPrice: res.data.deliveryPriceBasic,
               },
             });
-          }
-          else {
+          } else {
             self.formRef.current.setFieldsValue({
               deliveryPrice: comma(
                 res.data.deliveryPriceBasic + res.data.deliveryPriceExtra
@@ -447,9 +448,6 @@ class RegistCallDialog extends Component {
               },
             });
           }
-
-
-
         } else {
           Modal.info({
             title: "등록오류",
@@ -494,8 +492,8 @@ class RegistCallDialog extends Component {
             });
             return;
           }
-          console.log('====================update===============')
-          console.log(this.state.data)
+          console.log("====================update===============");
+          console.log(this.state.data);
           httpPost(httpUrl.orderUpdate, [], this.state.data)
             .then((res) => {
               console.log(res);
@@ -508,6 +506,11 @@ class RegistCallDialog extends Component {
                   Modal.info({
                     title: "등록 오류",
                     content: "가맹점 예치금이 부족합니다.",
+                  });
+                } else if (res.data === "BRANCH_CLOSED") {
+                  Modal.info({
+                    title: "등록 오류",
+                    content: "가맹점 영업시간이 아닙니다.",
                   });
                 }
               } else {
@@ -543,6 +546,11 @@ class RegistCallDialog extends Component {
                   Modal.info({
                     title: "등록 오류",
                     content: "가맹점 예치금이 부족합니다.",
+                  });
+                } else if (res.data === "BRANCH_CLOSED") {
+                  Modal.info({
+                    title: "등록 오류",
+                    content: "가맹점 영업시간이 아닙니다.",
                   });
                 }
               } else {
