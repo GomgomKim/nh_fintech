@@ -664,6 +664,16 @@ class MapControlDialog extends Component {
     return addPaths;
   };
 
+  clearSelected = () => {
+    this.setState({
+      riderName: "",
+      selectedRiderIdx: "",
+      selRiderPath: [],
+      riderAllLocates: [],
+      frLocates: [],
+    });
+  };
+
   render() {
     const { close } = this.props;
 
@@ -920,6 +930,16 @@ class MapControlDialog extends Component {
                     <span className="riderText">
                       {this.state.riderName}의 배차 목록
                     </span>
+                    <Button
+                      style={{
+                        marginLeft: 10,
+                        backgroundColor: "black",
+                        color: "white",
+                      }}
+                      onClick={() => this.clearSelected()}
+                    >
+                      X
+                    </Button>
                   </div>
                   <Table
                     rowKey={(record) => record.idx}
