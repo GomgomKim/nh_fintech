@@ -59,6 +59,7 @@ class RegistAccountDialog extends Component {
 
     handleSubmit = () => {
         let self = this;
+        var bankAccount = self.formRef.current.getFieldValue("bankAccount").replace(/\-/gi, "");
         const data = this.props.data;
         Modal.confirm({
             title: "출금계좌 수정",
@@ -70,10 +71,11 @@ class RegistAccountDialog extends Component {
           okText: "확인",
           cancelText: "취소",
           onOk() {
+            console.log(bankAccount)
             httpPost(httpUrl.frAccount, [], {
                 userIdx: data.idx,
-                // bankAccount: self.formRef.current.getFieldValue("bankAccount").replace("-", ""),
                 ...self.formRef.current.getFieldsValue(),
+                bankAccount,
             })
               .then((res) => {
                 if (res.result === "SUCCESS" && res.data === "SUCCESS") {
@@ -141,7 +143,7 @@ class RegistAccountDialog extends Component {
                                                         className="selectItem"
                                                         initialValue={data ? data.bankAccount : null == ""}
                                                     >
-                                                        <Input placeholder="- 를 포함한 계좌번호를 입력해 주세요." className="override-input">
+                                                        <Input placeholder="계좌번호를 입력해 주세요." className="override-input">
                                                         </Input>
                                                     </FormItem>
                                                 </div>
