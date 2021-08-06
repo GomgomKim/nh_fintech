@@ -387,22 +387,25 @@ class MapControlDialog extends Component {
     const pageNum = this.state.paginationList.current;
     const userStatus = 1;
     const searchName = this.state.searchName;
+    const riderStatus = 1;
 
-    httpGet(httpUrl.riderList, [10, pageNum, searchName, userStatus], {}).then(
-      (result) => {
-        console.log("getRiderList result");
-        console.log(result);
-        // console.log('## nnbox result=' + JSON.stringify(result, null, 4))
-        const pagination = { ...this.state.paginationList };
-        pagination.current = result.data.currentPage;
-        pagination.total = result.data.totalCount;
-        // console.log(result.data.riders)
-        this.setState({
-          results: result.data.riders,
-          paginationList: pagination,
-        });
-      }
-    );
+    httpGet(
+      httpUrl.riderList,
+      [10, pageNum, searchName, userStatus, "", riderStatus],
+      {}
+    ).then((result) => {
+      console.log("getRiderList result");
+      console.log(result);
+      // console.log('## nnbox result=' + JSON.stringify(result, null, 4))
+      const pagination = { ...this.state.paginationList };
+      pagination.current = result.data.currentPage;
+      pagination.total = result.data.currentCount;
+      // console.log(result.data.riders)
+      this.setState({
+        results: result.data.riders,
+        paginationList: pagination,
+      });
+    });
   };
 
   // 라이더 전체 리스트 (최대 1000명)
