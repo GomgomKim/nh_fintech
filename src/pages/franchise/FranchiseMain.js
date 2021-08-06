@@ -159,7 +159,7 @@ class FranchiseMain extends Component {
   //   this.setState({ blindControlOpen: false });
   // };
 
-  // 출금계정 dialog
+  // 출금계좌 dialog
   openAccountModal = () => {
     this.setState({ accountRegistOpen: true });
   };
@@ -578,7 +578,7 @@ class FranchiseMain extends Component {
         ),
       },
       {
-        title: "출금계정",
+        title: "출금계좌",
         className: "table-column-center desk",
         render: (data, row) => (
           <div>
@@ -642,14 +642,14 @@ class FranchiseMain extends Component {
             <div>
               <b>코인잔액:</b> {comma(row.ncash)}
               <br />
-              <b>가맹여부:</b> {row.isMember ? "가맹" : "무가맹"}
-              <br />
+              {/* <b>가맹여부:</b> {row.isMember ? "가맹" : "무가맹"} */}
+              {/* <br /> */}
               <b>가입일:</b> {formatDateToDay(row.registDate)}
               <br />
-              <b>최초납부일:</b> {formatDateToDay(row.chargeDate)}
-              <br />
-              <b>월회비:</b> {row.isMember ? row.dues : "-"}
-              <br />
+              {/* <b>최초납부일:</b> {formatDateToDay(row.chargeDate)} */}
+              {/* <br /> */}
+              {/* <b>월회비:</b> {row.isMember ? row.dues : "-"} */}
+              {/* <br /> */}
               <b>VAN:</b> {row.tidNormal}
               <br />
               <b>PG:</b> {row.tidPrepay}
@@ -663,18 +663,18 @@ class FranchiseMain extends Component {
           ),
         },
 
-        {
-          title: "월회비 최초납부일",
-          dataIndex: "chargeDate",
-          className: "table-column-center desk",
-          render: (data) => <div>{formatDateToDay(data)}</div>,
-        },
-        {
-          title: "가맹여부",
-          dataIndex: "isMember",
-          className: "table-column-center desk",
-          render: (data) => <div>{data ? "가맹" : "무가맹"}</div>,
-        },
+        // {
+        //   title: "월회비 최초납부일",
+        //   dataIndex: "chargeDate",
+        //   className: "table-column-center desk",
+        //   render: (data) => <div>{formatDateToDay(data)}</div>,
+        // },
+        // {
+        //   title: "가맹여부",
+        //   dataIndex: "isMember",
+        //   className: "table-column-center desk",
+        //   render: (data) => <div>{data ? "가맹" : "무가맹"}</div>,
+        // },
 
         // {
         //   title: "적용타입",
@@ -682,12 +682,12 @@ class FranchiseMain extends Component {
         //   className: "table-column-center",
         //   render: (data) => <div>{}</div>,
         // },
-        {
-          title: "월회비",
-          dataIndex: "dues",
-          className: "table-column-center desk",
-          render: (data, row) => <div>{row.isMember ? data : "-"}</div>,
-        },
+        // {
+        //   title: "월회비",
+        //   dataIndex: "dues",
+        //   className: "table-column-center desk",
+        //   render: (data, row) => <div>{row.isMember ? data : "-"}</div>,
+        // },
         // {
         //   title: "카드가맹상태",
         //   dataIndex: "cardStatus",
@@ -828,7 +828,7 @@ class FranchiseMain extends Component {
             블라인드관리
           </Button> */}
 
-          {/* 출금계정 */}
+          {/* 출금계좌 */}
           {this.state.accountRegistOpen && (
             <RegistAccountDialog
               close={this.closeAccountModal}
