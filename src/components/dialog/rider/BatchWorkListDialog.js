@@ -160,7 +160,7 @@ class BatchWorkListDialog extends Component {
   render() {
     const columns = [
       {
-        title: "속성",
+        title: "구분",
         dataIndex: "kind",
         className: "table-column-center",
         render: (data) => <div>{kindString[data]}</div>,

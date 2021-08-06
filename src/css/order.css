@@ -1,5 +1,6 @@
 @media screen and (min-width: 1200px) {
-  .desk {}
+  .desk {
+  }
 
   .mobile {
     display: none !important;
@@ -90,14 +91,15 @@
     height: 25px;
   }
 
-  .reception-box .ant-checkbox-inner::after {
+  /* .reception-box .ant-checkbox-inner::after {
     width: 15px;
     height: 15px;
-  }
+  } */
 
   .reception-box .ant-checkbox-wrapper {
     height: 32px;
     margin-left: 20px !important;
+    margin-top: 5px;
     vertical-align: top;
   }
 
@@ -110,8 +112,9 @@
   }
 
   .reception-box .span1 {
-    font-size: 16px;
-    margin-left: 10px;
+    font-size: 15px;
+    margin-left: 0px;
+    vertical-align: top;
   }
 
   .table-red {
@@ -120,6 +123,10 @@
   .table-redalert {
     background-color: #ff0000;
     color: white;
+  }
+  .table-redalert:hover {
+    background-color: #fff;
+    color: #000;
   }
 
   .table-gray {
@@ -151,33 +158,57 @@
     margin-top: 40px;
   }
 
-  #reception-table .ant-table .ant-table-tbody>tr>td:first-child {
+  #reception-table .ant-table .ant-table-tbody > tr > td:first-child {
     padding-left: 20px !important;
   }
 
-  #reception-table .ant-table .ant-table-tbody>tr>td:last-child {
+  #reception-table .ant-table .ant-table-tbody > tr > td:last-child {
     padding-right: 20px !important;
   }
 
-  #reception-table .ant-table .ant-table-thead>tr>th:last-child {
+  #reception-table .ant-table .ant-table-thead > tr > th:last-child {
     padding-right: 20px !important;
+  }
+
+  .ant-table .ant-table-thead > tr > th {
+    background-color: black;
+    color: white;
+  }
+
+  #reception-table .ant-table-measure-row > td:last-child {
+    display: none;
+  }
+  .dataTableLayout2 .ant-table-measure-row > td:last-child {
+    display: none;
+  }
+  #rider-dataTableLayout .ant-table-measure-row > td:last-child {
+    display: none;
+  }
+
+  .ant-table .ant-table-thead > tr > th.ant-table-cell-scrollbar {
+    display: none;
   }
 
   .tableSub {
     width: 150px;
   }
-
-  .delivery-status {
+  .delivery-status-box {
+    display: inline-block;
     float: right;
+    margin-bottom: 5px;
+  }
+  .delivery-status-box > div {
     display: inline-block;
     width: 125px;
-    font-size: 18px;
-    border: 1px solid;
+    font-size: 15px;
     text-align: center;
     margin-right: 15px;
-    margin-top: -30px;
+    margin-top: 15px;
     border-radius: 5px;
     height: 35px;
     line-height: 35px;
+  }
+  .delivery-status-box > div:nth-child(3) {
+    border: 1px solid #d1d1d1;
   }
 }

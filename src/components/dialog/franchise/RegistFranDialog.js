@@ -237,12 +237,14 @@ class RegistFranDialog extends Component {
           if (result.result === "SUCCESS" && result.data === "SUCCESS") {
             this.props.getList();
             registComplete();
+            this.props.close();
           } else if (result.result === "SUCCESS" && result.data == "ID_DUPLICATED") {
             idDuplicated();
           } else {
             registError();
+            this.props.close();
           }
-          this.props.close();
+
         })
         .catch((e) => {
           registError();

@@ -36,7 +36,7 @@ const httpExecWithNoLoading = (method, url, data) => {
       })
       .catch((error) => {
         if (error.message.includes("401")) {
-          alert("로그인이 만료되었습니다. 다시 로그인해주세요");
+          // alert("로그인이 만료되었습니다. 다시 로그인해주세요");
           reactLocalStorage.remove("adminUser");
           global.location.href = "/";
         }
@@ -83,7 +83,7 @@ const httpExec = (method, url, data) => {
       .catch((error) => {
         // console.log(JSON.stringify(error, null, 4));
         if (error.message.includes("401")) {
-          alert("로그인이 만료되었습니다. 다시 로그인해주세요");
+          // alert("로그인이 만료되었습니다. 다시 로그인해주세요");
           reactLocalStorage.remove("adminUser");
           global.location.href = "/";
         }
@@ -224,13 +224,16 @@ const httpUrl = {
   orderComplete: "/order/complete",
   getDeliveryPrice:
     "/fr/expectDeliveryPrice?frIdx=%s&destLatitude=%s&destLongitude=%s",
+  completedCount: "/order/count/completed",
+  canceledCount: "/order/count/canceled",
 
   // 주문 상태 변경
   orderAssignCancel: "/order/admin/admin/assignRiderCancel",
   orderPickup: "/order/pickup",
-  orderPickupCancel: '/order/pickupCancel',  
+  orderPickupCancel: "/order/pickupCancel",
   orderComplete: "/order/complete",
   orderCancel: "/order/cancel",
+  orderCompleteRestore: "/order/complete/restore",
 
   priceExtraList: "/branch/deliveryPriceExtra/list?pageNum=%s&pageSize=%s",
   priceExtraRegist: "/branch/deliveryPriceExtra/create",
@@ -268,6 +271,7 @@ const httpUrl = {
   userBatchWorkCreate: "/rider/userBatchWork/create",
   userBatchWorkDelete: "/rider/userBatchWork/delete",
   riderBatchWorkDailyList: "/rider/daily/list?kind=%s&pageNum=%s&pageSize=%s",
+  clearWithdrawPassword: "/rider/clear/withdraw-password",
 
   // 배차
   assignRiderAdmin: "/order/admin/assignRider",
@@ -300,7 +304,8 @@ const httpUrl = {
 
   // 채팅
   chatList: "/chat/chatList?pageSize=%s&pageNum=%s&searchName=%s",
-  chatListByUser: "/chat/chatList?pageSize=%s&pageNum=%s&searchName=%s&receiveUserIdx=%s",
+  chatListByUser:
+    "/chat/chatList?pageSize=%s&pageNum=%s&searchName=%s&receiveUserIdx=%s",
   chatMessageList: "/chat/messageList?pageSize=%s&pageNum=%s&chatRoomIdx=%s",
   chatSend: "/chat/send",
   chatRoom: "/chat/chatroom?receiveUserIdx=%s",
@@ -339,6 +344,9 @@ const httpUrl = {
   // 배송가능지역
   getAddrBranch: "/branch/addrBranch/list?pageNum=%s&pageSize=%s",
   updateAddrBranch: "/branch/addrBranch/update",
+
+  // VAN등록요청 - 파일업로드
+  FileUpload: "/file/upload",
 };
 
 const imageType = ["image/jpeg", "image/png", "image/bmp"];

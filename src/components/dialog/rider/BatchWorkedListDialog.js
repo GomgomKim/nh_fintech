@@ -17,7 +17,7 @@ class BatchWorkListDialog extends Component {
         current: 1,
         pageSize: 5,
       },
-      kind: 1,
+      kind: '',
     };
     this.formRef = React.createRef();
   }
@@ -41,7 +41,7 @@ class BatchWorkListDialog extends Component {
 
   onChangeStatus = (value) => {
     this.setState({
-        kind: value,
+        kind: value === "0" ? "" : value,
         pagination: {
             current: 1,
             pageSize: 5,
@@ -121,7 +121,7 @@ class BatchWorkListDialog extends Component {
         // render: (data) => <div>{formatDateToDay(data)}</div>,
       },
       {
-        title:"속성",
+        title:"구분",
         dataIndex: "kind",
         className:"table-column-center",
         render: (data) => <div>{kindString[data]}</div>
@@ -173,7 +173,7 @@ class BatchWorkListDialog extends Component {
             <SelectBox
                 // placeholder={'전체'}
                 style={{width:175}}
-                value={kindString[this.state.kind]}
+                value={ this.state.kind === "" ? kindString["0"] : kindString[this.state.kind]}
                 code={Object.keys(kindString)}
                 codeString={kindString}
                 onChange={(value) => {

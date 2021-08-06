@@ -102,12 +102,12 @@ class RegistBatchWorkDialog extends Component {
               <div className="taskWork-inner">
                 <div className="taskWork-list">
                   <div className="twl taskWork-list-01">
-                  <div className="twl-text">속성</div>
+                  <div className="twl-text">구분</div>
                   <FormItem
                         name="kind"
                         className="selectItem"
                         rules={[
-                          { required: true, message: "속성을 선택해주세요" },
+                          { required: true, message: "구분을 선택해주세요" },
                         ]}
                       >
                         <Select

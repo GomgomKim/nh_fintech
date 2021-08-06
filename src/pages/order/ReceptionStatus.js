@@ -2,7 +2,6 @@ import {
   DollarCircleOutlined,
   EnvironmentFilled,
   FieldTimeOutlined,
-  FilterOutlined,
   MessageOutlined,
   NotificationFilled,
   PhoneOutlined,
@@ -21,14 +20,18 @@ import {
 import moment from "moment";
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { httpPost, httpPostWithNoLoading, httpUrl } from "../../api/httpClient";
+import {
+  httpGet,
+  httpPost,
+  httpPostWithNoLoading,
+  httpUrl
+} from "../../api/httpClient";
 import { customError } from "../../api/Modals";
 import ChattingCurrentRoom from "../../components/dialog/common/ChattingCurrentRoom";
 import ChattingDialog from "../../components/dialog/common/ChattingDialog";
 import SearchRiderDialog from "../../components/dialog/common/SearchRiderDialog";
 import BlindControlDialog from "../../components/dialog/franchise/BlindControlDialog";
 import DeliveryZoneDialog from "../../components/dialog/order/DeliveryZoneDialog";
-import FilteringDialog from "../../components/dialog/order/FilteringDialog";
 import MapControlDialog from "../../components/dialog/order/MapControlDialog";
 import NoticeDialog from "../../components/dialog/order/NoticeDialog";
 import PaymentDialog from "../../components/dialog/order/PaymentDialog";
@@ -61,6 +64,11 @@ class ReceptionStatus extends Component {
     this.state = {
       // paging
       pagination: {
+        total: 0,
+        current: 1,
+        pageSize: 100,
+      },
+      totalPagination: {
         total: 0,
         current: 1,
         pageSize: 100,
@@ -104,21 +112,85 @@ class ReceptionStatus extends Component {
       messageTarget: null,
       messageTargetName: null,
       messageTargetLevel: null,
+
+      totalCancel: 0,
+      totalComplete: 0,
+
+      orderStatus: [
+        {
+          key: "orderStatus-1",
+          value: 1,
+          text: "접수",
+        },
+        {
+          key: "orderStatus-2",
+          value: 2,
+          text: "배차",
+        },
+        {
+          key: "orderStatus-3",
+          value: 3,
+          text: "픽업",
+        },
+        {
+          key: "orderStatus-4",
+          value: 5,
+          text: "취소",
+        },
+      ],
+      paymentMethod: [
+        {
+          key: "paymentMethod-1",
+          value: 1,
+          text: "카드",
+        },
+        {
+          key: "paymentMethod-2",
+          value: 2,
+          text: "현금",
+        },
+        {
+          key: "paymentMethod-3",
+          value: 3,
+          text: "선결",
+        },
+      ],
+      selectedOrderStatus: [1, 2, 3],
+      selectedPaymentMethods: [1, 2, 3],
     };
   }
 
   componentDidMount() {
     this.getList();
-    this.pullingList = setInterval(this.getList, this.state.pullingInterval);
+    this.pollingList = setInterval(
+      this.pollingFunction,
+      this.state.pullingInterval
+    );
+    this.canceledTotal();
+    this.completedTotal();
   }
 
   componentWillUnmount() {
-    clearInterval(this.pullingList);
+    if (this.pollingList) clearInterval(this.pollingList);
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      this.state.selectedOrderStatus !== prevState.selectedOrderStatus ||
+      this.state.selectedPaymentMethods !== prevState.selectedPaymentMethods
+    ) {
+      this.getList();
+    }
   }
 
   // pollingList = setInterval(this.getList, 5000);
 
+  pollingFunction = () => {
+    this.state.checkedCompleteCall ? this.getCompleteList() : this.getList();
+  };
+
   getList = () => {
+    // console.log("getlist");
     try {
       const startDate = this.state.selectedDate;
       const endDate = new moment();
@@ -136,6 +208,7 @@ class ReceptionStatus extends Component {
       if (this.state.rider) {
         data.riderName = this.state.rider;
       }
+      // console.log(data);
       httpPostWithNoLoading(httpUrl.orderList, [], data)
         .then((res) => {
           if (res.result === "SUCCESS") {
@@ -148,48 +221,51 @@ class ReceptionStatus extends Component {
               },
             });
           } else {
-            console.log("Pulling Error");
+            console.log("polling Error");
             return;
           }
         })
         .catch((e) => {
-          console.log("Pulling Error");
+          console.log("polling Error");
           console.log(e);
           throw e;
         });
     } catch (e) {}
   };
   getCompleteList = () => {
+    console.log("getcompletelist");
+
     const startDate = this.state.selectedDate;
     const endDate = new Date(
       startDate.getFullYear(),
       startDate.getMonth(),
       startDate.getDate() + 1
     );
-    const data = {
+    var data = {
       orderStatuses: [4, 5],
-      pageNum: this.state.pagination.current,
-      pageSize: this.state.pagination.pageSize,
+      pageNum: this.state.totalPagination.current,
+      pageSize: this.state.totalPagination.pageSize,
       paymentMethods: [1, 2, 3],
       startDate: formatDate(this.state.selectedDate).split(" ")[0],
       endDate: formatDate(endDate).split(" ")[0],
     };
-
     if (this.state.franchisee) {
       data.frName = this.state.franchisee;
     }
     if (this.state.rider) {
       data.riderName = this.state.rider;
     }
-
     console.log(data);
-
-    httpPost(httpUrl.orderList, [], data)
+    httpPostWithNoLoading(httpUrl.orderList, [], data)
       .then((res) => {
         if (res.result === "SUCCESS") {
           console.log(res);
           this.setState({
             totalList: res.data.orders,
+            totalPagination: {
+              ...this.state.totalPagination,
+              total: res.data.totalCount,
+            },
           });
         } else {
           Modal.info({
@@ -241,6 +317,32 @@ class ReceptionStatus extends Component {
     } else {
       this.getList();
     }
+  };
+
+  canceledTotal = () => {
+    httpGet(httpUrl.canceledCount, [], {})
+      .then((res) => {
+        this.setState({ totalCancel: res.data });
+      })
+      .catch((e) => {
+        customError(
+          "취소건수 에러",
+          "에러가 발생하여 취소건수를 불러올수 없습니다."
+        );
+      });
+  };
+
+  completedTotal = () => {
+    httpGet(httpUrl.completedCount, [], {})
+      .then((res) => {
+        this.setState({ totalComplete: res.data });
+      })
+      .catch((e) => {
+        customError(
+          "완료건수 에러",
+          "에러가 발생하여 완료건수를 불러올수 없습니다."
+        );
+      });
   };
 
   assignRider = (data, orderIdx) => {
@@ -512,8 +614,14 @@ class ReceptionStatus extends Component {
                 {/* {row.itemPrepared ? "완료" : "준비중"} <br />{" "} */}
               </p>
               {row.destAddr1 + " " + row.destAddr2} <br />
-              {row.riderName} / {row.distance}km /{" "}
-              {paymentMethod[row.orderPayments[0] ? row.orderPayments[0]["paymentMethod"] : 0]}
+              {row.riderName} / {comma(row.distance)}m /{" "}
+              {
+                paymentMethod[
+                  row.orderPayments[0]
+                    ? row.orderPayments[0]["paymentMethod"]
+                    : 0
+                ]
+              }
               <br />
               <div className="table-column-sub">
                 상태 :{" "}
@@ -543,6 +651,40 @@ class ReceptionStatus extends Component {
                             배차상태로 먼저 변경한 후 접수로 변경해주세요.
                           </div>
                         ),
+                      });
+                      return;
+                    }
+
+                    //완료를 복원시키는 경우
+                    if (row.orderStatus === 4 && value === 3) {
+                      const self = this;
+                      Modal.confirm({
+                        title: "주문복구",
+                        content:
+                          "주문을 복구하는 경우 라이더에게 지급된 가맹점 배달료도 북구됩니다. 정말 복구하시겠습니까?",
+                        okText: "확인",
+                        cancelText: "취소",
+                        onOk() {
+                          httpPost(httpUrl.orderCompleteRestore, [], {
+                            orderIdx: row.idx,
+                          }).then((res) => {
+                            if (
+                              res.result === "SUCCESS" &&
+                              res.data === "SUCCESS"
+                            ) {
+                              Modal.info({
+                                title: "변경 성공",
+                                content: "주문상태가 변경되었습니다.",
+                              });
+                              self.getList();
+                            } else {
+                              Modal.info({
+                                title: "변경 실패",
+                                content: "주문상태 변경에 실패했습니다.",
+                              });
+                            }
+                          });
+                        },
                       });
                       return;
                     }
@@ -617,31 +759,31 @@ class ReceptionStatus extends Component {
         dataIndex: "orderStatus",
         className: "table-column-center desk",
         key: (row) => `orderStatus:${row.orderStatus}`,
-        filters: [
-          {
-            text: "접수",
-            value: 1,
-          },
-          {
-            text: "배차",
-            value: 2,
-          },
-          {
-            text: "픽업",
-            value: 3,
-          },
+        // filters: [
+        //   {
+        //     text: "접수",
+        //     value: 1,
+        //   },
+        //   {
+        //     text: "배차",
+        //     value: 2,
+        //   },
+        //   {
+        //     text: "픽업",
+        //     value: 3,
+        //   },
 
-          {
-            text: "완료",
-            value: 4,
-          },
+        //   {
+        //     text: "완료",
+        //     value: 4,
+        //   },
 
-          {
-            text: "취소",
-            value: 5,
-          },
-        ],
-        onFilter: (value, record) => value === record.orderStatus,
+        //   {
+        //     text: "취소",
+        //     value: 5,
+        //   },
+        // ],
+        // onFilter: (value, record) => value === record.orderStatus,
         render: (data, row) => (
           <div className="table-column-sub">
             <Select
@@ -671,6 +813,39 @@ class ReceptionStatus extends Component {
                   return;
                 }
 
+                //완료를 복원시키는 경우
+                if (row.orderStatus === 4 && value === 3) {
+                  const self = this;
+                  Modal.confirm({
+                    title: "주문복구",
+                    content:
+                      "주문을 복구하는 경우 라이더에게 지급된 가맹점 배달료도 북구됩니다. 정말 복구하시겠습니까?",
+                    okText: "확인",
+                    cancelText: "취소",
+                    onOk() {
+                      httpPost(httpUrl.orderCompleteRestore, [], {
+                        orderIdx: row.idx,
+                      }).then((res) => {
+                        if (
+                          res.result === "SUCCESS" &&
+                          res.data === "SUCCESS"
+                        ) {
+                          Modal.info({
+                            title: "변경 성공",
+                            content: "주문상태가 변경되었습니다.",
+                          });
+                          self.getList();
+                        } else {
+                          Modal.info({
+                            title: "변경 실패",
+                            content: "주문상태 변경에 실패했습니다.",
+                          });
+                        }
+                      });
+                    },
+                  });
+                  return;
+                }
                 const orderStatuseChangeApiCode = [
                   "",
                   httpUrl.orderAssignCancel,
@@ -786,17 +961,17 @@ class ReceptionStatus extends Component {
         dataIndex: "itemPrepared",
         className: "table-column-center desk",
         key: (row) => `itemPrepared:${row.itemPrepared}`,
-        filters: [
-          {
-            text: "준비중",
-            value: false,
-          },
-          {
-            text: "완료",
-            value: true,
-          },
-        ],
-        onFilter: (value, record) => value === record.itemPrepared,
+        // filters: [
+        //   {
+        //     text: "준비중",
+        //     value: false,
+        //   },
+        //   {
+        //     text: "완료",
+        //     value: true,
+        //   },
+        // ],
+        // onFilter: (value, record) => value === record.itemPrepared,
         render: (data) => <div>{data ? "완료" : "준비중"}</div>,
       },
       // {
@@ -810,6 +985,8 @@ class ReceptionStatus extends Component {
         dataIndex: "frName",
         className: "table-column-center desk",
         key: (row) => `frName:${row.frName}`,
+        sorter: (a, b) => a.frName.localeCompare(b.frName),
+
         render: (data, row) => {
           const content = (
             <div>
@@ -863,6 +1040,11 @@ class ReceptionStatus extends Component {
         dataIndex: "riderName",
         className: "table-column-center desk",
         key: (row) => `riderName:${row.riderName}`,
+        // sorter: (a, b) => {
+        //   console.log(a);
+        //   console.log(b);
+        //   a.riderName.localeCompare(b.riderName);
+        // },
         render: (data, row) => {
           const content = (
             <div>
@@ -1052,10 +1234,11 @@ class ReceptionStatus extends Component {
         //   render: (data) => <div>{comma(data)}</div>,
         // },
         {
-          title: "거리(km)",
+          title: "거리(m)",
           dataIndex: "distance",
           className: "table-column-center desk",
           key: (row) => `distance:${row.distance}`,
+          render: (data, row) => <div>{comma(data)}</div>,
         },
         {
           title: "결제방식",
@@ -1394,7 +1577,13 @@ class ReceptionStatus extends Component {
               placeholder="가맹점검색"
               enterButton
               allowClear
-              onChange={(e) => this.setState({ franchisee: e.target.value })}
+              onChange={(e) => {
+                this.setState({ franchisee: e.target.value }, () => {
+                  if (e.target.value === "") {
+                    this.pollingFunction();
+                  }
+                });
+              }}
               onSearch={this.onSearch}
               style={{
                 width: 200,
@@ -1404,7 +1593,13 @@ class ReceptionStatus extends Component {
               placeholder="기사명검색"
               enterButton
               allowClear
-              onChange={(e) => this.setState({ rider: e.target.value })}
+              onChange={(e) => {
+                this.setState({ rider: e.target.value }, () => {
+                  if (e.target.value === "") {
+                    this.pollingFunction();
+                  }
+                });
+              }}
               onSearch={this.onSearch}
               style={{
                 width: 200,
@@ -1422,7 +1617,7 @@ class ReceptionStatus extends Component {
               marginLeft: 20,
             }}
           /> */}
-            <FilteringDialog
+            {/* <FilteringDialog
               isOpen={this.state.filteringOpen}
               close={this.closeFilteringModal}
               selectedOrderStatus={this.state.selectedOrderStatus}
@@ -1436,7 +1631,7 @@ class ReceptionStatus extends Component {
               >
                 필터링 설정
               </Button>
-            )}
+            )} */}
             {this.state.checkedCompleteCall && (
               <DatePicker
                 style={{ marginLeft: 20 }}
@@ -1464,16 +1659,107 @@ class ReceptionStatus extends Component {
             <Checkbox
               defaultChecked={this.state.checkedCompleteCall ? "checked" : ""}
               onChange={this.handleToggleCompleteCall}
-            ></Checkbox>
-            <span className="span1">완료조회</span>
-          </div>
+            >
+              <span className="span1">완료조회</span>
+            </Checkbox>
 
+            {!this.state.checkedCompleteCall && (
+              <div className="filtering-box-wrapper">
+                <div className="filtering-box">
+                  <div className="filtering-name">주문상태</div>
+
+                  {this.state.orderStatus.map((o) => {
+                    return (
+                      <div className="filtering-btn">
+                        <Checkbox
+                          key={o.key}
+                          value={o.value}
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              const result =
+                                this.state.selectedOrderStatus.concat(
+                                  e.target.value
+                                );
+                              this.setState({
+                                selectedOrderStatus: result,
+                              });
+                            } else {
+                              const result =
+                                this.state.selectedOrderStatus.filter(
+                                  (el) => el !== e.target.value
+                                );
+                              this.setState({
+                                selectedOrderStatus: result,
+                              });
+                            }
+                          }}
+                          defaultChecked={
+                            this.state.selectedOrderStatus.includes(o.value)
+                              ? "checked"
+                              : ""
+                          }
+                        >
+                          {o.text}
+                        </Checkbox>
+                      </div>
+                    );
+                  })}
+                </div>
+                <div className="filtering-box">
+                  <div className="filtering-name">결제방식</div>
+
+                  {this.state.paymentMethod.map((o) => {
+                    return (
+                      <div className="filtering-btn">
+                        <Checkbox
+                          key={o.key}
+                          value={o.value}
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              const result =
+                                this.state.selectedPaymentMethods.concat(
+                                  e.target.value
+                                );
+                              this.setState({
+                                selectedPaymentMethods: result,
+                              });
+                            } else {
+                              const result =
+                                this.state.selectedPaymentMethods.filter(
+                                  (el) => el !== e.target.value
+                                );
+                              this.setState({
+                                selectedPaymentMethods: result,
+                              });
+                            }
+                          }}
+                          defaultChecked={
+                            this.state.selectedPaymentMethods.includes(o.value)
+                              ? "checked"
+                              : ""
+                          }
+                        >
+                          {o.text}
+                        </Checkbox>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+          </div>
           <div className="mobile">
             <Search
               placeholder="가맹점검색"
               enterButton
               allowClear
-              onChange={(e) => this.setState({ franchisee: e.target.value })}
+              onChange={(e) =>
+                this.setState({ franchisee: e.target.value }, () => {
+                  if (e.target.value === "") {
+                    this.pollingFunction();
+                  }
+                })
+              }
               onSearch={this.onSearch}
               style={{
                 width: 308,
@@ -1485,7 +1771,13 @@ class ReceptionStatus extends Component {
               placeholder="기사명검색"
               enterButton
               allowClear
-              onChange={(e) => this.setState({ rider: e.target.value })}
+              onChange={(e) =>
+                this.setState({ rider: e.target.value }, () => {
+                  if (e.target.value === "") {
+                    this.pollingFunction();
+                  }
+                })
+              }
               onSearch={this.onSearch}
               style={{
                 width: 308,
@@ -1493,24 +1785,27 @@ class ReceptionStatus extends Component {
               }}
             />
           </div>
-          <div className="desk">
-            <div className="delivery-status" style={{ background: "white" }}>
-              픽업 :{" "}
-              {this.state.list.filter((item) => item.orderStatus === 3).length}{" "}
+          <div className="delivery-status-box desk">
+            <div style={{ background: "rgb(255, 204, 204)" }}>
+              접수 :{" "}
+              {this.state.list.filter((item) => item.orderStatus === 1).length}{" "}
               건
             </div>
-            <div className="delivery-status" style={{ background: "#d6edfe" }}>
+            <div style={{ background: "#d6edfe" }}>
               배차 :{" "}
               {this.state.list.filter((item) => item.orderStatus === 2).length}{" "}
               건
             </div>
-            <div
-              className="delivery-status"
-              style={{ background: "rgb(255, 204, 204)" }}
-            >
-              접수 :{" "}
-              {this.state.list.filter((item) => item.orderStatus === 1).length}{" "}
+            <div style={{ background: "white" }}>
+              픽업 :{" "}
+              {this.state.list.filter((item) => item.orderStatus === 3).length}{" "}
               건
+            </div>
+            <div style={{ background: "gray" }}>
+              완료 : {this.state.totalComplete} 건
+            </div>
+            <div style={{ background: "gray" }}>
+              취소 : {this.state.totalCancel} 건
             </div>
           </div>
           <div className="mobile">
@@ -1538,12 +1833,28 @@ class ReceptionStatus extends Component {
               {this.state.list.filter((item) => item.orderStatus === 3).length}{" "}
               건
             </div>
+            <div
+              className="delivery-status-mobile"
+              style={{ background: "gray" }}
+            >
+              완료 : {this.state.totalComplete} 건
+            </div>
+            <div
+              className="delivery-status-mobile"
+              style={{ background: "gray" }}
+            >
+              취소 : {this.state.totalCancel} 건
+            </div>
           </div>
 
           <div id="reception-table" className="desk">
             <Table
               rowKey={(record) => record.idx}
-              rowClassName={(record) => record.deliveryPrice == 0 ? 'table-redalert' : rowColorName[record.orderStatus]}
+              rowClassName={(record) =>
+                record.deliveryPrice == 0
+                  ? "table-redalert"
+                  : rowColorName[record.orderStatus]
+              }
               dataSource={
                 this.state.checkedCompleteCall
                   ? this.state.totalList
@@ -1553,12 +1864,17 @@ class ReceptionStatus extends Component {
               pagination={false}
               // onChange={this.handleTableChange}
               expandedRowRender={expandedRowRender}
+              // scroll={{ y: "50vh" }}
             />
           </div>
           <div id="reception-table" className="mobile">
             <Table
               rowKey={(record) => record.idx}
-              rowClassName={(record) => record.deliveryPrice == 0 ? 'table-redalert' : rowColorName[record.orderStatus]}
+              rowClassName={(record) =>
+                record.deliveryPrice == 0
+                  ? "table-redalert"
+                  : rowColorName[record.orderStatus]
+              }
               dataSource={
                 this.state.checkedCompleteCall
                   ? this.state.totalList
@@ -1580,27 +1896,51 @@ class ReceptionStatus extends Component {
           >
             <Button
               onClick={() => {
-                if (
-                  this.state.pagination.pageSize >= this.state.pagination.total
-                ) {
-                  Modal.info({
-                    title: "주문정보 오류",
-                    content: "더 이상 주문정보가 존재하지 않습니다.",
-                  });
-                  return;
-                }
-                this.setState(
-                  {
-                    pagination: {
-                      ...this.state.pagination,
-                      pageSize: this.state.pagination.pageSize + 30,
-                    },
-                  },
-                  () => {
-                    console.log(this.state.pagination);
-                    this.getList();
+                if (this.state.checkedCompleteCall) {
+                  if (
+                    this.state.totalPagination.pageSize >=
+                    this.state.totalPagination.total
+                  ) {
+                    Modal.info({
+                      title: "주문정보 오류",
+                      content: "더 이상 주문정보가 존재하지 않습니다.",
+                    });
+                    return;
                   }
-                );
+                  this.setState(
+                    {
+                      totalPagination: {
+                        ...this.state.totalPagination,
+                        pageSize: this.state.totalPagination.pageSize + 100,
+                      },
+                    },
+                    () => {
+                      this.getCompleteList();
+                    }
+                  );
+                } else {
+                  if (
+                    this.state.pagination.pageSize >=
+                    this.state.pagination.total
+                  ) {
+                    Modal.info({
+                      title: "주문정보 오류",
+                      content: "더 이상 주문정보가 존재하지 않습니다.",
+                    });
+                    return;
+                  }
+                  this.setState(
+                    {
+                      pagination: {
+                        ...this.state.pagination,
+                        pageSize: this.state.pagination.pageSize + 100,
+                      },
+                    },
+                    () => {
+                      this.getList();
+                    }
+                  );
+                }
               }}
             >
               더 보기

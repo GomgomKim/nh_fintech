@@ -1,7 +1,7 @@
 /*global kakao*/
 import { Button, Checkbox, Form, Input, Modal, Select } from "antd";
 import React, { Component } from "react";
-import { Marker, NaverMap } from "react-naver-maps";
+import { Marker, NaverMap, Polyline } from "react-naver-maps";
 import { httpGet, httpPost, httpUrl } from "../../../api/httpClient";
 import {
   registComplete,
@@ -100,13 +100,13 @@ class RegistCallDialog extends Component {
       data: this.props.data ? this.props.data : newOrder,
       selectedDest: this.props.data
         ? {
-          address: this.props.data.destAddr1,
-        }
+            address: this.props.data.destAddr1,
+          }
         : null,
       selectedFr: {
         idx: this.props.data ? this.props.data.frIdx : 0,
-        frLatitude: this.props.data ? this.props.data.frLatitude : 0,
-        frLongitude: this.props.data ? this.props.data.frLongitude : 0,
+        latitude: this.props.data ? this.props.data.frLatitude : 0,
+        longitude: this.props.data ? this.props.data.frLongitude : 0,
         frName: this.props.data ? this.props.data.frName : "",
         frPhone: this.props.data ? this.props.data.frPhone : "",
       },
@@ -238,22 +238,66 @@ class RegistCallDialog extends Component {
               if (res.result === "SUCCESS") {
                 console.log("getdeliveryprice res");
                 console.log(res);
-                self.formRef.current.setFieldsValue({
-                  deliveryPrice: comma(
-                    res.data.deliveryPriceBasic + res.data.deliveryPriceExtra
-                  ),
-                  basicDeliveryPrice: comma(res.data.deliveryPriceBasic),
-                  extraDeliveryPrice: res.data.deliveryPriceExtra,
-                });
-                this.setState({
-                  data: {
-                    ...this.state.data,
-                    deliveryPrice:
-                      res.data.deliveryPriceBasic + res.data.deliveryPriceExtra,
-                    basicDeliveryPrice: res.data.deliveryPriceBasic,
+
+                // self.formRef.current.setFieldsValue({
+                //   deliveryPrice: comma(
+                //     res.data.deliveryPriceBasic + res.data.deliveryPriceExtra
+                //   ),
+                //   basicDeliveryPrice: comma(res.data.deliveryPriceBasic),
+                //   extraDeliveryPrice: this.props.data
+                //     ? this.formRef.current.getFieldValue("extraDeliveryPrice")
+                //     : res.data.deliveryPriceExtra,
+                // });
+                // this.setState({
+                //   data: {
+                //     ...this.state.data,
+                //     deliveryPrice:
+                //       res.data.deliveryPriceBasic + res.data.deliveryPriceExtra,
+                //     basicDeliveryPrice: res.data.deliveryPriceBasic,
+                //     extraDeliveryPrice: this.props.data
+                //       ? this.formRef.current.getFieldValue("extraDeliveryPrice")
+                //       : res.data.deliveryPriceExtra,
+                //   },
+                // });
+
+                if (this.props.data) {
+                  self.formRef.current.setFieldsValue({
+                    deliveryPrice: comma(
+                      res.data.deliveryPriceBasic +
+                        this.formRef.current.getFieldValue("extraDeliveryPrice")
+                    ),
+                    basicDeliveryPrice: comma(res.data.deliveryPriceBasic),
+                  });
+                  this.setState({
+                    data: {
+                      ...this.state.data,
+                      deliveryPrice:
+                        res.data.deliveryPriceBasic +
+                        this.formRef.current.getFieldValue(
+                          "extraDeliveryPrice"
+                        ),
+                      basicDeliveryPrice: res.data.deliveryPriceBasic,
+                    },
+                  });
+                } else {
+                  self.formRef.current.setFieldsValue({
+                    deliveryPrice: comma(
+                      res.data.deliveryPriceBasic + res.data.deliveryPriceExtra
+                    ),
+                    basicDeliveryPrice: comma(res.data.deliveryPriceBasic),
                     extraDeliveryPrice: res.data.deliveryPriceExtra,
-                  },
-                });
+                  });
+                  this.setState({
+                    data: {
+                      ...this.state.data,
+                      deliveryPrice:
+                        res.data.deliveryPriceBasic +
+                        res.data.deliveryPriceExtra,
+                      basicDeliveryPrice: res.data.deliveryPriceBasic,
+                      extraDeliveryPrice: res.data.deliveryPriceExtra,
+                    },
+                  });
+                }
               } else {
                 Modal.info({
                   title: "등록오류",
@@ -292,24 +336,48 @@ class RegistCallDialog extends Component {
                   if (res.result === "SUCCESS") {
                     console.log("getdeliveryprice res");
                     console.log(res);
-                    self.formRef.current.setFieldsValue({
-                      deliveryPrice: comma(
-                        res.data.deliveryPriceBasic +
-                        res.data.deliveryPriceExtra
-                      ),
-                      basicDeliveryPrice: comma(res.data.deliveryPriceBasic),
-                      extraDeliveryPrice: res.data.deliveryPriceExtra,
-                    });
-                    this.setState({
-                      data: {
-                        ...this.state.data,
-                        deliveryPrice:
+
+                    if (this.props.data) {
+                      self.formRef.current.setFieldsValue({
+                        deliveryPrice: comma(
                           res.data.deliveryPriceBasic +
-                          res.data.deliveryPriceExtra,
-                        basicDeliveryPrice: res.data.deliveryPriceBasic,
+                            this.formRef.current.getFieldValue(
+                              "extraDeliveryPrice"
+                            )
+                        ),
+                        basicDeliveryPrice: comma(res.data.deliveryPriceBasic),
+                      });
+                      this.setState({
+                        data: {
+                          ...this.state.data,
+                          deliveryPrice:
+                            res.data.deliveryPriceBasic +
+                            this.formRef.current.getFieldValue(
+                              "extraDeliveryPrice"
+                            ),
+                          basicDeliveryPrice: res.data.deliveryPriceBasic,
+                        },
+                      });
+                    } else {
+                      self.formRef.current.setFieldsValue({
+                        deliveryPrice: comma(
+                          res.data.deliveryPriceBasic +
+                            res.data.deliveryPriceExtra
+                        ),
+                        basicDeliveryPrice: comma(res.data.deliveryPriceBasic),
                         extraDeliveryPrice: res.data.deliveryPriceExtra,
-                      },
-                    });
+                      });
+                      this.setState({
+                        data: {
+                          ...this.state.data,
+                          deliveryPrice:
+                            res.data.deliveryPriceBasic +
+                            res.data.deliveryPriceExtra,
+                          basicDeliveryPrice: res.data.deliveryPriceBasic,
+                          extraDeliveryPrice: res.data.deliveryPriceExtra,
+                        },
+                      });
+                    }
                   } else {
                     Modal.info({
                       title: "등록오류",
@@ -344,21 +412,42 @@ class RegistCallDialog extends Component {
       .then((res) => {
         if (res.result === "SUCCESS") {
           console.log(res);
-          self.formRef.current.setFieldsValue({
-            deliveryPrice:
-              res.data.deliveryPriceBasic + res.data.deliveryPriceExtra,
-            basicDeliveryPrice: res.data.deliveryPriceBasic,
-            extraDeliveryPrice: res.data.deliveryPriceExtra,
-          });
-          this.setState({
-            data: {
-              ...this.state.data,
-              deliveryPrice:
-                res.data.deliveryPriceBasic + res.data.deliveryPriceExtra,
-              basicDeliveryPrice: res.data.deliveryPriceBasic,
+
+          if (this.props.data) {
+            self.formRef.current.setFieldsValue({
+              deliveryPrice: comma(
+                res.data.deliveryPriceBasic +
+                  this.formRef.current.getFieldValue("extraDeliveryPrice")
+              ),
+              basicDeliveryPrice: comma(res.data.deliveryPriceBasic),
+            });
+            this.setState({
+              data: {
+                ...this.state.data,
+                deliveryPrice:
+                  res.data.deliveryPriceBasic +
+                  this.formRef.current.getFieldValue("extraDeliveryPrice"),
+                basicDeliveryPrice: res.data.deliveryPriceBasic,
+              },
+            });
+          } else {
+            self.formRef.current.setFieldsValue({
+              deliveryPrice: comma(
+                res.data.deliveryPriceBasic + res.data.deliveryPriceExtra
+              ),
+              basicDeliveryPrice: comma(res.data.deliveryPriceBasic),
               extraDeliveryPrice: res.data.deliveryPriceExtra,
-            },
-          });
+            });
+            this.setState({
+              data: {
+                ...this.state.data,
+                deliveryPrice:
+                  res.data.deliveryPriceBasic + res.data.deliveryPriceExtra,
+                basicDeliveryPrice: res.data.deliveryPriceBasic,
+                extraDeliveryPrice: res.data.deliveryPriceExtra,
+              },
+            });
+          }
         } else {
           Modal.info({
             title: "등록오류",
@@ -403,6 +492,8 @@ class RegistCallDialog extends Component {
             });
             return;
           }
+          console.log("====================update===============");
+          console.log(this.state.data);
           httpPost(httpUrl.orderUpdate, [], this.state.data)
             .then((res) => {
               console.log(res);
@@ -415,6 +506,11 @@ class RegistCallDialog extends Component {
                   Modal.info({
                     title: "등록 오류",
                     content: "가맹점 예치금이 부족합니다.",
+                  });
+                } else if (res.data === "BRANCH_CLOSED") {
+                  Modal.info({
+                    title: "등록 오류",
+                    content: "가맹점 영업시간이 아닙니다.",
                   });
                 }
               } else {
@@ -451,6 +547,11 @@ class RegistCallDialog extends Component {
                     title: "등록 오류",
                     content: "가맹점 예치금이 부족합니다.",
                   });
+                } else if (res.data === "BRANCH_CLOSED") {
+                  Modal.info({
+                    title: "등록 오류",
+                    content: "가맹점 영업시간이 아닙니다.",
+                  });
                 }
               } else {
                 registError();
@@ -474,8 +575,11 @@ class RegistCallDialog extends Component {
     let basicDeliveryPrice = this.state.data
       ? this.state.data.basicDeliveryPrice
       : this.props.data
-        ? this.props.data.basicDeliveryPrice
-        : "";
+      ? this.props.data.basicDeliveryPrice
+      : "";
+
+    console.log("this.state.selectedFr");
+    console.log(this.state.selectedFr);
 
     return (
       <React.Fragment>
@@ -539,8 +643,8 @@ class RegistCallDialog extends Component {
                               this.state.selectedFr
                                 ? this.state.selectedFr.frName
                                 : this.props.data
-                                  ? this.props.data.frName
-                                  : ""
+                                ? this.props.data.frName
+                                : ""
                             }
                             style={{ marginLeft: 20, width: 250 }}
                             required
@@ -558,8 +662,8 @@ class RegistCallDialog extends Component {
                               this.state.selectedFr
                                 ? this.state.selectedFr.frName
                                 : this.props.data
-                                  ? this.props.data.frName
-                                  : ""
+                                ? this.props.data.frName
+                                : ""
                             }
                             style={{ marginLeft: 10, width: 180 }}
                             required
@@ -602,15 +706,15 @@ class RegistCallDialog extends Component {
                               this.state.selectedDest
                                 ? this.state.selectedDest.address
                                 : this.props.data
-                                  ? this.props.data.destAddr1
-                                  : ""
+                                ? this.props.data.destAddr1
+                                : ""
                             }
                             value={
                               this.state.selectedDest
                                 ? this.state.selectedDest.address
                                 : this.props.data
-                                  ? this.props.data.destAddr1
-                                  : ""
+                                ? this.props.data.destAddr1
+                                : ""
                             }
                             style={{ marginLeft: 20, width: 250 }}
                             required
@@ -628,15 +732,15 @@ class RegistCallDialog extends Component {
                               this.state.selectedDest
                                 ? this.state.selectedDest.address
                                 : this.props.data
-                                  ? this.props.data.destAddr1
-                                  : ""
+                                ? this.props.data.destAddr1
+                                : ""
                             }
                             value={
                               this.state.selectedDest
                                 ? this.state.selectedDest.address
                                 : this.props.data
-                                  ? this.props.data.destAddr1
-                                  : ""
+                                ? this.props.data.destAddr1
+                                : ""
                             }
                             style={{ marginLeft: 10, width: 180 }}
                             required
@@ -730,16 +834,16 @@ class RegistCallDialog extends Component {
                             this.state.data
                               ? this.state.data.orderPayments
                               : this.props.data
-                                ? this.props.data.orderPayments
-                                : ""
+                              ? this.props.data.orderPayments
+                              : ""
                           }
                           editable={this.state.editable}
                           orderPrice={
                             this.state.data
                               ? this.state.data.orderPrice
                               : this.props.data
-                                ? this.props.data.orderPrice
-                                : ""
+                              ? this.props.data.orderPrice
+                              : ""
                           }
                         />
                       )}
@@ -800,8 +904,8 @@ class RegistCallDialog extends Component {
                             this.state.data
                               ? arriveReqTime[this.state.data.arriveReqTime]
                               : this.props.data
-                                ? arriveReqTime[this.props.data.arriveReqTime]
-                                : arriveReqTime[5]
+                              ? arriveReqTime[this.props.data.arriveReqTime]
+                              : arriveReqTime[5]
                           }
                           placeholder="시간단위"
                           className="override-input"
@@ -827,8 +931,8 @@ class RegistCallDialog extends Component {
                             this.state.data
                               ? packAmount[this.state.data.packAmount]
                               : this.props.data
-                                ? packAmount[this.props.data.packAmount]
-                                : packAmount[1]
+                              ? packAmount[this.props.data.packAmount]
+                              : packAmount[1]
                           }
                           placeholder="배달갯수"
                           className="override-input"
@@ -900,15 +1004,15 @@ class RegistCallDialog extends Component {
                       center={
                         this.state.mapLat && this.state.mapLng
                           ? navermaps.LatLng(
-                            this.state.mapLat,
-                            this.state.mapLng
-                          )
+                              this.state.mapLat,
+                              this.state.mapLng
+                            )
                           : this.props.data
-                            ? navermaps.LatLng(
+                          ? navermaps.LatLng(
                               this.props.data.latitude,
                               this.props.data.longitude
                             )
-                            : navermaps.LatLng(lat, lng)
+                          : navermaps.LatLng(lat, lng)
                       }
                       onClick={(e) => {
                         this.setState({
@@ -971,21 +1075,58 @@ class RegistCallDialog extends Component {
                         position={
                           this.state.mapLat && this.state.mapLng
                             ? navermaps.LatLng(
-                              this.state.mapLat,
-                              this.state.mapLng
-                            )
+                                this.state.mapLat,
+                                this.state.mapLng
+                              )
                             : this.props.data
-                              ? navermaps.LatLng(
+                            ? navermaps.LatLng(
                                 this.props.data.latitude,
                                 this.props.data.longitude
                               )
-                              : navermaps.LatLng(lat, lng)
+                            : navermaps.LatLng(lat, lng)
                         }
                         icon={
                           require("../../../img/login/map/marker_target.png")
                             .default
                         }
                       />
+                      {this.state.selectedFr &&
+                        this.state.selectedFr.latitude !== 0 &&
+                        this.state.selectedFr.longitude !== 0 && (
+                          <>
+                            <Marker
+                              position={navermaps.LatLng(
+                                this.state.selectedFr.latitude,
+                                this.state.selectedFr.longitude
+                              )}
+                              icon={
+                                require("../../../img/login/map/marker_rider.png")
+                                  .default
+                              }
+                            />
+                            <Polyline
+                              path={[
+                                this.state.mapLat && this.state.mapLng
+                                  ? navermaps.LatLng(
+                                      this.state.mapLat,
+                                      this.state.mapLng
+                                    )
+                                  : this.props.data
+                                  ? navermaps.LatLng(
+                                      this.props.data.latitude,
+                                      this.props.data.longitude
+                                    )
+                                  : navermaps.LatLng(lat, lng),
+                                navermaps.LatLng(
+                                  this.state.selectedFr.latitude,
+                                  this.state.selectedFr.longitude
+                                ),
+                              ]}
+                              strokeColor={"#0000ff"}
+                              strokeWeight={5}
+                            />
+                          </>
+                        )}
                     </NaverMap>
                   )}
                 </div>
