@@ -390,7 +390,7 @@ class MapControlDialog extends Component {
     const searchName = this.state.searchName;
     const riderStatus = 1;
 
-    httpGet(
+    httpGetWithNoLoading(
       httpUrl.riderList,
       [10, pageNum, searchName, userStatus, "", riderStatus],
       {}
