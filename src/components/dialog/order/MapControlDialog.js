@@ -39,7 +39,7 @@ class MapControlDialog extends Component {
       pagination: {
         total: 0,
         current: 1,
-        pageSize: 5,
+        pageSize: 100000,
       },
       paginationList: {
         total: 0,
