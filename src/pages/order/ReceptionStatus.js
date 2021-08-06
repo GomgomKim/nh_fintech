@@ -750,6 +750,17 @@ class ReceptionStatus extends Component {
                   강제배차
                 </Button>
               </div>
+              <div className="table-column-sub">
+                <Button
+                  style={{marginLeft : 10}}
+                  className="tabBtn"
+                  onClick={() => {
+                    this.openModifyOrderModal(row);
+                  }}
+                >
+                  주문수정
+                </Button>
+              </div>
             </div>
           );
         },
