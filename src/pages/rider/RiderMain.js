@@ -889,7 +889,7 @@ class RiderMain extends Component {
               pagination={this.state.pagination}
               onChange={this.handleTableChange}
               expandedRowRender={expandedRowRender}
-              scroll={{ y: "50vh" }}
+              // scroll={{ y: "50vh" }}
             />
           </div>
           <div id="rider-dataTableLayout" className="dataTableLayout mobile">

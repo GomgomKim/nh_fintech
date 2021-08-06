@@ -276,6 +276,7 @@ class MapControlDialog extends Component {
       userIdx: parseInt(selectedRiderIdx),
     }).then((result) => {
       console.log("### nnbox result=" + JSON.stringify(result, null, 4));
+      console.log(result);
       if (result.result === "SUCCESS") {
         if (result.data !== null) {
           this.setRiderOrderData(result);
@@ -387,22 +388,25 @@ class MapControlDialog extends Component {
     const pageNum = this.state.paginationList.current;
     const userStatus = 1;
     const searchName = this.state.searchName;
+    const riderStatus = 1;
 
-    httpGet(httpUrl.riderList, [10, pageNum, searchName, userStatus], {}).then(
-      (result) => {
-        console.log("getRiderList result");
-        console.log(result);
-        // console.log('## nnbox result=' + JSON.stringify(result, null, 4))
-        const pagination = { ...this.state.paginationList };
-        pagination.current = result.data.currentPage;
-        pagination.total = result.data.totalCount;
-        // console.log(result.data.riders)
-        this.setState({
-          results: result.data.riders,
-          paginationList: pagination,
-        });
-      }
-    );
+    httpGetWithNoLoading(
+      httpUrl.riderList,
+      [10, pageNum, searchName, userStatus, "", riderStatus],
+      {}
+    ).then((result) => {
+      console.log("getRiderList result");
+      console.log(result);
+      // console.log('## nnbox result=' + JSON.stringify(result, null, 4))
+      const pagination = { ...this.state.paginationList };
+      pagination.current = result.data.currentPage;
+      pagination.total = result.data.currentCount;
+      // console.log(result.data.riders)
+      this.setState({
+        results: result.data.riders,
+        paginationList: pagination,
+      });
+    });
   };
 
   // 라이더 전체 리스트 (최대 1000명)
@@ -731,6 +735,13 @@ class MapControlDialog extends Component {
         className: "table-column-center",
         render: (data) => <div>{arriveReqTime[data]}</div>,
       },
+      {
+        title: "가맹점명",
+        dataIndex: "frName",
+        className: "table-column-center",
+        render: (data) => <div>{data}</div>,
+      },
+
       {
         title: "음식준비",
         dataIndex: "itemPrepared",

@@ -886,7 +886,7 @@ class FranchiseMain extends Component {
             pagination={this.state.pagination}
             onChange={this.handleTableChange}
             expandedRowRender={expandedRowRender}
-            scroll={{ y: "50vh" }}
+            // scroll={{ y: "50vh" }}
           />
         </div>
         {this.state.modifyFranOpen && (

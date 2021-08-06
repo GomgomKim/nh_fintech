@@ -258,7 +258,7 @@ const httpUrl = {
   // rider
   riderTotalList: "/rider/list",
   riderList:
-    "/rider/list?pageSize=%s&pageNum=%s&searchName=%s&userStatus=%s&riderLevels=%s",
+    "/rider/list?pageSize=%s&pageNum=%s&searchName=%s&userStatus=%s&riderLevels=%s&riderStatus=%s",
   registRider: "/rider/create",
   updateRider: "/rider/update",
   riderListOne: "/rider/list",

@@ -750,6 +750,17 @@ class ReceptionStatus extends Component {
                   강제배차
                 </Button>
               </div>
+              <div className="table-column-sub">
+                <Button
+                  style={{marginLeft : 10}}
+                  className="tabBtn"
+                  onClick={() => {
+                    this.openModifyOrderModal(row);
+                  }}
+                >
+                  주문수정
+                </Button>
+              </div>
             </div>
           );
         },
@@ -1660,7 +1671,7 @@ class ReceptionStatus extends Component {
               defaultChecked={this.state.checkedCompleteCall ? "checked" : ""}
               onChange={this.handleToggleCompleteCall}
             >
-              <span className="span1">완료조회</span>
+              <span className="span1">이력조회</span>
             </Checkbox>
 
             {!this.state.checkedCompleteCall && (
@@ -1785,6 +1796,7 @@ class ReceptionStatus extends Component {
               }}
             />
           </div>
+          {!this.state.checkedCompleteCall ?
           <div className="delivery-status-box desk">
             <div style={{ background: "rgb(255, 204, 204)" }}>
               접수 :{" "}
@@ -1801,13 +1813,16 @@ class ReceptionStatus extends Component {
               {this.state.list.filter((item) => item.orderStatus === 3).length}{" "}
               건
             </div>
-            <div style={{ background: "gray" }}>
+          </div> :
+          <div className="delivery-status-box desk">
+            <div style={{ background: "#ffffbf" }}>
               완료 : {this.state.totalComplete} 건
             </div>
-            <div style={{ background: "gray" }}>
+            <div style={{ background: "#a9a9a9" }}>
               취소 : {this.state.totalCancel} 건
             </div>
           </div>
+          }
           <div className="mobile">
             <div
               className="delivery-status-mobile"
@@ -1835,13 +1850,13 @@ class ReceptionStatus extends Component {
             </div>
             <div
               className="delivery-status-mobile"
-              style={{ background: "gray" }}
+              style={{ background: "#ffffbf" }}
             >
               완료 : {this.state.totalComplete} 건
             </div>
             <div
               className="delivery-status-mobile"
-              style={{ background: "gray" }}
+              style={{ background: "#a9a9a9" }}
             >
               취소 : {this.state.totalCancel} 건
             </div>
