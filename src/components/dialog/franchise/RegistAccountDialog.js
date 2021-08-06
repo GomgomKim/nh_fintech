@@ -51,7 +51,7 @@ class RegistAccountDialog extends Component {
     //     this.formRef.current.resetFields();
     // };
 
-    // 출금계정 등록,수정 처리
+    // 출금계좌 등록,수정 처리
 
 
 
@@ -61,10 +61,10 @@ class RegistAccountDialog extends Component {
         let self = this;
         const data = this.props.data;
         Modal.confirm({
-            title: "출금계정 수정",
+            title: "출금계좌 수정",
             content: (
                 <div>
-              {data ? "출금계정을 수정하시겠습니까?" : "출금계정을 등록하시겠습니까?"}
+              {data ? "출금계좌을 수정하시겠습니까?" : "출금계좌을 등록하시겠습니까?"}
             </div>
           ),
           okText: "확인",
@@ -77,7 +77,7 @@ class RegistAccountDialog extends Component {
             })
               .then((res) => {
                 if (res.result === "SUCCESS" && res.data === "SUCCESS") {
-                  customAlert("새로운 출금계정이 등록되었습니다.");
+                  customAlert("새로운 출금계좌가 등록되었습니다.");
                 }
                 self.props.close();
               })
@@ -101,7 +101,7 @@ class RegistAccountDialog extends Component {
                             <div className="registAccount-Dialog">
                                 <div className="registAccount-content">
                                     <div className="registAccount-title">
-                                        출금계정 관리
+                                    출금계좌 관리
                                     </div>
                                     <img onClick={close} src={require('../../../img/login/close.png').default}
                                         className="registAccount-close" alt='close' />

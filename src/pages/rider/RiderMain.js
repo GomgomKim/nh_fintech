@@ -6,7 +6,7 @@ import {
   httpGetWithNoLoading,
   httpPost,
   httpUrl,
-  imageUrl,
+  imageUrl
 } from "../../api/httpClient";
 import { customAlert, updateError } from "../../api/Modals";
 import BatchWorkedListDialog from "../../components/dialog/rider/BatchWorkedListDialog";
@@ -25,7 +25,7 @@ import {
   riderLevelText,
   riderStatusCode,
   statusString,
-  tableStatusString,
+  tableStatusString
 } from "../../lib/util/codeUtil";
 import { formatDateToDay } from "../../lib/util/dateUtil";
 import { comma } from "../../lib/util/numberUtil";
@@ -204,12 +204,15 @@ class RiderMain extends Component {
       okText: "확인",
       cancelText: "취소",
       onOk() {
-        httpPost(httpUrl.updateRider, [], {
+        console.log({
           idx: row.idx,
           withdrawPassword: null,
+        });
+        httpPost(httpUrl.clearWithdrawPassword, [], {
+          userIdx: row.idx,
         })
           .then((result) => {
-            console.log(row);
+            console.log(result);
             if (result.result === "SUCCESS" && result.data === "SUCCESS") {
               customAlert("완료", "출금비밀번호가 초기화되었습니다.");
             } else if (result.data === "NOT_ADMIN") updateError();

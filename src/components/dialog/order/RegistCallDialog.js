@@ -1,7 +1,7 @@
 /*global kakao*/
 import { Button, Checkbox, Form, Input, Modal, Select } from "antd";
 import React, { Component } from "react";
-import { Marker, NaverMap } from "react-naver-maps";
+import { Marker, NaverMap, Polyline } from "react-naver-maps";
 import { httpGet, httpPost, httpUrl } from "../../../api/httpClient";
 import {
   registComplete,
@@ -105,8 +105,8 @@ class RegistCallDialog extends Component {
         : null,
       selectedFr: {
         idx: this.props.data ? this.props.data.frIdx : 0,
-        frLatitude: this.props.data ? this.props.data.frLatitude : 0,
-        frLongitude: this.props.data ? this.props.data.frLongitude : 0,
+        latitude: this.props.data ? this.props.data.frLatitude : 0,
+        longitude: this.props.data ? this.props.data.frLongitude : 0,
         frName: this.props.data ? this.props.data.frName : "",
         frPhone: this.props.data ? this.props.data.frPhone : "",
       },
@@ -238,26 +238,66 @@ class RegistCallDialog extends Component {
               if (res.result === "SUCCESS") {
                 console.log("getdeliveryprice res");
                 console.log(res);
-                self.formRef.current.setFieldsValue({
-                  deliveryPrice: comma(
-                    res.data.deliveryPriceBasic + res.data.deliveryPriceExtra
-                  ),
-                  basicDeliveryPrice: comma(res.data.deliveryPriceBasic),
-                  extraDeliveryPrice: this.props.data
-                    ? this.formRef.current.getFieldValue("extraDeliveryPrice")
-                    : res.data.deliveryPriceExtra,
-                });
-                this.setState({
-                  data: {
-                    ...this.state.data,
-                    deliveryPrice:
-                      res.data.deliveryPriceBasic + res.data.deliveryPriceExtra,
-                    basicDeliveryPrice: res.data.deliveryPriceBasic,
-                    extraDeliveryPrice: this.props.data
-                      ? this.formRef.current.getFieldValue("extraDeliveryPrice")
-                      : res.data.deliveryPriceExtra,
-                  },
-                });
+
+                // self.formRef.current.setFieldsValue({
+                //   deliveryPrice: comma(
+                //     res.data.deliveryPriceBasic + res.data.deliveryPriceExtra
+                //   ),
+                //   basicDeliveryPrice: comma(res.data.deliveryPriceBasic),
+                //   extraDeliveryPrice: this.props.data
+                //     ? this.formRef.current.getFieldValue("extraDeliveryPrice")
+                //     : res.data.deliveryPriceExtra,
+                // });
+                // this.setState({
+                //   data: {
+                //     ...this.state.data,
+                //     deliveryPrice:
+                //       res.data.deliveryPriceBasic + res.data.deliveryPriceExtra,
+                //     basicDeliveryPrice: res.data.deliveryPriceBasic,
+                //     extraDeliveryPrice: this.props.data
+                //       ? this.formRef.current.getFieldValue("extraDeliveryPrice")
+                //       : res.data.deliveryPriceExtra,
+                //   },
+                // });
+
+                if (this.props.data) {
+                  self.formRef.current.setFieldsValue({
+                    deliveryPrice: comma(
+                      res.data.deliveryPriceBasic +
+                        this.formRef.current.getFieldValue("extraDeliveryPrice")
+                    ),
+                    basicDeliveryPrice: comma(res.data.deliveryPriceBasic),
+                  });
+                  this.setState({
+                    data: {
+                      ...this.state.data,
+                      deliveryPrice:
+                        res.data.deliveryPriceBasic +
+                        this.formRef.current.getFieldValue(
+                          "extraDeliveryPrice"
+                        ),
+                      basicDeliveryPrice: res.data.deliveryPriceBasic,
+                    },
+                  });
+                } else {
+                  self.formRef.current.setFieldsValue({
+                    deliveryPrice: comma(
+                      res.data.deliveryPriceBasic + res.data.deliveryPriceExtra
+                    ),
+                    basicDeliveryPrice: comma(res.data.deliveryPriceBasic),
+                    extraDeliveryPrice: res.data.deliveryPriceExtra,
+                  });
+                  this.setState({
+                    data: {
+                      ...this.state.data,
+                      deliveryPrice:
+                        res.data.deliveryPriceBasic +
+                        res.data.deliveryPriceExtra,
+                      basicDeliveryPrice: res.data.deliveryPriceBasic,
+                      extraDeliveryPrice: res.data.deliveryPriceExtra,
+                    },
+                  });
+                }
               } else {
                 Modal.info({
                   title: "등록오류",
@@ -296,24 +336,48 @@ class RegistCallDialog extends Component {
                   if (res.result === "SUCCESS") {
                     console.log("getdeliveryprice res");
                     console.log(res);
-                    self.formRef.current.setFieldsValue({
-                      deliveryPrice: comma(
-                        res.data.deliveryPriceBasic +
-                          res.data.deliveryPriceExtra
-                      ),
-                      basicDeliveryPrice: comma(res.data.deliveryPriceBasic),
-                      extraDeliveryPrice: res.data.deliveryPriceExtra,
-                    });
-                    this.setState({
-                      data: {
-                        ...this.state.data,
-                        deliveryPrice:
+
+                    if (this.props.data) {
+                      self.formRef.current.setFieldsValue({
+                        deliveryPrice: comma(
                           res.data.deliveryPriceBasic +
-                          res.data.deliveryPriceExtra,
-                        basicDeliveryPrice: res.data.deliveryPriceBasic,
+                            this.formRef.current.getFieldValue(
+                              "extraDeliveryPrice"
+                            )
+                        ),
+                        basicDeliveryPrice: comma(res.data.deliveryPriceBasic),
+                      });
+                      this.setState({
+                        data: {
+                          ...this.state.data,
+                          deliveryPrice:
+                            res.data.deliveryPriceBasic +
+                            this.formRef.current.getFieldValue(
+                              "extraDeliveryPrice"
+                            ),
+                          basicDeliveryPrice: res.data.deliveryPriceBasic,
+                        },
+                      });
+                    } else {
+                      self.formRef.current.setFieldsValue({
+                        deliveryPrice: comma(
+                          res.data.deliveryPriceBasic +
+                            res.data.deliveryPriceExtra
+                        ),
+                        basicDeliveryPrice: comma(res.data.deliveryPriceBasic),
                         extraDeliveryPrice: res.data.deliveryPriceExtra,
-                      },
-                    });
+                      });
+                      this.setState({
+                        data: {
+                          ...this.state.data,
+                          deliveryPrice:
+                            res.data.deliveryPriceBasic +
+                            res.data.deliveryPriceExtra,
+                          basicDeliveryPrice: res.data.deliveryPriceBasic,
+                          extraDeliveryPrice: res.data.deliveryPriceExtra,
+                        },
+                      });
+                    }
                   } else {
                     Modal.info({
                       title: "등록오류",
@@ -348,25 +412,42 @@ class RegistCallDialog extends Component {
       .then((res) => {
         if (res.result === "SUCCESS") {
           console.log(res);
-          self.formRef.current.setFieldsValue({
-            deliveryPrice:
-              res.data.deliveryPriceBasic + res.data.deliveryPriceExtra,
-            basicDeliveryPrice: res.data.deliveryPriceBasic,
-            extraDeliveryPrice: this.props.data
-              ? this.formRef.current.getFieldValue("extraDeliveryPrice")
-              : res.data.deliveryPriceExtra,
-          });
-          this.setState({
-            data: {
-              ...this.state.data,
-              deliveryPrice:
-                res.data.deliveryPriceBasic + res.data.deliveryPriceExtra,
-              basicDeliveryPrice: res.data.deliveryPriceBasic,
-              extraDeliveryPrice: this.props.data
-                ? this.formRef.current.getFieldValue("extraDeliveryPrice")
-                : res.data.deliveryPriceExtra,
-            },
-          });
+
+          if (this.props.data) {
+            self.formRef.current.setFieldsValue({
+              deliveryPrice: comma(
+                res.data.deliveryPriceBasic +
+                  this.formRef.current.getFieldValue("extraDeliveryPrice")
+              ),
+              basicDeliveryPrice: comma(res.data.deliveryPriceBasic),
+            });
+            this.setState({
+              data: {
+                ...this.state.data,
+                deliveryPrice:
+                  res.data.deliveryPriceBasic +
+                  this.formRef.current.getFieldValue("extraDeliveryPrice"),
+                basicDeliveryPrice: res.data.deliveryPriceBasic,
+              },
+            });
+          } else {
+            self.formRef.current.setFieldsValue({
+              deliveryPrice: comma(
+                res.data.deliveryPriceBasic + res.data.deliveryPriceExtra
+              ),
+              basicDeliveryPrice: comma(res.data.deliveryPriceBasic),
+              extraDeliveryPrice: res.data.deliveryPriceExtra,
+            });
+            this.setState({
+              data: {
+                ...this.state.data,
+                deliveryPrice:
+                  res.data.deliveryPriceBasic + res.data.deliveryPriceExtra,
+                basicDeliveryPrice: res.data.deliveryPriceBasic,
+                extraDeliveryPrice: res.data.deliveryPriceExtra,
+              },
+            });
+          }
         } else {
           Modal.info({
             title: "등록오류",
@@ -411,6 +492,8 @@ class RegistCallDialog extends Component {
             });
             return;
           }
+          console.log("====================update===============");
+          console.log(this.state.data);
           httpPost(httpUrl.orderUpdate, [], this.state.data)
             .then((res) => {
               console.log(res);
@@ -423,6 +506,11 @@ class RegistCallDialog extends Component {
                   Modal.info({
                     title: "등록 오류",
                     content: "가맹점 예치금이 부족합니다.",
+                  });
+                } else if (res.data === "BRANCH_CLOSED") {
+                  Modal.info({
+                    title: "등록 오류",
+                    content: "가맹점 영업시간이 아닙니다.",
                   });
                 }
               } else {
@@ -459,6 +547,11 @@ class RegistCallDialog extends Component {
                     title: "등록 오류",
                     content: "가맹점 예치금이 부족합니다.",
                   });
+                } else if (res.data === "BRANCH_CLOSED") {
+                  Modal.info({
+                    title: "등록 오류",
+                    content: "가맹점 영업시간이 아닙니다.",
+                  });
                 }
               } else {
                 registError();
@@ -484,6 +577,9 @@ class RegistCallDialog extends Component {
       : this.props.data
       ? this.props.data.basicDeliveryPrice
       : "";
+
+    console.log("this.state.selectedFr");
+    console.log(this.state.selectedFr);
 
     return (
       <React.Fragment>
@@ -994,6 +1090,43 @@ class RegistCallDialog extends Component {
                             .default
                         }
                       />
+                      {this.state.selectedFr &&
+                        this.state.selectedFr.latitude !== 0 &&
+                        this.state.selectedFr.longitude !== 0 && (
+                          <>
+                            <Marker
+                              position={navermaps.LatLng(
+                                this.state.selectedFr.latitude,
+                                this.state.selectedFr.longitude
+                              )}
+                              icon={
+                                require("../../../img/login/map/marker_rider.png")
+                                  .default
+                              }
+                            />
+                            <Polyline
+                              path={[
+                                this.state.mapLat && this.state.mapLng
+                                  ? navermaps.LatLng(
+                                      this.state.mapLat,
+                                      this.state.mapLng
+                                    )
+                                  : this.props.data
+                                  ? navermaps.LatLng(
+                                      this.props.data.latitude,
+                                      this.props.data.longitude
+                                    )
+                                  : navermaps.LatLng(lat, lng),
+                                navermaps.LatLng(
+                                  this.state.selectedFr.latitude,
+                                  this.state.selectedFr.longitude
+                                ),
+                              ]}
+                              strokeColor={"#0000ff"}
+                              strokeWeight={5}
+                            />
+                          </>
+                        )}
                     </NaverMap>
                   )}
                 </div>

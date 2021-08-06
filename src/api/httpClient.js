@@ -224,8 +224,8 @@ const httpUrl = {
   orderComplete: "/order/complete",
   getDeliveryPrice:
     "/fr/expectDeliveryPrice?frIdx=%s&destLatitude=%s&destLongitude=%s",
-  completedCount : "/order/count/completed",
-  canceledCount : "/order/count/canceled",
+  completedCount: "/order/count/completed",
+  canceledCount: "/order/count/canceled",
 
   // 주문 상태 변경
   orderAssignCancel: "/order/admin/admin/assignRiderCancel",
@@ -258,7 +258,7 @@ const httpUrl = {
   // rider
   riderTotalList: "/rider/list",
   riderList:
-    "/rider/list?pageSize=%s&pageNum=%s&searchName=%s&userStatus=%s&riderLevels=%s",
+    "/rider/list?pageSize=%s&pageNum=%s&searchName=%s&userStatus=%s&riderLevels=%s&riderStatus=%s",
   registRider: "/rider/create",
   updateRider: "/rider/update",
   riderListOne: "/rider/list",
@@ -271,6 +271,7 @@ const httpUrl = {
   userBatchWorkCreate: "/rider/userBatchWork/create",
   userBatchWorkDelete: "/rider/userBatchWork/delete",
   riderBatchWorkDailyList: "/rider/daily/list?kind=%s&pageNum=%s&pageSize=%s",
+  clearWithdrawPassword: "/rider/clear/withdraw-password",
 
   // 배차
   assignRiderAdmin: "/order/admin/assignRider",
@@ -365,3 +366,4 @@ export {
   httpPostWithNoLoading,
   httpGetWithNoLoading,
 };
+
