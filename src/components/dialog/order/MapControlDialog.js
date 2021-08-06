@@ -276,6 +276,7 @@ class MapControlDialog extends Component {
       userIdx: parseInt(selectedRiderIdx),
     }).then((result) => {
       console.log("### nnbox result=" + JSON.stringify(result, null, 4));
+      console.log(result);
       if (result.result === "SUCCESS") {
         if (result.data !== null) {
           this.setRiderOrderData(result);
@@ -734,6 +735,13 @@ class MapControlDialog extends Component {
         className: "table-column-center",
         render: (data) => <div>{arriveReqTime[data]}</div>,
       },
+      {
+        title: "가맹점명",
+        dataIndex: "frName",
+        className: "table-column-center",
+        render: (data) => <div>{data}</div>,
+      },
+
       {
         title: "음식준비",
         dataIndex: "itemPrepared",
