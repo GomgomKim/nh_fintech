@@ -130,7 +130,7 @@
   }
 
   .table-gray {
-    background-color: gray;
+    background-color: #a9a9a9;
   }
 
   .table-blue {
@@ -146,8 +146,16 @@
     background-color: yellow;
   }
 
+  .table-lightyellow {
+    background-color: #ffffbf;
+  }
+
   .table-orange {
     background-color: orange;
+  }
+
+  .table-green {
+    background-color: #00995a;
   }
 
   .btnLayout {

@@ -29,7 +29,7 @@ const rowColorName = [
   "table-red",
   "table-blue",
   "table-white",
-  "table-gray",
+  "table-lightyellow",
   "table-gray",
 ];
 
