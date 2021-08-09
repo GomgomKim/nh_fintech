@@ -151,6 +151,7 @@ class SurchargeDialog extends Component {
           branchIdx: self.props.branchIdx,
           startDate: self.state.startDate,
           endDate: self.state.endDate,
+          type: self.state.pickerChange == false ? 0 : 1,
           frSettingGroupIdx:
             self.state.surchargeType === 0 ? null : frSettingGroupIdx,
         })
@@ -305,7 +306,14 @@ class SurchargeDialog extends Component {
         title: "적용시간",
         dataIndex: "completionTime",
         className: "table-column-center",
-        render: (data, row) => <div>{row.startDate + " - " + row.endDate}</div>,
+        render: (data, row) =>
+         <div>
+           {  row.type == 0 ? 
+              row.startDate + " ~ " + row.endDate
+              : "매일 " + moment(row.startDate).format("hh:mm") + " ~ "
+              + moment(row.endDate).format("hh:mm")
+           }
+        </div>,
       },
       {
         title: "추가요금",
