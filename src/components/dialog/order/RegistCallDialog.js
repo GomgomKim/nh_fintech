@@ -826,6 +826,80 @@ class RegistCallDialog extends Component {
                     </div>
                     <div className="contentBlock">
                       <div className="mainTitle">결제방식</div>
+                      <Select
+                        style={{
+                          width: 100,
+                          fontSize: 16,
+                          marginRight: 5,
+                          marginLeft: 20,
+                        }}
+                        defaultValue={
+                          this.state.data
+                            ? this.state.data.orderPayments[0].paymentMethod
+                            : this.props.data
+                            ? this.props.data.orderPayments[0].paymentMethod
+                            : 1
+                        }
+                        disabled={
+                          this.state.data
+                            ? this.state.data.orderPayments.length > 1
+                            : this.props.data
+                            ? this.props.data.length > 1
+                            : false
+                        }
+                        onChange={(value) => {
+                          let orderData = { ...this.state.data };
+                          orderData.orderPayments[0].paymentMethod = value;
+                          this.setState({ data: orderData });
+                        }}
+                      >
+                        {paymentMethod.map((value, index) => {
+                          if (index === 0) {
+                            return <></>;
+                          }
+                          return <Option value={index}>{value}</Option>;
+                        })}
+                      </Select>
+                      <Input
+                        style={{ width: 295 }}
+                        type="number"
+                        defaultValue={
+                          this.state.data
+                            ? this.state.data.orderPayments.length > 1
+                              ? null
+                              : this.state.data.orderPayments[0].paymentAmount
+                            : this.props.data
+                            ? this.props.data.orderPayments.length > 1
+                              ? null
+                              : this.props.data.orderPayments[0].paymentAmount
+                            : ""
+                        }
+                        value={
+                          this.state.data
+                            ? this.state.data.orderPayments[0].paymentAmount
+                            : ""
+                        }
+                        disabled={
+                          this.state.data
+                            ? this.state.data.orderPayments.length > 1
+                            : this.props.data
+                            ? this.props.data.length > 1
+                            : false
+                        }
+                        onChange={(e) => {
+                          let orderData = { ...this.state.data };
+                          orderData.orderPayments[0].paymentAmount = parseInt(
+                            e.target.value
+                          );
+                          this.setState({ data: orderData }, () =>
+                            console.log(this.state.data.orderPayments)
+                          );
+                        }}
+                      />
+                    </div>
+                    <div className="contentBlock">
+                      <div className="mainTitle"></div>
+
                       {this.state.paymentOpen && (
                         <PaymentDialog
                           close={this.closePaymentModal}
@@ -847,38 +921,64 @@ class RegistCallDialog extends Component {
                           }
                         />
                       )}
+
                       <Button
                         onClick={this.openPaymentModal}
-                        className="override-input"
+                        style={{ marginLeft: 20, width: 290 }}
+                        // className="override-input"
                       >
-                        결제방식 선택
+                        분할결제 지정
+                      </Button>
+                      <Button
+                        type="danger"
+                        onClick={() => {
+                          this.setState({
+                            data: {
+                              ...this.state.data,
+                              orderPayments: [
+                                {
+                                  idx: 1,
+                                  paymentMethod: 1,
+                                  paymentStatus: 1,
+                                  paymentAmount: "",
+                                },
+                              ],
+                            },
+                          });
+                        }}
+                        // className="override-input"
+                      >
+                        분할결제 취소
                       </Button>
                     </div>
-
-                    <div className="contentBlock">
-                      <div className="mainTitle" />
-
-                      <div className="selectItem" style={{ marginLeft: 20 }}>
-                        {this.state.data &&
-                          this.state.data.orderPayments.map((el) => {
-                            return (
-                              <div
-                                style={{
-                                  display: "inline-block",
-                                  backgroundColor: "black",
-                                  color: "#fddc00",
-                                  padding: "5px 8px",
-                                  borderRadius: 5,
-                                  marginRight: 10,
-                                }}
-                              >
-                                {paymentMethod[el.paymentMethod]} :{" "}
-                                {comma(el.paymentAmount)} 원
-                              </div>
-                            );
-                          })}
-                      </div>
-                    </div>
+                    {this.state.data &&
+                      this.state.data.orderPayments.length > 1 && (
+                        <div className="contentBlock">
+                          <div className="mainTitle" />
+                          <div
+                            className="selectItem"
+                            style={{ marginLeft: 20 }}
+                          >
+                            {this.state.data.orderPayments.map((el) => {
+                              return (
+                                <div
+                                  style={{
+                                    display: "inline-block",
+                                    backgroundColor: "black",
+                                    color: "#fddc00",
+                                    padding: "5px 8px",
+                                    borderRadius: 5,
+                                    marginRight: 10,
+                                  }}
+                                >
+                                  {paymentMethod[el.paymentMethod]} :{" "}
+                                  {comma(el.paymentAmount)} 원
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      )}
                   </div>
 
                   <div>

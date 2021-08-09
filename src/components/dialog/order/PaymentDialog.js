@@ -35,7 +35,7 @@ const PaymentDialog = ({
 
   const validatePaymentAmount = (data) => {
     for (let i = 0; i < data.length; i++) {
-      if (data[i].paymentAmount < 0) {
+      if (data[i].paymentAmount <= 0) {
         return false;
       }
     }
