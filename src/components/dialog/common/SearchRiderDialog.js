@@ -5,7 +5,7 @@ import "../../../css/modal.css";
 import {
   riderLevelText,
   tableStatusString,
-  userGroupString,
+  userGroupString
 } from "../../../lib/util/codeUtil";
 import SelectBox from "../../input/SelectBox";
 
@@ -76,16 +76,17 @@ class SearchRiderDialog extends Component {
     const riderLevel = this.props.teamManagerOnly
       ? [3]
       : [1, 2, 3, 4, 5, 6, 7, 8, 9];
+    const riderStatus = this.props.availableOnly ? 1 : "";
 
     httpGet(
       httpUrl.riderList,
-      [10, pageNum, searchName, userStatus, riderLevel],
+      [10, pageNum, searchName, userStatus, riderLevel, riderStatus],
       {}
     ).then((result) => {
       console.log("## nnbox result=" + JSON.stringify(result, null, 4));
       const pagination = { ...this.state.pagination };
       pagination.current = result.data.currentPage;
-      pagination.total = result.data.totalCount;
+      pagination.total = result.data.currentCount;
       this.setState({
         list: result.data.riders,
         pagination,

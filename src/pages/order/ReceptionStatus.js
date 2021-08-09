@@ -157,6 +157,9 @@ class ReceptionStatus extends Component {
       ],
       selectedOrderStatus: [1, 2, 3],
       selectedPaymentMethods: [1, 2, 3],
+
+      // 강제배차 주문 지정
+      forceAllocateOrder: {},
     };
   }
 
@@ -353,8 +356,12 @@ class ReceptionStatus extends Component {
       okText: "확인",
       cancelText: "취소",
       onOk() {
+        console.log({
+          orderIdx: self.state.forceAllocateOrder.idx,
+          userIdx: data.idx,
+        });
         httpPost(httpUrl.assignRiderAdmin, [], {
-          orderIdx: orderIdx,
+          orderIdx: self.state.forceAllocateOrder.idx,
           userIdx: data.idx,
         }).then((res) => {
           console.log(res);
@@ -482,8 +489,11 @@ class ReceptionStatus extends Component {
   };
 
   // 강제배차 dialog
-  openForceModal = () => {
-    this.setState({ forceOpen: true });
+  openForceModal = (forceAllocateOrder) => {
+    this.setState({ forceOpen: true, forceAllocateOrder }, () => {
+      console.log("this.state.forceAllocateOrder");
+      console.log(this.state.forceAllocateOrder);
+    });
   };
   closeForceingModal = () => {
     this.setState({ forceOpen: false });
@@ -745,14 +755,14 @@ class ReceptionStatus extends Component {
                 <Button
                   style={{ marginLeft: 5 }}
                   className="tabBtn"
-                  onClick={this.openForceModal}
+                  onClick={() => this.openForceModal(row)}
                 >
                   강제배차
                 </Button>
               </div>
               <div className="table-column-sub">
                 <Button
-                  style={{marginLeft : 10}}
+                  style={{ marginLeft: 10 }}
                   className="tabBtn"
                   onClick={() => {
                     this.openModifyOrderModal(row);
@@ -1281,13 +1291,16 @@ class ReceptionStatus extends Component {
           render: (data, row) => (
             <span>
               {/* <ForceAllocateDialog */}
-              {this.state.forceOpen && (
+              {/* {this.state.forceOpen && (
                 <SearchRiderDialog
                   close={this.closeForceingModal}
                   callback={(data) => this.assignRider(data, row.idx)}
                 />
-              )}
-              <Button className="tabBtn" onClick={this.openForceModal}>
+              )} */}
+              <Button
+                className="tabBtn"
+                onClick={() => this.openForceModal(row)}
+              >
                 강제배차
               </Button>
             </span>
@@ -1439,7 +1452,8 @@ class ReceptionStatus extends Component {
         {this.state.forceOpen && (
           <SearchRiderDialog
             close={this.closeForceingModal}
-            callback={(data, row) => this.assignRider(row.forceLocate, row.idx)}
+            callback={(rider) => this.assignRider(rider, rider)}
+            availableOnly={true}
           />
         )}
         <div className="reception-box">
@@ -1796,33 +1810,43 @@ class ReceptionStatus extends Component {
               }}
             />
           </div>
-          {!this.state.checkedCompleteCall ?
-          <div className="delivery-status-box desk">
-            <div style={{ background: "rgb(255, 204, 204)" }}>
-              접수 :{" "}
-              {this.state.list.filter((item) => item.orderStatus === 1).length}{" "}
-              건
+          {!this.state.checkedCompleteCall ? (
+            <div className="delivery-status-box desk">
+              <div style={{ background: "rgb(255, 204, 204)" }}>
+                접수 :{" "}
+                {
+                  this.state.list.filter((item) => item.orderStatus === 1)
+                    .length
+                }{" "}
+                건
+              </div>
+              <div style={{ background: "#d6edfe" }}>
+                배차 :{" "}
+                {
+                  this.state.list.filter((item) => item.orderStatus === 2)
+                    .length
+                }{" "}
+                건
+              </div>
+              <div style={{ background: "white" }}>
+                픽업 :{" "}
+                {
+                  this.state.list.filter((item) => item.orderStatus === 3)
+                    .length
+                }{" "}
+                건
+              </div>
             </div>
-            <div style={{ background: "#d6edfe" }}>
-              배차 :{" "}
-              {this.state.list.filter((item) => item.orderStatus === 2).length}{" "}
-              건
+          ) : (
+            <div className="delivery-status-box desk">
+              <div style={{ background: "#ffffbf" }}>
+                완료 : {this.state.totalComplete} 건
+              </div>
+              <div style={{ background: "#a9a9a9" }}>
+                취소 : {this.state.totalCancel} 건
+              </div>
             </div>
-            <div style={{ background: "white" }}>
-              픽업 :{" "}
-              {this.state.list.filter((item) => item.orderStatus === 3).length}{" "}
-              건
-            </div>
-          </div> :
-          <div className="delivery-status-box desk">
-            <div style={{ background: "#ffffbf" }}>
-              완료 : {this.state.totalComplete} 건
-            </div>
-            <div style={{ background: "#a9a9a9" }}>
-              취소 : {this.state.totalCancel} 건
-            </div>
-          </div>
-          }
+          )}
           <div className="mobile">
             <div
               className="delivery-status-mobile"
