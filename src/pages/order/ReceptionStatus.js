@@ -102,6 +102,7 @@ class ReceptionStatus extends Component {
       rider: "",
       selectedDate: new Date(1990, 1, 1),
       selectedOrderStatus: [1, 2, 3],
+      selectedCompleteStatus: [4, 5],
       selectedPaymentMethods: [1, 2, 3],
       checkedCompleteCall: false,
 
@@ -132,8 +133,15 @@ class ReceptionStatus extends Component {
           value: 3,
           text: "픽업",
         },
+      ],
+      completeStatus: [
         {
           key: "orderStatus-4",
+          value: 4,
+          text: "완료",
+        },
+        {
+          key: "orderStatus-5",
           value: 5,
           text: "취소",
         },
@@ -177,9 +185,11 @@ class ReceptionStatus extends Component {
   componentDidUpdate(prevProps, prevState) {
     if (
       this.state.selectedOrderStatus !== prevState.selectedOrderStatus ||
-      this.state.selectedPaymentMethods !== prevState.selectedPaymentMethods
+      this.state.selectedPaymentMethods !== prevState.selectedPaymentMethods ||
+      this.state.selectedCompleteStatus !== prevState.selectedCompleteStatus
     ) {
       this.getList();
+      this.getCompleteList();
     }
   }
 
@@ -242,10 +252,10 @@ class ReceptionStatus extends Component {
       startDate.getDate() + 1
     );
     var data = {
-      orderStatuses: [4, 5],
+      orderStatuses: this.state.selectedCompleteStatus,
       pageNum: this.state.totalPagination.current,
       pageSize: this.state.totalPagination.pageSize,
-      paymentMethods: [1, 2, 3],
+      paymentMethods: this.state.selectedPaymentMethods,
       startDate: formatDate(this.state.selectedDate).split(" ")[0],
       endDate: formatDate(endDate).split(" ")[0],
     };
@@ -1645,7 +1655,7 @@ class ReceptionStatus extends Component {
             )} */}
             {this.state.checkedCompleteCall && (
               <DatePicker
-                style={{ marginLeft: 20 }}
+                style={{ marginLeft: 20, verticalAlign:"top" }}
                 defaultValue={moment(today, dateFormat)}
                 format={dateFormat}
                 onChange={(date) => {
@@ -1674,8 +1684,8 @@ class ReceptionStatus extends Component {
               <span className="span1">이력조회</span>
             </Checkbox>
 
-            {!this.state.checkedCompleteCall && (
               <div className="filtering-box-wrapper">
+            {!this.state.checkedCompleteCall ? (
                 <div className="filtering-box">
                   <div className="filtering-name">주문상태</div>
 
@@ -1716,6 +1726,48 @@ class ReceptionStatus extends Component {
                     );
                   })}
                 </div>
+            ):
+            <div className="filtering-box">
+            <div className="filtering-name">주문상태</div>
+
+            {this.state.completeStatus.map((o) => {
+              return (
+                <div className="filtering-btn">
+                  <Checkbox
+                    key={o.key}
+                    value={o.value}
+                    onChange={(e) => {
+                      if (e.target.checked) {
+                        const resultComplete =
+                          this.state.selectedCompleteStatus.concat(
+                            e.target.value
+                          );
+                        this.setState({
+                          selectedCompleteStatus: resultComplete,
+                        });
+                      } else {
+                        const resultComplete =
+                          this.state.selectedCompleteStatus.filter(
+                            (el) => el !== e.target.value
+                          );
+                        this.setState({
+                          selectedCompleteStatus: resultComplete,
+                        });
+                      }
+                    }}
+                    defaultChecked={
+                      this.state.selectedCompleteStatus.includes(o.value)
+                        ? "checked"
+                        : ""
+                    }
+                  >
+                    {o.text}
+                  </Checkbox>
+                </div>
+              );
+            })}
+          </div>
+          }
                 <div className="filtering-box">
                   <div className="filtering-name">결제방식</div>
 
@@ -1757,7 +1809,6 @@ class ReceptionStatus extends Component {
                   })}
                 </div>
               </div>
-            )}
           </div>
           <div className="mobile">
             <Search
