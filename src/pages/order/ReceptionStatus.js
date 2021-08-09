@@ -102,6 +102,7 @@ class ReceptionStatus extends Component {
       rider: "",
       selectedDate: new Date(1990, 1, 1),
       selectedOrderStatus: [1, 2, 3],
+      selectedCompleteStatus: [4, 5],
       selectedPaymentMethods: [1, 2, 3],
       checkedCompleteCall: false,
 
@@ -132,8 +133,15 @@ class ReceptionStatus extends Component {
           value: 3,
           text: "픽업",
         },
+      ],
+      completeStatus: [
         {
           key: "orderStatus-4",
+          value: 4,
+          text: "완료",
+        },
+        {
+          key: "orderStatus-5",
           value: 5,
           text: "취소",
         },
@@ -157,6 +165,9 @@ class ReceptionStatus extends Component {
       ],
       selectedOrderStatus: [1, 2, 3],
       selectedPaymentMethods: [1, 2, 3],
+
+      // 강제배차 주문 지정
+      forceAllocateOrder: {},
     };
   }
 
@@ -177,9 +188,11 @@ class ReceptionStatus extends Component {
   componentDidUpdate(prevProps, prevState) {
     if (
       this.state.selectedOrderStatus !== prevState.selectedOrderStatus ||
-      this.state.selectedPaymentMethods !== prevState.selectedPaymentMethods
+      this.state.selectedPaymentMethods !== prevState.selectedPaymentMethods ||
+      this.state.selectedCompleteStatus !== prevState.selectedCompleteStatus
     ) {
       this.getList();
+      this.getCompleteList();
     }
   }
 
@@ -242,10 +255,10 @@ class ReceptionStatus extends Component {
       startDate.getDate() + 1
     );
     var data = {
-      orderStatuses: [4, 5],
+      orderStatuses: this.state.selectedCompleteStatus,
       pageNum: this.state.totalPagination.current,
       pageSize: this.state.totalPagination.pageSize,
-      paymentMethods: [1, 2, 3],
+      paymentMethods: this.state.selectedPaymentMethods,
       startDate: formatDate(this.state.selectedDate).split(" ")[0],
       endDate: formatDate(endDate).split(" ")[0],
     };
@@ -353,8 +366,12 @@ class ReceptionStatus extends Component {
       okText: "확인",
       cancelText: "취소",
       onOk() {
+        console.log({
+          orderIdx: self.state.forceAllocateOrder.idx,
+          userIdx: data.idx,
+        });
         httpPost(httpUrl.assignRiderAdmin, [], {
-          orderIdx: orderIdx,
+          orderIdx: self.state.forceAllocateOrder.idx,
           userIdx: data.idx,
         }).then((res) => {
           console.log(res);
@@ -482,8 +499,11 @@ class ReceptionStatus extends Component {
   };
 
   // 강제배차 dialog
-  openForceModal = () => {
-    this.setState({ forceOpen: true });
+  openForceModal = (forceAllocateOrder) => {
+    this.setState({ forceOpen: true, forceAllocateOrder }, () => {
+      console.log("this.state.forceAllocateOrder");
+      console.log(this.state.forceAllocateOrder);
+    });
   };
   closeForceingModal = () => {
     this.setState({ forceOpen: false });
@@ -745,14 +765,14 @@ class ReceptionStatus extends Component {
                 <Button
                   style={{ marginLeft: 5 }}
                   className="tabBtn"
-                  onClick={this.openForceModal}
+                  onClick={() => this.openForceModal(row)}
                 >
                   강제배차
                 </Button>
               </div>
               <div className="table-column-sub">
                 <Button
-                  style={{marginLeft : 10}}
+                  style={{ marginLeft: 10 }}
                   className="tabBtn"
                   onClick={() => {
                     this.openModifyOrderModal(row);
@@ -1281,13 +1301,16 @@ class ReceptionStatus extends Component {
           render: (data, row) => (
             <span>
               {/* <ForceAllocateDialog */}
-              {this.state.forceOpen && (
+              {/* {this.state.forceOpen && (
                 <SearchRiderDialog
                   close={this.closeForceingModal}
                   callback={(data) => this.assignRider(data, row.idx)}
                 />
-              )}
-              <Button className="tabBtn" onClick={this.openForceModal}>
+              )} */}
+              <Button
+                className="tabBtn"
+                onClick={() => this.openForceModal(row)}
+              >
                 강제배차
               </Button>
             </span>
@@ -1439,7 +1462,8 @@ class ReceptionStatus extends Component {
         {this.state.forceOpen && (
           <SearchRiderDialog
             close={this.closeForceingModal}
-            callback={(data, row) => this.assignRider(row.forceLocate, row.idx)}
+            callback={(rider) => this.assignRider(rider, rider)}
+            availableOnly={true}
           />
         )}
         <div className="reception-box">
@@ -1645,7 +1669,7 @@ class ReceptionStatus extends Component {
             )} */}
             {this.state.checkedCompleteCall && (
               <DatePicker
-                style={{ marginLeft: 20 }}
+                style={{ marginLeft: 20, verticalAlign:"top" }}
                 defaultValue={moment(today, dateFormat)}
                 format={dateFormat}
                 onChange={(date) => {
@@ -1674,8 +1698,8 @@ class ReceptionStatus extends Component {
               <span className="span1">이력조회</span>
             </Checkbox>
 
-            {!this.state.checkedCompleteCall && (
               <div className="filtering-box-wrapper">
+            {!this.state.checkedCompleteCall ? (
                 <div className="filtering-box">
                   <div className="filtering-name">주문상태</div>
 
@@ -1716,6 +1740,48 @@ class ReceptionStatus extends Component {
                     );
                   })}
                 </div>
+            ):
+            <div className="filtering-box">
+            <div className="filtering-name">주문상태</div>
+
+            {this.state.completeStatus.map((o) => {
+              return (
+                <div className="filtering-btn">
+                  <Checkbox
+                    key={o.key}
+                    value={o.value}
+                    onChange={(e) => {
+                      if (e.target.checked) {
+                        const resultComplete =
+                          this.state.selectedCompleteStatus.concat(
+                            e.target.value
+                          );
+                        this.setState({
+                          selectedCompleteStatus: resultComplete,
+                        });
+                      } else {
+                        const resultComplete =
+                          this.state.selectedCompleteStatus.filter(
+                            (el) => el !== e.target.value
+                          );
+                        this.setState({
+                          selectedCompleteStatus: resultComplete,
+                        });
+                      }
+                    }}
+                    defaultChecked={
+                      this.state.selectedCompleteStatus.includes(o.value)
+                        ? "checked"
+                        : ""
+                    }
+                  >
+                    {o.text}
+                  </Checkbox>
+                </div>
+              );
+            })}
+          </div>
+          }
                 <div className="filtering-box">
                   <div className="filtering-name">결제방식</div>
 
@@ -1757,7 +1823,6 @@ class ReceptionStatus extends Component {
                   })}
                 </div>
               </div>
-            )}
           </div>
           <div className="mobile">
             <Search
@@ -1796,33 +1861,43 @@ class ReceptionStatus extends Component {
               }}
             />
           </div>
-          {!this.state.checkedCompleteCall ?
-          <div className="delivery-status-box desk">
-            <div style={{ background: "rgb(255, 204, 204)" }}>
-              접수 :{" "}
-              {this.state.list.filter((item) => item.orderStatus === 1).length}{" "}
-              건
+          {!this.state.checkedCompleteCall ? (
+            <div className="delivery-status-box desk">
+              <div style={{ background: "rgb(255, 204, 204)" }}>
+                접수 :{" "}
+                {
+                  this.state.list.filter((item) => item.orderStatus === 1)
+                    .length
+                }{" "}
+                건
+              </div>
+              <div style={{ background: "#d6edfe" }}>
+                배차 :{" "}
+                {
+                  this.state.list.filter((item) => item.orderStatus === 2)
+                    .length
+                }{" "}
+                건
+              </div>
+              <div style={{ background: "white" }}>
+                픽업 :{" "}
+                {
+                  this.state.list.filter((item) => item.orderStatus === 3)
+                    .length
+                }{" "}
+                건
+              </div>
             </div>
-            <div style={{ background: "#d6edfe" }}>
-              배차 :{" "}
-              {this.state.list.filter((item) => item.orderStatus === 2).length}{" "}
-              건
+          ) : (
+            <div className="delivery-status-box desk">
+              <div style={{ background: "#ffffbf" }}>
+                완료 : {this.state.totalComplete} 건
+              </div>
+              <div style={{ background: "#a9a9a9" }}>
+                취소 : {this.state.totalCancel} 건
+              </div>
             </div>
-            <div style={{ background: "white" }}>
-              픽업 :{" "}
-              {this.state.list.filter((item) => item.orderStatus === 3).length}{" "}
-              건
-            </div>
-          </div> :
-          <div className="delivery-status-box desk">
-            <div style={{ background: "#ffffbf" }}>
-              완료 : {this.state.totalComplete} 건
-            </div>
-            <div style={{ background: "#a9a9a9" }}>
-              취소 : {this.state.totalCancel} 건
-            </div>
-          </div>
-          }
+          )}
           <div className="mobile">
             <div
               className="delivery-status-mobile"
