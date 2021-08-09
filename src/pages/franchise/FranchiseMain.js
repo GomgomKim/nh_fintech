@@ -647,8 +647,8 @@ class FranchiseMain extends Component {
               {/* <br /> */}
               <b>가입일:</b> {formatDateToDay(row.registDate)}
               <br />
-              {/* <b>최초납부일:</b> {formatDateToDay(row.chargeDate)} */}
-              {/* <br /> */}
+              {/* <b>최초납부일:</b> {formatDateToDay(row.chargeDate)}
+              <br /> */}
               {/* <b>월회비:</b> {row.isMember ? row.dues : "-"} */}
               {/* <br /> */}
               <b>VAN:</b> {row.tidNormal}
@@ -657,6 +657,8 @@ class FranchiseMain extends Component {
               <br />
               <b>PG사용여부:</b>
               {row.tidNormalRate === 100 ? "미사용" : "사용"}
+              <br />
+              <b>출금계좌:</b> {row.bank + " " + row.bankAccount}
               <br />
               <b>영업담당자:</b> {row.frSalesRiderName}
               <br />
@@ -717,6 +719,11 @@ class FranchiseMain extends Component {
           title: "메모",
           dataIndex: "memo",
           className: "table-column-center desk",
+        },
+        {
+          title: "출금계좌 정보",
+          className: "table-column-center desk",
+          render: (data, row) => <div>{row.bank.split(',')[0] + " " + row.bankAccount}</div>,
         },
         {
           title: "가입일",
