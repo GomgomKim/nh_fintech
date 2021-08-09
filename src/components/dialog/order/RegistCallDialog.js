@@ -479,6 +479,11 @@ class RegistCallDialog extends Component {
       },
       () => {
         console.log(this.state.data);
+        if (this.state.data.orderPayments.length === 1) {
+          let newData = { ...this.state.data };
+          newData.orderPayments[0].paymentAmount = newData.orderPrice;
+          this.setState({ data: newData });
+        }
         if (this.props.data) {
           let paySum = 0;
           this.state.data.orderPayments.forEach(
@@ -827,12 +832,13 @@ class RegistCallDialog extends Component {
                     <div className="contentBlock">
                       <div className="mainTitle">결제방식</div>
                       <Select
-                        style={{
-                          width: 100,
-                          fontSize: 16,
-                          marginRight: 5,
-                          marginLeft: 20,
-                        }}
+                        className="override-input"
+                        // style={{
+                        //   width: 100,
+                        //   fontSize: 16,
+                        //   marginRight: 5,
+                        //   marginLeft: 20,
+                        // }}
                         defaultValue={
                           this.state.data
                             ? this.state.data.orderPayments[0].paymentMethod
@@ -860,7 +866,7 @@ class RegistCallDialog extends Component {
                           return <Option value={index}>{value}</Option>;
                         })}
                       </Select>
-                      <Input
+                      {/* <Input
                         style={{ width: 295 }}
                         type="number"
                         defaultValue={
@@ -895,7 +901,7 @@ class RegistCallDialog extends Component {
                             console.log(this.state.data.orderPayments)
                           );
                         }}
-                      />
+                      /> */}
                     </div>
                     <div className="contentBlock">
                       <div className="mainTitle"></div>
