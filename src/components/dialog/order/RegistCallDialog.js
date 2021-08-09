@@ -846,6 +846,13 @@ class RegistCallDialog extends Component {
                             ? this.props.data.orderPayments[0].paymentMethod
                             : 1
                         }
+                        value={
+                          this.state.data
+                            ? this.state.data.orderPayments[0].paymentMethod
+                            : this.props.data
+                            ? this.props.data.orderPayments[0].paymentMethod
+                            : 1
+                        }
                         disabled={
                           this.state.data
                             ? this.state.data.orderPayments.length > 1
