@@ -35,7 +35,7 @@ const PaymentDialog = ({
 
   const validatePaymentAmount = (data) => {
     for (let i = 0; i < data.length; i++) {
-      if (data[i].paymentAmount < 0) {
+      if (data[i].paymentAmount <= 0) {
         return false;
       }
     }
@@ -43,6 +43,13 @@ const PaymentDialog = ({
   };
 
   const handlePlus = () => {
+    if (data.length >= 3) {
+      Modal.info({
+        title: "설정오류",
+        content: "결제방식은 최대 3가지입니다.",
+      });
+      return;
+    }
     setData(
       data.concat({
         idx: maxIdx,
@@ -57,6 +64,24 @@ const PaymentDialog = ({
   const handleMinus = (index) => {
     setData(data.filter((v, idx) => v.idx !== index));
   };
+  const handleMax = (index) => {
+    let newData = [...data];
+    newData.forEach((payment) => {
+      if (payment.idx === index) {
+        payment.paymentAmount = change + payment.paymentAmount;
+      }
+    });
+    setData(newData);
+  };
+  const handleReset = (index) => {
+    let newData = [...data];
+    newData.forEach((payment) => {
+      if (payment.idx === index) {
+        payment.paymentAmount = 0;
+      }
+    });
+    setData(newData);
+  };
   const calcSum = useCallback(() => {
     let res = 0;
     for (let i = 0; i < data.length; i++) {
@@ -65,7 +90,7 @@ const PaymentDialog = ({
     return res;
   }, [data]);
   const calcChange = useCallback(() => {
-    setChange(comma(orderPrice - calcSum()));
+    setChange(orderPrice - calcSum());
   }, [orderPrice, calcSum]);
 
   useEffect(() => {
@@ -127,7 +152,7 @@ const PaymentDialog = ({
                             {editable ? (
                               <Select
                                 style={{
-                                  width: 100,
+                                  width: 80,
                                   fontSize: 16,
                                   marginRight: 5,
                                   marginBottom: 10,
@@ -237,7 +262,7 @@ const PaymentDialog = ({
                               <Input
                                 type="number"
                                 style={{
-                                  width: 220,
+                                  width: 110,
                                   textAlign: "center",
                                   fontSize: 16,
                                   padding: 3,
@@ -248,6 +273,7 @@ const PaymentDialog = ({
                                     ? 0
                                     : orderPayment.paymentAmount
                                 }
+                                value={orderPayment.paymentAmount}
                                 onChange={(e) => {
                                   const newData = data;
                                   newData[i].paymentAmount = parseInt(
@@ -313,17 +339,43 @@ const PaymentDialog = ({
 
                           <div>
                             {editable && (
-                              <Button
-                                type="primary"
-                                style={{
-                                  backgroundColor: "black",
-                                  borderColor: "black",
-                                  marginLeft: 5,
-                                }}
-                                onClick={() => handleMinus(orderPayment.idx)}
-                              >
-                                <p> - </p>
-                              </Button>
+                              <>
+                                <Button
+                                  type="primary"
+                                  style={{
+                                    backgroundColor: "black",
+                                    borderColor: "black",
+                                    marginLeft: 5,
+                                  }}
+                                  onClick={() => handleMax(orderPayment.idx)}
+                                >
+                                  <p> 최대 </p>
+                                </Button>
+
+                                <Button
+                                  type="primary"
+                                  style={{
+                                    backgroundColor: "black",
+                                    borderColor: "black",
+                                    marginLeft: 5,
+                                  }}
+                                  onClick={() => handleReset(orderPayment.idx)}
+                                >
+                                  <p> 리셋 </p>
+                                </Button>
+
+                                <Button
+                                  type="primary"
+                                  style={{
+                                    backgroundColor: "black",
+                                    borderColor: "black",
+                                    marginLeft: 5,
+                                  }}
+                                  onClick={() => handleMinus(orderPayment.idx)}
+                                >
+                                  <p> - </p>
+                                </Button>
+                              </>
                             )}
                           </div>
                         </div>

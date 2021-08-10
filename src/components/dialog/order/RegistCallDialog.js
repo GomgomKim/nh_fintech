@@ -12,6 +12,8 @@ import {
 import "../../../css/modal.css";
 import {
   arriveReqTime,
+  deliveryStatusCode,
+  modifyType,
   packAmount,
   paymentMethod
 } from "../../../lib/util/codeUtil";
@@ -117,25 +119,6 @@ class RegistCallDialog extends Component {
     this.setDefaultState();
   }
 
-  // componentDidUpdate(prevProps, prevState) {
-  //   if (prevState.data) {
-  //     if (
-  //       prevState.data.basicDeliveryPrice !==
-  //         this.state.data.basicDeliveryPrice ||
-  //       prevState.data.extraDeliveryPrice !== this.state.data.extraDeliveryPrice
-  //     ) {
-  //       this.setState({
-  //         data: {
-  //           ...this.state.data,
-  //           deliveryPrice:
-  //             this.state.data.basicDeliveryPrice +
-  //             this.state.data.extraDeliveryPrice,
-  //         },
-  //       });
-  //     }
-  //   }
-  // }
-
   handleChangeInput = (value, stateKey) => {
     const cloneObj = (obj) => JSON.parse(JSON.stringify(obj));
     let newData = cloneObj(this.state.data);
@@ -238,27 +221,6 @@ class RegistCallDialog extends Component {
               if (res.result === "SUCCESS") {
                 console.log("getdeliveryprice res");
                 console.log(res);
-
-                // self.formRef.current.setFieldsValue({
-                //   deliveryPrice: comma(
-                //     res.data.deliveryPriceBasic + res.data.deliveryPriceExtra
-                //   ),
-                //   basicDeliveryPrice: comma(res.data.deliveryPriceBasic),
-                //   extraDeliveryPrice: this.props.data
-                //     ? this.formRef.current.getFieldValue("extraDeliveryPrice")
-                //     : res.data.deliveryPriceExtra,
-                // });
-                // this.setState({
-                //   data: {
-                //     ...this.state.data,
-                //     deliveryPrice:
-                //       res.data.deliveryPriceBasic + res.data.deliveryPriceExtra,
-                //     basicDeliveryPrice: res.data.deliveryPriceBasic,
-                //     extraDeliveryPrice: this.props.data
-                //       ? this.formRef.current.getFieldValue("extraDeliveryPrice")
-                //       : res.data.deliveryPriceExtra,
-                //   },
-                // });
 
                 if (this.props.data) {
                   self.formRef.current.setFieldsValue({
@@ -479,6 +441,11 @@ class RegistCallDialog extends Component {
       },
       () => {
         console.log(this.state.data);
+        if (this.state.data.orderPayments.length === 1) {
+          let newData = { ...this.state.data };
+          newData.orderPayments[0].paymentAmount = newData.orderPrice;
+          this.setState({ data: newData });
+        }
         if (this.props.data) {
           let paySum = 0;
           this.state.data.orderPayments.forEach(
@@ -826,6 +793,88 @@ class RegistCallDialog extends Component {
                     </div>
                     <div className="contentBlock">
                       <div className="mainTitle">결제방식</div>
+                      <Select
+                        className="override-input"
+                        // style={{
+                        //   width: 100,
+                        //   fontSize: 16,
+                        //   marginRight: 5,
+                        //   marginLeft: 20,
+                        // }}
+                        defaultValue={
+                          this.state.data
+                            ? this.state.data.orderPayments[0].paymentMethod
+                            : this.props.data
+                            ? this.props.data.orderPayments[0].paymentMethod
+                            : 1
+                        }
+                        value={
+                          this.state.data
+                            ? this.state.data.orderPayments[0].paymentMethod
+                            : this.props.data
+                            ? this.props.data.orderPayments[0].paymentMethod
+                            : 1
+                        }
+                        disabled={
+                          this.state.data
+                            ? this.state.data.orderPayments.length > 1
+                            : this.props.data
+                            ? this.props.data.length > 1
+                            : false
+                        }
+                        onChange={(value) => {
+                          let orderData = { ...this.state.data };
+                          orderData.orderPayments[0].paymentMethod = value;
+                          this.setState({ data: orderData });
+                        }}
+                      >
+                        {paymentMethod.map((value, index) => {
+                          if (index === 0) {
+                            return <></>;
+                          }
+                          return <Option value={index}>{value}</Option>;
+                        })}
+                      </Select>
+                      {/* <Input
+                        style={{ width: 295 }}
+                        type="number"
+                        defaultValue={
+                          this.state.data
+                            ? this.state.data.orderPayments.length > 1
+                              ? null
+                              : this.state.data.orderPayments[0].paymentAmount
+                            : this.props.data
+                            ? this.props.data.orderPayments.length > 1
+                              ? null
+                              : this.props.data.orderPayments[0].paymentAmount
+                            : ""
+                        }
+                        value={
+                          this.state.data
+                            ? this.state.data.orderPayments[0].paymentAmount
+                            : ""
+                        }
+                        disabled={
+                          this.state.data
+                            ? this.state.data.orderPayments.length > 1
+                            : this.props.data
+                            ? this.props.data.length > 1
+                            : false
+                        }
+                        onChange={(e) => {
+                          let orderData = { ...this.state.data };
+                          orderData.orderPayments[0].paymentAmount = parseInt(
+                            e.target.value
+                          );
+                          this.setState({ data: orderData }, () =>
+                            console.log(this.state.data.orderPayments)
+                          );
+                        }}
+                      /> */}
+                    </div>
+                    <div className="contentBlock">
+                      <div className="mainTitle"></div>
+
                       {this.state.paymentOpen && (
                         <PaymentDialog
                           close={this.closePaymentModal}
@@ -847,41 +896,196 @@ class RegistCallDialog extends Component {
                           }
                         />
                       )}
+
                       <Button
                         onClick={this.openPaymentModal}
-                        className="override-input"
+                        style={{ marginLeft: 20, width: 290 }}
+                        // className="override-input"
                       >
-                        결제방식 선택
+                        분할결제 지정
+                      </Button>
+                      <Button
+                        type="danger"
+                        onClick={() => {
+                          this.setState({
+                            data: {
+                              ...this.state.data,
+                              orderPayments: [
+                                {
+                                  idx: 1,
+                                  paymentMethod: 1,
+                                  paymentStatus: 1,
+                                  paymentAmount: "",
+                                },
+                              ],
+                            },
+                          });
+                        }}
+                        // className="override-input"
+                      >
+                        분할결제 취소
                       </Button>
                     </div>
-
-                    <div className="contentBlock">
-                      <div className="mainTitle" />
-
-                      <div className="selectItem" style={{ marginLeft: 20 }}>
-                        {this.state.data &&
-                          this.state.data.orderPayments.map((el) => {
-                            return (
-                              <div
-                                style={{
-                                  display: "inline-block",
-                                  backgroundColor: "black",
-                                  color: "#fddc00",
-                                  padding: "5px 8px",
-                                  borderRadius: 5,
-                                  marginRight: 10,
-                                }}
-                              >
-                                {paymentMethod[el.paymentMethod]} :{" "}
-                                {comma(el.paymentAmount)} 원
-                              </div>
-                            );
-                          })}
-                      </div>
-                    </div>
+                    {this.state.data &&
+                      this.state.data.orderPayments.length > 1 && (
+                        <div className="contentBlock">
+                          <div className="mainTitle" />
+                          <div
+                            className="selectItem"
+                            style={{ marginLeft: 20 }}
+                          >
+                            {this.state.data.orderPayments.map((el) => {
+                              return (
+                                <div
+                                  style={{
+                                    display: "inline-block",
+                                    backgroundColor: "black",
+                                    color: "#fddc00",
+                                    padding: "5px 8px",
+                                    borderRadius: 5,
+                                    marginRight: 10,
+                                  }}
+                                >
+                                  {paymentMethod[el.paymentMethod]} :{" "}
+                                  {comma(el.paymentAmount)} 원
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      )}
                   </div>
 
                   <div>
+                    {this.props.data && (
+                      <div className="contentBlock">
+                        <div className="mainTitle">주문상태</div>
+                        <Select
+                          className="override-input"
+                          defaultValue={
+                            this.state.data && this.state.data.orderStatus
+                          }
+                          value={this.state.data && this.state.data.orderStatus}
+                          onChange={(value) => {
+                            if (!modifyType[data.orderStatus].includes(value)) {
+                              Modal.info({
+                                content: <div>상태를 바꿀 수 없습니다.</div>,
+                              });
+                              return;
+                            }
+                            // 대기중 -> 픽업중 변경 시 강제배차 알림
+                            if (data.orderStatus === 1 && value === 2) {
+                              Modal.info({
+                                content: <div>강제배차를 사용하세요.</div>,
+                              });
+                              return;
+                            }
+                            // 픽업 -> 접수 변경 시 배차상태로 변경 알림
+                            if (data.orderStatus === 3 && value === 1) {
+                              Modal.info({
+                                content: (
+                                  <div>
+                                    배차상태로 먼저 변경한 후 접수로
+                                    변경해주세요.
+                                  </div>
+                                ),
+                              });
+                              return;
+                            }
+
+                            //완료를 복원시키는 경우
+                            if (data.orderStatus === 4 && value === 3) {
+                              const self = this;
+                              Modal.confirm({
+                                title: "주문복구",
+                                content:
+                                  "주문을 복구하는 경우 라이더에게 지급된 가맹점 배달료도 북구됩니다. 정말 복구하시겠습니까?",
+                                okText: "확인",
+                                cancelText: "취소",
+                                onOk() {
+                                  httpPost(httpUrl.orderCompleteRestore, [], {
+                                    orderIdx: data.idx,
+                                  }).then((res) => {
+                                    if (
+                                      res.result === "SUCCESS" &&
+                                      res.data === "SUCCESS"
+                                    ) {
+                                      Modal.info({
+                                        title: "변경 성공",
+                                        content: "주문상태가 변경되었습니다.",
+                                      });
+                                      this.setState({
+                                        data: { ...data, orderStatus: value },
+                                      });
+                                    } else {
+                                      Modal.info({
+                                        title: "변경 실패",
+                                        content:
+                                          "주문상태 변경에 실패했습니다.",
+                                      });
+                                    }
+                                  });
+                                },
+                              });
+                              return;
+                            }
+                            const orderStatuseChangeApiCode = [
+                              "",
+                              httpUrl.orderAssignCancel,
+                              httpUrl.orderPickupCancel,
+                              httpUrl.orderPickup,
+                              httpUrl.orderComplete,
+                              httpUrl.orderCancel,
+                            ];
+
+                            httpPost(orderStatuseChangeApiCode[value], [], {
+                              orderIdx: data.idx,
+                            })
+                              .then((res) => {
+                                if (
+                                  res.result === "SUCCESS" &&
+                                  res.data === "SUCCESS"
+                                ) {
+                                  Modal.info({
+                                    title: "변경 성공",
+                                    content: "주문상태가 변경되었습니다.",
+                                  });
+                                  this.setState({
+                                    data: { ...data, orderStatus: value },
+                                  });
+                                } else {
+                                  Modal.info({
+                                    title: "변경 실패",
+                                    content: "주문상태 변경에 실패했습니다.",
+                                  });
+                                }
+                              })
+                              .catch((e) => {
+                                Modal.info({
+                                  title: "변경 실패",
+                                  content: "주문상태 변경에 실패했습니다.",
+                                });
+
+                                throw e;
+                              });
+                          }}
+                        >
+                          {deliveryStatusCode.map((value, index) => {
+                            if (index === 0) return <></>;
+                            else
+                              return (
+                                <Option key={index} value={index}>
+                                  {value}
+                                </Option>
+                              );
+                          })}
+                        </Select>
+                        <p style={{ color: "red", marginTop: 5 }}>
+                          * 주문상태는 클릭하는 즉시 적용되니 주의하시기
+                          바랍니다.
+                        </p>
+                      </div>
+                    )}
                     <div className="contentBlock" style={{ marginTop: 0 }}>
                       <div className="mainTitle">음식준비완료</div>
                       <FormItem name="itemPrepared" className="selectItem">
