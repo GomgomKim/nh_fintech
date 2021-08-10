@@ -315,6 +315,7 @@ const httpUrl = {
     "/order/addrAptList?addrType=%s&pageNum=%s&pageSize=%s&searchDong=%s",
   createAddrApt: "/branch/addrApt/create",
   deleteAddrApt: "/branch/addrApt/delete",
+  updateAddrApt: "/branch/addrApt/update",
 
   // 패스워드 변경
   changePassword: "/user/changePassword",
