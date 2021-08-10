@@ -224,8 +224,8 @@ const httpUrl = {
   orderComplete: "/order/complete",
   getDeliveryPrice:
     "/fr/expectDeliveryPrice?frIdx=%s&destLatitude=%s&destLongitude=%s",
-  completedCount: "/order/count/completed",
-  canceledCount: "/order/count/canceled",
+  completedCount: "/order/count/completed?selectedDate=%s",
+  canceledCount: "/order/count/canceled?selectedDate=%s",
 
   // 주문 상태 변경
   orderAssignCancel: "/order/admin/admin/assignRiderCancel",
