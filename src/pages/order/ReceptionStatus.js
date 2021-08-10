@@ -1936,7 +1936,7 @@ class ReceptionStatus extends Component {
               {this.state.list.filter((item) => item.orderStatus === 3).length}{" "}
               건
             </div>
-            <div
+            {/* <div
               className="delivery-status-mobile"
               style={{ background: "#ffffbf" }}
             >
@@ -1947,7 +1947,7 @@ class ReceptionStatus extends Component {
               style={{ background: "#a9a9a9" }}
             >
               취소 : {this.state.totalCancel} 건
-            </div>
+            </div> */}
           </div>
 
           <div id="reception-table" className="desk">
