@@ -74,7 +74,7 @@ class SearchAddressDialog extends Component {
       {}
     )
       .then((res) => {
-        console.log(JSON.stringify(res, null, 4));
+        console.log(res);
         if (res.result === "SUCCESS" && res.data) {
           this.setState({
             list: res.data.addrAptBranches,
@@ -188,6 +188,7 @@ class SearchAddressDialog extends Component {
         latitude: this.state.latitude,
         longitude: this.state.longitude,
         addr2: "",
+        status: 1,
       })
     )
       .then((res) => {
@@ -242,6 +243,40 @@ class SearchAddressDialog extends Component {
       });
   };
 
+  onChangeStatus = (row) => {
+    console.log({
+      ...row,
+      status: !row.status,
+    });
+    httpPost(httpUrl.updateAddrApt, [], {
+      ...row,
+      status: row.status === 0 ? 1 : 0,
+    })
+      .then((res) => {
+        console.log(res);
+        if (res.result === "SUCCESS" && res.data === "SUCCESS") {
+          Modal.info({
+            title: "변경 성공",
+            content: "상태변경에 성공했습니다.",
+          });
+          this.getList();
+        } else {
+          Modal.warn({
+            title: "변경실패",
+            conten: "관리자에게 문의하세요",
+          });
+        }
+      })
+      .catch((e) => {
+        console.log(e);
+        Modal.warn({
+          title: "변경실패",
+          conten: "관리자에게 문의하세요",
+        });
+        throw e;
+      });
+  };
+
   // 라디오
   onChangeRegistAddType = (e) => {
     this.setState({ RegistAddType: e.target.value }, () => {});
@@ -282,6 +317,17 @@ class SearchAddressDialog extends Component {
         className: "table-column-center",
         width: "30%",
         render: (data) => <div>{data}</div>,
+      },
+      {
+        title: "배송가능여부",
+        dataIndex: "status",
+        className: "table-column-center",
+        width: "30%",
+        render: (data, row) => (
+          <Button onClick={() => this.onChangeStatus(row)}>
+            {data ? "배송가능" : "배송불가"}
+          </Button>
+        ),
       },
       {
         title: "삭제",
