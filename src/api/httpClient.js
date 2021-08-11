@@ -272,6 +272,7 @@ const httpUrl = {
   userBatchWorkDelete: "/rider/userBatchWork/delete",
   riderBatchWorkDailyList: "/rider/daily/list?kind=%s&pageNum=%s&pageSize=%s",
   clearWithdrawPassword: "/rider/clear/withdraw-password",
+  ncashList: "/ncash/list?category=%s&pageNum=%s&pageSize=%s&userIdx=%s",
 
   // 배차
   assignRiderAdmin: "/order/admin/assignRider",

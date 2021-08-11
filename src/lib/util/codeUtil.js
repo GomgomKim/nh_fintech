@@ -48,12 +48,34 @@ const tableStatusString = {
   3: "탈퇴",
 };
 
+//일차감 구분
 const kindString = [
   "전체",
   "리스료",
   "대출 상환",
   "산재 보험비",
 ];
+
+//코인잔액 카테고리
+const coinCategory = {
+  NONE: "전체",
+  BUY_PRODUCT: "몰 구매",
+  BUY_PRODUCT_CANCEL: "몰 구매 취소",
+  DELIVERY_PRICE_SEND: "배송비 보내기",
+  // DELIVERY_PRICE_SEND_RESTORE: "배송비 보내기 복원",
+  DELIVERY_PRICE_RECEIVE: "배송비 받기",
+  // DELIVERY_PRICE_RECEIVE_RESTORE: "배송비 받기 복원",
+  NCASH_CHARGE_PROC:"충전",
+  // NCASH_CHARGE_REQ:"충전 요청",
+  // WITHDRAW_PROC: "출금 처리",
+  WITHDRAW_REQ: "출금 요청",
+  // DUES_PAY: "가맹비 지급",
+  INCENTIVE_PAYED: "인센티브 지급",
+  NCASH_SEND:"예치금 전송",
+  NCASH_SEND_BY_ADMIN: "관리자 예치금 추가/차감",
+  BATCH_WORK_NCASH: "일차감",
+  RIDER_ASSIGN_CANCEL: "배차 취소(페널티 차감)",
+};
 
 // 가맹점 - 출금설정
 const withdrawString = {
@@ -373,4 +395,5 @@ export {
   kindString,
   contarctType,
   phoneAgency,
+  coinCategory,
 };

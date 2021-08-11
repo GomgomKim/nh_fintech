@@ -14,6 +14,7 @@ import BatchWorkListDialog from "../../components/dialog/rider/BatchWorkListDial
 import BlindRiderListDialog from "../../components/dialog/rider/BlindRiderListDialog";
 import RegistRiderDialog from "../../components/dialog/rider/RegistRiderDialog";
 import RiderGroupDialog from "../../components/dialog/rider/RiderGroupDialog";
+import CoinTransferDialog from "../../components/dialog/rider/CoinTransferDialog";
 import UpdatePasswordDialog from "../../components/dialog/rider/UpdatePasswordDialog";
 import SelectBox from "../../components/input/SelectBox";
 import "../../css/modal.css";
@@ -49,6 +50,7 @@ class RiderMain extends Component {
       riderUpdateOpen: false, // 기사 수정
       updatePasswordOpen: false, // 출금 비밀번호
       blindListOpen: false, // 블라인드
+      coinOpen: false,
       blindRiderData: [], //블라인드 정보
       pagination: {
         total: 0,
@@ -294,6 +296,14 @@ class RiderMain extends Component {
     this.setState({ riderCoinOpen: false });
   };
 
+  //코인이력
+  openCoinTransferModal = (row) => {
+    this.setState({ coinOpen: true, dialogData: row });
+  };
+  closeCoinTransferModal = () => {
+    this.setState({ coinOpen: false });
+  };
+
   //입출금내역
   openRiderBankModal = () => {
     this.setState({ riderBankOpen: true });
@@ -493,7 +503,11 @@ class RiderMain extends Component {
         dataIndex: "ncash",
         className: "table-column-center desk",
         sorter: (a, b) => a.ncash - b.ncash,
-        render: (data) => <div>{comma(data)}</div>,
+        render: (data, row) => 
+        <div
+        style={{cursor: "pointer"}}
+        onClick={() => {this.openCoinTransferModal(row)}}
+        >{comma(data)}</div>,
       },
       {
         title: "입사일",
@@ -905,6 +919,12 @@ class RiderMain extends Component {
           {this.state.riderUpdateOpen && (
             <RegistRiderDialog
               close={this.closeUpdateRiderModal}
+              data={this.state.dialogData}
+            />
+          )}
+          {this.state.coinOpen && (
+            <CoinTransferDialog
+              close={this.closeCoinTransferModal}
               data={this.state.dialogData}
             />
           )}
