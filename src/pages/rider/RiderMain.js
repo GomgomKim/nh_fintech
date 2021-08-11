@@ -525,7 +525,7 @@ class RiderMain extends Component {
       {
         title: "퇴사일",
         dataIndex: "deleteDate",
-        width: "7%",
+        // width: "7%",
         className: "table-column-center desk",
         sorter: (a, b) => moment(a.deleteDate) - moment(b.deleteDate),
         render: (data) => <div>{formatDateToDay(data)}</div>,
@@ -540,21 +540,21 @@ class RiderMain extends Component {
         title: "상태",
         dataIndex: "userStatus",
         className: "table-column-center desk",
-        filters: [
-          {
-            text: "사용",
-            value: 1,
-          },
-          {
-            text: "중지",
-            value: 2,
-          },
-          {
-            text: "탈퇴",
-            value: 3,
-          },
-        ],
-        onFilter: (value, record) => value === record.userStatus,
+        // filters: [
+        //   {
+        //     text: "사용",
+        //     value: 1,
+        //   },
+        //   {
+        //     text: "중지",
+        //     value: 2,
+        //   },
+        //   {
+        //     text: "탈퇴",
+        //     value: 3,
+        //   },
+        // ],
+        // onFilter: (value, record) => value === record.userStatus,
         render: (data, row) => (
           <div>
             <SelectBox
