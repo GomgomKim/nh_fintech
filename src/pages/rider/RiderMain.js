@@ -50,7 +50,7 @@ class RiderMain extends Component {
       riderUpdateOpen: false, // 기사 수정
       updatePasswordOpen: false, // 출금 비밀번호
       blindListOpen: false, // 블라인드
-      coinOpen: false,
+      coinOpen: false, // 코인이력
       blindRiderData: [], //블라인드 정보
       pagination: {
         total: 0,

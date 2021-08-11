@@ -148,16 +148,16 @@ class CoinTransferDialog extends Component {
     return (
       <React.Fragment>
         <div className="Dialog-overlay" onClick={close} />
-        <div className="taskWorkList-Dialog">
-          <div className="taskWorkList-content">
-            <div className="taskWorkList-title">코인 이력</div>
+        <div className="coinList-Dialog">
+          <div className="coinList-content">
+            <div className="coinList-title">코인 이력</div>
             <img
               onClick={close}
               src={require("../../../img/login/close.png").default}
-              className="taskWorkList-close"
+              className="coinList-close"
               alt="close"
             />
-            <div className="taskWorkList-inner">
+            <div className="coinList-inner">
             <SelectBox
                 // placeholder={'전체'}
                 style={{width:200}}
