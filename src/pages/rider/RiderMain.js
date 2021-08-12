@@ -858,11 +858,12 @@ class RiderMain extends Component {
             </Button>
           </div>
           <div className="desk">
+            <div className="riderStatus">
             <div className="rider-status">
-              퇴근 :{" "}
+              근무 :{" "}
               {
                 this.state.resultsStatus.filter(
-                  (item) => item.riderStatus === 3
+                  (item) => item.riderStatus === 1
                 ).length
               }{" "}
               명
@@ -877,13 +878,14 @@ class RiderMain extends Component {
               명
             </div>
             <div className="rider-status">
-              근무 :{" "}
+              퇴근 :{" "}
               {
                 this.state.resultsStatus.filter(
-                  (item) => item.riderStatus === 1
+                  (item) => item.riderStatus === 3
                 ).length
               }{" "}
               명
+            </div>
             </div>
           </div>
           {this.state.blindListOpen && (
