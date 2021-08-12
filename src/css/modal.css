@@ -2577,6 +2577,54 @@
     margin-top: 20px;
   }
 
+  /* 코인 이력 */
+  .coinList-Dialog {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 1000px;
+    z-index: 2;
+  }
+
+  .coinList-content {
+    padding: 30px;
+    background-color: white;
+  }
+
+  .coinList-title {
+    font-size: 25px;
+    font-weight: bold;
+    line-height: 30px;
+    /* width:300px; */
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  .coinList-close {
+    width: 30px;
+    cursor: pointer;
+    background-color: #fddc00;
+    /* display: inline-block; */
+    float: right;
+    padding: 8px;
+  }
+
+  .coinList-inner {
+    width: 100%;
+    overflow-y: scroll;
+    border: 1px solid #ccc;
+    padding: 20px;
+    text-align: left;
+    margin-top: 20px;
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+
+  .coinList-inner::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera*/
+  }
+
   /*기사 그룹관리*/
   .riderGroup-Dialog {
     position: fixed;

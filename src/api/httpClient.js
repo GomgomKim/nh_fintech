@@ -224,8 +224,8 @@ const httpUrl = {
   orderComplete: "/order/complete",
   getDeliveryPrice:
     "/fr/expectDeliveryPrice?frIdx=%s&destLatitude=%s&destLongitude=%s",
-  completedCount: "/order/count/completed",
-  canceledCount: "/order/count/canceled",
+  completedCount: "/order/count/completed?selectedDate=%s",
+  canceledCount: "/order/count/canceled?selectedDate=%s",
 
   // 주문 상태 변경
   orderAssignCancel: "/order/admin/admin/assignRiderCancel",
@@ -272,6 +272,7 @@ const httpUrl = {
   userBatchWorkDelete: "/rider/userBatchWork/delete",
   riderBatchWorkDailyList: "/rider/daily/list?kind=%s&pageNum=%s&pageSize=%s",
   clearWithdrawPassword: "/rider/clear/withdraw-password",
+  ncashList: "/ncash/list?category=%s&pageNum=%s&pageSize=%s&userIdx=%s",
 
   // 배차
   assignRiderAdmin: "/order/admin/assignRider",
@@ -315,6 +316,7 @@ const httpUrl = {
     "/order/addrAptList?addrType=%s&pageNum=%s&pageSize=%s&searchDong=%s",
   createAddrApt: "/branch/addrApt/create",
   deleteAddrApt: "/branch/addrApt/delete",
+  updateAddrApt: "/branch/addrApt/update",
 
   // 패스워드 변경
   changePassword: "/user/changePassword",

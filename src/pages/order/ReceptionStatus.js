@@ -49,7 +49,7 @@ import {
   paymentMethod,
   rowColorName
 } from "../../lib/util/codeUtil";
-import { formatDate } from "../../lib/util/dateUtil";
+import { formatDate, formatDateToDay } from "../../lib/util/dateUtil";
 import { comma, remainTime } from "../../lib/util/numberUtil";
 import SurchargeDialog from "./../../components/dialog/order/SurchargeDialog";
 
@@ -70,6 +70,11 @@ class ReceptionStatus extends Component {
       },
       totalPagination: {
         total: 0,
+        current: 1,
+        pageSize: 10000,
+      },
+      newPagination: {
+        total:0,
         current: 1,
         pageSize: 100,
       },
@@ -177,8 +182,6 @@ class ReceptionStatus extends Component {
       this.pollingFunction,
       this.state.pullingInterval
     );
-    this.canceledTotal();
-    this.completedTotal();
   }
 
   componentWillUnmount() {
@@ -313,7 +316,11 @@ class ReceptionStatus extends Component {
             {
               selectedDate: today,
             },
-            () => this.getCompleteList()
+            () => {
+              this.getCompleteList();
+              this.completedTotal();
+              this.canceledTotal();
+            }
           );
         }
       }
@@ -333,7 +340,7 @@ class ReceptionStatus extends Component {
   };
 
   canceledTotal = () => {
-    httpGet(httpUrl.canceledCount, [], {})
+    httpGet(httpUrl.canceledCount, [moment(this.state.selectedDate).format("YYYY-MM-DD")], {})
       .then((res) => {
         this.setState({ totalCancel: res.data });
       })
@@ -346,7 +353,8 @@ class ReceptionStatus extends Component {
   };
 
   completedTotal = () => {
-    httpGet(httpUrl.completedCount, [], {})
+    console.log("QQQ " + this.state.selectedDate)
+    httpGet(httpUrl.completedCount, [moment(this.state.selectedDate).format("YYYY-MM-DD")], {})
       .then((res) => {
         this.setState({ totalComplete: res.data });
       })
@@ -413,15 +421,16 @@ class ReceptionStatus extends Component {
     });
   };
 
-  handleTableChange = (pagination) => {
-    const pager = { ...this.state.pagination };
-    pager.current = pagination.current;
-    pager.pageSize = pagination.pageSize;
+  handleTableChange = (newPagination, sorter) => {
+    console.log('various parameters', newPagination, sorter);
+    const pager = { ...this.state.newPagination };
+    pager.current = newPagination.current;
+    pager.pageSize = newPagination.pageSize;
     this.setState(
       {
-        pagination: pager,
+        newPagination: pager,
       },
-      () => this.getList()
+      () => this.getCompleteList()
     );
   };
 
@@ -576,7 +585,7 @@ class ReceptionStatus extends Component {
         title: "주문번호",
         dataIndex: "idx",
         className: "table-column-center desk",
-        key: (row) => `idx:${row.idx}`,
+        // key: (row) => `idx:${row.idx}`,
         sorter: (a, b) => a.idx - b.idx,
         render: (data) => <div>{data}</div>,
       },
@@ -930,7 +939,7 @@ class ReceptionStatus extends Component {
         title: "요청시간",
         dataIndex: "arriveReqTime",
         className: "table-column-center desk",
-        key: (row) => `arriveReqTime:${row.arriveReqTime}`,
+        // key: (row) => `arriveReqTime:${row.arriveReqTime}`,
         sorter: (a, b) => a.arriveReqTime - b.arriveReqTime,
         render: (data) => <div>{arriveReqTime[data]}</div>,
       },
@@ -991,7 +1000,8 @@ class ReceptionStatus extends Component {
         title: "음식준비",
         dataIndex: "itemPrepared",
         className: "table-column-center desk",
-        key: (row) => `itemPrepared:${row.itemPrepared}`,
+        // key: (row) => `itemPrepared:${row.itemPrepared}`,
+        sorter: (a, b) => a.itemPrepared - b.itemPrepared,
         // filters: [
         //   {
         //     text: "준비중",
@@ -1015,7 +1025,7 @@ class ReceptionStatus extends Component {
         title: "가맹점명",
         dataIndex: "frName",
         className: "table-column-center desk",
-        key: (row) => `frName:${row.frName}`,
+        // key: (row) => `frName:${row.frName}`,
         sorter: (a, b) => a.frName.localeCompare(b.frName),
 
         render: (data, row) => {
@@ -1035,7 +1045,7 @@ class ReceptionStatus extends Component {
         title: "접수시간",
         dataIndex: "orderDate",
         className: "table-column-center desk",
-        key: (row) => `orderDate:${row.orderDate}`,
+        // key: (row) => `orderDate:${row.orderDate}`,
         sorter: (a, b) => moment(a.orderDate) - moment(b.orderDate),
         render: (data, row) => <div>{data}</div>,
       },
@@ -1057,7 +1067,7 @@ class ReceptionStatus extends Component {
         title: "도착지",
         // dataIndex: "destAddr1",
         className: "table-column-center desk",
-        key: (row) => `destAddr1:${row.destAddr1}`,
+        // key: (row) => `destAddr1:${row.destAddr1}`,
         sorter: (a, b) =>
           (a.destAddr1 + a.destAddr2).localeCompare(b.destAddr1 + b.destAddr2),
         render: (data, row) => (
@@ -1070,7 +1080,7 @@ class ReceptionStatus extends Component {
         title: "기사명",
         dataIndex: "riderName",
         className: "table-column-center desk",
-        key: (row) => `riderName:${row.riderName}`,
+        // key: (row) => `riderName:${row.riderName}`,
         // sorter: (a, b) => {
         //   console.log(a);
         //   console.log(b);
@@ -1101,7 +1111,7 @@ class ReceptionStatus extends Component {
         title: "가격",
         dataIndex: "orderPrice",
         className: "table-column-center desk",
-        key: (row) => `orderPrice:${row.orderPrice}`,
+        // key: (row) => `orderPrice:${row.orderPrice}`,
         sorter: (a, b) => a.orderPrice - b.orderPrice,
         render: (data) => <div>{comma(data)}</div>,
       },
@@ -1109,7 +1119,7 @@ class ReceptionStatus extends Component {
         title: "배달요금",
         dataIndex: "deliveryPrice",
         className: "table-column-center desk",
-        key: (row) => `deliveryPrice:${row.deliveryPrice}`,
+        // key: (row) => `deliveryPrice:${row.deliveryPrice}`,
         sorter: (a, b) => a.deliveryPrice - b.deliveryPrice,
         render: (data, row) => (
           <div>
@@ -1141,7 +1151,7 @@ class ReceptionStatus extends Component {
         title: "배차시간",
         dataIndex: "assignDate",
         className: "table-column-center desk",
-        key: (row) => `assignDate:${row.assignDate}`,
+        // key: (row) => `assignDate:${row.assignDate}`,
         sorter: (a, b) => moment(a.assignDate) - moment(b.assignDate),
         render: (data, row) => <div>{data}</div>,
       },
@@ -1149,7 +1159,7 @@ class ReceptionStatus extends Component {
         title: "픽업시간",
         dataIndex: "pickupDate",
         className: "table-column-center desk",
-        key: (row) => `pickupDate:${row.pickupDate}`,
+        // key: (row) => `pickupDate:${row.pickupDate}`,
         sorter: (a, b) => moment(a.pickupDate) - moment(b.pickupDate),
         render: (data, row) => (
           <div>{row.orderStatus >= 3 ? formatDate(data) : "-"}</div>
@@ -1159,7 +1169,7 @@ class ReceptionStatus extends Component {
         title: "완료시간",
         dataIndex: "completeDate",
         className: "table-column-center desk",
-        key: (row) => `completeDate:${row.completeDate}`,
+        // key: (row) => `completeDate:${row.completeDate}`,
         sorter: (a, b) => moment(a.completeDate) - moment(b.completeDate),
         render: (data, row) => (
           <div>{row.orderStatus >= 4 ? formatDate(data) : "-"}</div>
@@ -1669,7 +1679,7 @@ class ReceptionStatus extends Component {
             )} */}
             {this.state.checkedCompleteCall && (
               <DatePicker
-                style={{ marginLeft: 20, verticalAlign:"top" }}
+                style={{ marginLeft: 20, verticalAlign: "top" }}
                 defaultValue={moment(today, dateFormat)}
                 format={dateFormat}
                 onChange={(date) => {
@@ -1684,8 +1694,11 @@ class ReceptionStatus extends Component {
                       { selectedDate: newDate },
                       () => {
                         this.getCompleteList();
+                        this.completedTotal();
+                        this.canceledTotal();
+                        console.log("BBB "+ moment(this.state.selectedDate).format("YYYY-MM-DD"))
                       },
-                      () => console.log(this.state.selectedDate)
+                      () => console.log("aaa" + this.state.selectedDate)
                     );
                   }
                 }}
@@ -1698,8 +1711,8 @@ class ReceptionStatus extends Component {
               <span className="span1">이력조회</span>
             </Checkbox>
 
-              <div className="filtering-box-wrapper">
-            {!this.state.checkedCompleteCall ? (
+            <div className="filtering-box-wrapper">
+              {!this.state.checkedCompleteCall ? (
                 <div className="filtering-box">
                   <div className="filtering-name">주문상태</div>
 
@@ -1740,52 +1753,11 @@ class ReceptionStatus extends Component {
                     );
                   })}
                 </div>
-            ):
-            <div className="filtering-box">
-            <div className="filtering-name">주문상태</div>
-
-            {this.state.completeStatus.map((o) => {
-              return (
-                <div className="filtering-btn">
-                  <Checkbox
-                    key={o.key}
-                    value={o.value}
-                    onChange={(e) => {
-                      if (e.target.checked) {
-                        const resultComplete =
-                          this.state.selectedCompleteStatus.concat(
-                            e.target.value
-                          );
-                        this.setState({
-                          selectedCompleteStatus: resultComplete,
-                        });
-                      } else {
-                        const resultComplete =
-                          this.state.selectedCompleteStatus.filter(
-                            (el) => el !== e.target.value
-                          );
-                        this.setState({
-                          selectedCompleteStatus: resultComplete,
-                        });
-                      }
-                    }}
-                    defaultChecked={
-                      this.state.selectedCompleteStatus.includes(o.value)
-                        ? "checked"
-                        : ""
-                    }
-                  >
-                    {o.text}
-                  </Checkbox>
-                </div>
-              );
-            })}
-          </div>
-          }
+              ) : (
                 <div className="filtering-box">
-                  <div className="filtering-name">결제방식</div>
+                  <div className="filtering-name">주문상태</div>
 
-                  {this.state.paymentMethod.map((o) => {
+                  {this.state.completeStatus.map((o) => {
                     return (
                       <div className="filtering-btn">
                         <Checkbox
@@ -1793,25 +1765,25 @@ class ReceptionStatus extends Component {
                           value={o.value}
                           onChange={(e) => {
                             if (e.target.checked) {
-                              const result =
-                                this.state.selectedPaymentMethods.concat(
+                              const resultComplete =
+                                this.state.selectedCompleteStatus.concat(
                                   e.target.value
                                 );
                               this.setState({
-                                selectedPaymentMethods: result,
+                                selectedCompleteStatus: resultComplete,
                               });
                             } else {
-                              const result =
-                                this.state.selectedPaymentMethods.filter(
+                              const resultComplete =
+                                this.state.selectedCompleteStatus.filter(
                                   (el) => el !== e.target.value
                                 );
                               this.setState({
-                                selectedPaymentMethods: result,
+                                selectedCompleteStatus: resultComplete,
                               });
                             }
                           }}
                           defaultChecked={
-                            this.state.selectedPaymentMethods.includes(o.value)
+                            this.state.selectedCompleteStatus.includes(o.value)
                               ? "checked"
                               : ""
                           }
@@ -1822,7 +1794,48 @@ class ReceptionStatus extends Component {
                     );
                   })}
                 </div>
+              )}
+              <div className="filtering-box">
+                <div className="filtering-name">결제방식</div>
+
+                {this.state.paymentMethod.map((o) => {
+                  return (
+                    <div className="filtering-btn">
+                      <Checkbox
+                        key={o.key}
+                        value={o.value}
+                        onChange={(e) => {
+                          if (e.target.checked) {
+                            const result =
+                              this.state.selectedPaymentMethods.concat(
+                                e.target.value
+                              );
+                            this.setState({
+                              selectedPaymentMethods: result,
+                            });
+                          } else {
+                            const result =
+                              this.state.selectedPaymentMethods.filter(
+                                (el) => el !== e.target.value
+                              );
+                            this.setState({
+                              selectedPaymentMethods: result,
+                            });
+                          }
+                        }}
+                        defaultChecked={
+                          this.state.selectedPaymentMethods.includes(o.value)
+                            ? "checked"
+                            : ""
+                        }
+                      >
+                        {o.text}
+                      </Checkbox>
+                    </div>
+                  );
+                })}
               </div>
+            </div>
           </div>
           <div className="mobile">
             <Search
@@ -1923,7 +1936,7 @@ class ReceptionStatus extends Component {
               {this.state.list.filter((item) => item.orderStatus === 3).length}{" "}
               건
             </div>
-            <div
+            {/* <div
               className="delivery-status-mobile"
               style={{ background: "#ffffbf" }}
             >
@@ -1934,7 +1947,7 @@ class ReceptionStatus extends Component {
               style={{ background: "#a9a9a9" }}
             >
               취소 : {this.state.totalCancel} 건
-            </div>
+            </div> */}
           </div>
 
           <div id="reception-table" className="desk">
@@ -1951,8 +1964,15 @@ class ReceptionStatus extends Component {
                   : this.state.list
               }
               columns={columns}
-              pagination={false}
-              // onChange={this.handleTableChange}
+              pagination={
+                this.state.checkedCompleteCall
+                ? this.state.newPagination
+                : false  
+              }
+              onChange={
+                this.state.checkedCompleteCall &&
+                this.handleTableChange
+              }
               expandedRowRender={expandedRowRender}
               // scroll={{ y: "50vh" }}
             />
@@ -1971,7 +1991,11 @@ class ReceptionStatus extends Component {
                   : this.state.list
               }
               columns={columns}
-              pagination={false}
+              pagination={
+                this.state.checkedCompleteCall
+                ? this.state.newPagination
+                : false
+              }
               // onChange={this.handleTableChange}
               expandedRowRender={expandedRowRender}
             />
@@ -1984,6 +2008,7 @@ class ReceptionStatus extends Component {
               marginTop: "1rem",
             }}
           >
+            { !this.state.checkedCompleteCall &&
             <Button
               onClick={() => {
                 if (this.state.checkedCompleteCall) {
@@ -2035,6 +2060,7 @@ class ReceptionStatus extends Component {
             >
               더 보기
             </Button>
+            }
           </div>
         </div>
       </>

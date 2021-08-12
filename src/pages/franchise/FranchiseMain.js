@@ -449,21 +449,21 @@ class FranchiseMain extends Component {
         title: "상태",
         dataIndex: "userStatus",
         className: "table-column-center desk",
-        filters: [
-          {
-            text: "사용",
-            value: 1,
-          },
-          {
-            text: "중지",
-            value: 2,
-          },
-          {
-            text: "탈퇴",
-            value: 3,
-          },
-        ],
-        onFilter: (value, record) => value === record.userStatus,
+        // filters: [
+        //   {
+        //     text: "사용",
+        //     value: 1,
+        //   },
+        //   {
+        //     text: "중지",
+        //     value: 2,
+        //   },
+        //   {
+        //     text: "탈퇴",
+        //     value: 3,
+        //   },
+        // ],
+        // onFilter: (value, record) => value === record.userStatus,
         render: (data, row) => (
           <div>
             <SelectBox
