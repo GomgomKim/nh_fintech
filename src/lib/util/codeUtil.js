@@ -148,7 +148,7 @@ const staffString = {
 
 const riderGroupString = ["", "A", "B", "C", "D", "E"];
 
-const riderStatusCode = ["", "근무", "휴식", "퇴근"];
+const riderStatusCode = ["전체", "근무", "휴식", "퇴근"];
 
 const riderLevelText = [
   "",
