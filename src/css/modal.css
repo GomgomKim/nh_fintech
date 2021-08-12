@@ -1312,6 +1312,9 @@
   .registFranWrapper .override-input.addrBtn {
     width: 120px;
   }
+  .registFranWrapper .override-input.serchRiderBtn {
+    width: 90px;
+  }
 
   /* 오른쪽 wrappper */
   .registFranWrapper.sub {
@@ -1332,10 +1335,13 @@
     /* margin-left: -30px; */
     width: 300px;
   }
-  .registFranWrapper.sub .override-input.price {
+  .registFranWrapper.sub .override-input.orderman {
     /* margin-left: -30px; */
-    width: 200px;
-    margin-right: 10px;
+    width: 190px;
+  }
+  .registFranWrapper.sub .ant-picker.datepicker {
+    margin-left: 20px;
+    width: 300px;
   }
   /* .registFranWrapper.sub .callTab {
   width: 400px;
@@ -1388,6 +1394,10 @@
   .registFran-btn {
     float: right;
     margin-top: 15px;
+    width: 180px;
+    height: 40px;
+    font-size: 18px;
+    margin-top: -5px;
   }
   /* 코인이체 dialog */
   .coinTran-Dialog {
