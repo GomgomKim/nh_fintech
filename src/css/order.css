@@ -23,7 +23,7 @@
   }
 
   .selectLayout {
-    /* margin-top: 20px !important; */
+    margin-top: 20px !important;
     display: inline-block;
   }
 
@@ -51,8 +51,8 @@
     /* margin-right: 5px; */
   }
 
-  .dataTableLayout2 .ant-table-thead{
-    z-index:0;
+  .dataTableLayout2 .ant-table-thead {
+    z-index: 0;
   }
 
   .riderTableLayout {

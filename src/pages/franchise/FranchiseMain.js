@@ -887,7 +887,7 @@ class FranchiseMain extends Component {
             )}
           <Button
             icon={<BankOutlined />}
-            className="tabBtn addFranTab desk"
+            className="tabBtn addFranTab"
             onClick={this.openRegistFranchiseModal}
             >
             가맹점등록
@@ -899,7 +899,7 @@ class FranchiseMain extends Component {
             />
             )}
           <Button
-            className="tabBtn sectionTab desk"
+            className="tabBtn sectionTab"
             onClick={this.openSearchAddressModal}
             >
             주소검색관리
@@ -991,7 +991,7 @@ class FranchiseMain extends Component {
           />
           )}
 
-        <div className="dataTableLayout2">
+        <div className="dataTableLayout2 desk">
           <Table
             rowKey={(record) => record.idx}
             dataSource={this.state.list}
@@ -1002,8 +1002,6 @@ class FranchiseMain extends Component {
             // scroll={{ y: "50vh" }}
             scroll={{x: true, marginTop:100}}
             sticky={{offsetHeader:60}}
-            scroll={{ x: true }}
-            sticky={true}
           />
         </div>
         <div className="dataTableLayout2 mobile">
