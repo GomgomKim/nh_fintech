@@ -1245,7 +1245,7 @@
   }
   .registFran-title {
     /* font-size: 28px; */
-    letter-spacing: -1px;
+    letter-spacing: -1px; 
     font-weight: bold;
     color: #333;
     text-align: right;
@@ -3183,7 +3183,7 @@
 
   .searchAddress-content {
     background-color: white;
-    padding: 10px;
+    padding: 5px 10px;
     text-align: left;
     color: #777;
   }
@@ -3194,7 +3194,7 @@
     color: #333;
     text-align: right;
     display: inline-block;
-    font-size: 25px;
+    font-size: 18px;
     line-height: 30px;
   }
   .searchAddressWrapper {
@@ -3211,7 +3211,7 @@
     padding: 8px;
   }
   .searchAddress-Dialog .layout {
-    margin-top: 20px;
+    margin-top: 10px;
     width: 100%;
     /* overflow-y: scroll; */
     border: 1px solid #ccc;
@@ -3238,7 +3238,7 @@
 
   .searchAddress-btn {
     display: inline-block;
-    margin-top: 10px;
+    /* margin-top: 10px; */
     margin-right: 25px;
     float: right;
   }
@@ -3253,7 +3253,6 @@
   }
 
   .searchAddress-Dialog .layout .dataTableLayout-01 {
-    margin-top: 30px;
     height:300px;
     overflow-y: scroll;
     -ms-overflow-style: none; /* IE and Edge */
@@ -3272,7 +3271,7 @@
   }
   .searchAddress-name {
     display: inline-block;
-    font-size: 20px;
+    font-size: 16px;
     font-weight: bold;
     color: #1890ff;
     margin-top:10px;
@@ -3290,6 +3289,7 @@
     width: 300px;
     vertical-align: top;
     margin-left: 10px;
+    margin-bottom:0px!important;
   }
 
   .searchAddress-Dialog .searchRequirement {
@@ -3310,9 +3310,9 @@
   }
 
   .searchAddress-Dialog .contentBlock .mainTitle {
-    font-size: 16px;
+    font-size: 14px;
     color: #222;
-    width: 40px;
+    width: 30px;
   }
   .searchAddress-Dialog .contentBlock .short {
     width: 175px;

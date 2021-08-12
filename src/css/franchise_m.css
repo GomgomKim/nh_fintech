@@ -7,9 +7,15 @@
     }
   
     .franchiseContainer .selectLayout {
-        margin-top: 20px;
+        margin-top: -20px;
+        padding-top: 30px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid #b5b5b5;
         vertical-align: middle;
         margin-right: 10px!important;
+        background-color: white;
+        z-index: 100;
+        width: 100%;
       }
       
       .franchiseContainer .dataTableLayout {
@@ -49,7 +55,7 @@
   /*가맹점관리-모바일*/
   .dataTableLayout2 {
     /* width: 310px; */
-    margin-top: 20px;
+    /* margin-top: 20px; */
   }
  
   /* .franchiseContainer{
