@@ -484,6 +484,7 @@ class FranchiseMain extends Component {
         dataIndex: "idx",
         className: "table-column-center desk",
         sorter: (a, b) => a.idx - b.idx,
+        render: (data) => <div className="c-p-20">{data}</div>,
       },
       {
         title: "가맹점명",
@@ -495,16 +496,21 @@ class FranchiseMain extends Component {
         title: "사업자번호",
         dataIndex: "businessNumber",
         className: "table-column-center desk",
+        render: (data) => <div className="c-p-10">{data}</div>,
+
       },
       {
         title: "가맹점번호",
         dataIndex: "frPhone",
         className: "table-column-center desk",
+        render: (data) => <div className="c-p-10">{data}</div>,
+
       },
       {
         title: "대표자번호",
         dataIndex: "phone",
         className: "table-column-center desk",
+        render: (data) => <div className="c-p-10">{data}</div>,
       },
       {
         title: "주소",
@@ -518,7 +524,7 @@ class FranchiseMain extends Component {
         dataIndex: "ncash",
         className: "table-column-center desk",
         sorter: (a, b) => a.ncash - b.ncash,
-        render: (data) => <div>{comma(data)}</div>,
+        render: (data) => <div className="c-p-10">{comma(data)}</div>,
       },
       // {
       //   title: "잔액",
@@ -561,112 +567,7 @@ class FranchiseMain extends Component {
       //     </div>
       //   ),
       // },
-      {
-        title: "VAN등록요청",
-        className: "table-column-center desk",
-        render: (data, row) => (
-          <div>
-            <Button
-              className="tabBtn surchargeTab"
-              // onClick={() => this.setState({ ResistVANOpen: true })}
-              onClick={this.vanWatinAlert}
-            >
-              등록요청
-            </Button>
-          </div>
-        ),
-      },
-      {
-        title: "출금계좌",
-        className: "table-column-center desk",
-        render: (data, row) => (
-          <div>
-            <Button
-              className="tabBtn surchargeTab"
-              onClick={() =>
-                this.setState({ accountRegistOpen: true, accountData: row })
-              }
-            >
-              등록/수정
-            </Button>
-          </div>
-        ),
-      },
-      {
-        title: "블라인드",
-        className: "table-column-center desk",
-        render: (data, row) => (
-          <div>
-            <Button
-              className="tabBtn surchargeTab"
-              onClick={() =>
-                this.setState({ blindListOpen: true, blindFrData: row })
-              }
-            >
-              블라인드
-            </Button>
-          </div>
-        ),
-      },
-      {
-        title: "수정",
-        className: "table-column-center desk",
-        render: (data, row) => (
-          <div>
-            {/* {this.state.modifyFranOpen && (
-              <RegistFranDialog
-                close={this.closeModifyFranModal}
-                data={this.state.dialogData}
-              />
-            )} */}
-            <Button
-              className="tabBtn surchargeTab"
-              onClick={() =>
-                this.setState({ modifyFranOpen: true, dialogData: row })
-              }
-            >
-              수정하기
-            </Button>
-          </div>
-        ),
-      },
-    ];
-
-    const expandedRowRender = (record) => {
-      const dropColumns = [
-        // 모바일
-        {
-          title: "세부정보",
-          dataIndex: "chargeDate",
-          className: "table-column-center mobile",
-          render: (data, row) => (
-            <div>
-              <b>코인잔액:</b> {comma(row.ncash)}
-              <br />
-              {/* <b>가맹여부:</b> {row.isMember ? "가맹" : "무가맹"} */}
-              {/* <br /> */}
-              <b>가입일:</b> {formatDateToDay(row.registDate)}
-              <br />
-              {/* <b>최초납부일:</b> {formatDateToDay(row.chargeDate)}
-              <br /> */}
-              {/* <b>월회비:</b> {row.isMember ? row.dues : "-"} */}
-              {/* <br /> */}
-              <b>VAN:</b> {row.tidNormal}
-              <br />
-              <b>PG:</b> {row.tidPrepay}
-              <br />
-              <b>PG사용여부:</b>
-              {row.tidNormalRate === 100 ? "미사용" : "사용"}
-              <br />
-              <b>출금계좌:</b> {row.bank + " " + row.bankAccount}
-              <br />
-              <b>영업담당자:</b> {row.frSalesRiderName}
-              <br />
-            </div>
-          ),
-        },
-
-        // {
+       // {
         //   title: "월회비 최초납부일",
         //   dataIndex: "chargeDate",
         //   className: "table-column-center desk",
@@ -701,41 +602,43 @@ class FranchiseMain extends Component {
           title: "VAN",
           dataIndex: "tidNormal",
           className: "table-column-center desk",
-          render: (data) => <div>{data}</div>,
+          render: (data) => <div className="c-p-20">{data}</div>,
         },
         {
           title: "PG",
           dataIndex: "tidPrepay",
           className: "table-column-center desk",
-          render: (data) => <div>{data}</div>,
+          render: (data) => <div className="c-p-15">{data}</div>,
         },
         {
           title: "PG 사용여부",
           dataIndex: "tidNormalRate",
           className: "table-column-center desk",
-          render: (data) => <div>{data === 100 ? "미사용" : "사용"}</div>,
+          render: (data) => <div className="c-p-25">{data === 100 ? "미사용" : "사용"}</div>,
         },
         {
           title: "메모",
           dataIndex: "memo",
           className: "table-column-center desk",
+          render: (data) => <div className="c-p-25">{data}</div>,
+
         },
         {
           title: "출금계좌 정보",
           className: "table-column-center desk",
-          render: (data, row) => <div>{row.bank.split(',')[0] + " " + row.bankAccount}</div>,
+          render: (data, row) => <div className="c-p-10">{row.bank.split(',')[0] + " " + row.bankAccount}</div>,
         },
         {
           title: "가입일",
           dataIndex: "registDate",
           className: "table-column-center desk",
-          render: (data) => <div>{formatDateToDay(data)}</div>,
+          render: (data) => <div className="c-p-25">{formatDateToDay(data)}</div>,
         },
         {
           title: "영업담당자",
           dataIndex: "frSalesRiderName",
           className: "table-column-center desk",
-          render: (data) => <div>{data}</div>,
+          render: (data) => <div className="c-p-25">{data}</div>,
         },
         // {
         //   title: "영업담당자",
@@ -743,25 +646,208 @@ class FranchiseMain extends Component {
         //   className: "table-column-center",
         //   render: (data) => <div>{formatDate(data)}</div>,
         // },
+        {
+          title: "VAN등록요청",
+          className: "table-column-center desk",
+          render: (data, row) => (
+            <div>
+              <Button
+                className="tabBtn surchargeTab"
+                // onClick={() => this.setState({ ResistVANOpen: true })}
+                onClick={this.vanWatinAlert}
+              >
+                등록요청
+              </Button>
+            </div>
+          ),
+        },
+        {
+          title: "출금계좌",
+          className: "table-column-center desk",
+          render: (data, row) => (
+            <div>
+              <Button
+                className="tabBtn surchargeTab"
+                onClick={() =>
+                  this.setState({ accountRegistOpen: true, accountData: row })
+                }
+              >
+                등록/수정
+              </Button>
+            </div>
+          ),
+        },
+        {
+          title: "블라인드",
+          className: "table-column-center desk",
+          render: (data, row) => (
+            <div>
+              <Button
+                className="tabBtn surchargeTab"
+                onClick={() =>
+                  this.setState({ blindListOpen: true, blindFrData: row })
+                }
+              >
+                블라인드
+              </Button>
+            </div>
+          ),
+        },
+        {
+          title: "수정",
+          className: "table-column-center desk",
+          render: (data, row) => (
+            <div>
+              {/* {this.state.modifyFranOpen && (
+                <RegistFranDialog
+                  close={this.closeModifyFranModal}
+                  data={this.state.dialogData}
+                />
+              )} */}
+              <Button
+                className="tabBtn surchargeTab"
+                onClick={() =>
+                  this.setState({ modifyFranOpen: true, dialogData: row })
+                }
+              >
+                수정하기
+              </Button>
+            </div>
+          ),
+        },
       ];
 
-      return (
-        <Table
-          className="droptable_fr"
-          rowKey={(record) => `record: ${record.idx}`}
-          columns={dropColumns}
-          dataSource={[record]}
-          pagination={false}
-        />
-      );
-    };
+    // const expandedRowRender = (record) => {
+    //   const dropColumns = [
+    //     // 모바일
+    //     {
+    //       title: "세부정보",
+    //       dataIndex: "chargeDate",
+    //       className: "table-column-center mobile",
+    //       render: (data, row) => (
+    //         <div>
+    //           <b>코인잔액:</b> {comma(row.ncash)}
+    //           <br />
+    //           {/* <b>가맹여부:</b> {row.isMember ? "가맹" : "무가맹"} */}
+    //           {/* <br /> */}
+    //           <b>가입일:</b> {formatDateToDay(row.registDate)}
+    //           <br />
+    //           {/* <b>최초납부일:</b> {formatDateToDay(row.chargeDate)}
+    //           <br /> */}
+    //           {/* <b>월회비:</b> {row.isMember ? row.dues : "-"} */}
+    //           {/* <br /> */}
+    //           <b>VAN:</b> {row.tidNormal}
+    //           <br />
+    //           <b>PG:</b> {row.tidPrepay}
+    //           <br />
+    //           <b>PG사용여부:</b>
+    //           {row.tidNormalRate === 100 ? "미사용" : "사용"}
+    //           <br />
+    //           <b>출금계좌:</b> {row.bank + " " + row.bankAccount}
+    //           <br />
+    //           <b>영업담당자:</b> {row.frSalesRiderName}
+    //           <br />
+    //         </div>
+    //       ),
+    //     },
+
+    //     // {
+    //     //   title: "월회비 최초납부일",
+    //     //   dataIndex: "chargeDate",
+    //     //   className: "table-column-center desk",
+    //     //   render: (data) => <div>{formatDateToDay(data)}</div>,
+    //     // },
+    //     // {
+    //     //   title: "가맹여부",
+    //     //   dataIndex: "isMember",
+    //     //   className: "table-column-center desk",
+    //     //   render: (data) => <div>{data ? "가맹" : "무가맹"}</div>,
+    //     // },
+
+    //     // {
+    //     //   title: "적용타입",
+    //     //   dataIndex: "applyType",
+    //     //   className: "table-column-center",
+    //     //   render: (data) => <div>{}</div>,
+    //     // },
+    //     // {
+    //     //   title: "월회비",
+    //     //   dataIndex: "dues",
+    //     //   className: "table-column-center desk",
+    //     //   render: (data, row) => <div>{row.isMember ? data : "-"}</div>,
+    //     // },
+    //     // {
+    //     //   title: "카드가맹상태",
+    //     //   dataIndex: "cardStatus",
+    //     //   className: "table-column-center",
+    //     //   render: (data) => <div>{cardStatus[data]}</div>,
+    //     // },
+    //     {
+    //       title: "VAN",
+    //       dataIndex: "tidNormal",
+    //       className: "table-column-center desk",
+    //       render: (data) => <div>{data}</div>,
+    //     },
+    //     {
+    //       title: "PG",
+    //       dataIndex: "tidPrepay",
+    //       className: "table-column-center desk",
+    //       render: (data) => <div>{data}</div>,
+    //     },
+    //     {
+    //       title: "PG 사용여부",
+    //       dataIndex: "tidNormalRate",
+    //       className: "table-column-center desk",
+    //       render: (data) => <div>{data === 100 ? "미사용" : "사용"}</div>,
+    //     },
+    //     {
+    //       title: "메모",
+    //       dataIndex: "memo",
+    //       className: "table-column-center desk",
+    //     },
+    //     {
+    //       title: "출금계좌 정보",
+    //       className: "table-column-center desk",
+    //       render: (data, row) => <div>{row.bank.split(',')[0] + " " + row.bankAccount}</div>,
+    //     },
+    //     {
+    //       title: "가입일",
+    //       dataIndex: "registDate",
+    //       className: "table-column-center desk",
+    //       render: (data) => <div>{formatDateToDay(data)}</div>,
+    //     },
+    //     {
+    //       title: "영업담당자",
+    //       dataIndex: "frSalesRiderName",
+    //       className: "table-column-center desk",
+    //       render: (data) => <div>{data}</div>,
+    //     },
+    //     // {
+    //     //   title: "영업담당자",
+    //     //   dataIndex: "registDate",
+    //     //   className: "table-column-center",
+    //     //   render: (data) => <div>{formatDate(data)}</div>,
+    //     // },
+    //   ];
+
+    //   return (
+    //     <Table
+    //       className="droptable_fr"
+    //       rowKey={(record) => `record: ${record.idx}`}
+    //       columns={dropColumns}
+    //       dataSource={[record]}
+    //       pagination={false}
+    //     />
+    //   );
+    // };
 
     return (
+      <div>
+
+      
       <div className="franchiseContainer">
         <div className="selectLayout">
-          <span className="searchRequirementText desk">검색조건</span>
-          <br />
-          <br />
+          <div className="searchRequirementText desk">검색조건</div>
           <SelectBox
             value={tableStatusString[this.state.franStatus]}
             code={Object.keys(tableStatusString)}
@@ -885,6 +971,15 @@ class FranchiseMain extends Component {
           )}
         </div>
 
+        {this.state.modifyFranOpen && (
+          <RegistFranDialog
+          getList={this.getList}
+            isOpen={this.state.modifyFranOpen}
+            close={this.closeModifyFranModal}
+            data={this.state.dialogData}
+          />
+        )}
+      </div>
         <div className="dataTableLayout2">
           <Table
             rowKey={(record) => record.idx}
@@ -892,18 +987,12 @@ class FranchiseMain extends Component {
             columns={columns}
             pagination={this.state.pagination}
             onChange={this.handleTableChange}
-            expandedRowRender={expandedRowRender}
+            // expandedRowRender={expandedRowRender}
             // scroll={{ y: "50vh" }}
+            scroll={{x: true}}
+            sticky={true}
           />
         </div>
-        {this.state.modifyFranOpen && (
-          <RegistFranDialog
-            getList={this.getList}
-            isOpen={this.state.modifyFranOpen}
-            close={this.closeModifyFranModal}
-            data={this.state.dialogData}
-          />
-        )}
       </div>
     );
   }

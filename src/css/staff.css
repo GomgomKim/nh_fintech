@@ -5,6 +5,8 @@
 .searchRequirementText {
   font-size: 15px;
   font-family: NotoSansBold;
+  display: inline-block;
+  margin-right: 10px;
 }
 
 .registStaff {

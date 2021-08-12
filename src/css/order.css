@@ -31,12 +31,43 @@
     margin-left: 20px !important;
   }
 
+  .riderMain-container .selectLayout {
+    margin-top: 10px !important;
+    margin-bottom: 10px !important;
+    display: inline-block;
+    position: fixed;
+  }
+
+  .franchiseContainer .selectLayout {
+    margin-top: 10px !important;
+    margin-bottom: 10px !important;
+    display: inline-block;
+  }
+
   .dataTableLayout {
-    margin-top: 40px;
+    margin-top: 10px;
   }
 
   .dataTableLayout2 {
-    margin-top: 40px;
+    margin-top: 10px;
+    /* -webkit-overflow-scrolling: initial; */
+    /* vertical-align: top; */
+    /* white-space: nowrap; */
+    /* float: left; */
+    /* display: table; */
+    /* max-width: 100px; */
+    /* display: table; */
+    /* table-layout: fixed; */
+    white-space: nowrap;
+  }
+
+  .dataTableLayout2 th .ant-table-column-sorters {
+    padding: 16px 0px;
+  }
+
+  .dataTableLayout2 th .ant-table-column-sorter {
+    margin-left: 0px;
+    /* margin-right: 5px; */
   }
 
   .riderTableLayout {
