@@ -6,13 +6,23 @@
     display: none !important;
   }
 
-  .franchiseContainer .selectLayout {
-    /* margin-top: 20px; */
-    vertical-align: middle;
+  .franchiseContainer {
+    /* position: fixed;
+    width: 100%;
+    left: 15px;
+    top: 80px;
+    right: 0;
+    z-index: 1000; */
   }
 
-  .franchiseContainer .dataTableLayout {
-    margin-top: 40px;
+  .franchiseContainer .selectLayout {
+    margin-top: 0px !important;
+    padding-top: 10px !important;
+    padding-bottom: 20px !important;
+    display: inline-block;
+    background-color: white;
+    z-index: 100;
+    width: 100%;
   }
 
   .franchiseContainer .override-select.fran {

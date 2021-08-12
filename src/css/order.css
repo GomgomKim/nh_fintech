@@ -31,33 +31,14 @@
     margin-left: 20px !important;
   }
 
-  .riderMain-container .selectLayout {
-    margin-top: 10px !important;
-    margin-bottom: 10px !important;
-    display: inline-block;
-    position: fixed;
-  }
-
-  .franchiseContainer .selectLayout {
-    margin-top: 10px !important;
-    margin-bottom: 10px !important;
-    display: inline-block;
-  }
-
+  /* 라이더 */
   .dataTableLayout {
     margin-top: 10px;
   }
 
+  /* 가맹점 */
   .dataTableLayout2 {
-    margin-top: 10px;
-    /* -webkit-overflow-scrolling: initial; */
-    /* vertical-align: top; */
-    /* white-space: nowrap; */
-    /* float: left; */
-    /* display: table; */
-    /* max-width: 100px; */
-    /* display: table; */
-    /* table-layout: fixed; */
+    /* margin-top: 10px; */
     white-space: nowrap;
   }
 
@@ -70,8 +51,8 @@
     /* margin-right: 5px; */
   }
 
-  .dataTableLayout2 .ant-table-thead{
-    z-index:0;
+  .dataTableLayout2 .ant-table-thead {
+    z-index: 0;
   }
 
   .riderTableLayout {
