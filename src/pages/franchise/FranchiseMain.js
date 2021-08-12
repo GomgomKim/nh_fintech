@@ -1,5 +1,5 @@
 import { BankOutlined } from "@ant-design/icons";
-import { Button, Input, Modal, Table } from "antd";
+import { Button, Input, Modal, Table, Affix } from "antd";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 // import { sheet_to_json } from "xlsx";
@@ -846,6 +846,8 @@ class FranchiseMain extends Component {
 
       
       <div className="franchiseContainer">
+        <Affix offsetTop={5}>
+
         <div className="selectLayout">
           <div className="searchRequirementText desk">검색조건</div>
           <SelectBox
@@ -864,10 +866,10 @@ class FranchiseMain extends Component {
                     },
                   },
                   () => this.getList()
-                );
-              }
-            }}
-          />
+                  );
+                }
+              }}
+              />
 
           <Search
             placeholder="가맹점검색"
@@ -876,67 +878,67 @@ class FranchiseMain extends Component {
             allowClear
             onSearch={this.onSearchFranchisee}
             style={{}}
-          />
+            />
           {this.state.ResistFranchiseOpen && (
             <RegistFranDialog
-              getList={this.getList}
-              close={this.closeRegistFranchiseModal}
+            getList={this.getList}
+            close={this.closeRegistFranchiseModal}
             />
-          )}
+            )}
           <Button
             icon={<BankOutlined />}
             className="tabBtn addFranTab desk"
             onClick={this.openRegistFranchiseModal}
-          >
+            >
             가맹점등록
           </Button>
           {this.state.SearchAddressOpen && (
             <SearchAddressDialog
-              isOpen={this.state.SearchAddressOpen}
-              close={this.closeSearchAddressModal}
+            isOpen={this.state.SearchAddressOpen}
+            close={this.closeSearchAddressModal}
             />
-          )}
+            )}
           <Button
             className="tabBtn sectionTab desk"
             onClick={this.openSearchAddressModal}
-          >
+            >
             주소검색관리
           </Button>
           {/* VAN등록요청 */}
           {this.state.ResistVANOpen && (
             <RegistVANDialog
-              close={this.closeResistVANModal}
-              // data={this.state.ResistVANData}
+            close={this.closeResistVANModal}
+            // data={this.state.ResistVANData}
             />
-          )}
+            )}
           {/* {this.state.blindControlOpen && (
             <BlindControlDialog
-              isOpen={this.state.blindControlOpen}
-              close={this.closeBlindControlModal}
+            isOpen={this.state.blindControlOpen}
+            close={this.closeBlindControlModal}
             />
-          )}
-          <Button
+            )}
+            <Button
             className="tabBtn sectionTab"
             onClick={this.openBlindControlModal}
-          >
+            >
             블라인드관리
           </Button> */}
 
           {/* 출금계좌 */}
           {this.state.accountRegistOpen && (
             <RegistAccountDialog
-              close={this.closeAccountModal}
-              data={this.state.accountData}
+            close={this.closeAccountModal}
+            data={this.state.accountData}
             />
-          )}
+            )}
 
           {/* 블라인드 */}
           {this.state.blindListOpen && (
             <BlindFranListDialog
-              close={this.closeBlindModal}
-              data={this.state.blindFrData}
+            close={this.closeBlindModal}
+            data={this.state.blindFrData}
             />
-          )}
+            )}
 
           {/* 엑셀업로드버튼 */}
           <a href="/franchise_regist_templete.xlsx" download className="desk">
@@ -949,7 +951,7 @@ class FranchiseMain extends Component {
           <Button
             className="tabBtn sectionTab exel desk"
             onClick={() => this.setState({ inputOpen: !this.state.inputOpen })}
-          >
+            >
             <img src={require("../../img/login/excel.png").default} alt="" />
             올리기
           </Button>
@@ -958,12 +960,12 @@ class FranchiseMain extends Component {
               <div
                 className="orderPayment-wrapper desk"
                 style={{ marginTop: "15px" }}
-              >
+                >
                 <Input type="file" onChange={this.readExcel} />
                 <Button
                   style={{ height: "40px" }}
                   onClick={() => this.handleExcelRegist()}
-                >
+                  >
                   일괄등록
                 </Button>
               </div>
@@ -974,12 +976,13 @@ class FranchiseMain extends Component {
         {this.state.modifyFranOpen && (
           <RegistFranDialog
           getList={this.getList}
-            isOpen={this.state.modifyFranOpen}
-            close={this.closeModifyFranModal}
-            data={this.state.dialogData}
+          isOpen={this.state.modifyFranOpen}
+          close={this.closeModifyFranModal}
+          data={this.state.dialogData}
           />
-        )}
-      </div>
+          )}
+          </Affix>
+
         <div className="dataTableLayout2">
           <Table
             rowKey={(record) => record.idx}
@@ -989,10 +992,11 @@ class FranchiseMain extends Component {
             onChange={this.handleTableChange}
             // expandedRowRender={expandedRowRender}
             // scroll={{ y: "50vh" }}
-            scroll={{x: true}}
-            sticky={true}
+            scroll={{x: true, marginTop:100}}
+            sticky={{offsetHeader:60}}
           />
         </div>
+      </div>
       </div>
     );
   }

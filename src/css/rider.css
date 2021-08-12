@@ -11,6 +11,13 @@
   width: 200px !important;
   margin-left: 15px;
 }
+
+.riderMain-container .selectLayout {
+  margin-top: 10px !important;
+  margin-bottom: 10px !important;
+  display: inline-block;
+}
+
 @media screen and (min-width: 1200px) {
   .rider-status {
     float: right;

@@ -3539,11 +3539,6 @@
     display: none; /* Chrome, Safari, Opera*/
   }
 
-  .selectLayout {
-    margin-left: 0;
-    margin-right: 1rem;
-  }
-
   /* ModifyOrdeDialog */
 
   .modifyOrderLayout {
