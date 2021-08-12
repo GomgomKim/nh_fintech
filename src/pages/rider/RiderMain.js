@@ -1,4 +1,4 @@
-import { Button, Image, Input, Modal, Popover, Table } from "antd";
+import { Button, Image, Input, Modal, Popover, Table, Checkbox } from "antd";
 import moment from "moment";
 import React, { Component } from "react";
 import {
@@ -37,7 +37,7 @@ class RiderMain extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      riderLevel: [1],
+      selectedRiderLevel: [1,2,3,4,5,6,7],
       userData: 1,
       searchName: "",
       taskSchedulerOpen: false, // 일차감
@@ -51,6 +51,7 @@ class RiderMain extends Component {
       updatePasswordOpen: false, // 출금 비밀번호
       blindListOpen: false, // 블라인드
       coinOpen: false, // 코인이력
+      riderLevelOpen: false, //지급필터
       blindRiderData: [], //블라인드 정보
       pagination: {
         total: 0,
@@ -68,12 +69,58 @@ class RiderMain extends Component {
       withdrawPassword: 1111,
       resultsStatus: [],
       results: [],
+      riderStatus:0,
+      riderLevel: [
+        {
+          key: "riderLevel-1",
+          value: 1,
+          text: "라이더",
+        },
+        {
+          key: "riderLevel-2",
+          value: 2,
+          text: "부팀장",
+        },
+        {
+          key: "riderLevel-3",
+          value: 3,
+          text: "팀장",
+        },
+        {
+          key: "riderLevel-4",
+          value: 4,
+          text: "부본부장",
+        },
+        {
+          key: "riderLevel-5",
+          value: 5,
+          text: "본부장",
+        },
+        {
+          key: "riderLevel-6",
+          value: 6,
+          text: "부지점장",
+        },
+        {
+          key: "riderLevel-7",
+          value: 7,
+          text: "지점장",
+        },
+      ],
     };
   }
 
   componentDidMount() {
     this.getList();
     this.getStatusList();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      this.state.selectedRiderLevel !== prevState.selectedRiderLevel
+    ) {
+      this.getList();
+    }
   }
 
   handleTableChange = (pagination) => {
@@ -91,9 +138,10 @@ class RiderMain extends Component {
 
   getList = () => {
     let pageNum = this.state.pagination.current;
-    // let riderLevel = this.state.riderLevel;
+    let riderLevel = this.state.selectedRiderLevel;
     let userStatus = this.state.userStatus === 0 ? "" : this.state.userStatus;
     let searchName = this.state.searchName;
+    let riderStatus = this.state.riderStatus === 0 ? "" : this.state.riderStatus;
 
     httpGet(
       httpUrl.riderList,
@@ -102,7 +150,8 @@ class RiderMain extends Component {
         pageNum,
         searchName,
         userStatus,
-        [1, 2, 3, 4, 5, 6, 7],
+        riderLevel,
+        riderStatus,
       ],
       {}
     ).then((result) => {
@@ -406,45 +455,45 @@ class RiderMain extends Component {
         title: "직급",
         dataIndex: "riderLevel",
         className: "table-column-center desk tableSub",
-        filters: [
-          {
-            text: "라이더",
-            value: 1,
-          },
-          {
-            text: "부팀장",
-            value: 2,
-          },
-          {
-            text: "팀장",
-            value: 3,
-          },
-          {
-            text: "부본부장",
-            value: 4,
-          },
-          {
-            text: "본부장",
-            value: 5,
-          },
-          {
-            text: "부지점장",
-            value: 6,
-          },
-          {
-            text: "지점장",
-            value: 7,
-          },
-          {
-            text: "부센터장",
-            value: 8,
-          },
-          {
-            text: "센터장",
-            value: 9,
-          },
-        ],
-        onFilter: (value, record) => value === record.riderLevel,
+        // filters: [
+        //   {
+        //     text: "라이더",
+        //     value: 1,
+        //   },
+        //   {
+        //     text: "부팀장",
+        //     value: 2,
+        //   },
+        //   {
+        //     text: "팀장",
+        //     value: 3,
+        //   },
+        //   {
+        //     text: "부본부장",
+        //     value: 4,
+        //   },
+        //   {
+        //     text: "본부장",
+        //     value: 5,
+        //   },
+        //   {
+        //     text: "부지점장",
+        //     value: 6,
+        //   },
+        //   {
+        //     text: "지점장",
+        //     value: 7,
+        //   },
+        //   {
+        //     text: "부센터장",
+        //     value: 8,
+        //   },
+        //   {
+        //     text: "센터장",
+        //     value: 9,
+        //   },
+        // ],
+        // onFilter: (value, record) => value === record.riderLevel,
         sorter: (a, b) => a.riderLevel - b.riderLevel,
         render: (data) => <div>{riderLevelText[data]}</div>,
       },
@@ -598,21 +647,21 @@ class RiderMain extends Component {
         title: "출근상태",
         dataIndex: "riderStatus",
         className: "table-column-center desk",
-        filters: [
-          {
-            text: "근무",
-            value: 1,
-          },
-          {
-            text: "휴식",
-            value: 2,
-          },
-          {
-            text: "퇴근",
-            value: 3,
-          },
-        ],
-        onFilter: (value, record) => value === record.riderStatus,
+        // filters: [
+        //   {
+        //     text: "근무",
+        //     value: 1,
+        //   },
+        //   {
+        //     text: "휴식",
+        //     value: 2,
+        //   },
+        //   {
+        //     text: "퇴근",
+        //     value: 3,
+        //   },
+        // ],
+        // onFilter: (value, record) => value === record.riderStatus,
         sorter: (a, b) => a.riderStatus - b.riderStatus,
         render: (data) => <div>{riderStatusCode[data]}</div>,
       },
@@ -811,6 +860,18 @@ class RiderMain extends Component {
               }}
             />
 
+            <Button
+            className="rider-level-btn"
+            style={{
+              marginLeft: "10px",
+              background: this.state.riderLevelOpen && "#fddc00",
+              border: this.state.riderLevelOpen && "#fddc00"
+            }}
+            onClick={() => this.setState({
+              riderLevelOpen: !this.state.riderLevelOpen
+            })}
+            >직급</Button>
+
             <Search
               placeholder="기사검색"
               className="searchRiderInput"
@@ -859,6 +920,26 @@ class RiderMain extends Component {
           </div>
           <div className="desk">
             <div className="riderStatus">
+            <SelectBox
+                  style={{ verticalAlign: "top"}}
+                  value={riderStatusCode[this.state.riderStatus]}
+                  code={Object.keys(riderStatusCode)}
+                  codeString={riderStatusCode}
+                  onChange={(value) => {
+                    if (parseInt(value) !== this.state.riderStatus) {
+                      this.setState(
+                        {
+                          riderStatus: parseInt(value),
+                          pagination: {
+                            current: 1,
+                            pageSize: this.state.pagination.pageSize,
+                          },
+                        },
+                        () => this.getList()
+                      );
+                    }
+                  }}
+                />
             <div className="rider-status">
               근무 :{" "}
               {
@@ -886,6 +967,49 @@ class RiderMain extends Component {
               }{" "}
               명
             </div>
+            </div>
+            <div
+            className="rider-filtering-box"
+            style={{ display: !this.state.riderLevelOpen && "none" }}
+            >
+              { this.state.riderLevelOpen && 
+              this.state.riderLevel.map((o) => {
+                      return (
+                        <div>
+                          <Checkbox
+                            style={{marginLeft: "8px"}}
+                            key={o.key}
+                            value={o.value}
+                            onChange={(e) => {
+                              if (e.target.checked) {
+                                const selectRiderLevel =
+                                  this.state.selectedRiderLevel.concat(
+                                    e.target.value
+                                  );
+                                this.setState({
+                                  selectedRiderLevel: selectRiderLevel,
+                                });
+                              } else {
+                                const selectRiderLevel =
+                                  this.state.selectedRiderLevel.filter(
+                                    (el) => el !== e.target.value
+                                  );
+                                this.setState({
+                                  selectedRiderLevel: selectRiderLevel,
+                                });
+                              }
+                            }}
+                            defaultChecked={
+                              this.state.selectedRiderLevel.includes(o.value)
+                                ? "checked"
+                                : ""
+                            }
+                          >
+                            {o.text}
+                          </Checkbox>
+                        </div>
+                      );
+              })}
             </div>
           </div>
           {this.state.blindListOpen && (

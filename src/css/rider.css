@@ -19,9 +19,16 @@
 }
 
 @media screen and (min-width: 1200px) {
+  .rider-filtering-box {
+    border: 1px solid #d1d1d1;
+    display: flex;
+    width: 567px;
+    margin-top: -5px;
+  }
   .riderStatus{
     float: right;
     margin-top: -45px;
+    margin-right: 15px;
   }
   .rider-status {
     display: inline-block;
@@ -29,9 +36,10 @@
     font-size: 15px;
     border: 1px solid #d1d1d1;
     text-align: center;
-    margin-right: 15px;
+    /* margin-right: 15px; */
+    margin-left: 15px;
     border-radius: 5px;
-    height: 35px;
-    line-height: 35px;
+    height: 32px;
+    line-height: 32px;
   }
 }
