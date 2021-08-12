@@ -16,9 +16,9 @@
   }
 
   .franchiseContainer .selectLayout {
-    margin-top: 0px !important;
-    padding-top: 10px !important;
-    padding-bottom: 20px !important;
+    margin-top: -5px !important;
+    padding-top: 15px !important;
+    padding-bottom: 15px !important;
     display: inline-block;
     background-color: white;
     z-index: 100;
