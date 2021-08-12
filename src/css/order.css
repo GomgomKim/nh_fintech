@@ -51,6 +51,10 @@
     /* margin-right: 5px; */
   }
 
+  .dataTableLayout2 .ant-table-thead{
+    z-index:0;
+  }
+
   .riderTableLayout {
     min-height: 200px;
     position: absolute;
