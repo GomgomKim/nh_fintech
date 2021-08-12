@@ -5,6 +5,9 @@
   .mobile {
     display: none !important;
   }
+.reception-box .tabBtn{
+  margin-left:5px!important;
+}
 
   .tabBtn {
     margin-left: 10px;
@@ -23,7 +26,7 @@
   }
 
   .selectLayout {
-    margin-top: 20px !important;
+    margin-top: 10px !important;
     display: inline-block;
   }
 
@@ -114,7 +117,7 @@
 
   .reception-box .ant-checkbox-wrapper {
     height: 32px;
-    margin-left: 20px !important;
+    margin-left: 10px !important;
     margin-top: 5px;
     vertical-align: top;
   }
@@ -175,11 +178,11 @@
   }
 
   .btnLayout {
-    margin-top: 20px;
+    margin-top: 10px;
   }
 
   #reception-table {
-    margin-top: 40px;
+    margin-top: 10px;
   }
 
   #reception-table .ant-table .ant-table-tbody > tr > td:first-child {
