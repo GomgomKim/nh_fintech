@@ -301,14 +301,12 @@ class SearchAddressDialog extends Component {
         title: "종류",
         dataIndex: "addrType",
         className: "table-column-center mobile",
-        width: '20%',
         render: (data) => <div>{addType[data]}</div>,
       },
       {
         title: "상세정보",
         dataIndex: "name",
         className: "table-column-center mobile",
-        width: '80%',
         render: (data, row) => (
           <div className="status-box">
             <p>{row.name}</p>
@@ -389,10 +387,11 @@ class SearchAddressDialog extends Component {
             <Form ref={this.formRef} onFinish={this.handleSubmit}>
               <div className="layout">
                 <div className="searchAddressWrapper">
-                  <div className="searchAddress-name">주소 등록</div>
+                  <div className="searchAddress-name desk">주소 등록</div>
                   <div className="contentbox">
                     <div className="contentBlock frist">
-                      <div className="mainTitle">유형</div>
+                      <div className="mainTitle desk">유형</div>
+                      <div className="searchAddress-name mobile">주소 등록</div>
 
                       <Radio.Group
                         className="searchRequirement"
@@ -437,7 +436,8 @@ class SearchAddressDialog extends Component {
                     </div>
 
                     <div className="contentBlock">
-                      <div className="mainTitle">지번주소</div>
+                      <div className="mainTitle desk">지번주소</div>
+                      <div className="mainTitle mobile">지번</div>
 
                       <FormItem name="addr3" className="selectItem">
                         <Input
@@ -486,11 +486,12 @@ class SearchAddressDialog extends Component {
                   </div>
                 </div>
 
-                <div className="searchAddress-name">주소 검색</div>
+                <div className="searchAddress-name desk">주소 검색</div>
 
                 <div className="contentBlock second">
                   <div className="contentBlock">
-                    <div className="mainTitle">유형</div>
+                    <div className="mainTitle desk">유형</div>
+                    <div className="searchAddress-name mobile">주소 검색</div>
 
                     <Radio.Group
                       className="searchRequirement"

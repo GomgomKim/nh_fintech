@@ -43,6 +43,7 @@
   .ant-table-container table > thead > tr:first-child th:first-child {
     /* width:5%!important; */
     /* border:1px solid #fff; */
+    width:20%;
   }
 
   .ant-table-expanded-row .ant-table-thead > tr > th {
