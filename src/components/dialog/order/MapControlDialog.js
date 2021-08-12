@@ -400,7 +400,7 @@ class MapControlDialog extends Component {
       // console.log('## nnbox result=' + JSON.stringify(result, null, 4))
       const pagination = { ...this.state.paginationList };
       pagination.current = result.data.currentPage;
-      pagination.total = result.data.currentCount;
+      pagination.total = result.data.totalCount;
       // console.log(result.data.riders)
       this.setState({
         results: result.data.riders,
