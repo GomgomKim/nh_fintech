@@ -10,7 +10,7 @@ import {
   registError,
   updateComplete,
   updateError,
-  idDuplicated
+  idDuplicated,
 } from "../../../api/Modals";
 import "../../../css/modal.css";
 import { pgUseRate } from "../../../lib/util/codeUtil";
@@ -122,10 +122,9 @@ class RegistFranDialog extends Component {
         chargeDate: formatDateToDay(
           this.formRef.current.getFieldValue("chargeDate")
         ),
-        password:
-          this.formRef.current.getFieldValue("password")
-            ? this.formRef.current.getFieldValue("password")
-            : null,
+        password: this.formRef.current.getFieldValue("password")
+          ? this.formRef.current.getFieldValue("password")
+          : null,
         businessNumber: this.formRef.current
           .getFieldValue("businessNumber")
           .split("-")
@@ -238,13 +237,15 @@ class RegistFranDialog extends Component {
             this.props.getList();
             registComplete();
             this.props.close();
-          } else if (result.result === "SUCCESS" && result.data == "ID_DUPLICATED") {
+          } else if (
+            result.result === "SUCCESS" &&
+            result.data == "ID_DUPLICATED"
+          ) {
             idDuplicated();
           } else {
             registError();
             this.props.close();
           }
-
         })
         .catch((e) => {
           registError();
@@ -345,7 +346,7 @@ class RegistFranDialog extends Component {
 
   onChangFeeManner = (e) => {
     console.log(e.target.value);
-    this.setState({ feeManner: e.target.value }, () => { });
+    this.setState({ feeManner: e.target.value }, () => {});
   };
 
   onChangeIsMember(e) {
@@ -374,7 +375,7 @@ class RegistFranDialog extends Component {
             <Form ref={this.formRef} onFinish={this.handleSubmit}>
               <div className="registFranLayout">
                 <div className="registFranTitle">
-                  <div className="registFranTitle-sub">기본정보</div>
+                  <div className="registFranTitle-sub desk">기본정보</div>
                   {/* <div className="registFran-radio">
                     <FormItem
                       name="isMember"
@@ -500,18 +501,18 @@ class RegistFranDialog extends Component {
                           disabled
                           className="override-input addrText"
                         />
+                        <PostCodeDialog
+                          data={(addrData) => this.getAddr(addrData)}
+                          isOpen={this.state.isPostCodeOpen}
+                          close={this.closePostCode}
+                        />
+                        <Button
+                          onClick={this.openPostCode}
+                          className="override-input addrBtn"
+                        >
+                          우편번호 검색
+                        </Button>
                       </FormItem>
-                      <PostCodeDialog
-                        data={(addrData) => this.getAddr(addrData)}
-                        isOpen={this.state.isPostCodeOpen}
-                        close={this.closePostCode}
-                      />
-                      <Button
-                        onClick={this.openPostCode}
-                        className="override-input addrBtn"
-                      >
-                        우편번호 검색
-                      </Button>
                     </div>
                     <div className="contentBlock">
                       <div className="mainTitle">지번주소</div>
@@ -563,23 +564,24 @@ class RegistFranDialog extends Component {
                           />
                         )}
 
-                        <div className="orderPayment-wrapper">
-                          <Input
-                            style={{ marginLeft: 20, width: 220 }}
-                            placeholder="영업담당자를 선택해주세요."
-                            value={
-                              this.state.selectedRider
-                                ? this.state.selectedRider.riderName
-                                : ""
-                            }
-                          />
-                          <Button
-                            // style={{ width: 150 }}
-                            onClick={this.openSearchRider}
-                          >
-                            기사조회
-                          </Button>
-                        </div>
+                        {/* <div className="orderPayment-wrapperv sub"> */}
+                        <Input
+                          className="override-input orderman"
+                          placeholder="영업담당자를 선택해주세요."
+                          value={
+                            this.state.selectedRider
+                              ? this.state.selectedRider.riderName
+                              : ""
+                          }
+                        />
+                        <Button
+                          // style={{ width: 150 }}
+                          className="override-input serchRiderBtn"
+                          onClick={this.openSearchRider}
+                        >
+                          기사조회
+                        </Button>
+                        {/* </div> */}
                       </FormItem>
                     </div>
                     <div className="contentBlock">
@@ -726,7 +728,10 @@ class RegistFranDialog extends Component {
                     </div> */}
 
                     <div className="contentBlock">
-                      <div className="mainTitle">PG 사용여부</div>
+                      <div className="mainTitle">
+                        <span className="desk">PG 사용여부</span>
+                        <span className="mobile">PG 사용</span>
+                      </div>
                       <div className="registRiderCheck">
                         <FormItem
                           name="tidNormalRate"
@@ -822,18 +827,19 @@ class RegistFranDialog extends Component {
                         }
                       >
                         <DatePicker
-                          style={{ marginLeft: 20, width: 300 }}
                           format={dateFormat}
+                          className="datepicker"
                         />
                       </FormItem>
                     </div>
                     <div className="contentBlock">
                       <div style={{ fontSize: "1rem" }} className="mainTitle">
-                        SMS수신동의
+                        <span className="desk">SMS수신동의</span>
+                        <span className="mobile">SMS수신</span>
                       </div>
                       <FormItem name="agreeSms" className="selectItem">
                         <Checkbox
-                          className="override-input"
+                          className="override-input checkbox"
                           defaultChecked={
                             this.props.data ? this.props.data.agreeSms : true
                           }
@@ -846,21 +852,15 @@ class RegistFranDialog extends Component {
                         </Checkbox>
                       </FormItem>
                     </div>
-                  </div>
-                  <div className="registFran-btn">
-                    <Button
-                      type="primary"
-                      htmlType="submit"
-                      className="callTab"
-                      style={{
-                        width: 180,
-                        height: 40,
-                        fontSize: 18,
-                        marginTop: -5,
-                      }}
-                    >
-                      등록하기
-                    </Button>
+                    <div className="registFran-btn ">
+                      <Button
+                        type="primary"
+                        htmlType="submit"
+                        className="callTab"
+                      >
+                        등록하기
+                      </Button>
+                    </div>
                   </div>
                 </div>
 

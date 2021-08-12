@@ -172,11 +172,11 @@
   .inputBox-searchFranchise .searchRiderInput {
     width: 170px !important;
     display: inline-block;
-    margin-left:10px!important;
+    margin-left: 10px !important;
   }
   .inputBox-searchFranchise .searchFranchiseInput {
     width: 170px !important;
-    margin-left:10px;
+    margin-left: 10px;
   }
 
   /* 우편번호 팝업 */
@@ -1176,7 +1176,7 @@
     vertical-align: middle;
   }
   .contentBlock .override-input {
-    margin-left: 20px;
+    margin-left: 5px;
     width: 150px;
   }
   .callTab {
@@ -1233,13 +1233,13 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 1000px;
+    width: 90vw;
     border-radius: 30px;
     z-index: 2;
   }
   .registFran-container {
     background-color: white;
-    padding: 30px;
+    padding: 15px;
     text-align: left;
     color: #777;
   }
@@ -1250,8 +1250,9 @@
     color: #333;
     text-align: right;
     display: inline-block;
-    font-size: 25px;
+    font-size: 16px;
     line-height: 30px;
+    vertical-align: middle;
   }
   .registFran-close {
     width: 30px;
@@ -1262,12 +1263,13 @@
     float: right;
   }
   .registFranLayout {
-    margin-top: 20px;
+    margin-top: 10px;
     width: 100%;
+    height: 81vh;
     /* height: 510px;  */
     overflow-y: scroll;
     border: 1px solid #ccc;
-    padding: 20px;
+    padding: 0 10px;
     text-align: left;
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
@@ -1278,15 +1280,13 @@
 
   /* 왼쪽 wrappper */
   .registFranWrapper {
-    display: inline-block;
   }
   .registFranTitle {
     display: inline-block;
-    font-size: 20px;
+    font-size: 16px;
     vertical-align: middle;
     font-weight: bold;
     color: #1890ff;
-    width: 875px;
     margin-bottom: 10px;
   }
   .registFranTitle-sub {
@@ -1301,19 +1301,19 @@
     /* font-size: 20px; */
     vertical-align: top;
     font-weight: bold;
-    width: 100px;
+    width: 85px;
   }
   .registFranWrapper .mainTitle.red {
     display: inline-block;
     /* font-size: 20px; */
     vertical-align: middle;
     font-weight: bold;
-    width: 100px;
+    width: 5vw;
     color: #1890ff;
   }
   .mainTitle.sub {
     display: inline-block;
-    font-size: 18px;
+    font-size: 16px;
     vertical-align: middle;
     font-weight: bold;
     margin-left: 10px;
@@ -1341,41 +1341,63 @@
     vertical-align: middle;
   }
   .registFranWrapper .override-input {
-    margin-left: 20px;
-    width: 300px;
+    margin-left: 0px;
+    width: 70vw;
   }
 
   .registFranWrapper .override-input.addrText {
-    width: 160px;
+    width: 70vw;
   }
 
   .registFranWrapper .override-input.addrBtn {
     width: 120px;
+    display: block;
+  }
+  .orderPayment-wrapperv.sub {
+    width: 70vw;
+    margin-left: 0px;
+  }
+  .registFranWrapper.sub .datepicker {
+    width: 70vw;
+    margin-left: 0px;
   }
 
   /* 오른쪽 wrappper */
   .registFranWrapper.sub {
-    vertical-align: top;
-    display: inline-block;
-    /* width: 340px; 
-     margin-top: 46px; */
-    margin-left: 30px;
+    margin-top: 15px;
   }
   .registFranWrapper.sub .mainTitle {
     display: inline-block;
     /* font-size: 20px; */
     vertical-align: top;
     font-weight: bold;
-    width: 100px;
+    width: 85px;
   }
   .registFranWrapper.sub .override-input.sub {
     /* margin-left: -30px; */
-    width: 300px;
+    width: 70vw;
+  }
+  .registFranWrapper.sub .override-input.orderman {
+    /* margin-left: -30px; */
+    width: 70vw;
   }
   .registFranWrapper.sub .override-input.price {
     /* margin-left: -30px; */
-    width: 200px;
+    width: 70vw;
     margin-right: 10px;
+  }
+  .registFranWrapper .override-input.serchRiderBtn {
+    width: 120px;
+    display: block;
+  }
+
+  .registFran-container .registRiderCheck {
+    margin-left: 0px;
+    display: inline-block;
+    height: 20px;
+  }
+  .registFranWrapper.sub .override-input.checkbox {
+    width: 30vw;
   }
   /* .registFranWrapper.sub .callTab {
     width: 400px;
@@ -1427,7 +1449,7 @@
   }
   .registFran-btn {
     float: right;
-    margin-top: 15px;
+    margin: 15px 0;
   }
   /* 코인이체 dialog */
   .coinTran-Dialog {
@@ -2232,7 +2254,7 @@
     /* font-size: 20px; */
     vertical-align: middle;
     font-weight: bold;
-    /* width: 75px; */
+    /* width: 45px; */
   }
 
   .taskScheduler-btn {
@@ -3154,14 +3176,14 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 800px;
+    width: 320px;
     border-radius: 30px;
     z-index: 2;
   }
 
   .searchAddress-content {
     background-color: white;
-    padding: 30px;
+    padding: 10px;
     text-align: left;
     color: #777;
   }
@@ -3177,6 +3199,7 @@
   }
   .searchAddressWrapper {
     margin-bottom: 20px;
+    width:310px;
   }
 
   .searchAddress-close {
@@ -3192,7 +3215,7 @@
     width: 100%;
     /* overflow-y: scroll; */
     border: 1px solid #ccc;
-    padding: 20px 20px;
+    padding: 5px;
     text-align: left;
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
@@ -3215,8 +3238,8 @@
 
   .searchAddress-btn {
     display: inline-block;
-    margin-top: 113px;
-    margin-right: 20px;
+    margin-top: 10px;
+    margin-right: 25px;
     float: right;
   }
 
@@ -3231,6 +3254,10 @@
 
   .searchAddress-Dialog .layout .dataTableLayout-01 {
     margin-top: 30px;
+    height:300px;
+    overflow-y: scroll;
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
   }
 
   .searchAddress-Dialog .ant-table-content thead th {
@@ -3248,20 +3275,21 @@
     font-size: 20px;
     font-weight: bold;
     color: #1890ff;
+    margin-top:10px;
   }
 
   .contentbox {
     display: inline-block;
-    width: 450px;
+    width: 300px;
     vertical-align: top;
-    margin-left: 30px;
+    margin-left: 10px;
   }
 
   .second {
     display: inline-block;
-    width: 570px;
+    width: 300px;
     vertical-align: top;
-    margin-left: 30px;
+    margin-left: 10px;
   }
 
   .searchAddress-Dialog .searchRequirement {
@@ -3269,12 +3297,12 @@
     margin-left: 20px;
   }
   .searchAddress-Dialog .contentBlock .override-input {
-    width: 350px;
+    width: 230px;
     vertical-align: middle;
   }
   .searchAddress-Dialog .contentBlock .addrBtn {
-    width: 120px;
-    margin-left: 20px;
+    width: 50px;
+    margin-left: 5px;
   }
 
   .searchAddress-Dialog .contentBlock .addrBtn span {
@@ -3284,10 +3312,10 @@
   .searchAddress-Dialog .contentBlock .mainTitle {
     font-size: 16px;
     color: #222;
-    width: 80px;
+    width: 40px;
   }
   .searchAddress-Dialog .contentBlock .short {
-    width: 210px;
+    width: 175px;
   }
 
   .map-address-Dialog {
@@ -3702,6 +3730,7 @@
     text-align: left;
     color: #777;
   }
+
   .blind-container > div:nth-child(2) {
     display: inline-block;
   }
@@ -3769,14 +3798,14 @@
   }
 
   .blindWrapper.bot .mainTitle {
-    /* font-size: 20px; */
+    font-size: 16px;
     vertical-align: middle;
     font-weight: bold;
     width: 70px;
     margin-bottom: 10px;
   }
   .blindWrapper.bot .subTitle {
-    font-size: 18px;
+    font-size: 16px;
     vertical-align: middle;
     font-weight: bold;
     width: 70px;

@@ -86,7 +86,7 @@ class SearchAddressDialog extends Component {
           });
         }
       })
-      .catch((e) => {});
+      .catch((e) => { });
   };
 
   // 우편번호 검색
@@ -279,11 +279,11 @@ class SearchAddressDialog extends Component {
 
   // 라디오
   onChangeRegistAddType = (e) => {
-    this.setState({ RegistAddType: e.target.value }, () => {});
+    this.setState({ RegistAddType: e.target.value }, () => { });
   };
 
   onChangeSelectAddType = (e) => {
-    this.setState({ selectAddType: e.target.value }, () => {});
+    this.setState({ selectAddType: e.target.value }, () => { });
   };
 
   render() {
@@ -300,29 +300,57 @@ class SearchAddressDialog extends Component {
       {
         title: "종류",
         dataIndex: "addrType",
-        className: "table-column-center",
-        width: "20%",
+        className: "table-column-center mobile",
+        width: '20%',
+        render: (data) => <div>{addType[data]}</div>,
+      },
+      {
+        title: "상세정보",
+        dataIndex: "name",
+        className: "table-column-center mobile",
+        width: '80%',
+        render: (data, row) => (
+          <div className="status-box">
+            <p>{row.name}</p>
+            주소: {row.addr1}
+            <br />
+            <Button onClick={() => this.onChangeStatus(row)}>
+              {data ? "배송가능" : "배송불가"}
+            </Button>
+            <Button className="tabBtn" onClick={() => this.onDelete(row.idx)}>
+              삭제
+            </Button>
+          </div>
+        )
+
+      },
+
+      {
+        title: "종류",
+        dataIndex: "addrType",
+        className: "table-column-center desk",
+        // width: "20%",
         render: (data) => <div>{addType[data]}</div>,
       },
       {
         title: "이름",
         dataIndex: "name",
-        className: "table-column-center",
-        width: "30%",
+        className: "table-column-center desk",
+        // width: "30%",
         render: (data) => <div>{data}</div>,
       },
       {
         title: "도로명주소",
         dataIndex: "addr1",
-        className: "table-column-center",
-        width: "30%",
+        className: "table-column-center desk",
+        // width: "30%",
         render: (data) => <div>{data}</div>,
       },
       {
         title: "배송가능여부",
         dataIndex: "status",
-        className: "table-column-center",
-        width: "30%",
+        className: "table-column-center desk",
+        // width: "30%",
         render: (data, row) => (
           <Button onClick={() => this.onChangeStatus(row)}>
             {data ? "배송가능" : "배송불가"}
@@ -332,8 +360,8 @@ class SearchAddressDialog extends Component {
       {
         title: "삭제",
         dataIndex: "delete",
-        className: "table-column-center",
-        width: "20%",
+        className: "table-column-center desk",
+        // width: "20%",
         render: (data, row) => (
           <div className="pwChange-btn">
             <Button className="tabBtn" onClick={() => this.onDelete(row.idx)}>
@@ -396,9 +424,15 @@ class SearchAddressDialog extends Component {
                       />
                       <Button
                         onClick={this.openPostCode}
-                        className="override-input addrBtn"
+                        className="override-input addrBtn desk"
                       >
                         우편번호 검색
+                      </Button>
+                      <Button
+                        onClick={this.openPostCode}
+                        className="override-input addrBtn mobile"
+                      >
+                        검색
                       </Button>
                     </div>
 
@@ -445,7 +479,7 @@ class SearchAddressDialog extends Component {
                       type="primary"
                       htmlType="submit"
                       style={{ width: 100, backgroundColor: "#1890ff" }}
-                      // onClick={() => this.handleSubmit()}
+                    // onClick={() => this.handleSubmit()}
                     >
                       등록하기
                     </Button>
@@ -472,7 +506,7 @@ class SearchAddressDialog extends Component {
                     </Radio.Group>
                   </div>
 
-                  <div className="contentBlock bottom">
+                  <div className="contentBlock bottom desk">
                     <div className="mainTitle">주소</div>
                     <Search
                       placeholder="주소를 검색해 주세요."
@@ -481,6 +515,20 @@ class SearchAddressDialog extends Component {
                       onSearch={(value) => this.onSearchAddress(value)}
                       style={{
                         width: 470,
+                        marginLeft: 20,
+                        verticalAlign: "middle",
+                      }}
+                    />
+                  </div>
+                  <div className="contentBlock bottom mobile">
+                    <div className="mainTitle">주소</div>
+                    <Search
+                      placeholder="주소를 검색해 주세요."
+                      enterButton
+                      allowClear
+                      onSearch={(value) => this.onSearchAddress(value)}
+                      style={{
+                        width: 215,
                         marginLeft: 20,
                         verticalAlign: "middle",
                       }}
