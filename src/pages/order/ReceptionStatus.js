@@ -74,7 +74,7 @@ class ReceptionStatus extends Component {
         pageSize: 10000,
       },
       newPagination: {
-        total:0,
+        total: 0,
         current: 1,
         pageSize: 100,
       },
@@ -246,7 +246,7 @@ class ReceptionStatus extends Component {
           console.log(e);
           throw e;
         });
-    } catch (e) {}
+    } catch (e) { }
   };
   getCompleteList = () => {
     console.log("getcompletelist");
@@ -646,9 +646,9 @@ class ReceptionStatus extends Component {
               {row.riderName} / {comma(row.distance)}m /{" "}
               {
                 paymentMethod[
-                  row.orderPayments[0]
-                    ? row.orderPayments[0]["paymentMethod"]
-                    : 0
+                row.orderPayments[0]
+                  ? row.orderPayments[0]["paymentMethod"]
+                  : 0
                 ]
               }
               <br />
@@ -1139,7 +1139,7 @@ class ReceptionStatus extends Component {
           data.length > 1 ? (
             <Button
               onClick={() => this.openPaymentModal(data, row)}
-              // close={this.closePaymentModal}
+            // close={this.closePaymentModal}
             >
               보기
             </Button>
@@ -1536,7 +1536,7 @@ class ReceptionStatus extends Component {
               icon={<EnvironmentFilled />}
               className="tabBtn mapTab"
               onClick={this.openMapControlModal}
-              // onClick={() => { this.props.openMapControl() }}
+            // onClick={() => { this.props.openMapControl() }}
             >
               지도관제
             </Button>
@@ -1604,7 +1604,7 @@ class ReceptionStatus extends Component {
               icon={<EnvironmentFilled />}
               className="tabBtn mapTab"
               onClick={this.openMapControlModal}
-              // onClick={() => { this.props.openMapControl() }}
+            // onClick={() => { this.props.openMapControl() }}
             >
               지도관제
             </Button>
@@ -1648,7 +1648,7 @@ class ReceptionStatus extends Component {
               onSearch={this.onSearch}
               style={{
                 width: 200,
-                marginLeft: 20,
+                marginLeft: 10,
               }}
             />
             {/* <Search
@@ -1696,7 +1696,7 @@ class ReceptionStatus extends Component {
                         this.getCompleteList();
                         this.completedTotal();
                         this.canceledTotal();
-                        console.log("BBB "+ moment(this.state.selectedDate).format("YYYY-MM-DD"))
+                        console.log("BBB " + moment(this.state.selectedDate).format("YYYY-MM-DD"))
                       },
                       () => console.log("aaa" + this.state.selectedDate)
                     );
@@ -1966,15 +1966,15 @@ class ReceptionStatus extends Component {
               columns={columns}
               pagination={
                 this.state.checkedCompleteCall
-                ? this.state.newPagination
-                : false  
+                  ? this.state.newPagination
+                  : false
               }
               onChange={
                 this.state.checkedCompleteCall &&
                 this.handleTableChange
               }
               expandedRowRender={expandedRowRender}
-              // scroll={{ y: "50vh" }}
+            // scroll={{ y: "50vh" }}
             />
           </div>
           <div id="reception-table" className="mobile">
@@ -1993,8 +1993,8 @@ class ReceptionStatus extends Component {
               columns={columns}
               pagination={
                 this.state.checkedCompleteCall
-                ? this.state.newPagination
-                : false
+                  ? this.state.newPagination
+                  : false
               }
               // onChange={this.handleTableChange}
               expandedRowRender={expandedRowRender}
@@ -2008,58 +2008,58 @@ class ReceptionStatus extends Component {
               marginTop: "1rem",
             }}
           >
-            { !this.state.checkedCompleteCall &&
-            <Button
-              onClick={() => {
-                if (this.state.checkedCompleteCall) {
-                  if (
-                    this.state.totalPagination.pageSize >=
-                    this.state.totalPagination.total
-                  ) {
-                    Modal.info({
-                      title: "주문정보 오류",
-                      content: "더 이상 주문정보가 존재하지 않습니다.",
-                    });
-                    return;
-                  }
-                  this.setState(
-                    {
-                      totalPagination: {
-                        ...this.state.totalPagination,
-                        pageSize: this.state.totalPagination.pageSize + 100,
-                      },
-                    },
-                    () => {
-                      this.getCompleteList();
+            {!this.state.checkedCompleteCall &&
+              <Button
+                onClick={() => {
+                  if (this.state.checkedCompleteCall) {
+                    if (
+                      this.state.totalPagination.pageSize >=
+                      this.state.totalPagination.total
+                    ) {
+                      Modal.info({
+                        title: "주문정보 오류",
+                        content: "더 이상 주문정보가 존재하지 않습니다.",
+                      });
+                      return;
                     }
-                  );
-                } else {
-                  if (
-                    this.state.pagination.pageSize >=
-                    this.state.pagination.total
-                  ) {
-                    Modal.info({
-                      title: "주문정보 오류",
-                      content: "더 이상 주문정보가 존재하지 않습니다.",
-                    });
-                    return;
-                  }
-                  this.setState(
-                    {
-                      pagination: {
-                        ...this.state.pagination,
-                        pageSize: this.state.pagination.pageSize + 100,
+                    this.setState(
+                      {
+                        totalPagination: {
+                          ...this.state.totalPagination,
+                          pageSize: this.state.totalPagination.pageSize + 100,
+                        },
                       },
-                    },
-                    () => {
-                      this.getList();
+                      () => {
+                        this.getCompleteList();
+                      }
+                    );
+                  } else {
+                    if (
+                      this.state.pagination.pageSize >=
+                      this.state.pagination.total
+                    ) {
+                      Modal.info({
+                        title: "주문정보 오류",
+                        content: "더 이상 주문정보가 존재하지 않습니다.",
+                      });
+                      return;
                     }
-                  );
-                }
-              }}
-            >
-              더 보기
-            </Button>
+                    this.setState(
+                      {
+                        pagination: {
+                          ...this.state.pagination,
+                          pageSize: this.state.pagination.pageSize + 100,
+                        },
+                      },
+                      () => {
+                        this.getList();
+                      }
+                    );
+                  }
+                }}
+              >
+                더 보기
+              </Button>
             }
           </div>
         </div>
