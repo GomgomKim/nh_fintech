@@ -116,6 +116,22 @@
     text-align: center !important;
   }
 
+  .c-p-10 {
+    padding: 0px 10px;
+  }
+
+  .c-p-15 {
+    padding: 0px 10px;
+  }
+
+  .c-p-20 {
+    padding: 0px 20px;
+  }
+
+  .c-p-25 {
+    padding: 0px 25px;
+  }
+
   /* .table-column-surGroup{
   text-align: center;
   width: 50%;

@@ -839,10 +839,7 @@ class RiderMain extends Component {
         </div>
         <div className="riderMain-container">
           <div className="selectLayout desk">
-            <span className="searchRequirementText">검색조건</span>
-            <br />
-            <br />
-
+            <div className="searchRequirementText">검색조건</div>
             <SelectBox
               value={tableStatusString[this.state.userStatus]}
               code={Object.keys(tableStatusString)}
