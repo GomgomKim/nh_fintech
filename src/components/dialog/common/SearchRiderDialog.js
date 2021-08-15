@@ -93,7 +93,7 @@ class SearchRiderDialog extends Component {
       });
 
       // mount될 때 data idx 배열 초기화
-      if (isInit) {
+      if (isInit && result.data.riders.length > 0) {
         // console.log(result.data.franchises[0].idx)
         var totCnt = result.data.riders[0].idx;
         var lists = [];
