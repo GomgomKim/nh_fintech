@@ -34,7 +34,7 @@ class FranchiseMain extends Component {
       // test data
       list: [],
       withdrawSet: 0,
-      franStatus: 0,
+      franStatus: 1,
       frName: "",
       franGroup: 0,
       franSelectStatus: 0,

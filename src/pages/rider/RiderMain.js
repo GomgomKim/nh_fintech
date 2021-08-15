@@ -64,7 +64,7 @@ class RiderMain extends Component {
         pageSize: 10500,
       },
       dialogData: [],
-      userStatus: 0,
+      userStatus: 1,
       selRider: "",
       withdrawPassword: 1111,
       resultsStatus: [],
@@ -944,7 +944,7 @@ class RiderMain extends Component {
               근무 :{" "}
               {
                 this.state.resultsStatus.filter(
-                  (item) => item.riderStatus === 1
+                  (item) => item.riderStatus === 1 && item.userStatus === 1
                 ).length
               }{" "}
               명
@@ -953,7 +953,7 @@ class RiderMain extends Component {
               휴식 :{" "}
               {
                 this.state.resultsStatus.filter(
-                  (item) => item.riderStatus === 2
+                  (item) => item.riderStatus === 2 && item.userStatus === 1
                 ).length
               }{" "}
               명
@@ -962,7 +962,7 @@ class RiderMain extends Component {
               퇴근 :{" "}
               {
                 this.state.resultsStatus.filter(
-                  (item) => item.riderStatus === 3
+                  (item) => item.riderStatus === 3 && item.userStatus === 1
                 ).length
               }{" "}
               명
