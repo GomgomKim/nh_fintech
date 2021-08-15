@@ -1086,6 +1086,11 @@ class ReceptionStatus extends Component {
         //   console.log(b);
         //   a.riderName.localeCompare(b.riderName);
         // },
+        sorter: (a, b) => {
+          const dataA = (a.riderName||'').trim();
+          const dataB = (b.riderName||'').trim();
+          return dataA.localeCompare(dataB);
+        },
         render: (data, row) => {
           const content = (
             <div>
