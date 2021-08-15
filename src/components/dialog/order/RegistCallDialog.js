@@ -56,7 +56,7 @@ const newOrder = {
     {
       idx: 1,
       paymentAmount: 0,
-      paymentMethod: 1,
+      paymentMethod: 3,
       paymentStatus: 1,
     },
   ],
