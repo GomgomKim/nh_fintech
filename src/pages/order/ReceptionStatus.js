@@ -701,10 +701,10 @@ class ReceptionStatus extends Component {
                               res.result === "SUCCESS" &&
                               res.data === "SUCCESS"
                             ) {
-                              Modal.info({
-                                title: "변경 성공",
-                                content: "주문상태가 변경되었습니다.",
-                              });
+                              // Modal.info({
+                              //   title: "변경 성공",
+                              //   content: "주문상태가 변경되었습니다.",
+                              // });
                               self.getList();
                             } else {
                               Modal.info({
@@ -735,10 +735,10 @@ class ReceptionStatus extends Component {
                           res.result === "SUCCESS" &&
                           res.data === "SUCCESS"
                         ) {
-                          Modal.info({
-                            title: "변경 성공",
-                            content: "주문상태가 변경되었습니다.",
-                          });
+                          // Modal.info({
+                          //   title: "변경 성공",
+                          //   content: "주문상태가 변경되었습니다.",
+                          // });
                           this.getList();
                         } else {
                           Modal.info({
@@ -870,10 +870,10 @@ class ReceptionStatus extends Component {
                           res.result === "SUCCESS" &&
                           res.data === "SUCCESS"
                         ) {
-                          Modal.info({
-                            title: "변경 성공",
-                            content: "주문상태가 변경되었습니다.",
-                          });
+                          // Modal.info({
+                          //   title: "변경 성공",
+                          //   content: "주문상태가 변경되었습니다.",
+                          // });
                           self.getList();
                         } else {
                           Modal.info({
@@ -900,10 +900,10 @@ class ReceptionStatus extends Component {
                 })
                   .then((res) => {
                     if (res.result === "SUCCESS" && res.data === "SUCCESS") {
-                      Modal.info({
-                        title: "변경 성공",
-                        content: "주문상태가 변경되었습니다.",
-                      });
+                      // Modal.info({
+                      //   title: "변경 성공",
+                      //   content: "주문상태가 변경되었습니다.",
+                      // });
                       this.getList();
                     } else {
                       Modal.info({
