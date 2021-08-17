@@ -5,7 +5,7 @@ import {
   MessageOutlined,
   NotificationFilled,
   PhoneOutlined,
-  PushpinOutlined
+  PushpinOutlined,
 } from "@ant-design/icons";
 import {
   Button,
@@ -15,7 +15,7 @@ import {
   Modal,
   Popover,
   Select,
-  Table
+  Table,
 } from "antd";
 import moment from "moment";
 import React, { Component } from "react";
@@ -24,7 +24,7 @@ import {
   httpGet,
   httpPost,
   httpPostWithNoLoading,
-  httpUrl
+  httpUrl,
 } from "../../api/httpClient";
 import { customError } from "../../api/Modals";
 import ChattingCurrentRoom from "../../components/dialog/common/ChattingCurrentRoom";
@@ -47,7 +47,7 @@ import {
   deliveryStatusCode,
   modifyType,
   paymentMethod,
-  rowColorName
+  rowColorName,
 } from "../../lib/util/codeUtil";
 import { formatDate, formatDateToDay } from "../../lib/util/dateUtil";
 import { comma, remainTime } from "../../lib/util/numberUtil";
@@ -246,7 +246,7 @@ class ReceptionStatus extends Component {
           console.log(e);
           throw e;
         });
-    } catch (e) { }
+    } catch (e) {}
   };
   getCompleteList = () => {
     console.log("getcompletelist");
@@ -340,7 +340,11 @@ class ReceptionStatus extends Component {
   };
 
   canceledTotal = () => {
-    httpGet(httpUrl.canceledCount, [moment(this.state.selectedDate).format("YYYY-MM-DD")], {})
+    httpGet(
+      httpUrl.canceledCount,
+      [moment(this.state.selectedDate).format("YYYY-MM-DD")],
+      {}
+    )
       .then((res) => {
         this.setState({ totalCancel: res.data });
       })
@@ -353,8 +357,12 @@ class ReceptionStatus extends Component {
   };
 
   completedTotal = () => {
-    console.log("QQQ " + this.state.selectedDate)
-    httpGet(httpUrl.completedCount, [moment(this.state.selectedDate).format("YYYY-MM-DD")], {})
+    console.log("QQQ " + this.state.selectedDate);
+    httpGet(
+      httpUrl.completedCount,
+      [moment(this.state.selectedDate).format("YYYY-MM-DD")],
+      {}
+    )
       .then((res) => {
         this.setState({ totalComplete: res.data });
       })
@@ -422,7 +430,7 @@ class ReceptionStatus extends Component {
   };
 
   handleTableChange = (newPagination, sorter) => {
-    console.log('various parameters', newPagination, sorter);
+    console.log("various parameters", newPagination, sorter);
     const pager = { ...this.state.newPagination };
     pager.current = newPagination.current;
     pager.pageSize = newPagination.pageSize;
@@ -646,9 +654,9 @@ class ReceptionStatus extends Component {
               {row.riderName} / {comma(row.distance)}m /{" "}
               {
                 paymentMethod[
-                row.orderPayments[0]
-                  ? row.orderPayments[0]["paymentMethod"]
-                  : 0
+                  row.orderPayments[0]
+                    ? row.orderPayments[0]["paymentMethod"]
+                    : 0
                 ]
               }
               <br />
@@ -1087,8 +1095,8 @@ class ReceptionStatus extends Component {
         //   a.riderName.localeCompare(b.riderName);
         // },
         sorter: (a, b) => {
-          const dataA = (a.riderName||'').trim();
-          const dataB = (b.riderName||'').trim();
+          const dataA = (a.riderName || "").trim();
+          const dataB = (b.riderName || "").trim();
           return dataA.localeCompare(dataB);
         },
         render: (data, row) => {
@@ -1144,7 +1152,7 @@ class ReceptionStatus extends Component {
           data.length > 1 ? (
             <Button
               onClick={() => this.openPaymentModal(data, row)}
-            // close={this.closePaymentModal}
+              // close={this.closePaymentModal}
             >
               보기
             </Button>
@@ -1541,7 +1549,7 @@ class ReceptionStatus extends Component {
               icon={<EnvironmentFilled />}
               className="tabBtn mapTab"
               onClick={this.openMapControlModal}
-            // onClick={() => { this.props.openMapControl() }}
+              // onClick={() => { this.props.openMapControl() }}
             >
               지도관제
             </Button>
@@ -1609,7 +1617,7 @@ class ReceptionStatus extends Component {
               icon={<EnvironmentFilled />}
               className="tabBtn mapTab"
               onClick={this.openMapControlModal}
-            // onClick={() => { this.props.openMapControl() }}
+              // onClick={() => { this.props.openMapControl() }}
             >
               지도관제
             </Button>
@@ -1701,7 +1709,10 @@ class ReceptionStatus extends Component {
                         this.getCompleteList();
                         this.completedTotal();
                         this.canceledTotal();
-                        console.log("BBB " + moment(this.state.selectedDate).format("YYYY-MM-DD"))
+                        console.log(
+                          "BBB " +
+                            moment(this.state.selectedDate).format("YYYY-MM-DD")
+                        );
                       },
                       () => console.log("aaa" + this.state.selectedDate)
                     );
@@ -1975,11 +1986,10 @@ class ReceptionStatus extends Component {
                   : false
               }
               onChange={
-                this.state.checkedCompleteCall &&
-                this.handleTableChange
+                this.state.checkedCompleteCall && this.handleTableChange
               }
               expandedRowRender={expandedRowRender}
-            // scroll={{ y: "50vh" }}
+              // scroll={{ y: "50vh" }}
             />
           </div>
           <div id="reception-table" className="mobile">
@@ -2013,7 +2023,7 @@ class ReceptionStatus extends Component {
               marginTop: "1rem",
             }}
           >
-            {!this.state.checkedCompleteCall &&
+            {!this.state.checkedCompleteCall && (
               <Button
                 onClick={() => {
                   if (this.state.checkedCompleteCall) {
@@ -2065,7 +2075,7 @@ class ReceptionStatus extends Component {
               >
                 더 보기
               </Button>
-            }
+            )}
           </div>
         </div>
       </>

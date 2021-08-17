@@ -27,9 +27,8 @@
     margin-left: 20px !important;
   }
   .riderTableLayout {
-    min-height: 200px;
     position: absolute;
-    top: 20px;
+    top: 35px;
     left: 10px;
     right: 10px;
     z-index: 80;

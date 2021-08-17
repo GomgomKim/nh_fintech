@@ -5,9 +5,9 @@
   .mobile {
     display: none !important;
   }
-.reception-box .tabBtn{
-  margin-left:5px!important;
-}
+  .reception-box .tabBtn {
+    margin-left: 5px !important;
+  }
 
   .tabBtn {
     margin-left: 10px;
@@ -59,11 +59,10 @@
   }
 
   .riderTableLayout {
-    min-height: 200px;
     position: absolute;
-    top: 20px;
-    left: 10px;
+    top: 0px;
     right: 10px;
+    left: 10px;
     z-index: 80;
   }
 

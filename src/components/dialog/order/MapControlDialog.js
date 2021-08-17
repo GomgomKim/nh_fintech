@@ -824,7 +824,6 @@ class MapControlDialog extends Component {
         title: "아이디",
         dataIndex: "id",
         className: "table-column-center",
-        width: "200px",
         render: (data, row) => (
           <div
             className="riderName"
@@ -846,7 +845,6 @@ class MapControlDialog extends Component {
         title: "직급",
         dataIndex: "riderLevel",
         className: "table-column-center",
-        width: "200px",
         render: (data) => <div>{riderLevelText[data]}</div>,
       },
       {
@@ -927,6 +925,7 @@ class MapControlDialog extends Component {
                 }}
               />
             </div>
+
             <img
               onClick={close}
               src={require("../../../img/login/close.png").default}
@@ -961,6 +960,7 @@ class MapControlDialog extends Component {
                     // onChange={this.handleTableChange}
                     // pagination={this.state.pagination}
                     pagination={false}
+                    className={"riderOderTable"}
                   />
                 </div>
               )}
@@ -1153,11 +1153,10 @@ class MapControlDialog extends Component {
               </div>
 
               {/* 콜 정보 */}
-
               {this.props.callData && this.state.orderListOpen && (
                 <>
                   <div
-                    className="order-list-show-btn"
+                    className="order-list-show-btn "
                     onClick={() => this.setState({ orderListOpen: false })}
                   >
                     닫기
@@ -1180,7 +1179,7 @@ class MapControlDialog extends Component {
                       else if (remainTimeNum <= -20) return "table-orange";
                       else if (remainTimeNum <= -10) return "table-yellow";
                     }}
-                    pagination={this.state.paginationCallList}
+                    pagination={false}
                     onChange={this.handleCallListTableChange}
                     className={"callDataTable"}
                   />
@@ -1221,8 +1220,9 @@ class MapControlDialog extends Component {
                       rowKey={(record) => record.idx}
                       dataSource={this.state.results}
                       columns={columns_riderList}
-                      pagination={this.state.paginationList}
+                      pagination={false}
                       onChange={this.handleListTableChange}
+                      className={"riderListTable"}
                     />
                   </div>
                 </>

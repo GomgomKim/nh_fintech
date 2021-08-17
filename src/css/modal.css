@@ -337,14 +337,12 @@
     cursor: pointer;
     background-color: #fddc00;
     /* display: inline-block; */
-    padding: 8px;
   }
 
   .select-rider-orderCnt {
     z-index: 90;
     width: 30px;
     cursor: pointer;
-    padding: 8px;
   }
 
   .map-inner {
@@ -354,13 +352,43 @@
     /* border: 1px solid #ccc;  */
     text-align: left;
   }
-
-  .callDataTable {
-    width: 45%;
-    position: absolute;
-    top: 35%;
+  .map-inner .textLayout {
+    height: 56px;
+    line-height: 56px;
   }
 
+  .riderOderTable {
+    width: 100vw;
+    height: 25vh;
+    position: absolute;
+    top: 56px;
+    overflow-x: auto;
+    /* -ms-overflow-style: none; */
+  }
+  /* .riderOderTable::-webkit-scrollbar {
+    display: none;
+  } */
+  .callDataTable {
+    width: 45%;
+    height: 40vh;
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    overflow-y: auto;
+    /* -ms-overflow-style: none; */
+  }
+  /* .callDataTable::-webkit-scrollbar {
+    display: none;
+  } */
+
+  .riderListTable {
+    height: 40vh;
+    overflow-y: auto;
+    /* -ms-overflow-style: none; */
+  }
+  /* .riderListTable::-webkit-scrollbar {
+    display: none;
+  } */
   .table-column-center.arrive {
     overflow: hidden;
     text-overflow: ellipsis;
@@ -370,7 +398,7 @@
     width: 42%;
     position: absolute;
     right: 10px;
-    top: 300px;
+    top: 45%;
     z-index: 50;
   }
   .rider-list-show-btn {
@@ -378,7 +406,7 @@
     position: absolute;
     z-index: 100;
     right: 10px;
-    top: 320px;
+    top: 44%;
     background-color: #000;
     padding: 5px 20px;
     color: #fff;
@@ -389,8 +417,8 @@
     float: right;
     position: absolute;
     z-index: 100;
-    left: 0px;
-    top: 300px;
+    left: 10px;
+    top: 44%;
     background-color: #000;
     padding: 5px 20px;
     color: #fff;
@@ -1306,6 +1334,10 @@
   .registFranWrapper .override-input.addrBtn {
     width: 120px;
   }
+  .registFranWrapper.sub .datepicker {
+    margin-left: 20px;
+    width: 300px;
+  }
 
   /* 오른쪽 wrappper */
   .registFranWrapper.sub {
@@ -1326,6 +1358,15 @@
     /* margin-left: -30px; */
     width: 300px;
   }
+  .registFranWrapper.sub .override-input.orderman {
+    /* margin-left: -30px; */
+    width: 160px;
+  }
+  .registFranWrapper.sub .override-input.serchRiderBtn {
+    /* margin-left: -30px; */
+    width: 120px;
+  }
+
   .registFranWrapper.sub .override-input.price {
     /* margin-left: -30px; */
     width: 200px;
