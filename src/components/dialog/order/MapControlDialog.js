@@ -7,7 +7,7 @@ import {
   httpGet,
   httpGetWithNoLoading,
   httpPost,
-  httpUrl
+  httpUrl,
 } from "../../../api/httpClient";
 import { customAlert, customError, deleteError } from "../../../api/Modals";
 import RegistCallDialog from "../../../components/dialog/order/RegistCallDialog";
@@ -20,7 +20,7 @@ import {
   modifyType,
   orderCnt,
   riderLevelText,
-  rowColorName
+  rowColorName,
 } from "../../../lib/util/codeUtil";
 import { formatDate, formatHM } from "../../../lib/util/dateUtil";
 import { comma, remainTime } from "../../../lib/util/numberUtil";
@@ -914,7 +914,7 @@ class MapControlDialog extends Component {
         )}
         <div className="Dialog-overlay" onClick={close} />
         <div className="map-Dialog">
-          <div className="map-content">
+          <div className="map-menu-bar">
             <div className="select-rider-orderCnt">
               <SelectBox
                 value={orderCnt[this.state.selOrderCnt]}
@@ -933,7 +933,8 @@ class MapControlDialog extends Component {
               className="map-close"
               alt="닫기"
             />
-
+          </div>
+          <div className="map-content">
             <div className="map-inner">
               {this.state.riderName && (
                 <div className="riderTableLayout">

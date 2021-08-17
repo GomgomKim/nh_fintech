@@ -284,17 +284,17 @@
   /* 지도 관제 dialog */
   .map-Dialog {
     position: fixed;
-    top: 0;
-    left: 0;
-    /* transform: translate(-50%, -50%); */
-    /* width: 100%;
-  height: 100%; */
+    top: 47%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 85vw;
+    height: 85vh;
     z-index: 2;
   }
 
   .map-Dialog .mapLayout {
-    width: 100vw;
-    height: 100vh;
+    width: 85vw;
+    height: 85vh;
   }
 
   .map-Dialog .mapLayout .map-navermap {
@@ -312,7 +312,14 @@
     left: 24.95%;
   }
 
-  .map-content {
+  .map-menu-bar {
+    width: 100%;
+    background-color: #fff;
+    height: 56px;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
 
   .map-title {
@@ -325,9 +332,6 @@
   }
 
   .map-close {
-    position: absolute;
-    top: 30px;
-    right: 50px;
     z-index: 90;
     width: 30px;
     cursor: pointer;
@@ -337,9 +341,6 @@
   }
 
   .select-rider-orderCnt {
-    position: absolute;
-    top: 20px;
-    left: 20px;
     z-index: 90;
     width: 30px;
     cursor: pointer;
@@ -352,13 +353,6 @@
     /* margin-top: -30px; */
     /* border: 1px solid #ccc;  */
     text-align: left;
-  }
-
-  .select-rider-orderCnt {
-    position: absolute;
-    /* right: 10px; */
-    /* left: 1793px; */
-    /* top: 110px; */
   }
 
   .callDataTable {
@@ -2076,7 +2070,7 @@
   }
   .filtering-box-wrapper > div:last-child {
     margin-bottom: 0;
-    margin-left: 30px;
+    margin-left: 10px;
   }
   .filtering-name {
     font-size: 14px;
