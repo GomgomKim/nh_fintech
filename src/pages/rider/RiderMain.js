@@ -1,4 +1,4 @@
-import { Button, Image, Input, Modal, Popover, Table, Checkbox } from "antd";
+import { Button, Image, Input, Modal, Popover, Table, Affix, Checkbox } from "antd";
 import moment from "moment";
 import React, { Component } from "react";
 import {
@@ -495,7 +495,7 @@ class RiderMain extends Component {
         // ],
         // onFilter: (value, record) => value === record.riderLevel,
         sorter: (a, b) => a.riderLevel - b.riderLevel,
-        render: (data) => <div>{riderLevelText[data]}</div>,
+        render: (data) => <div className="c-p-20">{riderLevelText[data]}</div>,
       },
       {
         title: "면허정보",
@@ -504,7 +504,7 @@ class RiderMain extends Component {
         render: (data, row) => {
           // 면허정보 컬럼 확정후 확인 필요
           const content = (
-            <div>
+            <div className="c-p-20">
               <Image
                 src={imageUrl(row.driverLicenseFileIdx)}
                 style={{ width: 400, height: 300 }}
@@ -523,7 +523,7 @@ class RiderMain extends Component {
         title: "출금비밀번호",
         className: "table-column-center desk",
         render: (data, row) => (
-          <div>
+          <div className="c-p-20">
             <Button className="tabBtn" onClick={() => this.onResetPW(row)}>
               초기화
             </Button>
@@ -554,6 +554,7 @@ class RiderMain extends Component {
         sorter: (a, b) => a.ncash - b.ncash,
         render: (data, row) => 
         <div
+        className="c-p-25"
         style={{cursor: "pointer"}}
         onClick={() => {this.openCoinTransferModal(row)}}
         >{comma(data)}</div>,
@@ -563,7 +564,7 @@ class RiderMain extends Component {
         dataIndex: "createDate",
         className: "table-column-center desk",
         sorter: (a, b) => moment(a.createDate) - moment(b.createDate),
-        render: (data) => <div>{formatDateToDay(data)}</div>,
+        render: (data) => <div className="c-p-30">{formatDateToDay(data)}</div>,
         // render: (data, row) => <div>
         //   <DatePicker
         //     defaultValue={moment(today, dateFormat)}
@@ -574,10 +575,9 @@ class RiderMain extends Component {
       {
         title: "퇴사일",
         dataIndex: "deleteDate",
-        // width: "7%",
         className: "table-column-center desk",
         sorter: (a, b) => moment(a.deleteDate) - moment(b.deleteDate),
-        render: (data) => <div>{formatDateToDay(data)}</div>,
+        render: (data) => <div className="c-p-30">{formatDateToDay(data)}</div>,
         // render: (data, row) => <div>
         //   <DatePicker
         //     defaultValue={moment(today, dateFormat)}
@@ -585,6 +585,135 @@ class RiderMain extends Component {
         //     onChange={date => this.setState({ selected: date })} />
         // </div>
       },
+      
+
+      {
+        title: "최소보유잔액",
+        dataIndex: "ncashMin",
+        className: "table-column-center desk",
+        render: (data) => <div className="c-p-20">{data}</div>,
+      },
+      {
+        title: () => (
+          <div>
+            잔액
+            <br />
+            (최소보유잔액)
+          </div>
+        ),
+        dataIndex: ["ncashMin", "ncash"],
+        className: "table-column-center mobile",
+        render: (data, row) => (
+          <div className="c-p-20">
+            {comma(row.ncash)} <br />({row.ncashMin})
+          </div>
+        ),
+      },
+      {
+        title: "전화번호",
+        dataIndex: "phone",
+        className: "table-column-center desk",
+        render: (data) => <div className="c-p-20">{data}</div>,
+      },
+      // {
+      //   title: "잔액",
+      //   dataIndex: "ncash",
+      //   className: "table-column-center desk",
+      //   render: (data) => <div>{comma(data)}</div>,
+      // },
+      {
+        title: "메모",
+        dataIndex: "memo",
+        className: "table-column-center desk",
+        render: (data) => <div className="c-p-20">{data}</div>,
+      },
+      {
+        title: "기사그룹",
+        dataIndex: "riderSettingGroup",
+        className: "table-column-center desk",
+        render: (data) => <div className="c-p-25">{data.settingGroupName}</div>,
+      },
+
+      {
+        title: "수수료방식",
+        dataIndex: "riderSettingGroup",
+        className: "table-column-center desk",
+        render: (data) => (
+          <div className="c-p-20">{data.deliveryPriceFeeType === 1 ? "정량" : "정율"}</div>
+        ),
+      },
+      {
+        title: "수수료",
+        dataIndex: "riderSettingGroup",
+        className: "table-column-center desk",
+        render: (data) => (
+          <div className="c-p-20">
+            {data.deliveryPriceFeeType === 1
+              ? data.deliveryPriceFeeAmount + "원"
+              : data.deliveryPriceFeeAmount + "%"}
+          </div>
+        ),
+      },
+      {
+        title: "은행명",
+        dataIndex: "bank",
+        className: "table-column-center desk",
+        render: (data) => <div className="c-p-20">{data.split(",")[0]}</div>,
+      },
+      {
+        title: "계좌번호",
+        dataIndex: "bankAccount",
+        className: "table-column-center desk",
+        render: (data) => <div className="c-p-20">{data}</div>,
+      },
+      {
+        title: "계좌번호",
+        dataIndex: ["bank", "bankAccount"],
+        className: "table-column-center mobile",
+        render: (data, row) => (
+          <div className="c-p-20">
+            {row.bank.split(",")[0]} <br /> {row.bankAccount} <br />{" "}
+            {row.riderName}
+          </div>
+        ),
+      },
+      {
+        title: "예금주",
+        dataIndex: "riderName",
+        className: "table-column-center desk",
+        render: (data) => <div className="c-p-20">{data}</div>,
+      },
+      {
+        title: "출금등록",
+        dataIndex: "walletId",
+        className: "table-column-center desk",
+        render: (data, row) => (
+          <div>
+            {data ? (
+              "완료"
+            ) : (
+              <Button
+                onClick={() => {
+                  httpPost(httpUrl.createUserWallet, [row.idx], {})
+                    .then((response) => {
+                      console.log(response);
+                      if (response.data.resultCd == "0000") {
+                        this.getList();
+                      } else {
+                        alert(response.data.advanceMsg);
+                      }
+                    })
+                    .catch((e) => {});
+                }}
+              >
+                등록하기
+              </Button>
+            )}
+          </div>
+        ),
+      },
+
+
       {
         title: "상태",
         dataIndex: "userStatus",
@@ -622,7 +751,6 @@ class RiderMain extends Component {
       {
         title: "수정",
         className: "table-column-center desk",
-        width: "8%",
         render: (data, row) => (
           <div>
             {/* {this.state.riderUpdateOpen &&
@@ -638,7 +766,7 @@ class RiderMain extends Component {
                 )
               }
             >
-              수정
+              수정하기
             </Button>
           </div>
         ),
@@ -663,146 +791,146 @@ class RiderMain extends Component {
         // ],
         // onFilter: (value, record) => value === record.riderStatus,
         sorter: (a, b) => a.riderStatus - b.riderStatus,
-        render: (data) => <div>{riderStatusCode[data]}</div>,
+        render: (data) => <div className="c-p-30">{riderStatusCode[data]}</div>,
       },
     ];
 
-    const expandedRowRender = (record) => {
-      const dropColumns = [
-        // 컬럼 확인 필요
-        {
-          title: "최소보유잔액",
-          dataIndex: "ncashMin",
-          className: "table-column-center desk",
-          render: (data) => <div>{data}</div>,
-        },
-        {
-          title: () => (
-            <div>
-              잔액
-              <br />
-              (최소보유잔액)
-            </div>
-          ),
-          dataIndex: ["ncashMin", "ncash"],
-          className: "table-column-center mobile",
-          render: (data, row) => (
-            <div>
-              {comma(row.ncash)} <br />({row.ncashMin})
-            </div>
-          ),
-        },
-        {
-          title: "전화번호",
-          dataIndex: "phone",
-          className: "table-column-center desk",
-        },
-        // {
-        //   title: "잔액",
-        //   dataIndex: "ncash",
-        //   className: "table-column-center desk",
-        //   render: (data) => <div>{comma(data)}</div>,
-        // },
-        {
-          title: "메모",
-          dataIndex: "memo",
-          className: "table-column-center desk",
-          render: (data) => <div>{data}</div>,
-        },
-        {
-          title: "기사그룹",
-          dataIndex: "riderSettingGroup",
-          className: "table-column-center desk",
-          render: (data) => <div>{data.settingGroupName}</div>,
-        },
+    // const expandedRowRender = (record) => {
+    //   const dropColumns = [
+    //     // 컬럼 확인 필요
+    //     {
+    //       title: "최소보유잔액",
+    //       dataIndex: "ncashMin",
+    //       className: "table-column-center desk",
+    //       render: (data) => <div>{data}</div>,
+    //     },
+    //     {
+    //       title: () => (
+    //         <div>
+    //           잔액
+    //           <br />
+    //           (최소보유잔액)
+    //         </div>
+    //       ),
+    //       dataIndex: ["ncashMin", "ncash"],
+    //       className: "table-column-center mobile",
+    //       render: (data, row) => (
+    //         <div>
+    //           {comma(row.ncash)} <br />({row.ncashMin})
+    //         </div>
+    //       ),
+    //     },
+    //     {
+    //       title: "전화번호",
+    //       dataIndex: "phone",
+    //       className: "table-column-center desk",
+    //     },
+    //     // {
+    //     //   title: "잔액",
+    //     //   dataIndex: "ncash",
+    //     //   className: "table-column-center desk",
+    //     //   render: (data) => <div>{comma(data)}</div>,
+    //     // },
+    //     {
+    //       title: "메모",
+    //       dataIndex: "memo",
+    //       className: "table-column-center desk",
+    //       render: (data) => <div>{data}</div>,
+    //     },
+    //     {
+    //       title: "기사그룹",
+    //       dataIndex: "riderSettingGroup",
+    //       className: "table-column-center desk",
+    //       render: (data) => <div>{data.settingGroupName}</div>,
+    //     },
 
-        {
-          title: "수수료방식",
-          dataIndex: "riderSettingGroup",
-          className: "table-column-center desk",
-          render: (data) => (
-            <div>{data.deliveryPriceFeeType === 1 ? "정량" : "정율"}</div>
-          ),
-        },
-        {
-          title: "수수료",
-          dataIndex: "riderSettingGroup",
-          className: "table-column-center desk",
-          render: (data) => (
-            <div>
-              {data.deliveryPriceFeeType === 1
-                ? data.deliveryPriceFeeAmount + "원"
-                : data.deliveryPriceFeeAmount + "%"}
-            </div>
-          ),
-        },
-        {
-          title: "은행명",
-          dataIndex: "bank",
-          className: "table-column-center desk",
-          render: (data) => <div>{data.split(",")[0]}</div>,
-        },
-        {
-          title: "계좌번호",
-          dataIndex: "bankAccount",
-          className: "table-column-center desk",
-        },
-        {
-          title: "계좌번호",
-          dataIndex: ["bank", "bankAccount"],
-          className: "table-column-center mobile",
-          render: (data, row) => (
-            <div>
-              {row.bank.split(",")[0]} <br /> {row.bankAccount} <br />{" "}
-              {row.riderName}
-            </div>
-          ),
-        },
-        {
-          title: "예금주",
-          dataIndex: "riderName",
-          className: "table-column-center desk",
-        },
-        {
-          title: "출금등록",
-          dataIndex: "walletId",
-          className: "table-column-center desk",
-          render: (data, row) => (
-            <div>
-              {data ? (
-                "완료"
-              ) : (
-                <Button
-                  onClick={() => {
-                    httpPost(httpUrl.createUserWallet, [row.idx], {})
-                      .then((response) => {
-                        console.log(response);
-                        if (response.data.resultCd == "0000") {
-                          this.getList();
-                        } else {
-                          alert(response.data.advanceMsg);
-                        }
-                      })
-                      .catch((e) => {});
-                  }}
-                >
-                  등록하기
-                </Button>
-              )}
-            </div>
-          ),
-        },
-      ];
-      return (
-        <Table
-          className="droptable"
-          rowKey={(record) => `record: ${record.idx}`}
-          columns={dropColumns}
-          dataSource={[record]}
-          pagination={false}
-        />
-      );
-    };
+    //     {
+    //       title: "수수료방식",
+    //       dataIndex: "riderSettingGroup",
+    //       className: "table-column-center desk",
+    //       render: (data) => (
+    //         <div>{data.deliveryPriceFeeType === 1 ? "정량" : "정율"}</div>
+    //       ),
+    //     },
+    //     {
+    //       title: "수수료",
+    //       dataIndex: "riderSettingGroup",
+    //       className: "table-column-center desk",
+    //       render: (data) => (
+    //         <div>
+    //           {data.deliveryPriceFeeType === 1
+    //             ? data.deliveryPriceFeeAmount + "원"
+    //             : data.deliveryPriceFeeAmount + "%"}
+    //         </div>
+    //       ),
+    //     },
+    //     {
+    //       title: "은행명",
+    //       dataIndex: "bank",
+    //       className: "table-column-center desk",
+    //       render: (data) => <div>{data.split(",")[0]}</div>,
+    //     },
+    //     {
+    //       title: "계좌번호",
+    //       dataIndex: "bankAccount",
+    //       className: "table-column-center desk",
+    //     },
+    //     {
+    //       title: "계좌번호",
+    //       dataIndex: ["bank", "bankAccount"],
+    //       className: "table-column-center mobile",
+    //       render: (data, row) => (
+    //         <div>
+    //           {row.bank.split(",")[0]} <br /> {row.bankAccount} <br />{" "}
+    //           {row.riderName}
+    //         </div>
+    //       ),
+    //     },
+    //     {
+    //       title: "예금주",
+    //       dataIndex: "riderName",
+    //       className: "table-column-center desk",
+    //     },
+    //     {
+    //       title: "출금등록",
+    //       dataIndex: "walletId",
+    //       className: "table-column-center desk",
+    //       render: (data, row) => (
+    //         <div>
+    //           {data ? (
+    //             "완료"
+    //           ) : (
+    //             <Button
+    //               onClick={() => {
+    //                 httpPost(httpUrl.createUserWallet, [row.idx], {})
+    //                   .then((response) => {
+    //                     console.log(response);
+    //                     if (response.data.resultCd == "0000") {
+    //                       this.getList();
+    //                     } else {
+    //                       alert(response.data.advanceMsg);
+    //                     }
+    //                   })
+    //                   .catch((e) => {});
+    //               }}
+    //             >
+    //               등록하기
+    //             </Button>
+    //           )}
+    //         </div>
+    //       ),
+    //     },
+    //   ];
+    //   return (
+    //     <Table
+    //       className="droptable"
+    //       rowKey={(record) => `record: ${record.idx}`}
+    //       columns={dropColumns}
+    //       dataSource={[record]}
+    //       pagination={false}
+    //     />
+    //   );
+    // };
 
     return (
       <div>
@@ -838,6 +966,8 @@ class RiderMain extends Component {
           />
         </div>
         <div className="riderMain-container">
+        <Affix offsetTop={5}>
+
           <div className="selectLayout desk">
             <div className="searchRequirementText">검색조건</div>
             <SelectBox
@@ -917,7 +1047,6 @@ class RiderMain extends Component {
             >
               일차감 내역
             </Button>
-          </div>
           <div className="desk">
             <div className="riderStatus">
             <SelectBox
@@ -1012,6 +1141,8 @@ class RiderMain extends Component {
               })}
             </div>
           </div>
+          </div>
+          </Affix>
           {this.state.blindListOpen && (
             <BlindRiderListDialog
               close={this.closeBlindModal}
@@ -1025,8 +1156,10 @@ class RiderMain extends Component {
               columns={columns}
               pagination={this.state.pagination}
               onChange={this.handleTableChange}
-              expandedRowRender={expandedRowRender}
+              // expandedRowRender={expandedRowRender}
               // scroll={{ y: "50vh" }}
+              scroll={{ x: true }}
+              sticky={{ offsetHeader: 60 }}
             />
           </div>
           <div id="rider-dataTableLayout" className="dataTableLayout mobile">
