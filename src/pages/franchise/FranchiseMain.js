@@ -994,7 +994,7 @@ class FranchiseMain extends Component {
               onChange={this.handleTableChange}
               // expandedRowRender={expandedRowRender}
               // scroll={{ y: "50vh" }}
-              scroll={{ x: true, marginTop: 100 }}
+              scroll={{ x: true }}
               sticky={{ offsetHeader: 60 }}
             />
           </div>

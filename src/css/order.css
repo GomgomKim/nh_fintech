@@ -33,7 +33,21 @@
 
   /* 라이더 */
   .dataTableLayout {
-    margin-top: 10px;
+    /* margin-top: 10px; */
+    white-space: nowrap;
+  }
+
+  .dataTableLayout th .ant-table-column-sorters {
+    padding: 16px 0px;
+  }
+
+  .dataTableLayout th .ant-table-column-sorter {
+    margin-left: 0px;
+    /* margin-right: 5px; */
+  }
+
+  .dataTableLayout .ant-table-thead {
+    z-index: 0;
   }
 
   /* 가맹점 */

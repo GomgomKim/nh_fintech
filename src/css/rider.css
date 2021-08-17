@@ -13,15 +13,19 @@
 }
 
 .riderMain-container .selectLayout {
-  margin-top: 10px !important;
-  margin-bottom: 10px !important;
+  margin-top: -5px !important;
+  padding-top: 15px !important;
+  padding-bottom: 15px !important;
   display: inline-block;
+  background-color: white;
+  z-index: 100;
+  width: 100%;
 }
 
 @media screen and (min-width: 1200px) {
-  .riderStatus{
+  .riderStatus {
     float: right;
-    margin-top: -45px;
+    margin-top: -35px;
   }
   .rider-status {
     display: inline-block;
