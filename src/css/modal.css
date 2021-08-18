@@ -289,7 +289,7 @@
     transform: translate(-50%, -50%);
     width: 85vw;
     height: 85vh;
-    z-index: 2;
+    z-index: 999;
   }
 
   .map-Dialog .mapLayout {
@@ -615,7 +615,7 @@
     width: 1000px;
     border-radius: 30px;
     padding: 20px;
-    z-index: 2;
+    z-index: 999;
   }
 
   .noticeLayout {
@@ -853,7 +853,7 @@
     transform: translate(-50%, -60%);
     width: 1000px;
     border-radius: 30px;
-    z-index: 2;
+    z-index: 999;
   }
   .surcharge-Dialog .mainTitle {
     display: inline-block;
@@ -1057,7 +1057,7 @@
     transform: translate(-50%, -50%);
     width: 1300px;
     border-radius: 30px;
-    z-index: 3;
+    z-index: 999;
   }
   .registCall-container {
     background-color: white;
@@ -1217,7 +1217,7 @@
     transform: translate(-50%, -50%);
     width: 1000px;
     border-radius: 30px;
-    z-index: 2;
+    z-index: 999;
   }
   .registFran-container {
     background-color: white;
@@ -1880,7 +1880,7 @@
     left: 50%;
     transform: translate(-50%, -50%);
     width: 690px;
-    z-index: 2;
+    z-index: 999;
   }
 
   .timeDelay-content {
@@ -2180,7 +2180,7 @@
     left: 50%;
     transform: translate(-50%, -50%);
     width: 1000px;
-    z-index: 2;
+    z-index: 999;
   }
 
   .taskScheduler-content {
@@ -2567,7 +2567,7 @@
     left: 50%;
     transform: translate(-50%, -50%);
     width: 1100px;
-    z-index: 2;
+    z-index: 999;
   }
 
   .taskWorkList-content {
@@ -2667,7 +2667,7 @@
     left: 50%;
     transform: translate(-50%, -50%);
     width: 1000px;
-    z-index: 2;
+    z-index: 999;
   }
 
   .riderGroup-content {
@@ -2866,7 +2866,7 @@
     transform: translate(-50%, -50%);
     width: 960px;
     border-radius: 30px;
-    z-index: 2;
+    z-index: 999;
   }
 
   .registRider-content {
@@ -3274,9 +3274,9 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 800px;
+    width: 900px;
     border-radius: 30px;
-    z-index: 2;
+    z-index:999;
   }
 
   .searchAddress-content {
@@ -3763,7 +3763,7 @@
     transform: translate(-50%, -50%);
     width: 1000px;
     border-radius: 30px;
-    z-index: 2;
+    z-index: 999;
   }
   .blind-container {
     background-color: white;
@@ -4666,7 +4666,7 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    z-index: 2;
+    z-index: 999;
   }
 
   .zone-content {
