@@ -345,7 +345,9 @@ const httpUrl = {
 
   // 배송가능지역
   getAddrBranch: "/branch/addrBranch/list?pageNum=%s&pageSize=%s",
+  branchAddrDeliveryList: "/branch/addrDelivery/list??pageNum=%s&pageSize=%s",
   updateAddrBranch: "/branch/addrBranch/update",
+  updateAddrDelivery: "/branch/addrDelivery/update",
 
   // VAN등록요청 - 파일업로드
   FileUpload: "/file/upload",

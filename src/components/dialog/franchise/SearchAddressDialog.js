@@ -42,11 +42,14 @@ class SearchAddressDialog extends Component {
 
       selfAddOpen: false,
       isPostCodeOpen: false,
+
+      addrDeliveryList: [],
     };
     this.formRef = React.createRef();
   }
   componentDidMount() {
     this.getList();
+    this.getAddrDeliveryList();
   }
 
   handleTableChange = (pagination) => {
@@ -86,7 +89,28 @@ class SearchAddressDialog extends Component {
           });
         }
       })
-      .catch((e) => { });
+      .catch((e) => {});
+  };
+
+  getAddrDeliveryList = () => {
+    httpGet(httpUrl.branchAddrDeliveryList, [1, 10000], {}).then((res) => {
+      if (res.result === "SUCCESS") {
+        console.log(res.data);
+        this.setState({
+          addrDeliveryList: res.data.addrDiliveries,
+          prevAddrDeliveryList: res.data.addrDiliveries,
+        });
+      }
+    });
+  };
+
+  handleToggle = (index) => {
+    let newState = [...this.state.addrDeliveryList];
+    newState[index].canDeliver = !newState[index].canDeliver;
+    this.setState({ addrDeliveryList: newState }, () => {
+      console.log(this.state.deliveryZone);
+      console.log(this.state.prevDeliveryZone);
+    });
   };
 
   // 우편번호 검색
@@ -277,13 +301,49 @@ class SearchAddressDialog extends Component {
       });
   };
 
+  handleUpdate = async () => {
+    let failed = [];
+    for (let i = 0; i < this.state.addrDeliveryList.length; i++) {
+      console.log(i);
+      console.log(this.state.addrDeliveryList[i].canDeliver);
+      console.log(this.state.prevAddrDeliveryList[i].canDeliver);
+      // if (
+      //   this.state.deliveryZone[i].canDeliver !==
+      //   this.state.prevDeliveryZone[i].canDeliver
+      // ) {
+      const res = await httpPost(httpUrl.updateAddrDelivery, [], {
+        canDeliver: this.state.addrDeliveryList[i].canDeliver,
+        idx: this.state.addrDeliveryList[i].idx,
+      });
+
+      console.log("res");
+      console.log(res);
+
+      if (res.result !== "SUCCESS") {
+        failed.push(this.state.addrDeliveryList[i].eupMyeonDong);
+      }
+      // }
+    }
+    if (failed.length === 0) {
+      Modal.info({
+        title: "적용 성공",
+        content: "배송가능지역 적용에 성공했습니다.",
+      });
+    } else {
+      Modal.info({
+        title: "적용 실패",
+        content: `${failed} 지역의 적용에 실패했습니다.`,
+      });
+    }
+  };
+
   // 라디오
   onChangeRegistAddType = (e) => {
-    this.setState({ RegistAddType: e.target.value }, () => { });
+    this.setState({ RegistAddType: e.target.value }, () => {});
   };
 
   onChangeSelectAddType = (e) => {
-    this.setState({ selectAddType: e.target.value }, () => { });
+    this.setState({ selectAddType: e.target.value }, () => {});
   };
 
   render() {
@@ -319,8 +379,7 @@ class SearchAddressDialog extends Component {
               삭제
             </Button>
           </div>
-        )
-
+        ),
       },
 
       {
@@ -479,16 +538,45 @@ class SearchAddressDialog extends Component {
                       type="primary"
                       htmlType="submit"
                       style={{ width: 100, backgroundColor: "#1890ff" }}
-                    // onClick={() => this.handleSubmit()}
+                      // onClick={() => this.handleSubmit()}
                     >
                       등록하기
                     </Button>
                   </div>
                 </div>
 
+                <div className="searchAddress-name desk">배송가능동</div>
+                <div className="contentbox second">
+                  {this.state.addrDeliveryList &&
+                    this.state.addrDeliveryList.map((obj, idx) => (
+                      <div key={obj.idx} className="zone-box">
+                        <div
+                          className={
+                            obj.canDeliver ? "zone-el-active" : "zone-el"
+                          }
+                          onClick={() => this.handleToggle(idx)}
+                        >
+                          {obj.eupMyeonDong}
+                        </div>
+                      </div>
+                    ))}
+                </div>
+                <div className="searchAddress-btn">
+                  <Button
+                    onClick={() => this.handleUpdate()}
+                    style={{
+                      width: 100,
+                      backgroundColor: "#1890ff",
+                      color: "white",
+                    }}
+                  >
+                    적용하기
+                  </Button>
+                </div>
+
                 <div className="searchAddress-name desk">주소 검색</div>
 
-                <div className="contentBlock second">
+                <div className="contentBlock third">
                   <div className="contentBlock">
                     <div className="mainTitle desk">유형</div>
                     <div className="searchAddress-name mobile">주소 검색</div>
