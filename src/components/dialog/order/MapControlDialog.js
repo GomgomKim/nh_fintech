@@ -3,11 +3,12 @@ import { Button, Input, Modal, Select, Space, Table } from "antd";
 import moment from "moment";
 import React, { Component } from "react";
 import { Marker, NaverMap, Polyline } from "react-naver-maps";
+import { connect } from "react-redux";
 import {
   httpGet,
   httpGetWithNoLoading,
   httpPost,
-  httpUrl,
+  httpUrl
 } from "../../../api/httpClient";
 import { customAlert, customError, deleteError } from "../../../api/Modals";
 import RegistCallDialog from "../../../components/dialog/order/RegistCallDialog";
@@ -20,7 +21,7 @@ import {
   modifyType,
   orderCnt,
   riderLevelText,
-  rowColorName,
+  rowColorName
 } from "../../../lib/util/codeUtil";
 import { formatDate, formatHM } from "../../../lib/util/dateUtil";
 import { comma, remainTime } from "../../../lib/util/numberUtil";
@@ -122,6 +123,9 @@ class MapControlDialog extends Component {
 
     this.riderLocateListInterval = setInterval(this.getRiderLocateList, 7033);
     this.riderListInterval = setInterval(this.getRiderList, 7033);
+
+    console.log("this.props.loginInfo");
+    console.log(this.props.loginInfo);
   }
 
   componentWillUnmount() {
@@ -143,6 +147,19 @@ class MapControlDialog extends Component {
   onSearchWorker = (value) => {
     this.setState({ searchName: value }, () => {
       this.getRiderList();
+    });
+  };
+
+  setMapCenter = () => {
+    this.setState({
+      mapCenter: {
+        lat: this.props.loginInfo.branchLatitude
+          ? this.props.loginInfo.branchLatitude
+          : 37.643623625321474,
+        lng: this.props.loginInfo.branchLongitude
+          ? this.props.loginInfo.branchLongitude
+          : 126.66509442649551,
+      },
     });
   };
 
@@ -1243,4 +1260,10 @@ class MapControlDialog extends Component {
   }
 }
 
-export default MapControlDialog;
+let mapStateToProps = (state) => {
+  return {
+    loginInfo: state.login.loginInfo,
+  };
+};
+
+export default connect(mapStateToProps, null)(MapControlDialog);
