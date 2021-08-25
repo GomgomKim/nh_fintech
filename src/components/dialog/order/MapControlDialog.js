@@ -120,6 +120,7 @@ class MapControlDialog extends Component {
     this.getRiderList();
     this.getRiderLocateList();
     this.getBounds();
+    this.setMapCenter();
 
     this.riderLocateListInterval = setInterval(this.getRiderLocateList, 7033);
     this.riderListInterval = setInterval(this.getRiderList, 7033);
