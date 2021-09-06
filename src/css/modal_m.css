@@ -2012,7 +2012,7 @@
   /* .timeDelay-box .timeDelay-box-01, .timeDelay-box-05, .timeDelay-box-09 {
     margin-left:0px!important;
   }
-  
+
   .timeDelay-box .timeDelay-box-10, .timeDelay-box-11, .timeDelay-box-12 {
     margin-bottom:0px!important;
   } */
@@ -2035,7 +2035,7 @@
   }
   /* .timeDelay-btn .ant-checkbox-input{
     display:inline-block;
-    vertical-align: middle; 
+    vertical-align: middle;
   } */
 
   .timeDelay-btn-01 {
@@ -2771,7 +2771,7 @@
   /* .riderGroup-inner .ant-table-row-level-0:hover{
     background-color: #40a9ff !important;
   }
-  
+
   .riderGroup-inner .clickRowStyl:hover{
     background-color: #40a9ff !important;
     transition: all 10s ease-in-out;
